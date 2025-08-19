@@ -1,0 +1,590 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../theme.dart';
+import '../models/church_resource.dart';
+import '../services/church_resource_service.dart';
+
+class ChurchResourcesTab extends StatefulWidget {
+  const ChurchResourcesTab({Key? key}) : super(key: key);
+
+  @override
+  State<ChurchResourcesTab> createState() => _ChurchResourcesTabState();
+}
+
+class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
+  String _selectedType = 'all';
+  final TextEditingController _searchController = TextEditingController();
+
+  final List<Map<String, dynamic>> _types = [
+    {'value': 'all', 'label': 'Tout', 'icon': Icons.all_inclusive},
+    {'value': 'video', 'label': 'Vidéos', 'icon': Icons.video_library},
+    {'value': 'audio', 'label': 'Audios', 'icon': Icons.audiotrack},
+    {'value': 'document', 'label': 'Documents', 'icon': Icons.description},
+    {'value': 'link', 'label': 'Liens', 'icon': Icons.link},
+    {'value': 'book', 'label': 'Livres', 'icon': Icons.book},
+    {'value': 'study', 'label': 'Études', 'icon': Icons.school},
+  ];
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _buildHeader(),
+        _buildTypeFilter(),
+        Expanded(
+          child: _buildContent(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.primaryColor.withOpacity(0.1),
+            AppTheme.backgroundColor,
+          ],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Ressources',
+            style: GoogleFonts.poppins(
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Découvrez nos ressources spirituelles et éducatives',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: AppTheme.textSecondaryColor,
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Rechercher des ressources...',
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTypeFilter() {
+    return Container(
+      height: 80,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: _types.length,
+        itemBuilder: (context, index) {
+          final type = _types[index];
+          final isSelected = _selectedType == type['value'];
+          
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedType = type['value']),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: isSelected ? AppTheme.primaryColor : Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected ? AppTheme.primaryColor : Colors.grey.shade300,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      type['icon'],
+                      color: isSelected ? Colors.white : AppTheme.primaryColor,
+                      size: 20,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      type['label'],
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: isSelected ? Colors.white : AppTheme.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return StreamBuilder<List<ChurchResource>>(
+      stream: ChurchResourceService.getActiveResourcesStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
+                const SizedBox(height: 16),
+                Text(
+                  'Erreur de chargement',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: AppTheme.textSecondaryColor,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        List<ChurchResource> resources = snapshot.data ?? [];
+
+        // Filtrer par type
+        if (_selectedType != 'all') {
+          resources = resources.where((resource) => resource.resourceType == _selectedType).toList();
+        }
+
+        // Filtrer par recherche
+        if (_searchController.text.isNotEmpty) {
+          final query = _searchController.text.toLowerCase();
+          resources = resources.where((resource) {
+            return resource.title.toLowerCase().contains(query) ||
+                   resource.description.toLowerCase().contains(query);
+          }).toList();
+        }
+
+        if (resources.isEmpty) {
+          return _buildEmptyState();
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: resources.length,
+          itemBuilder: (context, index) {
+            return _buildResourceCard(resources[index]);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.library_books_outlined,
+            size: 80,
+            color: Colors.grey.shade400,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            _selectedType == 'all' 
+                ? 'Aucune ressource disponible'
+                : 'Aucune ressource de ce type',
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: AppTheme.textSecondaryColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildResourceCard(ChurchResource resource) {
+    final type = ResourceType.fromValue(resource.resourceType);
+    
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: InkWell(
+        onTap: () => _handleResourceTap(resource),
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (resource.imageUrl != null && resource.imageUrl!.isNotEmpty)
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                child: Stack(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: resource.imageUrl!,
+                      height: 150,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        height: 150,
+                        color: Colors.grey.shade200,
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        height: 150,
+                        color: Colors.grey.shade200,
+                        child: const Center(child: Icon(Icons.error)),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              _getTypeIcon(type.value),
+                              color: Colors.white,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              type.label,
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (resource.resourceType == 'video')
+                      const Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Center(
+                          child: Icon(
+                            Icons.play_circle_fill,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (resource.imageUrl == null || resource.imageUrl!.isEmpty)
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                _getTypeIcon(type.value),
+                                color: AppTheme.primaryColor,
+                                size: 14,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                type.label,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          _formatDate(resource.createdAt),
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: AppTheme.textSecondaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 8),
+                  Text(
+                    resource.title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  if (resource.createdBy != null)
+                    Text(
+                      'Par ${resource.createdBy}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                  Text(
+                    resource.description,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: AppTheme.textSecondaryColor,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (resource.downloadCount > 0) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.download,
+                          size: 16,
+                          color: Colors.grey.shade600,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${resource.downloadCount} téléchargements',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _handleResourceTap(ChurchResource resource) async {
+    // Incrémenter le compteur de téléchargements/vues
+    await ChurchResourceService.incrementDownloadCount(resource.id);
+
+    if (resource.fileUrl != null && resource.fileUrl!.isNotEmpty) {
+      final Uri url = Uri.parse(resource.fileUrl!);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Impossible d\'ouvrir cette ressource'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } else {
+      _showResourceDetails(resource);
+    }
+  }
+
+  void _showResourceDetails(ChurchResource resource) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        maxChildSize: 0.95,
+        minChildSize: 0.5,
+        builder: (context, scrollController) {
+          return Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: SingleChildScrollView(
+              controller: scrollController,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  if (resource.imageUrl != null && resource.imageUrl!.isNotEmpty) ...[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: CachedNetworkImage(
+                        imageUrl: resource.imageUrl!,
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                  Text(
+                    resource.title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textPrimaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  if (resource.createdBy != null)
+                    Text(
+                      'Par ${resource.createdBy}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _formatDate(resource.createdAt),
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: AppTheme.textSecondaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    resource.description,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: AppTheme.textPrimaryColor,
+                      height: 1.6,
+                    ),
+                  ),
+                  if (resource.fileUrl != null && resource.fileUrl!.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () => _handleResourceTap(resource),
+                        icon: const Icon(Icons.open_in_new),
+                        label: const Text('Ouvrir la ressource'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  IconData _getTypeIcon(String type) {
+    switch (type) {
+      case 'video':
+        return Icons.video_library;
+      case 'audio':
+        return Icons.audiotrack;
+      case 'document':
+        return Icons.description;
+      case 'link':
+        return Icons.link;
+      case 'book':
+        return Icons.book;
+      case 'study':
+        return Icons.school;
+      default:
+        return Icons.description;
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays == 0) {
+      return 'Aujourd\'hui';
+    } else if (difference.inDays == 1) {
+      return 'Hier';
+    } else if (difference.inDays < 7) {
+      return 'Il y a ${difference.inDays} jours';
+    } else {
+      return '${date.day}/${date.month}/${date.year}';
+    }
+  }
+}

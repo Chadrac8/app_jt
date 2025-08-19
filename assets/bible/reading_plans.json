@@ -1,0 +1,183 @@
+[
+  {
+    "id": "bible_365",
+    "name": "Bible en 1 an",
+    "description": "Lisez toute la Bible en 365 jours avec ce plan structuré qui combine Ancien et Nouveau Testament chaque jour.",
+    "category": "Classique",
+    "totalDays": 365,
+    "estimatedReadingTime": 15,
+    "difficulty": "beginner",
+    "isPopular": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "days": [
+      {
+        "day": 1,
+        "title": "Commencement - Genèse et Matthieu",
+        "readings": [
+          {
+            "book": "Genèse",
+            "chapter": 1,
+            "startVerse": 1,
+            "endVerse": 31
+          },
+          {
+            "book": "Matthieu",
+            "chapter": 1,
+            "startVerse": 1,
+            "endVerse": 25
+          }
+        ],
+        "reflection": "Aujourd'hui nous commençons notre voyage à travers la Bible. Genèse nous montre les commencements, et Matthieu nous présente Jésus, l'accomplissement des promesses.",
+        "prayer": "Seigneur, guide-moi dans cette aventure de lecture. Ouvre mon cœur à ta Parole."
+      },
+      {
+        "day": 2,
+        "title": "La création continue",
+        "readings": [
+          {
+            "book": "Genèse",
+            "chapter": 2,
+            "startVerse": 1,
+            "endVerse": 25
+          },
+          {
+            "book": "Matthieu",
+            "chapter": 2,
+            "startVerse": 1,
+            "endVerse": 23
+          }
+        ],
+        "reflection": "Dieu nous a créés pour la relation avec lui. Dans Matthieu, nous voyons comment Jésus a été protégé dès sa naissance pour accomplir sa mission.",
+        "prayer": "Merci Seigneur pour ton amour et ta protection constante."
+      }
+    ]
+  },
+  {
+    "id": "new_testament_90",
+    "name": "Nouveau Testament en 90 jours",
+    "description": "Un parcours intensif à travers le Nouveau Testament en 3 mois pour découvrir la vie et l'enseignement de Jésus.",
+    "category": "Nouveau Testament",
+    "totalDays": 90,
+    "estimatedReadingTime": 20,
+    "difficulty": "intermediate",
+    "isPopular": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "days": [
+      {
+        "day": 1,
+        "title": "L'Évangile commence",
+        "readings": [
+          {
+            "book": "Matthieu",
+            "chapter": 1,
+            "startVerse": 1,
+            "endVerse": 25
+          },
+          {
+            "book": "Matthieu",
+            "chapter": 2,
+            "startVerse": 1,
+            "endVerse": 23
+          }
+        ],
+        "reflection": "Matthieu commence par montrer que Jésus est l'accomplissement des promesses de l'Ancien Testament. Il est le Messie attendu.",
+        "prayer": "Jésus, aide-moi à te reconnaître comme mon Sauveur et Seigneur."
+      }
+    ]
+  },
+  {
+    "id": "psalms_30",
+    "name": "Psaumes en 30 jours",
+    "description": "Découvrez la richesse des Psaumes avec 5 psaumes par jour pour nourrir votre vie de prière et de louange.",
+    "category": "Psaumes",
+    "totalDays": 30,
+    "estimatedReadingTime": 10,
+    "difficulty": "beginner",
+    "isPopular": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "days": [
+      {
+        "day": 1,
+        "title": "Les fondements de la foi",
+        "readings": [
+          {
+            "book": "Psaumes",
+            "chapter": 1
+          },
+          {
+            "book": "Psaumes",
+            "chapter": 2
+          },
+          {
+            "book": "Psaumes",
+            "chapter": 3
+          },
+          {
+            "book": "Psaumes",
+            "chapter": 4
+          },
+          {
+            "book": "Psaumes",
+            "chapter": 5
+          }
+        ],
+        "reflection": "Les premiers psaumes nous enseignent les fondements de la vie spirituelle : méditer la Parole, faire confiance à Dieu, et chercher sa protection.",
+        "prayer": "Seigneur, que ta Parole soit ma méditation jour et nuit. Protège-moi et guide mes pas."
+      }
+    ]
+  },
+  {
+    "id": "gospels_28",
+    "name": "Les 4 Évangiles en 28 jours",
+    "description": "Explorez la vie de Jésus à travers les quatre évangiles en un mois pour une compréhension complète de son ministère.",
+    "category": "Évangiles",
+    "totalDays": 28,
+    "estimatedReadingTime": 12,
+    "difficulty": "beginner",
+    "isPopular": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "days": [
+      {
+        "day": 1,
+        "title": "Matthieu - La naissance du Roi",
+        "readings": [
+          {
+            "book": "Matthieu",
+            "chapter": 1
+          },
+          {
+            "book": "Matthieu",
+            "chapter": 2
+          }
+        ],
+        "reflection": "Matthieu présente Jésus comme le Roi promis, l'accomplissement des prophéties de l'Ancien Testament.",
+        "prayer": "Jésus, mon Roi, règne dans mon cœur et dans ma vie."
+      }
+    ]
+  },
+  {
+    "id": "proverbs_31",
+    "name": "Proverbes en 31 jours",
+    "description": "Un chapitre de Proverbes par jour pour acquérir la sagesse divine et vivre selon les principes de Dieu.",
+    "category": "Sagesse",
+    "totalDays": 31,
+    "estimatedReadingTime": 5,
+    "difficulty": "beginner",
+    "isPopular": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "days": [
+      {
+        "day": 1,
+        "title": "Le début de la sagesse",
+        "readings": [
+          {
+            "book": "Proverbes",
+            "chapter": 1
+          }
+        ],
+        "reflection": "La crainte de l'Éternel est le commencement de la sagesse. Tout commence par reconnaître qui est Dieu et notre besoin de lui.",
+        "prayer": "Seigneur, donne-moi un cœur sage qui te craint et qui désire ta volonté."
+      }
+    ]
+  }
+]
