@@ -14,12 +14,9 @@ import 'services/app_config_firebase_service.dart';
 import 'services/workflow_initialization_service.dart';
 import 'services/push_notification_service.dart';
 import 'services/notification_dev_service.dart';
-import 'routes/app_routes.dart';
 import 'utils/date_formatter.dart';
 import 'config/locale_config.dart';
 import 'churchflow_splash.dart';
-import 'modules/pour_vous/services/pour_vous_service.dart';
-import 'modules/ressources/services/ressources_service.dart';
 
 /// Gestionnaire global pour les messages en background
 @pragma('vm:entry-point')
@@ -173,30 +170,10 @@ void _initializeModulesAsync() async {
   try {
     print('🔄 Initialisation des modules...');
     
-    // Initialiser les modules avec timeout
-    await Future.wait([
-      PourVousService.initializeDefaultActions().timeout(
-        const Duration(seconds: 10),
-      ),
-      RessourcesService.initializeDefaultResources().timeout(
-        const Duration(seconds: 10),
-      ),
-    ]);
-    
-    print('✅ Modules "Pour vous" et "Ressources" initialisés');
+    // Les modules "Pour vous", "Ressources" et "Dons" ont été supprimés
+    print('✅ Modules supprimés, aucune initialisation nécessaire');
   } catch (e) {
     print('Avertissement: Impossible d\'initialiser les modules: $e');
-    // Essayer d'initialiser individuellement en cas d'échec
-    try {
-      await PourVousService.initializeDefaultActions();
-    } catch (e2) {
-      print('Échec Pour vous: $e2');
-    }
-    try {
-      await RessourcesService.initializeDefaultResources();
-    } catch (e2) {
-      print('Échec Ressources: $e2');
-    }
   }
 }
 

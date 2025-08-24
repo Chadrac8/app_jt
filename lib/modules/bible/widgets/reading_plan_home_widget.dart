@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
@@ -71,15 +72,12 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
             Container(
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withOpacity(0.13),
-                borderRadius: BorderRadius.circular(18),
-              ),
+                borderRadius: BorderRadius.circular(18)),
               padding: const EdgeInsets.all(12),
               child: const SizedBox(
                 width: 32,
                 height: 32,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-            ),
+                child: CircularProgressIndicator(strokeWidth: 2))),
             const SizedBox(width: 18),
             Expanded(
               child: Column(
@@ -90,25 +88,16 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                     width: 120,
                     decoration: BoxDecoration(
                       color: theme.colorScheme.onSurface.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                      borderRadius: BorderRadius.circular(8))),
                   const SizedBox(height: 8),
                   Container(
                     height: 12,
                     width: 200,
                     decoration: BoxDecoration(
                       color: theme.colorScheme.onSurface.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                      borderRadius: BorderRadius.circular(6))),
+                ])),
+          ])));
   }
 
   Widget _buildNoActivePlanWidget(ThemeData theme) {
@@ -123,9 +112,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ReadingPlansHomePage(),
-            ),
-          ).then((_) => _loadActivePlan());
+              builder: (context) => const ReadingPlansHomePage())).then((_) => _loadActivePlan());
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
@@ -134,11 +121,9 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
               Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.13),
-                  borderRadius: BorderRadius.circular(18),
-                ),
+                  borderRadius: BorderRadius.circular(18)),
                 padding: const EdgeInsets.all(12),
-                child: Icon(Icons.flag, color: theme.colorScheme.primary, size: 32),
-              ),
+                child: Icon(Icons.flag, color: theme.colorScheme.primary, size: 32)),
               const SizedBox(width: 18),
               Expanded(
                 child: Column(
@@ -146,29 +131,19 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                   children: [
                     Text(
                       'Plans de lecture',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 18),
-                    ),
+                      style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 18)),
                     const SizedBox(height: 4),
                     Text(
                       'Découvre des plans pour lire la Bible chaque jour.',
-                      style: GoogleFonts.inter(fontSize: 14, color: theme.colorScheme.secondary),
-                    ),
-                  ],
-                ),
-              ),
+                      style: GoogleFonts.inter(fontSize: 14, color: theme.colorScheme.secondary)),
+                  ])),
               Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                  borderRadius: BorderRadius.circular(16)),
                 padding: const EdgeInsets.all(8),
-                child: const Icon(Icons.chevron_right, size: 24),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                child: const Icon(Icons.chevron_right, size: 24)),
+            ]))));
   }
 
   Widget _buildActivePlanWidget(ThemeData theme) {
@@ -187,9 +162,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ReadingPlansHomePage(),
-            ),
-          ).then((_) => _loadActivePlan());
+              builder: (context) => const ReadingPlansHomePage())).then((_) => _loadActivePlan());
         },
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -207,17 +180,13 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                           theme.colorScheme.secondary.withOpacity(0.2),
                         ],
                         begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(18),
-                    ),
+                        end: Alignment.bottomRight),
+                      borderRadius: BorderRadius.circular(18)),
                     padding: const EdgeInsets.all(12),
                     child: Icon(
                       Icons.menu_book,
                       color: theme.colorScheme.primary,
-                      size: 32,
-                    ),
-                  ),
+                      size: 32)),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -227,9 +196,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                           _activePlan!.name,
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
+                            fontSize: 18)),
                         const SizedBox(height: 4),
                         Row(
                           children: [
@@ -238,44 +205,31 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                                fontWeight: FontWeight.w600)),
                             const SizedBox(width: 8),
                             if (isUpToDate)
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 6,
-                                  vertical: 2,
-                                ),
+                                  vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                  color: AppTheme.successColor.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(8)),
                                 child: Text(
                                   '✓',
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
-                                    color: Colors.green[700],
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                                    color: AppTheme.successColor,
+                                    fontWeight: FontWeight.bold))),
+                          ]),
+                      ])),
                   Container(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
+                      borderRadius: BorderRadius.circular(16)),
                     padding: const EdgeInsets.all(8),
-                    child: const Icon(Icons.chevron_right, size: 24),
-                  ),
-                ],
-              ),
+                    child: const Icon(Icons.chevron_right, size: 24)),
+                ]),
               
               const SizedBox(height: 16),
               
@@ -287,8 +241,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                       height: 6,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(3),
-                      ),
+                        borderRadius: BorderRadius.circular(3)),
                       child: FractionallySizedBox(
                         widthFactor: progressPercentage,
                         child: Container(
@@ -297,43 +250,29 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                               colors: [
                                 theme.colorScheme.primary,
                                 theme.colorScheme.secondary,
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                              ]),
+                            borderRadius: BorderRadius.circular(3)))))),
                   const SizedBox(width: 12),
                   Text(
                     '${(progressPercentage * 100).toInt()}%',
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ],
-              ),
+                      color: theme.colorScheme.primary)),
+                ]),
               
               const SizedBox(height: 12),
               
               // Lecture du jour
               if (_activePlan!.days.isNotEmpty && currentDay <= _activePlan!.days.length)
                 _buildTodayReading(theme, currentDay),
-            ],
-          ),
-        ),
-      ),
-    );
+            ]))));
   }
 
   Widget _buildTodayReading(ThemeData theme, int currentDay) {
     final todayReading = _activePlan!.days.firstWhere(
       (day) => day.day == currentDay,
-      orElse: () => _activePlan!.days.first,
-    );
+      orElse: () => _activePlan!.days.first);
     
     final isCompleted = _progress!.completedDays.contains(currentDay);
     
@@ -341,15 +280,13 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: isCompleted 
-            ? Colors.green.withOpacity(0.1)
-            : theme.colorScheme.background,
+            ? AppTheme.successColor.withOpacity(0.1)
+            : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isCompleted 
-              ? Colors.green.withOpacity(0.3)
-              : theme.colorScheme.outline.withOpacity(0.2),
-        ),
-      ),
+              ? AppTheme.successColor.withOpacity(0.3)
+              : theme.colorScheme.outline.withOpacity(0.2))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -359,9 +296,8 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                 isCompleted ? Icons.check_circle : Icons.today,
                 size: 16,
                 color: isCompleted 
-                    ? Colors.green 
-                    : theme.colorScheme.primary,
-              ),
+                    ? AppTheme.successColor 
+                    : theme.colorScheme.primary),
               const SizedBox(width: 6),
               Text(
                 isCompleted ? 'Lecture terminée' : 'Lecture du jour',
@@ -369,32 +305,23 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: isCompleted 
-                      ? Colors.green[700]
-                      : theme.colorScheme.primary,
-                ),
-              ),
-            ],
-          ),
+                      ? AppTheme.successColor
+                      : theme.colorScheme.primary)),
+            ]),
           const SizedBox(height: 6),
           Text(
             todayReading.title,
             style: GoogleFonts.inter(
               fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+              fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
           Text(
             todayReading.readings.map((r) => r.displayText).join(' • '),
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: theme.colorScheme.onSurface.withOpacity(0.7),
-            ),
+              color: theme.colorScheme.onSurface.withOpacity(0.7)),
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
+            overflow: TextOverflow.ellipsis),
+        ]));
   }
 }

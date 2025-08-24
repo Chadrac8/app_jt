@@ -38,8 +38,7 @@ class ReadingPlanService {
         difficulty: 'beginner',
         days: _generateBible365Days(),
         createdAt: DateTime.now(),
-        isPopular: true,
-      ),
+        isPopular: true),
       ReadingPlan(
         id: 'new_testament_90',
         name: 'Nouveau Testament en 90 jours',
@@ -50,8 +49,7 @@ class ReadingPlanService {
         difficulty: 'intermediate',
         days: _generateNewTestament90Days(),
         createdAt: DateTime.now(),
-        isPopular: true,
-      ),
+        isPopular: true),
       ReadingPlan(
         id: 'psalms_30',
         name: 'Psaumes en 30 jours',
@@ -62,8 +60,7 @@ class ReadingPlanService {
         difficulty: 'beginner',
         days: _generatePsalms30Days(),
         createdAt: DateTime.now(),
-        isPopular: false,
-      ),
+        isPopular: false),
       ReadingPlan(
         id: 'gospels_28',
         name: 'Les 4 Évangiles en 28 jours',
@@ -74,8 +71,7 @@ class ReadingPlanService {
         difficulty: 'beginner',
         days: _generateGospels28Days(),
         createdAt: DateTime.now(),
-        isPopular: true,
-      ),
+        isPopular: true),
       ReadingPlan(
         id: 'proverbs_31',
         name: 'Proverbes en 31 jours',
@@ -86,8 +82,7 @@ class ReadingPlanService {
         difficulty: 'beginner',
         days: _generateProverbs31Days(),
         createdAt: DateTime.now(),
-        isPopular: true,
-      ),
+        isPopular: true),
     ];
   }
 
@@ -104,8 +99,7 @@ class ReadingPlanService {
           BibleReference(book: 'Genèse', chapter: ((i - 1) % 50) + 1),
           BibleReference(book: 'Matthieu', chapter: ((i - 1) % 28) + 1),
         ],
-        reflection: 'Réflexion du jour $i sur la Parole de Dieu.',
-      ));
+        reflection: 'Réflexion du jour $i sur la Parole de Dieu.'));
     }
     
     return days;
@@ -130,11 +124,9 @@ class ReadingPlanService {
         readings: [
           BibleReference(
             book: newTestamentBooks[(i - 1) % newTestamentBooks.length],
-            chapter: ((i - 1) ~/ newTestamentBooks.length) + 1,
-          ),
+            chapter: ((i - 1) ~/ newTestamentBooks.length) + 1),
         ],
-        reflection: 'Méditation sur le Nouveau Testament - Jour $i',
-      ));
+        reflection: 'Méditation sur le Nouveau Testament - Jour $i'));
     }
     
     return days;
@@ -155,8 +147,7 @@ class ReadingPlanService {
           BibleReference(book: 'Psaumes', chapter: startPsalm + index)
         ),
         reflection: 'Méditation sur les Psaumes $startPsalm à $endPsalm',
-        prayer: 'Prière inspirée des Psaumes du jour',
-      ));
+        prayer: 'Prière inspirée des Psaumes du jour'));
     }
     
     return days;
@@ -177,8 +168,7 @@ class ReadingPlanService {
         readings: [
           BibleReference(book: gospel, chapter: chapter),
         ],
-        reflection: 'Réflexion sur la vie de Jésus selon $gospel',
-      ));
+        reflection: 'Réflexion sur la vie de Jésus selon $gospel'));
     }
     
     return days;
@@ -196,8 +186,7 @@ class ReadingPlanService {
           BibleReference(book: 'Proverbes', chapter: i),
         ],
         reflection: 'Sagesse pratique pour la vie quotidienne',
-        prayer: 'Prière pour recevoir la sagesse divine',
-      ));
+        prayer: 'Prière pour recevoir la sagesse divine'));
     }
     
     return days;
@@ -239,8 +228,7 @@ class ReadingPlanService {
       planId: planId,
       startDate: DateTime.now(),
       currentDay: 1,
-      completedDays: {},
-    );
+      completedDays: {});
     
     progress[planId] = newProgress;
     await saveUserProgress(progress);
@@ -266,8 +254,7 @@ class ReadingPlanService {
         completedDays: updatedCompletedDays,
         currentDay: day + 1,
         lastReadDate: DateTime.now(),
-        dayNotes: updatedNotes,
-      );
+        dayNotes: updatedNotes);
       
       progress[planId] = updatedProgress;
       await saveUserProgress(progress);
@@ -288,8 +275,7 @@ class ReadingPlanService {
     final plans = await getAvailablePlans();
     return plans.firstWhere(
       (plan) => plan.id == activePlanId,
-      orElse: () => plans.first,
-    );
+      orElse: () => plans.first);
   }
 
   /// Obtient le progrès pour un plan spécifique

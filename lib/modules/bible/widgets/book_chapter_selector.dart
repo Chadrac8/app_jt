@@ -1,0 +1,285 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../theme.dart';
+import '../models/bible_book.dart';
+
+class BookChapterSelector extends StatefulWidget {
+  final List<BibleBook> books;
+  final String? selectedBook;
+  final int? selectedChapter;
+  final Function(String book, int chapter) onBookChapterSelected;
+
+  const BookChapterSelector({
+    Key? key,
+    required this.books,
+    this.selectedBook,
+    this.selectedChapter,
+    required this.onBookChapterSelected,
+  }) : super(key: key);
+
+  @override
+  State<BookChapterSelector> createState() => _BookChapterSelectorState();
+}
+
+class _BookChapterSelectorState extends State<BookChapterSelector>
+    with TickerProviderStateMixin {
+  late TabController _testamentTabController;
+  String? _selectedBook;
+  int? _selectedChapter;
+  
+  @override
+  void initState() {
+    super.initState();
+    _testamentTabController = TabController(length: 2, vsync: this);
+    _selectedBook = widget.selectedBook;
+    _selectedChapter = widget.selectedChapter;
+  }
+
+  @override
+  void dispose() {
+    _testamentTabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.8,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Poignée de glissement
+          Container(
+            margin: const EdgeInsets.only(top: 12, bottom: 8),
+            height: 4,
+            width: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          
+          // En-tête
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Text(
+                  'Sélectionner un passage',
+                  style: GoogleFonts.inter(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.primaryColor,
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+          
+          // Sélection actuelle
+          if (_selectedBook != null)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppTheme.primaryColor.withOpacity(0.3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.bookmark,
+                    color: AppTheme.primaryColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '$_selectedBook${_selectedChapter != null ? ' $_selectedChapter' : ''}',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.primaryColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (_selectedBook != null && _selectedChapter != null)
+                    ElevatedButton(
+                      onPressed: () {
+                        widget.onBookChapterSelected(_selectedBook!, _selectedChapter!);
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryColor,
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size(80, 32),
+                      ),
+                      child: const Text('Aller'),
+                    ),
+                ],
+              ),
+            ),
+          
+          const SizedBox(height: 16),
+          
+          // Onglets Testament
+          TabBar(
+            controller: _testamentTabController,
+            labelColor: AppTheme.primaryColor,
+            unselectedLabelColor: Colors.grey[600],
+            indicatorColor: AppTheme.primaryColor,
+            tabs: const [
+              Tab(text: 'Ancien Testament'),
+              Tab(text: 'Nouveau Testament'),
+            ],
+          ),
+          
+          // Contenu des onglets
+          Expanded(
+            child: TabBarView(
+              controller: _testamentTabController,
+              children: [
+                _buildTestamentBooks('old'),
+                _buildTestamentBooks('new'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTestamentBooks(String testament) {
+    final books = widget.books.where((book) => book.testament == testament).toList();
+    
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: books.length,
+      itemBuilder: (context, index) {
+        final book = books[index];
+        final isSelected = _selectedBook == book.name;
+        
+        return Card(
+          margin: const EdgeInsets.only(bottom: 8),
+          elevation: isSelected ? 4 : 1,
+          color: isSelected ? AppTheme.primaryColor.withOpacity(0.1) : null,
+          child: ExpansionTile(
+            leading: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: isSelected 
+                    ? AppTheme.primaryColor 
+                    : AppTheme.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Text(
+                  book.abbreviation,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.white : AppTheme.primaryColor,
+                  ),
+                ),
+              ),
+            ),
+            title: Text(
+              book.name,
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                color: isSelected ? AppTheme.primaryColor : Colors.black87,
+              ),
+            ),
+            subtitle: Text(
+              '${book.totalChapters} chapitres',
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+            ),
+            onExpansionChanged: (expanded) {
+              if (expanded) {
+                setState(() {
+                  _selectedBook = book.name;
+                  _selectedChapter = null;
+                });
+              }
+            },
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sélectionner un chapitre:',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(book.totalChapters, (chapterIndex) {
+                        final chapterNumber = chapterIndex + 1;
+                        final isChapterSelected = _selectedChapter == chapterNumber && 
+                                                _selectedBook == book.name;
+                        
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedBook = book.name;
+                              _selectedChapter = chapterNumber;
+                            });
+                          },
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: isChapterSelected 
+                                  ? AppTheme.primaryColor 
+                                  : Colors.grey[100],
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: isChapterSelected 
+                                    ? AppTheme.primaryColor 
+                                    : Colors.grey[300]!,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '$chapterNumber',
+                                style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.w600,
+                                  color: isChapterSelected 
+                                      ? Colors.white 
+                                      : Colors.black87,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

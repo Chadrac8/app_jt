@@ -37,8 +37,7 @@ class ReadingPlan {
       days: (json['days'] as List).map((d) => ReadingPlanDay.fromJson(d)).toList(),
       imageUrl: json['imageUrl'],
       createdAt: DateTime.parse(json['createdAt']),
-      isPopular: json['isPopular'] ?? false,
-    );
+      isPopular: json['isPopular'] ?? false);
   }
 
   Map<String, dynamic> toJson() {
@@ -79,8 +78,7 @@ class ReadingPlanDay {
       title: json['title'],
       readings: (json['readings'] as List).map((r) => BibleReference.fromJson(r)).toList(),
       reflection: json['reflection'],
-      prayer: json['prayer'],
-    );
+      prayer: json['prayer']);
   }
 
   Map<String, dynamic> toJson() {
@@ -115,8 +113,7 @@ class BibleReference {
       chapter: json['chapter'],
       startVerse: json['startVerse'],
       endVerse: json['endVerse'],
-      endChapter: json['endChapter'],
-    );
+      endChapter: json['endChapter']);
   }
 
   Map<String, dynamic> toJson() {
@@ -175,8 +172,7 @@ class UserReadingProgress {
       completedDays: Set<int>.from(json['completedDays']),
       lastReadDate: json['lastReadDate'] != null ? DateTime.parse(json['lastReadDate']) : null,
       isCompleted: json['isCompleted'] ?? false,
-      dayNotes: Map<int, String>.from(json['dayNotes'] ?? {}),
-    );
+      dayNotes: Map<int, String>.from(json['dayNotes'] ?? {}));
   }
 
   Map<String, dynamic> toJson() {
@@ -211,7 +207,6 @@ class UserReadingProgress {
       completedDays: completedDays ?? this.completedDays,
       lastReadDate: lastReadDate ?? this.lastReadDate,
       isCompleted: isCompleted ?? this.isCompleted,
-      dayNotes: dayNotes ?? this.dayNotes,
-    );
+      dayNotes: dayNotes ?? this.dayNotes);
   }
 }

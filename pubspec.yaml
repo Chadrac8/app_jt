@@ -30,6 +30,7 @@ dependencies:
   path_provider: 2.1.4
   provider: 6.1.2
   http: '>=1.0.0'
+  html: ^0.15.4  # Pour le parsing HTML du pain quotidien
   uuid: '>=3.0.0'
   staggered_grid_view_flutter: ^0.0.4
   share_plus: ^7.0.0

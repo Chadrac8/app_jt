@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
@@ -54,14 +55,11 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                  borderRadius: BorderRadius.circular(8)),
                 child: Icon(
                   Icons.school_outlined,
                   color: theme.colorScheme.primary,
-                  size: 20,
-                ),
-              ),
+                  size: 20)),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -72,19 +70,13 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                       style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ),
+                        color: theme.colorScheme.onSurface)),
                     Text(
                       'Approfondissez votre foi',
                       style: GoogleFonts.inter(
                         fontSize: 13,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                        color: theme.colorScheme.onSurface.withOpacity(0.6))),
+                  ])),
               TextButton(
                 onPressed: () => _openStudiesPage(),
                 child: Text(
@@ -92,12 +84,8 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
+                    color: theme.colorScheme.primary))),
+            ]),
           
           const SizedBox(height: 16),
           
@@ -107,9 +95,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
             _buildActiveStudiesSection()
           else
             _buildPopularStudiesSection(),
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget _buildLoadingState() {
@@ -118,9 +104,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3,
-        itemBuilder: (context, index) => _buildLoadingCard(),
-      ),
-    );
+        itemBuilder: (context, index) => _buildLoadingCard()));
   }
 
   Widget _buildLoadingCard() {
@@ -137,10 +121,8 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
             blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+            offset: const Offset(0, 2)),
+        ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -151,9 +133,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                 height: 40,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.onSurface.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(8))),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -164,44 +144,31 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                       height: 16,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.onSurface.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+                        borderRadius: BorderRadius.circular(8))),
                     const SizedBox(height: 4),
                     Container(
                       width: 100,
                       height: 12,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.onSurface.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                        borderRadius: BorderRadius.circular(6))),
+                  ])),
+            ]),
           const SizedBox(height: 12),
           Container(
             width: double.infinity,
             height: 12,
             decoration: BoxDecoration(
               color: theme.colorScheme.onSurface.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
-            ),
-          ),
+              borderRadius: BorderRadius.circular(6))),
           const SizedBox(height: 4),
           Container(
             width: 150,
             height: 12,
             decoration: BoxDecoration(
               color: theme.colorScheme.onSurface.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
-            ),
-          ),
-        ],
-      ),
-    );
+              borderRadius: BorderRadius.circular(6))),
+        ]));
   }
 
   Widget _buildActiveStudiesSection() {
@@ -213,9 +180,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
           style: GoogleFonts.inter(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-          ),
-        ),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
         const SizedBox(height: 8),
         SizedBox(
           height: 120,
@@ -224,9 +189,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
             itemCount: _activeStudies.length,
             itemBuilder: (context, index) {
               return _buildActiveStudyCard(_activeStudies[index]);
-            },
-          ),
-        ),
+            })),
         if (_popularStudies.isNotEmpty) ...[
           const SizedBox(height: 20),
           Text(
@@ -234,9 +197,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
             style: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-            ),
-          ),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
           const SizedBox(height: 8),
           SizedBox(
             height: 120,
@@ -245,12 +206,9 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
               itemCount: _popularStudies.length,
               itemBuilder: (context, index) {
                 return _buildStudyCard(_popularStudies[index]);
-              },
-            ),
-          ),
+              })),
         ],
-      ],
-    );
+      ]);
   }
 
   Widget _buildPopularStudiesSection() {
@@ -262,9 +220,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
           style: GoogleFonts.inter(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-          ),
-        ),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
         const SizedBox(height: 8),
         SizedBox(
           height: 120,
@@ -273,11 +229,8 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
             itemCount: _popularStudies.length,
             itemBuilder: (context, index) {
               return _buildStudyCard(_popularStudies[index]);
-            },
-          ),
-        ),
-      ],
-    );
+            })),
+      ]);
   }
 
   Widget _buildActiveStudyCard(BibleStudy study) {
@@ -303,9 +256,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: theme.colorScheme.primary.withOpacity(0.2),
-                    width: 1,
-                  ),
-                ),
+                    width: 1)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -316,14 +267,11 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                           height: 40,
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                            borderRadius: BorderRadius.circular(8)),
                           child: Icon(
                             Icons.school_outlined,
                             color: theme.colorScheme.primary,
-                            size: 20,
-                          ),
-                        ),
+                            size: 20)),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
@@ -334,49 +282,36 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                                 style: GoogleFonts.inter(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
-                                  color: theme.colorScheme.onSurface,
-                                ),
+                                  color: theme.colorScheme.onSurface),
                                 maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                                overflow: TextOverflow.ellipsis),
                               Text(
                                 study.author,
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
-                                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                                  color: theme.colorScheme.onSurface.withOpacity(0.6))),
+                            ])),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                            borderRadius: BorderRadius.circular(12)),
                           child: Text(
                             'EN COURS',
                             style: GoogleFonts.inter(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                              color: AppTheme.surfaceColor))),
+                      ]),
                     const SizedBox(height: 12),
                     Text(
                       study.description,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: theme.colorScheme.onSurface.withOpacity(0.7),
-                        height: 1.3,
-                      ),
+                        height: 1.3),
                       maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                      overflow: TextOverflow.ellipsis),
                     const Spacer(),
                     if (progress != null) ...[
                       const SizedBox(height: 8),
@@ -386,29 +321,18 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                             child: LinearProgressIndicator(
                               value: progress.progressPercentage / 100,
                               backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
-                              valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
-                            ),
-                          ),
+                              valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary))),
                           const SizedBox(width: 8),
                           Text(
                             '${progress.progressPercentage.round()}%',
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
-                        ],
-                      ),
+                              color: theme.colorScheme.primary)),
+                        ]),
                     ],
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+                  ])))));
+      });
   }
 
   Widget _buildStudyCard(BibleStudy study) {
@@ -431,10 +355,8 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                 BoxShadow(
                   color: Colors.black.withOpacity(0.04),
                   blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+                  offset: const Offset(0, 2)),
+              ]),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -445,14 +367,11 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                       height: 40,
                       decoration: BoxDecoration(
                         color: _getCategoryColor(study.category).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                        borderRadius: BorderRadius.circular(8)),
                       child: Icon(
                         _getCategoryIcon(study.category),
                         color: _getCategoryColor(study.category),
-                        size: 20,
-                      ),
-                    ),
+                        size: 20)),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -463,88 +382,63 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.onSurface,
-                            ),
+                              color: theme.colorScheme.onSurface),
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                            overflow: TextOverflow.ellipsis),
                           Text(
                             study.author,
                             style: GoogleFonts.inter(
                               fontSize: 12,
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                              color: theme.colorScheme.onSurface.withOpacity(0.6))),
+                        ])),
                     if (study.isPopular)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                          color: AppTheme.warningColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8)),
                         child: Text(
                           'POPULAIRE',
                           style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
-                            color: Colors.orange.shade700,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
+                            color: AppTheme.warningColor))),
+                  ]),
                 const SizedBox(height: 12),
                 Text(
                   study.description,
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: theme.colorScheme.onSurface.withOpacity(0.7),
-                    height: 1.3,
-                  ),
+                    height: 1.3),
                   maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                  overflow: TextOverflow.ellipsis),
                 const Spacer(),
                 Row(
                   children: [
                     Icon(
                       Icons.access_time,
                       size: 14,
-                      color: theme.colorScheme.onSurface.withOpacity(0.5),
-                    ),
+                      color: theme.colorScheme.onSurface.withOpacity(0.5)),
                     const SizedBox(width: 4),
                     Text(
                       study.formattedDuration,
                       style: GoogleFonts.inter(
                         fontSize: 12,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                    ),
+                        color: theme.colorScheme.onSurface.withOpacity(0.6))),
                     const SizedBox(width: 12),
                     Icon(
                       Icons.signal_cellular_alt,
                       size: 14,
-                      color: theme.colorScheme.onSurface.withOpacity(0.5),
-                    ),
+                      color: theme.colorScheme.onSurface.withOpacity(0.5)),
                     const SizedBox(width: 4),
                     Text(
                       study.displayDifficulty,
                       style: GoogleFonts.inter(
                         fontSize: 12,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+                        color: theme.colorScheme.onSurface.withOpacity(0.6))),
+                  ]),
+              ])))));
   }
 
   Color _getCategoryColor(String category) {
@@ -552,13 +446,13 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
       case 'Nouveau Testament':
         return Colors.blue;
       case 'Ancien Testament':
-        return Colors.green;
+        return AppTheme.successColor;
       case 'Spiritualité':
         return Colors.purple;
       case 'Théologie':
-        return Colors.orange;
+        return AppTheme.warningColor;
       default:
-        return Colors.grey;
+        return AppTheme.textTertiaryColor;
     }
   }
 
@@ -581,17 +475,13 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const BibleStudiesListView(),
-      ),
-    );
+        builder: (context) => const BibleStudiesListView()));
   }
 
   void _openStudyDetail(BibleStudy study) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BibleStudyDetailView(study: study),
-      ),
-    );
+        builder: (context) => BibleStudyDetailView(study: study)));
   }
 }

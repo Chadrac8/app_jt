@@ -18,6 +18,9 @@ class PourVousAction {
   final DateTime updatedAt;
   final String? createdBy;
   final String? color; // Couleur hexadécimale optionnelle
+  final String? groupId; // ID du groupe auquel appartient l'action
+  final String? backgroundImageUrl; // URL de l'image de fond
+  final String? category; // Catégorie pour le groupement
 
   PourVousAction({
     required this.id,
@@ -35,6 +38,9 @@ class PourVousAction {
     required this.updatedAt,
     this.createdBy,
     this.color,
+    this.groupId,
+    this.backgroundImageUrl,
+    this.category,
   });
 
   factory PourVousAction.fromFirestore(DocumentSnapshot doc) {
@@ -58,6 +64,9 @@ class PourVousAction {
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       createdBy: data['createdBy'],
       color: data['color'],
+      groupId: data['groupId'],
+      backgroundImageUrl: data['backgroundImageUrl'],
+      category: data['category'],
     );
   }
 
@@ -76,6 +85,9 @@ class PourVousAction {
       'updatedAt': Timestamp.fromDate(updatedAt),
       'createdBy': createdBy,
       'color': color,
+      'groupId': groupId,
+      'backgroundImageUrl': backgroundImageUrl,
+      'category': category,
     };
   }
 
@@ -95,6 +107,9 @@ class PourVousAction {
     DateTime? updatedAt,
     String? createdBy,
     String? color,
+    String? groupId,
+    String? backgroundImageUrl,
+    String? category,
   }) {
     return PourVousAction(
       id: id ?? this.id,
@@ -112,6 +127,9 @@ class PourVousAction {
       updatedAt: updatedAt ?? this.updatedAt,
       createdBy: createdBy ?? this.createdBy,
       color: color ?? this.color,
+      groupId: groupId ?? this.groupId,
+      backgroundImageUrl: backgroundImageUrl ?? this.backgroundImageUrl,
+      category: category ?? this.category,
     );
   }
 

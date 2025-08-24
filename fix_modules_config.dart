@@ -43,13 +43,6 @@ void main() async {
         'isEnabledForMembers': true,
         'order': 5,
       },
-      {
-        'id': 'dons',
-        'name': 'Dons',
-        'isPrimaryInBottomNav': true,
-        'isEnabledForMembers': true, 
-        'order': 6,
-      },
     ];
     
     // Mettre à jour chaque module

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,14 +8,11 @@ import '../models/app_config_model.dart';
 import '../models/person_model.dart';
 import '../services/app_config_firebase_service.dart';
 
-import '../services/firebase_service.dart';
 import '../services/push_notification_service.dart';
 import '../auth/auth_service.dart';
 import '../theme.dart';
 
 import '../pages/member_dashboard_page.dart';
-import '../pages/admin/admin_dashboard_page.dart';
-import '../pages/people_home_page.dart';
 import '../modules/bible/bible_module_page.dart';
 
 import '../pages/member_groups_page.dart';
@@ -38,10 +36,7 @@ import '../pages/blog_home_page.dart';
 
 import '../pages/member_dynamic_lists_page.dart';
 import '../pages/message_page.dart';
-import '../modules/pour_vous/views/pour_vous_member_view.dart';
-import '../modules/ressources/views/ressources_member_view.dart';
 import '../modules/vie_eglise/vie_eglise_module.dart';
-import '../modules/dons/views/dons_member_view.dart';
 import '../models/page_model.dart';
 import '../services/pages_firebase_service.dart';
 
@@ -61,6 +56,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   String _currentRoute = 'dashboard';
   AppConfigModel? _appConfig;
   List<dynamic> _overflowPrimaryItems = []; // Modules primaires qui ne peuvent pas être affichés
+  int? _lastDebugLog; // Pour limiter les logs de debug
 
   // Méthode publique pour permettre la navigation depuis les modules enfants
   void navigateToRoute(String route) {
@@ -70,8 +66,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   }
 
   PersonModel? _currentUser;
-  List<String> _userRoles = [];
-  List<String> _userGroups = [];
   bool _isLoading = true;
   int _unreadNotificationsCount = 0;
 
@@ -112,7 +106,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         final person = await AuthService.getCurrentUserProfile();
         if (person != null) {
           _currentUser = person;
-          _userRoles = person.roles;
           
           // TODO: Charger les groupes de l'utilisateur
           // Implémenter la logique pour récupérer les groupes
@@ -190,34 +183,8 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         return const MemberDynamicListsPage();
       case 'message':
         return const MessagePage();
-      case 'pour-vous':
-        return const PourVousMemberView();
-      case 'ressources':
-        final moduleConfig = _appConfig?.modules.firstWhere(
-          (m) => m.route == 'ressources',
-          orElse: () => ModuleConfig(
-            id: 'ressources',
-            name: 'Ressources',
-            description: 'Ressources spirituelles',
-            iconName: 'library_books',
-            route: 'ressources',
-            category: 'ministry',
-            isEnabledForMembers: true,
-            isPrimaryInBottomNav: false,
-            order: 0,
-            isBuiltIn: true,
-            coverImageUrl: null,
-            showCoverImage: false,
-          ),
-        );
-        return RessourcesMemberView(
-          onNavigate: navigateToRoute,
-          moduleConfig: moduleConfig,
-        );
       case 'vie-eglise':
         return const VieEgliseModule();
-      case 'dons':
-        return const DonsMemberView();
       default:
         // Check if it's a custom page route
         if (route.startsWith('custom_page/')) {
@@ -493,7 +460,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       case 'perm_media':
         return Icons.perm_media;
 
-      // Finance et dons
+      // Finance
       case 'attach_money':
         return Icons.attach_money;
       case 'payment':
@@ -619,8 +586,28 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       ...secondaryPages
     ];
     
+    // DÉDUPLICATION: Supprimer les doublons basés sur l'ID
+    final seen = <String>{};
+    final deduplicatedItems = <dynamic>[];
+    
+    for (final item in allSecondaryItems) {
+      String itemId;
+      if (item is ModuleConfig) {
+        itemId = item.id;
+      } else if (item is PageConfig) {
+        itemId = item.id;
+      } else {
+        continue; // Skip items that are neither ModuleConfig nor PageConfig
+      }
+      
+      if (!seen.contains(itemId)) {
+        seen.add(itemId);
+        deduplicatedItems.add(item);
+      }
+    }
+    
     // Trier par ordre (modules débordés d'abord, puis secondaires)
-    allSecondaryItems.sort((a, b) {
+    deduplicatedItems.sort((a, b) {
       final isAOverflow = _overflowPrimaryItems.contains(a);
       final isBOverflow = _overflowPrimaryItems.contains(b);
       
@@ -648,65 +635,64 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 4,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                height: 4,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
                 ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.more_horiz, color: AppTheme.primaryColor),
+                    SizedBox(width: 8),
+                    Text(
+                      'Plus de modules',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (deduplicatedItems.isEmpty)
                 Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
+                  padding: EdgeInsets.all(32),
+                  child: Column(
                     children: [
-                      Icon(Icons.more_horiz, color: AppTheme.primaryColor),
-                      SizedBox(width: 8),
+                      Icon(Icons.apps, size: 48, color: Colors.grey),
+                      SizedBox(height: 16),
                       Text(
-                        'Plus de modules',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
-                        ),
+                        'Aucun module ou page secondaire configuré',
+                        style: TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
-                ),
-                if (allSecondaryItems.isEmpty)
-                  Padding(
-                    padding: EdgeInsets.all(32),
-                    child: Column(
-                      children: [
-                        Icon(Icons.apps, size: 48, color: Colors.grey),
-                        SizedBox(height: 16),
-                        Text(
-                          'Aucun module ou page secondaire configuré',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  )
-                else
-                  Padding(
+                )
+              else
+                Expanded(
+                  child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      controller: scrollController,
+                      physics: AlwaysScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         childAspectRatio: 1.2,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
                       ),
-                      itemCount: allSecondaryItems.length,
+                      itemCount: deduplicatedItems.length,
                       itemBuilder: (context, index) {
-                        final item = allSecondaryItems[index];
+                        final item = deduplicatedItems[index];
                         if (item is ModuleConfig) {
                           return _buildModuleCard(item);
                         } else if (item is PageConfig) {
@@ -716,9 +702,9 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
                       },
                     ),
                   ),
-                SizedBox(height: 24),
-              ],
-            ),
+                ),
+              SizedBox(height: 24),
+            ],
           ),
         ),
       ),
@@ -938,10 +924,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         return 'La Bible';
       case 'message':
         return 'Le Message';
-      case 'pour-vous':
-        return 'Pour Vous';
-      case 'ressources':
-        return 'Ressources';
       case 'vie-eglise':
         return 'Vie de l\'Église';
       default:
@@ -1056,45 +1038,21 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     _overflowPrimaryItems = remainingPrimaryItems;
     final allRoutes = <String>[];
     
-    // Debug info
-    print('=== DEBUG BOTTOM NAV ===');
-    print('Primary modules count: ${primaryModules.length}');
-    print('Primary pages count: ${primaryPages.length}');
-    print('Total primary items: ${allPrimaryItems.length}');
-    
-    // Debug détaillé des modules primaires
-    print('--- DEBUG PRIMARY MODULES ---');
-    for (int i = 0; i < primaryModules.length; i++) {
-      final module = primaryModules[i];
-      print('Module $i: ${module.name} (${module.id})');
-      print('  - Enabled for members: ${module.isEnabledForMembers}');
-      print('  - Primary in bottom nav: ${module.isPrimaryInBottomNav}');
-      print('  - Order: ${module.order}');
+    // Debug info (reduced logging to prevent console spam)
+    if (kDebugMode) {
+      // Only log once every 30 seconds to prevent spam
+      final now = DateTime.now().millisecondsSinceEpoch;
+      if (_lastDebugLog == null || (now - _lastDebugLog!) > 30000) {
+        _lastDebugLog = now;
+        print('=== DEBUG BOTTOM NAV ===');
+        print('Primary modules: ${primaryModules.length}, Pages: ${primaryPages.length}');
+        print('Should show More button: $shouldShowMoreButton');
+        print('Final items count: ${finalItems.length}');
+        print('=======================');
+      }
     }
     
-    print('Has secondary items: $hasMoreItems');
-    print('Has overflow primary items: $hasMorePrimaryItems');
-    print('Should show More button: $shouldShowMoreButton');
-    print('Max primary items: $maxPrimaryItems');
-    print('Final items count: ${finalItems.length}');
-    
-    // Debug les pages personnalisées en détail
-    print('--- DEBUG CUSTOM PAGES ---');
-    final allCustomPages = _appConfig?.customPages ?? [];
-    print('Total custom pages: ${allCustomPages.length}');
-    for (var page in allCustomPages) {
-      print('Page: ${page.title}');
-      print('  - ID: ${page.id}');
-      print('  - Route: ${page.route}');
-      print('  - Enabled for members: ${page.isEnabledForMembers}');
-      print('  - Primary in bottom nav: ${page.isPrimaryInBottomNav}');
-      print('  - Order: ${page.order}');
-    }
-    print('Primary pages (enabled): ${primaryPages.length}');
-    for (var page in primaryPages) {
-      print('  - ${page.title} (order: ${page.order})');
-    }
-    print('=======================');
+    // Removed excessive debug logs for custom pages to prevent console spam
     
     if (finalItems.isEmpty) {
       return BottomNavigationBar(

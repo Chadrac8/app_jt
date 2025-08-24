@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/admin/admin_dashboard_page.dart';
-import '../pages/admin/admin_send_notification_page.dart';
-import '../pages/admin/advanced_notification_admin_page.dart';
+import '../pages/admin/unified_notification_admin_page.dart';
 import '../pages/people_home_page.dart';
 import '../pages/groups_home_page.dart';
 import '../pages/events_home_page.dart';
@@ -15,10 +14,7 @@ import '../pages/pages_home_page.dart';
 import '../modules/songs/views/songs_home_page.dart';
 import '../modules/bible/bible_admin_page.dart';
 import '../pages/message_page.dart';
-import '../modules/pour_vous/views/pour_vous_admin_view.dart';
-import '../modules/ressources/views/ressources_admin_view.dart';
 import '../modules/vie_eglise/views/vie_eglise_admin_view.dart';
-import '../modules/dons/views/dons_admin_view.dart';
 import '../modules/message/views/message_admin_view.dart';
 
 import '../pages/appointments_admin_page.dart';
@@ -112,16 +108,10 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       page: const AppointmentsAdminPage(),
     ),
     AdminMenuItem(
-      route: 'send-notifications',
-      title: 'Envoyer notifications',
-      icon: Icons.notifications_active,
-      page: const AdminSendNotificationPage(),
-    ),
-    AdminMenuItem(
-      route: 'advanced-notifications',
-      title: 'Notifications Avancées',
-      icon: Icons.notifications_outlined,
-      page: const AdvancedNotificationAdminPage(),
+      route: 'notifications',
+      title: 'Gestion des Notifications',
+      icon: Icons.notifications,
+      page: const UnifiedNotificationAdminPage(),
     ),
     AdminMenuItem(
       route: 'prayers',
@@ -130,28 +120,10 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       page: const PrayersHomePage(),
     ),
     AdminMenuItem(
-      route: 'pour-vous',
-      title: 'Pour vous',
-      icon: Icons.favorite,
-      page: const PourVousAdminView(),
-    ),
-    AdminMenuItem(
-      route: 'ressources',
-      title: 'Ressources',
-      icon: Icons.library_books,
-      page: const RessourcesAdminView(),
-    ),
-    AdminMenuItem(
       route: 'vie-eglise',
       title: 'Vie de l\'Église',
       icon: Icons.church,
       page: const VieEgliseAdminView(),
-    ),
-    AdminMenuItem(
-      route: 'dons',
-      title: 'Dons',
-      icon: Icons.volunteer_activism,
-      page: const DonsAdminView(),
     ),
     AdminMenuItem(
       route: 'message',

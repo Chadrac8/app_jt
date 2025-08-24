@@ -12,6 +12,7 @@ import '../services/roles_firebase_service.dart';
 import '../auth/auth_service.dart';
 import '../theme.dart';
 import '../widgets/custom_page_app_bar.dart';
+import '../widgets/admin_navigation_wrapper.dart';
 import '../extensions/datetime_extensions.dart';
 
 import '../image_upload.dart';
@@ -419,6 +420,28 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         ),
       ),
       actions: [
+        // Toggle to admin view
+        Container(
+          margin: const EdgeInsets.only(right: 8),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.admin_panel_settings_outlined),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminNavigationWrapper(),
+                ),
+              );
+            },
+            tooltip: 'Vue Administrateur',
+            iconSize: 20,
+            color: Colors.white,
+          ),
+        ),
         IconButton(
           icon: Icon(_isEditing ? Icons.save : Icons.edit),
           onPressed: _isEditing ? _saveProfile : () => setState(() => _isEditing = true),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
@@ -19,10 +20,8 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
             blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+            offset: const Offset(0, 2)),
+        ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,14 +34,11 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.purple.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                    borderRadius: BorderRadius.circular(12)),
                   child: Icon(
                     Icons.collections_bookmark,
                     color: Colors.purple[700],
-                    size: 24,
-                  ),
-                ),
+                    size: 24)),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
@@ -53,40 +49,27 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                         style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
+                          color: theme.colorScheme.onSurface)),
                       const SizedBox(height: 4),
                       Text(
                         'Collections de versets par thème',
                         style: GoogleFonts.inter(
                           fontSize: 14,
-                          color: theme.colorScheme.onSurface.withOpacity(0.7),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                          color: theme.colorScheme.onSurface.withOpacity(0.7))),
+                    ])),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ThematicPassagesView(),
-                      ),
-                    );
+                        builder: (context) => const ThematicPassagesView()));
                   },
                   child: Text(
                     'Voir tout',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                      color: theme.colorScheme.primary))),
+              ])),
           
           // Liste des thèmes populaires
           StreamBuilder<List<BiblicalTheme>>(
@@ -105,26 +88,21 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                       Icon(
                         Icons.error_outline,
                         size: 48,
-                        color: theme.colorScheme.error.withOpacity(0.6),
-                      ),
+                        color: theme.colorScheme.error.withOpacity(0.6)),
                       const SizedBox(height: 12),
                       Text(
                         'Erreur de chargement',
                         style: GoogleFonts.inter(
                           color: theme.colorScheme.error,
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                          fontWeight: FontWeight.w600)),
                       const SizedBox(height: 8),
                       Text(
                         'Impossible de charger les thèmes bibliques',
                         style: GoogleFonts.inter(
                           color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          fontSize: 14,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                          fontSize: 14),
+                        textAlign: TextAlign.center),
                       const SizedBox(height: 16),
                       OutlinedButton.icon(
                         onPressed: () async {
@@ -135,9 +113,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Problème de connexion à Firebase'),
-                                  backgroundColor: Colors.orange,
-                                ),
-                              );
+                                  backgroundColor: AppTheme.warningColor));
                               return;
                             }
                             
@@ -145,27 +121,19 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Thèmes initialisés avec succès'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
+                                backgroundColor: AppTheme.successColor));
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Erreur: $e'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                                backgroundColor: AppTheme.errorColor));
                           }
                         },
                         icon: const Icon(Icons.refresh),
                         label: Text(
                           'Initialiser les thèmes',
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600))),
+                    ]));
               }
               
               final themes = snapshot.data ?? [];
@@ -178,16 +146,13 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                       Icon(
                         Icons.collections_bookmark_outlined,
                         size: 48,
-                        color: theme.colorScheme.onSurface.withOpacity(0.3),
-                      ),
+                        color: theme.colorScheme.onSurface.withOpacity(0.3)),
                       const SizedBox(height: 12),
                       Text(
                         'Aucun thème disponible',
                         style: GoogleFonts.inter(
                           color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          fontSize: 16,
-                        ),
-                      ),
+                          fontSize: 16)),
                       const SizedBox(height: 8),
                       TextButton(
                         onPressed: () async {
@@ -197,13 +162,8 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                           'Initialiser les thèmes par défaut',
                           style: GoogleFonts.inter(
                             color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                            fontWeight: FontWeight.w600))),
+                    ]));
               }
               
               // Afficher les 3 premiers thèmes
@@ -220,19 +180,15 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ThematicPassagesView(),
-                            ),
-                          );
+                              builder: (context) => const ThematicPassagesView()));
                         },
                         child: Container(
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: theme.colorScheme.primary.withOpacity(0.3),
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                              color: theme.colorScheme.primary.withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(8)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -240,28 +196,17 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                                 'Voir ${themes.length - 3} autres thèmes',
                                 style: GoogleFonts.inter(
                                   color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                                  fontWeight: FontWeight.w600)),
                               const SizedBox(width: 8),
                               Icon(
                                 Icons.arrow_forward,
                                 size: 16,
-                                color: theme.colorScheme.primary,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                                color: theme.colorScheme.primary),
+                            ])))),
                   const SizedBox(height: 8),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
+                ]);
+            }),
+        ]));
   }
 }
 
@@ -281,9 +226,7 @@ class _ThemeCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ThematicPassagesView(selectedThemeId: theme.id),
-            ),
-          );
+              builder: (context) => ThematicPassagesView(selectedThemeId: theme.id)));
         },
         borderRadius: BorderRadius.circular(12),
         child: Container(
@@ -293,23 +236,18 @@ class _ThemeCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: theme.color.withOpacity(0.2),
-              width: 1,
-            ),
-          ),
+              width: 1)),
           child: Row(
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: theme.color.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                  borderRadius: BorderRadius.circular(8)),
                 child: Icon(
                   theme.icon,
                   color: theme.color,
-                  size: 20,
-                ),
-              ),
+                  size: 20)),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -320,49 +258,34 @@ class _ThemeCard extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: themeData.colorScheme.onSurface,
-                      ),
-                    ),
+                        color: themeData.colorScheme.onSurface)),
                     const SizedBox(height: 2),
                     Text(
                       theme.description,
                       style: GoogleFonts.inter(
                         fontSize: 13,
-                        color: themeData.colorScheme.onSurface.withOpacity(0.6),
-                      ),
+                        color: themeData.colorScheme.onSurface.withOpacity(0.6)),
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
+                      overflow: TextOverflow.ellipsis),
+                  ])),
               const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: theme.color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                  borderRadius: BorderRadius.circular(12)),
                 child: Text(
                   '${theme.passages.length}',
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: theme.color,
-                  ),
-                ),
-              ),
+                    color: theme.color))),
               const SizedBox(width: 8),
               Icon(
                 Icons.arrow_forward_ios,
                 size: 14,
-                color: themeData.colorScheme.onSurface.withOpacity(0.4),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                color: themeData.colorScheme.onSurface.withOpacity(0.4)),
+            ]))));
   }
 }
 
@@ -379,12 +302,7 @@ class _LoadingShimmer extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 12),
             height: 60,
             decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-      ),
-    );
+              color: AppTheme.textTertiaryColor,
+              borderRadius: BorderRadius.circular(12))))));
   }
 }

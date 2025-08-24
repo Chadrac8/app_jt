@@ -19,10 +19,6 @@ import '../pages/member_appointments_page.dart';
 import '../pages/member_prayer_wall_page.dart';
 import '../pages/member_pages_view.dart';
 import '../pages/message_page.dart';
-import '../modules/pour_vous/views/pour_vous_member_view.dart';
-import '../modules/pour_vous/views/pour_vous_admin_view.dart';
-import '../modules/ressources/views/ressources_member_view.dart';
-import '../modules/ressources/views/ressources_admin_view.dart';
 
 
 import '../pages/blog_home_page.dart';
@@ -78,6 +74,9 @@ class SimpleRoutes {
     '/login': (context) => const LoginPage(),
     '/profile-setup': (context) => const InitialProfileSetupPage(),
     
+    // Routes raccourcies (redirigent vers membre par défaut)
+    '/events': (context) => const MemberEventsPage(),
+    
     // Navigation membre
     '/member/dashboard': (context) => const MemberDashboardPage(),
     '/member/profile': (context) => const MemberProfilePage(),
@@ -96,8 +95,6 @@ class SimpleRoutes {
     '/member/prayers': (context) => const MemberPrayerWallPage(),
     '/member/pages': (context) => const MemberPagesView(),
     '/member/message': (context) => const MessagePage(),
-    '/member/pour-vous': (context) => const PourVousMemberView(),
-    '/member/ressources': (context) => const RessourcesMemberView(),
     // '/member/automation': (context) => const MemberAutomationPage(),
     // '/member/reports': (context) => const MemberReportsPage(),
     
@@ -117,8 +114,6 @@ class SimpleRoutes {
     '/admin/prayers': (context) => const PrayersHomePage(),
     '/admin/pages': (context) => const PagesHomePage(),
     '/admin/message': (context) => const MessagePage(),
-    '/admin/pour-vous': (context) => const PourVousAdminView(),
-    '/admin/ressources': (context) => const RessourcesAdminView(),
     // '/admin/automation': (context) => const AutomationHomePage(),
     // '/admin/reports': (context) => const ReportsHomePage(),
     

@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import '../../services/app_config_firebase_service.dart';
+import '../services/app_config_firebase_service.dart';
 
 /// Utilitaire pour forcer la mise à jour de la configuration avec les nouveaux modules
 class ConfigUpdater {
@@ -22,18 +21,23 @@ class ConfigUpdater {
   }
   
   /// Vérifie si les nouveaux modules sont présents dans la configuration
+  /// Vérifier si les modules sont présents (plus pertinent après suppression)
   static Future<bool> checkNewModulesPresent() async {
     try {
       final config = await AppConfigFirebaseService.getAppConfig();
       final moduleIds = config.modules.map((m) => m.id).toSet();
       
-      final hasNewModules = moduleIds.contains('pour_vous') && moduleIds.contains('ressources');
+      // Les modules "pour_vous", "ressources" et "dons" ont été supprimés
+      final hasRemovedModules = !moduleIds.contains('pour_vous') && 
+                               !moduleIds.contains('ressources') && 
+                               !moduleIds.contains('dons');
       
-      print('🔍 Vérification des nouveaux modules:');
-      print('  - Pour vous: ${moduleIds.contains('pour_vous') ? '✅' : '❌'}');
-      print('  - Ressources: ${moduleIds.contains('ressources') ? '✅' : '❌'}');
+      print('🔍 Vérification des modules supprimés:');
+      print('  - Pour vous: ${!moduleIds.contains('pour_vous') ? '✅ Supprimé' : '❌ Présent'}');
+      print('  - Ressources: ${!moduleIds.contains('ressources') ? '✅ Supprimé' : '❌ Présent'}');
+      print('  - Dons: ${!moduleIds.contains('dons') ? '✅ Supprimé' : '❌ Présent'}');
       
-      return hasNewModules;
+      return hasRemovedModules;
     } catch (e) {
       print('❌ Erreur lors de la vérification: $e');
       return false;

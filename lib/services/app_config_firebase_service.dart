@@ -102,9 +102,9 @@ class AppConfigFirebaseService {
       // Créer le module s'il n'existe pas
       final newModule = ModuleConfig(
         id: moduleId,
-        name: moduleId == 'ressources' ? 'Ressources' : moduleId,
-        description: moduleId == 'ressources' ? 'Ressources spirituelles et de l\'église' : '',
-        iconName: moduleId == 'ressources' ? 'library_books' : 'apps',
+        name: moduleId,
+        description: '',
+        iconName: 'apps',
         route: moduleId,
         category: 'ministry',
         isEnabledForMembers: isEnabledForMembers ?? true,
@@ -433,33 +433,6 @@ class AppConfigFirebaseService {
         isBuiltIn: true,
       ),
       ModuleConfig(
-        id: 'pour_vous',
-        name: 'Pour vous',
-        description: 'Actions personnalisées et demandes des membres de l\'église',
-        iconName: 'favorite',
-        route: 'pour-vous',
-        category: 'ministry',
-        isEnabledForMembers: true,
-        isPrimaryInBottomNav: false,
-        order: 15,
-        isBuiltIn: true,
-      ),
-      ModuleConfig(
-        id: 'ressources',
-        name: 'Ressources',
-        description: 'Rassemblement des différentes ressources spirituelles et de l\'église',
-        iconName: 'library_books',
-        route: 'ressources',
-        category: 'ministry',
-        isEnabledForMembers: true,
-        isPrimaryInBottomNav: false,
-        order: 16,
-        isBuiltIn: true,
-        coverImageUrl: null,
-        showCoverImage: false,
-        coverImageHeight: 200.0,
-      ),
-      ModuleConfig(
         id: 'vie-eglise',
         name: 'Vie de l\'église',
         description: 'Gestion de la vie de l\'église avec onglets spécialisés',
@@ -468,22 +441,7 @@ class AppConfigFirebaseService {
         category: 'ministry',
         isEnabledForMembers: true,
         isPrimaryInBottomNav: false,
-        order: 17,
-        isBuiltIn: true,
-        coverImageUrl: null,
-        showCoverImage: false,
-        coverImageHeight: 200.0,
-      ),
-      ModuleConfig(
-        id: 'dons',
-        name: 'Dons',
-        description: 'Gestion des donations et offrandes de l\'église',
-        iconName: 'volunteer_activism',
-        route: 'dons',
-        category: 'finance',
-        isEnabledForMembers: true,
-        isPrimaryInBottomNav: true,
-        order: 5,
+        order: 15,
         isBuiltIn: true,
         coverImageUrl: null,
         showCoverImage: false,
@@ -655,6 +613,53 @@ class AppConfigFirebaseService {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  /// Nettoie les modules orphelins de la configuration Firebase
+  /// Supprime les modules qui n'existent plus dans le code par défaut
+  static Future<void> cleanupOrphanModules() async {
+    try {
+      print('🗑️ Début du nettoyage des modules orphelins...');
+      
+      final config = await getAppConfig();
+      final defaultModuleIds = _getDefaultModules().map((m) => m.id).toSet();
+      
+      // Identifier les modules orphelins
+      final orphanModules = config.modules.where((module) => 
+        !defaultModuleIds.contains(module.id)
+      ).toList();
+      
+      if (orphanModules.isEmpty) {
+        print('✅ Aucun module orphelin trouvé');
+        return;
+      }
+      
+      print('🎯 Modules orphelins trouvés: ${orphanModules.map((m) => '${m.id} (${m.name})').join(', ')}');
+      
+      // Supprimer les modules orphelins
+      final cleanModules = config.modules.where((module) => 
+        defaultModuleIds.contains(module.id)
+      ).toList();
+      
+      final updatedConfig = AppConfigModel(
+        id: config.id,
+        modules: cleanModules,
+        customPages: config.customPages,
+        generalSettings: config.generalSettings,
+        lastUpdated: DateTime.now(),
+        lastUpdatedBy: _auth.currentUser?.uid,
+      );
+      
+      await updateAppConfig(updatedConfig);
+      
+      print('✅ Nettoyage terminé avec succès!');
+      print('📊 Modules supprimés: ${orphanModules.length}');
+      print('📊 Modules restants: ${cleanModules.length}');
+      
+    } catch (e) {
+      print('❌ Erreur lors du nettoyage des modules orphelins: $e');
+      throw Exception('Erreur lors du nettoyage: $e');
     }
   }
 }

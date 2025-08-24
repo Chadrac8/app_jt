@@ -1,0 +1,212 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../theme.dart';
+
+class AdminSermonsTab extends StatefulWidget {
+  const AdminSermonsTab({Key? key}) : super(key: key);
+
+  @override
+  State<AdminSermonsTab> createState() => _AdminSermonsTabState();
+}
+
+class _AdminSermonsTabState extends State<AdminSermonsTab> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
+      body: _isLoading ? _buildLoadingWidget() : _buildContent(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddSermonDialog,
+        backgroundColor: AppTheme.primaryColor,
+        child: Icon(Icons.add, color: AppTheme.surfaceColor),
+        tooltip: 'Ajouter un sermon'));
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor)));
+  }
+
+  Widget _buildContent() {
+    return Column(
+      children: [
+        _buildHeader(),
+        Expanded(
+          child: _buildSermonsList()),
+      ]);
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceColor,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.textTertiaryColor.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 1)),
+        ]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.play_circle,
+                color: AppTheme.primaryColor,
+                size: 24),
+              const SizedBox(width: 8),
+              Text(
+                'Administration - Sermons locaux',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.textPrimaryColor)),
+            ]),
+          const SizedBox(height: 12),
+          Text(
+            'Gérez les sermons et prédications de votre église locale',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: AppTheme.textSecondaryColor)),
+        ]));
+  }
+
+  Widget _buildSermonsList() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          _buildStatsCards(),
+          const SizedBox(height: 20),
+          Expanded(
+            child: _buildEmptyState()),
+        ]));
+  }
+
+  Widget _buildStatsCards() {
+    return Row(
+      children: [
+        Expanded(
+          child: _buildStatCard(
+            'Sermons publiés',
+            '0',
+            Icons.public,
+            Colors.green)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _buildStatCard(
+            'Brouillons',
+            '0',
+            Icons.edit,
+            Colors.orange)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _buildStatCard(
+            'Total d\'écoutes',
+            '0',
+            Icons.headphones,
+            AppTheme.primaryColor)),
+      ]);
+  }
+
+  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: color.withOpacity(0.2),
+          width: 1)),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 32),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: color)),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: AppTheme.textSecondaryColor)),
+        ]));
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.library_music,
+            size: 64,
+            color: AppTheme.textTertiaryColor),
+          const SizedBox(height: 16),
+          Text(
+            'Aucun sermon ajouté',
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textPrimaryColor)),
+          const SizedBox(height: 8),
+          Text(
+            'Ajoutez des sermons de votre église\npour enrichir l\'expérience des membres',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: AppTheme.textSecondaryColor)),
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: _showAddSermonDialog,
+            icon: Icon(Icons.add, color: AppTheme.surfaceColor),
+            label: Text(
+              'Ajouter un sermon',
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                color: AppTheme.surfaceColor)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)))),
+        ]));
+  }
+
+  void _showAddSermonDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surfaceColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: Text(
+          'Ajouter un sermon',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            color: AppTheme.textPrimaryColor)),
+        content: Text(
+          'Cette fonctionnalité sera disponible prochainement.\n\nElle permettra d\'ajouter et de gérer les sermons de votre église locale.',
+          style: GoogleFonts.poppins(
+            color: AppTheme.textSecondaryColor)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Fermer',
+              style: GoogleFonts.poppins(
+                color: AppTheme.primaryColor,
+                fontWeight: FontWeight.w600))),
+        ]));
+  }
+}

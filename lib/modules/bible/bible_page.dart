@@ -12,6 +12,8 @@ import 'widgets/reading_plan_home_widget.dart';
 import 'widgets/bible_study_home_widget.dart';
 import 'widgets/bible_article_home_widget.dart';
 import 'widgets/thematic_passages_home_widget.dart';
+import 'views/bible_reading_view.dart';
+import 'views/bible_home_view.dart';
 
 class BiblePage extends StatefulWidget {
   const BiblePage({Key? key}) : super(key: key);
@@ -46,12 +48,17 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   
   // Index de l'onglet actuel
   int _currentTabIndex = 0;
+  
+  // Variables pour l'onglet Notes - reproduction exacte de perfect 13
+  String _currentFilter = 'all'; // 'all', 'notes', 'highlights'
+  String _notesSearchQuery = '';
+  final TextEditingController _notesSearchController = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       setState(() {
         _currentTabIndex = _tabController.index;
@@ -261,7 +268,6 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         ),
       );
     }
-    final books = _bibleService.books;
     return Theme(
       data: theme,
       child: Column(
@@ -295,8 +301,6 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               tabs: const [
                 Tab(icon: Icon(Icons.home, size: 20), text: 'Accueil'),
                 Tab(icon: Icon(Icons.menu_book, size: 20), text: 'Lecture'),
-                Tab(icon: Icon(Icons.search, size: 20), text: 'Recherche'),
-                Tab(icon: Icon(Icons.star, size: 20), text: 'Favoris'),
                 Tab(icon: Icon(Icons.note_alt, size: 20), text: 'Notes'),
               ],
             ),
@@ -307,9 +311,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               controller: _tabController,
               children: [
                 _buildHomeTab(),
-                _buildModernReadingTab(books),
-                _buildSearchTab(),
-                _buildFavoritesTab(),
+                const BibleReadingView(isAdminMode: false),
                 _buildNotesAndHighlightsTab(),
               ],
             ),
@@ -320,6 +322,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   }
 
   Widget _buildHomeTab() {
+    return const BibleHomeView();
+  }
+
+  Widget _buildHomeTab_old() {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -481,7 +487,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     required String title,
     required String value,
     required Color color,
+    int? count,
+    String? label,
   }) {
+    // Utiliser count et label si fournis, sinon value et title
+    final displayValue = count != null ? count.toString() : value;
+    final displayLabel = label ?? title;
+    
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -507,7 +519,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           ),
           const SizedBox(height: 8),
           Text(
-            value,
+            displayValue,
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -515,13 +527,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             ),
           ),
           Text(
-            title,
+            displayLabel,
             style: GoogleFonts.inter(
-              fontSize: 11,
+              fontSize: 12,
               color: Colors.white.withOpacity(0.8),
-              fontWeight: FontWeight.w500,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -3540,82 +3550,258 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   }
 
   Widget _buildNotesAndHighlightsTab() {
-    // État pour le filtre
-    String _selectedFilter = 'all'; // 'all', 'notes', 'highlights'
+    final totalNotes = _notes.values.where((note) => note.isNotEmpty).length;
+    final totalHighlights = _highlights.length;
+    final totalFavorites = _favorites.length;
+
+    // Filtrer les versets en fonction du filtre et de la recherche actuels
+    List<String> filteredVerseKeys = [];
     
-    return StatefulBuilder(
-      builder: (context, setModalState) {
-        // Obtenir tous les versets avec notes et/ou surlignements
-        final List<BibleVerse> filteredVerses = [];
-        final allBooks = _bibleService.books;
-        
-        for (final book in allBooks) {
-          for (int c = 0; c < book.chapters.length; c++) {
-            for (int v = 0; v < book.chapters[c].length; v++) {
-              final verse = BibleVerse(
-                book: book.name,
-                chapter: c + 1,
-                verse: v + 1,
-                text: book.chapters[c][v],
-              );
-              final key = _verseKey(verse);
-              final hasNote = _notes.containsKey(key) && _notes[key]!.isNotEmpty;
-              final hasHighlight = _highlights.contains(key);
-              
-              switch (_selectedFilter) {
-                case 'notes':
-                  if (hasNote) filteredVerses.add(verse);
-                  break;
-                case 'highlights':
-                  if (hasHighlight) filteredVerses.add(verse);
-                  break;
-                case 'all':
-                default:
-                  if (hasNote || hasHighlight) filteredVerses.add(verse);
-                  break;
-              }
-            }
-          }
-        }
+    if (_currentFilter == 'notes') {
+      filteredVerseKeys = _notes.keys
+          .where((key) => _notes[key]!.isNotEmpty)
+          .where((key) => _notesSearchQuery.isEmpty || 
+              _getVerseDisplayText(key).toLowerCase().contains(_notesSearchQuery.toLowerCase()) ||
+              _notes[key]!.toLowerCase().contains(_notesSearchQuery.toLowerCase()))
+          .toList();
+    } else if (_currentFilter == 'highlights') {
+      filteredVerseKeys = _highlights
+          .where((key) => _notesSearchQuery.isEmpty || 
+              _getVerseDisplayText(key).toLowerCase().contains(_notesSearchQuery.toLowerCase()))
+          .toList();
+    } else if (_currentFilter == 'favorites') {
+      filteredVerseKeys = _favorites
+          .where((key) => _notesSearchQuery.isEmpty || 
+              _getVerseDisplayText(key).toLowerCase().contains(_notesSearchQuery.toLowerCase()))
+          .toList();
+    } else {
+      // Tous
+      final noteKeys = _notes.keys.where((key) => _notes[key]!.isNotEmpty);
+      final allKeys = {...noteKeys, ..._highlights, ..._favorites}.toList();
+      filteredVerseKeys = allKeys
+          .where((key) => _notesSearchQuery.isEmpty || 
+              _getVerseDisplayText(key).toLowerCase().contains(_notesSearchQuery.toLowerCase()) ||
+              (_notes[key] ?? '').toLowerCase().contains(_notesSearchQuery.toLowerCase()))
+          .toList();
+    }
 
-        // Compter par catégorie
-        final allCount = _notes.length + _highlights.length;
-        final notesCount = _notes.values.where((value) => value.isNotEmpty).length;
-        final highlightsCount = _highlights.length;
-
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.purple[50]!,
-                Colors.white,
-              ],
+    return Container(
+      color: const Color(0xFFFAFAFA),
+      child: CustomScrollView(
+        slivers: [
+          // En-tête avec dégradé
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF6C63FF),
+                    Color(0xFF8B5CF6),
+                  ],
+                ),
+              ),
+              padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.bookmark_border,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Mes Notes & Annotations',
+                              style: GoogleFonts.poppins(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                height: 1.2,
+                              ),
+                            ),
+                            Text(
+                              '${totalNotes + totalHighlights + totalFavorites} éléments sauvegardés',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: Colors.white.withOpacity(0.9),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      _buildStatCard(
+                        icon: Icons.note_alt_outlined,
+                        title: 'Notes',
+                        value: totalNotes.toString(),
+                        count: totalNotes,
+                        label: 'Notes',
+                        color: Colors.orange,
+                      ),
+                      const SizedBox(width: 12),
+                      _buildStatCard(
+                        icon: Icons.highlight_outlined,
+                        title: 'Surlignés',
+                        value: totalHighlights.toString(),
+                        count: totalHighlights,
+                        label: 'Surlignés',
+                        color: Colors.yellow,
+                      ),
+                      const SizedBox(width: 12),
+                      _buildStatCard(
+                        icon: Icons.favorite_border,
+                        title: 'Favoris',
+                        value: totalFavorites.toString(),
+                        count: totalFavorites,
+                        label: 'Favoris',
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          child: Column(
-            children: [
-              // En-tête moderne
-              _buildModernNotesHeader(allCount, notesCount, highlightsCount),
-              
-              // Sélecteur de filtres moderne
-              _buildModernFilterSelector(_selectedFilter, (filter) {
-                setModalState(() {
-                  _selectedFilter = filter;
-                });
-              }),
-              
-              // Contenu principal
-              Expanded(
-                child: filteredVerses.isEmpty
-                    ? _buildNotesEmptyState(_selectedFilter)
-                    : _buildModernNotesList(filteredVerses, setModalState),
+
+          // Filtres compacts
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildCompactFilterChip(
+                      'all',
+                      'Tous',
+                      Icons.view_list,
+                      totalNotes + totalHighlights + totalFavorites,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildCompactFilterChip(
+                      'notes',
+                      'Notes',
+                      Icons.note_alt_outlined,
+                      totalNotes,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildCompactFilterChip(
+                      'highlights',
+                      'Surlignés',
+                      Icons.highlight,
+                      totalHighlights,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildCompactFilterChip(
+                      'favorites',
+                      'Favoris',
+                      Icons.favorite,
+                      totalFavorites,
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        );
-      },
+
+          // Barre de recherche
+          SliverToBoxAdapter(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: TextField(
+                controller: _notesSearchController,
+                onChanged: (value) {
+                  setState(() {
+                    _notesSearchQuery = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Rechercher dans vos notes...',
+                  hintStyle: GoogleFonts.inter(
+                    color: Colors.grey[500],
+                    fontSize: 14,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey[400],
+                    size: 20,
+                  ),
+                  suffixIcon: _notesSearchQuery.isNotEmpty
+                      ? IconButton(
+                          icon: Icon(
+                            Icons.clear,
+                            color: Colors.grey[400],
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            _notesSearchController.clear();
+                            setState(() {
+                              _notesSearchQuery = '';
+                            });
+                          },
+                        )
+                      : null,
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 20)),
+
+          // Liste des versets
+          filteredVerseKeys.isEmpty
+              ? SliverFillRemaining(
+                  child: _buildEmptyNotesState(),
+                )
+              : SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final verseKey = filteredVerseKeys[index];
+                      return _buildNoteCard(verseKey);
+                    },
+                    childCount: filteredVerseKeys.length,
+                  ),
+                ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+        ],
+      ),
     );
   }
 
@@ -4444,5 +4630,358 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         ),
       ),
     );
+  }
+
+  String _getVerseDisplayText(String verseKey) {
+    final parts = verseKey.split('_');
+    if (parts.length >= 3) {
+      final book = parts[0];
+      final chapter = parts[1];
+      final verse = parts[2];
+      return '$book $chapter:$verse';
+    }
+    return verseKey;
+  }
+
+  Widget _buildCompactFilterChip(String filterKey, String label, IconData icon, int count) {
+    final isSelected = _currentFilter == filterKey;
+    
+    Color getFilterColor() {
+      switch (filterKey) {
+        case 'notes':
+          return const Color(0xFF10B981);
+        case 'highlights':
+          return const Color(0xFFF59E0B);
+        case 'favorites':
+          return const Color(0xFFEF4444);
+        default:
+          return const Color(0xFF6366F1);
+      }
+    }
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentFilter = filterKey;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? getFilterColor() : const Color(0xFFF1F5F9),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? getFilterColor() : const Color(0xFFE2E8F0),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: isSelected ? Colors.white : const Color(0xFF64748B),
+            ),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: isSelected ? Colors.white : const Color(0xFF64748B),
+              ),
+            ),
+            if (count > 0) ...[
+              const SizedBox(width: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: isSelected ? Colors.white.withOpacity(0.2) : getFilterColor().withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  count.toString(),
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isSelected ? Colors.white : getFilterColor(),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyNotesState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            _notesSearchQuery.isNotEmpty ? Icons.search_off_rounded : Icons.sticky_note_2_outlined,
+            size: 64,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            _notesSearchQuery.isNotEmpty 
+                ? 'Aucun résultat pour "${_notesSearchQuery}"'
+                : 'Aucun élément trouvé',
+            style: GoogleFonts.inter(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _notesSearchQuery.isNotEmpty
+                ? 'Essayez avec d\'autres mots-clés ou vérifiez l\'orthographe'
+                : 'Commencez à prendre des notes\nou surligner des versets',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Colors.grey[500],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoteCard(String verseKey) {
+    final hasNote = _notes.containsKey(verseKey) && _notes[verseKey]!.isNotEmpty;
+    final hasHighlight = _highlights.contains(verseKey);
+    final isFavorite = _favorites.contains(verseKey);
+    
+    // Couleur principale selon le type
+    Color getCardAccentColor() {
+      if (hasNote) return const Color(0xFF10B981);
+      if (hasHighlight) return const Color(0xFFF59E0B);
+      if (isFavorite) return const Color(0xFFEF4444);
+      return const Color(0xFF6366F1);
+    }
+
+    return GestureDetector(
+      onTap: () => _goToVerseFromNotes(verseKey),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: getCardAccentColor().withOpacity(0.15),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: getCardAccentColor().withOpacity(0.08),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+            BoxShadow(
+              color: const Color(0xFF000000).withOpacity(0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // En-tête avec référence et badges
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    getCardAccentColor().withOpacity(0.05),
+                    getCardAccentColor().withOpacity(0.02),
+                  ],
+                ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _getVerseDisplayText(verseKey),
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: getCardAccentColor(),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      if (hasNote)
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF10B981).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.sticky_note_2,
+                            size: 16,
+                            color: Color(0xFF10B981),
+                          ),
+                        ),
+                      if (hasHighlight) ...[
+                        if (hasNote) const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF59E0B).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.highlight,
+                            size: 16,
+                            color: Color(0xFFF59E0B),
+                          ),
+                        ),
+                      ],
+                      if (isFavorite) ...[
+                        if (hasNote || hasHighlight) const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEF4444).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.favorite,
+                            size: 16,
+                            color: Color(0xFFEF4444),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            
+            // Contenu du verset
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Text(
+                _getVerseText(verseKey),
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: const Color(0xFF374151),
+                  height: 1.5,
+                ),
+              ),
+            ),
+            
+            // Note utilisateur si présente
+            if (hasNote && _notes[verseKey]!.isNotEmpty) ...[
+              Container(
+                margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF10B981).withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: const Color(0xFF10B981).withOpacity(0.2),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.sticky_note_2,
+                          size: 16,
+                          color: Color(0xFF10B981),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Ma note',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF10B981),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _notes[verseKey]!,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: const Color(0xFF374151),
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getVerseText(String verseKey) {
+    final parts = verseKey.split('_');
+    if (parts.length >= 3) {
+      final bookName = parts[0];
+      final chapterNum = int.tryParse(parts[1]) ?? 1;
+      final verseNum = int.tryParse(parts[2]) ?? 1;
+      
+      final book = _bibleService.books.firstWhere(
+        (b) => b.name == bookName,
+        orElse: () => BibleBook(name: bookName, chapters: []),
+      );
+      
+      if (book.chapters.isNotEmpty && 
+          chapterNum <= book.chapters.length && 
+          chapterNum > 0) {
+        final chapterVerses = book.chapters[chapterNum - 1];
+        if (verseNum <= chapterVerses.length && verseNum > 0) {
+          return chapterVerses[verseNum - 1];
+        }
+      }
+    }
+    return 'Texte non disponible';
+  }
+
+  void _goToVerseFromNotes(String verseKey) {
+    final parts = verseKey.split('_');
+    if (parts.length >= 3) {
+      final bookName = parts[0];
+      final chapterNum = int.tryParse(parts[1]) ?? 1;
+      final verseNum = int.tryParse(parts[2]) ?? 1;
+      
+      setState(() {
+        _selectedBook = bookName;
+        _selectedChapter = chapterNum;
+        _tabController.index = 1; // Aller à l'onglet lecture
+      });
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Navigation vers $bookName $chapterNum:$verseNum'),
+          duration: const Duration(seconds: 2),
+          backgroundColor: const Color(0xFF6366F1),
+        ),
+      );
+    }
   }
 }

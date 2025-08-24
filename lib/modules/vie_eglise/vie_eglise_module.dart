@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme.dart';
-import 'widgets/church_resources_tab.dart';
-import 'widgets/pour_vous_tab.dart';
+import 'widgets/pour_vous_tab.dart' as pour_vous;
 import 'widgets/prayer_wall_tab.dart';
-import 'widgets/benevolat_tab.dart';
+import 'widgets/benevolat_tab.dart' as benevolat;
 import 'widgets/sermons_tab.dart';
 
 class VieEgliseModule extends StatefulWidget {
-  const VieEgliseModule({Key? key}) : super(key: key);
+  final int initialTabIndex;
+  
+  const VieEgliseModule({Key? key, this.initialTabIndex = 0}) : super(key: key);
 
   @override
   State<VieEgliseModule> createState() => _VieEgliseModuleState();
@@ -20,7 +21,10 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(
+      length: 4, 
+      vsync: this,
+      initialIndex: widget.initialTabIndex);
   }
 
   @override
@@ -39,71 +43,52 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: const [
-                PourVousTab(),
+              children: [
+                const pour_vous.PourVousTab(),
                 SermonsTab(),
-                ChurchResourcesTab(),
-                BenevolatTab(),
+                const benevolat.BenevolatTab(),
                 PrayerWallTab(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+              ])),
+        ]));
   }
 
   Widget _buildTabBar() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.textTertiaryColor.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 3,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
+            offset: const Offset(0, 1)),
+        ]),
       child: TabBar(
         controller: _tabController,
         labelColor: AppTheme.primaryColor,
-        unselectedLabelColor: Colors.grey,
+        unselectedLabelColor: AppTheme.textTertiaryColor,
         indicatorColor: AppTheme.primaryColor,
         indicatorWeight: 3,
         labelStyle: GoogleFonts.poppins(
           fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
+          fontWeight: FontWeight.w600),
         unselectedLabelStyle: GoogleFonts.poppins(
           fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
+          fontWeight: FontWeight.w500),
         tabs: const [
           Tab(
             icon: Icon(Icons.person, size: 20),
-            text: 'Pour vous',
-          ),
+            text: 'Pour vous'),
           Tab(
             icon: Icon(Icons.play_circle, size: 20),
-            text: 'Sermons',
-          ),
-          Tab(
-            icon: Icon(Icons.library_books, size: 20),
-            text: 'Ressources',
-          ),
+            text: 'Sermons'),
           Tab(
             icon: Icon(Icons.volunteer_activism, size: 20),
-            text: 'Bénévolat',
-          ),
+            text: 'Bénévolat'),
           Tab(
             icon: Icon(Icons.pan_tool, size: 20),
-            text: 'Prières & Témoignages',
-          ),
-        ],
-      ),
-    );
+            text: 'Prières & Témoignages'),
+        ]));
   }
 }
 
@@ -114,58 +99,53 @@ class VieEgliseModulePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
             AppTheme.primaryColor.withOpacity(0.1),
-            AppTheme.backgroundColor,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
+            AppTheme.primaryColor.withOpacity(0.05),
+          ]),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.primaryColor.withOpacity(0.2),
+          width: 1)),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.church,
-            size: 60,
-            color: AppTheme.primaryColor,
-          ),
-          const SizedBox(height: 16),
+            size: 48,
+            color: AppTheme.primaryColor),
+          const SizedBox(height: 12),
           Text(
             'Vie de l\'Église',
             style: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: AppTheme.primaryColor,
-            ),
-          ),
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textPrimaryColor)),
           const SizedBox(height: 8),
           Text(
-            'Actualités, ressources et services',
+            'Actions personnalisées, sermons, bénévolat et prières',
+            textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 14,
-              color: AppTheme.textSecondaryColor,
-            ),
-            textAlign: TextAlign.center,
-          ),
+              color: AppTheme.textSecondaryColor)),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildFeatureIcon(Icons.campaign, 'Actualités'),
-              const SizedBox(width: 20),
-              _buildFeatureIcon(Icons.library_books, 'Ressources'),
-              const SizedBox(width: 20),
-              _buildFeatureIcon(Icons.event, 'Services'),
-            ],
-          ),
-        ],
-      ),
-    );
+              _buildFeatureIcon(Icons.person, 'Pour vous'),
+              const SizedBox(width: 16),
+              _buildFeatureIcon(Icons.play_circle, 'Sermons'),
+              const SizedBox(width: 16),
+              _buildFeatureIcon(Icons.volunteer_activism, 'Bénévolat'),
+              const SizedBox(width: 16),
+              _buildFeatureIcon(Icons.pan_tool, 'Prières'),
+            ]),
+        ]));
   }
 
   Widget _buildFeatureIcon(IconData icon, String label) {
@@ -175,23 +155,17 @@ class VieEgliseModulePreview extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
+            borderRadius: BorderRadius.circular(8)),
           child: Icon(
             icon,
             size: 20,
-            color: AppTheme.primaryColor,
-          ),
-        ),
+            color: AppTheme.primaryColor)),
         const SizedBox(height: 4),
         Text(
           label,
           style: GoogleFonts.poppins(
             fontSize: 10,
-            color: AppTheme.textSecondaryColor,
-          ),
-        ),
-      ],
-    );
+            color: AppTheme.textSecondaryColor)),
+      ]);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../widgets/song_lyrics_viewer.dart';
 import 'song_form_page.dart';
@@ -30,26 +31,19 @@ class _SongDetailPageState extends State<SongDetailPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SongProjectionPage(song: widget.song),
-                ),
-              );
+                  builder: (context) => SongProjectionPage(song: widget.song)));
             },
-            tooltip: 'Mode projection',
-          ),
+            tooltip: 'Mode projection'),
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SongFormPage(song: widget.song),
-                ),
-              );
+                  builder: (context) => SongFormPage(song: widget.song)));
             },
-            tooltip: 'Modifier',
-          ),
-        ],
-      ),
+            tooltip: 'Modifier'),
+        ]),
       body: Column(
         children: [
           // En-tête avec informations du chant
@@ -63,15 +57,9 @@ class _SongDetailPageState extends State<SongDetailPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SongProjectionPage(song: widget.song),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+                    builder: (context) => SongProjectionPage(song: widget.song)));
+              })),
+        ]));
   }
 
   Widget _buildHeader() {
@@ -83,10 +71,8 @@ class _SongDetailPageState extends State<SongDetailPage> {
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+            offset: const Offset(0, 2)),
+        ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -101,52 +87,39 @@ class _SongDetailPageState extends State<SongDetailPage> {
                     Text(
                       widget.song.title,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold)),
                     if (widget.song.authors.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
                         'Par: ${widget.song.authors}',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontStyle: FontStyle.italic,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                          color: AppTheme.textTertiaryColor)),
                     ],
-                  ],
-                ),
-              ),
+                  ])),
               
               // Statut
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: _getStatusColor().withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                  borderRadius: BorderRadius.circular(16)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       _getStatusIcon(),
                       size: 16,
-                      color: _getStatusColor(),
-                    ),
+                      color: _getStatusColor()),
                     const SizedBox(width: 4),
                     Text(
                       _getStatusText(),
                       style: TextStyle(
                         fontSize: 12,
                         color: _getStatusColor(),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                        fontWeight: FontWeight.bold)),
+                  ])),
+            ]),
           
           const SizedBox(height: 16),
           
@@ -159,32 +132,21 @@ class _SongDetailPageState extends State<SongDetailPage> {
               _buildInfoChip(
                 widget.song.originalKey,
                 Theme.of(context).primaryColor,
-                Icons.music_note,
-              ),
-              
-              // Style
-              _buildInfoChip(
-                widget.song.style,
-                Colors.blue,
-                Icons.category,
-              ),
+                Icons.music_note),
               
               // Tempo (si disponible)
               if (widget.song.tempo != null)
                 _buildInfoChip(
                   '${widget.song.tempo} BPM',
-                  Colors.green,
-                  Icons.speed,
-                ),
+                  AppTheme.successColor,
+                  Icons.speed),
               
               // Visibilité
               _buildInfoChip(
                 _getVisibilityDisplayName(widget.song.visibility),
-                Colors.orange,
-                Icons.visibility,
-              ),
-            ],
-          ),
+                AppTheme.warningColor,
+                Icons.visibility),
+            ]),
           
           // Tags
           if (widget.song.tags.isNotEmpty) ...[
@@ -195,11 +157,8 @@ class _SongDetailPageState extends State<SongDetailPage> {
               children: widget.song.tags.map((tag) => Chip(
                 label: Text(
                   tag,
-                  style: const TextStyle(fontSize: 12),
-                ),
-                backgroundColor: Colors.grey.withOpacity(0.2),
-              )).toList(),
-            ),
+                  style: const TextStyle(fontSize: 12)),
+                backgroundColor: AppTheme.textTertiaryColor.withOpacity(0.2))).toList()),
           ],
           
           // Statistiques
@@ -211,16 +170,13 @@ class _SongDetailPageState extends State<SongDetailPage> {
                   Icon(
                     Icons.play_arrow,
                     size: 16,
-                    color: Colors.grey[600],
-                  ),
+                    color: AppTheme.textTertiaryColor),
                   const SizedBox(width: 4),
                   Text(
                     '${widget.song.usageCount} utilisations',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
-                  ),
+                      color: AppTheme.textTertiaryColor)),
                 ],
                 
                 if (widget.song.lastUsedAt != null) ...[
@@ -228,19 +184,15 @@ class _SongDetailPageState extends State<SongDetailPage> {
                   Icon(
                     Icons.access_time,
                     size: 16,
-                    color: Colors.grey[600],
-                  ),
+                    color: AppTheme.textTertiaryColor),
                   const SizedBox(width: 4),
                   Text(
                     'Utilisé le ${_formatDate(widget.song.lastUsedAt!)}',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
-                  ),
+                      color: AppTheme.textTertiaryColor)),
                 ],
-              ],
-            ),
+              ]),
           ],
           
           // Références bibliques
@@ -251,8 +203,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.blue.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
+                borderRadius: BorderRadius.circular(8)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -261,30 +212,22 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       const Icon(
                         Icons.menu_book,
                         size: 16,
-                        color: Colors.blue,
-                      ),
+                        color: Colors.blue),
                       const SizedBox(width: 4),
                       Text(
                         'Références bibliques:',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue[700],
-                        ),
-                      ),
-                    ],
-                  ),
+                          color: Colors.blue[700])),
+                    ]),
                   const SizedBox(height: 4),
                   Text(
                     widget.song.bibleReferences.join(', '),
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.blue[700],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                      color: Colors.blue[700])),
+                ])),
           ],
           
           // Notes privées (pour les administrateurs)
@@ -295,8 +238,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.amber.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
+                borderRadius: BorderRadius.circular(8)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -305,30 +247,22 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       const Icon(
                         Icons.lock,
                         size: 16,
-                        color: Colors.amber,
-                      ),
+                        color: Colors.amber),
                       const SizedBox(width: 4),
                       Text(
                         'Notes privées:',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Colors.amber[700],
-                        ),
-                      ),
-                    ],
-                  ),
+                          color: Colors.amber[700])),
+                    ]),
                   const SizedBox(height: 4),
                   Text(
                     widget.song.privateNotes!,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.amber[700],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                      color: Colors.amber[700])),
+                ])),
           ],
           
           // Audio/Vidéo
@@ -339,15 +273,13 @@ class _SongDetailPageState extends State<SongDetailPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.purple.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
+                borderRadius: BorderRadius.circular(8)),
               child: Row(
                 children: [
                   Icon(
                     Icons.audiotrack,
                     size: 16,
-                    color: Colors.purple[700],
-                  ),
+                    color: Colors.purple[700]),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -355,23 +287,15 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: Colors.purple[700],
-                      ),
-                    ),
-                  ),
+                        color: Colors.purple[700]))),
                   TextButton(
                     onPressed: () {
                       // TODO: Ouvrir le lien audio/vidéo
                     },
-                    child: const Text('Écouter'),
-                  ),
-                ],
-              ),
-            ),
+                    child: const Text('Écouter')),
+                ])),
           ],
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget _buildInfoChip(String label, Color color, IconData icon) {
@@ -379,8 +303,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
+        borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -391,22 +314,18 @@ class _SongDetailPageState extends State<SongDetailPage> {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-        ],
-      ),
-    );
+              color: color)),
+        ]));
   }
 
   Color _getStatusColor() {
     switch (widget.song.status) {
       case 'published':
-        return Colors.green;
+        return AppTheme.successColor;
       case 'draft':
-        return Colors.orange;
+        return AppTheme.warningColor;
       case 'archived':
-        return Colors.grey;
+        return AppTheme.textTertiaryColor;
       default:
         return Colors.blue;
     }

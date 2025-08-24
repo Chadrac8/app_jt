@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/bible_study.dart';
@@ -84,14 +85,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
           widget.study == null ? 'Nouvelle étude' : 'Modifier l\'étude',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold),
-        ),
+          style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           TextButton(
@@ -100,16 +100,12 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 ? const SizedBox(
                     width: 20,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
+                    child: CircularProgressIndicator(strokeWidth: 2))
                 : Text(
                     'Sauvegarder',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-          ),
+                      color: theme.colorScheme.primary))),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56),
@@ -117,27 +113,21 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-            ),
+              borderRadius: BorderRadius.circular(16)),
             child: TabBar(
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: theme.colorScheme.primary,
-              ),
-              labelColor: Colors.white,
+                color: theme.colorScheme.primary),
+              labelColor: AppTheme.surfaceColor,
               unselectedLabelColor: theme.colorScheme.onSurface.withOpacity(0.6),
               labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
               tabs: const [
                 Tab(text: 'Informations'),
                 Tab(text: 'Leçons'),
                 Tab(text: 'Aperçu'),
-              ],
-            ),
-          ),
-        ),
-      ),
+              ])))),
       body: Form(
         key: _formKey,
         child: TabBarView(
@@ -146,10 +136,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             _buildInfoTab(),
             _buildLessonsTab(),
             _buildPreviewTab(),
-          ],
-        ),
-      ),
-    );
+          ])));
   }
 
   Widget _buildInfoTab() {
@@ -162,9 +149,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Informations générales',
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+              fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           
           // Titre
@@ -174,16 +159,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Titre de l\'étude *',
               hintText: 'Ex: Les Paraboles de Jésus',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(12))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Le titre est obligatoire';
               }
               return null;
-            },
-          ),
+            }),
           
           const SizedBox(height: 16),
           
@@ -195,16 +177,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Description *',
               hintText: 'Décrivez le contenu et l\'objectif de cette étude',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(12))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'La description est obligatoire';
               }
               return null;
-            },
-          ),
+            }),
           
           const SizedBox(height: 16),
           
@@ -215,16 +194,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Auteur *',
               hintText: 'Nom de l\'auteur de l\'étude',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(12))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'L\'auteur est obligatoire';
               }
               return null;
-            },
-          ),
+            }),
           
           const SizedBox(height: 20),
           
@@ -237,9 +213,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   decoration: InputDecoration(
                     labelText: 'Catégorie',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                      borderRadius: BorderRadius.circular(12))),
                   items: [
                     'Nouveau Testament',
                     'Ancien Testament',
@@ -251,14 +225,11 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   ].map((category) {
                     return DropdownMenuItem(
                       value: category,
-                      child: Text(category),
-                    );
+                      child: Text(category));
                   }).toList(),
                   onChanged: (value) {
                     setState(() => _selectedCategory = value!);
-                  },
-                ),
-              ),
+                  })),
               const SizedBox(width: 12),
               Expanded(
                 child: DropdownButtonFormField<String>(
@@ -266,9 +237,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   decoration: InputDecoration(
                     labelText: 'Difficulté',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                      borderRadius: BorderRadius.circular(12))),
                   items: const [
                     DropdownMenuItem(value: 'beginner', child: Text('Débutant')),
                     DropdownMenuItem(value: 'intermediate', child: Text('Intermédiaire')),
@@ -276,11 +245,8 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   ],
                   onChanged: (value) {
                     setState(() => _selectedDifficulty = value!);
-                  },
-                ),
-              ),
-            ],
-          ),
+                  })),
+            ]),
           
           const SizedBox(height: 16),
           
@@ -292,9 +258,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Durée totale estimée (minutes) *',
               hintText: '120',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(12))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'La durée est obligatoire';
@@ -304,8 +268,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 return 'Durée invalide';
               }
               return null;
-            },
-          ),
+            }),
           
           const SizedBox(height: 16),
           
@@ -316,10 +279,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'URL de l\'image',
               hintText: 'https://example.com/image.jpg',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
+                borderRadius: BorderRadius.circular(12)))),
           
           const SizedBox(height: 20),
           
@@ -331,9 +291,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 'Mots-clés',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+                  fontWeight: FontWeight.w600)),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -343,19 +301,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                       decoration: InputDecoration(
                         hintText: 'Ajouter un mot-clé',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onSubmitted: _addTag,
-                    ),
-                  ),
+                          borderRadius: BorderRadius.circular(12))),
+                      onSubmitted: _addTag)),
                   const SizedBox(width: 8),
                   IconButton(
                     onPressed: () => _addTag(_tagController.text),
-                    icon: const Icon(Icons.add),
-                  ),
-                ],
-              ),
+                    icon: const Icon(Icons.add)),
+                ]),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -364,12 +316,9 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   return Chip(
                     label: Text(tag),
                     onDeleted: () => _removeTag(tag),
-                    deleteIcon: const Icon(Icons.close, size: 18),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
+                    deleteIcon: const Icon(Icons.close, size: 18));
+                }).toList()),
+            ]),
           
           const SizedBox(height: 20),
           
@@ -378,43 +327,33 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Options',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+              fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           
           SwitchListTile(
             title: Text(
               'Étude populaire',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-            ),
+              style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
             subtitle: Text(
               'Mettre en avant cette étude',
-              style: GoogleFonts.inter(fontSize: 12),
-            ),
+              style: GoogleFonts.inter(fontSize: 12)),
             value: _isPopular,
             onChanged: (value) {
               setState(() => _isPopular = value);
-            },
-          ),
+            }),
           
           SwitchListTile(
             title: Text(
               'Étude active',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-            ),
+              style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
             subtitle: Text(
               'Rendre cette étude disponible aux utilisateurs',
-              style: GoogleFonts.inter(fontSize: 12),
-            ),
+              style: GoogleFonts.inter(fontSize: 12)),
             value: _isActive,
             onChanged: (value) {
               setState(() => _isActive = value);
-            },
-          ),
-        ],
-      ),
-    );
+            }),
+        ]));
   }
 
   Widget _buildLessonsTab() {
@@ -428,25 +367,19 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             children: [
               Icon(
                 Icons.school,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+                color: Theme.of(context).colorScheme.primary),
               const SizedBox(width: 8),
               Text(
                 '${_lessons.length} leçon(s)',
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
+                  color: Theme.of(context).colorScheme.primary)),
               const Spacer(),
               TextButton.icon(
                 onPressed: _addLesson,
                 icon: const Icon(Icons.add),
-                label: const Text('Ajouter'),
-              ),
-            ],
-          ),
-        ),
+                label: const Text('Ajouter')),
+            ])),
         
         // Liste des leçons
         Expanded(
@@ -457,11 +390,8 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   itemCount: _lessons.length,
                   itemBuilder: (context, index) {
                     return _buildLessonCard(_lessons[index], index);
-                  },
-                ),
-        ),
-      ],
-    );
+                  })),
+      ]);
   }
 
   Widget _buildPreviewTab() {
@@ -474,9 +404,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Aperçu de l\'étude',
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+              fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           
           _buildPreviewCard(),
@@ -488,9 +416,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               'Leçons (${_lessons.length})',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+                fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             
             ..._lessons.take(3).map((lesson) => _buildPreviewLessonCard(lesson)),
@@ -501,20 +427,14 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 margin: const EdgeInsets.only(top: 8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                  borderRadius: BorderRadius.circular(12)),
                 child: Text(
                   '... et ${_lessons.length - 3} autres leçons',
                   style: GoogleFonts.inter(
                     fontStyle: FontStyle.italic,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  ),
-                ),
-              ),
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)))),
           ],
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget _buildPreviewCard() {
@@ -524,8 +444,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-      ),
+        borderRadius: BorderRadius.circular(16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -536,14 +455,11 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 height: 50,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                  borderRadius: BorderRadius.circular(12)),
                 child: Icon(
                   Icons.school,
                   color: theme.colorScheme.primary,
-                  size: 24,
-                ),
-              ),
+                  size: 24)),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -554,37 +470,26 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                       style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
+                        color: theme.colorScheme.primary)),
                     Text(
                       'Par ${_authorController.text.isEmpty ? 'Auteur' : _authorController.text}',
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: theme.colorScheme.onSurface.withOpacity(0.7),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                        color: theme.colorScheme.onSurface.withOpacity(0.7))),
+                  ])),
               if (_isPopular)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                    color: AppTheme.warningColor,
+                    borderRadius: BorderRadius.circular(8)),
                   child: Text(
                     'POPULAIRE',
                     style: GoogleFonts.inter(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-            ],
-          ),
+                      color: AppTheme.surfaceColor))),
+            ]),
           
           const SizedBox(height: 16),
           
@@ -594,9 +499,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 : _descriptionController.text,
             style: GoogleFonts.inter(
               fontSize: 14,
-              height: 1.4,
-            ),
-          ),
+              height: 1.4)),
           
           const SizedBox(height: 16),
           
@@ -607,8 +510,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               _buildInfoChip(_selectedCategory),
               const SizedBox(width: 8),
               _buildInfoChip(_getDifficultyDisplay()),
-            ],
-          ),
+            ]),
           
           if (_tags.isNotEmpty) ...[
             const SizedBox(height: 12),
@@ -620,22 +522,15 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                    borderRadius: BorderRadius.circular(12)),
                   child: Text(
                     '#$tag',
                     style: GoogleFonts.inter(
                       fontSize: 11,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
+                      color: theme.colorScheme.primary)));
+              }).toList()),
           ],
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget _buildInfoChip(String label) {
@@ -645,16 +540,12 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-      ),
+        borderRadius: BorderRadius.circular(12)),
       child: Text(
         label,
         style: GoogleFonts.inter(
           fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
+          fontWeight: FontWeight.w500)));
   }
 
   Widget _buildPreviewLessonCard(BibleStudyLesson lesson) {
@@ -665,28 +556,22 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-      ),
+        borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Leçon ${lesson.order}: ${lesson.title}',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-          ),
+            style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
           if (lesson.references.isNotEmpty) ...[
             const SizedBox(height: 4),
             Text(
               'Lectures: ${lesson.references.map((r) => r.displayText).join(', ')}',
               style: GoogleFonts.inter(
                 fontSize: 12,
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
+                color: theme.colorScheme.onSurface.withOpacity(0.7))),
           ],
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget _buildEmptyLessonsState() {
@@ -697,33 +582,25 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
           Icon(
             Icons.school_outlined,
             size: 64,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
-          ),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3)),
           const SizedBox(height: 16),
           Text(
             'Aucune leçon',
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-            ),
-          ),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
           const SizedBox(height: 8),
           Text(
             'Ajoutez des leçons pour construire votre étude',
             style: GoogleFonts.inter(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-            ),
-          ),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5))),
           const SizedBox(height: 24),
           ElevatedButton.icon(
             onPressed: _addLesson,
             icon: const Icon(Icons.add),
-            label: const Text('Ajouter une leçon'),
-          ),
-        ],
-      ),
-    );
+            label: const Text('Ajouter une leçon')),
+        ]));
   }
 
   Widget _buildLessonCard(BibleStudyLesson lesson, int index) {
@@ -732,20 +609,17 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       child: ExpansionTile(
         title: Text(
           'Leçon ${lesson.order}: ${lesson.title}',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-        ),
+          style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
         subtitle: Text(
           '${lesson.estimatedDuration}min • ${lesson.references.length} passage(s)',
-          style: GoogleFonts.inter(fontSize: 12),
-        ),
+          style: GoogleFonts.inter(fontSize: 12)),
         trailing: PopupMenuButton<String>(
           onSelected: (action) => _handleLessonAction(action, index),
           itemBuilder: (context) => [
-            const PopupMenuItem(value: 'edit', child: Text('Modifier')),
-            const PopupMenuItem(value: 'duplicate', child: Text('Dupliquer')),
-            const PopupMenuItem(value: 'delete', child: Text('Supprimer')),
-          ],
-        ),
+            PopupMenuItem(value: 'edit', child: Text('Modifier')),
+            PopupMenuItem(value: 'duplicate', child: Text('Dupliquer')),
+            PopupMenuItem(value: 'delete', child: Text('Supprimer')),
+          ]),
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
@@ -755,34 +629,27 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 if (lesson.content.isNotEmpty) ...[
                   Text(
                     'Contenu:',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                  ),
+                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                   Text(lesson.content),
                   const SizedBox(height: 8),
                 ],
                 if (lesson.references.isNotEmpty) ...[
                   Text(
                     'Passages bibliques:',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                  ),
+                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                   ...lesson.references.map((ref) => Text('• ${ref.displayText}')),
                   const SizedBox(height: 8),
                 ],
                 if (lesson.questions.isNotEmpty) ...[
                   Text(
                     'Questions (${lesson.questions.length}):',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                  ),
+                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
                   ...lesson.questions.take(2).map((q) => Text('• ${q.question}')),
                   if (lesson.questions.length > 2)
                     Text('• ... et ${lesson.questions.length - 2} autres questions'),
                 ],
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+              ])),
+        ]));
   }
 
   String _getDifficultyDisplay() {
@@ -822,8 +689,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       references: [],
       questions: [],
       order: _lessons.length + 1,
-      estimatedDuration: 30,
-    );
+      estimatedDuration: 30);
     
     setState(() {
       _lessons.add(newLesson);
@@ -831,8 +697,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
     
     // TODO: Ouvrir un dialogue d'édition de leçon
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Leçon ajoutée ! (Édition complète à implémenter)')),
-    );
+      const SnackBar(content: Text('Leçon ajoutée ! (Édition complète à implémenter)')));
   }
 
   void _handleLessonAction(String action, int index) {
@@ -840,8 +705,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       case 'edit':
         // TODO: Éditer la leçon
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Édition de leçon à implémenter')),
-        );
+          const SnackBar(content: Text('Édition de leçon à implémenter')));
         break;
       case 'duplicate':
         final original = _lessons[index];
@@ -854,8 +718,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
           order: _lessons.length + 1,
           estimatedDuration: original.estimatedDuration,
           reflection: original.reflection,
-          prayer: original.prayer,
-        );
+          prayer: original.prayer);
         setState(() {
           _lessons.add(duplicate);
         });
@@ -880,8 +743,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
     
     if (_lessons.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ajoutez au moins une leçon à l\'étude')),
-      );
+        const SnackBar(content: Text('Ajoutez au moins une leçon à l\'étude')));
       _tabController.animateTo(1);
       return;
     }
@@ -905,8 +767,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
         isPopular: _isPopular,
         isActive: _isActive,
         author: _authorController.text.trim(),
-        tags: _tags,
-      );
+        tags: _tags);
       
       // TODO: Sauvegarder l'étude via le service
       await _saveStudyToStorage(study);
@@ -919,9 +780,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   ? 'Étude créée avec succès' 
                   : 'Étude mise à jour avec succès'
             ),
-            backgroundColor: Colors.green,
-          ),
-        );
+            backgroundColor: AppTheme.successColor));
         
         widget.onSaved?.call();
         Navigator.pop(context);
@@ -929,8 +788,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors de la sauvegarde: $e')),
-        );
+          SnackBar(content: Text('Erreur lors de la sauvegarde: $e')));
       }
     } finally {
       if (mounted) {

@@ -104,8 +104,7 @@ class BibleStudyService {
     }
     
     final progressJson = jsonEncode(
-      allProgress.map((p) => p.toJson()).toList(),
-    );
+      allProgress.map((p) => p.toJson()).toList());
     await prefs.setString(_progressKey, progressJson);
   }
 
@@ -119,8 +118,7 @@ class BibleStudyService {
       completedLessons: [],
       answers: {},
       startedAt: DateTime.now(),
-      progressPercentage: 0.0,
-    );
+      progressPercentage: 0.0);
     
     await saveStudyProgress(progress);
   }
@@ -148,8 +146,7 @@ class BibleStudyService {
       completedLessons: updatedCompletedLessons,
       answers: newAnswers,
       progressPercentage: progressPercentage,
-      completedAt: isCompleted ? DateTime.now() : null,
-    );
+      completedAt: isCompleted ? DateTime.now() : null);
     
     await saveStudyProgress(updatedProgress);
   }
@@ -243,21 +240,18 @@ class BibleStudyService {
               StudyQuestion(
                 id: 'q1_1',
                 question: 'Quels sont les quatre types de terrain mentionnés dans cette parabole ?',
-                type: 'open_ended',
-              ),
+                type: 'open_ended'),
               StudyQuestion(
                 id: 'q1_2',
                 question: 'Que représente la semence dans cette parabole ?',
                 type: 'multiple_choice',
                 options: ['L\'argent', 'La Parole de Dieu', 'Les bonnes œuvres', 'La prière'],
-                correctAnswer: 'La Parole de Dieu',
-              ),
+                correctAnswer: 'La Parole de Dieu'),
             ],
             reflection: 'Réfléchissez à quel type de terrain votre cœur représente-t-il actuellement.',
             prayer: 'Seigneur, prépare mon cœur à recevoir ta Parole avec joie et à porter du fruit.',
             order: 1,
-            estimatedDuration: 30,
-          ),
+            estimatedDuration: 30),
           BibleStudyLesson(
             id: 'lesson_1_2',
             title: 'La Parabole de la Brebis Perdue',
@@ -270,16 +264,13 @@ class BibleStudyService {
               StudyQuestion(
                 id: 'q2_1',
                 question: 'Que fait le berger quand il découvre qu\'une brebis manque ?',
-                type: 'open_ended',
-              ),
+                type: 'open_ended'),
             ],
             reflection: 'Dieu nous cherche avec la même passion quand nous nous éloignons de lui.',
             prayer: 'Merci Seigneur de ne jamais m\'abandonner, même quand je m\'égare.',
             order: 2,
-            estimatedDuration: 25,
-          ),
-        ],
-      ),
+            estimatedDuration: 25),
+        ]),
       BibleStudy(
         id: 'study_2',
         title: 'Les Héros de la Foi',
@@ -307,16 +298,13 @@ class BibleStudyService {
                 question: 'Quel âge avait Abraham quand Dieu l\'a appelé ?',
                 type: 'multiple_choice',
                 options: ['65 ans', '75 ans', '85 ans', '95 ans'],
-                correctAnswer: '75 ans',
-              ),
+                correctAnswer: '75 ans'),
             ],
             reflection: 'Êtes-vous prêt à obéir à Dieu même sans voir le chemin complet ?',
             prayer: 'Seigneur, donne-moi la foi d\'Abraham pour te suivre où que tu m\'appelles.',
             order: 1,
-            estimatedDuration: 45,
-          ),
-        ],
-      ),
+            estimatedDuration: 45),
+        ]),
       BibleStudy(
         id: 'study_3',
         title: 'Les Fruits de l\'Esprit',
@@ -342,16 +330,13 @@ class BibleStudyService {
               StudyQuestion(
                 id: 'q4_1',
                 question: 'Comment peut-on cultiver l\'amour dans notre vie quotidienne ?',
-                type: 'reflection',
-              ),
+                type: 'reflection'),
             ],
             reflection: 'L\'amour véritable se manifeste dans nos actions, pas seulement nos paroles.',
             prayer: 'Seigneur, remplis mon cœur de ton amour pour que je puisse l\'offrir aux autres.',
             order: 1,
-            estimatedDuration: 30,
-          ),
-        ],
-      ),
+            estimatedDuration: 30),
+        ]),
     ];
   }
 

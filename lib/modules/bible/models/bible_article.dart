@@ -74,8 +74,7 @@ class BibleArticle {
       imageUrl: json['imageUrl'],
       readingTimeMinutes: json['readingTimeMinutes'] ?? 5,
       isPublished: json['isPublished'] ?? true,
-      viewCount: json['viewCount'] ?? 0,
-    );
+      viewCount: json['viewCount'] ?? 0);
   }
 
   BibleArticle copyWith({
@@ -106,8 +105,7 @@ class BibleArticle {
       imageUrl: imageUrl ?? this.imageUrl,
       readingTimeMinutes: readingTimeMinutes ?? this.readingTimeMinutes,
       isPublished: isPublished ?? this.isPublished,
-      viewCount: viewCount ?? this.viewCount,
-    );
+      viewCount: viewCount ?? this.viewCount);
   }
 }
 
@@ -139,8 +137,7 @@ class BibleReference {
       book: json['book'],
       chapter: json['chapter'],
       startVerse: json['startVerse'],
-      endVerse: json['endVerse'],
-    );
+      endVerse: json['endVerse']);
   }
 
   String get displayText {
@@ -177,8 +174,7 @@ enum BibleArticleCategory {
   static BibleArticleCategory fromString(String value) {
     return BibleArticleCategory.values.firstWhere(
       (category) => category.name == value,
-      orElse: () => BibleArticleCategory.other,
-    );
+      orElse: () => BibleArticleCategory.other);
   }
 }
 
@@ -223,8 +219,7 @@ class ArticleReadingStats {
       lastReadAt: DateTime.parse(json['lastReadAt']),
       readCount: json['readCount'] ?? 1,
       isBookmarked: json['isBookmarked'] ?? false,
-      readingProgress: (json['readingProgress'] ?? 0.0).toDouble(),
-    );
+      readingProgress: (json['readingProgress'] ?? 0.0).toDouble());
   }
 
   ArticleReadingStats copyWith({
@@ -240,7 +235,6 @@ class ArticleReadingStats {
       lastReadAt: lastReadAt ?? DateTime.now(),
       readCount: readCount ?? this.readCount,
       isBookmarked: isBookmarked ?? this.isBookmarked,
-      readingProgress: readingProgress ?? this.readingProgress,
-    );
+      readingProgress: readingProgress ?? this.readingProgress);
   }
 }

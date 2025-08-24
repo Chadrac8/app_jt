@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../models/pour_vous_action.dart';
 
 /// Service pour gérer les actions "Pour vous" du module Vie de l'église
 class PourVousActionService {
   static const String _collection = 'pour_vous_actions';
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   /// Récupère toutes les actions actives, triées par ordre
   Stream<List<PourVousAction>> getActiveActions() {
@@ -73,6 +76,17 @@ class PourVousActionService {
     } catch (e) {
       print('Erreur lors de l\'ajout de l\'action: $e');
       return false;
+    }
+  }
+
+  /// Crée une nouvelle action et retourne son ID
+  Future<String?> createAction(PourVousAction action) async {
+    try {
+      final docRef = await _firestore.collection(_collection).add(action.toFirestore());
+      return docRef.id;
+    } catch (e) {
+      print('Erreur lors de la création de l\'action: $e');
+      return null;
     }
   }
 
@@ -191,6 +205,150 @@ class PourVousActionService {
     } catch (e) {
       print('Erreur lors de la récupération des statistiques: $e');
       return {'total': 0, 'active': 0, 'inactive': 0};
+    }
+  }
+
+  /// Upload une image vers Firebase Storage
+  Future<String?> uploadImage(File imageFile, String actionId) async {
+    try {
+      final ref = _storage.ref().child('pour_vous_actions').child('$actionId.jpg');
+      final uploadTask = await ref.putFile(imageFile);
+      return await uploadTask.ref.getDownloadURL();
+    } catch (e) {
+      print('Erreur lors de l\'upload de l\'image: $e');
+      return null;
+    }
+  }
+
+  /// Supprimer une image de Firebase Storage
+  Future<bool> deleteImage(String imageUrl) async {
+    try {
+      final ref = _storage.refFromURL(imageUrl);
+      await ref.delete();
+      return true;
+    } catch (e) {
+      print('Erreur lors de la suppression de l\'image: $e');
+      return false;
+    }
+  }
+
+  /// Obtenir les actions par groupe
+  Stream<List<PourVousAction>> getActionsByGroup(String groupId) {
+    return _firestore
+        .collection(_collection)
+        .where('groupId', isEqualTo: groupId)
+        .where('isActive', isEqualTo: true)
+        .orderBy('order')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => PourVousAction.fromFirestore(doc))
+            .toList());
+  }
+
+  /// Réorganiser les actions
+  Future<bool> reorderActions(List<PourVousAction> actions) async {
+    try {
+      final batch = _firestore.batch();
+      
+      for (int i = 0; i < actions.length; i++) {
+        final docRef = _firestore.collection(_collection).doc(actions[i].id);
+        batch.update(docRef, {
+          'order': i,
+          'updatedAt': Timestamp.fromDate(DateTime.now()),
+        });
+      }
+      
+      await batch.commit();
+      return true;
+    } catch (e) {
+      print('Erreur lors de la réorganisation des actions: $e');
+      return false;
+    }
+  }
+
+  /// Dupliquer une action
+  Future<String?> duplicateAction(String actionId) async {
+    try {
+      final action = await getActionById(actionId);
+      if (action != null) {
+        final duplicatedAction = action.copyWith(
+          id: '',
+          title: '${action.title} (Copie)',
+          order: action.order + 1,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        return await createAction(duplicatedAction);
+      }
+      return null;
+    } catch (e) {
+      print('Erreur lors de la duplication de l\'action: $e');
+      return null;
+    }
+  }
+
+  /// Exporter les actions au format JSON
+  Future<Map<String, dynamic>> exportActions() async {
+    try {
+      final snapshot = await _firestore.collection(_collection).get();
+      final actions = snapshot.docs.map((doc) => {
+        'id': doc.id,
+        ...doc.data(),
+      }).toList();
+      
+      return {
+        'exported_at': DateTime.now().toIso8601String(),
+        'total_actions': actions.length,
+        'actions': actions,
+      };
+    } catch (e) {
+      print('Erreur lors de l\'export des actions: $e');
+      return {};
+    }
+  }
+
+  /// Importer des actions depuis un JSON
+  Future<bool> importActions(Map<String, dynamic> data) async {
+    try {
+      final actions = data['actions'] as List<dynamic>;
+      final batch = _firestore.batch();
+      
+      for (final actionData in actions) {
+        final docRef = _firestore.collection(_collection).doc();
+        final Map<String, dynamic> cleanData = Map<String, dynamic>.from(actionData);
+        cleanData.remove('id'); // Supprimer l'ancien ID
+        cleanData['createdAt'] = Timestamp.fromDate(DateTime.now());
+        cleanData['updatedAt'] = Timestamp.fromDate(DateTime.now());
+        
+        batch.set(docRef, cleanData);
+      }
+      
+      await batch.commit();
+      return true;
+    } catch (e) {
+      print('Erreur lors de l\'import des actions: $e');
+      return false;
+    }
+  }
+
+  /// Rechercher des actions
+  Future<List<PourVousAction>> searchActions(String query) async {
+    try {
+      final snapshot = await _firestore.collection(_collection).get();
+      final allActions = snapshot.docs
+          .map((doc) => PourVousAction.fromFirestore(doc))
+          .toList();
+      
+      final lowerQuery = query.toLowerCase();
+      return allActions.where((action) {
+        return action.title.toLowerCase().contains(lowerQuery) ||
+               action.description.toLowerCase().contains(lowerQuery) ||
+               action.actionType.toLowerCase().contains(lowerQuery) ||
+               (action.targetModule?.toLowerCase().contains(lowerQuery) ?? false);
+      }).toList();
+    } catch (e) {
+      print('Erreur lors de la recherche: $e');
+      return [];
     }
   }
 }

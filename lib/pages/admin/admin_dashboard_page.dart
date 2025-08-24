@@ -10,6 +10,7 @@ import '../../widgets/dashboard_widgets/dashboard_list_widget.dart';
 import '../../widgets/member_view_toggle_button.dart';
 import '../../widgets/bottom_navigation_wrapper.dart';
 import 'dashboard_configuration_page.dart';
+import 'admin_home_config_page.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -120,6 +121,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                 (route) => false,
               );
             },
+          ),
+          // Bouton de configuration de la dashboard membre
+          IconButton(
+            onPressed: () => _navigateToHomeConfiguration(),
+            icon: const Icon(Icons.home_filled),
+            tooltip: 'Configurer l\'accueil membre',
           ),
           // Bouton de rafraîchissement
           IconButton(
@@ -403,6 +410,14 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _navigateToHomeConfiguration() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const AdminHomeConfigPage(),
       ),
     );
   }

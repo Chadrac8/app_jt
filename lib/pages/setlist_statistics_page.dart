@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
 import '../widgets/setlist_stats_charts.dart';
 
@@ -33,10 +34,7 @@ class SetlistStatisticsPage extends StatelessWidget {
                       Text('Total: [200m${stats['totalSetlists'] ?? 0}[0m'),
                       const SizedBox(height: 8),
                       Text('Utilisations totales: [200m${stats['totalUsage'] ?? 0}[0m'),
-                    ],
-                  ),
-                ),
-              ),
+                    ]))),
               const SizedBox(height: 16),
               Card(
                 child: Padding(
@@ -52,12 +50,8 @@ class SetlistStatisticsPage extends StatelessWidget {
                         ListTile(
                           leading: const Icon(Icons.person),
                           title: Text(user['name'] ?? user['id'] ?? 'Inconnu'),
-                          trailing: Text('${user['count']} playlists'),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
+                          trailing: Text('${user['count']} playlists')),
+                    ]))),
               const SizedBox(height: 16),
               Card(
                 child: Padding(
@@ -78,23 +72,16 @@ class SetlistStatisticsPage extends StatelessWidget {
                           title: 'Top playlists par nombre de chants',
                           colors: [
                             Colors.blue,
-                            Colors.green,
-                            Colors.orange,
+                            AppTheme.successColor,
+                            AppTheme.warningColor,
                             Colors.purple,
-                            Colors.red,
+                            AppTheme.errorColor,
                             Colors.teal,
                             Colors.brown,
                             Colors.pink,
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                          ]),
+                    ]))),
+            ]);
+        }));
   }
 }

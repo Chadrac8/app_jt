@@ -1,0 +1,29 @@
+name: Archive code on push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  archive-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Create ZIP archive
+        run: |
+          zip -r app_jt-main.zip .
+      - name: Upload ZIP archive as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app_jt-main-archive
+          path: app_jt-main.zip
+      - name: Create TAR archive
+        run: |
+          tar -czvf app_jt-main.tar.gz .
+      - name: Upload TAR archive as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app_jt-main-tar-archive
+          path: app_jt-main.tar.gz

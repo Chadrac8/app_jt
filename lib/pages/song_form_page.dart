@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
 
@@ -25,7 +26,6 @@ class _SongFormPageState extends State<SongFormPage> {
   late TextEditingController _bibleReferencesController;
   late TextEditingController _tempoController;
 
-  String _selectedStyle = 'Adoration';
   String _selectedKey = 'C';
   String _selectedStatus = 'draft';
   String _selectedVisibility = 'members_only';
@@ -56,13 +56,10 @@ class _SongFormPageState extends State<SongFormPage> {
       _audioUrlController = TextEditingController(text: widget.song!.audioUrl);
       _privateNotesController = TextEditingController(text: widget.song!.privateNotes);
       _bibleReferencesController = TextEditingController(
-        text: widget.song!.bibleReferences.join(', '),
-      );
+        text: widget.song!.bibleReferences.join(', '));
       _tempoController = TextEditingController(
-        text: widget.song!.tempo?.toString() ?? '',
-      );
+        text: widget.song!.tempo?.toString() ?? '');
       
-      _selectedStyle = widget.song!.style;
       _selectedKey = widget.song!.originalKey;
       _selectedStatus = widget.song!.status;
       _selectedVisibility = widget.song!.visibility;
@@ -100,15 +97,12 @@ class _SongFormPageState extends State<SongFormPage> {
           if (_isSaving)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Center(child: CircularProgressIndicator()),
-            )
+              child: Center(child: CircularProgressIndicator()))
           else
             TextButton(
               onPressed: _saveSong,
-              child: const Text('Enregistrer'),
-            ),
-        ],
-      ),
+              child: const Text('Enregistrer')),
+        ]),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -124,9 +118,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Informations générales',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     
                     // Titre
@@ -134,15 +126,13 @@ class _SongFormPageState extends State<SongFormPage> {
                       controller: _titleController,
                       decoration: const InputDecoration(
                         labelText: 'Titre du chant *',
-                        border: OutlineInputBorder(),
-                      ),
+                        border: OutlineInputBorder()),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Le titre est obligatoire';
                         }
                         return null;
-                      },
-                    ),
+                      }),
                     
                     const SizedBox(height: 16),
                     
@@ -152,64 +142,31 @@ class _SongFormPageState extends State<SongFormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Auteurs/Compositeurs',
                         border: OutlineInputBorder(),
-                        hintText: 'Ex: John Doe, Jane Smith',
-                      ),
-                    ),
+                        hintText: 'Ex: John Doe, Jane Smith')),
                     
                     const SizedBox(height: 16),
                     
-                    // Style et Tonalité
+                    // Tonalité
                     Row(
                       children: [
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            value: _selectedStyle,
-                            decoration: const InputDecoration(
-                              labelText: 'Style',
-                              border: OutlineInputBorder(),
-                            ),
-                            items: SongModel.availableStyles.map((style) =>
-                              DropdownMenuItem<String>(
-                                value: style,
-                                child: Text(style),
-                              ),
-                            ).toList(),
-                            onChanged: (value) {
-                              if (value != null) {
-                                setState(() {
-                                  _selectedStyle = value;
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                        
-                        const SizedBox(width: 16),
-                        
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: _selectedKey,
                             decoration: const InputDecoration(
                               labelText: 'Tonalité',
-                              border: OutlineInputBorder(),
-                            ),
+                              border: OutlineInputBorder()),
                             items: SongModel.availableKeys.map((key) =>
                               DropdownMenuItem<String>(
                                 value: key,
-                                child: Text(key),
-                              ),
-                            ).toList(),
+                                child: Text(key))).toList(),
                             onChanged: (value) {
                               if (value != null) {
                                 setState(() {
                                   _selectedKey = value;
                                 });
                               }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                            })),
+                      ]),
                     
                     const SizedBox(height: 16),
                     
@@ -219,8 +176,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Tempo (BPM)',
                         border: OutlineInputBorder(),
-                        hintText: 'Ex: 120',
-                      ),
+                        hintText: 'Ex: 120'),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
@@ -230,12 +186,8 @@ class _SongFormPageState extends State<SongFormPage> {
                           }
                         }
                         return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                      }),
+                  ]))),
             
             const SizedBox(height: 16),
             
@@ -249,16 +201,12 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Paroles et Accords',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     Text(
                       'Tapez les paroles avec les accords. Les accords doivent être placés au-dessus des mots correspondants.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
-                      ),
-                    ),
+                        color: AppTheme.textTertiaryColor)),
                     const SizedBox(height: 16),
                     
                     TextFormField(
@@ -266,20 +214,15 @@ class _SongFormPageState extends State<SongFormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Paroles *',
                         border: OutlineInputBorder(),
-                        alignLabelWithHint: true,
-                      ),
+                        alignLabelWithHint: true),
                       maxLines: 15,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Les paroles sont obligatoires';
                         }
                         return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                      }),
+                  ]))),
             
             const SizedBox(height: 16),
             
@@ -293,9 +236,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Tags',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     
                     Wrap(
@@ -314,14 +255,9 @@ class _SongFormPageState extends State<SongFormPage> {
                                 _tags.remove(tag);
                               }
                             });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                          });
+                      }).toList()),
+                  ]))),
             
             const SizedBox(height: 16),
             
@@ -335,9 +271,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Références bibliques',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     
                     TextFormField(
@@ -345,14 +279,9 @@ class _SongFormPageState extends State<SongFormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Références bibliques',
                         border: OutlineInputBorder(),
-                        hintText: 'Ex: Psaume 23:1, Jean 3:16',
-                      ),
-                      maxLines: 2,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                        hintText: 'Ex: Psaume 23:1, Jean 3:16'),
+                      maxLines: 2),
+                  ]))),
             
             const SizedBox(height: 16),
             
@@ -366,9 +295,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Médias',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     
                     // URL Audio
@@ -377,8 +304,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       decoration: const InputDecoration(
                         labelText: 'URL Audio/Vidéo',
                         border: OutlineInputBorder(),
-                        hintText: 'https://youtube.com/watch?v=...',
-                      ),
+                        hintText: 'https://youtube.com/watch?v=...'),
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
                           final uri = Uri.tryParse(value);
@@ -387,12 +313,8 @@ class _SongFormPageState extends State<SongFormPage> {
                           }
                         }
                         return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                      }),
+                  ]))),
             
             const SizedBox(height: 16),
             
@@ -406,9 +328,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Paramètres de publication',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     
                     Row(
@@ -418,23 +338,18 @@ class _SongFormPageState extends State<SongFormPage> {
                             value: _selectedStatus,
                             decoration: const InputDecoration(
                               labelText: 'Statut',
-                              border: OutlineInputBorder(),
-                            ),
+                              border: OutlineInputBorder()),
                             items: SongModel.availableStatuses.map((status) =>
                               DropdownMenuItem<String>(
                                 value: status,
-                                child: Text(_getStatusDisplayName(status)),
-                              ),
-                            ).toList(),
+                                child: Text(_getStatusDisplayName(status)))).toList(),
                             onChanged: (value) {
                               if (value != null) {
                                 setState(() {
                                   _selectedStatus = value;
                                 });
                               }
-                            },
-                          ),
-                        ),
+                            })),
                         
                         const SizedBox(width: 16),
                         
@@ -443,25 +358,19 @@ class _SongFormPageState extends State<SongFormPage> {
                             value: _selectedVisibility,
                             decoration: const InputDecoration(
                               labelText: 'Visibilité',
-                              border: OutlineInputBorder(),
-                            ),
+                              border: OutlineInputBorder()),
                             items: SongModel.availableVisibilities.map((visibility) =>
                               DropdownMenuItem<String>(
                                 value: visibility,
-                                child: Text(_getVisibilityDisplayName(visibility)),
-                              ),
-                            ).toList(),
+                                child: Text(_getVisibilityDisplayName(visibility)))).toList(),
                             onChanged: (value) {
                               if (value != null) {
                                 setState(() {
                                   _selectedVisibility = value;
                                 });
                               }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                            })),
+                      ]),
                     
                     const SizedBox(height: 16),
                     
@@ -470,20 +379,12 @@ class _SongFormPageState extends State<SongFormPage> {
                       controller: _privateNotesController,
                       decoration: const InputDecoration(
                         labelText: 'Notes privées (visibles uniquement par les administrateurs)',
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 3,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                        border: OutlineInputBorder()),
+                      maxLines: 3),
+                  ]))),
             
             const SizedBox(height: 32),
-          ],
-        ),
-      ),
-    );
+          ])));
   }
 
   String _getStatusDisplayName(String status) {
@@ -536,7 +437,7 @@ class _SongFormPageState extends State<SongFormPage> {
         authors: _authorsController.text.trim(),
         lyrics: _lyricsController.text.trim(),
         originalKey: _selectedKey,
-        style: _selectedStyle,
+        style: widget.song?.style ?? 'Autre',
         tags: _tags,
         bibleReferences: bibleRefs,
         tempo: _tempoController.text.isNotEmpty ? int.tryParse(_tempoController.text) : null,
@@ -551,8 +452,7 @@ class _SongFormPageState extends State<SongFormPage> {
         updatedAt: DateTime.now(),
         createdBy: widget.song?.createdBy ?? '',
         modifiedBy: widget.song?.modifiedBy,
-        metadata: widget.song?.metadata ?? {},
-      );
+        metadata: widget.song?.metadata ?? {});
 
       bool success = false;
       if (widget.song == null) {
@@ -567,26 +467,20 @@ class _SongFormPageState extends State<SongFormPage> {
           SnackBar(
             content: Text(widget.song == null 
                 ? 'Chant créé avec succès' 
-                : 'Chant modifié avec succès'),
-          ),
-        );
+                : 'Chant modifié avec succès')));
         Navigator.pop(context);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Erreur lors de l\'enregistrement'),
-            backgroundColor: Colors.red,
-          ),
-        );
+            backgroundColor: AppTheme.errorColor));
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+            backgroundColor: AppTheme.errorColor));
       }
     } finally {
       if (mounted) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/dashboard_widget_model.dart';
 import '../../services/dashboard_firebase_service.dart';
+import '../../services/app_config_firebase_service.dart';
 
 class DashboardConfigurationPage extends StatefulWidget {
   const DashboardConfigurationPage({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _loadConfiguration();
   }
 
@@ -70,6 +71,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
           tabs: const [
             Tab(icon: Icon(Icons.widgets), text: 'Widgets'),
             Tab(icon: Icon(Icons.settings), text: 'Préférences'),
+            Tab(icon: Icon(Icons.build), text: 'Maintenance'),
           ],
           indicatorColor: Colors.white,
           labelColor: Colors.white,
@@ -90,6 +92,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
               children: [
                 _buildWidgetsTab(),
                 _buildPreferencesTab(),
+                _buildMaintenanceTab(),
               ],
             ),
     );
@@ -607,5 +610,212 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
         ),
       ),
     );
+  }
+
+  Widget _buildMaintenanceTab() {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        // Section de nettoyage des modules
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.cleaning_services,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Nettoyage des Modules',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Supprime les modules orphelins qui n\'existent plus dans le code '
+                  'mais qui sont encore présents dans la configuration Firebase.',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: _cleanupOrphanModules,
+                  icon: const Icon(Icons.delete_sweep),
+                  label: const Text('Nettoyer les modules orphelins'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '⚠️ Cette action supprimera définitivement les modules '
+                  '"Pour vous", "Ressources" et "Dons" du menu "Plus".',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.orange.shade700,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
+        const SizedBox(height: 16),
+        
+        // Section d'informations système
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Informations Système',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                _buildInfoRow('Version de l\'application', '1.0.0'),
+                _buildInfoRow('Configuration Firebase', 'Connectée'),
+                _buildInfoRow('Modules actifs', '${_allWidgets.length}'),
+                const SizedBox(height: 16),
+                Text(
+                  'Pour plus d\'informations de maintenance, consultez la console Firebase.',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _cleanupOrphanModules() async {
+    // Afficher un dialogue de confirmation
+    final bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmer le nettoyage'),
+          content: const Text(
+            'Cette action va supprimer définitivement les modules orphelins '
+            '(Pour vous, Ressources, Dons) de la configuration Firebase.\n\n'
+            'Ces modules n\'apparaîtront plus dans le menu "Plus" de l\'application.\n\n'
+            'Voulez-vous continuer ?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Nettoyer'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm != true) return;
+
+    try {
+      // Afficher un indicateur de chargement
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            content: Row(
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 16),
+                Text('Nettoyage en cours...'),
+              ],
+            ),
+          );
+        },
+      );
+
+      // Exécuter le nettoyage
+      await AppConfigFirebaseService.cleanupOrphanModules();
+
+      // Fermer le dialogue de chargement
+      Navigator.of(context).pop();
+
+      // Afficher un message de succès
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            '✅ Nettoyage terminé avec succès! '
+            'Les modules orphelins ont été supprimés.',
+          ),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 4),
+        ),
+      );
+
+    } catch (e) {
+      // Fermer le dialogue de chargement en cas d'erreur
+      Navigator.of(context).pop();
+
+      // Afficher un message d'erreur
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '❌ Erreur lors du nettoyage: $e\n'
+            'Veuillez essayer via Firebase Console.',
+          ),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 6),
+        ),
+      );
+    }
   }
 }

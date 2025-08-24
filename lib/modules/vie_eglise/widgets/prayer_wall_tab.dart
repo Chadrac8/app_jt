@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../../models/prayer_model.dart';
 import '../../../services/prayers_firebase_service.dart';
-import '../../../widgets/prayer_card.dart';
-import '../../../widgets/prayer_search_filter_bar.dart';
-import '../../../theme.dart';
-import '../../../auth/auth_service.dart';
 import '../../../pages/prayer_form_page.dart';
 import '../../../pages/prayer_detail_page.dart';
 
-/// Onglet "Prières & Témoignages" du module Vie de l'église
-/// Version adaptée du MemberPrayerWallPage pour l'intégration dans les onglets
+/// Onglet "Prières" moderne du module Vie de l'église
+/// Design inspiré des meilleures applications d'église
 class PrayerWallTab extends StatefulWidget {
   const PrayerWallTab({Key? key}) : super(key: key);
 
@@ -24,309 +23,512 @@ class _PrayerWallTabState extends State<PrayerWallTab>
   
   String _searchQuery = '';
   PrayerType? _selectedType;
-  String? _selectedCategory;
-  bool _showApprovedOnly = true; // Membres voient seulement les prières approuvées
-  bool _showActiveOnly = true;
-  String _selectedTab = 'all';
+  bool _isLoading = true;
+  List<PrayerModel> _prayers = [];
+  List<PrayerModel> _filteredPrayers = [];
   
-  late AnimationController _fabAnimationController;
-  late Animation<double> _fabAnimation;
-  
-  List<String> _availableCategories = [];
+  late AnimationController _animationController;
+
+  // Catégories de prières avec couleurs modernes
+  final List<Map<String, dynamic>> _categories = [
+    {
+      'type': null,
+      'label': 'Toutes',
+      'icon': Icons.all_inclusive,
+      'color': const Color(0xFF6B73FF),
+      'gradient': [const Color(0xFF6B73FF), const Color(0xFF9DD5EA)],
+    },
+    {
+      'type': PrayerType.request,
+      'label': 'Demandes',
+      'icon': Icons.volunteer_activism,
+      'color': const Color(0xFFFF6B6B),
+      'gradient': [const Color(0xFFFF6B6B), const Color(0xFFFFB8B8)],
+    },
+    {
+      'type': PrayerType.thanksgiving,
+      'label': 'Actions de grâce',
+      'icon': Icons.celebration,
+      'color': const Color(0xFF4ECDC4),
+      'gradient': [const Color(0xFF4ECDC4), const Color(0xFF44A08D)],
+    },
+    {
+      'type': PrayerType.testimony,
+      'label': 'Témoignages',
+      'icon': Icons.auto_awesome,
+      'color': const Color(0xFFFFD93D),
+      'gradient': [const Color(0xFFFFD93D), const Color(0xFF6BCF7F)],
+    },
+  ];
 
   @override
   void initState() {
     super.initState();
-    _fabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _fabAnimation = CurvedAnimation(
-      parent: _fabAnimationController,
-      curve: Curves.easeInOut,
-    );
-    _fabAnimationController.forward();
+    _setupAnimations();
+    _loadPrayers();
+  }
 
-    _loadCategories();
+  void _setupAnimations() {
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this);
+
+    _animationController.forward();
   }
 
   @override
   void dispose() {
+    _animationController.dispose();
     _searchController.dispose();
     _scrollController.dispose();
-    _fabAnimationController.dispose();
     super.dispose();
   }
 
-  void _loadCategories() async {
+  Future<void> _loadPrayers() async {
     try {
-      final categories = await PrayersFirebaseService.getUsedCategories();
-      if (mounted) {
-        setState(() {
-          _availableCategories = categories;
-        });
-      }
+      setState(() => _isLoading = true);
+      
+      // Écouter le stream des prières
+      PrayersFirebaseService.getPrayersStream().listen((prayers) {
+        if (mounted) {
+          setState(() {
+            _prayers = prayers.where((p) => p.isApproved && !p.isArchived).toList();
+            _isLoading = false;
+          });
+          _applyFilters();
+        }
+      });
     } catch (e) {
-      print('Erreur lors du chargement des catégories: $e');
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors du chargement: ${e.toString()}'),
+            backgroundColor: AppTheme.errorColor));
+      }
     }
   }
 
-  void _clearFilters() {
+  void _applyFilters() {
     setState(() {
-      _searchQuery = '';
-      _selectedType = null;
-      _selectedCategory = null;
-      _searchController.clear();
+      _filteredPrayers = _prayers.where((prayer) {
+        // Filtre par type
+        if (_selectedType != null && prayer.type != _selectedType) {
+          return false;
+        }
+        
+        // Filtre par recherche
+        if (_searchQuery.isNotEmpty) {
+          final searchTerm = _searchQuery.toLowerCase();
+          return prayer.title.toLowerCase().contains(searchTerm) ||
+                 prayer.content.toLowerCase().contains(searchTerm) ||
+                 prayer.authorName.toLowerCase().contains(searchTerm);
+        }
+        
+        return true;
+      }).toList();
+      
+      // Trier par date (plus récent en premier)
+      _filteredPrayers.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     });
   }
 
-  Stream<List<PrayerModel>> _getPrayersStream() {
-    final currentUser = AuthService.currentUser;
-    if (currentUser == null) {
-      return Stream.value([]);
-    }
+  void _onSearchChanged(String query) {
+    setState(() => _searchQuery = query);
+    _applyFilters();
+  }
 
-    if (_selectedTab == 'my') {
-      return PrayersFirebaseService.getUserPrayersStream();
-    } else {
-      // Utiliser la méthode simplifiée pour éviter les erreurs d'index
-      if (_selectedType == null && _selectedCategory == null && _searchQuery.isEmpty) {
-        // Cas simple : utiliser le stream simplifié
-        return PrayersFirebaseService.getSimplePrayersStream(limit: 100);
-      } else {
-        // Cas avec filtres : utiliser la méthode optimisée
-        return PrayersFirebaseService.getPrayersStream(
-          type: _selectedType,
-          category: _selectedCategory,
-          approvedOnly: _showApprovedOnly,
-          activeOnly: _showActiveOnly,
-          searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
-          limit: 100,
-        );
-      }
-    }
+  void _onCategorySelected(PrayerType? type) {
+    setState(() => _selectedType = type);
+    _applyFilters();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // Sélecteur d'onglets
-          _buildTabSelector(),
+      backgroundColor: const Color(0xFFF8F9FE), // Fond moderne
+      body: RefreshIndicator(
+        onRefresh: _loadPrayers,
+        color: const Color(0xFF6B73FF),
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            // Barre de recherche et catégories
+            SliverToBoxAdapter(
+              child: Container(
+                color: const Color(0xFFF8F9FE),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    // Barre de recherche
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F9FE),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: AppTheme.textTertiaryColor.withValues(alpha: 0.1))),
+                      child: TextField(
+                        controller: _searchController,
+                        onChanged: _onSearchChanged,
+                        decoration: InputDecoration(
+                          hintText: 'Rechercher dans les prières...',
+                          hintStyle: GoogleFonts.inter(
+                            color: AppTheme.textTertiaryColor,
+                            fontSize: 15),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: AppTheme.textTertiaryColor,
+                            size: 22),
+                          suffixIcon: _searchQuery.isNotEmpty
+                              ? IconButton(
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    _onSearchChanged('');
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: AppTheme.textTertiaryColor,
+                                    size: 20))
+                              : null,
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 16)))),
+                    const SizedBox(height: 20),
 
-          // Espacement entre le sélecteur et la section suivante
-          const SizedBox(height: 16),
+                    // Catégories horizontales
+                    SizedBox(
+                      height: 120,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _categories.length,
+                        itemBuilder: (context, index) {
+                          final category = _categories[index];
+                          final isSelected = _selectedType == category['type'];
+                          
+                          return Container(
+                            width: 100,
+                            margin: EdgeInsets.only(
+                              right: index == _categories.length - 1 ? 0 : 16),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () => _onCategorySelected(category['type']),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: isSelected
+                                        ? LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: category['gradient'])
+                                        : null,
+                                    color: isSelected ? null : AppTheme.surfaceColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? Colors.transparent
+                                          : AppTheme.textTertiaryColor.withValues(alpha: 0.2),
+                                      width: 1.5),
+                                    boxShadow: isSelected
+                                        ? [
+                                            BoxShadow(
+                                              color: category['color'].withValues(alpha: 0.3),
+                                              blurRadius: 15,
+                                              offset: const Offset(0, 8)),
+                                          ]
+                                        : [
+                                            BoxShadow(
+                                              color: Colors.black.withValues(alpha: 0.05),
+                                              blurRadius: 10,
+                                              offset: const Offset(0, 2)),
+                                          ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(12),
+                                          decoration: BoxDecoration(
+                                            color: isSelected
+                                                ? AppTheme.surfaceColor.withValues(alpha: 0.2)
+                                                : category['color'].withValues(alpha: 0.1),
+                                            shape: BoxShape.circle),
+                                          child: Icon(
+                                            category['icon'],
+                                            color: isSelected
+                                                ? AppTheme.surfaceColor
+                                                : category['color'],
+                                            size: 24)),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          category['label'],
+                                          style: GoogleFonts.inter(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: isSelected
+                                                ? AppTheme.surfaceColor
+                                                : AppTheme.textTertiaryColor),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis),
+                                      ]))))));
+                        })),
+                  ]))),
 
-          // Barre de recherche et filtres (seulement pour "Toutes")
-          if (_selectedTab == 'all')
-            PrayerSearchFilterBar(
-              searchController: _searchController,
-              searchQuery: _searchQuery,
-              selectedType: _selectedType,
-              selectedCategory: _selectedCategory,
-              availableCategories: _availableCategories,
-              showApprovedOnly: _showApprovedOnly,
-              showActiveOnly: _showActiveOnly,
-              onSearchChanged: (value) => setState(() => _searchQuery = value),
-              onTypeChanged: (type) => setState(() => _selectedType = type),
-              onCategoryChanged: (category) => setState(() => _selectedCategory = category),
-              onApprovedOnlyChanged: (value) => setState(() => _showApprovedOnly = value),
-              onActiveOnlyChanged: (value) => setState(() => _showActiveOnly = value),
-              onClearFilters: _clearFilters,
-            ),
-
-          // Liste des prières
-          Expanded(
-            child: StreamBuilder<List<PrayerModel>>(
-              stream: _getPrayersStream(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.error_outline,
-                          size: 64,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Erreur: ${snapshot.error}',
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () => setState(() {}),
-                          child: const Text('Réessayer'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-                final prayers = snapshot.data ?? [];
-
-                if (prayers.isEmpty) {
-                  return _buildEmptyState();
-                }
-
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    _loadCategories();
-                  },
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.all(16),
-                    itemCount: prayers.length,
-                    itemBuilder: (context, index) {
-                      final prayer = prayers[index];
-                      return PrayerCard(
-                        prayer: prayer,
-                        onTap: () => _navigateToDetail(prayer),
-                      );
+            // Liste des prières
+            if (_isLoading)
+              SliverToBoxAdapter(
+                child: _buildLoadingState())
+            else if (_filteredPrayers.isEmpty)
+              SliverToBoxAdapter(
+                child: _buildEmptyState())
+            else
+              SliverPadding(
+                padding: const EdgeInsets.all(20),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return _buildModernPrayerCard(_filteredPrayers[index], index);
                     },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: ScaleTransition(
-        scale: _fabAnimation,
-        child: FloatingActionButton(
-          onPressed: _navigateToAddPrayer,
-          backgroundColor: AppTheme.primaryColor,
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
-      ),
-    );
+                    childCount: _filteredPrayers.length))),
+          ])),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _navigateToAddPrayer,
+        backgroundColor: const Color(0xFF6B73FF),
+        foregroundColor: AppTheme.surfaceColor,
+        elevation: 8,
+        icon: const Icon(Icons.add, size: 24),
+        label: Text(
+          'Nouvelle prière',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w600)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30))));
   }
 
-  Widget _buildTabSelector() {
+  Widget _buildModernPrayerCard(PrayerModel prayer, int index) {
+    final category = _categories.firstWhere(
+      (c) => c['type'] == prayer.type,
+      orElse: () => _categories[0]);
+
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildTabButton(
-              'all',
-              'Toutes',
-              Icons.list,
-            ),
-          ),
-          Expanded(
-            child: _buildTabButton(
-              'my',
-              'Mes prières',
-              Icons.person,
-            ),
-          ),
-        ],
-      ),
-    );
+      margin: const EdgeInsets.only(bottom: 20),
+      child: TweenAnimationBuilder<double>(
+        duration: Duration(milliseconds: 300 + (index * 100)),
+        tween: Tween(begin: 0.0, end: 1.0),
+        curve: Curves.easeOutCubic,
+        builder: (context, value, child) {
+          return Transform.translate(
+            offset: Offset(0, 50 * (1 - value)),
+            child: Opacity(
+              opacity: value,
+              child: child));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceColor,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 4)),
+            ]),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: () => _navigateToPrayerDetail(prayer),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header avec catégorie et date
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: category['gradient']),
+                            borderRadius: BorderRadius.circular(20)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                category['icon'],
+                                size: 14,
+                                color: AppTheme.surfaceColor),
+                              const SizedBox(width: 6),
+                              Text(
+                                category['label'],
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.surfaceColor)),
+                            ])),
+                        const Spacer(),
+                        Text(
+                          _formatDate(prayer.createdAt),
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppTheme.textTertiaryColor,
+                            fontWeight: FontWeight.w500)),
+                      ]),
+                    const SizedBox(height: 16),
+
+                    // Titre
+                    Text(
+                      prayer.title,
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.textTertiaryColor,
+                        height: 1.3),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
+                    const SizedBox(height: 12),
+
+                    // Contenu
+                    Text(
+                      prayer.content,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: AppTheme.textTertiaryColor,
+                        height: 1.5),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis),
+                    const SizedBox(height: 16),
+
+                    // Footer avec auteur et actions
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: category['color'].withValues(alpha: 0.1),
+                            shape: BoxShape.circle),
+                          child: Icon(
+                            Icons.person,
+                            size: 16,
+                            color: category['color'])),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            prayer.authorName,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.textTertiaryColor))),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8F9FE),
+                            borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.favorite,
+                                size: 14,
+                                color: AppTheme.errorColor),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Prier',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.textTertiaryColor)),
+                            ])),
+                      ]),
+                  ])))))));
   }
 
-  Widget _buildTabButton(String tabId, String label, IconData icon) {
-    final isSelected = _selectedTab == tabId;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedTab = tabId),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 18,
-              color: isSelected ? Colors.white : Colors.grey[600],
-            ),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.grey[600],
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
+  Widget _buildLoadingState() {
+    return Container(
+      padding: const EdgeInsets.all(60),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.favorite_border,
-            size: 64,
-            color: Colors.grey[400],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Aucune prière trouvée',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Soyez le premier à partager une intention de prière',
-            style: TextStyle(
-              color: Colors.grey[500],
-            ),
-          ),
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: const Color(0xFF6B73FF).withValues(alpha: 0.1),
+              shape: BoxShape.circle),
+            child: const CircularProgressIndicator(
+              color: Color(0xFF6B73FF),
+              strokeWidth: 3)),
           const SizedBox(height: 24),
-          ElevatedButton.icon(
-            onPressed: _navigateToAddPrayer,
-            icon: const Icon(Icons.add),
-            label: const Text('Ajouter une prière'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            ),
-          ),
-        ],
-      ),
-    );
+          Text(
+            'Chargement des prières...',
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppTheme.textTertiaryColor)),
+        ]));
   }
 
-  void _navigateToDetail(PrayerModel prayer) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PrayerDetailPage(prayer: prayer),
-      ),
-    );
+  Widget _buildEmptyState() {
+    return Container(
+      padding: const EdgeInsets.all(60),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              color: AppTheme.textTertiaryColor.withValues(alpha: 0.1),
+              shape: BoxShape.circle),
+            child: Icon(
+              Icons.volunteer_activism,
+              size: 64,
+              color: AppTheme.textTertiaryColor)),
+          const SizedBox(height: 24),
+          Text(
+            'Aucune prière trouvée',
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textTertiaryColor)),
+          const SizedBox(height: 8),
+          Text(
+            'Soyez le premier à partager une prière\nou modifiez vos filtres de recherche',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: AppTheme.textTertiaryColor),
+            textAlign: TextAlign.center),
+        ]));
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays == 0) {
+      if (difference.inHours == 0) {
+        return '${difference.inMinutes}m';
+      }
+      return '${difference.inHours}h';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}j';
+    } else {
+      return DateFormat('dd/MM').format(date);
+    }
   }
 
   void _navigateToAddPrayer() {
-    Navigator.push(
-      context,
+    Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const PrayerFormPage(),
-      ),
-    );
+        builder: (context) => const PrayerFormPage())).then((_) => _loadPrayers());
+  }
+
+  void _navigateToPrayerDetail(PrayerModel prayer) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PrayerDetailPage(prayer: prayer)));
   }
 }

@@ -50,8 +50,7 @@ class BibleStudy {
       isPopular: json['isPopular'] as bool? ?? false,
       isActive: json['isActive'] as bool? ?? true,
       author: json['author'] as String,
-      tags: List<String>.from(json['tags'] as List? ?? []),
-    );
+      tags: List<String>.from(json['tags'] as List? ?? []));
   }
 
   Map<String, dynamic> toJson() {
@@ -103,8 +102,7 @@ class BibleStudy {
       isPopular: isPopular ?? this.isPopular,
       isActive: isActive ?? this.isActive,
       author: author ?? this.author,
-      tags: tags ?? this.tags,
-    );
+      tags: tags ?? this.tags);
   }
 
   String get displayDifficulty {
@@ -176,8 +174,7 @@ class BibleStudyLesson {
       objectives: List<String>.from(json['objectives'] as List? ?? []),
       bibleReferences: (json['bibleReferences'] as List? ?? [])
           .map((ref) => BibleReference.fromJson(ref))
-          .toList(),
-    );
+          .toList());
   }
 
   Map<String, dynamic> toJson() {
@@ -220,8 +217,7 @@ class BibleStudyLesson {
       order: order ?? this.order,
       estimatedDuration: estimatedDuration ?? this.estimatedDuration,
       objectives: objectives ?? this.objectives,
-      bibleReferences: bibleReferences ?? this.bibleReferences,
-    );
+      bibleReferences: bibleReferences ?? this.bibleReferences);
   }
 }
 
@@ -252,8 +248,7 @@ class BibleReference {
       endVerse: json['endVerse'] as int?,
       reference: json['reference'] as String? ?? '',
       text: json['text'] as String? ?? '',
-      commentary: json['commentary'] as String? ?? '',
-    );
+      commentary: json['commentary'] as String? ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -314,8 +309,7 @@ class StudyQuestion {
           : null,
       correctAnswer: json['correctAnswer'] as String?,
       hint: json['hint'] as String?,
-      hints: List<String>.from(json['hints'] as List? ?? []),
-    );
+      hints: List<String>.from(json['hints'] as List? ?? []));
   }
 
   Map<String, dynamic> toJson() {
@@ -346,8 +340,7 @@ class StudyQuestion {
       options: options ?? this.options,
       correctAnswer: correctAnswer ?? this.correctAnswer,
       hint: hint ?? this.hint,
-      hints: hints ?? this.hints,
-    );
+      hints: hints ?? this.hints);
   }
 }
 
@@ -383,8 +376,7 @@ class UserStudyProgress {
       completedAt: json['completedAt'] != null 
           ? DateTime.parse(json['completedAt'] as String)
           : null,
-      progressPercentage: (json['progressPercentage'] as num).toDouble(),
-    );
+      progressPercentage: (json['progressPercentage'] as num).toDouble());
   }
 
   Map<String, dynamic> toJson() {
@@ -418,8 +410,7 @@ class UserStudyProgress {
       answers: answers ?? this.answers,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
-      progressPercentage: progressPercentage ?? this.progressPercentage,
-    );
+      progressPercentage: progressPercentage ?? this.progressPercentage);
   }
 
   bool get isCompleted => completedAt != null;

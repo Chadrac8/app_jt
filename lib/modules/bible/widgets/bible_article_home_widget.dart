@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
@@ -59,10 +60,8 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+            offset: const Offset(0, 2)),
+        ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -70,16 +69,13 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
           if (_isLoading)
             const Padding(
               padding: EdgeInsets.all(24.0),
-              child: Center(child: CircularProgressIndicator()),
-            )
+              child: Center(child: CircularProgressIndicator()))
           else ...[
             _buildStats(theme),
             _buildRecentArticles(theme),
             _buildActionButtons(theme),
           ],
-        ],
-      ),
-    );
+        ]));
   }
 
   Widget _buildHeader(ThemeData theme) {
@@ -92,27 +88,21 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
           colors: [
             theme.primaryColor,
             theme.primaryColor.withValues(alpha: 0.8),
-          ],
-        ),
+          ]),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-      ),
+          topRight: Radius.circular(16))),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
+              color: AppTheme.surfaceColor.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(12)),
             child: Icon(
               Icons.article_outlined,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
+              color: AppTheme.surfaceColor,
+              size: 24)),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -123,32 +113,22 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                   style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                    color: AppTheme.surfaceColor)),
                 const SizedBox(height: 4),
                 Text(
                   'Enrichissez votre compréhension des Écritures',
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.9),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                    color: AppTheme.surfaceColor.withValues(alpha: 0.9))),
+              ])),
           if (widget.isAdmin)
             IconButton(
               onPressed: () => _navigateToAdmin(),
               icon: const Icon(
                 Icons.admin_panel_settings_outlined,
-                color: Colors.white,
-              ),
-              tooltip: 'Administration',
-            ),
-        ],
-      ),
-    );
+                color: AppTheme.surfaceColor),
+              tooltip: 'Administration'),
+        ]));
   }
 
   Widget _buildStats(ThemeData theme) {
@@ -161,30 +141,22 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
               icon: Icons.article_outlined,
               value: '${_stats['publishedArticles'] ?? 0}',
               label: 'Articles',
-              color: theme.primaryColor,
-            ),
-          ),
+              color: theme.primaryColor)),
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatItem(
               icon: Icons.visibility_outlined,
               value: '${_stats['totalViews'] ?? 0}',
               label: 'Lectures',
-              color: Colors.orange,
-            ),
-          ),
+              color: AppTheme.warningColor)),
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatItem(
               icon: Icons.category_outlined,
               value: '${_stats['categoriesCount'] ?? 0}',
               label: 'Catégories',
-              color: Colors.green,
-            ),
-          ),
-        ],
-      ),
-    );
+              color: AppTheme.successColor)),
+        ]));
   }
 
   Widget _buildStatItem({
@@ -200,9 +172,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
+          width: 1)),
       child: Column(
         children: [
           Icon(icon, color: color, size: 24),
@@ -212,20 +182,14 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
+              color: color)),
           const SizedBox(height: 4),
           Text(
             label,
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: color.withValues(alpha: 0.8),
-            ),
-          ),
-        ],
-      ),
-    );
+              color: color.withValues(alpha: 0.8))),
+        ]));
   }
 
   Widget _buildRecentArticles(ThemeData theme) {
@@ -238,30 +202,22 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
               Icon(
                 Icons.article_outlined,
                 size: 48,
-                color: theme.hintColor,
-              ),
+                color: theme.hintColor),
               const SizedBox(height: 16),
               Text(
                 'Aucun article disponible',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  color: theme.hintColor,
-                ),
-              ),
+                  color: theme.hintColor)),
               if (widget.isAdmin) ...[
                 const SizedBox(height: 8),
                 Text(
                   'Commencez par créer votre premier article',
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: theme.hintColor.withValues(alpha: 0.7),
-                  ),
-                ),
+                    color: theme.hintColor.withValues(alpha: 0.7))),
               ],
-            ],
-          ),
-        ),
-      );
+            ])));
     }
 
     return Padding(
@@ -274,9 +230,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: theme.textTheme.titleLarge?.color,
-            ),
-          ),
+              color: theme.textTheme.titleLarge?.color)),
           const SizedBox(height: 16),
           ListView.separated(
             shrinkWrap: true,
@@ -286,11 +240,8 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
             itemBuilder: (context, index) {
               final article = _recentArticles[index];
               return _buildArticleCard(article, theme);
-            },
-          ),
-        ],
-      ),
-    );
+            }),
+        ]));
   }
 
   Widget _buildArticleCard(BibleArticle article, ThemeData theme) {
@@ -304,9 +255,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
-          ),
-        ),
+            width: 1)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -322,92 +271,68 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                         style: GoogleFonts.inter(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
-                          color: theme.textTheme.titleMedium?.color,
-                        ),
+                          color: theme.textTheme.titleMedium?.color),
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                        overflow: TextOverflow.ellipsis),
                       const SizedBox(height: 8),
                       Text(
                         article.summary,
                         style: GoogleFonts.inter(
                           fontSize: 13,
-                          color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
-                        ),
+                          color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8)),
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
+                        overflow: TextOverflow.ellipsis),
+                    ])),
                 const SizedBox(width: 12),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: theme.primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                    borderRadius: BorderRadius.circular(8)),
                   child: Text(
                     article.category,
                     style: GoogleFonts.inter(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                      color: theme.primaryColor))),
+              ]),
             const SizedBox(height: 12),
             Row(
               children: [
                 Icon(
                   Icons.person_outline,
                   size: 14,
-                  color: theme.hintColor,
-                ),
+                  color: theme.hintColor),
                 const SizedBox(width: 4),
                 Text(
                   article.author,
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: theme.hintColor,
-                  ),
-                ),
+                    color: theme.hintColor)),
                 const SizedBox(width: 16),
                 Icon(
                   Icons.access_time_outlined,
                   size: 14,
-                  color: theme.hintColor,
-                ),
+                  color: theme.hintColor),
                 const SizedBox(width: 4),
                 Text(
                   '${article.readingTimeMinutes} min',
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: theme.hintColor,
-                  ),
-                ),
+                    color: theme.hintColor)),
                 const Spacer(),
                 Icon(
                   Icons.visibility_outlined,
                   size: 14,
-                  color: theme.hintColor,
-                ),
+                  color: theme.hintColor),
                 const SizedBox(width: 4),
                 Text(
                   '${article.viewCount}',
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: theme.hintColor,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+                    color: theme.hintColor)),
+              ]),
+          ])));
   }
 
   Widget _buildActionButtons(ThemeData theme) {
@@ -423,19 +348,13 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
               label: Text(
                 'Voir tous les articles',
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+                  fontWeight: FontWeight.w600)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.surfaceColor,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
+                  borderRadius: BorderRadius.circular(12))))),
           if (widget.isAdmin) ...[
             const SizedBox(height: 12),
             SizedBox(
@@ -446,32 +365,22 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                 label: Text(
                   'Gérer les articles',
                   style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                    fontWeight: FontWeight.w600)),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: theme.primaryColor,
                   side: BorderSide(color: theme.primaryColor),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-            ),
+                    borderRadius: BorderRadius.circular(12))))),
           ],
-        ],
-      ),
-    );
+        ]));
   }
 
   void _navigateToAllArticles() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BibleArticlesListView(isAdmin: widget.isAdmin),
-      ),
-    );
+        builder: (context) => BibleArticlesListView(isAdmin: widget.isAdmin)));
   }
 
   void _navigateToArticleDetail(BibleArticle article) {
@@ -480,10 +389,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
       MaterialPageRoute(
         builder: (context) => BibleArticleDetailView(
           article: article,
-          isAdmin: widget.isAdmin,
-        ),
-      ),
-    );
+          isAdmin: widget.isAdmin)));
   }
 
   void _navigateToAdmin() {
@@ -492,9 +398,6 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
       MaterialPageRoute(
         builder: (context) => BibleArticlesListView(
           isAdmin: true,
-          showAdminTools: true,
-        ),
-      ),
-    );
+          showAdminTools: true)));
   }
 }

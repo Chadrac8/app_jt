@@ -1,40 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import '../models/person_model.dart';
-import '../models/group_model.dart';
-import '../models/event_model.dart';
-import '../models/service_model.dart';
-import '../models/form_model.dart';
-import '../models/appointment_model.dart';
-import '../services/firebase_service.dart';
-import '../services/groups_firebase_service.dart';
-import '../services/events_firebase_service.dart';
-import '../services/services_firebase_service.dart';
-import '../services/forms_firebase_service.dart';
-import '../services/appointments_firebase_service.dart';
-import '../auth/auth_service.dart';
+import 'dart:async';
 import '../theme.dart';
-import '../widgets/admin_navigation_wrapper.dart';
-import '../widgets/appointment_card.dart';
-import '../widgets/appointment_notifications_widget.dart';
-import '../widgets/my_assigned_workflows_widget.dart';
-
-import 'member_profile_page.dart';
-import 'member_groups_page.dart';
-import 'member_events_page.dart';
-import '../modules/services/views/member_services_page.dart';
-import 'member_forms_page.dart';
-import 'member_tasks_page.dart';
-import '../modules/songs/views/member_songs_page.dart';
-
-import 'member_notifications_page.dart';
-import 'member_calendar_page.dart';
-import 'member_settings_page.dart';
-import 'member_pages_view.dart';
-import 'member_appointments_page.dart';
-import 'appointment_detail_page.dart';
-
-import '../routes/simple_routes.dart';
+import '../models/home_widget_model.dart';
+import '../models/home_config_model.dart';
+import '../services/home_widget_service.dart';
+import '../services/home_config_service.dart';
+import '../widgets/latest_sermon_widget.dart';
+import '../modules/offrandes/widgets/offrandes_widget.dart';
+import '../widgets/home_widget_renderer.dart';
+import '../modules/pain_quotidien/widgets/daily_bread_preview_widget.dart';
+import '../pages/church_info_page.dart';
+import '../pages/prayer_wall_page.dart';
+import '../pages/new_member_form_page.dart';
+import '../pages/give_life_to_jesus_page.dart';
+import '../services/live_reminder_service.dart';
+import '../services/home_cover_config_service.dart';
+import '../models/home_cover_config_model.dart';
+import '../models/event_model.dart';
+import '../services/events_firebase_service.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 class MemberDashboardPage extends StatefulWidget {
   const MemberDashboardPage({super.key});
@@ -46,500 +32,236 @@ class MemberDashboardPage extends StatefulWidget {
 class _MemberDashboardPageState extends State<MemberDashboardPage>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
+  late AnimationController _liveAnimationController;
   late Animation<Offset> _slideAnimation;
+  late Animation<double> _liveAnimation;
+  Timer? _countdownTimer;
   
-  PersonModel? _currentUser;
-  List<GroupModel> _userGroups = [];
-  List<EventModel> _upcomingEvents = [];
-  List<ServiceAssignmentModel> _pendingServices = [];
-  List<FormModel> _availableForms = [];
-  List<AppointmentModel> _upcomingAppointments = [];
-  int _unreadNotifications = 0;
-  bool _isLoading = true;
-
-  final List<Map<String, dynamic>> _dashboardModules = [
-
-    {
-      'title': 'Mes Groupes',
-      'subtitle': 'Groupes et communautés',
-      'icon': Icons.groups,
-      'color': AppTheme.secondaryColor,
-      'route': 'groups',
-    },
-    {
-      'title': 'Mes Événements',
-      'subtitle': 'Événements à venir',
-      'icon': Icons.event,
-      'color': AppTheme.tertiaryColor,
-      'route': 'events',
-    },
-    {
-      'title': 'Mes Services',
-      'subtitle': 'Affectations et planning',
-      'icon': Icons.church,
-      'color': Colors.purple,
-      'route': 'services',
-    },
-    {
-      'title': 'Formulaires',
-      'subtitle': 'Formulaires à remplir',
-      'icon': Icons.assignment,
-      'color': Colors.teal,
-      'route': 'forms',
-    },
-    {
-      'title': 'Mes Tâches',
-      'subtitle': 'Tâches assignées et listes',
-      'icon': Icons.task_alt,
-      'color': Colors.indigo,
-      'route': 'tasks',
-    },
-
-    {
-      'title': 'Mes Rendez-vous',
-      'subtitle': 'Prendre et gérer mes RDV',
-      'icon': Icons.event_available,
-      'color': Colors.indigo,
-      'route': 'appointments',
-    },
-    {
-      'title': 'Calendrier',
-      'subtitle': 'Mon agenda personnel',
-      'icon': Icons.calendar_today,
-      'color': Colors.indigo,
-      'route': 'calendar',
-    },
-    {
-      'title': 'Pages',
-      'subtitle': 'Contenus personnalisés',
-      'icon': Icons.web,
-      'color': Colors.purple,
-      'route': 'pages',
-    },
-    {
-      'title': 'Cantiques',
-      'subtitle': 'Chants et cantiques',
-      'icon': Icons.music_note,
-      'color': Colors.deepOrange,
-      'route': 'songs',
-    },
-
-  ];
+  // Variables pour le carrousel d'images
+  late PageController _pageController;
+  Timer? _carouselTimer;
+  int _currentImageIndex = 0;
+  late ValueNotifier<int> _currentImageNotifier;
+  bool _isUserInteracting = false;
+  bool _carouselTimerStarted = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeAnimations();
-    _loadDashboardData();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _initializeAnimations() {
+    
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    
+    _liveAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    ));
+    _pageController = PageController();
+    _currentImageNotifier = ValueNotifier<int>(0);
 
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: const Interval(0.3, 1.0, curve: Curves.easeOut),
+      curve: Curves.easeOutCubic,
+    ));
+
+    _liveAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _liveAnimationController,
+      curve: Curves.easeInOut,
     ));
 
     _animationController.forward();
+    _liveAnimationController.repeat(reverse: true);
+    
+    // Démarrer le timer pour le compte à rebours
+    _startCountdownTimer();
   }
 
-  Future<void> _loadDashboardData() async {
-    try {
-      final user = AuthService.currentUser;
-      if (user == null) return;
-
-      // Charger les informations de l'utilisateur
-      final userData = await AuthService.getCurrentUserProfile();
-      if (userData != null) {
-        setState(() {
-          _currentUser = userData;
-        });
-      }
-
-      // Charger les données en parallèle
-      final futures = await Future.wait([
-        _loadUserGroups(),
-        _loadUpcomingEvents(),
-        _loadPendingServices(),
-        _loadAvailableForms(),
-        _loadUpcomingAppointments(),
-      ]);
-
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erreur lors du chargement : $e'),
-            backgroundColor: AppTheme.errorColor,
-          ),
-        );
-      }
-    }
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _liveAnimationController.dispose();
+    _countdownTimer?.cancel();
+    _carouselTimer?.cancel();
+    _pageController.dispose();
+    _currentImageNotifier.dispose();
+    super.dispose();
   }
 
-  Future<void> _loadUserGroups() async {
-    try {
-      final user = AuthService.currentUser;
-      if (user == null) return;
-
-      final groupsStream = GroupsFirebaseService.getGroupsStream(limit: 3);
-      await for (final groups in groupsStream.take(1)) {
-        setState(() {
-          _userGroups = groups ?? [];
-        });
-        break;
-      }
-    } catch (e) {
-      print('Erreur chargement groupes: $e');
-    }
+  void _startCountdownTimer() {
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      // Le rebuild sera géré par les StreamBuilders individuels, pas globalement
+      // Removed setState to prevent unnecessary rebuilds
+    });
   }
 
-  Future<void> _loadUpcomingEvents() async {
-    try {
-      final eventsStream = EventsFirebaseService.getUpcomingEventsStream(limit: 3);
-      await for (final events in eventsStream.take(1)) {
-        setState(() {
-          _upcomingEvents = events ?? [];
-        });
-        break;
-      }
-    } catch (e) {
-      print('Erreur chargement événements: $e');
-    }
-  }
-
-  Future<void> _loadPendingServices() async {
-    try {
-      final user = AuthService.currentUser;
-      if (user == null) return;
-
-      final assignments = await ServicesFirebaseService.getPersonAssignments(
-        user.uid,
-        startDate: DateTime.now(),
-      );
-      final pending = assignments?.where((a) => a.status == 'invited').toList() ?? [];
-      setState(() {
-        _pendingServices = pending;
-      });
-    } catch (e) {
-      print('Erreur chargement services: $e');
-    }
-  }
-
-  Future<void> _loadAvailableForms() async {
-    try {
-      final forms = await FormsFirebaseService.getFormsStream(
-        statusFilter: 'publie',
-        limit: 3,
-      ).first;
-      
-      setState(() {
-        _availableForms = forms;
-      });
-    } catch (e) {
-      print('Erreur lors du chargement des formulaires: $e');
-    }
-  }
-
-  Future<void> _loadUpcomingAppointments() async {
-    try {
-      if (_currentUser != null) {
-        final appointments = await AppointmentsFirebaseService.getUpcomingAppointments(
-          membreId: _currentUser!.id,
-          limit: 3,
-        );
-        
-        setState(() {
-          _upcomingAppointments = appointments;
-        });
-      }
-    } catch (e) {
-      print('Erreur lors du chargement des rendez-vous: $e');
-    }
-  }
-
-  void _navigateToModule(String route) {
-    Widget page;
-    switch (route) {
-      case 'profile':
-        // Seulement naviguer si nous avons un utilisateur courant
-        if (_currentUser != null) {
-          page = MemberProfilePage(person: _currentUser!);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Profil non disponible. Veuillez vous reconnecter.'),
-              backgroundColor: Colors.orange,
-            ),
-          );
-          return;
-        }
-        break;
-      case 'groups':
-        page = const MemberGroupsPage();
-        break;
-      case 'events':
-        page = const MemberEventsPage();
-        break;
-      case 'services':
-        page = const MemberServicesPage();
-        break;
-      case 'forms':
-        page = const MemberFormsPage();
-        break;
-      case 'tasks':
-        page = const MemberTasksPage();
-        break;
-
-      case 'appointments':
-        page = const MemberAppointmentsPage();
-        break;
-      case 'calendar':
-        page = const MemberCalendarPage();
-        break;
-      case 'pages':
-        page = const MemberPagesView();
-        break;
-      case 'songs':
-        page = const MemberSongsPage();
-        break;
-      default:
+  void _startCarouselTimer(List<String> imageUrls) {
+    if (_carouselTimerStarted || _isUserInteracting || imageUrls.length <= 1) return;
+    
+    _carouselTimerStarted = true;
+    _carouselTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (!mounted || _isUserInteracting) {
+        timer.cancel();
+        _carouselTimerStarted = false;
         return;
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
+      }
+      
+      final nextIndex = (_currentImageIndex + 1) % imageUrls.length;
+      _pageController.animateToPage(
+        nextIndex,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        title: const Text('Tableau de bord'),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: AppTheme.textPrimaryColor,
-        actions: [
-          // Toggle to admin view
-          Container(
-            margin: const EdgeInsets.only(right: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.admin_panel_settings_outlined),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AdminNavigationWrapper(),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: StreamBuilder<HomeConfigModel>(
+        stream: HomeConfigService.getHomeConfigStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                );
-              },
-              tooltip: 'Vue Administrateur',
-              iconSize: 20,
-            ),
-          ),
-          IconButton(
-            icon: Stack(
-              children: [
-                const Icon(Icons.notifications_outlined),
-                if (_unreadNotifications > 0)
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: const BoxDecoration(
-                        color: AppTheme.errorColor,
-                        shape: BoxShape.circle,
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 16,
-                        minHeight: 16,
-                      ),
-                      child: Text(
-                        '$_unreadNotifications',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Chargement...',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
-              ],
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MemberNotificationsPage(),
+                ],
+              ),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Erreur lors du chargement de la configuration',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MemberSettingsPage(),
+              ),
+            );
+          }
+
+          final config = snapshot.data ?? HomeConfigModel.defaultConfig;
+
+          // Démarrer le carrousel après le build si il y a plusieurs images
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (config.coverImageUrls.isNotEmpty && !_carouselTimerStarted) {
+              _startCarouselTimer(config.coverImageUrls);
+            }
+          });
+
+          return CustomScrollView(
+            slivers: [
+              // AppBar avec image de couverture
+              _buildSliverAppBar(config),
+
+              // Pain quotidien (si activé)
+              if (config.isDailyBreadActive)
+                SliverToBoxAdapter(
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32, bottom: 32),
+                      child: const DailyBreadPreviewWidget(),
+                    ),
+                  ),
                 ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : FadeTransition(
-              opacity: _fadeAnimation,
-              child: SlideTransition(
-                position: _slideAnimation,
-                child: RefreshIndicator(
-                  onRefresh: _loadDashboardData,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
+
+              // Contenu principal
+              SliverToBoxAdapter(
+                child: SlideTransition(
+                  position: _slideAnimation,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0, bottom: 20.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildWelcomeCard(),
-                        const SizedBox(height: 24),
-                        const AppointmentNotificationsWidget(),
-                        _buildAnnouncementsBanner(),
-                        const SizedBox(height: 24),
-                        _buildRemindersBanner(),
-                        const SizedBox(height: 24),
-            _buildQuickStats(),
-            const SizedBox(height: 20),
-            _buildMyFollowUpsSection(),
-            const SizedBox(height: 20),
-            _buildModulesGrid(),
-            const SizedBox(height: 20),
-            if (_upcomingAppointments.isNotEmpty) ...[
-              _buildUpcomingAppointments(),
-              const SizedBox(height: 20),
-            ],
-            _buildUpcomingSection(),
+                        // Section Live (si activée)
+                        if (config.isLiveActive)
+                          _buildNextLiveSection(config),
+                        if (config.isLiveActive)
+                          const SizedBox(height: 32),
+                        
+                        // Actions rapides (si activées)
+                        if (config.areQuickActionsActive)
+                          _buildQuickActionsSection(config),
+                        if (config.areQuickActionsActive)
+                          const SizedBox(height: 32),
+                        
+                        // Dernières prédications (si activées)
+                        if (config.isLastSermonActive)
+                          const LatestSermonWidget(),
+                        if (config.isLastSermonActive)
+                          const SizedBox(height: 32),
+                        
+                        // Événements à venir (si activés)
+                        if (config.areEventsActive)
+                          _buildUpcomingEventsSection(config),
+                        if (config.areEventsActive)
+                          const SizedBox(height: 32),
+                        
+                        // Nous contacter (si activé)
+                        if (config.isContactActive)
+                          _buildContactUsSection(config),
+                        if (config.isContactActive)
+                          const SizedBox(height: 32),
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildWelcomeCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppTheme.primaryColor,
-              AppTheme.primaryColor.withOpacity(0.8),
-            ],
-          ),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Row(
+  Widget _buildSliverAppBar(HomeConfigModel config) {
+    return SliverAppBar(
+      expandedHeight: 280,
+      floating: false,
+      pinned: true,
+      elevation: 0,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          fit: StackFit.expand,
           children: [
-            _buildProfileAvatar(),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Bonjour ${_currentUser?.firstName ?? 'Membre'} !',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  if (_currentUser?.roles.isNotEmpty == true)
-                    Text(
-                      _currentUser?.roles.join(', ') ?? '',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white70,
-                      ),
-                    ),
-                  const SizedBox(height: 8),
-                  if (_upcomingEvents.isNotEmpty)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.event,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Prochain : ${_upcomingEvents.first.title}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
+            // Media de couverture (carrousel ou image unique)
+            _buildCoverMedia(config),
+            
+            // Overlay dégradé
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.1),
+                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0.6),
+                  ],
+                ),
               ),
             ),
           ],
@@ -548,81 +270,427 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
     );
   }
 
-  Widget _buildProfileAvatar() {
+  Widget _buildCoverMedia(HomeConfigModel config) {
+    // Gestion du carrousel d'images
+    if (config.coverImageUrls.isNotEmpty) {
+      return Stack(
+        children: [
+          GestureDetector(
+            onPanStart: (_) {
+              // L'utilisateur commence à faire défiler manuellement
+              _isUserInteracting = true;
+              _carouselTimer?.cancel();
+              _carouselTimerStarted = false;
+            },
+            onPanEnd: (_) {
+              // L'utilisateur a fini de faire défiler
+              Timer(const Duration(seconds: 3), () {
+                if (mounted) {
+                  _isUserInteracting = false;
+                  _startCarouselTimer(config.coverImageUrls);
+                }
+              });
+            },
+            onTap: () {
+              _isUserInteracting = true;
+              _carouselTimer?.cancel();
+              _carouselTimerStarted = false;
+              
+              // Relancer le timer après 5 secondes d'inactivité
+              Timer(const Duration(seconds: 5), () {
+                if (mounted) {
+                  _isUserInteracting = false;
+                  _startCarouselTimer(config.coverImageUrls);
+                }
+              });
+            },
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: config.coverImageUrls.length,
+              scrollDirection: Axis.horizontal,
+              pageSnapping: true,
+              physics: const BouncingScrollPhysics(),
+              onPageChanged: (index) {
+                if (mounted) {
+                  _currentImageIndex = index;
+                  _currentImageNotifier.value = index;
+                }
+              },
+              itemBuilder: (context, index) {
+                return Image.network(
+                  config.coverImageUrls[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return _buildDefaultCoverBackground();
+                  },
+                );
+              },
+            ),
+          ),
+          // Indicateurs de pagination (dots)
+          if (config.coverImageUrls.length > 1)
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: ValueListenableBuilder<int>(
+                valueListenable: _currentImageNotifier,
+                builder: (context, currentIndex, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      config.coverImageUrls.length,
+                      (index) => Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: currentIndex == index
+                              ? Colors.white
+                              : Colors.white.withOpacity(0.4),
+                          border: currentIndex == index
+                              ? Border.all(color: Colors.white, width: 1)
+                              : null,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+        ],
+      );
+    }
+    
+    // Image unique si coverImageUrl est défini
+    if (config.coverImageUrl.isNotEmpty) {
+      return Image.network(
+        config.coverImageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildDefaultCoverBackground();
+        },
+      );
+    }
+    
+    // Background par défaut
+    return _buildDefaultCoverBackground();
+  }
+
+  Widget _buildDefaultCoverBackground() {
     return Container(
-      width: 80,
-      height: 80,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 3),
-      ),
-      child: ClipOval(
-        child: (_currentUser?.profileImageUrl != null && _currentUser!.profileImageUrl!.isNotEmpty)
-            ? CachedNetworkImage(
-                imageUrl: _currentUser!.profileImageUrl!,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => _buildLoadingAvatar(),
-                errorWidget: (context, url, error) => _buildFallbackAvatar(),
-              )
-            : _buildFallbackAvatar(),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Theme.of(context).colorScheme.primary,
+            Theme.of(context).colorScheme.primary.withOpacity(0.8),
+            Theme.of(context).colorScheme.secondary,
+          ],
+          stops: const [0.0, 0.7, 1.0],
+        ),
       ),
     );
   }
 
-  Widget _buildLoadingAvatar() {
+  Widget _buildNextLiveSection(HomeConfigModel config) {
+    // Utiliser la configuration ou calculer le prochain dimanche
+    final now = DateTime.now();
+    final liveDateTime = config.liveDateTime ?? _getDefaultNextSundayDateTime();
+    final duration = liveDateTime.difference(now);
+    
+    // Si c'est dans moins de 2 heures après le live, ne pas afficher
+    if (duration.inHours < -2) {
+      return const SizedBox.shrink();
+    }
+    
+    final isLive = config.isLiveNow || (duration.inMinutes <= 0 && duration.inMinutes > -120);
+    final isUpcoming = config.isLiveUpcoming || duration.inMinutes > 0;
+    
     return Container(
-      color: Colors.grey[300],
-      child: const Center(
-        child: CircularProgressIndicator(strokeWidth: 2),
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isLive
+              ? [
+                  const Color(0xFFFF5722),
+                  const Color(0xFFE64A19),
+                  const Color(0xFFD84315),
+                ]
+              : isUpcoming
+                  ? [
+                      const Color(0xFF2196F3),
+                      const Color(0xFF1976D2),
+                      const Color(0xFF1565C0),
+                    ]
+                  : [
+                      const Color(0xFF607D8B),
+                      const Color(0xFF546E7A),
+                      const Color(0xFF455A64),
+                    ],
+        ),
+        borderRadius: BorderRadius.zero,
+        boxShadow: [
+          BoxShadow(
+            color: (isLive ? Colors.deepOrange : isUpcoming ? Colors.blue : Colors.blueGrey)
+                .withOpacity(0.2),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildLiveHeader(isLive, isUpcoming, duration, config),
+          const SizedBox(height: 16),
+          _buildLiveActionButtons(isLive, isUpcoming, config),
+        ],
       ),
     );
   }
 
-  Widget _buildFallbackAvatar() {
-    final imageUrl = "https://pixabay.com/get/gd8d11dfb9c3bc9a1585c8ff0939d1b7e79707b3539b69b28509fb2b6cb159919bdc616032dc99dd505442fae239f4eaa1212f5b7e2bf2ac47176e9d09306b3e8_1280.jpg";
+  DateTime _getDefaultNextSundayDateTime() {
+    final now = DateTime.now();
+    final daysUntilSunday = (7 - now.weekday) % 7;
+    final nextSunday = daysUntilSunday == 0 && now.hour >= 12
+        ? now.add(const Duration(days: 7))
+        : now.add(Duration(days: daysUntilSunday == 0 ? 7 : daysUntilSunday));
+    return DateTime(nextSunday.year, nextSunday.month, nextSunday.day, 10, 0);
+  }
 
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      fit: BoxFit.cover,
-      placeholder: (context, url) => Container(
-        color: AppTheme.primaryColor.withOpacity(0.3),
-        child: Icon(
-          Icons.person,
-          size: 40,
-          color: Colors.white.withOpacity(0.8),
+  Widget _buildLiveHeader(bool isLive, bool isUpcoming, Duration duration, HomeConfigModel config) {
+    String statusText;
+    
+    if (isLive) {
+      statusText = 'EN DIRECT MAINTENANT';
+    } else if (isUpcoming) {
+      statusText = config.liveDescription ?? 'Prochain culte dans';
+    } else {
+      statusText = 'Culte terminé';
+    }
+    
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (isLive) ...[
+              AnimatedBuilder(
+                animation: _liveAnimation,
+                builder: (context, child) {
+                  return Container(
+                    width: 8 + (_liveAnimation.value * 4),
+                    height: 8 + (_liveAnimation.value * 4),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.red.withOpacity(_liveAnimation.value * 0.8),
+                          blurRadius: 8,
+                          spreadRadius: _liveAnimation.value * 3,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 12),
+            ],
+            Flexible(
+              child: Text(
+                statusText,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
+        
+        if (isUpcoming) ...[
+          const SizedBox(height: 16),
+          _buildElegantCountdown(duration),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildElegantCountdown(Duration duration) {
+    final days = duration.inDays;
+    final hours = duration.inHours % 24;
+    final minutes = duration.inMinutes % 60;
+    final seconds = duration.inSeconds % 60;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      errorWidget: (context, url, error) => Container(
-        color: AppTheme.primaryColor.withOpacity(0.3),
-        child: Icon(
-          Icons.person,
-          size: 40,
-          color: Colors.white.withOpacity(0.8),
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            if (days > 0) ...[
+              _buildTimeBlock(days.toString().padLeft(2, '0'), 'JOURS'),
+              _buildTimeSeparator(),
+            ],
+            _buildTimeBlock(hours.toString().padLeft(2, '0'), 'H'),
+            _buildTimeSeparator(),
+            _buildTimeBlock(minutes.toString().padLeft(2, '0'), 'MIN'),
+            _buildTimeSeparator(),
+            _buildTimeBlock(seconds.toString().padLeft(2, '0'), 'SEC'),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildAnnouncementsBanner() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: AppTheme.secondaryColor.withOpacity(0.1),
-          border: Border.all(
-            color: AppTheme.secondaryColor.withOpacity(0.3),
-            width: 1,
+  Widget _buildTimeBlock(String value, String unit) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'monospace',
+              letterSpacing: 1.0,
+            ),
           ),
         ),
-        padding: const EdgeInsets.all(16),
-        child: Row(
+        const SizedBox(height: 4),
+        Text(
+          unit,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.9),
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTimeSeparator() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Text(
+        ':',
+        style: TextStyle(
+          color: Colors.white.withOpacity(0.7),
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiveActionButtons(bool isLive, bool isUpcoming, HomeConfigModel config) {
+    return Row(
+      children: [
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: () => _showChurchInfo(),
+            icon: const Icon(Icons.location_on_outlined),
+            label: const Text('Nous visiter'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: isLive 
+                  ? const Color(0xFFFF5722)
+                  : isUpcoming 
+                      ? const Color(0xFF2196F3)
+                      : const Color(0xFF607D8B),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 4,
+            ),
+          ),
+        ),
+        
+        const SizedBox(width: 12),
+        
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: isLive 
+                ? () => _openLiveStream(config.liveUrl)
+                : () => _addLiveToCalendar(),
+            icon: Icon(isLive ? Icons.play_circle_filled : Icons.notifications_outlined),
+            label: Text(isLive ? 'Rejoindre' : 'Rappel'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white.withOpacity(0.2),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: const BorderSide(color: Colors.white, width: 1.5),
+              ),
+              elevation: 4,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuickActionsSection(HomeConfigModel config) {
+    final actions = config.quickActions.isNotEmpty 
+        ? config.quickActions 
+        : HomeConfigModel.defaultConfig.quickActions;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section Header - Style moderne comme Perfect 13
+        Row(
           children: [
-            Icon(
-              Icons.campaign,
-              color: AppTheme.secondaryColor,
-              size: 24,
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.flash_on_rounded,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -630,283 +698,150 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Annonces de l\'église',
-                    style: TextStyle(
-                      fontSize: 16,
+                    'Actions rapides',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.secondaryColor,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Nouvelle série de prédications sur l\'amour de Dieu - Dimanche 10h',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.textSecondaryColor,
+                  Text(
+                    'Accès direct aux fonctionnalités importantes',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                 ],
               ),
             ),
-            Icon(
-              Icons.chevron_right,
-              color: AppTheme.secondaryColor,
-            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildRemindersBanner() {
-    final hasReminders = _pendingServices.isNotEmpty || _availableForms.isNotEmpty;
-    
-    if (!hasReminders) return const SizedBox.shrink();
-
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: AppTheme.warningColor.withOpacity(0.1),
-          border: Border.all(
-            color: AppTheme.warningColor.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.notifications_active,
-                  color: AppTheme.warningColor,
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Rappels',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.warningColor,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            if (_pendingServices.isNotEmpty)
-              _buildReminderItem(
-                'Services en attente de confirmation',
-                '${_pendingServices.length} affectation(s) à confirmer',
-                Icons.church,
-              ),
-            if (_availableForms.isNotEmpty)
-              _buildReminderItem(
-                'Formulaires à remplir',
-                '${_availableForms.length} formulaire(s) disponible(s)',
-                Icons.assignment,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildReminderItem(String title, String subtitle, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: AppTheme.warningColor,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppTheme.textPrimaryColor,
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuickStats() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildStatCard(
-            'Mes Groupes',
-            _userGroups.length.toString(),
-            Icons.groups,
-            AppTheme.secondaryColor,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _buildStatCard(
-            'Rendez-vous',
-            _upcomingAppointments.length.toString(),
-            Icons.event_available,
-            Colors.indigo,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _buildStatCard(
-            'Services',
-            _pendingServices.length.toString(),
-            Icons.church,
-            Colors.purple,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                color: color,
-                size: 24,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppTheme.textSecondaryColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildModulesGrid() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Modules',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimaryColor,
-          ),
-        ),
-        const SizedBox(height: 16),
-        GridView.builder(
+        const SizedBox(height: 20),
+        
+        GridView.count(
+          crossAxisCount: 2,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.2,
-          ),
-          itemCount: _dashboardModules.length,
-          itemBuilder: (context, index) {
-            final module = _dashboardModules[index];
-            return _buildModuleCard(module);
-          },
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.9,
+          children: actions.map((action) => _buildQuickActionCardFromConfig(action)).toList(),
         ),
       ],
     );
   }
 
-  Widget _buildModuleCard(Map<String, dynamic> module) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+  Widget _buildQuickActionCardFromConfig(Map<String, dynamic> actionConfig) {
+    final title = actionConfig['title'] ?? '';
+    final description = actionConfig['description'] ?? '';
+    final iconName = actionConfig['icon'] ?? 'help_outline';
+    final colorValue = actionConfig['color'] ?? 0xFF9E9E9E;
+    final color = Color(colorValue);
+    
+    // Mapper les noms d'icônes aux IconData
+    IconData icon;
+    switch (iconName) {
+      case 'favorite_rounded':
+        icon = Icons.favorite_rounded;
+        break;
+      case 'menu_book_rounded':
+        icon = Icons.menu_book_rounded;
+        break;
+      case 'volunteer_activism_rounded':
+        icon = Icons.volunteer_activism_rounded;
+        break;
+      case 'card_giftcard_rounded':
+        icon = Icons.card_giftcard_rounded;
+        break;
+      default:
+        icon = Icons.help_outline;
+    }
+    
+    return _buildQuickActionCard(title, description, icon, color, () => _handleQuickAction(title));
+  }
+
+  Widget _buildQuickActionCard(String title, String description, IconData icon, Color color, VoidCallback onTap) {
+    return Material(
+      elevation: 0,
+      borderRadius: BorderRadius.circular(20),
       child: InkWell(
-        onTap: () => _navigateToModule(module['route']),
-        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                module['color'],
-                module['color'].withOpacity(0.8),
+                color,
+                color.withOpacity(0.8),
               ],
             ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.3),
+                blurRadius: 15,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
             children: [
-              Icon(
-                module['icon'],
-                size: 32,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                module['title'],
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              // Background Pattern
+              Positioned(
+                top: -20,
+                right: -20,
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 4),
-              Text(
-                module['subtitle'],
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white70,
+              
+              // Content
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Icon
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                    ),
+                    
+                    const Spacer(),
+                    
+                    // Text
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.9),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -915,308 +850,468 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
     );
   }
 
-  Widget _buildUpcomingAppointments() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildUpcomingEventsSection(HomeConfigModel config) {
+    return StreamBuilder<List<EventModel>>(
+      stream: EventsFirebaseService.getUpcomingEventsStream(limit: 3),
+      builder: (context, snapshot) {
+        final events = snapshot.data ?? [];
+        
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Mes prochains rendez-vous',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.textPrimaryColor,
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MemberAppointmentsPage()),
-              ),
-              child: const Text('Voir tout'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        if (_upcomingAppointments.isEmpty)
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: Center(
-              child: Column(
+            // En-tête avec bouton "Voir plus" - Style moderne
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              child: Row(
                 children: [
-                  Icon(Icons.event_available, size: 48, color: Colors.grey.shade400),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Aucun rendez-vous prévu',
-                    style: TextStyle(color: Colors.grey.shade600),
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MemberAppointmentsPage()),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Text('Prendre rendez-vous'),
+                    child: Icon(
+                      Icons.event_rounded,
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Événements à venir',
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                        Text(
+                          'Ne manquez aucun événement',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // Navigation vers la page complète des événements
+                      Navigator.pushNamed(context, '/events');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.orange.withOpacity(0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Voir plus',
+                            style: TextStyle(
+                              color: Colors.orange.shade300,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.orange.shade300,
+                            size: 12,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-          )
-        else
-          ...(_upcomingAppointments.map((appointment) => AppointmentCard(
-            appointment: appointment,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AppointmentDetailPage(appointment: appointment),
-              ),
-            ),
-            isCompact: true,
-          ))),
-      ],
-    );
-  }
-
-  Widget _buildUpcomingSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'À venir',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimaryColor,
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildUpcomingEvents(),
-        if (_userGroups.isNotEmpty) ...[
-          const SizedBox(height: 20),
-          _buildUpcomingMeetings(),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildUpcomingEvents() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.event,
-                  color: AppTheme.tertiaryColor,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                const Text(
-                  'Événements à venir',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.textPrimaryColor,
+            const SizedBox(height: 16),
+            
+            // Contenu des événements
+            if (snapshot.connectionState == ConnectionState.waiting)
+              const Center(
+                child: CircularProgressIndicator(color: Colors.orange),
+              )
+            else if (snapshot.hasError)
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colors.red.withOpacity(0.2),
+                    width: 1,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ...(_upcomingEvents.take(3).where((event) => event != null).map((event) => _buildEventItem(event))),
+                child: Text(
+                  'Erreur lors du chargement des événements',
+                  style: TextStyle(color: Colors.red.withOpacity(0.8)),
+                ),
+              )
+            else if (events.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colors.orange.withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.event,
+                      color: Colors.orange.withOpacity(0.6),
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Aucun événement à venir',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              // Liste des événements
+              ...events.map((event) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _buildEventCardFromEventModel(event),
+              )).toList(),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildEventItem(EventModel event) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: AppTheme.tertiaryColor,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  event.title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppTheme.textPrimaryColor,
-                  ),
-                ),
-                Text(
-                  _formatEventDate(event.startDate),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+  Widget _buildEventCardFromEventModel(EventModel event) {
+    // Formatage de la date
+    final startDate = event.startDate;
+    final day = startDate.day.toString();
+    final monthNames = [
+      '', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
+      'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'
+    ];
+    final month = monthNames[startDate.month];
+    
+    // Formatage de l'heure
+    final timeFormat = '${startDate.hour.toString().padLeft(2, '0')}:${startDate.minute.toString().padLeft(2, '0')}';
+    
+    // Limitation de la description
+    final description = event.description.length > 80 
+        ? '${event.description.substring(0, 80)}...' 
+        : event.description;
+    
+    return _buildEventCard(day, month, event.title, description, timeFormat);
   }
 
-  Widget _buildUpcomingMeetings() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.groups,
-                  color: AppTheme.secondaryColor,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                const Text(
-                  'Mes groupes',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.textPrimaryColor,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ...(_userGroups.take(3).where((group) => group != null).map((group) => _buildGroupItem(group))),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGroupItem(GroupModel group) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: Color(int.parse(group.color.replaceFirst('#', '0xFF'))),
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  group.name,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppTheme.textPrimaryColor,
-                  ),
-                ),
-                Text(
-                  '${group.dayName} à ${group.time}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAppointmentItem(AppointmentModel appointment) {
+  Widget _buildEventCard(String day, String month, String title, String description, String time) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.orange.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            width: 68,
+            height: 68,
             decoration: BoxDecoration(
-              color: Colors.indigo.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFFFFB74D),
+                  Color(0xFFFF9800),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.orange.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            child: Icon(
-              _getAppointmentIcon(appointment.lieu),
-              color: Colors.indigo,
-              size: 20,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  day,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  month,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(width: 12),
+          
+          const SizedBox(width: 16),
+          
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  appointment.motif,
+                  title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                     fontSize: 16,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _formatAppointmentDate(appointment.dateTime),
-                  style: TextStyle(
-                    color: AppTheme.textSecondaryColor,
+                  description,
+                  style: const TextStyle(
+                    color: Color(0xFFB0BEC5),
                     fontSize: 14,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.access_time_rounded,
+                      size: 14,
+                      color: Color(0xFFFFB74D),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      time,
+                      style: const TextStyle(
+                        color: Color(0xFFFFB74D),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: _getAppointmentStatusColor(appointment.statut).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              appointment.statutLabel,
-              style: TextStyle(
-                color: _getAppointmentStatusColor(appointment.statut),
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+          
+          Icon(
+            Icons.chevron_right_rounded,
+            color: Colors.white.withOpacity(0.5),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactUsSection(HomeConfigModel config) {
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF1565C0),
+            Color(0xFF1976D2),
+            Color(0xFF42A5F5),
+          ],
+          stops: [0.0, 0.6, 1.0],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1976D2).withOpacity(0.4),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.white.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.support_agent_rounded,
+                  color: Colors.white,
+                  size: 28,
+                ),
               ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nous contacter',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 26,
+                        shadows: [
+                          const Shadow(
+                            blurRadius: 8,
+                            color: Colors.black26,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Une question ? Nous sommes là pour vous',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white.withOpacity(0.95),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: 24),
+          
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              children: [
+                if (config.contactEmail?.isNotEmpty == true)
+                  _buildContactMethod(
+                    Icons.email_rounded,
+                    'Email',
+                    config.contactEmail!,
+                    () => _sendEmail(),
+                  ),
+                
+                if (config.contactEmail?.isNotEmpty == true)
+                  const SizedBox(height: 16),
+                
+                if (config.contactAddress?.isNotEmpty == true)
+                  _buildContactMethod(
+                    Icons.location_on_rounded,
+                    'Adresse',
+                    config.contactAddress!,
+                    () => _openMaps(),
+                  ),
+                
+                if (config.contactAddress?.isNotEmpty == true)
+                  const SizedBox(height: 16),
+                
+                if (config.contactPhone?.isNotEmpty == true)
+                  _buildContactMethod(
+                    Icons.phone_rounded,
+                    'Téléphone',
+                    config.contactPhone!,
+                    () => _callChurch(),
+                  ),
+                
+                if (config.contactPhone?.isNotEmpty == true)
+                  const SizedBox(height: 16),
+                
+                if (config.contactWhatsApp?.isNotEmpty == true)
+                  _buildContactMethod(
+                    Icons.chat_rounded,
+                    'WhatsApp',
+                    'Messagerie instantanée',
+                    () => _openWhatsApp(),
+                  ),
+                
+                if (config.contactWhatsApp?.isNotEmpty == true)
+                  const SizedBox(height: 20),
+                
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _showContactForm(),
+                    icon: const Icon(Icons.message_rounded),
+                    label: const Text('Envoyer un message'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF1976D2),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -1224,126 +1319,671 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
     );
   }
 
-  IconData _getAppointmentIcon(String lieu) {
-    switch (lieu) {
-      case 'en_personne':
-        return Icons.location_on;
-      case 'appel_video':
-        return Icons.video_call;
-      case 'telephone':
-        return Icons.phone;
-      default:
-        return Icons.event;
-    }
-  }
-
-  Color _getAppointmentStatusColor(String statut) {
-    switch (statut) {
-      case 'en_attente':
-        return AppTheme.warningColor;
-      case 'confirme':
-        return AppTheme.successColor;
-      case 'refuse':
-        return AppTheme.errorColor;
-      case 'termine':
-        return AppTheme.primaryColor;
-      case 'annule':
-        return AppTheme.textTertiaryColor;
-      default:
-        return AppTheme.textTertiaryColor;
-    }
-  }
-
-  String _formatAppointmentDate(DateTime date) {
-    final now = DateTime.now();
-    final diff = date.difference(now).inDays;
-    
-    if (diff == 0) {
-      return 'Aujourd\'hui à ${date.hour.toString().padLeft(2, '0')}h${date.minute.toString().padLeft(2, '0')}';
-    } else if (diff == 1) {
-      return 'Demain à ${date.hour.toString().padLeft(2, '0')}h${date.minute.toString().padLeft(2, '0')}';
-    } else if (diff < 7) {
-      return 'Dans $diff jours à ${date.hour.toString().padLeft(2, '0')}h${date.minute.toString().padLeft(2, '0')}';
-    } else {
-      return '${date.day}/${date.month}/${date.year} à ${date.hour.toString().padLeft(2, '0')}h${date.minute.toString().padLeft(2, '0')}';
-    }
-  }
-
-  Widget _buildMyFollowUpsSection() {
-    if (_currentUser == null) {
-      return const SizedBox.shrink();
-    }
-
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
+  Widget _buildContactMethod(IconData icon, String title, String subtitle, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.15),
+            width: 1,
+          ),
+        ),
+        child: Row(
           children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.white.withOpacity(0.7),
+              size: 16,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Méthodes d'action
+  void _handleQuickAction(String actionTitle) {
+    switch (actionTitle) {
+      case 'Donner sa vie à Jésus':
+        _showGiveLifeToJesus();
+        break;
+      case 'Étudier la Parole':
+        _showBibleStudy();
+        break;
+      case 'Requêtes de prière':
+        _showPrayerRequests();
+        break;
+      case 'Faire un don':
+        _showDonations();
+        break;
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$actionTitle - Fonctionnalité bientôt disponible')),
+        );
+    }
+  }
+
+  void _showChurchInfo() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Informations sur l\'église - Fonctionnalité bientôt disponible')),
+    );
+  }
+
+  void _openLiveStream([String? liveUrl]) {
+    if (liveUrl?.isNotEmpty == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ouverture du live stream: $liveUrl')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ouverture du live stream...')),
+      );
+    }
+  }
+
+  void _addLiveToCalendar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Rappel ajouté au calendrier')),
+    );
+  }
+
+  void _showGiveLifeToJesus() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Donner sa vie à Jésus - Fonctionnalité bientôt disponible')),
+    );
+  }
+
+  void _showBibleStudy() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Étude biblique - Fonctionnalité bientôt disponible')),
+    );
+  }
+
+  void _showPrayerRequests() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Requêtes de prière - Fonctionnalité bientôt disponible')),
+    );
+  }
+
+  void _showDonations() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Dons - Fonctionnalité bientôt disponible')),
+    );
+  }
+
+  void _sendEmail() async {
+    try {
+      // Récupérer la configuration
+      final config = await HomeConfigService.getHomeConfig();
+      final email = config.contactEmail;
+      
+      if (email?.isNotEmpty == true) {
+        final Uri emailUri = Uri(
+          scheme: 'mailto',
+          path: email,
+          query: 'subject=${Uri.encodeComponent('Contact depuis l\'application')}&body=${Uri.encodeComponent('Bonjour,\n\nJe vous contacte depuis l\'application mobile.\n\n')}'
+        );
+        
+        if (await canLaunchUrl(emailUri)) {
+          await launchUrl(emailUri);
+        } else {
+          // Fallback : copier l'email dans le presse-papier
+          await Clipboard.setData(ClipboardData(text: email!));
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Email copié dans le presse-papier : $email'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Aucun email de contact configuré'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'ouverture de l\'email : $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _openMaps() async {
+    try {
+      // Récupérer la configuration
+      final config = await HomeConfigService.getHomeConfig();
+      final address = config.contactAddress;
+      
+      if (address?.isNotEmpty == true) {
+        // Encoder l'adresse pour l'URL
+        final encodedAddress = Uri.encodeComponent(address!);
+        
+        // Essayer d'ouvrir Google Maps d'abord
+        final googleMapsUri = Uri.parse('google.navigation:q=$encodedAddress');
+        final appleMapsUri = Uri.parse('maps:q=$encodedAddress');
+        final webMapsUri = Uri.parse('https://www.google.com/maps/search/?api=1&query=$encodedAddress');
+        
+        bool launched = false;
+        
+        // Essayer Google Maps
+        if (await canLaunchUrl(googleMapsUri)) {
+          await launchUrl(googleMapsUri);
+          launched = true;
+        }
+        // Essayer Apple Maps
+        else if (await canLaunchUrl(appleMapsUri)) {
+          await launchUrl(appleMapsUri);
+          launched = true;
+        }
+        // Fallback vers le web
+        else if (await canLaunchUrl(webMapsUri)) {
+          await launchUrl(webMapsUri, mode: LaunchMode.externalApplication);
+          launched = true;
+        }
+        
+        if (!launched) {
+          // Copier l'adresse dans le presse-papier comme fallback
+          await Clipboard.setData(ClipboardData(text: address));
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Adresse copiée dans le presse-papier : $address'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Aucune adresse configurée'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'ouverture de la carte : $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _callChurch() async {
+    try {
+      // Récupérer la configuration
+      final config = await HomeConfigService.getHomeConfig();
+      final phone = config.contactPhone;
+      
+      if (phone?.isNotEmpty == true) {
+        // Nettoyer le numéro de téléphone (enlever les espaces, tirets, etc.)
+        final cleanPhone = phone!.replaceAll(RegExp(r'[^\d+]'), '');
+        final Uri telUri = Uri(scheme: 'tel', path: cleanPhone);
+        
+        if (await canLaunchUrl(telUri)) {
+          await launchUrl(telUri);
+        } else {
+          // Fallback : copier le numéro dans le presse-papier
+          await Clipboard.setData(ClipboardData(text: phone));
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Numéro copié dans le presse-papier : $phone'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Aucun numéro de téléphone configuré'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'appel : $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _openWhatsApp() async {
+    try {
+      // Récupérer la configuration
+      final config = await HomeConfigService.getHomeConfig();
+      final whatsappNumber = config.contactWhatsApp;
+      
+      if (whatsappNumber?.isNotEmpty == true) {
+        // Nettoyer le numéro WhatsApp
+        final cleanNumber = whatsappNumber!.replaceAll(RegExp(r'[^\d+]'), '');
+        
+        // Message prédéfini
+        const message = 'Bonjour, je vous contacte depuis l\'application mobile.';
+        final encodedMessage = Uri.encodeComponent(message);
+        
+        // URLs WhatsApp
+        final whatsappUri = Uri.parse('whatsapp://send?phone=$cleanNumber&text=$encodedMessage');
+        final whatsappWebUri = Uri.parse('https://wa.me/$cleanNumber?text=$encodedMessage');
+        
+        bool launched = false;
+        
+        // Essayer l'application WhatsApp d'abord
+        if (await canLaunchUrl(whatsappUri)) {
+          await launchUrl(whatsappUri);
+          launched = true;
+        }
+        // Fallback vers WhatsApp Web
+        else if (await canLaunchUrl(whatsappWebUri)) {
+          await launchUrl(whatsappWebUri, mode: LaunchMode.externalApplication);
+          launched = true;
+        }
+        
+        if (!launched) {
+          // Copier le numéro dans le presse-papier comme fallback
+          await Clipboard.setData(ClipboardData(text: whatsappNumber));
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Numéro WhatsApp copié : $whatsappNumber'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Aucun numéro WhatsApp configuré'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'ouverture de WhatsApp : $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showContactForm() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ContactFormDialog();
+      },
+    );
+  }
+}
+
+class ContactFormDialog extends StatefulWidget {
+  @override
+  _ContactFormDialogState createState() => _ContactFormDialogState();
+}
+
+class _ContactFormDialogState extends State<ContactFormDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _subjectController = TextEditingController();
+  final _messageController = TextEditingController();
+  bool _isSubmitting = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _subjectController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    try {
+      // Récupérer la configuration pour l'email de destination
+      final config = await HomeConfigService.getHomeConfig();
+      final contactEmail = config.contactEmail;
+
+      if (contactEmail?.isNotEmpty == true) {
+        // Créer le contenu de l'email
+        final subject = 'Contact App Mobile: ${_subjectController.text}';
+        final body = '''
+Nouveau message depuis l'application mobile
+
+Nom: ${_nameController.text}
+Email: ${_emailController.text}
+Sujet: ${_subjectController.text}
+
+Message:
+${_messageController.text}
+
+---
+Envoyé depuis l'application mobile Jubilé Tabernacle
+        ''';
+
+        final Uri emailUri = Uri(
+          scheme: 'mailto',
+          path: contactEmail,
+          query: 'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}'
+        );
+
+        if (await canLaunchUrl(emailUri)) {
+          await launchUrl(emailUri);
+          
+          if (mounted) {
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Application email ouverte avec votre message'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        } else {
+          // Fallback : copier le message dans le presse-papier
+          await Clipboard.setData(ClipboardData(text: body));
+          if (mounted) {
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Message copié dans le presse-papier'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Aucun email de contact configuré'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur : $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 500, maxHeight: 600),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // En-tête
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    Icons.track_changes,
-                    color: AppTheme.primaryColor,
-                    size: 20,
+                  child: const Icon(
+                    Icons.message_rounded,
+                    color: Colors.white,
+                    size: 24,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Mes Suivis',
+                        'Nous contacter',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.textPrimaryColor,
                         ),
                       ),
                       Text(
-                        'Suivis dont je suis responsable',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppTheme.textSecondaryColor,
+                        'Envoyez-nous votre message',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
                         ),
                       ),
                     ],
                   ),
                 ),
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.close),
+                ),
               ],
             ),
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 200, // Hauteur fixe pour permettre le scroll si nécessaire
-              child: MyAssignedWorkflowsWidget(
-                personId: _currentUser!.id,
+            
+            const SizedBox(height: 24),
+            
+            // Formulaire
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Nom
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Votre nom *',
+                          prefixIcon: Icon(Icons.person_outline),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Veuillez entrer votre nom';
+                          }
+                          return null;
+                        },
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      // Email
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'Votre email *',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Veuillez entrer votre email';
+                          }
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                            return 'Veuillez entrer un email valide';
+                          }
+                          return null;
+                        },
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      // Sujet
+                      TextFormField(
+                        controller: _subjectController,
+                        decoration: const InputDecoration(
+                          labelText: 'Sujet *',
+                          prefixIcon: Icon(Icons.subject),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Veuillez entrer un sujet';
+                          }
+                          return null;
+                        },
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      // Message
+                      TextFormField(
+                        controller: _messageController,
+                        decoration: const InputDecoration(
+                          labelText: 'Votre message *',
+                          prefixIcon: Icon(Icons.message_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                        maxLines: 4,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Veuillez entrer votre message';
+                          }
+                          if (value.trim().length < 10) {
+                            return 'Le message doit contenir au moins 10 caractères';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Boutons d'action
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _isSubmitting ? null : () => Navigator.of(context).pop(),
+                    child: const Text('Annuler'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _isSubmitting ? null : _submitForm,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1976D2),
+                      foregroundColor: Colors.white,
+                    ),
+                    child: _isSubmitting
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : const Text('Envoyer'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
     );
   }
-
-  String _formatEventDate(DateTime date) {
-    final now = DateTime.now();
-    final diff = date.difference(now).inDays;
-    
-    if (diff == 0) {
-      return 'Aujourd\'hui';
-    } else if (diff == 1) {
-      return 'Demain';
-    } else if (diff < 7) {
-      return 'Dans $diff jours';
-    } else {
-      return '${date.day}/${date.month}/${date.year}';
-    }
-  }
 }
+
+

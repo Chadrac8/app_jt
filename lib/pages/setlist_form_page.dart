@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -90,9 +91,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement des chants: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+            backgroundColor: AppTheme.errorColor));
       }
     }
   }
@@ -109,8 +108,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+        body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -120,15 +118,12 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
           if (_isSaving)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Center(child: CircularProgressIndicator()),
-            )
+              child: Center(child: CircularProgressIndicator()))
           else
             TextButton(
               onPressed: _saveSetlist,
-              child: const Text('Enregistrer'),
-            ),
-        ],
-      ),
+              child: const Text('Enregistrer')),
+        ]),
       body: Form(
         key: _formKey,
         child: Column(
@@ -148,9 +143,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                           Text(
                             'Informations générales',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                              fontWeight: FontWeight.bold)),
                           const SizedBox(height: 16),
                           
                           // Nom de la setlist
@@ -158,15 +151,13 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                             controller: _nameController,
                             decoration: const InputDecoration(
                               labelText: 'Nom de la setlist *',
-                              border: OutlineInputBorder(),
-                            ),
+                              border: OutlineInputBorder()),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Le nom est obligatoire';
                               }
                               return null;
-                            },
-                          ),
+                            }),
                           
                           const SizedBox(height: 16),
                           
@@ -175,10 +166,8 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                             controller: _descriptionController,
                             decoration: const InputDecoration(
                               labelText: 'Description',
-                              border: OutlineInputBorder(),
-                            ),
-                            maxLines: 2,
-                          ),
+                              border: OutlineInputBorder()),
+                            maxLines: 2),
                           
                           const SizedBox(height: 16),
                           
@@ -188,13 +177,9 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                             child: InputDecorator(
                               decoration: const InputDecoration(
                                 labelText: 'Date du service *',
-                                border: OutlineInputBorder(),
-                              ),
+                                border: OutlineInputBorder()),
                               child: Text(
-                                '${_serviceDate.day.toString().padLeft(2, '0')}/${_serviceDate.month.toString().padLeft(2, '0')}/${_serviceDate.year}',
-                              ),
-                            ),
-                          ),
+                                '${_serviceDate.day.toString().padLeft(2, '0')}/${_serviceDate.month.toString().padLeft(2, '0')}/${_serviceDate.year}'))),
                           
                           const SizedBox(height: 16),
                           
@@ -203,26 +188,21 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                             value: _serviceType,
                             decoration: const InputDecoration(
                               labelText: 'Type de service',
-                              border: OutlineInputBorder(),
-                            ),
+                              border: OutlineInputBorder()),
                             items: [
                               const DropdownMenuItem<String>(
                                 value: null,
-                                child: Text('Sélectionner un type'),
-                              ),
+                                child: Text('Sélectionner un type')),
                               ..._serviceTypes.map((type) =>
                                 DropdownMenuItem<String>(
                                   value: type,
-                                  child: Text(type),
-                                ),
-                              ),
+                                  child: Text(type))),
                             ],
                             onChanged: (value) {
                               setState(() {
                                 _serviceType = value;
                               });
-                            },
-                          ),
+                            }),
                           
                           const SizedBox(height: 16),
                           
@@ -231,14 +211,9 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                             controller: _notesController,
                             decoration: const InputDecoration(
                               labelText: 'Notes',
-                              border: OutlineInputBorder(),
-                            ),
-                            maxLines: 3,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                              border: OutlineInputBorder()),
+                            maxLines: 3),
+                        ]))),
                   
                   const SizedBox(height: 16),
                   
@@ -254,17 +229,13 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               Text(
                                 'Chants sélectionnés (${_selectedSongs.length})',
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                                  fontWeight: FontWeight.bold)),
                               const Spacer(),
                               TextButton.icon(
                                 onPressed: _showSongSelection,
                                 icon: const Icon(Icons.add),
-                                label: const Text('Ajouter'),
-                              ),
-                            ],
-                          ),
+                                label: const Text('Ajouter')),
+                            ]),
                           
                           const SizedBox(height: 16),
                           
@@ -273,29 +244,24 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               width: double.infinity,
                               padding: const EdgeInsets.all(32),
                               decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                                color: AppTheme.textTertiaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8)),
                               child: Column(
                                 children: [
                                   const Icon(
                                     Icons.music_off,
                                     size: 48,
-                                    color: Colors.grey,
-                                  ),
+                                    color: AppTheme.textTertiaryColor),
                                   const SizedBox(height: 8),
                                   const Text(
                                     'Aucun chant sélectionné',
-                                    style: TextStyle(color: Colors.grey),
+                                    style: TextStyle(color: AppTheme.textTertiaryColor),
                                   ),
                                   const SizedBox(height: 8),
                                   ElevatedButton(
                                     onPressed: _showSongSelection,
-                                    child: const Text('Ajouter des chants'),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                    child: const Text('Ajouter des chants')),
+                                ])),
                           ] else ...[
                             ReorderableListView.builder(
                               shrinkWrap: true,
@@ -309,8 +275,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                                   margin: const EdgeInsets.only(bottom: 8),
                                   child: ListTile(
                                     leading: CircleAvatar(
-                                      child: Text('${index + 1}'),
-                                    ),
+                                      child: Text('${index + 1}')),
                                     title: Text(song.title),
                                     subtitle: Text('${song.authors} • ${song.originalKey}'),
                                     trailing: Row(
@@ -318,27 +283,14 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                                       children: [
                                         const Icon(Icons.drag_handle),
                                         IconButton(
-                                          icon: const Icon(Icons.remove_circle, color: Colors.red),
-                                          onPressed: () => _removeSong(index),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                                          icon: Icon(Icons.settings, color: AppTheme.errorColor),
+                                          onPressed: () => _removeSong(index)),
+                                      ])));
+                              }),
                           ],
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                        ]))),
+                ])),
+          ])));
   }
 
   void _selectServiceDate() async {
@@ -346,8 +298,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
       context: context,
       initialDate: _serviceDate,
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
+      lastDate: DateTime.now().add(const Duration(days: 365)));
 
     if (date != null) {
       setState(() {
@@ -369,9 +320,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
             _selectedSongs = selectedSongs;
             _selectedSongIds = selectedSongs.map((s) => s.id).toList();
           });
-        },
-      ),
-    );
+        }));
   }
 
   void _reorderSongs(int oldIndex, int newIndex) {
@@ -401,9 +350,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Veuillez sélectionner au moins un chant'),
-          backgroundColor: Colors.orange,
-        ),
-      );
+          backgroundColor: AppTheme.warningColor));
       return;
     }
 
@@ -425,8 +372,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
         createdAt: widget.setlist?.createdAt ?? DateTime.now(),
         updatedAt: DateTime.now(),
         createdBy: widget.setlist?.createdBy ?? userId,
-        modifiedBy: userId,
-      );
+        modifiedBy: userId);
 
       bool success = false;
       if (widget.setlist == null) {
@@ -441,26 +387,20 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
           SnackBar(
             content: Text(widget.setlist == null 
                 ? 'Setlist créée avec succès' 
-                : 'Setlist modifiée avec succès'),
-          ),
-        );
+                : 'Setlist modifiée avec succès')));
         Navigator.pop(context);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Erreur lors de l\'enregistrement'),
-            backgroundColor: Colors.red,
-          ),
-        );
+            backgroundColor: AppTheme.errorColor));
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+            backgroundColor: AppTheme.errorColor));
       }
     } finally {
       if (mounted) {
@@ -514,8 +454,7 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
       expand: false,
       builder: (context, scrollController) => Container(
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         child: Column(
           children: [
             // Poignée
@@ -525,9 +464,7 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
               margin: const EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
                 color: Theme.of(context).dividerColor,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(2))),
             
             // En-tête
             Padding(
@@ -536,16 +473,12 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
                 children: [
                   Text(
                     'Sélectionner des chants',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                    style: Theme.of(context).textTheme.titleLarge),
                   const Spacer(),
                   Text(
                     '${_tempSelectedSongIds.length} sélectionnés',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
+                    style: Theme.of(context).textTheme.bodyMedium),
+                ])),
             
             // Barre de recherche
             Padding(
@@ -555,16 +488,12 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
                   hintText: 'Rechercher un chant...',
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(25))),
                 onChanged: (query) {
                   setState(() {
                     _searchQuery = query;
                   });
-                },
-              ),
-            ),
+                })),
             
             const SizedBox(height: 16),
             
@@ -589,11 +518,8 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
                           _tempSelectedSongIds.remove(song.id);
                         }
                       });
-                    },
-                  );
-                },
-              ),
-            ),
+                    });
+                })),
             
             // Boutons d'action
             Padding(
@@ -603,9 +529,7 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Annuler'),
-                    ),
-                  ),
+                      child: const Text('Annuler'))),
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
@@ -616,15 +540,8 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
                         widget.onSongsSelected(selectedSongs);
                         Navigator.pop(context);
                       },
-                      child: const Text('Confirmer'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                      child: const Text('Confirmer'))),
+                ])),
+          ])));
   }
 }
