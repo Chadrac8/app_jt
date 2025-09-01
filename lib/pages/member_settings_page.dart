@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
 import '../auth/auth_service.dart';
 import '../theme.dart';
-import 'firebase_storage_diagnostic_page.dart';
 
 class MemberSettingsPage extends StatefulWidget {
   const MemberSettingsPage({super.key});
@@ -22,19 +22,13 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
   bool _enableNotifications = true;
   bool _emailNotifications = true;
   bool _pushNotifications = true;
-  bool _serviceReminders = true;
-  bool _groupReminders = true;
-  bool _eventNotifications = true;
-  bool _formNotifications = true;
-  
-  // Paramètres de confidentialité
-  bool _profileVisible = true;
-  bool _showBirthDate = true;
-  bool _showPhoneNumber = false;
   
   // Paramètres d'affichage
   bool _darkMode = false;
   String _language = 'Français';
+  
+  // Statistiques
+  int _shareCount = 0;
   
   final List<String> _availableLanguages = [
     'Français',
@@ -81,17 +75,11 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
         _enableNotifications = prefs.getBool('enable_notifications') ?? true;
         _emailNotifications = prefs.getBool('email_notifications') ?? true;
         _pushNotifications = prefs.getBool('push_notifications') ?? true;
-        _serviceReminders = prefs.getBool('service_reminders') ?? true;
-        _groupReminders = prefs.getBool('group_reminders') ?? true;
-        _eventNotifications = prefs.getBool('event_notifications') ?? true;
-        _formNotifications = prefs.getBool('form_notifications') ?? true;
-        
-        _profileVisible = prefs.getBool('profile_visible') ?? true;
-        _showBirthDate = prefs.getBool('show_birth_date') ?? true;
-        _showPhoneNumber = prefs.getBool('show_phone_number') ?? false;
         
         _darkMode = prefs.getBool('dark_mode') ?? false;
         _language = prefs.getString('language') ?? 'Français';
+        
+        _shareCount = prefs.getInt('app_share_count') ?? 0;
         
         _isLoading = false;
       });
@@ -109,14 +97,6 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
       await prefs.setBool('enable_notifications', _enableNotifications);
       await prefs.setBool('email_notifications', _emailNotifications);
       await prefs.setBool('push_notifications', _pushNotifications);
-      await prefs.setBool('service_reminders', _serviceReminders);
-      await prefs.setBool('group_reminders', _groupReminders);
-      await prefs.setBool('event_notifications', _eventNotifications);
-      await prefs.setBool('form_notifications', _formNotifications);
-      
-      await prefs.setBool('profile_visible', _profileVisible);
-      await prefs.setBool('show_birth_date', _showBirthDate);
-      await prefs.setBool('show_phone_number', _showPhoneNumber);
       
       await prefs.setBool('dark_mode', _darkMode);
       await prefs.setString('language', _language);
@@ -177,50 +157,6 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
     }
   }
 
-  Future<void> _exportData() async {
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Exporter mes données'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Cette fonctionnalité permet d\'exporter toutes vos données personnelles :'),
-            SizedBox(height: 8),
-            Text('• Profil et informations personnelles'),
-            Text('• Historique des événements'),
-            Text('• Réponses aux formulaires'),
-            Text('• Historique des services'),
-            SizedBox(height: 16),
-            Text(
-              'Un fichier ZIP contenant toutes vos données vous sera envoyé par email.',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Export en cours... Vous recevrez un email sous peu.'),
-                  backgroundColor: AppTheme.successColor,
-                ),
-              );
-            },
-            child: const Text('Exporter'),
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<void> _deleteAccount() async {
     await showDialog(
       context: context,
@@ -264,6 +200,247 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
     );
   }
 
+  Future<void> _showPrivacyPolicy() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Politique de confidentialité'),
+        content: const SingleChildScrollView(
+          child: Text(
+            'Notre politique de confidentialité décrit comment nous collectons, '
+            'utilisons et protégeons vos informations personnelles.\n\n'
+            'Nous nous engageons à protéger votre vie privée et à utiliser vos '
+            'données de manière responsable et transparente.\n\n'
+            'Pour plus de détails, visitez notre site web ou contactez-nous.',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Fermer'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // TODO: Ouvrir le lien vers la politique de confidentialité
+            },
+            child: const Text('Voir en ligne'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showAbout() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('À propos'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Jubilé Tabernacle',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text('Version: 1.0.0'),
+            SizedBox(height: 16),
+            Text(
+              'Application officielle du Jubilé Tabernacle.\n\n'
+              'Restez connecté avec votre communauté, accédez aux ressources '
+              'spirituelles et participez à la vie de l\'église.',
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _shareApp() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.share, color: AppTheme.primaryColor),
+            SizedBox(width: 8),
+            Text('Partager l\'application'),
+          ],
+        ),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Aidez-nous à faire connaître Jubilé Tabernacle !',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Votre partage permet à d\'autres personnes de découvrir notre communauté spirituelle et de bénéficier de nos ressources.',
+            ),
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Icon(Icons.group, size: 16, color: AppTheme.primaryColor),
+                SizedBox(width: 8),
+                Expanded(child: Text('Grandir en communauté')),
+              ],
+            ),
+            SizedBox(height: 4),
+            Row(
+              children: [
+                Icon(Icons.favorite, size: 16, color: AppTheme.primaryColor),
+                SizedBox(width: 8),
+                Expanded(child: Text('Partager la bénédiction')),
+              ],
+            ),
+            SizedBox(height: 4),
+            Row(
+              children: [
+                Icon(Icons.connect_without_contact, size: 16, color: AppTheme.primaryColor),
+                SizedBox(width: 8),
+                Expanded(child: Text('Connecter les cœurs')),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Annuler'),
+          ),
+          FilledButton.icon(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _performShare();
+            },
+            icon: const Icon(Icons.share),
+            label: const Text('Partager'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _performShare() async {
+    try {
+      const String shareText = 
+          '🙏 Découvrez l\'application Jubilé Tabernacle !\n\n'
+          '✨ Restez connecté avec votre communauté spirituelle :\n'
+          '📖 Bible & Messages inspirants\n'
+          '🏛️ Vie de l\'Église & Événements\n'
+          '🍞 Pain Quotidien\n'
+          '🙏 Prières & Témoignages\n'
+          '🎵 Chants & Louanges\n\n'
+          '💝 Une expérience spirituelle enrichissante vous attend !\n\n'
+          '📱 Téléchargez gratuitement :\n'
+          '🤖 Play Store : https://play.google.com/store/apps/details?id=com.jubile.tabernacle.france\n'
+          '🍎 App Store : https://apps.apple.com/app/jubile-tabernacle-france/id123456789\n\n'
+          '🌐 Site web : https://jubile-tabernacle-france.com\n\n'
+          '#JubileTabernacle #Foi #Communauté #Spiritualité';
+      
+      await Share.share(
+        shareText,
+        subject: 'Jubilé Tabernacle - Application Mobile',
+      );
+      
+      // Enregistrer l'action de partage
+      final prefs = await SharedPreferences.getInstance();
+      final shareCount = prefs.getInt('app_share_count') ?? 0;
+      await prefs.setInt('app_share_count', shareCount + 1);
+      
+      // Mettre à jour l'interface
+      setState(() {
+        _shareCount = shareCount + 1;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 8),
+                Expanded(child: Text('✅ Merci de partager l\'application !')),
+              ],
+            ),
+            backgroundColor: AppTheme.successColor,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(child: Text('❌ Erreur lors du partage: ${e.toString()}')),
+              ],
+            ),
+            backgroundColor: AppTheme.errorColor,
+            duration: const Duration(seconds: 4),
+            action: SnackBarAction(
+              label: 'Réessayer',
+              textColor: Colors.white,
+              onPressed: _performShare,
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _sendFeedback() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Envoyer un feedback'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              maxLines: 4,
+              decoration: InputDecoration(
+                hintText: 'Partagez vos commentaires, suggestions ou signalez un problème...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Merci pour votre feedback !'),
+                  backgroundColor: AppTheme.successColor,
+                ),
+              );
+            },
+            child: const Text('Envoyer'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _signOut() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -299,14 +476,6 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
     }
   }
 
-  Future<void> _openStorageDiagnostic() async {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const FirebaseStorageDiagnosticPage(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -335,13 +504,9 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
                   const SizedBox(height: 24),
                   _buildNotificationsSection(),
                   const SizedBox(height: 24),
-                  _buildPrivacySection(),
-                  const SizedBox(height: 24),
                   _buildDisplaySection(),
                   const SizedBox(height: 24),
-                  _buildDataSection(),
-                  const SizedBox(height: 24),
-                  _buildTechnicalSection(),
+                  _buildInfoSection(),
                   const SizedBox(height: 24),
                   _buildDangerSection(),
                 ],
@@ -466,95 +631,6 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           } : null,
           contentPadding: EdgeInsets.zero,
         ),
-        const Divider(),
-        const Text(
-          'Types de notifications',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textSecondaryColor,
-          ),
-        ),
-        const SizedBox(height: 8),
-        SwitchListTile(
-          title: const Text('Rappels de services'),
-          value: _serviceReminders && _enableNotifications,
-          onChanged: _enableNotifications ? (value) {
-            setState(() {
-              _serviceReminders = value;
-            });
-          } : null,
-          contentPadding: EdgeInsets.zero,
-        ),
-        SwitchListTile(
-          title: const Text('Rappels de groupes'),
-          value: _groupReminders && _enableNotifications,
-          onChanged: _enableNotifications ? (value) {
-            setState(() {
-              _groupReminders = value;
-            });
-          } : null,
-          contentPadding: EdgeInsets.zero,
-        ),
-        SwitchListTile(
-          title: const Text('Événements'),
-          value: _eventNotifications && _enableNotifications,
-          onChanged: _enableNotifications ? (value) {
-            setState(() {
-              _eventNotifications = value;
-            });
-          } : null,
-          contentPadding: EdgeInsets.zero,
-        ),
-        SwitchListTile(
-          title: const Text('Formulaires'),
-          value: _formNotifications && _enableNotifications,
-          onChanged: _enableNotifications ? (value) {
-            setState(() {
-              _formNotifications = value;
-            });
-          } : null,
-          contentPadding: EdgeInsets.zero,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPrivacySection() {
-    return _buildSectionCard(
-      title: 'Confidentialité',
-      icon: Icons.privacy_tip,
-      children: [
-        SwitchListTile(
-          title: const Text('Profil visible'),
-          subtitle: const Text('Votre profil est visible par les autres membres'),
-          value: _profileVisible,
-          onChanged: (value) {
-            setState(() {
-              _profileVisible = value;
-            });
-          },
-          contentPadding: EdgeInsets.zero,
-        ),
-        SwitchListTile(
-          title: const Text('Afficher ma date de naissance'),
-          value: _showBirthDate && _profileVisible,
-          onChanged: _profileVisible ? (value) {
-            setState(() {
-              _showBirthDate = value;
-            });
-          } : null,
-          contentPadding: EdgeInsets.zero,
-        ),
-        SwitchListTile(
-          title: const Text('Afficher mon numéro de téléphone'),
-          value: _showPhoneNumber && _profileVisible,
-          onChanged: _profileVisible ? (value) {
-            setState(() {
-              _showPhoneNumber = value;
-            });
-          } : null,
-          contentPadding: EdgeInsets.zero,
-        ),
       ],
     );
   }
@@ -602,35 +678,63 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
     );
   }
 
-  Widget _buildDataSection() {
+  Widget _buildInfoSection() {
     return _buildSectionCard(
-      title: 'Mes données',
-      icon: Icons.storage,
+      title: 'Informations',
+      icon: Icons.info_outline,
       children: [
         ListTile(
-          leading: const Icon(Icons.download),
-          title: const Text('Exporter mes données'),
-          subtitle: const Text('Télécharger toutes mes informations'),
+          leading: const Icon(Icons.privacy_tip),
+          title: const Text('Politique de confidentialité'),
+          subtitle: const Text('Consultez notre politique de confidentialité'),
           trailing: const Icon(Icons.chevron_right),
-          onTap: _exportData,
+          onTap: _showPrivacyPolicy,
           contentPadding: EdgeInsets.zero,
         ),
-      ],
-    );
-  }
-
-  Widget _buildTechnicalSection() {
-    return _buildSectionCard(
-      title: 'Support technique',
-      icon: Icons.build,
-      headerColor: Colors.orange,
-      children: [
+        const Divider(),
         ListTile(
-          leading: const Icon(Icons.cloud_upload, color: Colors.orange),
-          title: const Text('Diagnostic Firebase Storage'),
-          subtitle: const Text('Tester l\'upload d\'images et la connectivité'),
+          leading: const Icon(Icons.info),
+          title: const Text('À propos'),
+          subtitle: const Text('Informations sur l\'application'),
           trailing: const Icon(Icons.chevron_right),
-          onTap: _openStorageDiagnostic,
+          onTap: _showAbout,
+          contentPadding: EdgeInsets.zero,
+        ),
+        const Divider(),
+        ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppTheme.primaryColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.share,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+          title: const Text(
+            'Partager l\'application',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+          subtitle: Text(
+            _shareCount > 0 
+              ? 'Partagez la bénédiction avec vos proches\nVous avez partagé $_shareCount fois - Merci ! 🙏'
+              : 'Partagez la bénédiction avec vos proches\nAidez-nous à grandir en communauté',
+            style: const TextStyle(fontSize: 13),
+          ),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: _shareApp,
+          contentPadding: EdgeInsets.zero,
+          isThreeLine: true,
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.feedback),
+          title: const Text('Feedback'),
+          subtitle: const Text('Envoyez-nous vos commentaires'),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: _sendFeedback,
           contentPadding: EdgeInsets.zero,
         ),
       ],

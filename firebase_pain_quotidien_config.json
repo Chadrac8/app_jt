@@ -1,0 +1,21 @@
+{
+  "modules": {
+    "pain_quotidien": {
+      "name": "Pain quotidien",
+      "icon": "book_outlined",
+      "route": "/pain-quotidien",
+      "enabled": true,
+      "position": 6,
+      "description": "Pain quotidien de Joyce Meyer",
+      "category": "reading",
+      "config": {
+        "autoRefresh": true,
+        "cacheEnabled": true,
+        "notificationsEnabled": true,
+        "refreshIntervalHours": 24,
+        "source": "joyce_meyer_daily_bread",
+        "language": "fr"
+      }
+    }
+  }
+}

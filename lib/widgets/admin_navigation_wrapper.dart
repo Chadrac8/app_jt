@@ -13,7 +13,6 @@ import '../pages/tasks_home_page.dart';
 import '../pages/pages_home_page.dart';
 import '../modules/songs/views/songs_home_page.dart';
 import '../modules/bible/bible_admin_page.dart';
-import '../pages/message_page.dart';
 import '../modules/vie_eglise/views/vie_eglise_admin_view.dart';
 import '../modules/message/views/message_admin_view.dart';
 
@@ -148,12 +147,6 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       title: 'La Bible',
       icon: Icons.menu_book,
       page: const BibleAdminPage(),
-    ),
-    AdminMenuItem(
-      route: 'message',
-      title: 'Le Message',
-      icon: Icons.library_books,
-      page: const MessagePage(),
     ),
 
     AdminMenuItem(

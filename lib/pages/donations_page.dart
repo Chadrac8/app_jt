@@ -1,0 +1,887 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
+import '../shared/theme/app_theme.dart';
+import 'donation_webview_page.dart';
+import 'simple_donation_webview_page.dart';
+
+class DonationsPage extends StatefulWidget {
+  const DonationsPage({Key? key}) : super(key: key);
+
+  @override
+  State<DonationsPage> createState() => _DonationsPageState();
+}
+
+class _DonationsPageState extends State<DonationsPage> {
+  int _selectedDonationType = 0;
+  bool _showRIB = false;
+
+  final List<DonationType> _donationTypes = [
+    DonationType(
+      title: 'Offrande',
+      description: 'Offrande libre pour soutenir l\'œuvre de Dieu',
+      icon: Icons.favorite,
+      color: Colors.pink,
+    ),
+    DonationType(
+      title: 'Loyer de l\'église',
+      description: 'Participation aux frais de location du lieu de culte',
+      icon: Icons.home_filled,
+      color: Colors.blue,
+    ),
+    DonationType(
+      title: 'Achat du local',
+      description: 'Contribution pour l\'acquisition de notre propre lieu',
+      icon: Icons.business,
+      color: Colors.green,
+    ),
+    DonationType(
+      title: 'Dîme',
+      description: 'Dîme selon les enseignements bibliques (10%)',
+      icon: Icons.percent,
+      color: Colors.orange,
+    ),
+  ];
+
+  // Informations bancaires (à remplacer par les vraies données)
+  final String _iban = 'FR76 1234 5678 9012 3456 7890 123';
+  final String _bic = 'TESTFRPP';
+  final String _titulaire = 'Association Jubilé Tabernacle France';
+
+  // URLs HelloAsso pour chaque type de don
+  final Map<int, String> _donationUrls = {
+    0: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/1', // Offrande
+    1: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/6', // Loyer de l'église
+    2: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/5', // Achat du local
+    3: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/4', // Dîme
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: AppTheme.textPrimaryColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Faire un don',
+          style: GoogleFonts.poppins(
+            color: AppTheme.textPrimaryColor,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildBiblicalVerse(),
+            const SizedBox(height: 30),
+            _buildDonationTypes(),
+            const SizedBox(height: 30),
+            _buildPaymentMethods(),
+            const SizedBox(height: 20),
+            if (_showRIB) _buildRIBSection(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBiblicalVerse() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.primaryColor.withOpacity(0.1),
+            const Color(0xFF6366F1).withOpacity(0.1),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppTheme.primaryColor.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.auto_stories,
+                  color: AppTheme.primaryColor,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  'Parole de Dieu',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimaryColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            '"Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie."',
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              height: 1.6,
+              fontStyle: FontStyle.italic,
+              color: AppTheme.textPrimaryColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '2 Corinthiens 9:7',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDonationTypes() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Types de dons',
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: AppTheme.textPrimaryColor,
+          ),
+        ),
+        const SizedBox(height: 16),
+        ...List.generate(_donationTypes.length, (index) {
+          final donation = _donationTypes[index];
+          final isSelected = _selectedDonationType == index;
+          
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: GestureDetector(
+              onTap: () {
+                final donation = _donationTypes[index];
+                final url = _donationUrls[index];
+                
+                if (url != null) {
+                  // Redirection directe vers HelloAsso pour tous les types
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DonationWebViewPage(
+                        donationType: donation.title,
+                        url: url,
+                        icon: donation.icon,
+                        color: donation.color,
+                      ),
+                    ),
+                  );
+                } else {
+                  // Fallback pour les types sans URL
+                  setState(() {
+                    _selectedDonationType = index;
+                  });
+                }
+              },
+              onLongPress: () {
+                final donation = _donationTypes[index];
+                final url = _donationUrls[index];
+                
+                if (url != null) {
+                  // Afficher les options de chargement
+                  _showLoadingOptions(context, donation, url);
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: isSelected ? donation.color.withOpacity(0.1) : AppTheme.surfaceColor,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: isSelected ? donation.color : Colors.grey.withOpacity(0.2),
+                    width: isSelected ? 2 : 1,
+                  ),
+                  boxShadow: isSelected ? [
+                    BoxShadow(
+                      color: donation.color.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ] : [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: donation.color.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        donation.icon,
+                        color: donation.color,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            donation.title,
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.textPrimaryColor,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            donation.description,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: AppTheme.textSecondaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (isSelected)
+                      Icon(
+                        Icons.check_circle,
+                        color: donation.color,
+                        size: 24,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildPaymentMethods() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Moyens de paiement',
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: AppTheme.textPrimaryColor,
+          ),
+        ),
+        const SizedBox(height: 16),
+        _buildPaymentMethodCard(
+          icon: Icons.account_balance,
+          title: 'Virement bancaire',
+          description: 'Virement SEPA gratuit',
+          onTap: () {
+            setState(() {
+              _showRIB = !_showRIB;
+            });
+          },
+        ),
+        const SizedBox(height: 12),
+        _buildPaymentMethodCard(
+          icon: Icons.receipt_long,
+          title: 'Chèque',
+          description: 'À l\'ordre de l\'association',
+          onTap: _showCheckInstructions,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPaymentMethodCard({
+    required IconData icon,
+    required String title,
+    required String description,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.2),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: AppTheme.primaryColor,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: AppTheme.textSecondaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: AppTheme.textSecondaryColor,
+              size: 16,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRIBSection() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppTheme.primaryColor.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.account_balance,
+                color: AppTheme.primaryColor,
+                size: 24,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Informations bancaires',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.textPrimaryColor,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildRIBField('Titulaire du compte', _titulaire),
+          _buildRIBField('IBAN', _iban),
+          _buildRIBField('BIC/SWIFT', _bic),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: _buildActionButton(
+                  'Copier IBAN',
+                  Icons.copy,
+                  () => _copyToClipboard(_iban, 'IBAN copié'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildActionButton(
+                  'Partager',
+                  Icons.share,
+                  _shareRIB,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.blue.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.blue.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: Colors.blue[700],
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Précisez le type de don en commentaire du virement',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      color: Colors.blue[700],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRIBField(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: AppTheme.textSecondaryColor,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: Colors.grey.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Text(
+              value,
+              style: GoogleFonts.robotoMono(
+                fontSize: 14,
+                color: AppTheme.textPrimaryColor,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton(String text, IconData icon, VoidCallback onPressed) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 16),
+      label: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 2,
+        textStyle: GoogleFonts.poppins(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  void _copyToClipboard(String text, String message) {
+    Clipboard.setData(ClipboardData(text: text));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
+
+  void _shareRIB() {
+    final selectedDonation = _donationTypes[_selectedDonationType];
+    final text = '''
+🏛️ Don pour: ${selectedDonation.title}
+Jubilé Tabernacle France
+
+💳 Informations bancaires:
+Titulaire: $_titulaire
+IBAN: $_iban
+BIC: $_bic
+
+📖 "${_getBiblicalVerse()}"
+2 Corinthiens 9:7
+
+Merci pour votre générosité ! 🙏
+''';
+    
+    Share.share(text, subject: 'Informations de don - Jubilé Tabernacle France');
+  }
+
+  void _showCheckInstructions() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.receipt_long,
+                  color: AppTheme.primaryColor,
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Paiement par chèque',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimaryColor,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            _buildCheckInstruction('À l\'ordre de', _titulaire),
+            _buildCheckInstruction('Préciser au dos', _donationTypes[_selectedDonationType].title),
+            _buildCheckInstruction('Envoyer à', 'Adresse de l\'église\n[À compléter avec l\'adresse réelle]'),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Compris',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCheckInstruction(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 6,
+            height: 6,
+            margin: const EdgeInsets.only(top: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.primaryColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: GoogleFonts.inter(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: AppTheme.textSecondaryColor,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: AppTheme.textPrimaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getBiblicalVerse() {
+    return 'Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie.';
+  }
+
+  void _showLoadingOptions(BuildContext context, DonationType donation, String url) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: donation.color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    donation.icon,
+                    color: donation.color,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    'Options de chargement',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            _buildLoadingOption(
+              context,
+              'Chargement normal',
+              'Version complète avec toutes les fonctionnalités',
+              Icons.web,
+              Colors.blue,
+              () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DonationWebViewPage(
+                      donationType: donation.title,
+                      url: url,
+                      icon: donation.icon,
+                      color: donation.color,
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+            _buildLoadingOption(
+              context,
+              'Chargement simplifié',
+              'Version basique si problème de paiement',
+              Icons.speed,
+              Colors.green,
+              () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SimpleDonationWebViewPage(
+                      donationType: donation.title,
+                      url: url,
+                      icon: donation.icon,
+                      color: donation.color,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingOption(
+    BuildContext context,
+    String title,
+    String description,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.2),
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: AppTheme.textSecondaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+              size: 16,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DonationType {
+  final String title;
+  final String description;
+  final IconData icon;
+  final Color color;
+
+  DonationType({
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.color,
+  });
+}

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
-import '../widgets/song_card.dart';
 import 'setlist_form_page.dart';
 import 'song_detail_page.dart';
+import 'setlist_conductor_mode.dart';
+import 'setlist_musician_mode.dart';
 
 /// Page de détail d'une setlist
 class SetlistDetailPage extends StatefulWidget {
@@ -230,6 +231,44 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
               color: Colors.grey[600],
             ),
           ),
+          
+          // Boutons des modes (reproduction exacte de Perfect 13)
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: _songs.isNotEmpty ? _openConductorMode : null,
+                  icon: const Icon(Icons.spatial_audio_off, size: 20),
+                  label: const Text('Mode Conducteur'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: _songs.isNotEmpty ? _openMusicianMode : null,
+                  icon: const Icon(Icons.music_note, size: 20),
+                  label: const Text('Mode Musicien'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amber,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -360,6 +399,24 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
           ),
         );
       },
+    );
+  }
+
+  void _openConductorMode() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SetlistConductorMode(setlist: widget.setlist),
+      ),
+    );
+  }
+
+  void _openMusicianMode() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SetlistMusicianMode(setlist: widget.setlist),
+      ),
     );
   }
 

@@ -14,6 +14,7 @@ import 'services/app_config_firebase_service.dart';
 import 'services/workflow_initialization_service.dart';
 import 'services/push_notification_service.dart';
 import 'services/notification_dev_service.dart';
+import 'services/profile_image_cache_service.dart';
 import 'utils/date_formatter.dart';
 import 'config/locale_config.dart';
 import 'churchflow_splash.dart';
@@ -141,6 +142,9 @@ void _initializeSecondaryServicesAsync() {
   
   // Initialiser les modules
   _initializeModulesAsync();
+  
+  // Initialiser le cache des images de profil
+  _initializeProfileImageCacheAsync();
 }
 
 /// Initialiser la configuration de l'application de manière asynchrone
@@ -174,6 +178,17 @@ void _initializeModulesAsync() async {
     print('✅ Modules supprimés, aucune initialisation nécessaire');
   } catch (e) {
     print('Avertissement: Impossible d\'initialiser les modules: $e');
+  }
+}
+
+/// Initialiser le cache des images de profil de manière asynchrone
+void _initializeProfileImageCacheAsync() async {
+  try {
+    await ProfileImageCacheService.initializeCache().timeout(
+      const Duration(seconds: 10),
+    );
+  } catch (e) {
+    print('Avertissement: Impossible d\'initialiser le cache des images de profil: $e');
   }
 }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../models/branham_message.dart';
+import '../../../models/pepite_or_model.dart';
 import '../../../shared/theme/app_theme.dart';
-import '../services/admin_branham_messages_service.dart';
+import '../../../services/pepite_or_firebase_service.dart';
+import 'pepite_form_dialog.dart';
 
 class AdminTab extends StatefulWidget {
   const AdminTab({Key? key}) : super(key: key);
@@ -12,23 +13,28 @@ class AdminTab extends StatefulWidget {
 }
 
 class _AdminTabState extends State<AdminTab> {
-  List<BranhamMessage> _messages = [];
+  List<PepiteOrModel> _pepites = [];
   bool _isLoading = true;
   String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _loadMessages();
+    _loadPepites();
   }
 
-  Future<void> _loadMessages() async {
+  Future<void> _loadPepites() async {
     setState(() => _isLoading = true);
     
     try {
-      final messages = await AdminBranhamMessagesService.getAllMessages();
+      // Charger les pépites - récupérer toutes les pépites (publiées et non publiées) pour l'admin
+      final pepites = await PepiteOrFirebaseService.obtenirPepitesOrParPage(
+        limite: 1000, // Limite élevée pour récupérer toutes les pépites
+        seulementPubliees: false, // Récupérer toutes les pépites pour l'admin
+      );
+      
       setState(() {
-        _messages = messages;
+        _pepites = pepites;
         _isLoading = false;
       });
     } catch (e) {
@@ -60,305 +66,209 @@ class _AdminTabState extends State<AdminTab> {
           ),
         ),
         child: Column(
-        children: [
-          // Header avec titre et actions
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
+          children: [
+            // Header avec titre
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.auto_awesome,
+                      color: AppTheme.primaryColor,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Pépites d\'Or',
+                          style: GoogleFonts.inter(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                        Text(
+                          'Gérez vos pépites spirituelles',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Container(
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: AppTheme.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
-                        Icons.admin_panel_settings,
+                        Icons.refresh,
                         color: AppTheme.primaryColor,
-                        size: 24,
+                        size: 18,
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Administration',
-                            style: GoogleFonts.inter(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              color: AppTheme.primaryColor,
-                            ),
-                          ),
-                          Text(
-                            'Gérez vos prédications',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      icon: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          Icons.refresh,
-                          color: AppTheme.primaryColor,
-                          size: 18,
-                        ),
-                      ),
-                      onPressed: _loadMessages,
-                      tooltip: 'Actualiser',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                // Barre de recherche
-                TextField(
-                  onChanged: (value) => setState(() => _searchQuery = value),
-                  decoration: InputDecoration(
-                    hintText: 'Rechercher une prédication...',
-                    hintStyle: GoogleFonts.inter(color: Colors.grey.shade500),
-                    prefixIcon: Icon(Icons.search, color: Colors.grey.shade500),
-                    filled: true,
-                    fillColor: Colors.grey.shade100,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    onPressed: _loadPepites,
+                    tooltip: 'Actualiser',
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          // Stats rapides
-          Container(
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+            
+            // Contenu des pépites d'or
+            Expanded(
+              child: _buildPepitesTab(),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    'Total',
-                    '${_messages.length}',
-                    Icons.library_books,
-                    AppTheme.primaryColor,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildStatCard(
-                    'Avec PDF',
-                    '${_messages.where((m) => m.pdfUrl.isNotEmpty).length}',
-                    Icons.picture_as_pdf,
-                    Colors.red,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildStatCard(
-                    'Avec Audio',
-                    '${_messages.where((m) => m.audioUrl.isNotEmpty).length}',
-                    Icons.audiotrack,
-                    Colors.orange,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Liste des prédications
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _filteredMessages.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.inbox_outlined,
-                              size: 64,
-                              color: Colors.grey.shade400,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              _messages.isEmpty 
-                                ? 'Aucune prédication trouvée'
-                                : 'Aucun résultat pour "${_searchQuery}"',
-                              style: GoogleFonts.inter(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              _messages.isEmpty 
-                                ? 'Commencez par ajouter votre première prédication'
-                                : 'Essayez un autre terme de recherche',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                color: Colors.grey.shade500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 100),
-                        itemCount: _filteredMessages.length,
-                        itemBuilder: (context, index) {
-                          final message = _filteredMessages[index];
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(16),
-                              title: Text(
-                                message.title,
-                                style: GoogleFonts.inter(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.primaryColor,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '${message.formattedDate} • ${message.location}',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 13,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      if (message.pdfUrl.isNotEmpty) ...[
-                                        Icon(Icons.picture_as_pdf, size: 14, color: Colors.red),
-                                        const SizedBox(width: 4),
-                                      ],
-                                      if (message.audioUrl.isNotEmpty) ...[
-                                        Icon(Icons.audiotrack, size: 14, color: Colors.orange),
-                                        const SizedBox(width: 4),
-                                      ],
-                                      Text(
-                                        '${message.formattedDuration}',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              trailing: PopupMenuButton<String>(
-                                onSelected: (value) {
-                                  if (value == 'delete') {
-                                    _deleteMessage(message.id);
-                                  } else if (value == 'edit') {
-                                    _showEditDialog(message);
-                                  }
-                                },
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(
-                                    value: 'edit',
-                                    child: ListTile(
-                                      leading: Icon(Icons.edit, color: Colors.blue),
-                                      title: Text('Modifier'),
-                                      dense: true,
-                                    ),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 'delete',
-                                    child: ListTile(
-                                      leading: Icon(Icons.delete, color: Colors.red),
-                                      title: Text('Supprimer', style: TextStyle(color: Colors.red)),
-                                      dense: true,
-                                    ),
-                                  ),
-                                ],
-                                child: const Icon(Icons.more_vert),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
+  Widget _buildPepitesTab() {
+    final filteredPepites = _getFilteredPepites();
+    
+    return Column(
+      children: [
+        // Barre de recherche et statistiques
+        Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+          child: Column(
+            children: [
+              // Barre de recherche
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Rechercher une pépite d\'or...',
+                  prefixIcon: Icon(Icons.search, color: AppTheme.primaryColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppTheme.primaryColor),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey.shade50,
+                ),
+                onChanged: (value) {
+                  setState(() => _searchQuery = value);
+                },
+              ),
+              const SizedBox(height: 16),
+              
+              // Statistiques
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildStatCard(
+                      'Total',
+                      '${_pepites.length}',
+                      Icons.auto_awesome,
+                      AppTheme.primaryColor,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildStatCard(
+                      'Publiées',
+                      '${_pepites.where((p) => p.estPubliee).length}',
+                      Icons.visibility,
+                      Colors.green,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildStatCard(
+                      'En attente',
+                      '${_pepites.where((p) => !p.estPubliee).length}',
+                      Icons.edit,
+                      Colors.orange,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        
+        // Bouton d'ajout
+        Container(
+          margin: const EdgeInsets.all(16),
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: () => _showPepiteDialog(),
+            icon: const Icon(Icons.add),
+            label: const Text('Nouvelle Pépite d\'Or'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ),
+        
+        // Liste des pépites
+        Expanded(
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _buildPepitesList(filteredPepites),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(height: 4),
+          Icon(icon, size: 24, color: color),
+          const SizedBox(height: 8),
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
               color: color,
             ),
           ),
           Text(
-            label,
+            title,
             style: GoogleFonts.inter(
-              fontSize: 11,
-              color: Colors.grey.shade600,
+              fontSize: 12,
+              color: Colors.grey[600],
             ),
           ),
         ],
@@ -366,21 +276,243 @@ class _AdminTabState extends State<AdminTab> {
     );
   }
 
-  List<BranhamMessage> get _filteredMessages {
-    if (_searchQuery.isEmpty) return _messages;
+  Widget _buildPepitesList(List<PepiteOrModel> pepites) {
+    if (pepites.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.auto_awesome_outlined,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              _searchQuery.isEmpty 
+                  ? 'Aucune pépite d\'or trouvée'
+                  : 'Aucun résultat pour "$_searchQuery"',
+              style: GoogleFonts.inter(
+                fontSize: 18,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Commencez par créer votre première pépite spirituelle',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: Colors.grey[500],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: pepites.length,
+      itemBuilder: (context, index) {
+        return _buildPepiteCard(pepites[index]);
+      },
+    );
+  }
+
+  Widget _buildPepiteCard(PepiteOrModel pepite) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => _showPepiteDialog(pepite),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      pepite.theme,
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.primaryColor,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: pepite.estPubliee ? Colors.green : Colors.orange,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      pepite.estPubliee ? 'Publiée' : 'Brouillon',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'edit':
+                          _showPepiteDialog(pepite);
+                          break;
+                        case 'toggle':
+                          _togglePepitePublication(pepite);
+                          break;
+                        case 'delete':
+                          _deletePepite(pepite.id);
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'edit',
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit, size: 18),
+                            SizedBox(width: 8),
+                            Text('Modifier'),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 'toggle',
+                        child: Row(
+                          children: [
+                            Icon(
+                              pepite.estPubliee ? Icons.unpublished : Icons.publish,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(pepite.estPubliee ? 'Dépublier' : 'Publier'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete, size: 18, color: Colors.red),
+                            SizedBox(width: 8),
+                            Text('Supprimer', style: TextStyle(color: Colors.red)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                pepite.description,
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                  height: 1.4,
+                ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Icon(Icons.person, size: 14, color: Colors.grey[500]),
+                  const SizedBox(width: 4),
+                  Text(
+                    pepite.nomAuteur,
+                    style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                  if (pepite.tags.isNotEmpty) ...[
+                    const SizedBox(width: 16),
+                    Icon(Icons.label, size: 14, color: Colors.grey[500]),
+                    const SizedBox(width: 4),
+                    Text(
+                      pepite.tags.take(2).join(', '),
+                      style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<PepiteOrModel> _getFilteredPepites() {
+    if (_searchQuery.isEmpty) return _pepites;
     
-    return _messages.where((message) {
-      return message.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-             message.location.toLowerCase().contains(_searchQuery.toLowerCase());
+    return _pepites.where((pepite) {
+      return pepite.theme.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+             pepite.description.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+             pepite.nomAuteur.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+             pepite.tags.any((tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()));
     }).toList();
   }
 
-  Future<void> _deleteMessage(String id) async {
-    final bool confirmed = await showDialog(
+  void _showPepiteDialog([PepiteOrModel? pepite]) {
+    showDialog(
+      context: context,
+      builder: (context) => PepiteFormDialog(
+        pepite: pepite,
+      ),
+    ).then((_) => _loadPepites()); // Recharger après fermeture du dialog
+  }
+
+  Future<void> _togglePepitePublication(PepiteOrModel pepite) async {
+    try {
+      final updatedPepite = pepite.copyWith(estPubliee: !pepite.estPubliee);
+      await PepiteOrFirebaseService.modifierPepiteOr(updatedPepite);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              pepite.estPubliee 
+                  ? 'Pépite dépubliée avec succès' 
+                  : 'Pépite publiée avec succès'
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+      
+      _loadPepites(); // Recharger les données
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de la publication: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _deletePepite(String pepiteId) async {
+    final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirmer la suppression'),
-        content: const Text('Êtes-vous sûr de vouloir supprimer cette prédication ?'),
+        content: const Text(
+          'Êtes-vous sûr de vouloir supprimer cette pépite d\'or ? '
+          'Cette action est irréversible.'
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -393,189 +525,32 @@ class _AdminTabState extends State<AdminTab> {
           ),
         ],
       ),
-    ) ?? false;
+    );
 
-    if (confirmed) {
-      final success = await AdminBranhamMessagesService.deleteMessage(id);
-      if (success) {
-        _loadMessages();
+    if (confirmed == true) {
+      try {
+        await PepiteOrFirebaseService.supprimerPepiteOr(pepiteId);
+        
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Prédication supprimée avec succès'),
+              content: Text('Pépite supprimée avec succès'),
               backgroundColor: Colors.green,
+            ),
+          );
+        }
+        
+        _loadPepites(); // Recharger les données
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur lors de la suppression: $e'),
+              backgroundColor: Colors.red,
             ),
           );
         }
       }
     }
-  }
-
-  void _showAddDialog() {
-    _showAddEditDialog();
-  }
-
-  void _showEditDialog(BranhamMessage message) {
-    _showAddEditDialog(message: message);
-  }
-
-  void _showAddEditDialog({BranhamMessage? message}) {
-    final isEditing = message != null;
-    final titleController = TextEditingController(text: message?.title ?? '');
-    final locationController = TextEditingController(text: message?.location ?? '');
-    final pdfUrlController = TextEditingController(text: message?.pdfUrl ?? '');
-    final audioUrlController = TextEditingController(text: message?.audioUrl ?? '');
-    
-    DateTime selectedDate = message?.publishDate ?? DateTime.now();
-    int durationMinutes = message?.durationMinutes ?? 90;
-
-    showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: Text(isEditing ? 'Modifier la prédication' : 'Ajouter une prédication'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Titre *',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: locationController,
-                    decoration: const InputDecoration(
-                      labelText: 'Lieu *',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  InkWell(
-                    onTap: () async {
-                      final date = await showDatePicker(
-                        context: context,
-                        initialDate: selectedDate,
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),
-                      );
-                      if (date != null) {
-                        setState(() => selectedDate = date);
-                      }
-                    },
-                    child: InputDecorator(
-                      decoration: const InputDecoration(
-                        labelText: 'Date',
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(Icons.calendar_today),
-                      ),
-                      child: Text('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Durée: ${durationMinutes ~/ 60}h ${durationMinutes % 60}min'),
-                      Slider(
-                        value: durationMinutes.toDouble(),
-                        min: 15,
-                        max: 240,
-                        divisions: 45,
-                        onChanged: (value) => setState(() => durationMinutes = value.round()),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: pdfUrlController,
-                    decoration: const InputDecoration(
-                      labelText: 'Lien PDF',
-                      border: OutlineInputBorder(),
-                      hintText: 'https://exemple.com/document.pdf',
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: audioUrlController,
-                    decoration: const InputDecoration(
-                      labelText: 'Lien Audio',
-                      border: OutlineInputBorder(),
-                      hintText: 'https://exemple.com/audio.mp3',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Annuler'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (titleController.text.trim().isEmpty ||
-                    locationController.text.trim().isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Veuillez remplir tous les champs obligatoires (*)'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                  return;
-                }
-
-                final messageData = BranhamMessage(
-                  id: message?.id ?? '',
-                  title: titleController.text.trim(),
-                  date: '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-                  location: locationController.text.trim(),
-                  durationMinutes: durationMinutes,
-                  pdfUrl: pdfUrlController.text.trim(),
-                  audioUrl: audioUrlController.text.trim(),
-                  streamUrl: audioUrlController.text.trim(),
-                  language: 'Français',
-                  publishDate: selectedDate,
-                  series: ['Messages de William Branham'],
-                );
-
-                bool success;
-                if (isEditing) {
-                  success = await AdminBranhamMessagesService.updateMessage(message.id, messageData);
-                } else {
-                  final id = await AdminBranhamMessagesService.addMessage(messageData);
-                  success = id != null;
-                }
-
-                if (success) {
-                  Navigator.of(context).pop();
-                  _loadMessages();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(isEditing ? 'Prédication modifiée avec succès' : 'Prédication ajoutée avec succès'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(isEditing ? 'Erreur lors de la modification' : 'Erreur lors de l\'ajout'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
-              child: Text(isEditing ? 'Modifier' : 'Ajouter'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

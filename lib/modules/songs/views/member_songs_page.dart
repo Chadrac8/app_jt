@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
-import '../../../widgets/song_card.dart';
+import '../widgets/setlists_tab_perfect13.dart';
+import '../widgets/songs_tab_perfect13.dart';
+import '../../../widgets/song_card_perfect13.dart';
 import '../../../widgets/song_search_filter_bar.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
@@ -25,7 +27,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this); // 3 onglets maintenant
   }
 
   @override
@@ -42,8 +44,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
-            Tab(icon: Icon(Icons.whatshot), text: 'Populaires'),
-            Tab(icon: Icon(Icons.access_time), text: 'Récents'),
+            Tab(icon: Icon(Icons.library_music), text: 'Chants'),
             Tab(icon: Icon(Icons.favorite), text: 'Favoris'),
             Tab(icon: Icon(Icons.playlist_play), text: 'Setlists'),
           ],
@@ -83,124 +84,14 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildPopularSongsTab(),
-                _buildRecentSongsTab(),
+                const SongsTabPerfect13(), // Onglet Chants - reproduction exacte de Perfect 13
                 _buildFavoriteSongsTab(),
-                _buildSetlistsTab(),
+                const SetlistsTabPerfect13(), // Reproduction exacte de Perfect 13
               ],
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildPopularSongsTab() {
-    return StreamBuilder<List<SongModel>>(
-      stream: SongsFirebaseService.getPopularSongs(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
-                const SizedBox(height: 16),
-                Text('Erreur: ${snapshot.error}'),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => setState(() {}),
-                  child: const Text('Réessayer'),
-                ),
-              ],
-            ),
-          );
-        }
-
-        final songs = _filterSongs(snapshot.data ?? []);
-
-        if (songs.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.music_off, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'Aucun chant populaire trouvé',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
-                ),
-              ],
-            ),
-          );
-        }
-
-        return ListView.builder(
-          itemCount: songs.length,
-          itemBuilder: (context, index) {
-            return SongCard(
-              song: songs[index],
-              onTap: () => _showSongDetails(songs[index]),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildRecentSongsTab() {
-    return StreamBuilder<List<SongModel>>(
-      stream: SongsFirebaseService.getRecentSongs(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
-                const SizedBox(height: 16),
-                Text('Erreur: ${snapshot.error}'),
-              ],
-            ),
-          );
-        }
-
-        final songs = _filterSongs(snapshot.data ?? []);
-
-        if (songs.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.music_off, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'Aucun chant récent trouvé',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
-                ),
-              ],
-            ),
-          );
-        }
-
-        return ListView.builder(
-          itemCount: songs.length,
-          itemBuilder: (context, index) {
-            return SongCard(
-              song: songs[index],
-              onTap: () => _showSongDetails(songs[index]),
-            );
-          },
-        );
-      },
     );
   }
 
@@ -250,87 +141,18 @@ class _MemberSongsPageState extends State<MemberSongsPage>
         }
 
         return ListView.builder(
+          padding: const EdgeInsets.all(16),
           itemCount: songs.length,
           itemBuilder: (context, index) {
-            return SongCard(
-              song: songs[index],
-              onTap: () => _showSongDetails(songs[index]),
+            final song = songs[index];
+            return SongCardPerfect13(
+              song: song,
+              songNumber: _getSongNumber(song, songs),
+              onTap: () => _showSongDetails(song),
             );
           },
         );
       },
-    );
-  }
-
-  Widget _buildSetlistsTab() {
-    return StreamBuilder<List<SetlistModel>>(
-      stream: SongsFirebaseService.getSetlists(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
-                const SizedBox(height: 16),
-                Text('Erreur: ${snapshot.error}'),
-              ],
-            ),
-          );
-        }
-
-        final setlists = snapshot.data ?? [];
-
-        if (setlists.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.playlist_play, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'Aucune setlist disponible',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
-                ),
-              ],
-            ),
-          );
-        }
-
-        return ListView.builder(
-          itemCount: setlists.length,
-          itemBuilder: (context, index) {
-            return _buildSetlistCard(setlists[index]);
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildSetlistCard(SetlistModel setlist) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        leading: const Icon(Icons.playlist_play),
-        title: Text(setlist.name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (setlist.description.isNotEmpty) Text(setlist.description),
-            const SizedBox(height: 4),
-            Text(
-              'Service du ${_formatDate(setlist.serviceDate)} • ${setlist.songIds.length} chants',
-              style: const TextStyle(fontSize: 12),
-            ),
-          ],
-        ),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => _showSetlistDetails(setlist),
-      ),
     );
   }
 
@@ -454,103 +276,17 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     );
   }
 
-  void _showSetlistDetails(SetlistModel setlist) async {
-    final songs = await SongsFirebaseService.getSetlistSongs(setlist.songIds);
+  /// Calcule le numéro d'un chant basé sur l'ordre alphabétique
+  int _getSongNumber(SongModel song, List<SongModel> allSongs) {
+    // Trier par titre pour la numérotation alphabétique
+    final sortedSongs = List<SongModel>.from(allSongs);
+    sortedSongs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
     
-    if (!mounted) return;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.8,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        expand: false,
-        builder: (context, scrollController) => Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            children: [
-              // Poignée de déplacement
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).dividerColor,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              
-              // En-tête
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            setlist.name,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    ),
-                    if (setlist.description.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Text(setlist.description),
-                    ],
-                    const SizedBox(height: 8),
-                    Text(
-                      'Service du ${_formatDate(setlist.serviceDate)} • ${songs.length} chants',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-              
-              const Divider(),
-              
-              // Liste des chants
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: songs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        child: Text('${index + 1}'),
-                      ),
-                      title: Text(songs[index].title),
-                      subtitle: Text('${songs[index].authors} • ${songs[index].originalKey}'),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () {
-                        Navigator.pop(context);
-                        _showSongDetails(songs[index]);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+    for (int i = 0; i < sortedSongs.length; i++) {
+      if (sortedSongs[i].id == song.id) {
+        return i + 1;
+      }
+    }
+    return 0;
   }
 }

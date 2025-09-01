@@ -4,6 +4,7 @@ import '../models/person_model.dart';
 import '../services/services_firebase_service.dart';
 import '../services/firebase_service.dart';
 import '../theme.dart';
+import '../widgets/user_avatar.dart';
 
 class ServiceAssignmentsList extends StatefulWidget {
   final ServiceModel service;
@@ -543,34 +544,9 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
       child: Row(
         children: [
           // Person avatar
-          CircleAvatar(
+          UserAvatar(
+            person: person,
             radius: 20,
-            backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-            child: person.profileImageUrl != null
-                ? ClipOval(
-                    child: Image.network(
-                      person.profileImageUrl!,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Text(
-                          person.displayInitials,
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                : Text(
-                    person.displayInitials,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
           ),
           const SizedBox(width: 12),
           
@@ -828,33 +804,9 @@ class _PersonSelectionDialogState extends State<_PersonSelectionDialog> {
                   final person = filteredPersons[index];
                   
                   return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                      child: person.profileImageUrl != null
-                          ? ClipOval(
-                              child: Image.network(
-                                person.profileImageUrl!,
-                                width: 40,
-                                height: 40,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Text(
-                                    person.displayInitials,
-                                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                      color: Theme.of(context).colorScheme.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                          : Text(
-                              person.displayInitials,
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                    leading: UserAvatar(
+                      person: person,
+                      radius: 20,
                     ),
                     title: Text(person.fullName),
                     subtitle: Text(person.email),

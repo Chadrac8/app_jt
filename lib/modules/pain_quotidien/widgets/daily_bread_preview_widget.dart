@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../shared/theme/app_theme.dart';
-import '../services/daily_bread_service.dart';
-import '../models/daily_bread_model.dart';
+import '../services/branham_scraping_service.dart';
 import '../views/daily_bread_page.dart';
 
 /// Widget d'aperçu du pain quotidien pour la page d'accueil
@@ -13,9 +12,8 @@ class DailyBreadPreviewWidget extends StatefulWidget {
 }
 
 class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
-  DailyBreadModel? _dailyBread;
+  BranhamQuoteModel? _dailyQuote;
   bool _isLoading = true;
-  bool _hasInitialized = false; // Pour éviter les appels multiples
 
   @override
   void initState() {
@@ -24,15 +22,11 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
   }
 
   Future<void> _loadDailyContent() async {
-    // Éviter les appels multiples
-    if (_hasInitialized) return;
-    _hasInitialized = true;
-    
     try {
-      final bread = await DailyBreadService.instance.getTodayDailyBread();
+      final quote = await BranhamScrapingService.instance.getQuoteOfTheDay();
       if (mounted) {
         setState(() {
-          _dailyBread = bread;
+          _dailyQuote = quote;
           _isLoading = false;
         });
       }
@@ -46,10 +40,10 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
   }
 
   String _getPreviewText() {
-    if (_dailyBread == null) return '';
+    if (_dailyQuote == null) return '';
     
     // Prendre les 2 premières lignes du pain quotidien (verset biblique)
-    final lines = _dailyBread!.dailyBread
+    final lines = _dailyQuote!.dailyBread
         .split('\n')
         .where((line) => line.trim().isNotEmpty)
         .take(2)
@@ -61,7 +55,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
   void _navigateToDailyBreadPage() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => DailyBreadPage(initialBread: _dailyBread),
+        builder: (context) => DailyBreadPage(initialQuote: _dailyQuote),
       ),
     );
   }
@@ -238,7 +232,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                   ),
                 ),
               )
-            else if (_dailyBread != null && _dailyBread!.dailyBread.isNotEmpty)
+            else if (_dailyQuote != null && _dailyQuote!.dailyBread.isNotEmpty)
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -293,7 +287,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         maxLines: 2, // Limite à 2 lignes
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (_dailyBread!.dailyBreadReference.isNotEmpty) ...[
+                      if (_dailyQuote!.dailyBreadReference.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -307,7 +301,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            _dailyBread!.dailyBreadReference,
+                            _dailyQuote!.dailyBreadReference,
                             style: const TextStyle(
                               color: AppTheme.surfaceColor,
                               fontSize: 13,

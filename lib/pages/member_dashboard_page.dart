@@ -8,6 +8,7 @@ import '../services/home_config_service.dart';
 import '../widgets/latest_sermon_widget.dart';
 import '../modules/offrandes/widgets/offrandes_widget.dart';
 import '../widgets/home_widget_renderer.dart';
+import 'donations_page.dart';
 import '../modules/pain_quotidien/widgets/daily_bread_preview_widget.dart';
 import '../pages/church_info_page.dart';
 import '../pages/prayer_wall_page.dart';
@@ -21,6 +22,8 @@ import '../services/events_firebase_service.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
+import 'member_events_page.dart';
+import 'member_event_detail_page.dart';
 
 class MemberDashboardPage extends StatefulWidget {
   const MemberDashboardPage({super.key});
@@ -238,9 +241,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
 
   Widget _buildSliverAppBar(HomeConfigModel config) {
     return SliverAppBar(
-      expandedHeight: 280,
+      expandedHeight: 230,
       floating: false,
-      pinned: true,
+      pinned: false,
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.surface,
       flexibleSpace: FlexibleSpaceBar(
@@ -899,8 +902,13 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigation vers la page complète des événements
-                      Navigator.pushNamed(context, '/events');
+                      // Navigation vers la page des événements pour les membres
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MemberEventsPage(),
+                        ),
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -992,7 +1000,18 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
               // Liste des événements
               ...events.map((event) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: _buildEventCardFromEventModel(event),
+                child: GestureDetector(
+                  onTap: () {
+                    // Navigation vers la vue membre de détail de l'événement
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MemberEventDetailPage(event: event),
+                      ),
+                    );
+                  },
+                  child: _buildEventCardFromEventModel(event),
+                ),
               )).toList(),
           ],
         );
@@ -1445,8 +1464,11 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
   }
 
   void _showDonations() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Dons - Fonctionnalité bientôt disponible')),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DonationsPage(),
+      ),
     );
   }
 

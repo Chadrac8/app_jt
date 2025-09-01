@@ -13,6 +13,7 @@ import '../auth/auth_service.dart';
 import '../theme.dart';
 import '../widgets/custom_page_app_bar.dart';
 import '../widgets/admin_navigation_wrapper.dart';
+import '../widgets/user_avatar.dart';
 import '../extensions/datetime_extensions.dart';
 
 import '../image_upload.dart';
@@ -230,14 +231,18 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   Future<void> _pickProfileImage() async {
     try {
       final imageBytes = await ImageUploadHelper.pickImageFromGallery();
+      
       if (imageBytes != null) {
         // Sauvegarder l'ancienne URL pour la supprimer après upload réussi
         final oldImageUrl = _profileImageUrl;
         
-        // Upload to Firebase Storage instead of storing as base64
+        // Obtenir l'ID de l'utilisateur actuel pour respecter les règles de sécurité Firebase
+        final userId = _currentPerson?.id ?? 'unknown';
+        
+        // Upload to Firebase Storage avec le bon chemin selon les règles de sécurité
         final imageUrl = await ImageStorage.ImageStorageService.uploadImage(
           imageBytes,
-          customPath: 'profiles/${DateTime.now().millisecondsSinceEpoch}.jpg',
+          customPath: 'profiles/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg',
         );
         
         if (imageUrl != null) {
@@ -245,6 +250,25 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             _profileImageUrl = imageUrl;
             _hasImageChanged = true;
           });
+          
+          // Sauvegarder automatiquement l'image de profil mise à jour
+          if (_currentPerson != null) {
+            try {
+              final updatedPerson = _currentPerson!.copyWith(
+                profileImageUrl: imageUrl,
+                updatedAt: DateTime.now(),
+              );
+              
+              await AuthService.updateCurrentUserProfile(updatedPerson);
+              
+              setState(() {
+                _currentPerson = updatedPerson;
+                _hasImageChanged = false;
+              });
+            } catch (e) {
+              print('Erreur lors de la sauvegarde: $e');
+            }
+          }
           
           // Supprimer l'ancienne image si elle existe et est stockée sur Firebase
           if (oldImageUrl != null && 
@@ -257,7 +281,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('Image de profil mise à jour avec succès'),
-                backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: AppTheme.successColor,
               ),
             );
           }
@@ -270,6 +294,338 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la sélection de l\'image : $e'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _showFamilyManagementDialog() async {
+    final choice = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Row(
+            children: [
+              Icon(
+                Icons.family_restroom,
+                color: AppTheme.primaryColor,
+              ),
+              const SizedBox(width: 8),
+              const Text('Gestion de famille'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Que souhaitez-vous faire ?',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => Navigator.pop(context, 'create'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Créer\nune famille'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryColor,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => Navigator.pop(context, 'join'),
+                      icon: const Icon(Icons.group_add),
+                      label: const Text('Rejoindre\nune famille'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppTheme.primaryColor,
+                        side: BorderSide(color: AppTheme.primaryColor),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (choice == 'create') {
+      await _createFamily();
+    } else if (choice == 'join') {
+      await _joinFamily();
+    }
+  }
+
+  Future<void> _createFamily() async {
+    final nameController = TextEditingController();
+    final addressController = TextEditingController();
+    final phoneController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Row(
+            children: [
+              Icon(
+                Icons.family_restroom,
+                color: AppTheme.primaryColor,
+              ),
+              const SizedBox(width: 8),
+              const Text('Créer une famille'),
+            ],
+          ),
+          content: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Nom de famille',
+                      hintText: 'ex: Famille Martin',
+                      prefixIcon: const Icon(Icons.home),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Le nom de famille est requis';
+                      }
+                      return null;
+                    },
+                    autofocus: true,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: addressController,
+                    decoration: InputDecoration(
+                      labelText: 'Adresse familiale (optionnel)',
+                      prefixIcon: const Icon(Icons.location_on),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    maxLines: 2,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                      labelText: 'Téléphone familial (optionnel)',
+                      prefixIcon: const Icon(Icons.phone),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    keyboardType: TextInputType.phone,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (formKey.currentState?.validate() == true) {
+                  Navigator.pop(context, true);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Créer'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true && _currentPerson != null) {
+      try {
+        final newFamily = FamilyModel(
+          id: '',
+          name: nameController.text.trim(),
+          address: addressController.text.trim().isEmpty ? null : addressController.text.trim(),
+          homePhone: phoneController.text.trim().isEmpty ? null : phoneController.text.trim(),
+          headOfFamilyId: _currentPerson!.id,
+          memberIds: [_currentPerson!.id],
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+
+        final familyId = await FirebaseService.createFamily(newFamily);
+        
+        // Mettre à jour la personne avec l'ID de famille
+        final updatedPerson = _currentPerson!.copyWith(
+          familyId: familyId,
+          updatedAt: DateTime.now(),
+        );
+        
+        await AuthService.updateCurrentUserProfile(updatedPerson);
+        
+        // Recharger les données
+        await _loadPersonData();
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Famille "${nameController.text.trim()}" créée avec succès'),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur lors de la création de la famille : $e'),
+              backgroundColor: AppTheme.errorColor,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> _joinFamily() async {
+    try {
+      final families = await FirebaseService.getFamiliesStream().first;
+      
+      if (!mounted) return;
+
+      final selectedFamily = await showDialog<FamilyModel>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            title: Row(
+              children: [
+                Icon(
+                  Icons.people,
+                  color: AppTheme.primaryColor,
+                ),
+                const SizedBox(width: 8),
+                const Text('Rejoindre une famille'),
+              ],
+            ),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: families.isEmpty
+                  ? const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.family_restroom, size: 64, color: Colors.grey),
+                        SizedBox(height: 16),
+                        Text('Aucune famille disponible'),
+                        SizedBox(height: 8),
+                        Text(
+                          'Demandez à un membre de votre famille de créer une famille d\'abord.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: families.length,
+                      itemBuilder: (context, index) {
+                        final family = families[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+                              child: Icon(
+                                Icons.home,
+                                color: AppTheme.primaryColor,
+                              ),
+                            ),
+                            title: Text(
+                              family.name,
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${family.memberIds.length} membre(s)'),
+                                if (family.address != null)
+                                  Text(
+                                    family.address!,
+                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                              ],
+                            ),
+                            onTap: () => Navigator.pop(context, family),
+                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Annuler'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (selectedFamily != null && _currentPerson != null) {
+        await FirebaseService.addPersonToFamily(_currentPerson!.id, selectedFamily.id);
+        
+        // Recharger les données
+        await _loadPersonData();
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Vous avez rejoint la famille "${selectedFamily.name}"'),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de la tentative de rejoindre la famille : $e'),
             backgroundColor: AppTheme.errorColor,
           ),
         );
@@ -368,18 +724,20 @@ class _MemberProfilePageState extends State<MemberProfilePage>
 
   Widget _buildSliverAppBar() {
     return SliverAppBar(
-      expandedHeight: 300,
+      expandedHeight: 320,
       floating: false,
       pinned: true,
       backgroundColor: AppTheme.primaryColor,
       flexibleSpace: FlexibleSpaceBar(
-        title: Text(
-          _currentPerson?.fullName ?? 'Mon Profil',
-          style: const TextStyle(
+        title: const Text(
+          'Mon Profil',
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
+        titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
         background: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -394,27 +752,75 @@ class _MemberProfilePageState extends State<MemberProfilePage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
               _buildProfileImage(),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               if (_currentPerson != null) ...[
-                Text(
-                  _currentPerson!.fullName,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    _currentPerson!.fullName,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                if (_currentPerson!.roles.isNotEmpty)
-                  Text(
-                    _currentPerson!.roles.join(', '),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    _currentPerson!.email,
                     style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                if (_currentPerson!.roles.isNotEmpty) ...[
+                  const SizedBox(height: 15),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      alignment: WrapAlignment.center,
+                      children: _currentPerson!.roles.map((role) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            role,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
+                ],
               ],
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -451,86 +857,10 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   }
 
   Widget _buildProfileImage() {
-    return GestureDetector(
-      onTap: _isEditing ? _pickProfileImage : null,
-      child: Stack(
-        children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 4),
-            ),
-            child: ClipOval(
-              child: _profileImageUrl != null
-                  ? _profileImageUrl!.startsWith('data:image')
-                      ? Image.memory(
-                          base64Decode(_profileImageUrl!.split(',')[1]),
-                          fit: BoxFit.cover,
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: _profileImageUrl!,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => _buildLoadingAvatar(),
-                          errorWidget: (context, url, error) => _buildFallbackAvatar(),
-                        )
-                  : _buildFallbackAvatar(),
-            ),
-          ),
-          if (_isEditing)
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: AppTheme.secondaryColor,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.camera_alt,
-                  size: 20,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoadingAvatar() {
-    return Container(
-      color: Colors.grey[300],
-      child: const Center(
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-    );
-  }
-
-  Widget _buildFallbackAvatar() {
-    final imageUrl = "https://pixabay.com/get/g8cb3b659d777c09fd00c1d7e509aef546a737b01cee4f68ec7f96b1e4aa41adb2c02b43e07c4925a29e8bd1caab2dcec26e6b295487ed037e490a7581a75f3ea_1280.jpg";
-
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      fit: BoxFit.cover,
-      placeholder: (context, url) => Container(
-        color: AppTheme.primaryColor.withOpacity(0.3),
-        child: const Icon(
-          Icons.person,
-          size: 60,
-          color: Colors.white,
-        ),
-      ),
-      errorWidget: (context, url, error) => Container(
-        color: AppTheme.primaryColor.withOpacity(0.3),
-        child: const Icon(
-          Icons.person,
-          size: 60,
-          color: Colors.white,
-        ),
-      ),
+    return ProfileUserAvatar(
+      person: _currentPerson,
+      isEditable: true,
+      onTap: _pickProfileImage,
     );
   }
 
@@ -660,11 +990,17 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Implémenter création/rejoindre famille
-                  },
+                  onPressed: _showFamilyManagementDialog,
                   icon: const Icon(Icons.add),
                   label: const Text('Créer ou rejoindre une famille'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/app_config_model.dart';
+import '../widgets/user_avatar.dart';
 
 import '../models/person_model.dart';
 import '../services/app_config_firebase_service.dart';
@@ -26,7 +26,6 @@ import '../pages/member_notifications_page.dart';
 import '../pages/member_settings_page.dart';
 import '../pages/member_pages_view.dart';
 import '../pages/member_appointments_page.dart';
-import '../utils/token_cleanup_script.dart';
 import '../pages/member_profile_page.dart';
 import '../pages/member_prayer_wall_page.dart';
 import '../modules/songs/views/member_songs_page.dart';
@@ -175,8 +174,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         return const MemberNotificationsPage();
       case 'settings':
         return const MemberSettingsPage();
-      case 'debug_notifications':
-        return const TokenCleanupWidget();
       case 'pages':
         return const MemberPagesView();
       case 'dynamic_lists':
@@ -856,18 +853,9 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         // Icône Mon profil
         IconButton(
           onPressed: _showProfileMenu,
-          icon: CircleAvatar(
-            radius: 16,
-            backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
-            child: _currentUser?.profileImageUrl != null
-                ? ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: _currentUser!.profileImageUrl!,
-                      width: 32,
-                      height: 32,
-                    ),
-                  )
-                : Icon(Icons.person, color: AppTheme.primaryColor),
+          icon: NavigationUserAvatar(
+            person: _currentUser,
+            onTap: _showProfileMenu,
           ),
         ),
       ],
@@ -1157,33 +1145,11 @@ class _ProfileMenuSheet extends StatelessWidget {
               child: Row(
                 children: [
                   // Photo de profil
-                  CircleAvatar(
+                  UserAvatar(
+                    person: currentUser,
                     radius: 30,
-                    backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
-                    child: currentUser?.profileImageUrl != null
-                        ? ClipOval(
-                            child: CachedNetworkImage(
-                              imageUrl: currentUser!.profileImageUrl!,
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Icon(
-                                Icons.person,
-                                color: AppTheme.primaryColor,
-                                size: 30,
-                              ),
-                              errorWidget: (context, url, error) => Icon(
-                                Icons.person,
-                                color: AppTheme.primaryColor,
-                                size: 30,
-                              ),
-                            ),
-                          )
-                        : Icon(
-                            Icons.person,
-                            color: AppTheme.primaryColor,
-                            size: 30,
-                          ),
+                    showBorder: true,
+                    borderColor: AppTheme.primaryColor.withOpacity(0.2),
                   ),
                   const SizedBox(width: 16),
                   
@@ -1297,12 +1263,6 @@ class _ProfileMenuSheet extends StatelessWidget {
         'subtitle': 'Configuration de l\'application',
         'icon': Icons.settings_outlined,
         'action': () => onNavigate('settings'),
-      },
-      {
-        'title': '🔧 Debug Notifications',
-        'subtitle': 'Diagnostic et nettoyage des tokens FCM',
-        'icon': Icons.bug_report_outlined,
-        'action': () => onNavigate('debug_notifications'),
       },
     ];
 

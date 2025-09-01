@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/person_model.dart';
+import 'profile_image_cache_service.dart';
 
 class UserProfileService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -87,11 +88,44 @@ class UserProfileService {
     }
 
     try {
+      // Mettre à jour Firestore
       await _firestore.collection(personsCollection).doc(person.id).update({
         ...person.toFirestore(),
         'updatedAt': FieldValue.serverTimestamp(),
         'lastModifiedBy': currentUser.uid,
       });
+
+      // Mettre à jour Firebase Auth si l'image de profil ou le nom a changé
+      bool needsAuthUpdate = false;
+      final Map<String, String?> authUpdates = {};
+
+      // Vérifier si l'image de profil a changé
+      if (person.profileImageUrl != currentUser.photoURL) {
+        authUpdates['photoURL'] = person.profileImageUrl;
+        needsAuthUpdate = true;
+      }
+
+      // Vérifier si le nom complet a changé
+      if (person.fullName != currentUser.displayName) {
+        authUpdates['displayName'] = person.fullName;
+        needsAuthUpdate = true;
+      }
+
+      // Effectuer la mise à jour Firebase Auth si nécessaire
+      if (needsAuthUpdate) {
+        await currentUser.updateDisplayName(authUpdates['displayName']);
+        if (authUpdates['photoURL'] != null) {
+          await currentUser.updatePhotoURL(authUpdates['photoURL']);
+        }
+        
+        // Recharger les données utilisateur pour synchroniser
+        await currentUser.reload();
+      }
+
+      // Mettre à jour le cache local de l'image de profil
+      if (person.profileImageUrl != null) {
+        await ProfileImageCacheService.cacheProfileImageUrl(person.id, person.profileImageUrl!);
+      }
     } catch (e) {
       throw Exception('Erreur lors de la mise à jour du profil: $e');
     }

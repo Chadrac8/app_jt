@@ -146,7 +146,6 @@ class _PrayerWallTabState extends State<PrayerWallTab>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FE), // Fond moderne
       body: RefreshIndicator(
         onRefresh: _loadPrayers,
         color: const Color(0xFF6B73FF),
@@ -155,18 +154,23 @@ class _PrayerWallTabState extends State<PrayerWallTab>
           slivers: [
             // Barre de recherche et catégories
             SliverToBoxAdapter(
-              child: Container(
-                color: const Color(0xFFF8F9FE),
-                padding: const EdgeInsets.all(20),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     // Barre de recherche
                     Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF8F9FE),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppTheme.textTertiaryColor.withValues(alpha: 0.1))),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
                       child: TextField(
                         controller: _searchController,
                         onChanged: _onSearchChanged,
@@ -194,11 +198,11 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 16)))),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
 
-                    // Catégories horizontales
+                    // Catégories horizontales (compactes)
                     SizedBox(
-                      height: 120,
+                      height: 60,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: _categories.length,
@@ -207,15 +211,15 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                           final isSelected = _selectedType == category['type'];
                           
                           return Container(
-                            width: 100,
                             margin: EdgeInsets.only(
-                              right: index == _categories.length - 1 ? 0 : 16),
+                              right: index == _categories.length - 1 ? 0 : 8),
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(30),
                                 onTap: () => _onCategorySelected(category['type']),
                                 child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   decoration: BoxDecoration(
                                     gradient: isSelected
                                         ? LinearGradient(
@@ -224,58 +228,50 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                             colors: category['gradient'])
                                         : null,
                                     color: isSelected ? null : AppTheme.surfaceColor,
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(30),
                                     border: Border.all(
                                       color: isSelected
                                           ? Colors.transparent
                                           : AppTheme.textTertiaryColor.withValues(alpha: 0.2),
-                                      width: 1.5),
+                                      width: 1),
                                     boxShadow: isSelected
                                         ? [
                                             BoxShadow(
-                                              color: category['color'].withValues(alpha: 0.3),
-                                              blurRadius: 15,
-                                              offset: const Offset(0, 8)),
+                                              color: category['color'].withValues(alpha: 0.2),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 4)),
                                           ]
                                         : [
                                             BoxShadow(
                                               color: Colors.black.withValues(alpha: 0.05),
-                                              blurRadius: 10,
+                                              blurRadius: 4,
                                               offset: const Offset(0, 2)),
                                           ]),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(12),
-                                          decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? AppTheme.surfaceColor.withValues(alpha: 0.2)
-                                                : category['color'].withValues(alpha: 0.1),
-                                            shape: BoxShape.circle),
-                                          child: Icon(
-                                            category['icon'],
-                                            color: isSelected
-                                                ? AppTheme.surfaceColor
-                                                : category['color'],
-                                            size: 24)),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          category['label'],
-                                          style: GoogleFonts.inter(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: isSelected
-                                                ? AppTheme.surfaceColor
-                                                : AppTheme.textTertiaryColor),
-                                          textAlign: TextAlign.center,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis),
-                                      ]))))));
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        category['icon'],
+                                        color: isSelected
+                                            ? AppTheme.surfaceColor
+                                            : category['color'],
+                                        size: 18),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        category['label'],
+                                        style: GoogleFonts.inter(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: isSelected
+                                              ? AppTheme.surfaceColor
+                                              : AppTheme.textSecondaryColor),
+                                        overflow: TextOverflow.ellipsis),
+                                    ])))));
                         })),
-                  ]))),
+                  ],
+                ),
+              ),
+            ),
 
             // Liste des prières
             if (_isLoading)
@@ -286,7 +282,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                 child: _buildEmptyState())
             else
               SliverPadding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -315,7 +311,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
       orElse: () => _categories[0]);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 16),
       child: TweenAnimationBuilder<double>(
         duration: Duration(milliseconds: 300 + (index * 100)),
         tween: Tween(begin: 0.0, end: 1.0),
@@ -343,7 +339,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
               borderRadius: BorderRadius.circular(20),
               onTap: () => _navigateToPrayerDetail(prayer),
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -379,13 +375,13 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                             color: AppTheme.textTertiaryColor,
                             fontWeight: FontWeight.w500)),
                       ]),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
 
                     // Titre
                     Text(
                       prayer.title,
                       style: GoogleFonts.poppins(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: AppTheme.textTertiaryColor,
                         height: 1.3),

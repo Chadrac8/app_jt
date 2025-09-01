@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../theme.dart';
 import '../../../models/pepite_or_model.dart';
 import '../../../services/pepite_or_firebase_service.dart';
-import '../../../pages/admin/pepite_or_detail_page.dart';
+import '../pages/pepite_detail_page.dart';
 
 /// Onglet "Pépites d'Or" - Citations spirituelles organisées par thème
 class PepitesOrTab extends StatefulWidget {
@@ -20,9 +19,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
   String _selectedTheme = 'Tous';
   bool _isLoading = true;
   String _searchQuery = '';
-  bool _isSearching = false;
   late AnimationController _fadeController;
-  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
@@ -30,9 +27,6 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
     _fadeController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _fadeController, curve: Curves.easeInOut),
     );
     _loadData();
   }
@@ -105,40 +99,203 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.primaryColor.withOpacity(0.03),
-            Colors.grey[50]!,
+      color: const Color(0xFFFAFAFA),
+      child: _isLoading
+          ? _buildLoadingState()
+          : CustomScrollView(
+              slivers: [
+                // Filtres de thèmes compacts
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: _availableThemes.map((theme) {
+                          final isSelected = _selectedTheme == theme;
+                          final count = theme == 'Tous' 
+                              ? _pepites.length 
+                              : _pepites.where((p) => p.theme == theme).length;
+                          
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: _buildCompactFilterChip(theme, count, isSelected),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Barre de recherche
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      onChanged: (value) => setState(() => _searchQuery = value),
+                      decoration: InputDecoration(
+                        hintText: 'Rechercher une pépite d\'or...',
+                        hintStyle: GoogleFonts.inter(
+                          color: Colors.grey[500],
+                          fontSize: 14,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.grey[400],
+                          size: 20,
+                        ),
+                        suffixIcon: _searchQuery.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.grey[400],
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _searchQuery = '';
+                                  });
+                                },
+                              )
+                            : null,
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SliverToBoxAdapter(child: SizedBox(height: 20)),
+
+                // Liste des pépites
+                _filteredPepites.isEmpty
+                    ? SliverFillRemaining(
+                        child: _buildEmptyState(),
+                      )
+                    : SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final pepite = _filteredPepites[index];
+                            return _buildPepiteCard(pepite, index);
+                          },
+                          childCount: _filteredPepites.length,
+                        ),
+                      ),
+
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildCompactFilterChip(String theme, int count, bool isSelected) {
+    Color getFilterColor() {
+      switch (theme) {
+        case 'Tous':
+          return const Color(0xFF6366F1);
+        case 'Foi':
+          return const Color(0xFF10B981);
+        case 'Espérance':
+          return const Color(0xFFF59E0B);
+        case 'Amour':
+          return const Color(0xFFEF4444);
+        default:
+          return AppTheme.primaryColor;
+      }
+    }
+
+    final color = getFilterColor();
+    
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        setState(() {
+          _selectedTheme = theme;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? color : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? color : Colors.grey.withOpacity(0.3),
+            width: 1,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: color.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              theme,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                color: isSelected ? Colors.white : Colors.grey[700],
+              ),
+            ),
+            if (count > 0) ...[
+              const SizedBox(width: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: isSelected 
+                      ? Colors.white.withOpacity(0.2) 
+                      : color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '$count',
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isSelected ? Colors.white : color,
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
-      ),
-      child: Column(
-        children: [
-          _buildHeader(),
-          Expanded(
-            child: _isLoading
-                ? _buildLoadingState()
-                : _filteredPepites.isEmpty
-                    ? _buildEmptyState()
-                    : _buildPepitesList(),
-          ),
-        ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildPepiteCard(PepiteOrModel pepite, int index) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(24),
-          bottomRight: Radius.circular(24),
-        ),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -147,218 +304,138 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Icon(
-                  Icons.auto_awesome,
-                  color: AppTheme.primaryColor,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () => _openPepiteDetail(pepite),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // En-tête avec thème et actions
+                Row(
                   children: [
-                    Text(
-                      'Pépites d\'Or',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.grey[800],
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
-                    Text(
-                      'Citations spirituelles inspirantes',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (!_isLoading && _pepites.isNotEmpty)
-                PopupMenuButton<String>(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      Icons.more_vert,
-                      color: AppTheme.primaryColor,
-                      size: 20,
-                    ),
-                  ),
-                  onSelected: (value) {
-                    switch (value) {
-                      case 'refresh':
-                        _loadData();
-                        break;
-                      case 'search':
-                        setState(() => _isSearching = true);
-                        break;
-                      case 'filter':
-                        _showThemeFilterDialog();
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'refresh',
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.refresh,
-                            size: 20,
-                            color: AppTheme.primaryColor,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Actualiser',
-                            style: GoogleFonts.inter(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'search',
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.search,
-                            size: 20,
-                            color: AppTheme.primaryColor,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Rechercher',
-                            style: GoogleFonts.inter(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'filter',
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.filter_list,
-                            size: 20,
-                            color: AppTheme.primaryColor,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Filtrer',
-                            style: GoogleFonts.inter(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-          if (_isSearching) ...[
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.2),
-                ),
-              ),
-              child: TextField(
-                onChanged: (value) => setState(() => _searchQuery = value),
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Rechercher une pépite d\'or...',
-                  hintStyle: GoogleFonts.inter(
-                    color: Colors.grey[500],
-                    fontSize: 14,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.grey[500],
-                    size: 20,
-                  ),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          onPressed: () => setState(() => _searchQuery = ''),
-                          icon: Icon(
-                            Icons.clear,
-                            color: Colors.grey[500],
-                            size: 20,
-                          ),
-                        )
-                      : IconButton(
-                          onPressed: () => setState(() => _isSearching = false),
-                          icon: Icon(
-                            Icons.close,
-                            color: Colors.grey[500],
-                            size: 20,
-                          ),
+                      child: Text(
+                        pepite.theme,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.primaryColor,
                         ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () => _sharePepite(pepite),
+                      icon: Icon(
+                        Icons.share,
+                        color: Colors.grey[600],
+                        size: 20,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ],
-          if (_selectedTheme != 'Tous') ...[
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.category,
-                    size: 16,
-                    color: AppTheme.primaryColor,
-                  ),
-                  const SizedBox(width: 6),
+                
+                const SizedBox(height: 16),
+                
+                // Description
+                if (pepite.description.isNotEmpty) ...[
                   Text(
-                    _selectedTheme,
+                    pepite.description,
                     style: GoogleFonts.inter(
-                      fontSize: 12,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: AppTheme.primaryColor,
+                      color: Colors.grey[800],
+                      height: 1.4,
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  GestureDetector(
-                    onTap: () => setState(() => _selectedTheme = 'Tous'),
-                    child: Icon(
-                      Icons.close,
-                      size: 14,
+                  const SizedBox(height: 16),
+                ],
+                
+                // Citations
+                ...pepite.citations.take(2).map((citation) => Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.grey.withOpacity(0.1),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '"${citation.texte}"',
+                        style: GoogleFonts.crimsonText(
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey[700],
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '— ${citation.auteur}',
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                )).toList(),
+                
+                // Afficher le nombre de citations restantes
+                if (pepite.citations.length > 2) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    '+${pepite.citations.length - 2} autre${pepite.citations.length - 2 > 1 ? 's' : ''} citation${pepite.citations.length - 2 > 1 ? 's' : ''}',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
                       color: AppTheme.primaryColor,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
-              ),
+                
+                // Tags
+                if (pepite.tags.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 4,
+                    children: pepite.tags.take(3).map((tag) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        tag,
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )).toList(),
+                  ),
+                ],
+              ],
             ),
-          ],
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -420,172 +497,11 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
     );
   }
 
-  Widget _buildPepitesList() {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: _filteredPepites.length,
-        itemBuilder: (context, index) {
-          final pepite = _filteredPepites[index];
-          return Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(16),
-              onTap: () => _openPepiteDetail(pepite),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            pepite.theme,
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.primaryColor,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        PopupMenuButton<String>(
-                          onSelected: (value) {
-                            switch (value) {
-                              case 'share':
-                                _sharePepite(pepite);
-                                break;
-                              case 'copy':
-                                _copyPepite(pepite);
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              value: 'share',
-                              child: Row(
-                                children: [
-                                  Icon(Icons.share, size: 18, color: AppTheme.primaryColor),
-                                  const SizedBox(width: 8),
-                                  const Text('Partager'),
-                                ],
-                              ),
-                            ),
-                            PopupMenuItem(
-                              value: 'copy',
-                              child: Row(
-                                children: [
-                                  Icon(Icons.copy, size: 18, color: AppTheme.primaryColor),
-                                  const SizedBox(width: 8),
-                                  const Text('Copier'),
-                                ],
-                              ),
-                            ),
-                          ],
-                          child: Icon(
-                            Icons.more_vert,
-                            color: Colors.grey[400],
-                            size: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      pepite.description,
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
-                        height: 1.4,
-                      ),
-                    ),
-                    if (pepite.citations.isNotEmpty) ...[
-                      const SizedBox(height: 16),
-                      ...pepite.citations.take(2).map((citation) => 
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[50],
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.grey.withOpacity(0.1),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '"${citation.texte}"',
-                                style: GoogleFonts.crimsonText(
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.grey[700],
-                                  height: 1.5,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '— ${citation.auteur}',
-                                style: GoogleFonts.inter(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppTheme.primaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                    if (pepite.citations.length > 2) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        '+${pepite.citations.length - 2} autre(s) citation(s)',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: Colors.grey[500],
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   void _openPepiteDetail(PepiteOrModel pepite) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PepiteOrDetailPage(pepite: pepite),
+        builder: (context) => PepiteDetailPage(pepite: pepite),
       ),
     );
   }
@@ -595,13 +511,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
         '${pepite.citations.map((c) => '"${c.texte}" - ${c.auteur}').join('\n\n')}\n\n'
         '#PépitesOr #Spiritualité';
     
-    Share.share(text, subject: 'Pépite d\'Or: ${pepite.theme}');
-  }
-
-  void _copyPepite(PepiteOrModel pepite) {
-    final text = '${pepite.description}\n\n'
-        '${pepite.citations.map((c) => '"${c.texte}" - ${c.auteur}').join('\n\n')}';
-    
+    // Copier dans le presse-papier
     Clipboard.setData(ClipboardData(text: text));
     
     ScaffoldMessenger.of(context).showSnackBar(
@@ -613,45 +523,4 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
     );
   }
 
-  void _showThemeFilterDialog() async {
-    final result = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Filtrer par thème',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-        ),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _availableThemes.length,
-            itemBuilder: (context, index) {
-              final theme = _availableThemes[index];
-              return RadioListTile<String>(
-                value: theme,
-                groupValue: _selectedTheme,
-                onChanged: (value) => Navigator.pop(context, value),
-                title: Text(
-                  theme,
-                  style: GoogleFonts.inter(fontSize: 14),
-                ),
-                activeColor: AppTheme.primaryColor,
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
-          ),
-        ],
-      ),
-    );
-
-    if (result != null && result != _selectedTheme) {
-      setState(() => _selectedTheme = result);
-    }
-  }
 }

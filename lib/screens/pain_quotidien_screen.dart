@@ -1,0 +1,1 @@
+../modules/pain_quotidien/views/daily_bread_page.dart
