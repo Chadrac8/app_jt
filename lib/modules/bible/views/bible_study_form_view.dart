@@ -3,6 +3,7 @@ import '../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/bible_study.dart';
+import '../services/bible_study_service.dart';
 
 class BibleStudyFormView extends StatefulWidget {
   final BibleStudy? study;
@@ -696,16 +697,14 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
     });
     
     // TODO: Ouvrir un dialogue d'édition de leçon
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Leçon ajoutée ! (Édition complète à implémenter)')));
+    _editLesson(newLesson, _lessons.length - 1);
   }
 
   void _handleLessonAction(String action, int index) {
     switch (action) {
       case 'edit':
         // TODO: Éditer la leçon
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Édition de leçon à implémenter')));
+        _editLesson(_lessons[index], index);
         break;
       case 'duplicate':
         final original = _lessons[index];
@@ -733,6 +732,107 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
         });
         break;
     }
+  }
+
+  void _editLesson(BibleStudyLesson lesson, int index) {
+    final TextEditingController titleController = TextEditingController(text: lesson.title);
+    final TextEditingController contentController = TextEditingController(text: lesson.content);
+    final TextEditingController durationController = TextEditingController(text: lesson.estimatedDuration.toString());
+    
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(
+            'Éditer la leçon',
+            style: GoogleFonts.plusJakartaSans(
+              fontWeight: FontWeight.bold,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: InputDecoration(
+                    labelText: 'Titre de la leçon',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                TextField(
+                  controller: contentController,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: 'Contenu',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                TextField(
+                  controller: durationController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Durée estimée (minutes)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (titleController.text.trim().isNotEmpty) {
+                  final updatedLesson = BibleStudyLesson(
+                    id: lesson.id,
+                    title: titleController.text.trim(),
+                    content: contentController.text.trim(),
+                    references: lesson.references,
+                    questions: lesson.questions,
+                    reflection: lesson.reflection,
+                    prayer: lesson.prayer,
+                    order: lesson.order,
+                    estimatedDuration: int.tryParse(durationController.text) ?? 30,
+                    objectives: lesson.objectives,
+                    bibleReferences: lesson.bibleReferences,
+                  );
+                  
+                  this.setState(() {
+                    _lessons[index] = updatedLesson;
+                  });
+                  
+                  Navigator.of(context).pop();
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Leçon mise à jour avec succès')),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Sauvegarder'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _saveStudy() async {
@@ -798,7 +898,12 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
   }
 
   Future<void> _saveStudyToStorage(BibleStudy study) async {
-    // TODO: Implémenter la sauvegarde réelle
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      await BibleStudyService.saveStudy(study);
+      print('✅ Étude biblique sauvegardée: ${study.title}');
+    } catch (e) {
+      print('❌ Erreur lors de la sauvegarde de l\'étude: $e');
+      throw Exception('Erreur lors de la sauvegarde: $e');
+    }
   }
 }

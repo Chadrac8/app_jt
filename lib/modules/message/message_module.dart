@@ -33,31 +33,32 @@ class _MessageModuleState extends State<MessageModule>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // TabBar directement visible
+        // TabBar moderne - Style identique au module Vie de l'église
         Container(
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor, // Rouge bordeaux
+            color: AppTheme.surfaceColor,
             boxShadow: [
               BoxShadow(
-                color: AppTheme.primaryActive.withOpacity(0.3), // Ombre avec couleur active
-                blurRadius: 4,
-                offset: const Offset(0, 2),
+                color: AppTheme.textTertiaryColor.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
           child: TabBar(
             controller: _tabController,
-            indicatorColor: AppTheme.backgroundColor, // Indicateur blanc cassé sur rouge bordeaux
+            labelColor: AppTheme.primaryColor,
+            unselectedLabelColor: AppTheme.textTertiaryColor,
+            indicatorColor: AppTheme.primaryColor,
             indicatorWeight: 3,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white70,
-            labelStyle: GoogleFonts.inter(
+            labelStyle: GoogleFonts.poppins(
+              fontSize: 14,
               fontWeight: FontWeight.w600,
-              fontSize: 14,
             ),
-            unselectedLabelStyle: GoogleFonts.inter(
-              fontWeight: FontWeight.w400,
+            unselectedLabelStyle: GoogleFonts.poppins(
               fontSize: 14,
+              fontWeight: FontWeight.w500,
             ),
             tabs: const [
               Tab(

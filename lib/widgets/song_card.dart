@@ -213,21 +213,6 @@ class _SongCardState extends State<SongCard> {
                     ),
                   ),
                   
-                  const SizedBox(width: 8),
-                  
-                  // Style
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      widget.song.style,
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ),
-                  
                   // Tempo (si disponible)
                   if (widget.song.tempo != null) ...[
                     const SizedBox(width: 8),

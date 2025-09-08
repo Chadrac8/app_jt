@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'auth_service.dart';
 import 'login_page.dart';
 import '../widgets/admin_navigation_wrapper.dart';
 import '../widgets/bottom_navigation_wrapper.dart';
 import '../models/person_model.dart';
 import '../services/dashboard_initialization_service.dart';
+import '../modules/roles/roles_module.dart';
+import '../modules/roles/services/permission_provider.dart';
 
 /// Enhanced AuthWrapper with comprehensive error handling and fallback mechanisms
 class AuthWrapper extends StatefulWidget {
@@ -124,6 +127,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
   /// Build user interface based on user roles
   Widget _buildUserInterface(PersonModel profile) {
     try {
+      // Initialiser le PermissionProvider avec l'utilisateur connecté
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final permissionProvider = Provider.of<PermissionProvider>(context, listen: false);
+        permissionProvider.initialize(profile.id);
+      });
+      
       // Check for admin/leader roles
       final hasAdminAccess = _checkAdminAccess(profile);
       

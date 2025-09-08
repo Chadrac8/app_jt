@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
+import '../../../auth/auth_service.dart';
 import '../models/song.dart';
 import '../models/song_category.dart';
 import '../services/songs_service.dart';
@@ -148,7 +149,7 @@ class _SongFormViewState extends State<SongFormView> {
         tags: _tags,
         isPublic: _isPublic,
         isApproved: _isApproved,
-        createdBy: 'current_user_id', // TODO: Remplacer par l'ID utilisateur réel
+        createdBy: AuthService.currentUser?.uid ?? 'anonymous_user', // ID utilisateur réel ou anonyme
         createdAt: _isEditMode ? widget.song!.createdAt : now,
         updatedAt: now,
         views: _isEditMode ? widget.song!.views : 0,
@@ -610,16 +611,16 @@ class _SongFormViewState extends State<SongFormView> {
               title: const Text('Chant public'),
               subtitle: const Text('Visible par tous les membres'),
               value: _isPublic,
-              onChanged: (value) => setState(() => _isPublic = value ?? true),
+              onChanged: (value) => setState(() => _isPublic = value),
             ),
 
             // Note: L'approbation ne devrait être modifiable que par les admins
-            // if (userIsAdmin) // TODO: Vérifier les permissions utilisateur
+            if (AuthService.hasPermission('songs_approve') || AuthService.currentUser?.email?.contains('admin') == true)
             SwitchListTile(
               title: const Text('Chant approuvé'),
               subtitle: const Text('Visible dans la liste publique'),
               value: _isApproved,
-              onChanged: (value) => setState(() => _isApproved = value ?? false),
+              onChanged: (value) => setState(() => _isApproved = value),
             ),
           ],
         ),

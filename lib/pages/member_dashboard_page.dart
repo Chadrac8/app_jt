@@ -22,6 +22,7 @@ import '../services/events_firebase_service.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
+import '../services/contact_service.dart'; // Nouveau service pour les messages de contact
 import 'member_events_page.dart';
 import 'member_event_detail_page.dart';
 
@@ -1740,74 +1741,31 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
     });
 
     try {
-      // Récupérer la configuration pour l'email de destination
-      final config = await HomeConfigService.getHomeConfig();
-      final contactEmail = config.contactEmail;
+      // Envoyer le message directement via Firebase
+      await ContactService.sendMessage(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        subject: _subjectController.text.trim(),
+        message: _messageController.text.trim(),
+      );
 
-      if (contactEmail?.isNotEmpty == true) {
-        // Créer le contenu de l'email
-        final subject = 'Contact App Mobile: ${_subjectController.text}';
-        final body = '''
-Nouveau message depuis l'application mobile
-
-Nom: ${_nameController.text}
-Email: ${_emailController.text}
-Sujet: ${_subjectController.text}
-
-Message:
-${_messageController.text}
-
----
-Envoyé depuis l'application mobile Jubilé Tabernacle
-        ''';
-
-        final Uri emailUri = Uri(
-          scheme: 'mailto',
-          path: contactEmail,
-          query: 'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}'
+      if (mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Message envoyé avec succès !'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3),
+          ),
         );
-
-        if (await canLaunchUrl(emailUri)) {
-          await launchUrl(emailUri);
-          
-          if (mounted) {
-            Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Application email ouverte avec votre message'),
-                backgroundColor: Colors.green,
-              ),
-            );
-          }
-        } else {
-          // Fallback : copier le message dans le presse-papier
-          await Clipboard.setData(ClipboardData(text: body));
-          if (mounted) {
-            Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Message copié dans le presse-papier'),
-                backgroundColor: Colors.green,
-              ),
-            );
-          }
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Aucun email de contact configuré'),
-              backgroundColor: Colors.orange,
-            ),
-          );
-        }
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur : $e'),
+            content: Text('❌ Erreur lors de l\'envoi: $e'),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
           ),
         );
       }

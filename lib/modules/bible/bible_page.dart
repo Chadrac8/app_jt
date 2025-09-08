@@ -106,6 +106,14 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     }
   }
 
+  Future<void> _saveFavorites() async {
+    await _savePrefs();
+  }
+
+  Future<void> _saveNotes() async {
+    await _savePrefs();
+  }
+
   void _editNoteDialog(BibleVerse v) {
     final key = _verseKey(v);
     final controller = TextEditingController(text: _notes[key] ?? '');
@@ -272,40 +280,50 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       data: theme,
       child: Column(
         children: [
-          // TabBar sans AppBar - Style identique au module Message
+          // TabBar moderne - Style identique au module Vie de l'église
           Container(
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor, // Rouge bordeaux
+              color: AppTheme.surfaceColor,
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.primaryActive.withOpacity(0.3), // Ombre avec couleur active
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
+                  color: AppTheme.textTertiaryColor.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: const Offset(0, 1),
                 ),
               ],
             ),
             child: TabBar(
               controller: _tabController,
-              indicatorColor: AppTheme.backgroundColor, // Indicateur blanc cassé sur rouge bordeaux
+              labelColor: AppTheme.primaryColor,
+              unselectedLabelColor: AppTheme.textTertiaryColor,
+              indicatorColor: AppTheme.primaryColor,
               indicatorWeight: 3,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              labelStyle: GoogleFonts.inter(
+              labelStyle: GoogleFonts.poppins(
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
-                fontSize: 14,
               ),
-              unselectedLabelStyle: GoogleFonts.inter(
-                fontWeight: FontWeight.w400,
+              unselectedLabelStyle: GoogleFonts.poppins(
                 fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
               tabs: const [
-                Tab(icon: Icon(Icons.home, size: 20), text: 'Accueil'),
-                Tab(icon: Icon(Icons.menu_book, size: 20), text: 'Lecture'),
-                Tab(icon: Icon(Icons.note_alt, size: 20), text: 'Notes'),
+                Tab(
+                  icon: Icon(Icons.home, size: 20),
+                  text: 'Accueil',
+                ),
+                Tab(
+                  icon: Icon(Icons.menu_book, size: 20),
+                  text: 'Lecture',
+                ),
+                Tab(
+                  icon: Icon(Icons.note_alt, size: 20),
+                  text: 'Notes',
+                ),
               ],
             ),
           ),
-          // TabBarView - Style identique au module Message
+          // TabBarView - Style identique au module Vie de l'église
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -839,25 +857,245 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   }
 
   void _showFavorites() {
-    // TODO: Implémenter l'affichage des favoris
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Affichage des favoris'),
-        backgroundColor: Colors.amber,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Mes Favoris',
+          style: GoogleFonts.plusJakartaSans(
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primaryColor,
+          ),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 400,
+          child: _favorites.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.favorite_border, size: 64, color: Colors.grey),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Aucun verset favori',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Appuyez longuement sur un verset pour l\'ajouter aux favoris',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _favorites.length,
+                  itemBuilder: (context, index) {
+                    final verseKey = _favorites.elementAt(index);
+                    final parts = verseKey.split(' ');
+                    final book = parts[0];
+                    final chapterVerse = parts[1].split(':');
+                    final chapter = int.parse(chapterVerse[0]);
+                    final verse = int.parse(chapterVerse[1]);
+                    
+                    final bibleVerse = _bibleService.getVerse(book, chapter, verse);
+                    
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      child: ListTile(
+                        leading: Icon(Icons.favorite, color: Colors.red),
+                        title: Text(
+                          verseKey,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                        subtitle: Text(
+                          bibleVerse?.text ?? 'Verset non trouvé',
+                          style: GoogleFonts.plusJakartaSans(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete_outline, color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              _favorites.remove(verseKey);
+                            });
+                            _saveFavorites();
+                            Navigator.of(context).pop();
+                            _showFavorites(); // Réafficher pour actualiser
+                          },
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          // Naviguer vers le verset
+                          setState(() {
+                            _selectedBook = book;
+                            _selectedChapter = chapter;
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Fermer'),
+          ),
+        ],
       ),
     );
   }
 
   void _showNotes() {
-    // TODO: Implémenter l'affichage des notes
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Affichage des notes'),
-        backgroundColor: Colors.green,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Mes Notes',
+          style: GoogleFonts.plusJakartaSans(
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primaryColor,
+          ),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 400,
+          child: _notes.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.note_add_outlined, size: 64, color: Colors.grey),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Aucune note',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Appuyez longuement sur un verset pour ajouter une note',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _notes.length,
+                  itemBuilder: (context, index) {
+                    final verseKey = _notes.keys.elementAt(index);
+                    final note = _notes[verseKey]!;
+                    final parts = verseKey.split(' ');
+                    final book = parts[0];
+                    final chapterVerse = parts[1].split(':');
+                    final chapter = int.parse(chapterVerse[0]);
+                    final verse = int.parse(chapterVerse[1]);
+                    
+                    final bibleVerse = _bibleService.getVerse(book, chapter, verse);
+                    
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      child: ListTile(
+                        leading: Icon(Icons.note, color: AppTheme.primaryColor),
+                        title: Text(
+                          verseKey,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              bibleVerse?.text ?? 'Verset non trouvé',
+                              style: GoogleFonts.plusJakartaSans(fontSize: 12),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                note,
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit_outlined, color: AppTheme.primaryColor),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                // Ouvrir le dialogue d'édition
+                                if (bibleVerse != null) {
+                                  _editNoteDialog(bibleVerse);
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete_outline, color: Colors.red),
+                              onPressed: () {
+                                setState(() {
+                                  _notes.remove(verseKey);
+                                });
+                                _saveNotes();
+                                Navigator.of(context).pop();
+                                _showNotes(); // Réafficher pour actualiser
+                              },
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          // Naviguer vers le verset
+                          setState(() {
+                            _selectedBook = book;
+                            _selectedChapter = chapter;
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Fermer'),
+          ),
+        ],
       ),
     );
   }

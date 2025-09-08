@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+import 'dart:convert';
 import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import 'reading_plan_form_view.dart';
@@ -770,18 +773,96 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
     );
   }
 
-  void _duplicatePlan(ReadingPlan plan) {
-    // TODO: Implémenter la duplication
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Duplication en cours de développement')),
-    );
+  void _duplicatePlan(ReadingPlan plan) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Créer une copie du plan avec un nouvel ID
+      final duplicatedPlan = ReadingPlan(
+        id: const Uuid().v4(),
+        name: '${plan.name} (Copie)',
+        description: plan.description,
+        category: plan.category,
+        totalDays: plan.totalDays,
+        estimatedReadingTime: plan.estimatedReadingTime,
+        difficulty: plan.difficulty,
+        days: plan.days, // Dupliquer les jours aussi
+        imageUrl: plan.imageUrl,
+        createdAt: DateTime.now(),
+        isPopular: false, // Les copies ne sont pas populaires par défaut
+      );
+
+      // Récupérer les plans existants
+      final plansJson = prefs.getString('reading_plans') ?? '[]';
+      final List<dynamic> plansList = json.decode(plansJson);
+      
+      // Ajouter le plan dupliqué
+      plansList.add(duplicatedPlan.toJson());
+      
+      // Sauvegarder
+      await prefs.setString('reading_plans', json.encode(plansList));
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Plan "${plan.name}" dupliqué avec succès')),
+      );
+      
+      // Recharger la liste
+      _loadPlans();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la duplication: $e')),
+      );
+    }
   }
 
-  void _bulkDuplicate() {
-    // TODO: Implémenter la duplication en lot
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Duplication en lot en cours de développement')),
-    );
+  void _bulkDuplicate() async {
+    if (_selectedPlans.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Aucun plan sélectionné')),
+      );
+      return;
+    }
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final plansJson = prefs.getString('reading_plans') ?? '[]';
+      final List<dynamic> plansList = json.decode(plansJson);
+      
+      // Dupliquer chaque plan sélectionné
+      for (String planId in _selectedPlans) {
+        final originalPlan = _allPlans.firstWhere((p) => p.id == planId);
+        
+        final duplicatedPlan = ReadingPlan(
+          id: const Uuid().v4(),
+          name: '${originalPlan.name} (Copie)',
+          description: originalPlan.description,
+          category: originalPlan.category,
+          totalDays: originalPlan.totalDays,
+          estimatedReadingTime: originalPlan.estimatedReadingTime,
+          difficulty: originalPlan.difficulty,
+          days: originalPlan.days,
+          imageUrl: originalPlan.imageUrl,
+          createdAt: DateTime.now(),
+          isPopular: false,
+        );
+        
+        plansList.add(duplicatedPlan.toJson());
+      }
+      
+      // Sauvegarder
+      await prefs.setString('reading_plans', json.encode(plansList));
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${_selectedPlans.length} plan(s) dupliqué(s) avec succès')),
+      );
+      
+      _clearSelection();
+      _loadPlans();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la duplication: $e')),
+      );
+    }
   }
 
   void _confirmDeletePlan(ReadingPlan plan) {
@@ -834,21 +915,60 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
     );
   }
 
-  void _deletePlan(ReadingPlan plan) {
-    // TODO: Implémenter la suppression
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Plan "${plan.name}" supprimé')),
-    );
-    _loadPlans();
+  void _deletePlan(ReadingPlan plan) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final plansJson = prefs.getString('reading_plans') ?? '[]';
+      final List<dynamic> plansList = json.decode(plansJson);
+      
+      // Retirer le plan de la liste
+      plansList.removeWhere((p) => p['id'] == plan.id);
+      
+      // Sauvegarder
+      await prefs.setString('reading_plans', json.encode(plansList));
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Plan "${plan.name}" supprimé avec succès')),
+      );
+      
+      _loadPlans();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la suppression: $e')),
+      );
+    }
   }
 
-  void _bulkDelete() {
-    // TODO: Implémenter la suppression en lot
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${_selectedPlans.length} plan(s) supprimé(s)')),
-    );
-    _clearSelection();
-    _loadPlans();
+  void _bulkDelete() async {
+    if (_selectedPlans.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Aucun plan sélectionné')),
+      );
+      return;
+    }
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final plansJson = prefs.getString('reading_plans') ?? '[]';
+      final List<dynamic> plansList = json.decode(plansJson);
+      
+      // Retirer tous les plans sélectionnés
+      plansList.removeWhere((p) => _selectedPlans.contains(p['id']));
+      
+      // Sauvegarder
+      await prefs.setString('reading_plans', json.encode(plansList));
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${_selectedPlans.length} plan(s) supprimé(s) avec succès')),
+      );
+      
+      _clearSelection();
+      _loadPlans();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la suppression: $e')),
+      );
+    }
   }
 
   void _showSearchDialog() {

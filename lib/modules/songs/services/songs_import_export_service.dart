@@ -368,9 +368,15 @@ class SongsImportExportService {
   }) async {
     try {
       if (kIsWeb) {
-        // Sur le web, on utilise la fonctionnalité de téléchargement du navigateur
-        // Ceci nécessiterait une implémentation spécifique au web
-        throw UnimplementedError('Export web non encore implémenté');
+        // Sur le web, on simule l'export en affichant les données
+        // Une vraie implémentation nécessiterait un package spécialisé comme universal_html
+        print('Export web - Contenu:');
+        print('Nom de fichier: $filename');
+        print('Type MIME: $mimeType');
+        print('Contenu: ${content.substring(0, content.length > 100 ? 100 : content.length)}...');
+        
+        // Pour une vraie implémentation, on pourrait utiliser un package comme file_saver
+        throw UnsupportedError('Export web nécessite un package supplémentaire comme file_saver');
       } else {
         // Sur mobile/desktop
         final directory = await getApplicationDocumentsDirectory();

@@ -268,16 +268,28 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
   Widget _buildFormattedLyrics() {
     final lines = _displayedLyrics.split('\n');
     final widgets = <Widget>[];
+    bool inChorusSection = false;
 
-    for (final line in lines) {
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+      
       if (line.trim().isEmpty) {
         widgets.add(SizedBox(height: _fontSize / 2));
+        // Une ligne vide peut marquer la fin d'une section chorus
+        if (inChorusSection) {
+          inChorusSection = false;
+        }
       } else if (_isChordLine(line)) {
         if (_showChords) {
-          widgets.add(_buildChordLine(line));
+          widgets.add(_buildChordLine(line, inChorusSection));
         }
       } else {
-        widgets.add(_buildLyricLine(line));
+        // Détecter le début d'une section chorus
+        if (line.toLowerCase().contains('chorus') || line.toLowerCase().contains('refrain')) {
+          inChorusSection = true;
+        }
+        
+        widgets.add(_buildLyricLine(line, inChorusSection));
       }
     }
 
@@ -311,9 +323,12 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
     return chordPattern.hasMatch(text);
   }
 
-  Widget _buildChordLine(String line) {
+  Widget _buildChordLine(String line, [bool inChorusSection = false]) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: EdgeInsets.only(
+        bottom: 4,
+        left: inChorusSection ? 16.0 : 0.0, // Retrait réduit pour les accords dans chorus
+      ),
       child: Text(
         line,
         style: TextStyle(
@@ -321,19 +336,29 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
           fontWeight: FontWeight.bold,
           color: Theme.of(context).primaryColor,
           fontFamily: 'monospace',
+          fontStyle: inChorusSection ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
         ),
       ),
     );
   }
 
-  Widget _buildLyricLine(String line) {
+  Widget _buildLyricLine(String line, [bool inChorusSection = false]) {
+    // Détecter si la ligne contient "Chorus" ou si on est dans une section chorus
+    final isChorusLine = line.toLowerCase().contains('chorus') || 
+                        line.toLowerCase().contains('refrain') || 
+                        inChorusSection;
+    
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(
+        bottom: 8,
+        left: isChorusLine ? 16.0 : 0.0, // Retrait réduit pour les lignes chorus
+      ),
       child: Text(
         line,
         style: TextStyle(
           fontSize: _fontSize,
           height: 1.3,
+          fontStyle: isChorusLine ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
         ),
       ),
     );

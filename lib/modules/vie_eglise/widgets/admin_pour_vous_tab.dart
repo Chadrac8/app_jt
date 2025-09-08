@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../services/pour_vous_action_service.dart';
+import '../dialogs/action_form_dialog.dart';
+import '../dialogs/group_management_dialog.dart';
+import '../dialogs/action_templates_dialog.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -606,80 +609,139 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
   void _showEditActionDialog(PourVousAction? action, {bool isDuplicate = false}) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          isDuplicate 
-              ? 'Dupliquer l\'action'
-              : action == null 
-                  ? 'Créer une action'
-                  : 'Modifier l\'action',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        content: Text(
-          'Cette fonctionnalité sera bientôt disponible',
-          style: GoogleFonts.poppins()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'Fermer',
-              style: GoogleFonts.poppins(color: AppTheme.primaryColor))),
-        ]));
+      builder: (context) => ActionFormDialog(
+        action: action,
+        isDuplicate: isDuplicate,
+      ),
+    );
   }
 
   void _showGroupManagementDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Gestion des groupes',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        content: Text(
-          'Cette fonctionnalité sera bientôt disponible',
-          style: GoogleFonts.poppins()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'Fermer',
-              style: GoogleFonts.poppins(color: AppTheme.primaryColor))),
-        ]));
+      builder: (context) => const GroupManagementDialog(),
+    );
   }
 
   void _showTemplatesDialog() {
     showDialog(
       context: context,
+      builder: (context) => const ActionTemplatesDialog(),
+    );
+  }
+
+  void _exportActions() {
+    showDialog(
+      context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'Templates d\'actions',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        content: Text(
-          'Cette fonctionnalité sera bientôt disponible',
-          style: GoogleFonts.poppins()),
+          'Exporter les actions',
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Choisissez le format d\'export :',
+              style: GoogleFonts.poppins(),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.code),
+              title: Text('JSON', style: GoogleFonts.poppins()),
+              subtitle: Text('Format de données structurées', style: GoogleFonts.poppins(fontSize: 12)),
+              onTap: () => _performExport('json'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.table_chart),
+              title: Text('CSV', style: GoogleFonts.poppins()),
+              subtitle: Text('Tableau compatible Excel', style: GoogleFonts.poppins(fontSize: 12)),
+              onTap: () => _performExport('csv'),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'Fermer',
-              style: GoogleFonts.poppins(color: AppTheme.primaryColor))),
-        ]));
+              'Annuler',
+              style: GoogleFonts.poppins(color: AppTheme.textSecondaryColor),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  void _exportActions() {
+  void _performExport(String format) {
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          'Export d\'actions - Fonctionnalité en développement',
-          style: GoogleFonts.poppins()),
-        backgroundColor: AppTheme.primaryColor));
+          'Export $format en cours... Cette fonctionnalité sera bientôt disponible',
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: AppTheme.primaryColor,
+      ),
+    );
   }
 
   void _importActions() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Importer des actions',
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Importez des actions depuis :',
+              style: GoogleFonts.poppins(),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.file_upload),
+              title: Text('Fichier JSON', style: GoogleFonts.poppins()),
+              subtitle: Text('Importer depuis un fichier de données', style: GoogleFonts.poppins(fontSize: 12)),
+              onTap: () => _performImport('file'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.cloud_download),
+              title: Text('Templates en ligne', style: GoogleFonts.poppins()),
+              subtitle: Text('Bibliothèque de templates prédéfinis', style: GoogleFonts.poppins(fontSize: 12)),
+              onTap: () => _performImport('online'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Annuler',
+              style: GoogleFonts.poppins(color: AppTheme.textSecondaryColor),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _performImport(String source) {
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          'Import d\'actions - Fonctionnalité en développement',
-          style: GoogleFonts.poppins()),
-        backgroundColor: AppTheme.primaryColor));
+          'Import depuis $source en cours... Cette fonctionnalité sera bientôt disponible',
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: AppTheme.primaryColor,
+      ),
+    );
   }
 
   void _refreshActions() {

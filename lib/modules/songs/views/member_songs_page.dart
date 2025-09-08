@@ -40,7 +40,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cantiques'),
+        toolbarHeight: 0,
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
@@ -198,9 +198,9 @@ class _MemberSongsPageState extends State<MemberSongsPage>
       isScrollControlled: true,
       useSafeArea: true,
       builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.9,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
+        initialChildSize: 1.0,
+        minChildSize: 1.0,
+        maxChildSize: 1.0,
         expand: false,
         builder: (context, scrollController) => Container(
           decoration: const BoxDecoration(

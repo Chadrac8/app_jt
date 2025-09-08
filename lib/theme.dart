@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Palette Raffinée : Rouge bordeaux avec états interactifs
-  static const Color primaryColor = Color(0xFF850606); // Rouge bordeaux (base)
-  static const Color primaryHover = Color(0xFFA50707); // Hover/Focus
-  static const Color primaryActive = Color(0xFF5C0404); // Active/Pressed
+  static const Color primaryColor = Color(0xFF860505); // Rouge bordeaux #860505
+  static const Color primaryHover = Color(0xFFA60606); // Hover/Focus
+  static const Color primaryActive = Color(0xFF5D0404); // Active/Pressed
   
   // Couleurs de compatibilité (mappées sur la nouvelle palette)
   static const Color secondaryColor = Color(0xFF6C757D); // Text secondary
@@ -125,15 +125,15 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: textPrimaryColor,
+        backgroundColor: primaryColor, // Rouge bordeaux #860505
+        foregroundColor: Colors.white, // Texte blanc sur fond rouge
         titleTextStyle: GoogleFonts.inter(
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          color: textPrimaryColor,
+          color: Colors.white, // Titre en blanc
         ),
         iconTheme: const IconThemeData(
-          color: textPrimaryColor,
+          color: Colors.white, // Icônes en blanc
         ),
       ),
       
@@ -378,7 +378,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: primaryColor, // Rouge bordeaux #860505
         foregroundColor: Colors.white,
         titleTextStyle: GoogleFonts.inter(
           fontSize: 18,
@@ -386,7 +386,7 @@ class AppTheme {
           color: Colors.white,
         ),
         iconTheme: const IconThemeData(
-          color: Color(0xFF4A4A4A), // Icônes gris moyen
+          color: Colors.white, // Icônes blanches
         ),
       ),
     );

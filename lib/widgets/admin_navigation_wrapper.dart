@@ -17,7 +17,8 @@ import '../modules/vie_eglise/views/vie_eglise_admin_view.dart';
 import '../modules/message/views/message_admin_view.dart';
 
 import '../pages/appointments_admin_page.dart';
-import '../pages/roles_management_page.dart';
+import '../modules/roles/views/roles_management_screen.dart';
+import '../modules/roles/views/new_roles_management_screen.dart';
 import '../pages/blog_home_page.dart';
 import '../pages/prayers_home_page.dart';
 
@@ -153,7 +154,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       route: 'roles',
       title: 'Rôles',
       icon: Icons.admin_panel_settings,
-      page: const RolesManagementPage(),
+      page: const NewRolesManagementScreen(),
     ),
 
     AdminMenuItem(

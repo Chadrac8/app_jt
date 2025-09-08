@@ -4462,13 +4462,254 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   }
 
   void _showAdvancedSearchDialog() {
-    // TODO: Implémenter la recherche avancée
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Recherche avancée (bientôt disponible)'),
-        backgroundColor: Colors.blue,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))));
+    final TextEditingController searchController = TextEditingController();
+    String selectedBook = 'Tous';
+    String searchType = 'exact'; // exact, partial, regex
+    bool caseSensitive = false;
+    
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(
+            'Recherche avancée',
+            style: GoogleFonts.plusJakartaSans(
+              fontWeight: FontWeight.bold,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Champ de recherche
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Terme de recherche',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Sélection du livre
+                DropdownButtonFormField<String>(
+                  value: selectedBook,
+                  decoration: InputDecoration(
+                    labelText: 'Livre',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  items: ['Tous', ..._bibleService.books.map((book) => book.name)].map((book) => 
+                    DropdownMenuItem(value: book, child: Text(book))
+                  ).toList(),
+                  onChanged: (value) => setState(() => selectedBook = value!),
+                ),
+                const SizedBox(height: 16),
+                
+                // Type de recherche
+                Text('Type de recherche:', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
+                RadioListTile<String>(
+                  title: const Text('Correspondance exacte'),
+                  value: 'exact',
+                  groupValue: searchType,
+                  onChanged: (value) => setState(() => searchType = value!),
+                ),
+                RadioListTile<String>(
+                  title: const Text('Contient le terme'),
+                  value: 'partial',
+                  groupValue: searchType,
+                  onChanged: (value) => setState(() => searchType = value!),
+                ),
+                RadioListTile<String>(
+                  title: const Text('Expression régulière'),
+                  value: 'regex',
+                  groupValue: searchType,
+                  onChanged: (value) => setState(() => searchType = value!),
+                ),
+                
+                // Sensibilité à la casse
+                CheckboxListTile(
+                  title: const Text('Sensible à la casse'),
+                  value: caseSensitive,
+                  onChanged: (value) => setState(() => caseSensitive = value!),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _performAdvancedSearch(
+                  searchController.text,
+                  selectedBook,
+                  searchType,
+                  caseSensitive,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Rechercher'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _performAdvancedSearch(String query, String book, String type, bool caseSensitive) {
+    if (query.isEmpty) return;
+    
+    List<Map<String, dynamic>> results = [];
+    
+    // Déterminer les livres à rechercher
+    List<BibleBook> booksToSearch = book == 'Tous' 
+        ? _bibleService.books 
+        : _bibleService.books.where((b) => b.name == book).toList();
+    
+    for (BibleBook bibleBook in booksToSearch) {
+      for (int chapterIndex = 0; chapterIndex < bibleBook.chapters.length; chapterIndex++) {
+        final chapter = bibleBook.chapters[chapterIndex];
+        
+        for (int verseIndex = 0; verseIndex < chapter.length; verseIndex++) {
+          final verse = chapter[verseIndex];
+          String verseText = caseSensitive ? verse : verse.toLowerCase();
+          String searchQuery = caseSensitive ? query : query.toLowerCase();
+          
+          bool matches = false;
+          
+          switch (type) {
+            case 'exact':
+              matches = verseText == searchQuery;
+              break;
+            case 'partial':
+              matches = verseText.contains(searchQuery);
+              break;
+            case 'regex':
+              try {
+                RegExp regex = RegExp(searchQuery, caseSensitive: caseSensitive);
+                matches = regex.hasMatch(verseText);
+              } catch (e) {
+                // Erreur de regex, fallback vers recherche partielle
+                matches = verseText.contains(searchQuery);
+              }
+              break;
+          }
+          
+          if (matches) {
+            results.add({
+              'book': bibleBook.name,
+              'chapter': chapterIndex + 1,
+              'verse': verseIndex + 1,
+              'text': verse,
+            });
+          }
+        }
+      }
+    }
+    
+    // Afficher les résultats
+    _showSearchResults(results, query);
+  }
+
+  void _showSearchResults(List<Map<String, dynamic>> results, String query) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Résultats pour "$query"',
+          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 400,
+          child: results.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.search_off, size: 64, color: Colors.grey),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Aucun résultat trouvé',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (context, index) {
+                    final result = results[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      child: ListTile(
+                        title: Text(
+                          '${result['book']} ${result['chapter']}:${result['verse']}',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                        subtitle: Text(
+                          result['text'],
+                          style: GoogleFonts.plusJakartaSans(),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          // Naviguer vers le verset
+                          _navigateToVerse(result['book'], result['chapter'], result['verse']);
+                        },
+                      ),
+                    );
+                  },
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _navigateToVerse(String book, int chapter, int verse) {
+    setState(() {
+      _selectedBook = book;
+      _selectedChapter = chapter;
+      _selectedVerseKey = '$book $chapter:$verse';
+    });
+    
+    // Changer vers l'onglet lecture
+    _tabController.animateTo(1);
+    
+    // Scroll vers le verset sélectionné après un délai
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_readingScrollController.hasClients) {
+        _readingScrollController.animateTo(
+          verse * 60.0, // Approximation de la hauteur d'un verset
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   Widget _buildFavoritesTab() {

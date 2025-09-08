@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
@@ -837,12 +839,34 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
   }
 
   Future<void> _savePlanToStorage(ReadingPlan plan) async {
-    // TODO: Implémenter la sauvegarde réelle
-    // Pour l'instant, on simule une sauvegarde
-    await Future.delayed(const Duration(seconds: 1));
-    
-    // Dans une vraie implémentation, on sauvegarderait dans:
-    // - Firestore pour la persistance
-    // - Le cache local pour l'accès rapide
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Récupérer les plans existants
+      final plansJson = prefs.getString('reading_plans') ?? '[]';
+      final List<dynamic> plansList = json.decode(plansJson);
+      
+      // Convertir le plan en Map
+      final Map<String, dynamic> planMap = plan.toJson();
+      
+      // Chercher si le plan existe déjà
+      final existingIndex = plansList.indexWhere((p) => p['id'] == plan.id);
+      
+      if (existingIndex != -1) {
+        // Mettre à jour le plan existant
+        plansList[existingIndex] = planMap;
+      } else {
+        // Ajouter un nouveau plan
+        plansList.add(planMap);
+      }
+      
+      // Sauvegarder dans SharedPreferences
+      await prefs.setString('reading_plans', json.encode(plansList));
+      
+      print('✅ Plan de lecture sauvegardé: ${plan.name}');
+    } catch (e) {
+      print('❌ Erreur lors de la sauvegarde du plan: $e');
+      throw Exception('Erreur lors de la sauvegarde: $e');
+    }
   }
 }

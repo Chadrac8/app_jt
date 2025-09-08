@@ -112,6 +112,57 @@ class ActionGroupService {
     }
   }
 
+  // Compter les actions dans un groupe
+  Future<int> countActionsInGroup(String groupId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('pour_vous_actions')
+          .where('groupId', isEqualTo: groupId)
+          .get();
+      return snapshot.docs.length;
+    } catch (e) {
+      print('Erreur lors du comptage des actions dans le groupe: $e');
+      return 0;
+    }
+  }
+
+  // Déplacer des actions vers un autre groupe
+  Future<bool> moveActionsToGroup(List<String> actionIds, String newGroupId) async {
+    try {
+      final batch = _firestore.batch();
+      
+      for (final actionId in actionIds) {
+        final docRef = _firestore.collection('pour_vous_actions').doc(actionId);
+        batch.update(docRef, {
+          'groupId': newGroupId,
+          'updatedAt': Timestamp.fromDate(DateTime.now()),
+        });
+      }
+      
+      await batch.commit();
+      return true;
+    } catch (e) {
+      print('Erreur lors du déplacement des actions: $e');
+      return false;
+    }
+  }
+
+  // Initialiser les groupes par défaut
+  Future<void> initializeDefaultGroups() async {
+    try {
+      // Vérifier si des groupes existent déjà
+      final snapshot = await _firestore.collection(_collection).limit(1).get();
+      if (snapshot.docs.isNotEmpty) {
+        print('Des groupes existent déjà, initialisation annulée');
+        return;
+      }
+      
+      await createDefaultGroups();
+    } catch (e) {
+      print('Erreur lors de l\'initialisation des groupes par défaut: $e');
+    }
+  }
+
   // Créer les groupes par défaut
   Future<void> createDefaultGroups() async {
     try {

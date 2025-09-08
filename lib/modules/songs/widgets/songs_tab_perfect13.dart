@@ -92,8 +92,6 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
 
     return Column(
       children: [
-        // Barre de recherche
-        _buildSearchBar(),
         // Liste des chants
         Expanded(
           child: ListView.builder(
@@ -106,47 +104,6 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
-        ),
-      ),
-      child: TextField(
-        onChanged: (value) {
-          setState(() {
-            searchQuery = value;
-            _filterSongs();
-          });
-        },
-        decoration: InputDecoration(
-          hintText: 'Rechercher un chant...',
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: searchQuery.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      searchQuery = '';
-                      _filterSongs();
-                    });
-                  },
-                )
-              : null,
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
-          ),
-        ),
-      ),
     );
   }
 
@@ -244,23 +201,6 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
-                      if (song.style.isNotEmpty) ...[
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            song.style,
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onSecondaryContainer,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 ),
@@ -333,9 +273,9 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) => StatefulBuilder(
         builder: (context, setStateBottomSheet) => DraggableScrollableSheet(
-        initialChildSize: 0.92, // Taille initiale très haute (92% de l'écran)
-        minChildSize: 0.7,      // Taille minimale élevée (70% de l'écran)
-        maxChildSize: 0.98,     // Taille maximale quasi plein écran (98%)
+        initialChildSize: 1.0, // Prend tout l'écran
+        minChildSize: 1.0,      // Taille minimale plein écran
+        maxChildSize: 1.0,     // Taille maximale plein écran
         expand: false,
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(

@@ -823,19 +823,27 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: const Color(0xFFF2F2F7), // Couleur Apple gris clair
+      backgroundColor: const Color(0xFF860505), // Rouge bordeaux #860505
       elevation: 0,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark, // Icônes sombres pour fond clair
-        statusBarBrightness: Brightness.light, // Pour iOS
+        statusBarIconBrightness: Brightness.light, // Icônes claires pour fond rouge
+        statusBarBrightness: Brightness.dark, // Pour iOS
       ),
       leading: Padding(
         padding: const EdgeInsets.only(left: 12, right: 4),
-        child: Image.asset(
-          'assets/logo_jt.png',
-          height: 32,
-          width: 32,
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+          ),
+          padding: const EdgeInsets.all(4),
+          child: Image.asset(
+            'assets/logo_jt.png',
+            height: 32,
+            width: 32,
+            fit: BoxFit.contain,
+          ),
         ),
       ),
       centerTitle: true,
@@ -844,7 +852,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         style: GoogleFonts.poppins(
           fontSize: 20,
           fontWeight: FontWeight.w600,
-          color: const Color(0xFF1C1C1E), // Couleur texte Apple noir/gris foncé
+          color: Colors.white, // Texte blanc sur fond rouge
         ),
       ),
       actions: [
@@ -955,7 +963,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return Stack(
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications, color: Color(0xFF007AFF)),
+          icon: const Icon(Icons.notifications, color: Colors.white),
           tooltip: 'Notifications',
           onPressed: () {
             setState(() {

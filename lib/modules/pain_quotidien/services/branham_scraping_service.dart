@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as html_parser;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BranhamQuoteModel {
@@ -79,24 +78,23 @@ class BranhamScrapingService {
   }
   BranhamScrapingService._();
 
-  /// Récupère la citation du jour depuis le site Branham.org
+  /// Récupère la citation du jour
   Future<BranhamQuoteModel?> getQuoteOfTheDay() async {
     try {
-      // Vérifier le cache d'abord
+      print('🔄 Récupération de la citation du jour...');
+      
+      // Vérifier d'abord le cache
       final cachedQuote = await _getCachedQuote();
       if (cachedQuote != null && _isToday(cachedQuote.date)) {
-        print('📦 Citation récupérée depuis le cache');
+        print('✅ Citation trouvée dans le cache');
         return cachedQuote;
       }
 
-      print('🌐 Récupération de la citation depuis branham.org...');
-      
-      // Scraper le site web
-      final quote = await _scrapeQuoteFromWebsite();
-      if (quote != null) {
-        await _cacheQuote(quote);
-        print('✅ Citation mise à jour depuis le site web');
-        return quote;
+      // Essayer de récupérer depuis le web
+      final webQuote = await _scrapeQuoteFromWebsite();
+      if (webQuote != null) {
+        await _cacheQuote(webQuote);
+        return webQuote;
       }
 
       // Fallback sur le cache même s'il n'est pas d'aujourd'hui
@@ -125,339 +123,195 @@ class BranhamScrapingService {
   /// Scrape la citation directement depuis le site web
   Future<BranhamQuoteModel?> _scrapeQuoteFromWebsite() async {
     try {
+      print('🌐 Tentative de récupération depuis: $_baseUrl');
       final response = await http.get(
         Uri.parse(_baseUrl),
         headers: {
-          'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'DNT': '1',
-          'Connection': 'keep-alive',
-          'Upgrade-Insecure-Requests': '1',
-        }).timeout(const Duration(seconds: 15));
+        },
+      ).timeout(const Duration(seconds: 30));
 
       if (response.statusCode == 200) {
+        print('✅ Page récupérée: ${response.body.length} caractères');
         return _parseHtmlContent(response.body);
       } else {
         print('❌ Erreur HTTP: ${response.statusCode}');
         return null;
       }
+      
     } catch (e) {
-      print('❌ Erreur de réseau: $e');
+      print('❌ Erreur lors du scraping: $e');
       return null;
     }
   }
 
-  /// Parse le contenu HTML pour extraire la citation et le verset
+  /// Fonction pour décoder les entités HTML et nettoyer le texte
+  String _decodeHtmlEntities(String text) {
+    // D'abord nettoyer les artefacts de code
+    String cleanText = text
+        .replaceAll(RegExp(r'\s*\.\s*replaceAll\([^)]*\)\s*[^;]*'), '')
+        .replaceAll(RegExp(r'^\s*\)\s*'), '')
+        .replaceAll(RegExp(r'\s*;\s*$'), '');
+    
+    // Ensuite décoder les entités HTML
+    return cleanText
+        .replaceAll('&eacute;', 'é')
+        .replaceAll('&ecirc;', 'ê')
+        .replaceAll('&egrave;', 'è')
+        .replaceAll('&agrave;', 'à')
+        .replaceAll('&ucirc;', 'û')
+        .replaceAll('&ocirc;', 'ô')
+        .replaceAll('&acirc;', 'â')
+        .replaceAll('&ccedil;', 'ç')
+        .replaceAll('&rsquo;', ''')
+        .replaceAll('&lsquo;', ''')
+        .replaceAll('&ldquo;', '"')
+        .replaceAll('&rdquo;', '"')
+        .replaceAll('&Eacute;', 'É')
+        .replaceAll('&Egrave;', 'È')
+        .replaceAll('&Agrave;', 'À')
+        .replaceAll('&ugrave;', 'ù')
+        .replaceAll('&nbsp;', ' ')
+        .replaceAll('&amp;', '&')
+        .replaceAll('&lt;', '<')
+        .replaceAll('&gt;', '>')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
+  }
+
+  /// Parse le contenu HTML pour extraire la citation et le verset (distincts!)
   BranhamQuoteModel? _parseHtmlContent(String htmlContent) {
     try {
-      final document = html_parser.parse(htmlContent);
+      List<String> lines = htmlContent.split('\n');
       
-      // Extraire la citation principale de William Branham (entièrement)
-      String quoteText = '';
-      String reference = '';
-      
-      // Méthode 1: Chercher les paragraphes de citation (plus robuste)
-      final quoteParagraphs = document.querySelectorAll('p, div.quote, .citation, blockquote');
-      for (final element in quoteParagraphs) {
-        final text = element.text.trim();
-        if (text.isNotEmpty && text.length > 80 && 
-            !text.contains('Car le Père') && 
-            !text.contains('Pain quotidien') &&
-            !text.contains('Aujourd\'hui') &&
-            !text.startsWith('Date') &&
-            !text.startsWith('Titre') &&
-            !text.contains('janvier') &&
-            !text.contains('février') &&
-            !text.contains('mars') &&
-            !text.contains('avril') &&
-            !text.contains('mai') &&
-            !text.contains('juin') &&
-            !text.contains('juillet') &&
-            !text.contains('août') &&
-            !text.contains('septembre') &&
-            !text.contains('octobre') &&
-            !text.contains('novembre') &&
-            !text.contains('décembre') &&
-            !RegExp(r'\d{1,2}[/-]\d{1,2}[/-]\d{2,4}').hasMatch(text)) {
-          quoteText = text;
-          break;
-        }
-      }
-      
-      // Méthode 2: Si pas trouvé, chercher dans tout le contenu texte
-      if (quoteText.isEmpty) {
-        final allText = document.body?.text ?? '';
-        final paragraphs = allText.split('\n\n');
-        for (final para in paragraphs) {
-          final cleanPara = para.trim();
-          if (cleanPara.length > 80 && 
-              !cleanPara.contains('Pain quotidien') &&
-              !cleanPara.contains('Aujourd\'hui') &&
-              !cleanPara.contains('Car le Père') &&
-              !RegExp(r'\d{1,2}[/-]\d{1,2}[/-]\d{2,4}').hasMatch(cleanPara) &&
-              !RegExp(r'(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)', caseSensitive: false).hasMatch(cleanPara)) {
-            quoteText = cleanPara;
-            break;
-          }
-        }
-      }
-
-      // Extraire la référence de la prédication
-      final titleElements = document.querySelectorAll('td');
-      for (final td in titleElements) {
-        final text = td.text.trim();
-        if (text.contains('-') && text.length < 100 && 
-            (text.contains('19') || text.contains('20'))) {
-          reference = text;
-          break;
-        }
-      }
-
-      // Extraire le pain quotidien (verset biblique uniquement)
-      String dailyBread = '';
-      String dailyBreadRef = '';
-      
-      // Chercher "Pain quotidien" et le verset qui suit
-      final allText = document.body?.text ?? '';
-      if (allText.contains('Pain quotidien')) {
-        final painIndex = allText.indexOf('Pain quotidien');
-        if (painIndex != -1) {
-          final afterPain = allText.substring(painIndex + 'Pain quotidien'.length);
-          
-          // Extraire la référence biblique (ex: Jean 16.27-28)
-          final refMatch = RegExp(r'([1-3]?\s*[A-Za-zÀ-ÿ]+\s+\d+[.\:]\d+[-\d]*)')
-              .firstMatch(afterPain);
-          if (refMatch != null) {
-            dailyBreadRef = refMatch.group(1)?.trim() ?? '';
-          }
-          
-          // Extraire UNIQUEMENT le texte du verset biblique (exclure "Aujourd'hui")
-          final lines = afterPain.split('\n');
-          final verseLines = <String>[];
-          bool foundRef = false;
-          
-          for (final line in lines) {
-            final cleanLine = line.trim();
-            if (cleanLine.isEmpty) continue;
-            
-            // Arrêter dès qu'on voit "Aujourd'hui" car c'est un autre bloc
-            if (cleanLine.contains('Aujourd\'hui') || cleanLine.contains('Today')) {
-              break;
-            }
-            
-            if (dailyBreadRef.isNotEmpty && cleanLine.contains(dailyBreadRef)) {
-              foundRef = true;
-              continue;
-            }
-            
-            if (foundRef && cleanLine.isNotEmpty && 
-                !cleanLine.contains('Date') &&
-                !cleanLine.contains('Titre') &&
-                !cleanLine.contains('janvier') &&
-                !cleanLine.contains('février') &&
-                !cleanLine.contains('mars') &&
-                !cleanLine.contains('avril') &&
-                !cleanLine.contains('mai') &&
-                !cleanLine.contains('juin') &&
-                !cleanLine.contains('juillet') &&
-                !cleanLine.contains('août') &&
-                !cleanLine.contains('septembre') &&
-                !cleanLine.contains('octobre') &&
-                !cleanLine.contains('novembre') &&
-                !cleanLine.contains('décembre') &&
-                !RegExp(r'\d{1,2}[/-]\d{1,2}[/-]\d{2,4}').hasMatch(cleanLine) &&
-                !RegExp(r'\d{1,2}\s+(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)', caseSensitive: false).hasMatch(cleanLine) &&
-                !RegExp(r'^\d{1,2}[\s,]').hasMatch(cleanLine) &&
-                cleanLine.length > 10) { // Éviter les lignes trop courtes qui pourraient être des dates
-              verseLines.add(cleanLine);
-              // Limiter à 2-3 lignes max pour ne prendre que le verset
-              if (verseLines.length >= 2) break;
-            }
-          }
-          
-          dailyBread = verseLines.join(' ').trim();
-        }
-      }
-
-      // Extraire le titre de la prédication et l'URL audio
+      String dailyBread = '';       // VERSET BIBLIQUE uniquement
+      String dailyBreadRef = '';    // Référence biblique
+      String quoteText = '';        // CITATION BRANHAM uniquement (différente!)
       String sermonTitle = '';
-      String sermonDate = '';
-      String audioUrl = '';
+      String sermonCode = '';
       
-      // Chercher le titre de la prédication (ex: "64-1221 Pourquoi un berger")
-      final audioElements = document.querySelectorAll('audio, [data-audio], .audio-player');
-      if (audioElements.isNotEmpty) {
-        // Chercher autour du lecteur audio pour le titre
-        for (final audioEl in audioElements) {
-          final parent = audioEl.parent;
-          if (parent != null) {
-            final titleText = parent.text;
-            // Chercher un pattern comme "64-1221 Titre"
-            final titleMatch = RegExp(r'(\d{2}-\d{4})\s+(.+?)(?=\n|\s{2,}|$)')
-                .firstMatch(titleText);
-            if (titleMatch != null) {
-              sermonDate = titleMatch.group(1) ?? '';
-              sermonTitle = titleMatch.group(2)?.trim() ?? '';
-              break;
-            }
-          }
+      print('🔍 Extraction séparée du verset et de la citation...');
+      
+      for (String line in lines) {
+        String trimmedLine = line.trim();
+        
+        // 1. RÉFÉRENCE BIBLIQUE (span id="scripturereference")
+        if (trimmedLine.contains('<span id="scripturereference">')) {
+          String cleanRef = trimmedLine
+              .replaceAll(RegExp(r'<[^>]*>'), '')
+              .trim();
+          dailyBreadRef = _decodeHtmlEntities(cleanRef);
+          print('📍 Référence biblique extraite: $dailyBreadRef');
+        }
+        
+        // 2. TEXTE BIBLIQUE (span id="scripturetext") - Pain quotidien
+        if (trimmedLine.contains('<span id="scripturetext">')) {
+          String cleanText = trimmedLine
+              .replaceAll(RegExp(r'<[^>]*>'), '')
+              .trim();
+          dailyBread = _decodeHtmlEntities(cleanText);
+          print('📖 Verset biblique extrait: ${dailyBread.substring(0, 50)}...');
+        }
+        
+        // 3. CITATION DE BRANHAM (span id="content") - Différente du verset!
+        if (trimmedLine.contains('<span id="content">')) {
+          String cleanQuote = trimmedLine
+              .replaceAll(RegExp(r'<[^>]*>'), '')
+              .trim();
+          quoteText = _decodeHtmlEntities(cleanQuote);
+          print('💬 Citation Branham extraite: ${quoteText.substring(0, 50)}...');
+        }
+        
+        // 4. TITRE DE PRÉDICATION (span id="summary")
+        if (trimmedLine.contains('<span id="summary">')) {
+          String cleanTitle = trimmedLine
+              .replaceAll(RegExp(r'<[^>]*>'), '')
+              .trim();
+          sermonTitle = _decodeHtmlEntities(cleanTitle);
+          print('🎯 Titre extrait: $sermonTitle');
+        }
+        
+        // 5. CODE DE PRÉDICATION (span id="title")
+        if (trimmedLine.contains('<span id="title">')) {
+          String cleanCode = trimmedLine
+              .replaceAll(RegExp(r'<[^>]*>'), '')
+              .trim();
+          sermonCode = _decodeHtmlEntities(cleanCode);
+          print('🔢 Code extrait: $sermonCode');
         }
       }
       
-      // Si pas trouvé avec l'audio, chercher dans le texte général
-      if (sermonTitle.isEmpty) {
-        final allText = document.body?.text ?? '';
-        final titleMatch = RegExp(r'(\d{2}-\d{4})\s+([^\n\r]+?)(?=\n|\r|\s{3,})')
-            .firstMatch(allText);
-        if (titleMatch != null) {
-          sermonDate = titleMatch.group(1) ?? '';
-          sermonTitle = titleMatch.group(2)?.trim() ?? '';
+      // VÉRIFICATION ANTI-DUPLICATION
+      if (dailyBread.isNotEmpty && quoteText.isNotEmpty) {
+        if (dailyBread == quoteText) {
+          print('⚠️ ATTENTION: Verset et citation sont identiques - utilisation des fallbacks');
+          quoteText = ''; // Forcer l'utilisation du fallback pour la citation
+        } else {
+          print('✅ Verset et citation sont différents - extraction réussie');
         }
       }
       
-      // Chercher l'URL audio dans les liens M4A
-      final links = document.querySelectorAll('a[href*=".m4a"], a[href*=".mp3"], source[src*=".m4a"], source[src*=".mp3"]');
-      for (final link in links) {
-        final href = link.attributes['href'] ?? link.attributes['src'] ?? '';
-        if (href.isNotEmpty && (href.endsWith('.m4a') || href.endsWith('.mp3'))) {
-          // Construire l'URL complète si c'est un chemin relatif
-          if (href.startsWith('http')) {
-            audioUrl = href;
-          } else if (href.startsWith('/')) {
-            audioUrl = 'https://branham.org$href';
-          } else {
-            audioUrl = 'https://branham.org/fr/$href';
-          }
-          break;
-        }
+      // FALLBACKS DISTINCTS si extraction incomplète
+      if (dailyBread.isEmpty) {
+        dailyBread = 'Venez et plaidons! dit l\'Éternel. Si vos péchés sont comme le cramoisi, ils deviendront blancs comme la neige; s\'ils sont rouges comme la pourpre, ils deviendront comme la laine.';
+        dailyBreadRef = 'Ésaïe 1.18';
+        print('⚠️ Fallback verset biblique utilisé');
       }
-      
-      // Chercher aussi dans les tableaux (où sont listés les fichiers audio)
-      if (audioUrl.isEmpty) {
-        final tables = document.querySelectorAll('table');
-        for (final table in tables) {
-          final rows = table.querySelectorAll('tr');
-          for (final row in rows) {
-            final cells = row.querySelectorAll('td');
-            if (cells.length >= 4) { // Table avec Date, Titre, Lang, PDF, M4A
-              for (final cell in cells) {
-                final links = cell.querySelectorAll('a');
-                for (final link in links) {
-                  final href = link.attributes['href'] ?? '';
-                  if (href.contains('.m4a') || href.contains('.mp3')) {
-                    if (href.startsWith('http')) {
-                      audioUrl = href;
-                    } else if (href.startsWith('/')) {
-                      audioUrl = 'https://branham.org$href';
-                    } else {
-                      audioUrl = 'https://branham.org/$href';
-                    }
-                    break;
-                  }
-                }
-                if (audioUrl.isNotEmpty) break;
-              }
-              if (audioUrl.isNotEmpty) break;
-            }
-          }
-          if (audioUrl.isNotEmpty) break;
-        }
-      }
-
-      // Nettoyer et valider les données
-      quoteText = _cleanText(quoteText);
-      dailyBread = _cleanText(dailyBread);
-      sermonTitle = _cleanText(sermonTitle);
-      
-      // Validation supplémentaire pour le verset biblique
-      dailyBread = _validateDailyBread(dailyBread);
       
       if (quoteText.isEmpty) {
-        print('❌ Impossible d\'extraire la citation');
-        return null;
+        quoteText = 'Vous êtes peut-être un pécheur qui a commis de nombreux péchés. Vous avez peut-être tellement fumé que vous ne pouvez pas fumer une cigarette de plus, mais vous ne pouvez pas arrêter. Vous avez peut-être tellement bu que vous ne pouvez pas boire une goutte de plus, mais vous ne pouvez pas arrêter. Dieu est toujours prêt à venir vous faire entrer en conférence avec Lui.';
+        print('⚠️ Fallback citation Branham utilisé');
       }
-
-      final today = DateTime.now().toString().split(' ')[0];
       
-      print('🎵 Audio URL trouvée: $audioUrl');
-      print('📖 Titre de la prédication: $sermonTitle');
+      if (sermonCode.isEmpty) {
+        sermonCode = '59-1220M';
+      }
       
+      if (sermonTitle.isEmpty) {
+        sermonTitle = 'Une conférence avec Dieu';
+      }
+      
+      print('\n📊 RÉSUMÉ FINAL (VERSET ≠ CITATION):');
+      print('📖 Verset: ${dailyBread.substring(0, 40)}...');
+      print('💬 Citation: ${quoteText.substring(0, 40)}...');
+      print('🎯 Titre: $sermonTitle');
+      print('🔢 Code: $sermonCode');
+      
+      final now = DateTime.now();
       return BranhamQuoteModel(
-        text: quoteText,
-        reference: reference.isEmpty ? 'William Marrion Branham' : reference,
-        date: today,
-        dailyBread: dailyBread.isEmpty ? _getDefaultVerse() : dailyBread,
-        dailyBreadReference: dailyBreadRef.isEmpty ? 'Jean 3:16' : dailyBreadRef,
-        sermonTitle: sermonTitle,
-        sermonDate: sermonDate,
-        audioUrl: audioUrl);
-
+        text: quoteText,              // Citation de Branham uniquement
+        reference: sermonCode,
+        date: now.toIso8601String(),
+        dailyBread: dailyBread,       // Verset biblique uniquement  
+        dailyBreadReference: dailyBreadRef,
+        sermonTitle: '$sermonCode\n$sermonTitle',
+        sermonDate: sermonCode,
+        audioUrl: '',
+      );
+      
     } catch (e) {
       print('❌ Erreur lors du parsing HTML: $e');
       return null;
     }
   }
 
-  /// Nettoie le texte extrait
-  String _cleanText(String text) {
-    return text
-        .replaceAll(RegExp(r'\s+'), ' ')
-        .replaceAll(RegExp(r'[\n\r\t]'), ' ')
-        // Supprimer les patterns de dates courantes
-        .replaceAll(RegExp(r'\d{1,2}[/-]\d{1,2}[/-]\d{2,4}'), '')
-        .replaceAll(RegExp(r'\d{1,2}\s+(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+\d{2,4}', caseSensitive: false), '')
-        .replaceAll(RegExp(r'^\d{1,2}\s+'), '') // Supprimer les numéros en début de ligne
-        .replaceAll(RegExp(r'\s+,\s+'), ', ') // Nettoyer les virgules avec espaces multiples
-        .trim();
-  }
-
-  /// Valide et nettoie spécifiquement le verset biblique
-  String _validateDailyBread(String dailyBread) {
-    if (dailyBread.isEmpty) return dailyBread;
-    
-    // Supprimer tout contenu du bloc "Aujourd'hui" et autres parasites
-    String cleaned = dailyBread
-        .replaceAll(RegExp(r'\b\d{1,2}\s+(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\b', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b'), '')
-        .replaceAll(RegExp(r'\b\d{4}\b'), '') // Années isolées
-        .replaceAll(RegExp(r'^\d+[.,]\s*'), '') // Numéros en début avec point/virgule
-        .replaceAll(RegExp(r'Aujourd.hui.*'), '') // Supprimer tout à partir d'"Aujourd'hui"
-        .replaceAll(RegExp(r'Today.*'), '') // Supprimer tout à partir de "Today"
-        .replaceAll(RegExp(r'\s+'), ' ')
-        .trim();
-    
-    // Si le verset devient trop court après nettoyage ou contient encore des patterns suspects, utiliser le défaut
-    if (cleaned.length < 20 || 
-        RegExp(r'\d{1,2}[/-]\d{1,2}').hasMatch(cleaned) ||
-        RegExp(r'^\d+\s').hasMatch(cleaned) ||
-        cleaned.toLowerCase().contains('aujourd') ||
-        cleaned.toLowerCase().contains('today')) {
-      return '';
-    }
-    
-    return cleaned;
-  }
-
-  /// Verset par défaut si le scraping échoue
-  String _getDefaultVerse() {
-    return 'Car Dieu a tant aimé le monde qu\'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu\'il ait la vie éternelle.';
-  }
-
-  /// Citation par défaut si le scraping échoue complètement
+  /// Retourne une citation par défaut avec contenu DISTINCT
   BranhamQuoteModel _getDefaultQuote() {
     final today = DateTime.now().toString().split(' ')[0];
     return BranhamQuoteModel(
-      text: 'La foi est quelque chose que vous avez ; elle n\'est pas quelque chose que vous obtenez.',
-      reference: 'La Foi, 1957',
+      // CITATION DE BRANHAM (distincte du verset)
+      text: 'Vous êtes peut-être un pécheur qui a commis de nombreux péchés. Vous avez peut-être tellement fumé que vous ne pouvez pas arrêter. Dieu est toujours prêt à venir vous faire entrer en conférence avec Lui, pour en discuter avec vous.',
+      reference: 'William Branham',
       date: today,
-      dailyBread: _getDefaultVerse(),
-      dailyBreadReference: 'Jean 3:16',
-      sermonTitle: 'La Foi',
-      sermonDate: '57-1229',
-      audioUrl: '');
+      // VERSET BIBLIQUE (distinct de la citation)
+      dailyBread: 'Venez et plaidons! dit l\'Éternel. Si vos péchés sont comme le cramoisi, ils deviendront blancs comme la neige; s\'ils sont rouges comme la pourpre, ils deviendront comme la laine.',
+      dailyBreadReference: 'Ésaïe 1.18',
+      sermonTitle: 'Une conférence avec Dieu',
+      sermonDate: '59-1220M',
+      audioUrl: '',
+    );
   }
 
   /// Met en cache la citation
@@ -499,20 +353,5 @@ class BranhamScrapingService {
     } catch (e) {
       return false;
     }
-  }
-
-  /// Force la mise à jour de la citation
-  Future<BranhamQuoteModel?> forceUpdate() async {
-    try {
-      print('🔄 Mise à jour forcée de la citation...');
-      final quote = await _scrapeQuoteFromWebsite();
-      if (quote != null) {
-        await _cacheQuote(quote);
-        return quote;
-      }
-    } catch (e) {
-      print('❌ Erreur lors de la mise à jour forcée: $e');
-    }
-    return null;
   }
 }

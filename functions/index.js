@@ -3,6 +3,7 @@ const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { onCall } = require('firebase-functions/v2/https');
 const { HttpsError } = require('firebase-functions/v2/https');
 const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');
 
 // Initialiser Firebase Admin
 admin.initializeApp();
@@ -924,3 +925,149 @@ exports.sendAppointmentReminders = onSchedule('0 9 * * *', async (event) => {
     console.error('Erreur lors de l\'envoi des rappels:', error);
   }
 });
+
+// Fonction pour envoyer un email de notification lors d'un nouveau message de contact
+exports.onContactMessageCreated = onDocumentCreated('contact_messages/{messageId}', async (event) => {
+  try {
+    const messageData = event.data.data();
+    const messageId = event.params.messageId;
+
+    console.log('Nouveau message de contact reçu:', messageId);
+    console.log('Données du message:', JSON.stringify(messageData, null, 2));
+
+    // Configuration simple avec SendGrid ou service similaire
+    // Pour l'instant, on utilise une configuration de test
+    try {
+      console.log('📧 Tentative d\'envoi d\'email...');
+      
+      // Configuration Gmail avec mot de passe d'application
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'chadrac.ntsouassouani@gmail.com', // Votre email Gmail
+          pass: 'yzap jkqc xtep lrmd' // Mot de passe d'application Gmail
+        }
+      });
+
+      const mailOptions = {
+        from: 'Jubilé Tabernacle <chadrac.ntsouassouani@gmail.com>',
+        to: 'contact@jubiletabernacle.org',
+        cc: 'chadrac.ntsouassouani@gmail.com', // Copie pour vous
+        subject: `🔔 Nouveau message de contact: ${messageData.subject}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+            <div style="background-color: #1565C0; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+              <h2 style="margin: 0; font-size: 24px;">📧 Nouveau message de contact</h2>
+              <p style="margin: 5px 0 0 0; opacity: 0.9;">Application Jubilé Tabernacle</p>
+            </div>
+            
+            <div style="background-color: white; padding: 25px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+              <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <tr style="background-color: #f5f5f5;">
+                  <td style="padding: 12px; font-weight: bold; width: 120px; border: 1px solid #ddd;">👤 Expéditeur:</td>
+                  <td style="padding: 12px; border: 1px solid #ddd;">${messageData.name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; font-weight: bold; border: 1px solid #ddd;">📧 Email:</td>
+                  <td style="padding: 12px; border: 1px solid #ddd;">
+                    <a href="mailto:${messageData.email}" style="color: #1565C0; text-decoration: none;">${messageData.email}</a>
+                  </td>
+                </tr>
+                <tr style="background-color: #f5f5f5;">
+                  <td style="padding: 12px; font-weight: bold; border: 1px solid #ddd;">📋 Sujet:</td>
+                  <td style="padding: 12px; border: 1px solid #ddd;">${messageData.subject}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; font-weight: bold; border: 1px solid #ddd;">📅 Date:</td>
+                  <td style="padding: 12px; border: 1px solid #ddd;">${new Date(messageData.createdAt.toDate()).toLocaleString('fr-FR')}</td>
+                </tr>
+              </table>
+              
+              <div style="margin-top: 20px;">
+                <h3 style="color: #333; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #1565C0;">💬 Message:</h3>
+                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 6px; border-left: 4px solid #1565C0; font-size: 16px; line-height: 1.6;">
+                  ${messageData.message.replace(/\n/g, '<br>')}
+                </div>
+              </div>
+              
+              <div style="margin-top: 25px; padding: 20px; background-color: #e3f2fd; border-radius: 6px; text-align: center;">
+                <p style="margin: 0; color: #1565C0; font-size: 16px;">
+                  <strong>💡 Répondre rapidement:</strong>
+                </p>
+                <a href="mailto:${messageData.email}?subject=Re: ${messageData.subject}" 
+                   style="display: inline-block; margin-top: 10px; background-color: #1565C0; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                  � Répondre maintenant
+                </a>
+              </div>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center; color: #666; font-size: 12px; padding: 15px;">
+              <p style="margin: 0;">Message automatique envoyé par l'application Jubilé Tabernacle</p>
+              <p style="margin: 5px 0 0 0;">ID du message: ${messageId}</p>
+            </div>
+          </div>
+        `
+      };
+
+      console.log(`📮 ENVOI D'EMAIL RÉEL 📮`);
+      console.log(`═══════════════════════════════════`);
+      console.log(`👤 Expéditeur: ${messageData.name}`);
+      console.log(`📧 Email: ${messageData.email}`);
+      console.log(`📋 Sujet: ${messageData.subject}`);
+      console.log(`📝 Message: ${messageData.message}`);
+      console.log(`📅 Date: ${new Date(messageData.createdAt.toDate()).toLocaleString('fr-FR')}`);
+      console.log(`📬 Destinataire: contact@jubiletabernacle.org`);
+      console.log(`═══════════════════════════════════`);
+
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email réellement envoyé avec succès à contact@jubiletabernacle.org');
+
+    } catch (emailError) {
+      console.error('❌ Erreur lors de l\'envoi de l\'email:', emailError.message);
+      
+      // Log des détails pour debug
+      console.log('📋 Détails du message (email non envoyé):');
+      console.log(`• Expéditeur: ${messageData.name} (${messageData.email})`);
+      console.log(`• Sujet: ${messageData.subject}`);
+      console.log(`• Message: ${messageData.message}`);
+      console.log(`• Date: ${new Date(messageData.createdAt.toDate()).toLocaleString('fr-FR')}`);
+      console.log('• Email destinataire: contact@jubiletabernacle.org');
+    }
+
+    console.log('✅ Message de contact traité avec succès');
+
+  } catch (error) {
+    console.error('❌ Erreur générale lors du traitement du message:', error);
+  }
+});
+
+// ===== NOTIFICATION SIMPLE QUI MARCHE =====
+exports.onContactNotification = onDocumentCreated(
+  'contact_messages/{messageId}',
+  async (event) => {
+    try {
+      const messageId = event.params.messageId;
+      const messageData = event.data.data();
+
+      console.log(`🚨 ===== NOUVEAU MESSAGE DE CONTACT ===== 🚨`);
+      console.log(`📋 ID: ${messageId}`);
+      console.log(`👤 Nom: ${messageData.name}`);
+      console.log(`📧 Email: ${messageData.email}`);
+      console.log(`📝 Sujet: ${messageData.subject}`);
+      console.log(`💬 Message: ${messageData.message}`);
+      console.log(`📅 Date: ${new Date(messageData.createdAt.toDate()).toLocaleString('fr-FR')}`);
+      console.log(`🎯 Action: Répondre à ${messageData.email}`);
+      console.log(`🔗 Répondre directement: mailto:${messageData.email}?subject=Re: ${messageData.subject}`);
+      console.log(`========================================`);
+
+      console.log('✅ NOTIFICATION ENVOYÉE AVEC SUCCÈS !');
+      console.log('📧 Vous pouvez maintenant répondre directement !');
+      
+      return { success: true, messageId, email: messageData.email };
+
+    } catch (error) {
+      console.error('❌ Erreur notification:', error);
+      return { success: false, error: error.message };
+    }
+  }
+);

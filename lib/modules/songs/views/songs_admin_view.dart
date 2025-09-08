@@ -598,11 +598,58 @@ class _SongsAdminViewState extends State<SongsAdminView>
         trailing: Switch(
           value: category.isActive,
           onChanged: (value) {
-            // TODO: Implémenter la mise à jour du statut de la catégorie
+            _updateCategoryStatus(category, value);
           },
         ),
       ),
     );
+  }
+
+  Future<void> _updateCategoryStatus(SongCategory category, bool isActive) async {
+    try {
+      // Créer une copie mise à jour de la catégorie
+      final updatedCategory = SongCategory(
+        id: category.id,
+        name: category.name,
+        description: category.description,
+        icon: category.icon,
+        color: category.color,
+        isActive: isActive,
+        sortOrder: category.sortOrder,
+        createdAt: category.createdAt,
+        updatedAt: DateTime.now(),
+      );
+
+      // Mettre à jour dans Firestore
+      await _songsService.categories.update(category.id!, updatedCategory);
+
+      // Recharger les données pour mettre à jour l'affichage
+      await _loadData();
+
+      // Afficher un message de confirmation
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isActive 
+                ? 'Catégorie "${category.name}" activée'
+                : 'Catégorie "${category.name}" désactivée'
+            ),
+            backgroundColor: isActive ? Colors.green : Colors.orange,
+          ),
+        );
+      }
+    } catch (e) {
+      // Afficher un message d'erreur
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de la mise à jour: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   IconData _getIconData(String iconName) {

@@ -185,15 +185,63 @@ class BibleStudyService {
 
   // Administration - Sauvegarder une étude
   static Future<void> saveStudy(BibleStudy study) async {
-    // TODO: Implémenter la sauvegarde réelle (Firestore, etc.)
-    // Pour l'instant, simulation
-    await Future.delayed(const Duration(milliseconds: 500));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Récupérer les études existantes
+      final studiesJson = prefs.getString('bible_studies') ?? '[]';
+      final List<dynamic> studiesList = json.decode(studiesJson);
+      
+      // Convertir en Map pour faciliter la manipulation
+      final Map<String, dynamic> studyMap = study.toJson();
+      
+      // Chercher si l'étude existe déjà
+      final existingIndex = studiesList.indexWhere((s) => s['id'] == study.id);
+      
+      if (existingIndex != -1) {
+        // Mettre à jour l'étude existante
+        studiesList[existingIndex] = studyMap;
+      } else {
+        // Ajouter une nouvelle étude
+        studiesList.add(studyMap);
+      }
+      
+      // Sauvegarder dans SharedPreferences
+      await prefs.setString('bible_studies', json.encode(studiesList));
+      
+      print('✅ Étude sauvegardée: ${study.title}');
+    } catch (e) {
+      print('❌ Erreur lors de la sauvegarde de l\'étude: $e');
+      throw Exception('Erreur lors de la sauvegarde: $e');
+    }
   }
 
   // Administration - Supprimer une étude
   static Future<void> deleteStudy(String studyId) async {
-    // TODO: Implémenter la suppression réelle
-    await Future.delayed(const Duration(milliseconds: 500));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Récupérer les études existantes
+      final studiesJson = prefs.getString('bible_studies') ?? '[]';
+      final List<dynamic> studiesList = json.decode(studiesJson);
+      
+      // Supprimer l'étude avec l'ID correspondant
+      studiesList.removeWhere((study) => study['id'] == studyId);
+      
+      // Sauvegarder la liste mise à jour
+      await prefs.setString('bible_studies', json.encode(studiesList));
+      
+      // Supprimer également les progrès associés à cette étude
+      final progressJson = prefs.getString(_progressKey) ?? '[]';
+      final List<dynamic> progressList = json.decode(progressJson);
+      progressList.removeWhere((progress) => progress['studyId'] == studyId);
+      await prefs.setString(_progressKey, json.encode(progressList));
+      
+      print('✅ Étude supprimée: $studyId');
+    } catch (e) {
+      print('❌ Erreur lors de la suppression de l\'étude: $e');
+      throw Exception('Erreur lors de la suppression: $e');
+    }
   }
 
   // Obtenir les statistiques d'usage

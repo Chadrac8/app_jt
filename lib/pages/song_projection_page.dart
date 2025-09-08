@@ -233,17 +233,7 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
                             duration: const Duration(milliseconds: 400),
                             child: SingleChildScrollView(
                               key: ValueKey(_sections[index]),
-                              child: Text(
-                                _sections[index],
-                                style: TextStyle(
-                                  color: _textColor,
-                                  fontSize: _fontSize,
-                                  height: 1.5,
-                                  fontFamily: _fontFamily,
-                                  fontWeight: _highContrast ? FontWeight.bold : FontWeight.normal,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                              child: _buildFormattedSection(_sections[index]),
                             ),
                           );
                         },
@@ -550,6 +540,49 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
           ],
         ),
       ),
+    );
+  }
+
+  /// Construit une section formatée avec style spécial pour les chorus
+  Widget _buildFormattedSection(String sectionText) {
+    final lines = sectionText.split('\n');
+    bool inChorusSection = false;
+    
+    return Column(
+      children: lines.map((line) {
+        // Détecter le début d'une section chorus
+        if (line.toLowerCase().contains('chorus') || line.toLowerCase().contains('refrain')) {
+          inChorusSection = true;
+        }
+        
+        // Si la ligne est vide, on sort de la section chorus
+        if (line.trim().isEmpty && inChorusSection) {
+          inChorusSection = false;
+        }
+        
+        final isChorusLine = line.toLowerCase().contains('chorus') || 
+                           line.toLowerCase().contains('refrain') || 
+                           inChorusSection;
+        
+        return Container(
+          margin: EdgeInsets.only(
+            left: isChorusLine ? 20.0 : 0.0, // Retrait réduit pour chorus
+            bottom: 8.0,
+          ),
+          child: Text(
+            line,
+            style: TextStyle(
+              color: _textColor,
+              fontSize: _fontSize,
+              height: 1.5,
+              fontFamily: _fontFamily,
+              fontWeight: _highContrast ? FontWeight.bold : FontWeight.normal,
+              fontStyle: isChorusLine ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+      }).toList(),
     );
   }
 }

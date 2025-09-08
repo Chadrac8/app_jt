@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../shared/widgets/base_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../shared/widgets/custom_card.dart';
+import '../../../theme.dart';
 import '../services/songs_service.dart';
 import '../../../auth/auth_service.dart';
 import '../models/song.dart';
@@ -171,8 +172,64 @@ class _SongsMemberViewState extends State<SongsMemberView>
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      title: '',
+    return Scaffold(
+      backgroundColor: AppTheme.surfaceColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Cantiques',
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primaryColor,
+          ),
+        ),
+        centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(color: Colors.grey[300]!, width: 1),
+                bottom: BorderSide(color: Colors.grey[300]!, width: 1),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: TabBar(
+              controller: _tabController,
+              indicatorColor: AppTheme.primaryColor,
+              labelColor: AppTheme.primaryColor,
+              unselectedLabelColor: Colors.grey[600],
+              tabs: const [
+                Tab(
+                  icon: Icon(Icons.library_music),
+                  text: 'Tous',
+                ),
+                Tab(
+                  icon: Icon(Icons.favorite),
+                  text: 'Favoris',
+                ),
+                Tab(
+                  icon: Icon(Icons.history),
+                  text: 'Récents',
+                ),
+                Tab(
+                  icon: Icon(Icons.trending_up),
+                  text: 'Populaires',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: Column(
         children: [
           // Barre de recherche
@@ -242,17 +299,6 @@ class _SongsMemberViewState extends State<SongsMemberView>
             ),
             const SizedBox(height: 16),
           ],
-
-          // Onglets
-          TabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(text: 'Tous', icon: Icon(Icons.library_music)),
-              Tab(text: 'Favoris', icon: Icon(Icons.favorite)),
-              Tab(text: 'Récents', icon: Icon(Icons.access_time)),
-              Tab(text: 'Populaires', icon: Icon(Icons.trending_up)),
-            ],
-          ),
 
           // Contenu des onglets
           Expanded(

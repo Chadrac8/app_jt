@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'firebase_options.dart';
 import 'theme.dart';
@@ -15,9 +16,13 @@ import 'services/workflow_initialization_service.dart';
 import 'services/push_notification_service.dart';
 import 'services/notification_dev_service.dart';
 import 'services/profile_image_cache_service.dart';
+import 'services/roles_initialization_service.dart';
+import 'modules/roles/services/permission_provider.dart';
+import 'modules/roles/providers/role_provider.dart';
 import 'utils/date_formatter.dart';
 import 'config/locale_config.dart';
 import 'churchflow_splash.dart';
+import 'modules/roles/roles_module.dart';
 
 /// Gestionnaire global pour les messages en background
 @pragma('vm:entry-point')
@@ -174,6 +179,14 @@ void _initializeModulesAsync() async {
   try {
     print('🔄 Initialisation des modules...');
     
+    // Initialiser le module Rôles et Permissions
+    try {
+      await RolesInitializationService.initialize();
+      print('✅ Module Rôles et Permissions initialisé');
+    } catch (e) {
+      print('⚠️ Erreur initialisation module Rôles: $e');
+    }
+    
     // Les modules "Pour vous", "Ressources" et "Dons" ont été supprimés
     print('✅ Modules supprimés, aucune initialisation nécessaire');
   } catch (e) {
@@ -237,28 +250,34 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ChurchFlow - Gestion d\'Église',
-      theme: AppTheme.lightTheme,
-      home: _hasError ? _buildErrorScreen() : const SafeAuthWrapper(),
-      debugShowCheckedModeBanner: false,
-      
-      // Configuration de localisation française
-      locale: LocaleConfig.defaultLocale,
-      localizationsDelegates: LocaleConfig.localizationsDelegates,
-      supportedLocales: LocaleConfig.supportedLocales,
-      
-      // Configuration du routage
-      initialRoute: '/',
-      
-      // Gestionnaire global d'erreurs
-      builder: (context, child) {
-        if (child == null) {
-          return _buildErrorWidget();
-        }
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => PermissionProvider()),
+        ChangeNotifierProvider(create: (_) => RoleProvider()),
+      ],
+      child: MaterialApp(
+        title: 'ChurchFlow - Gestion d\'Église',
+        theme: AppTheme.lightTheme,
+        home: _hasError ? _buildErrorScreen() : const SafeAuthWrapper(),
+        debugShowCheckedModeBanner: false,
         
-        return child;
-      },
+        // Configuration de localisation française
+        locale: LocaleConfig.defaultLocale,
+        localizationsDelegates: LocaleConfig.localizationsDelegates,
+        supportedLocales: LocaleConfig.supportedLocales,
+        
+        // Configuration du routage
+        initialRoute: '/',
+        
+        // Gestionnaire global d'erreurs
+        builder: (context, child) {
+          if (child == null) {
+            return _buildErrorWidget();
+          }
+          
+          return child;
+        },
+      ),
     );
   }
 

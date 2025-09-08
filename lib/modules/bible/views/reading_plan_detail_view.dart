@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
+import '../bible_page.dart';
 
 class ReadingPlanDetailView extends StatefulWidget {
   final ReadingPlan plan;
@@ -407,7 +408,12 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
         ),
         onPressed: () {
           Navigator.pop(context);
-          // TODO: Naviguer vers la vue de lecture active
+          // Naviguer vers la vue de lecture active
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BiblePage(),
+            ),
+          );
         },
         child: Text(
           'Continuer la lecture',

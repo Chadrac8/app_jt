@@ -934,7 +934,7 @@ class _ComponentTypeSelector extends StatelessWidget {
       ],
     );
   }
-  
+
   String _getDefaultComponentName(String componentType) {
     switch (componentType) {
       case 'text':

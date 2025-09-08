@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../shared/theme/app_theme.dart';
 import '../services/branham_scraping_service.dart';
+import '../services/ios_branham_service.dart';
 
 class DailyBreadPage extends StatefulWidget {
   final BranhamQuoteModel? initialQuote;
@@ -38,7 +40,25 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
       if (widget.initialQuote != null) {
         quote = widget.initialQuote;
       } else {
-        quote = await _scrapingService.getQuoteOfTheDay();
+        // Détecter si on est sur iOS/mobile et utiliser le service approprié
+        if (defaultTargetPlatform == TargetPlatform.iOS || 
+            defaultTargetPlatform == TargetPlatform.android) {
+          print('📱 Utilisation du service iOS optimisé');
+          final iosQuote = await IOSBranhamService.getTodaysQuote();
+          quote = BranhamQuoteModel(
+            text: iosQuote.text,
+            reference: iosQuote.reference,
+            date: iosQuote.date,
+            dailyBread: iosQuote.dailyBread,
+            dailyBreadReference: iosQuote.dailyBreadReference,
+            sermonTitle: 'Citation du jour',
+            sermonDate: 'Mobile',
+            audioUrl: '',
+          );
+        } else {
+          // Utiliser le service normal pour web
+          quote = await _scrapingService.getQuoteOfTheDay();
+        }
       }
 
       setState(() {
@@ -63,17 +83,45 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
   }
 
   Future<void> _refreshContent() async {
-    final refreshedBread = await _scrapingService.forceUpdate();
-    if (refreshedBread != null && mounted) {
-      setState(() {
-        _quote = refreshedBread;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Pain quotidien mis à jour'),
-          backgroundColor: AppTheme.primaryColor,
-        ),
-      );
+    // Utiliser le même système que _loadContent pour iOS vs Web
+    if (defaultTargetPlatform == TargetPlatform.iOS || 
+        defaultTargetPlatform == TargetPlatform.android) {
+      print('📱 Rafraîchissement iOS optimisé');
+      final iosQuote = await IOSBranhamService.getTodaysQuote();
+      if (mounted) {
+        setState(() {
+          _quote = BranhamQuoteModel(
+            text: iosQuote.text,
+            reference: iosQuote.reference,
+            date: iosQuote.date,
+            dailyBread: iosQuote.dailyBread,
+            dailyBreadReference: iosQuote.dailyBreadReference,
+            sermonTitle: 'Citation du jour',
+            sermonDate: 'Mobile',
+            audioUrl: '',
+          );
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Pain quotidien mis à jour (iOS)'),
+            backgroundColor: AppTheme.primaryColor,
+          ),
+        );
+      }
+    } else {
+      // Web - utiliser le service normal
+      final refreshedBread = await _scrapingService.getQuoteOfTheDay();
+      if (refreshedBread != null && mounted) {
+        setState(() {
+          _quote = refreshedBread;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Pain quotidien mis à jour'),
+            backgroundColor: AppTheme.primaryColor,
+          ),
+        );
+      }
     }
   }
 
@@ -259,29 +307,10 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                               ),
                             ),
                           
-                            // Verset du jour (Pain quotidien)
-                            if (_quote!.dailyBread.isNotEmpty) ...[
-                              _buildVersetCard(
-                                title: 'Verset du jour',
-                                content: _quote!.dailyBread,
-                                reference: _quote!.dailyBreadReference,
-                                icon: Icons.menu_book,
-                              ),
-                              const SizedBox(height: 32),
-                            ],
+                            // Page continue avec verset et citation
+                            _buildContinuousContent(),
 
-                            // Citation du jour
-                            if (_quote!.text.isNotEmpty) ...[
-                              _buildCitationCard(
-                                title: 'Citation du jour',
-                                content: _quote!.text,
-                                reference: _quote!.reference,
-                                sermonTitle: _quote!.sermonTitle,
-                                sermonDate: _quote!.sermonDate,
-                                audioUrl: _quote!.audioUrl,
-                              ),
-                              const SizedBox(height: 32),
-                            ],
+                            const SizedBox(height: 32),
 
                             // Bouton pour voir l'historique
                             _buildHistoryButton(),
@@ -292,12 +321,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
     );
   }
 
-  Widget _buildVersetCard({
-    required String title,
-    required String content,
-    required String reference,
-    required IconData icon,
-  }) {
+  Widget _buildContinuousContent() {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
@@ -311,115 +335,273 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(28),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+            // Verset biblique
+            if (_quote!.dailyBread.isNotEmpty) ...[
+              Row(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.menu_book,
+                      color: AppTheme.primaryColor,
+                      size: 24,
+                    ),
                   ),
-                  child: Icon(
-                    icon,
-                    color: AppTheme.primaryColor,
-                    size: 24,
+                  const SizedBox(width: 16),
+                  const Expanded(
+                    child: Text(
+                      'Verset du jour',
+                      style: TextStyle(
+                        color: Color(0xFF1A1A1A),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.3,
+                      ),
+                    ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              
+              // Contenu du verset
+              Text(
+                _quote!.dailyBread,
+                style: const TextStyle(
+                  color: Color(0xFF1E293B),
+                  fontSize: 19,
+                  fontWeight: FontWeight.w500,
+                  height: 1.7,
+                  letterSpacing: 0.2,
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      color: Color(0xFF1A1A1A),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.3,
+              ),
+              
+              if (_quote!.dailyBreadReference.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [AppTheme.primaryColor, Color(0xFF764BA2)],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      _quote!.dailyBreadReference,
+                      style: const TextStyle(
+                        color: AppTheme.surfaceColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.3,
+                      ),
                     ),
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    const Color(0xFFF8FAFC),
-                    const Color(0xFFF1F5F9).withOpacity(0.8),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: const Color(0xFFE2E8F0),
-                  width: 1,
-                ),
+            ],
+
+            // Séparateur élégant
+            if (_quote!.dailyBread.isNotEmpty && _quote!.text.isNotEmpty) ...[
+              const SizedBox(height: 32),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            AppTheme.primaryColor.withOpacity(0.3),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.auto_awesome,
+                      color: AppTheme.primaryColor,
+                      size: 16,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            AppTheme.primaryColor.withOpacity(0.3),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              child: Column(
+              const SizedBox(height: 32),
+            ],
+
+            // Citation du jour
+            if (_quote!.text.isNotEmpty) ...[
+              Row(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFAA6C39).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.format_quote,
+                      color: Color(0xFFAA6C39),
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Expanded(
+                    child: Text(
+                      'Citation du jour',
+                      style: TextStyle(
+                        color: Color(0xFF1A1A1A),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              
+              // Contenu de la citation
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    content,
+                    '"${_quote!.text}"',
                     style: const TextStyle(
                       color: Color(0xFF1E293B),
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      height: 1.7,
+                      height: 1.6,
                       letterSpacing: 0.2,
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
-                  if (reference.isNotEmpty) ...[
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [AppTheme.primaryColor, Color(0xFF764BA2)],
+                  const SizedBox(height: 16),
+                  
+                  // Informations sur la prédication
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (_quote!.sermonTitle.isNotEmpty) ...[
+                        Text(
+                          _quote!.sermonTitle,
+                          style: const TextStyle(
+                            color: Color(0xFFAA6C39),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.1,
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        reference,
-                        style: const TextStyle(
-                          color: AppTheme.surfaceColor,
+                        const SizedBox(height: 4),
+                      ],
+                      Text(
+                        '— William Marrion Branham',
+                        style: TextStyle(
+                          color: const Color(0xFF1E293B).withOpacity(0.7),
                           fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.3,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              
+              // Bouton audio si disponible
+              if (_quote!.audioUrl.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFFAA6C39).withOpacity(0.1),
+                        const Color(0xFFAA6C39).withOpacity(0.05),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFAA6C39).withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () {
+                        // TODO: Implémenter la lecture audio
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Lecture audio - Bientôt disponible'),
+                            backgroundColor: Color(0xFFAA6C39),
+                          ),
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.play_circle_outline,
+                              color: Color(0xFFAA6C39),
+                              size: 20,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              'Écouter la prédication',
+                              style: TextStyle(
+                                color: Color(0xFFAA6C39),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ],
-              ),
-            ),
+                  ),
+                ),
+              ],
+            ],
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildCitationCard({
-    required String title,
-    required String content,
-    required String reference,
-    String? sermonTitle,
-    String? sermonDate,
-    String? audioUrl,
-  }) {
-    return _ExpandableCitationCard(
-      title: title,
-      content: content,
-      reference: reference,
-      sermonTitle: sermonTitle,
-      sermonDate: sermonDate,
-      audioUrl: audioUrl,
     );
   }
 
@@ -490,204 +672,4 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
   }
 }
 
-/// Widget stateful pour gérer l'expansion/réduction des citations longues
-class _ExpandableCitationCard extends StatefulWidget {
-  final String title;
-  final String content;
-  final String reference;
-  final String? sermonTitle;
-  final String? sermonDate;
-  final String? audioUrl;
 
-  const _ExpandableCitationCard({
-    required this.title,
-    required this.content,
-    required this.reference,
-    this.sermonTitle,
-    this.sermonDate,
-    this.audioUrl,
-  });
-
-  @override
-  State<_ExpandableCitationCard> createState() => _ExpandableCitationCardState();
-}
-
-class _ExpandableCitationCardState extends State<_ExpandableCitationCard> {
-  bool _isExpanded = false;
-  static const int _maxLength = 200; // Longueur max avant "Lire plus"
-
-  @override
-  Widget build(BuildContext context) {
-    final bool isLongText = widget.content.length > _maxLength;
-    
-    String displayText = widget.content;
-    if (isLongText && !_isExpanded) {
-      // Trouve le dernier espace avant la limite pour éviter de couper au milieu d'un mot
-      int cutPosition = _maxLength;
-      for (int i = _maxLength - 1; i >= 0; i--) {
-        if (widget.content[i] == ' ') {
-          cutPosition = i;
-          break;
-        }
-      }
-      displayText = widget.content.substring(0, cutPosition);
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFEF3C7),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.format_quote,
-                    color: Color(0xFFD97706),
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(
-                      color: Color(0xFF1A1A1A),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    const Color(0xFFFEF3C7).withOpacity(0.3),
-                    const Color(0xFFFDE68A).withOpacity(0.2),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: const Color(0xFFFDE68A),
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '"$displayText${isLongText && !_isExpanded ? '...' : ''}"',
-                    style: const TextStyle(
-                      color: Color(0xFF1E293B),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      height: 1.7,
-                      letterSpacing: 0.2,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  if (isLongText) ...[
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isExpanded = !_isExpanded;
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF3B82F6).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: const Color(0xFF3B82F6).withOpacity(0.3),
-                            width: 1,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              _isExpanded ? Icons.expand_less : Icons.expand_more,
-                              color: const Color(0xFF3B82F6),
-                              size: 16,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              _isExpanded ? 'Lire moins' : 'Lire plus',
-                              style: const TextStyle(
-                                color: Color(0xFF3B82F6),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 16),
-                  Text(
-                    '— William Marrion Branham',
-                    style: const TextStyle(
-                      color: Color(0xFF64748B),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  if (widget.sermonTitle != null && widget.sermonTitle!.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF59E0B).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: const Color(0xFFF59E0B).withOpacity(0.3),
-                          width: 1,
-                        ),
-                      ),
-                      child: Text(
-                        widget.sermonTitle!,
-                        style: const TextStyle(
-                          color: Color(0xFFD97706),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

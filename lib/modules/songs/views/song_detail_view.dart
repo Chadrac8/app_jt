@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../models/song.dart';
@@ -70,9 +72,22 @@ class _SongDetailViewState extends State<SongDetailView> {
   }
 
   void _shareSheet() {
-    // TODO: Implémenter le partage
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité de partage à venir')),
+    final shareText = '''
+${_song.title}
+${_song.subtitle?.isNotEmpty == true ? 'Sous-titre: ${_song.subtitle}' : ''}
+${_song.author?.isNotEmpty == true ? 'Auteur: ${_song.author}' : ''}
+${_song.composer?.isNotEmpty == true ? 'Compositeur: ${_song.composer}' : ''}
+${_song.categories.isNotEmpty ? 'Catégories: ${_song.categories.join(', ')}' : ''}
+
+--- PAROLES ---
+${_song.lyrics}
+
+--- Partagé depuis l'app Jubilé Tabernacle ---
+''';
+
+    Share.share(
+      shareText,
+      subject: 'Cantique: ${_song.title}',
     );
   }
 
@@ -81,6 +96,84 @@ class _SongDetailViewState extends State<SongDetailView> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Paroles copiées dans le presse-papiers')),
     );
+  }
+
+  Future<void> _playAudio() async {
+    if (_song.audioUrl == null) return;
+    
+    try {
+      final Uri audioUri = Uri.parse(_song.audioUrl!);
+      if (await canLaunchUrl(audioUri)) {
+        await launchUrl(
+          audioUri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Impossible de lancer le lecteur audio')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de la lecture audio: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _playVideo() async {
+    if (_song.videoUrl == null) return;
+    
+    try {
+      final Uri videoUri = Uri.parse(_song.videoUrl!);
+      if (await canLaunchUrl(videoUri)) {
+        await launchUrl(
+          videoUri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Impossible de lancer le lecteur vidéo')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de la lecture vidéo: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _showMusicSheet() async {
+    if (_song.musicSheet == null) return;
+    
+    try {
+      final Uri sheetUri = Uri.parse(_song.musicSheet!);
+      if (await canLaunchUrl(sheetUri)) {
+        await launchUrl(
+          sheetUri,
+          mode: LaunchMode.inAppWebView,
+        );
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Impossible d\'afficher la partition')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'affichage de la partition: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -391,13 +484,7 @@ class _SongDetailViewState extends State<SongDetailView> {
               ],
             ),
             const SizedBox(height: 16),
-            SelectableText(
-              _song.lyrics,
-              style: TextStyle(
-                fontSize: _fontSize,
-                height: 1.6,
-              ),
-            ),
+            _buildFormattedLyricsText(),
           ],
         ),
       ),
@@ -429,10 +516,7 @@ class _SongDetailViewState extends State<SongDetailView> {
                     subtitle: const Text('Écouter le chant'),
                     trailing: const Icon(Icons.play_arrow),
                     onTap: () {
-                      // TODO: Implémenter la lecture audio
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Lecture audio à venir')),
-                      );
+                      _playAudio();
                     },
                   ),
                 ],
@@ -444,10 +528,7 @@ class _SongDetailViewState extends State<SongDetailView> {
                     subtitle: const Text('Regarder le chant'),
                     trailing: const Icon(Icons.play_arrow),
                     onTap: () {
-                      // TODO: Implémenter la lecture vidéo
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Lecture vidéo à venir')),
-                      );
+                      _playVideo();
                     },
                   ),
                 ],
@@ -459,10 +540,7 @@ class _SongDetailViewState extends State<SongDetailView> {
                     subtitle: const Text('Voir la partition'),
                     trailing: const Icon(Icons.visibility),
                     onTap: () {
-                      // TODO: Implémenter l'affichage de la partition
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Affichage partition à venir')),
-                      );
+                      _showMusicSheet();
                     },
                   ),
                 ],
@@ -574,6 +652,46 @@ class _SongDetailViewState extends State<SongDetailView> {
           ),
         ],
       ),
+    );
+  }
+
+  /// Construit le texte formaté des paroles avec style spécial pour chorus
+  Widget _buildFormattedLyricsText() {
+    final lines = _song.lyrics.split('\n');
+    bool inChorusSection = false;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: lines.map((line) {
+        // Détecter le début d'une section chorus
+        if (line.toLowerCase().contains('chorus') || line.toLowerCase().contains('refrain')) {
+          inChorusSection = true;
+        }
+        
+        // Si la ligne est vide, on sort de la section chorus
+        if (line.trim().isEmpty && inChorusSection) {
+          inChorusSection = false;
+        }
+        
+        final isChorusLine = line.toLowerCase().contains('chorus') || 
+                           line.toLowerCase().contains('refrain') || 
+                           inChorusSection;
+        
+        return Container(
+          margin: EdgeInsets.only(
+            left: isChorusLine ? 16.0 : 0.0, // Retrait réduit pour chorus
+            bottom: 4.0,
+          ),
+          child: SelectableText(
+            line,
+            style: TextStyle(
+              fontSize: _fontSize,
+              height: 1.6,
+              fontStyle: isChorusLine ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }
