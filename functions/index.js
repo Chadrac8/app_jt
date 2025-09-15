@@ -396,6 +396,77 @@ exports.sendRichNotification = onCall({
   }
 });
 
+// ===== OUTBOX NOTIFICATIONS CONSUMER =====
+exports.onOutboxNotificationCreated = onDocumentCreated(
+  'outbox_notifications/{notifId}',
+  async (event) => {
+    const notifId = event.params.notifId;
+    const data = event.data.data();
+    console.log(`Outbox notification created: ${notifId}`, data);
+
+    try {
+      const title = data.title || '';
+      const body = data.body || '';
+      const targetType = data.targetType || 'topic';
+      const scheduledAt = data.scheduledAt ? data.scheduledAt.toDate() : null;
+
+      // If scheduled in future, skip for now (could use scheduler to trigger later)
+      if (scheduledAt && scheduledAt > new Date()) {
+        console.log(`Notification ${notifId} scheduled for future at ${scheduledAt}`);
+        await firestore.collection('outbox_notifications').doc(notifId).update({ status: 'scheduled' });
+        return { success: true, notifId, scheduled: true };
+      }
+
+      let sendResult = null;
+
+      if (targetType === 'all') {
+        // send to topic 'all'
+        sendResult = await messaging.send({
+          topic: 'all',
+          notification: { title, body },
+          data: data.data || {}
+        });
+      } else if (targetType === 'topic') {
+        const topic = data.topic || 'annonces';
+        sendResult = await messaging.send({
+          topic,
+          notification: { title, body },
+          data: data.data || {}
+        });
+      } else if (targetType === 'tokens') {
+        const tokens = data.tokens || [];
+        if (tokens.length === 0) {
+          throw new Error('No tokens provided');
+        }
+        const multicast = await messaging.sendMulticast({
+          tokens,
+          notification: { title, body },
+          data: data.data || {}
+        });
+        sendResult = multicast;
+      }
+
+      // Update status
+      await firestore.collection('outbox_notifications').doc(notifId).update({
+        status: 'sent',
+        sentAt: admin.firestore.FieldValue.serverTimestamp(),
+        sendResult: sendResult || null
+      });
+
+      console.log(`Outbox notification ${notifId} sent`);
+      return { success: true, notifId };
+    } catch (error) {
+      console.error('Error sending outbox notification:', error);
+      await firestore.collection('outbox_notifications').doc(notifId).update({
+        status: 'failed',
+        errorMessage: error.message || String(error),
+        failedAt: admin.firestore.FieldValue.serverTimestamp()
+      });
+      return { success: false, notifId, error: error.message };
+    }
+  }
+);
+
 /**
  * Fonction pour envoyer des notifications push
  * Appelée depuis l'application Flutter
