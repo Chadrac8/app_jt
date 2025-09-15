@@ -11,6 +11,7 @@ import '../../widgets/member_view_toggle_button.dart';
 import '../../widgets/bottom_navigation_wrapper.dart';
 import 'dashboard_configuration_page.dart';
 import 'home_config_admin_page.dart';
+import 'outbox_notifications_page.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -22,7 +23,6 @@ class AdminDashboardPage extends StatefulWidget {
 class _AdminDashboardPageState extends State<AdminDashboardPage> {
   bool _isLoading = true;
   bool _isRefreshing = false;
-  List<DashboardWidgetModel> _widgets = [];
   Map<String, dynamic> _preferences = {};
   String? _errorMessage;
 
@@ -148,6 +148,18 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             onPressed: () => _navigateToConfiguration(),
             icon: const Icon(Icons.settings),
             tooltip: 'Configurer le dashboard',
+          ),
+          // Bouton pour accéder à l'outbox notifications
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const OutboxNotificationsPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.notifications_active),
+            tooltip: 'Outbox Notifications',
           ),
         ],
       ),
