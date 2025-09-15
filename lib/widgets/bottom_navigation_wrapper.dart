@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/app_config_model.dart';
 import '../widgets/user_avatar.dart';
+import '../pages/initial_profile_setup_page.dart';
 
 import '../models/person_model.dart';
 import '../services/app_config_firebase_service.dart';
 
-import '../services/push_notification_service.dart';
 import '../auth/auth_service.dart';
 import '../theme.dart';
 
@@ -22,7 +22,6 @@ import '../pages/member_forms_page.dart';
 import '../pages/member_tasks_page.dart';
 
 import '../pages/member_calendar_page.dart';
-import '../pages/member_notifications_page.dart';
 import '../pages/member_settings_page.dart';
 import '../pages/member_pages_view.dart';
 import '../pages/member_appointments_page.dart';
@@ -67,6 +66,38 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   PersonModel? _currentUser;
   bool _isLoading = true;
   int _unreadNotificationsCount = 0;
+
+  /// Check if user profile is complete with all required fields
+  bool _isProfileComplete(PersonModel? profile) {
+    if (profile == null) return false;
+    
+    try {
+      // Required fields for profile completion (synchronized with AuthWrapper)
+      final hasFirstName = profile.firstName.isNotEmpty;
+      final hasLastName = profile.lastName.isNotEmpty;
+      final hasPhone = profile.phone != null && profile.phone!.isNotEmpty;
+      final hasAddress = profile.address != null && profile.address!.isNotEmpty;
+      final hasBirthDate = profile.birthDate != null;
+      final hasGender = profile.gender != null && profile.gender!.isNotEmpty;
+      
+      final isComplete = hasFirstName && hasLastName && hasPhone && hasAddress && hasBirthDate && hasGender;
+      
+      if (!isComplete) {
+        print('🔄 BottomNavigationWrapper: Profil incomplet détecté');
+        print('  - Prénom: ${hasFirstName ? "✅" : "❌"}');
+        print('  - Nom: ${hasLastName ? "✅" : "❌"}');
+        print('  - Téléphone: ${hasPhone ? "✅" : "❌"}');
+        print('  - Adresse: ${hasAddress ? "✅" : "❌"}');
+        print('  - Date de naissance: ${hasBirthDate ? "✅" : "❌"}');
+        print('  - Genre: ${hasGender ? "✅" : "❌"}');
+      }
+      
+      return isComplete;
+    } catch (e) {
+      print('❌ Error checking profile completion in BottomNavigationWrapper: $e');
+      return false;
+    }
+  }
 
   @override
   void initState() {
@@ -117,14 +148,12 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   Future<void> _loadUnreadNotificationsCount() async {
     try {
-      // On écoute le stream pour mettre à jour automatiquement le count
-      PushNotificationService.getUnreadNotificationsCount().listen((count) {
-        if (mounted) {
-          setState(() {
-            _unreadNotificationsCount = count;
-          });
-        }
-      });
+      // Notifications module removed - set count to 0
+      if (mounted) {
+        setState(() {
+          _unreadNotificationsCount = 0;
+        });
+      }
     } catch (e) {
       print('Erreur lors du chargement du nombre de notifications: $e');
     }
@@ -171,7 +200,8 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       case 'calendar':
         return const MemberCalendarPage();
       case 'notifications':
-        return const MemberNotificationsPage();
+        // Notifications module removed - redirect to dashboard
+        return const MemberDashboardPage();
       case 'settings':
         return const MemberSettingsPage();
       case 'pages':
@@ -796,6 +826,12 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    // Check if profile is complete before showing main interface
+    if (!_isLoading && !_isProfileComplete(_currentUser)) {
+      print('🔄 BottomNavigationWrapper: Profil incomplet, redirection vers configuration');
+      return const InitialProfileSetupPage();
+    }
+    
     if (_isLoading) {
       return const Scaffold(
         body: Center(

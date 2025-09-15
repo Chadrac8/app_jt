@@ -38,6 +38,10 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
     super.dispose();
   }
 
+  Future<void> createMeeting() async {
+    return _createMeeting();
+  }
+
   Future<void> _createMeeting() async {
     final result = await showDialog<GroupMeetingModel>(
       context: context,
@@ -74,40 +78,10 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _fadeAnimation,
-      child: Column(
-        children: [
-          // Header with Add Button
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Réunions',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: _createMeeting,
-                  icon: const Icon(Icons.event_note),
-                  label: const Text('Nouvelle'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _groupColor,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Meetings List
-          Expanded(
-            child: StreamBuilder<List<GroupMeetingModel>>(
-              stream: GroupsFirebaseService.getGroupMeetingsStream(widget.group.id),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
+      child: StreamBuilder<List<GroupMeetingModel>>(
+        stream: GroupsFirebaseService.getGroupMeetingsStream(widget.group.id),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -185,7 +159,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                 final groupedMeetings = _groupMeetingsByMonth(meetings);
 
                 return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.all(20),
                   itemCount: groupedMeetings.length,
                   itemBuilder: (context, index) {
                     final entry = groupedMeetings.entries.elementAt(index);
@@ -197,10 +171,13 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                       children: [
                         // Month Header
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: EdgeInsets.only(
+                            bottom: 16, 
+                            top: index == 0 ? 0 : 24,
+                          ),
                           child: Text(
                             monthLabel,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: _groupColor,
                             ),
@@ -218,9 +195,6 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                 );
               },
             ),
-          ),
-        ],
-      ),
     );
   }
 

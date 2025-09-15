@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/event_model.dart';
-import '../models/person_model.dart';
+import '../models/event_recurrence_model.dart';
 import '../services/events_firebase_service.dart';
-import '../services/firebase_service.dart';
+import '../services/event_recurrence_service.dart';
 import '../theme.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
+import '../widgets/event_recurrence_widget.dart';
 import 'firebase_storage_diagnostic_page.dart';
 
 class EventFormPage extends StatefulWidget {
@@ -46,11 +47,11 @@ class _EventFormPageState extends State<EventFormPage>
   int? _maxParticipants;
   bool _hasWaitingList = false;
   bool _isRecurring = false;
+  EventRecurrenceModel? _recurrenceModel;
   bool _isLoading = false;
   
   // Image handling
   String? _imageUrl;
-  bool _hasImageChanged = false;
 
   final List<Map<String, String>> _eventTypes = [
     {'value': 'celebration', 'label': 'Célébration', 'icon': 'celebration'},
@@ -117,6 +118,24 @@ class _EventFormPageState extends State<EventFormPage>
       _hasWaitingList = event.hasWaitingList;
       _isRecurring = event.isRecurring;
       _imageUrl = event.imageUrl;
+      
+      // Charger la récurrence existante si applicable
+      if (event.isRecurring) {
+        _loadExistingRecurrence(event.id);
+      }
+    }
+  }
+  
+  Future<void> _loadExistingRecurrence(String eventId) async {
+    try {
+      final recurrences = await EventRecurrenceService.getEventRecurrences(eventId);
+      if (recurrences.isNotEmpty) {
+        setState(() {
+          _recurrenceModel = recurrences.first;
+        });
+      }
+    } catch (e) {
+      print('Erreur lors du chargement de la récurrence: $e');
     }
   }
 
@@ -186,7 +205,6 @@ class _EventFormPageState extends State<EventFormPage>
         if (imageUrl != null) {
           setState(() {
             _imageUrl = imageUrl;
-            _hasImageChanged = true;
           });
           
           // Supprimer l'ancienne image si elle existe et est stockée sur Firebase
@@ -283,9 +301,77 @@ class _EventFormPageState extends State<EventFormPage>
       );
       
       if (widget.event == null) {
-        await EventsFirebaseService.createEvent(event);
+        final eventId = await EventsFirebaseService.createEvent(event);
+        
+        // Si l'événement est récurrent, créer la règle de récurrence
+        if (_isRecurring && _recurrenceModel != null) {
+          try {
+            final recurrence = _recurrenceModel!.copyWith(
+              parentEventId: eventId,
+            );
+            await EventRecurrenceService.createRecurrence(recurrence);
+          } catch (e) {
+            print('Erreur lors de la création de la récurrence: $e');
+            // Afficher un warning mais ne pas faire échouer la création de l'événement
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Événement créé mais erreur dans la récurrence: $e'),
+                  backgroundColor: Colors.orange,
+                ),
+              );
+            }
+          }
+        }
       } else {
         await EventsFirebaseService.updateEvent(event);
+        
+        // Gérer la récurrence pour les modifications
+        if (_isRecurring && _recurrenceModel != null) {
+          try {
+            // Vérifier s'il existe déjà une récurrence
+            final existingRecurrences = await EventRecurrenceService.getEventRecurrences(widget.event!.id);
+            
+            if (existingRecurrences.isNotEmpty) {
+              // Mettre à jour la récurrence existante
+              final updatedRecurrence = EventRecurrenceModel(
+                id: existingRecurrences.first.id,
+                parentEventId: widget.event!.id,
+                type: _recurrenceModel!.type,
+                interval: _recurrenceModel!.interval,
+                daysOfWeek: _recurrenceModel!.daysOfWeek,
+                dayOfMonth: _recurrenceModel!.dayOfMonth,
+                monthsOfYear: _recurrenceModel!.monthsOfYear,
+                endDate: _recurrenceModel!.endDate,
+                occurrenceCount: _recurrenceModel!.occurrenceCount,
+                exceptions: _recurrenceModel!.exceptions,
+                overrides: _recurrenceModel!.overrides,
+                isActive: _recurrenceModel!.isActive,
+                createdAt: existingRecurrences.first.createdAt,
+                updatedAt: DateTime.now(),
+              );
+              await EventRecurrenceService.updateRecurrence(updatedRecurrence);
+            } else {
+              // Créer une nouvelle récurrence
+              final recurrence = _recurrenceModel!.copyWith(
+                parentEventId: widget.event!.id,
+              );
+              await EventRecurrenceService.createRecurrence(recurrence);
+            }
+          } catch (e) {
+            print('Erreur lors de la mise à jour de la récurrence: $e');
+          }
+        } else if (!_isRecurring) {
+          // Si la récurrence a été désactivée, supprimer les récurrences existantes
+          try {
+            final existingRecurrences = await EventRecurrenceService.getEventRecurrences(widget.event!.id);
+            for (final recurrence in existingRecurrences) {
+              await EventRecurrenceService.deleteRecurrence(recurrence.id);
+            }
+          } catch (e) {
+            print('Erreur lors de la suppression de la récurrence: $e');
+          }
+        }
       }
       
       if (mounted) {
@@ -867,6 +953,19 @@ class _EventFormPageState extends State<EventFormPage>
           subtitle: const Text('Répéter cet événement'),
           contentPadding: EdgeInsets.zero,
         ),
+        
+        // Widget de configuration de récurrence
+        if (_isRecurring) ...[
+          const SizedBox(height: 16),
+          EventRecurrenceWidget(
+            initialRecurrence: _recurrenceModel,
+            onRecurrenceChanged: (recurrence) {
+              setState(() {
+                _recurrenceModel = recurrence;
+              });
+            },
+          ),
+        ],
         if (widget.event == null) ...[
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(

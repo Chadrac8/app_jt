@@ -190,6 +190,14 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
 
   Color get _groupColor => Color(int.parse(widget.group.color.replaceFirst('#', '0xFF')));
 
+  Color _getContrastColor(Color backgroundColor) {
+    // Calcule la luminance de la couleur de fond
+    final luminance = backgroundColor.computeLuminance();
+    // Si la luminance est faible (couleur sombre), utilise du blanc
+    // Si la luminance est élevée (couleur claire), utilise du noir
+    return luminance > 0.5 ? Colors.black : Colors.white;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,32 +208,33 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
             Text(
               'Statistiques d\'assiduité',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.white,
+                color: _getContrastColor(_groupColor),
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
               widget.group.name,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.white.withOpacity(0.9),
+                color: _getContrastColor(_groupColor).withOpacity(0.9),
               ),
             ),
           ],
         ),
         backgroundColor: _groupColor,
+        foregroundColor: _getContrastColor(_groupColor),
         elevation: 0,
         actions: [
           IconButton(
             onPressed: _loadStatistics,
-            icon: const Icon(Icons.refresh, color: Colors.white),
+            icon: Icon(Icons.refresh, color: _getContrastColor(_groupColor)),
             tooltip: 'Actualiser',
           ),
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white.withOpacity(0.7),
+          indicatorColor: _getContrastColor(_groupColor),
+          labelColor: _getContrastColor(_groupColor),
+          unselectedLabelColor: _getContrastColor(_groupColor).withOpacity(0.7),
           tabs: const [
             Tab(
               icon: Icon(Icons.bar_chart),

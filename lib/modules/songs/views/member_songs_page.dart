@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
 import '../widgets/setlists_tab_perfect13.dart';
-import '../widgets/songs_tab_perfect13.dart';
 import '../../../widgets/song_card_perfect13.dart';
-import '../../../widgets/song_search_filter_bar.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
+import '../../../theme.dart';
 
 /// Page des chants pour les membres
 class MemberSongsPage extends StatefulWidget {
@@ -20,9 +19,8 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _searchQuery = '';
-  String? _selectedStyle;
-  String? _selectedKey;
-  List<String> _selectedTags = [];
+  bool _searchInLyrics = false; // false = titre, true = paroles
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -33,61 +31,57 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   @override
   void dispose() {
     _tabController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.library_music), text: 'Chants'),
-            Tab(icon: Icon(Icons.favorite), text: 'Favoris'),
-            Tab(icon: Icon(Icons.playlist_play), text: 'Setlists'),
-          ],
-        ),
-      ),
+      backgroundColor: AppTheme.surfaceColor,
       body: Column(
         children: [
-          // Barre de recherche et filtres
-          SongSearchFilterBar(
-            onSearchChanged: (query) {
-              setState(() {
-                _searchQuery = query;
-              });
-            },
-            onStyleChanged: (style) {
-              setState(() {
-                _selectedStyle = style;
-              });
-            },
-            onKeyChanged: (key) {
-              setState(() {
-                _selectedKey = key;
-              });
-            },
-            onStatusChanged: (status) {
-              // Les membres ne filtrent pas par statut
-            },
-            onTagsChanged: (tags) {
-              setState(() {
-                _selectedTags = tags;
-              });
-            },
+          // TabBar en haut
+          Container(
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: TabBar(
+                controller: _tabController,
+                indicatorColor: AppTheme.primaryColor,
+                labelColor: AppTheme.primaryColor,
+                unselectedLabelColor: Colors.grey[600],
+                tabs: const [
+                  Tab(icon: Icon(Icons.library_music), text: 'Chants'),
+                  Tab(icon: Icon(Icons.favorite), text: 'Favoris'),
+                  Tab(icon: Icon(Icons.playlist_play), text: 'Setlists'),
+                ],
+              ),
+            ),
           ),
           
           // Contenu des onglets
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                const SongsTabPerfect13(), // Onglet Chants - reproduction exacte de Perfect 13
-                _buildFavoriteSongsTab(),
-                const SetlistsTabPerfect13(), // Reproduction exacte de Perfect 13
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildSongsTabWithSearch(), // Onglet Chants avec recherche
+                  _buildFavoriteSongsTabWithSearch(), // Onglet Favoris avec recherche
+                  const SetlistsTabPerfect13(), // Reproduction exacte de Perfect 13
+                ],
+              ),
             ),
           ),
         ],
@@ -95,98 +89,234 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     );
   }
 
-  Widget _buildFavoriteSongsTab() {
-    return StreamBuilder<List<SongModel>>(
-      stream: SongsFirebaseService.getFavoriteSongs(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
-                const SizedBox(height: 16),
-                Text('Erreur: ${snapshot.error}'),
-              ],
+  Widget _buildSearchBar() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+      child: Column(
+        children: [
+          TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: _searchInLyrics ? 'Rechercher dans les paroles...' : 'Rechercher dans les titres...',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: _searchQuery.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          _searchController.clear();
+                          _searchQuery = '';
+                        });
+                      },
+                    )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: AppTheme.primaryColor),
+              ),
             ),
-          );
-        }
-
-        final songs = _filterSongs(snapshot.data ?? []);
-
-        if (songs.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.favorite_border, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'Aucun chant favori',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+            onChanged: (value) {
+              setState(() {
+                _searchQuery = value;
+              });
+            },
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              const Text('Rechercher dans: '),
+              const SizedBox(width: 12),
+              ChoiceChip(
+                label: const Text('Titre'),
+                selected: !_searchInLyrics,
+                onSelected: (selected) {
+                  setState(() {
+                    _searchInLyrics = false;
+                  });
+                },
+                selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+                labelStyle: TextStyle(
+                  color: !_searchInLyrics ? AppTheme.primaryColor : null,
                 ),
-                SizedBox(height: 8),
-                Text(
-                  'Ajoutez des chants à vos favoris en touchant le cœur',
-                  style: TextStyle(color: Colors.grey),
-                  textAlign: TextAlign.center,
+              ),
+              const SizedBox(width: 12),
+              ChoiceChip(
+                label: const Text('Paroles'),
+                selected: _searchInLyrics,
+                onSelected: (selected) {
+                  setState(() {
+                    _searchInLyrics = true;
+                  });
+                },
+                selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+                labelStyle: TextStyle(
+                  color: _searchInLyrics ? AppTheme.primaryColor : null,
                 ),
-              ],
-            ),
-          );
-        }
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: songs.length,
-          itemBuilder: (context, index) {
-            final song = songs[index];
-            return SongCardPerfect13(
-              song: song,
-              songNumber: _getSongNumber(song, songs),
-              onTap: () => _showSongDetails(song),
-            );
-          },
-        );
-      },
+  Widget _buildSongsTabWithSearch() {
+    return Column(
+      children: [
+        _buildSearchBar(),
+        Expanded(
+          child: FutureBuilder<List<SongModel>>(
+            future: SongsFirebaseService.getAllSongs(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error, size: 64, color: Colors.red),
+                      const SizedBox(height: 16),
+                      Text('Erreur: ${snapshot.error}'),
+                    ],
+                  ),
+                );
+              }
+
+              final songs = _filterSongs(snapshot.data ?? []);
+              // Trier par titre pour maintenir la numérotation alphabétique
+              songs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+
+              if (songs.isEmpty) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.music_note, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        'Aucun chant trouvé',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                itemCount: songs.length,
+                itemBuilder: (context, index) {
+                  final song = songs[index];
+                  return SongCardPerfect13(
+                    song: song,
+                    songNumber: _getSongNumber(song, songs),
+                    onTap: () => _showSongDetails(song),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFavoriteSongsTabWithSearch() {
+    return Column(
+      children: [
+        _buildSearchBar(),
+        Expanded(
+          child: StreamBuilder<List<SongModel>>(
+            stream: SongsFirebaseService.getFavoriteSongs(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error, size: 64, color: Colors.red),
+                      const SizedBox(height: 16),
+                      Text('Erreur: ${snapshot.error}'),
+                    ],
+                  ),
+                );
+              }
+
+              final songs = _filterSongs(snapshot.data ?? []);
+              // Trier par titre pour maintenir la numérotation alphabétique
+              songs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+
+              if (songs.isEmpty) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.favorite_border, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        'Aucun chant favori trouvé',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Ajoutez des chants à vos favoris en touchant le cœur',
+                        style: TextStyle(color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                itemCount: songs.length,
+                itemBuilder: (context, index) {
+                  final song = songs[index];
+                  return SongCardPerfect13(
+                    song: song,
+                    songNumber: _getSongNumber(song, songs),
+                    onTap: () => _showSongDetails(song),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
   List<SongModel> _filterSongs(List<SongModel> songs) {
-    var filtered = songs;
-
-    // Filtrer par recherche textuelle
-    if (_searchQuery.isNotEmpty) {
-      filtered = filtered.where((song) =>
-          song.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          song.authors.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          song.lyrics.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          song.tags.any((tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()))
-      ).toList();
+    if (_searchQuery.isEmpty) {
+      return songs;
     }
 
-    // Filtrer par style
-    if (_selectedStyle != null && _selectedStyle!.isNotEmpty) {
-      filtered = filtered.where((song) => song.style == _selectedStyle).toList();
-    }
-
-    // Filtrer par tonalité
-    if (_selectedKey != null && _selectedKey!.isNotEmpty) {
-      filtered = filtered.where((song) => song.originalKey == _selectedKey).toList();
-    }
-
-    // Filtrer par tags
-    if (_selectedTags.isNotEmpty) {
-      filtered = filtered.where((song) =>
-          _selectedTags.any((tag) => song.tags.contains(tag))
-      ).toList();
-    }
-
-    return filtered;
+    return songs.where((song) {
+      final query = _searchQuery.toLowerCase();
+      if (_searchInLyrics) {
+        // Rechercher dans les paroles
+        return song.lyrics.toLowerCase().contains(query);
+      } else {
+        // Rechercher dans le titre
+        return song.title.toLowerCase().contains(query);
+      }
+    }).toList();
   }
 
   void _showSongDetails(SongModel song) {
@@ -197,60 +327,94 @@ class _MemberSongsPageState extends State<MemberSongsPage>
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 1.0,
-        minChildSize: 1.0,
-        maxChildSize: 1.0,
-        expand: false,
-        builder: (context, scrollController) => Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            children: [
-              // Poignée de déplacement
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).dividerColor,
-                  borderRadius: BorderRadius.circular(2),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) => DraggableScrollableSheet(
+          initialChildSize: 1.0,
+          minChildSize: 1.0,
+          maxChildSize: 1.0,
+          expand: false,
+          builder: (context, scrollController) => Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                // Poignée de déplacement
+                Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).dividerColor,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-              ),
-              
-              // Barre d'actions
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      song.title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.present_to_all),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SongProjectionPage(song: song),
+                
+                // Barre d'actions
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      // Titre avec gestion du débordement
+                      Expanded(
+                        child: Text(
+                          song.title,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      },
-                      tooltip: 'Mode projection',
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      
+                      // Bouton favoris
+                      StreamBuilder<List<String>>(
+                        stream: SongsFirebaseService.getUserFavorites(),
+                        builder: (context, snapshot) {
+                          final favoriteSongIds = snapshot.data ?? [];
+                          final isFavorite = favoriteSongIds.contains(song.id);
+                          
+                          return IconButton(
+                            icon: Icon(
+                              isFavorite ? Icons.favorite : Icons.favorite_border,
+                              color: isFavorite ? Colors.red : null,
+                            ),
+                            onPressed: () async {
+                              if (isFavorite) {
+                                await SongsFirebaseService.removeFromFavorites(song.id);
+                              } else {
+                                await SongsFirebaseService.addToFavorites(song.id);
+                              }
+                            },
+                            tooltip: isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris',
+                          );
+                        },
+                      ),
+                      
+                      // Bouton projection
+                      IconButton(
+                        icon: const Icon(Icons.present_to_all),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SongProjectionPage(song: song),
+                            ),
+                          );
+                        },
+                        tooltip: 'Mode projection',
+                      ),
+                      
+                      // Bouton fermer
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               
               const Divider(),
               
@@ -271,6 +435,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               ),
             ],
           ),
+        ),
         ),
       ),
     );

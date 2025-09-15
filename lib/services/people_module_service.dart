@@ -5,7 +5,7 @@ import '../models/person_module_model.dart';
 /// Service pour la gestion des personnes
 class PeopleModuleService extends BaseFirebaseService<Person> {
   @override
-  String get collectionName => 'people';
+  String get collectionName => 'persons';
 
   @override
   Person fromFirestore(DocumentSnapshot doc) {

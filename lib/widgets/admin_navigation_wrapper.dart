@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import '../auth/auth_service.dart';
 import '../pages/admin/admin_dashboard_page.dart';
-import '../pages/admin/unified_notification_admin_page.dart';
 import '../pages/people_home_page.dart';
 import '../pages/groups_home_page.dart';
 import '../pages/events_home_page.dart';
 import '../modules/services/views/services_home_page.dart';
 import '../pages/forms_home_page.dart';
 import '../pages/tasks_home_page.dart';
+
 
 
 
@@ -17,7 +18,6 @@ import '../modules/vie_eglise/views/vie_eglise_admin_view.dart';
 import '../modules/message/views/message_admin_view.dart';
 
 import '../pages/appointments_admin_page.dart';
-import '../modules/roles/views/roles_management_screen.dart';
 import '../modules/roles/views/new_roles_management_screen.dart';
 import '../pages/blog_home_page.dart';
 import '../pages/prayers_home_page.dart';
@@ -25,7 +25,7 @@ import '../pages/prayers_home_page.dart';
 
 
 import '../pages/admin/modules_configuration_page.dart';
-
+import '../pages/initial_profile_setup_page.dart';
 
 import '../widgets/member_view_toggle_button.dart';
 import 'bottom_navigation_wrapper.dart';
@@ -45,6 +45,39 @@ class AdminNavigationWrapper extends StatefulWidget {
 class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
   String _currentRoute = 'dashboard';
   int _selectedIndex = 0;
+
+  // Méthode pour vérifier si le profil est complet (synchronized with AuthWrapper)
+  Future<bool> _isProfileComplete() async {
+    try {
+      final profile = await AuthService.getCurrentUserProfile();
+      if (profile == null) return false;
+
+      // Required fields for profile completion (synchronized with AuthWrapper)
+      final hasFirstName = profile.firstName.isNotEmpty;
+      final hasLastName = profile.lastName.isNotEmpty;
+      final hasPhone = profile.phone != null && profile.phone!.isNotEmpty;
+      final hasAddress = profile.address != null && profile.address!.isNotEmpty;
+      final hasBirthDate = profile.birthDate != null;
+      final hasGender = profile.gender != null && profile.gender!.isNotEmpty;
+      
+      final isComplete = hasFirstName && hasLastName && hasPhone && hasAddress && hasBirthDate && hasGender;
+      
+      if (!isComplete) {
+        print('🔄 AdminNavigationWrapper: Profil incomplet détecté');
+        print('  - Prénom: ${hasFirstName ? "✅" : "❌"}');
+        print('  - Nom: ${hasLastName ? "✅" : "❌"}');
+        print('  - Téléphone: ${hasPhone ? "✅" : "❌"}');
+        print('  - Adresse: ${hasAddress ? "✅" : "❌"}');
+        print('  - Date de naissance: ${hasBirthDate ? "✅" : "❌"}');
+        print('  - Genre: ${hasGender ? "✅" : "❌"}');
+      }
+      
+      return isComplete;
+    } catch (e) {
+      print('❌ Erreur lors de la vérification du profil dans AdminNavigationWrapper: $e');
+      return false;
+    }
+  }
 
   // Pages principales de l'admin
   final List<AdminMenuItem> _primaryPages = [
@@ -106,12 +139,6 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       title: 'Rendez-vous',
       icon: Icons.schedule,
       page: const AppointmentsAdminPage(),
-    ),
-    AdminMenuItem(
-      route: 'notifications',
-      title: 'Gestion des Notifications',
-      icon: Icons.notifications,
-      page: const UnifiedNotificationAdminPage(),
     ),
     AdminMenuItem(
       route: 'prayers',
@@ -187,9 +214,26 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _getCurrentPage(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+    return FutureBuilder<bool>(
+      future: _isProfileComplete(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        
+        // Si le profil n'est pas complet, rediriger vers la configuration
+        if (snapshot.hasData && !snapshot.data!) {
+          return const InitialProfileSetupPage();
+        }
+        
+        // Si le profil est complet, afficher l'interface admin
+        return Scaffold(
+          body: _getCurrentPage(),
+          bottomNavigationBar: _buildBottomNavigationBar(),
+        );
+      },
     );
   }
 

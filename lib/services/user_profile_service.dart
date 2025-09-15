@@ -12,25 +12,40 @@ class UserProfileService {
   /// Vérifie et crée automatiquement un profil utilisateur lors de l'inscription
   static Future<PersonModel?> ensureUserProfile(User firebaseUser) async {
     try {
+      print('🔍 Vérification du profil pour ${firebaseUser.email} (UID: ${firebaseUser.uid})');
+      
       // Vérifier si une fiche existe déjà avec cet UID
       PersonModel? existingPerson = await getPersonByUid(firebaseUser.uid);
       
       if (existingPerson != null) {
+        print('✅ Profil existant trouvé pour ${firebaseUser.email}');
         // Mettre à jour les informations si nécessaire (email, photo)
         return await _updateUserProfileFromAuth(existingPerson, firebaseUser);
       }
 
+      print('🆕 Création d\'un nouveau profil pour ${firebaseUser.email}');
       // Créer une nouvelle fiche personne
       return await _createUserProfileFromAuth(firebaseUser);
     } catch (e) {
-      print('Erreur lors de la création/mise à jour du profil utilisateur: $e');
-      return null;
+      print('❌ Erreur lors de la création/mise à jour du profil utilisateur: $e');
+      rethrow; // Rethrow pour permettre au AuthWrapper de gérer l'erreur
     }
   }
 
   /// Récupère une personne par son UID Firebase
   static Future<PersonModel?> getPersonByUid(String uid) async {
     try {
+      // D'abord essayer de récupérer directement avec l'UID comme ID du document
+      final doc = await _firestore
+          .collection(personsCollection)
+          .doc(uid)
+          .get();
+
+      if (doc.exists) {
+        return PersonModel.fromFirestore(doc);
+      }
+
+      // Fallback: chercher par champ uid (pour les anciens documents)
       final querySnapshot = await _firestore
           .collection(personsCollection)
           .where('uid', isEqualTo: uid)
@@ -38,6 +53,7 @@ class UserProfileService {
           .get();
 
       if (querySnapshot.docs.isEmpty) {
+        print('Aucun profil trouvé pour UID: $uid');
         return null;
       }
 

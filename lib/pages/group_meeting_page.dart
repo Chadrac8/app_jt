@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/group_model.dart';
 import '../models/person_model.dart';
 import '../services/groups_firebase_service.dart';
-import '../theme.dart';
 
 class GroupMeetingPage extends StatefulWidget {
   final GroupModel group;
@@ -201,6 +200,14 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
 
   Color get _groupColor => Color(int.parse(widget.group.color.replaceFirst('#', '0xFF')));
 
+  Color _getContrastColor(Color backgroundColor) {
+    // Calcule la luminance de la couleur de fond
+    final luminance = backgroundColor.computeLuminance();
+    // Si la luminance est faible (couleur sombre), utilise du blanc
+    // Si la luminance est élevée (couleur claire), utilise du noir
+    return luminance > 0.5 ? Colors.black : Colors.white;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,16 +215,16 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
       appBar: AppBar(
         title: Text(widget.meeting == null ? 'Nouvelle présence' : 'Modifier présence'),
         backgroundColor: _groupColor,
-        foregroundColor: Colors.white,
+        foregroundColor: _getContrastColor(_groupColor),
         elevation: 0,
         actions: [
           if (!_isLoading)
             TextButton(
               onPressed: _saveAttendance,
-              child: const Text(
+              child: Text(
                 'Enregistrer',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: _getContrastColor(_groupColor),
                   fontWeight: FontWeight.bold,
                 ),
               ),

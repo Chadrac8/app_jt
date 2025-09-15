@@ -189,7 +189,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
           preferredSize: const Size.fromHeight(48.0),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppTheme.surfaceColor,
               border: Border(
                 top: BorderSide(color: Colors.grey[300]!, width: 1),
                 bottom: BorderSide(color: Colors.grey[300]!, width: 1),

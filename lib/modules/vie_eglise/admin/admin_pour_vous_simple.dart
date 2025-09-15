@@ -642,7 +642,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: _targetModule,
+                  value: (['rendez_vous','groupes','mur_priere','bible','message','benevolat'].contains(_targetModule)) ? _targetModule : null,
                   decoration: const InputDecoration(
                     labelText: 'Module cible',
                     border: OutlineInputBorder(),
@@ -672,7 +672,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String?>(
-                  value: _selectedGroupId,
+                  value: (widget.groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
                   decoration: const InputDecoration(
                     labelText: 'Groupe',
                     border: OutlineInputBorder(),

@@ -694,7 +694,7 @@ exports.onAppointmentCreated = onDocumentCreated('appointments/{appointmentId}',
     // Récupérer le demandeur du rendez-vous
     if (appointment.requesterId) {
       const requesterDoc = await admin.firestore()
-        .collection('people')
+        .collection('persons')
         .doc(appointment.requesterId)
         .get();
 
@@ -724,7 +724,7 @@ exports.onAppointmentCreated = onDocumentCreated('appointments/{appointmentId}',
     // Récupérer l'assigné du rendez-vous
     if (appointment.assignedTo) {
       const assigneeDoc = await admin.firestore()
-        .collection('people')
+        .collection('persons')
         .doc(appointment.assignedTo)
         .get();
 
@@ -773,7 +773,7 @@ exports.onAppointmentUpdated = onDocumentUpdated('appointments/{appointmentId}',
       // Notifier le demandeur du changement de statut
       if (afterData.requesterId) {
         const requesterDoc = await admin.firestore()
-          .collection('people')
+          .collection('persons')
           .doc(afterData.requesterId)
           .get();
 
@@ -826,7 +826,7 @@ exports.cleanupInactiveTokens = onSchedule('0 2 * * 0', async (event) => {
 
     // Récupérer tous les utilisateurs avec des tokens anciens
     const usersSnapshot = await admin.firestore()
-      .collection('people')
+      .collection('persons')
       .where('fcmTokenUpdatedAt', '<', cutoffDate)
       .get();
 
@@ -886,7 +886,7 @@ exports.sendAppointmentReminders = onSchedule('0 9 * * *', async (event) => {
       
       if (appointment.requesterId) {
         const requesterDoc = await admin.firestore()
-          .collection('people')
+          .collection('persons')
           .doc(appointment.requesterId)
           .get();
 

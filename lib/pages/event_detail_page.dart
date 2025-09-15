@@ -5,6 +5,7 @@ import '../services/events_firebase_service.dart';
 import '../widgets/event_form_builder.dart';
 import '../widgets/event_registrations_list.dart';
 import '../widgets/event_statistics_view.dart';
+import '../widgets/recurring_event_manager_widget.dart';
 import 'event_form_page.dart';
 import '../theme.dart';
 
@@ -34,7 +35,7 @@ class _EventDetailPageState extends State<EventDetailPage>
   void initState() {
     super.initState();
     _currentEvent = widget.event;
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: _getTabCount(), vsync: this);
     _fabAnimationController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
@@ -43,6 +44,10 @@ class _EventDetailPageState extends State<EventDetailPage>
       CurvedAnimation(parent: _fabAnimationController, curve: Curves.easeInOut),
     );
     _fabAnimationController.forward();
+  }
+
+  int _getTabCount() {
+    return _currentEvent?.isRecurring == true ? 5 : 4;
   }
 
   @override
@@ -60,6 +65,20 @@ class _EventDetailPageState extends State<EventDetailPage>
     try {
       final refreshedEvent = await EventsFirebaseService.getEvent(widget.event.id);
       if (refreshedEvent != null && mounted) {
+        // Check if tab count needs to change
+        final newTabCount = refreshedEvent.isRecurring == true ? 5 : 4;
+        final currentTabCount = _tabController.length;
+        
+        if (newTabCount != currentTabCount) {
+          final currentIndex = _tabController.index;
+          _tabController.dispose();
+          _tabController = TabController(length: newTabCount, vsync: this);
+          // Restore tab index if still valid
+          if (currentIndex < newTabCount) {
+            _tabController.index = currentIndex;
+          }
+        }
+        
         setState(() => _currentEvent = refreshedEvent);
       }
     } catch (e) {
@@ -167,18 +186,6 @@ class _EventDetailPageState extends State<EventDetailPage>
     }
   }
 
-  String _getEventTypeKeyword() {
-    switch (_currentEvent!.type) {
-      case 'celebration': return 'church celebration';
-      case 'bapteme': return 'baptism ceremony';
-      case 'formation': return 'training workshop';
-      case 'sortie': return 'group outing';
-      case 'conference': return 'conference seminar';
-      case 'reunion': return 'meeting discussion';
-      default: return 'community event';
-    }
-  }
-
   Widget _buildEventImage() {
     if (_currentEvent!.imageUrl != null && _currentEvent!.imageUrl!.isNotEmpty) {
       return CachedNetworkImage(
@@ -202,7 +209,6 @@ class _EventDetailPageState extends State<EventDetailPage>
   }
 
   Widget _buildFallbackImage() {
-    final keyword = _getEventTypeKeyword();
     final imageUrl = "https://images.unsplash.com/photo-1556761175-129418cb2dfe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDgzNjE1NDJ8&ixlib=rb-4.1.0&q=80&w=1080";
     
     return CachedNetworkImage(
@@ -300,11 +306,14 @@ class _EventDetailPageState extends State<EventDetailPage>
                   labelColor: AppTheme.primaryColor,
                   unselectedLabelColor: AppTheme.textSecondaryColor,
                   indicatorColor: AppTheme.primaryColor,
-                  tabs: const [
-                    Tab(text: 'Infos'),
-                    Tab(text: 'Formulaire'),
-                    Tab(text: 'Participants'),
-                    Tab(text: 'Stats'),
+                  isScrollable: true,
+                  tabs: [
+                    const Tab(text: 'Infos'),
+                    const Tab(text: 'Formulaire'),
+                    const Tab(text: 'Participants'),
+                    const Tab(text: 'Stats'),
+                    if (_currentEvent?.isRecurring == true)
+                      const Tab(text: 'Récurrence'),
                   ],
                 ),
               ),
@@ -319,6 +328,8 @@ class _EventDetailPageState extends State<EventDetailPage>
             _buildFormTab(),
             _buildParticipantsTab(),
             _buildStatisticsTab(),
+            if (_currentEvent?.isRecurring == true)
+              _buildRecurrenceTab(),
           ],
         ),
       ),
@@ -508,6 +519,16 @@ class _EventDetailPageState extends State<EventDetailPage>
 
   Widget _buildStatisticsTab() {
     return EventStatisticsView(event: _currentEvent!);
+  }
+
+  Widget _buildRecurrenceTab() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: RecurringEventManagerWidget(
+        eventId: _currentEvent!.id,
+        parentEvent: _currentEvent!,
+      ),
+    );
   }
 
   Widget _buildInfoCard({

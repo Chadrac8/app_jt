@@ -3,13 +3,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import '../models/group_model.dart';
-import '../models/group_statistics.dart';
 // import '../models/person_model.dart';
 import '../services/groups_firebase_service.dart';
 // import '../services/firebase_service.dart';
 import '../widgets/group_members_list.dart';
 import '../widgets/group_meetings_list.dart';
-import '../widgets/group_member_attendance_stats.dart';
 import 'group_form_page.dart';
 import 'group_meeting_page.dart';
 import 'group_attendance_stats_page.dart';
@@ -100,12 +98,11 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
   late Animation<double> _fabAnimation;
   
   GroupModel? _currentGroup;
-  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _fabAnimationController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
@@ -125,11 +122,16 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     super.dispose();
   }
 
+  void _navigateToMembers() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => _GroupMembersPage(group: _currentGroup!),
+      ),
+    );
+  }
+
   Future<void> _refreshGroupData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    
     try {
       final updatedGroup = await GroupsFirebaseService.getGroup(widget.group.id);
       if (updatedGroup != null) {
@@ -146,10 +148,6 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
           ),
         );
       }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
@@ -185,10 +183,6 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
 
   Future<void> _toggleActiveStatus() async {
     try {
-      setState(() {
-        _isLoading = true;
-      });
-      
       final updatedGroup = _currentGroup!.copyWith(
         isActive: !_currentGroup!.isActive,
         updatedAt: DateTime.now(),
@@ -221,10 +215,6 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
           ),
         );
       }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
@@ -242,6 +232,14 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
   }
 
   Color get _groupColor => Color(int.parse(_currentGroup!.color.replaceFirst('#', '0xFF')));
+
+  Color _getContrastColor(Color backgroundColor) {
+    // Calcule la luminance de la couleur de fond
+    final luminance = backgroundColor.computeLuminance();
+    // Si la luminance est faible (couleur sombre), utilise du blanc
+    // Si la luminance est élevée (couleur claire), utilise du noir
+    return luminance > 0.5 ? Colors.black : Colors.white;
+  }
 
   Widget _buildGroupImage() {
     return Container(
@@ -337,204 +335,134 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              _groupColor.withOpacity(0.05),
-              Theme.of(context).colorScheme.surface,
-            ],
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: Text(_currentGroup!.name),
+        backgroundColor: _groupColor,
+        foregroundColor: _getContrastColor(_groupColor),
+        elevation: 1,
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: _editGroup,
+            icon: const Icon(Icons.edit),
+            tooltip: 'Modifier',
           ),
-        ),
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                expandedHeight: 300,
-                floating: false,
-                pinned: true,
-                backgroundColor: _groupColor,
-                foregroundColor: Colors.white,
-                actions: [
-                  IconButton(
-                    onPressed: _editGroup,
-                    icon: const Icon(Icons.edit),
-                    tooltip: 'Modifier',
-                  ),
-                  PopupMenuButton<String>(
-                    onSelected: (value) async {
-                      switch (value) {
-                        case 'toggle_status':
-                          await _toggleActiveStatus();
-                          break;
-                        case 'duplicate':
-                          // TODO: Implement duplicate
-                          break;
-                        case 'export':
-                          // TODO: Implement export
-                          break;
-                        case 'attendance_stats':
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GroupAttendanceStatsPage(
-                                group: _currentGroup!,
-                              ),
-                            ),
-                          );
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'toggle_status',
-                        child: Row(
-                          children: [
-                            Icon(
-                              _currentGroup!.isActive ? Icons.visibility_off : Icons.visibility,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 12),
-                            Text(_currentGroup!.isActive ? 'Désactiver' : 'Activer'),
-                          ],
-                        ),
-                      ),
-                      const PopupMenuItem(
-                        value: 'duplicate',
-                        child: Row(
-                          children: [
-                            Icon(Icons.copy, size: 20),
-                            SizedBox(width: 12),
-                            Text('Dupliquer'),
-                          ],
-                        ),
-                      ),
-                      const PopupMenuItem(
-                        value: 'export',
-                        child: Row(
-                          children: [
-                            Icon(Icons.download, size: 20),
-                            SizedBox(width: 12),
-                            Text('Exporter'),
-                          ],
-                        ),
-                      ),
-                      const PopupMenuItem(
-                        value: 'attendance_stats',
-                        child: Row(
-                          children: [
-                            Icon(Icons.analytics, size: 20),
-                            SizedBox(width: 12),
-                            Text('Statistiques détaillées'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          _groupColor,
-                          _groupColor.withOpacity(0.8),
-                        ],
+          PopupMenuButton<String>(
+            onSelected: (value) async {
+              switch (value) {
+                case 'members':
+                  _navigateToMembers();
+                  break;
+                case 'toggle_status':
+                  await _toggleActiveStatus();
+                  break;
+                case 'duplicate':
+                  // TODO: Implement duplicate
+                  break;
+                case 'export':
+                  // TODO: Implement export
+                  break;
+                case 'attendance_stats':
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GroupAttendanceStatsPage(
+                        group: _currentGroup!,
                       ),
                     ),
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            _buildGroupImage(),
-                            const SizedBox(height: 16),
-                            Text(
-                              _currentGroup!.name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Text(
-                                _currentGroup!.type,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            if (!_currentGroup!.isActive) ...[
-                              const SizedBox(height: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.8),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: const Text(
-                                  'INACTIF',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
+                  );
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'members',
+                child: Row(
+                  children: [
+                    Icon(Icons.people, size: 20),
+                    SizedBox(width: 12),
+                    Text('Voir les membres'),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
+              PopupMenuItem(
+                value: 'toggle_status',
+                child: Row(
+                  children: [
+                    Icon(
+                      _currentGroup!.isActive ? Icons.visibility_off : Icons.visibility,
+                      size: 20,
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    Text(_currentGroup!.isActive ? 'Désactiver' : 'Activer'),
+                  ],
                 ),
               ),
-              SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
-                  TabBar(
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(text: 'Infos'),
-                      Tab(text: 'Membres'),
-                      Tab(text: 'Réunions'),
-                      Tab(text: 'Ressources'),
-                      Tab(text: 'Statistiques'),
-                    ],
-                    labelColor: Theme.of(context).colorScheme.primary,
-                    unselectedLabelColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                    indicatorColor: Theme.of(context).colorScheme.primary,
-                  ),
+              const PopupMenuItem(
+                value: 'duplicate',
+                child: Row(
+                  children: [
+                    Icon(Icons.copy, size: 20),
+                    SizedBox(width: 12),
+                    Text('Dupliquer'),
+                  ],
                 ),
-                pinned: true,
               ),
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              _buildInformationTab(),
-              _buildMembersTab(),
-              _buildMeetingsTab(),
-              _buildResourcesTab(),
-              _buildStatisticsTab(),
+              const PopupMenuItem(
+                value: 'export',
+                child: Row(
+                  children: [
+                    Icon(Icons.download, size: 20),
+                    SizedBox(width: 12),
+                    Text('Exporter'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'attendance_stats',
+                child: Row(
+                  children: [
+                    Icon(Icons.analytics, size: 20),
+                    SizedBox(width: 12),
+                    Text('Statistiques détaillées'),
+                  ],
+                ),
+              ),
             ],
           ),
-        ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Sélecteur d'onglets directement après l'AppBar
+          Container(
+            color: Colors.white,
+            child: TabBar(
+              controller: _tabController,
+              tabs: const [
+                Tab(text: 'Infos'),
+                Tab(text: 'Réunions'),
+                Tab(text: 'Ressources'),
+              ],
+              labelColor: AppTheme.primaryColor,
+              unselectedLabelColor: Colors.grey[600],
+              indicatorColor: AppTheme.primaryColor,
+            ),
+          ),
+          // Contenu des onglets
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildInformationTab(),
+                _buildMeetingsTab(),
+                _buildResourcesTab(),
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: ScaleTransition(
         scale: _fabAnimation,
@@ -544,7 +472,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
             FloatingActionButton(
               heroTag: "attendance",
               onPressed: _takeAttendance,
-              backgroundColor: _groupColor,
+              backgroundColor: AppTheme.primaryColor,
               foregroundColor: Colors.white,
               child: const Icon(Icons.how_to_reg),
             ),
@@ -597,6 +525,42 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Group Header
+          Center(
+            child: Column(
+              children: [
+                _buildGroupImage(),
+                const SizedBox(height: 16),
+                Text(
+                  _currentGroup!.name,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: _groupColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _groupColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: _groupColor.withOpacity(0.3)),
+                  ),
+                  child: Text(
+                    _currentGroup!.type,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: _groupColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 32),
+          
           // Description
           if (_currentGroup!.description.isNotEmpty)
             _buildInfoCard(
@@ -693,10 +657,6 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ],
       ),
     );
-  }
-
-  Widget _buildMembersTab() {
-    return GroupMembersList(group: _currentGroup!);
   }
 
   Widget _buildMeetingsTab() {
@@ -1034,128 +994,6 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     }
   }
 
-  Widget _buildStatisticsTab() {
-    return FutureBuilder<GroupStatisticsModel>(
-      future: GroupsFirebaseService.getGroupStatistics(_currentGroup!.id),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error_outline,
-                  size: 64,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Erreur lors du chargement des statistiques',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '${snapshot.error}',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          );
-        }
-
-        final stats = snapshot.data!;
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Global Statistics Cards
-              Text(
-                'Vue d\'ensemble',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: _groupColor,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildStatCard(
-                      'Membres actifs',
-                      stats.activeMembers.toString(),
-                      Icons.group,
-                      _groupColor,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _buildStatCard(
-                      'Réunions',
-                      stats.totalMeetings.toString(),
-                      Icons.event,
-                      Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildStatCard(
-                      'Présence moy.',
-                      '${(stats.averageAttendance * 100).round()}%',
-                      Icons.how_to_reg,
-                      Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _buildStatCard(
-                      'Total membres',
-                      stats.totalMembers.toString(),
-                      Icons.people,
-                      Colors.orange,
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 32),
-              
-              // Individual Member Attendance
-              GroupMemberAttendanceStats(
-                memberAttendance: stats.memberAttendance.map((key, value) => MapEntry(
-                  key,
-                  MemberAttendance(
-                    personName: value.personName,
-                    attendanceRate: value.attendanceRate,
-                    consecutiveAbsences: value.consecutiveAbsences,
-                    totalMeetings: value.totalMeetings,
-                    presentCount: value.presentCount,
-                    absentCount: value.absentCount,
-                    lastAttendance: value.lastAttendance,
-                  ),
-                )),
-                isExpanded: true,
-              ),
-              
-              const SizedBox(height: 100), // Space for FAB
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildInfoCard({
     required String title,
     required IconData icon,
@@ -1307,54 +1145,6 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 24,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -1574,32 +1364,6 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
     );
   }
 }
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar;
-
-  _SliverAppBarDelegate(this._tabBar);
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Theme.of(context).colorScheme.surface,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
-}
-
 
 class _AddResourceDialog extends StatefulWidget {
   final String type;
@@ -2004,5 +1768,46 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
         ),
       ),
     ];
+  }
+}
+
+/// Page dédiée pour afficher les membres d'un groupe
+class _GroupMembersPage extends StatefulWidget {
+  final GroupModel group;
+
+  const _GroupMembersPage({required this.group});
+
+  @override
+  State<_GroupMembersPage> createState() => _GroupMembersPageState();
+}
+
+class _GroupMembersPageState extends State<_GroupMembersPage> {
+  Color get _groupColor => Color(int.parse(widget.group.color.replaceFirst('#', '0xFF')));
+
+  Color _getContrastColor(Color backgroundColor) {
+    // Calcule la luminance de la couleur de fond
+    final luminance = backgroundColor.computeLuminance();
+    // Si la luminance est faible (couleur sombre), utilise du blanc
+    // Si la luminance est élevée (couleur claire), utilise du noir
+    return luminance > 0.5 ? Colors.black : Colors.white;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: Text('Membres - ${widget.group.name}'),
+        backgroundColor: _groupColor,
+        foregroundColor: _getContrastColor(_groupColor),
+        elevation: 1,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: GroupMembersList(group: widget.group),
+    );
   }
 }

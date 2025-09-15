@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'user_profile_service.dart';
-import 'push_notification_service.dart';
 
 class AuthListenerService {
   static FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,21 +16,16 @@ class AuthListenerService {
           await UserProfileService.ensureUserProfile(user);
           print('✅ Profile ensured for user: ${user.email}');
           
-          // Réinitialiser les notifications push pour le nouvel utilisateur
-          if (PushNotificationService.isInitialized) {
-            await PushNotificationService.initialize();
-            print('🔔 Push notifications reinitialized for user');
-          }
+          // Note: Push notifications module removed
         } catch (e) {
           print('❌ Error ensuring user profile: $e');
         }
       } else {
-        // User signed out - clean up notifications
+        // User signed out
         try {
-          await PushNotificationService.deleteToken();
-          print('🔐 User signed out - notifications cleaned up');
+          print('🔐 User signed out');
         } catch (e) {
-          print('❌ Error cleaning up notifications: $e');
+          print('❌ Error during sign out: $e');
         }
       }
     });

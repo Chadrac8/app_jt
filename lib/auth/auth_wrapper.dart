@@ -7,7 +7,7 @@ import '../widgets/admin_navigation_wrapper.dart';
 import '../widgets/bottom_navigation_wrapper.dart';
 import '../models/person_model.dart';
 import '../services/dashboard_initialization_service.dart';
-import '../modules/roles/roles_module.dart';
+import '../pages/initial_profile_setup_page.dart';
 import '../modules/roles/services/permission_provider.dart';
 
 /// Enhanced AuthWrapper with comprehensive error handling and fallback mechanisms
@@ -66,10 +66,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
   }
 
-  /// Build widget for authenticated users with profile loading
+  /// Build widget for authenticated users with profile loading (using Stream for real-time updates)
   Widget _buildAuthenticatedUserWidget(User user) {
-    return FutureBuilder<PersonModel?>(
-      future: _loadUserProfileSafely(user),
+    return StreamBuilder<PersonModel?>(
+      stream: AuthService.getCurrentUserProfileStream(),
       builder: (context, profileSnapshot) {
         // Loading profile
         if (profileSnapshot.connectionState == ConnectionState.waiting) {
@@ -84,49 +84,32 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
         // Profile loaded successfully
         if (profileSnapshot.hasData && profileSnapshot.data != null) {
-          return _buildUserInterface(profileSnapshot.data!);
+          final profile = profileSnapshot.data!;
+          
+          // Check if profile is complete before allowing access
+          if (!_isProfileComplete(profile)) {
+            print('🔄 AuthWrapper: Profil incomplet, redirection vers configuration');
+            return _buildProfileCreationScreen();
+          }
+          
+          return _buildUserInterface(profile);
         }
 
         // No profile data - might be creating profile
-        return _buildProfileCreationScreen(user);
+        return _buildProfileCreationScreen();
       },
     );
-  }
-
-  /// Safely load user profile with timeout and error handling
-  Future<PersonModel?> _loadUserProfileSafely(User user) async {
-    try {
-      // Add timeout to prevent hanging
-      return await AuthService.getCurrentUserProfile().timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          print('⚠️ Profile loading timeout - will retry');
-          throw TimeoutException('Profile loading timeout', const Duration(seconds: 10));
-        },
-      );
-    } catch (e) {
-      print('❌ Error loading user profile: $e');
-      
-      // For timeout or network errors, try once more
-      if (e is TimeoutException || e.toString().contains('network')) {
-        try {
-          await Future.delayed(const Duration(seconds: 1));
-          return await AuthService.getCurrentUserProfile().timeout(
-            const Duration(seconds: 5),
-          );
-        } catch (retryError) {
-          print('❌ Retry failed: $retryError');
-          rethrow;
-        }
-      }
-      
-      rethrow;
-    }
   }
 
   /// Build user interface based on user roles
   Widget _buildUserInterface(PersonModel profile) {
     try {
+      // Double-check profile completion before proceeding
+      if (!_isProfileComplete(profile)) {
+        print('🔄 AuthWrapper: Double vérification - profil toujours incomplet');
+        return _buildProfileCreationScreen();
+      }
+      
       // Initialiser le PermissionProvider avec l'utilisateur connecté
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final permissionProvider = Provider.of<PermissionProvider>(context, listen: false);
@@ -163,6 +146,47 @@ class _AuthWrapperState extends State<AuthWrapper> {
     } catch (e) {
       print('❌ Error checking admin access: $e');
       return false; // Default to member access
+    }
+  }
+
+  /// Check if user profile is complete with all required fields
+  bool _isProfileComplete(PersonModel profile) {
+    try {
+      print('🔍 AuthWrapper: Vérification du profil complet pour: ${profile.email}');
+      print('📊 Valeurs du profil:');
+      print('  - ID: "${profile.id}"');
+      print('  - Prénom: "${profile.firstName}"');
+      print('  - Nom: "${profile.lastName}"');
+      print('  - Email: "${profile.email}"');
+      print('  - Téléphone: "${profile.phone}"');
+      print('  - Adresse: "${profile.address}"');
+      print('  - Date de naissance: ${profile.birthDate}');
+      print('  - Genre: "${profile.gender}"');
+      
+      // Required fields for profile completion
+      final hasFirstName = profile.firstName.isNotEmpty;
+      final hasLastName = profile.lastName.isNotEmpty;
+      final hasPhone = profile.phone != null && profile.phone!.isNotEmpty;
+      final hasAddress = profile.address != null && profile.address!.isNotEmpty;
+      final hasBirthDate = profile.birthDate != null;
+      final hasGender = profile.gender != null && profile.gender!.isNotEmpty;
+      
+      // Check if all required fields are present
+      final isComplete = hasFirstName && hasLastName && hasPhone && hasAddress && hasBirthDate && hasGender;
+      
+      print('🔍 AuthWrapper: Résultats de vérification:');
+      print('  - Prénom: ${hasFirstName ? "✅" : "❌"} (valeur: "${profile.firstName}")');
+      print('  - Nom: ${hasLastName ? "✅" : "❌"} (valeur: "${profile.lastName}")');
+      print('  - Téléphone: ${hasPhone ? "✅" : "❌"} (valeur: "${profile.phone}")');
+      print('  - Adresse: ${hasAddress ? "✅" : "❌"} (valeur: "${profile.address}")');
+      print('  - Date de naissance: ${hasBirthDate ? "✅" : "❌"} (valeur: ${profile.birthDate})');
+      print('  - Genre: ${hasGender ? "✅" : "❌"} (valeur: "${profile.gender}")');
+      print('🎯 Profil complet: ${isComplete ? "✅ OUI" : "❌ NON"}');
+      
+      return isComplete;
+    } catch (e) {
+      print('❌ Error checking profile completion: $e');
+      return false; // If error, consider incomplete for safety
     }
   }
 
@@ -386,69 +410,11 @@ class _AuthWrapperState extends State<AuthWrapper> {
   }
 
   /// Build screen for profile creation
-  Widget _buildProfileCreationScreen(User user) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      Icons.person_add,
-                      color: Colors.blue.shade600,
-                      size: 48,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Configuration du Profil',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Création de votre profil en cours...',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    user.email ?? 'Utilisateur',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () => _signOut(),
-                    child: const Text('Retour à la connexion'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+  Widget _buildProfileCreationScreen() {
+    print('AuthWrapper: Affichage de l ecran de configuration de profil');
+    
+    return const Scaffold(
+      body: InitialProfileSetupPage(),
     );
   }
 
@@ -602,13 +568,3 @@ class _AuthWrapperState extends State<AuthWrapper> {
   }
 }
 
-/// Custom timeout exception
-class TimeoutException implements Exception {
-  final String message;
-  final Duration timeout;
-  
-  const TimeoutException(this.message, this.timeout);
-  
-  @override
-  String toString() => 'TimeoutException: $message (timeout: $timeout)';
-}

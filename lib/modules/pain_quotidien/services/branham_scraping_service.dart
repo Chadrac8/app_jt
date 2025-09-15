@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../services/encoding_fix_service.dart';
 
 class BranhamQuoteModel {
   final String text;
@@ -147,38 +148,9 @@ class BranhamScrapingService {
     }
   }
 
-  /// Fonction pour décoder les entités HTML et nettoyer le texte
+  /// Fonction pour décoder les entités HTML et nettoyer le texte - Version améliorée
   String _decodeHtmlEntities(String text) {
-    // D'abord nettoyer les artefacts de code
-    String cleanText = text
-        .replaceAll(RegExp(r'\s*\.\s*replaceAll\([^)]*\)\s*[^;]*'), '')
-        .replaceAll(RegExp(r'^\s*\)\s*'), '')
-        .replaceAll(RegExp(r'\s*;\s*$'), '');
-    
-    // Ensuite décoder les entités HTML
-    return cleanText
-        .replaceAll('&eacute;', 'é')
-        .replaceAll('&ecirc;', 'ê')
-        .replaceAll('&egrave;', 'è')
-        .replaceAll('&agrave;', 'à')
-        .replaceAll('&ucirc;', 'û')
-        .replaceAll('&ocirc;', 'ô')
-        .replaceAll('&acirc;', 'â')
-        .replaceAll('&ccedil;', 'ç')
-        .replaceAll('&rsquo;', ''')
-        .replaceAll('&lsquo;', ''')
-        .replaceAll('&ldquo;', '"')
-        .replaceAll('&rdquo;', '"')
-        .replaceAll('&Eacute;', 'É')
-        .replaceAll('&Egrave;', 'È')
-        .replaceAll('&Agrave;', 'À')
-        .replaceAll('&ugrave;', 'ù')
-        .replaceAll('&nbsp;', ' ')
-        .replaceAll('&amp;', '&')
-        .replaceAll('&lt;', '<')
-        .replaceAll('&gt;', '>')
-        .replaceAll(RegExp(r'\s+'), ' ')
-        .trim();
+    return EncodingFixService.fixEncoding(text);
   }
 
   /// Parse le contenu HTML pour extraire la citation et le verset (distincts!)

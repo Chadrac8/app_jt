@@ -37,13 +37,19 @@ class AuthService {
       
       // Ensure user profile exists
       if (result.user != null) {
-        await UserProfileService.ensureUserProfile(result.user!);
+        try {
+          await UserProfileService.ensureUserProfile(result.user!);
+          print('✅ Profil utilisateur vérifié pour ${result.user!.email}');
+        } catch (profileError) {
+          print('⚠️ Erreur lors de la vérification du profil: $profileError');
+          // Ne pas échouer l'authentification si le profil ne peut pas être vérifié
+        }
       }
       
       return result;
     } catch (e) {
       print('Error signing in with email and password: $e');
-      return null;
+      rethrow; // Rethrow pour que l'UI puisse gérer l'erreur spécifique
     }
   }
 
@@ -57,13 +63,19 @@ class AuthService {
       
       // Create user profile automatically
       if (result.user != null) {
-        await UserProfileService.ensureUserProfile(result.user!);
+        try {
+          await UserProfileService.ensureUserProfile(result.user!);
+          print('✅ Profil utilisateur créé pour ${result.user!.email}');
+        } catch (profileError) {
+          print('⚠️ Erreur lors de la création du profil: $profileError');
+          // Ne pas échouer l'authentification si le profil ne peut pas être créé
+        }
       }
       
       return result;
     } catch (e) {
       print('Error creating user with email and password: $e');
-      return null;
+      rethrow; // Rethrow pour que l'UI puisse gérer l'erreur spécifique
     }
   }
 

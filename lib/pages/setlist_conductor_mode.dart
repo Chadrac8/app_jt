@@ -1,81 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../modules/songs/models/song_model.dart';
-import '../modules/songs/services/songs_firebase_service.dart';
-import '../pages/song_projection_page.dart';
+import '../modules/songs/models/song.dart';
+import '../modules/songs/services/songs_service.dart';
+import 'song_projection_page.dart';
 
-/// Mode conducteur pour diriger une setlist de chants
-/// Navigation séquentielle avec contrôles simplifiés - Reproduction exacte de Perfect 13
 class SetlistConductorMode extends StatefulWidget {
   final SetlistModel setlist;
-  final int? startIndex;
 
   const SetlistConductorMode({
-    super.key,
+    Key? key,
     required this.setlist,
-    this.startIndex,
-  });
+  }) : super(key: key);
 
   @override
-  State<SetlistConductorMode> createState() => _SetlistConductorModeState();
+  _SetlistConductorModeState createState() => _SetlistConductorModeState();
 }
 
 class _SetlistConductorModeState extends State<SetlistConductorMode>
     with TickerProviderStateMixin {
-  List<SongModel> _songs = [];
+  final SongsService _songsService = SongsService();
+  List<Song> _songs = [];
   int _currentIndex = 0;
   bool _isLoading = true;
-  bool _showLyrics = true;
+  bool _showLyrics = true; // Démarrer avec les paroles affichées
   bool _isProjecting = false;
-  
+
   late AnimationController _slideController;
-  late AnimationController _fadeController;
   late Animation<Offset> _slideAnimation;
-  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _currentIndex = widget.startIndex ?? 0;
-    
+    _initAnimations();
+    _loadSongs();
+  }
+
+  void _initAnimations() {
     _slideController = AnimationController(
       duration: const Duration(milliseconds: 300),
-      vsync: this);
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this);
-    
+      vsync: this,
+    );
+
     _slideAnimation = Tween<Offset>(
       begin: const Offset(1.0, 0.0),
-      end: Offset.zero).animate(CurvedAnimation(
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
       parent: _slideController,
-      curve: Curves.easeInOut));
-    
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0).animate(CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeIn));
-    
-    _loadSongs();
+      curve: Curves.easeOutCubic,
+    ));
+
+    _slideController.forward();
   }
 
   @override
   void dispose() {
     _slideController.dispose();
-    _fadeController.dispose();
     super.dispose();
   }
 
-  void _loadSongs() async {
+  Future<void> _loadSongs() async {
     try {
-      final songs = await SongsFirebaseService.getSetlistSongs(widget.setlist.songIds);
+      setState(() {
+        _isLoading = true;
+      });
+
+      List<Song> songs = [];
+      for (String songId in widget.setlist.songIds) {
+        final song = await _songsService.getById(songId);
+        if (song != null) {
+          songs.add(song);
+        }
+      }
+
       if (mounted) {
         setState(() {
           _songs = songs;
           _isLoading = false;
         });
-        _fadeController.forward();
       }
     } catch (e) {
       if (mounted) {
@@ -135,45 +137,44 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
     
     return Stack(
       children: [
-        // Arrière-plan avec gradient
+        // Arrière-plan simplifié pour maximiser la lisibilité
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black,
-                Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                Colors.grey.shade900,
                 Colors.black,
               ]))),
         
-        // Interface principale
+        // Interface principale optimisée pour les paroles
         SafeArea(
           child: Column(
             children: [
-              _buildHeader(currentSong),
+              _buildCompactHeader(currentSong),
               Expanded(
                 child: _showLyrics
-                    ? _buildLyricsView(currentSong)
-                    : _buildSongInfo(currentSong)),
-              _buildNavigationControls(),
+                    ? _buildMaximizedLyricsView(currentSong)
+                    : _buildCompactSongInfo(currentSong)),
+              _buildMinimalNavigationControls(),
             ])),
         
-        // Indicateur de projection
+        // Indicateur de projection compact
         if (_isProjecting)
           Positioned(
-            top: 60,
-            right: 20,
+            top: 50,
+            right: 16,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.error,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context).colorScheme.error.withOpacity(0.5),
-                    blurRadius: 8,
-                    spreadRadius: 2),
+                    color: Theme.of(context).colorScheme.error.withOpacity(0.3),
+                    blurRadius: 4,
+                    spreadRadius: 1),
                 ]),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -181,425 +182,327 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                   Icon(
                     Icons.live_tv,
                     color: Theme.of(context).colorScheme.surface,
-                    size: 16),
+                    size: 12),
                   const SizedBox(width: 4),
                   Text(
-                    'EN PROJECTION',
+                    'LIVE',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.surface,
-                      fontSize: 12,
+                      fontSize: 10,
                       fontWeight: FontWeight.bold)),
                 ]))),
       ]);
   }
 
-  Widget _buildHeader(SongModel song) {
+  // Header compact pour maximiser l'espace des paroles
+  Widget _buildCompactHeader(Song song) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.8),
-            Theme.of(context).colorScheme.primaryContainer.withOpacity(0.6),
+            Theme.of(context).colorScheme.primary.withOpacity(0.6),
+            Theme.of(context).colorScheme.primaryContainer.withOpacity(0.4),
           ]),
         borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 5)),
-        ]),
-      child: Column(
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16)),
+      ),
+      child: Row(
         children: [
-          // Ligne supérieure : contrôles et infos
+          // Bouton retour compact
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8)),
+            child: IconButton(
+              icon: Icon(Icons.close, 
+                color: Theme.of(context).colorScheme.surface, size: 20),
+              onPressed: () => Navigator.pop(context),
+              padding: const EdgeInsets.all(8))),
+          
+          const SizedBox(width: 12),
+          
+          // Info setlist compacte
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  song.title,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+                Text(
+                  '${_currentIndex + 1}/${_songs.length} • ${widget.setlist.name}',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+                    fontSize: 11),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+              ])),
+          
+          // Contrôles d'affichage compacts
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Bouton retour
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12)),
+                  color: Theme.of(context).colorScheme.surface.withOpacity(_showLyrics ? 0.3 : 0.1),
+                  borderRadius: BorderRadius.circular(6)),
                 child: IconButton(
-                  icon: Icon(Icons.close, 
-                    color: Theme.of(context).colorScheme.surface),
-                  onPressed: () => Navigator.pop(context))),
-              
-              const SizedBox(width: 16),
-              
-              // Info setlist
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.setlist.name,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis),
-                    Text(
-                      'Chant ${_currentIndex + 1} sur ${_songs.length}',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
-                        fontSize: 12)),
-                  ])),
-              
-              // Contrôles d'affichage
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface.withOpacity(_showLyrics ? 0.3 : 0.1),
-                      borderRadius: BorderRadius.circular(8)),
-                    child: IconButton(
-                      icon: Icon(
-                        _showLyrics ? Icons.lyrics : Icons.info_outline,
-                        color: Theme.of(context).colorScheme.surface,
-                        size: 20),
-                      onPressed: () {
-                        setState(() {
-                          _showLyrics = !_showLyrics;
-                        });
-                      })),
-                  const SizedBox(width: 8),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface.withOpacity(_isProjecting ? 0.3 : 0.1),
-                      borderRadius: BorderRadius.circular(8)),
-                    child: IconButton(
-                      icon: Icon(
-                        _isProjecting ? Icons.stop_screen_share : Icons.screen_share,
-                        color: Theme.of(context).colorScheme.surface,
-                        size: 20),
-                      onPressed: _toggleProjection)),
-                ]),
+                  icon: Icon(
+                    _showLyrics ? Icons.lyrics : Icons.info_outline,
+                    color: Theme.of(context).colorScheme.surface,
+                    size: 18),
+                  onPressed: () {
+                    setState(() {
+                      _showLyrics = !_showLyrics;
+                    });
+                  },
+                  padding: const EdgeInsets.all(6))),
+              const SizedBox(width: 6),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface.withOpacity(_isProjecting ? 0.3 : 0.1),
+                  borderRadius: BorderRadius.circular(6)),
+                child: IconButton(
+                  icon: Icon(
+                    _isProjecting ? Icons.stop_screen_share : Icons.screen_share,
+                    color: Theme.of(context).colorScheme.surface,
+                    size: 18),
+                  onPressed: _toggleProjection,
+                  padding: const EdgeInsets.all(6))),
             ]),
-          
-          const SizedBox(height: 16),
-          
-          // Titre du chant actuel
-          FadeTransition(
-            opacity: _fadeAnimation,
-            child: Text(
-              song.title,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.surface,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis)),
-          
-          if (song.authors.isNotEmpty) ...[
-            const SizedBox(height: 4),
-            Text(
-              song.authors,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
-                fontSize: 14),
-              textAlign: TextAlign.center),
-          ],
-          
-          if (song.originalKey.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12)),
-              child: Text(
-                'Tonalité: ${song.originalKey}',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.surface,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500))),
-          ],
         ]));
   }
 
-  Widget _buildLyricsView(SongModel song) {
+  // Vue des paroles maximisée pour la meilleure lisibilité
+  Widget _buildMaximizedLyricsView(Song song) {
     return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
-        borderRadius: BorderRadius.circular(20),
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5)),
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2)),
         ]),
       child: SlideTransition(
         position: _slideAnimation,
         child: SingleChildScrollView(
+          padding: EdgeInsets.zero,
           child: Text(
             song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
             style: TextStyle(
-              fontSize: 18,
-              height: 1.6,
+              fontSize: 20, // Taille de police augmentée pour les conducteurs
+              height: 1.8, // Espacement de ligne augmenté pour la lisibilité
               color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.w400),
+              fontWeight: FontWeight.w400,
+              letterSpacing: 0.3),
             textAlign: TextAlign.left))));
   }
 
-  Widget _buildSongInfo(SongModel song) {
+  // Informations du chant en version compacte
+  Widget _buildCompactSongInfo(Song song) {
     return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
-        borderRadius: BorderRadius.circular(20),
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5)),
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2)),
         ]),
       child: SlideTransition(
         position: _slideAnimation,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Informations du chant
-            if (song.originalKey.isNotEmpty) ...[
-              _buildInfoRow('Tonalité originale', song.originalKey),
-              const SizedBox(height: 12),
-            ],
-            
-            if (song.tempo != null) ...[
-              _buildInfoRow('Tempo', '${song.tempo} BPM'),
-              const SizedBox(height: 12),
-            ],
-            
-            if (song.tags.isNotEmpty) ...[
-              _buildInfoRow('Tags', song.tags.join(', ')),
-              const SizedBox(height: 12),
-            ],
-            
-            if (song.bibleReferences.isNotEmpty) ...[
-              _buildInfoRow('Références bibliques', song.bibleReferences.join(', ')),
-              const SizedBox(height: 12),
-            ],
-            
-            // Aperçu des paroles
-            if (song.lyrics.isNotEmpty) ...[
-              const SizedBox(height: 20),
-              Text(
-                'Aperçu des paroles:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onSurface)),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(12)),
-                child: Text(
-                  song.lyrics.length > 200 
-                      ? '${song.lyrics.substring(0, 200)}...'
-                      : song.lyrics,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Informations essentielles seulement
+              if (song.tonality != null && song.tonality!.isNotEmpty) ...[
+                _buildCompactInfoRow('Tonalité', song.tonality!),
+                const SizedBox(height: 8),
+              ],
+              
+              if (song.author != null && song.author!.isNotEmpty) ...[
+                _buildCompactInfoRow('Auteur', song.author!),
+                const SizedBox(height: 8),
+              ],
+              
+              if (song.tempo != null) ...[
+                _buildCompactInfoRow('Tempo', '${song.tempo} BPM'),
+                const SizedBox(height: 8),
+              ],
+              
+              // Aperçu des paroles optimisé
+              if (song.lyrics.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text(
+                  'Aperçu des paroles:',
                   style: TextStyle(
                     fontSize: 14,
-                    height: 1.5,
-                    color: Theme.of(context).colorScheme.onSurface))),
-            ],
-          ])));
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface)),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(8)),
+                  child: Text(
+                    song.lyrics.length > 300 
+                        ? '${song.lyrics.substring(0, 300)}...'
+                        : song.lyrics,
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.6,
+                      color: Theme.of(context).colorScheme.onSurface))),
+              ],
+            ]))));
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildCompactInfoRow(String label, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: 120,
+          width: 80,
           child: Text(
             label,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface))),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)))),
         Expanded(
           child: Text(
             value,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 12,
               color: Theme.of(context).colorScheme.onSurface))),
       ]);
   }
 
-  Widget _buildNavigationControls() {
+  // Contrôles de navigation minimalistes pour économiser l'espace
+  Widget _buildMinimalNavigationControls() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            Colors.black.withOpacity(0.8),
+            Colors.black.withOpacity(0.6),
           ])),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Indicateur de progression
+          // Indicateur de progression compact
           Container(
-            margin: const EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 12),
             child: Row(
               children: List.generate(_songs.length, (index) {
                 return Expanded(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 1),
-                    height: 4,
+                    margin: const EdgeInsets.symmetric(horizontal: 0.5),
+                    height: 3,
                     decoration: BoxDecoration(
                       color: index <= _currentIndex
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.surface.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(2))));
+                      borderRadius: BorderRadius.circular(1.5))));
               }))),
           
-          // Contrôles principaux
+          // Contrôles principaux en ligne
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               // Précédent
-              _buildControlButton(
+              _buildMinimalControlButton(
                 icon: Icons.skip_previous_rounded,
-                label: 'Précédent',
                 onPressed: _currentIndex > 0 ? _goToPrevious : null,
-                size: 60),
+                size: 48),
               
-              // Pause/Play (optionnel)
-              _buildControlButton(
-                icon: Icons.pause_rounded,
-                label: 'Pause',
-                onPressed: () {
-                  // Implémenter pause si nécessaire
-                  HapticFeedback.mediumImpact();
-                },
-                size: 70,
+              // Options
+              _buildMinimalControlButton(
+                icon: Icons.more_vert,
+                onPressed: _showOptions,
+                size: 40),
+              
+              // Projection
+              _buildMinimalControlButton(
+                icon: Icons.fullscreen,
+                onPressed: _openProjection,
+                size: 44,
                 isPrimary: true),
               
-              // Suivant
-              _buildControlButton(
-                icon: Icons.skip_next_rounded,
-                label: 'Suivant',
-                onPressed: _currentIndex < _songs.length - 1 ? _goToNext : null,
-                size: 60),
-            ]),
-          
-          const SizedBox(height: 16),
-          
-          // Actions secondaires
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildSecondaryButton(
+              // Liste
+              _buildMinimalControlButton(
                 icon: Icons.list_rounded,
-                label: 'Liste',
-                onPressed: _showSongList),
+                onPressed: _showSongList,
+                size: 40),
               
-              _buildSecondaryButton(
-                icon: Icons.fullscreen,
-                label: 'Projection',
-                onPressed: _openProjection),
-              
-              _buildSecondaryButton(
-                icon: Icons.settings,
-                label: 'Options',
-                onPressed: _showOptions),
+              // Suivant
+              _buildMinimalControlButton(
+                icon: Icons.skip_next_rounded,
+                onPressed: _currentIndex < _songs.length - 1 ? _goToNext : null,
+                size: 48),
             ]),
         ]));
   }
 
-  Widget _buildControlButton({
+  Widget _buildMinimalControlButton({
     required IconData icon,
-    required String label,
     required VoidCallback? onPressed,
     required double size,
     bool isPrimary = false,
   }) {
-    return Column(
-      children: [
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            gradient: isPrimary
-                ? LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.primaryContainer,
-                    ])
-                : null,
-            color: isPrimary 
-                ? null 
-                : (onPressed != null 
-                    ? Theme.of(context).colorScheme.surface.withOpacity(0.2)
-                    : Theme.of(context).colorScheme.surface.withOpacity(0.1)),
-            shape: BoxShape.circle,
-            boxShadow: isPrimary ? [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
-                blurRadius: 10,
-                offset: const Offset(0, 4)),
-            ] : null),
-          child: IconButton(
-            onPressed: onPressed,
-            icon: Icon(
-              icon,
-              color: onPressed != null
-                  ? Theme.of(context).colorScheme.surface
-                  : Theme.of(context).colorScheme.surface.withOpacity(0.4),
-              size: size * 0.4),
-            splashRadius: size / 2)),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: TextStyle(
-            color: onPressed != null
-                ? Theme.of(context).colorScheme.surface
-                : Theme.of(context).colorScheme.surface.withOpacity(0.4),
-            fontSize: 12,
-            fontWeight: FontWeight.w500)),
-      ]);
-  }
-
-  Widget _buildSecondaryButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface.withOpacity(0.15),
-          borderRadius: BorderRadius.circular(20)),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: Theme.of(context).colorScheme.surface,
-              size: 16),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.surface,
-                fontSize: 12,
-                fontWeight: FontWeight.w500)),
-          ])));
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        gradient: isPrimary
+            ? LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.primaryContainer,
+                ])
+            : null,
+        color: isPrimary 
+            ? null 
+            : (onPressed != null 
+                ? Theme.of(context).colorScheme.surface.withOpacity(0.15)
+                : Theme.of(context).colorScheme.surface.withOpacity(0.05)),
+        shape: BoxShape.circle,
+        boxShadow: isPrimary ? [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 2)),
+        ] : null),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          icon,
+          color: onPressed != null
+              ? Theme.of(context).colorScheme.surface
+              : Theme.of(context).colorScheme.surface.withOpacity(0.4),
+          size: size * 0.35),
+        splashRadius: size / 2));
   }
 
   void _goToPrevious() {
@@ -636,10 +539,37 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
 
   void _openProjection() {
     if (_songs.isNotEmpty) {
+      final currentSong = _songs[_currentIndex];
+      // Convertir Song en SongModel pour la projection
+      final songModel = SongModel(
+        id: currentSong.id ?? '',
+        title: currentSong.title,
+        authors: currentSong.author ?? '',
+        lyrics: currentSong.lyrics,
+        originalKey: currentSong.tonality ?? '',
+        currentKey: currentSong.tonality,
+        style: '',
+        tags: currentSong.tags,
+        bibleReferences: [],
+        tempo: currentSong.tempo,
+        audioUrl: currentSong.audioUrl,
+        attachmentUrls: [],
+        status: 'active',
+        visibility: currentSong.isPublic ? 'public' : 'private',
+        privateNotes: null,
+        usageCount: currentSong.views,
+        lastUsedAt: null,
+        createdAt: currentSong.createdAt,
+        updatedAt: currentSong.updatedAt,
+        createdBy: currentSong.createdBy,
+        modifiedBy: null,
+        metadata: currentSong.metadata,
+      );
+      
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SongProjectionPage(song: _songs[_currentIndex])));
+          builder: (context) => SongProjectionPage(song: songModel)));
     }
   }
 
@@ -690,7 +620,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                       song.title,
                       style: TextStyle(
                         fontWeight: isCurrentSong ? FontWeight.bold : FontWeight.normal)),
-                    subtitle: Text(song.authors),
+                    subtitle: Text(song.author ?? 'Auteur inconnu'),
                     trailing: isCurrentSong 
                         ? Icon(Icons.play_arrow, 
                             color: Theme.of(context).colorScheme.primary)

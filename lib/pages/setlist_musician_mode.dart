@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../modules/songs/models/song_model.dart';
-import '../modules/songs/services/songs_firebase_service.dart';
+import '../modules/songs/models/song.dart';
+import '../modules/songs/services/songs_service.dart';
 import '../pages/song_projection_page.dart';
 
-/// Mode musicien pour jouer une setlist de chants
-/// Interface spécialisée avec transposition et contrôles musicaux - Reproduction exacte de Perfect 13
+/// Mode musicien optimisé pour jouer une setlist de chants
+/// Interface spécialisée avec transposition et contrôles musicaux - Version professionnelle
 class SetlistMusicianMode extends StatefulWidget {
   final SetlistModel setlist;
 
@@ -20,10 +21,10 @@ class SetlistMusicianMode extends StatefulWidget {
 
 class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     with TickerProviderStateMixin {
+  final SongsService _songsService = SongsService();
+  List<Song> _songs = [];
   int _currentIndex = 0;
-  List<SongModel> _songs = [];
   bool _isLoading = true;
-  String _error = '';
   
   // Animation controllers
   late AnimationController _slideController;
@@ -42,54 +43,62 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     super.initState();
     _setupAnimations();
     _loadSongs();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   @override
   void dispose() {
     _slideController.dispose();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
 
   void _setupAnimations() {
     _slideController = AnimationController(
-      duration: const Duration(milliseconds: 400),
-      vsync: this);
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
 
     _slideAnimation = Tween<Offset>(
       begin: const Offset(1.0, 0.0),
-      end: Offset.zero).animate(CurvedAnimation(
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
       parent: _slideController,
-      curve: Curves.easeOutCubic));
+      curve: Curves.easeOutCubic,
+    ));
+
+    _slideController.forward();
   }
 
   Future<void> _loadSongs() async {
     try {
       setState(() {
         _isLoading = true;
-        _error = '';
       });
 
-      final songs = <SongModel>[];
-      for (final songId in widget.setlist.songIds) {
-        final song = await SongsFirebaseService.getSong(songId);
+      List<Song> songs = [];
+      for (String songId in widget.setlist.songIds) {
+        final song = await _songsService.getById(songId);
         if (song != null) {
           songs.add(song);
         }
       }
 
-      setState(() {
-        _songs = songs;
-        _isLoading = false;
-      });
-      
-      _slideController.forward();
+      if (mounted) {
+        setState(() {
+          _songs = songs;
+          _isLoading = false;
+          _updateBpmFromSong();
+        });
+      }
     } catch (e) {
-      setState(() {
-        _error = 'Erreur lors du chargement: $e';
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors du chargement: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error));
+      }
     }
   }
 
@@ -143,7 +152,6 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
   String _transposeChord(String chord) {
     if (_transposeSteps == 0) return chord;
     
-    // Simple chord transposition logic
     for (int i = 0; i < _notes.length; i++) {
       if (chord.startsWith(_notes[i])) {
         int newIndex = (i + _transposeSteps) % _notes.length;
@@ -154,18 +162,9 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     return chord;
   }
 
-  String _getTransposedKey(String originalKey) {
+  String _getTransposedKey(String? originalKey) {
+    if (originalKey == null || originalKey.isEmpty) return '';
     return _transposeChord(originalKey);
-  }
-
-  void _openProjection() {
-    if (_songs.isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SongProjectionPage(
-            song: _songs[_currentIndex])));
-    }
   }
 
   @override
@@ -175,30 +174,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
         backgroundColor: Colors.black,
         body: Center(
           child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.primary)));
-    }
-
-    if (_error.isNotEmpty) {
-      return Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline,
-                size: 64,
-                color: Theme.of(context).colorScheme.error),
-              const SizedBox(height: 16),
-              Text(_error,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.surface,
-                  fontSize: 16),
-                textAlign: TextAlign.center),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _loadSongs,
-                child: const Text('Réessayer')),
-            ])));
+            color: Theme.of(context).colorScheme.surface)));
     }
 
     if (_songs.isEmpty) {
@@ -227,157 +203,148 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Gradient background
+          // Arrière-plan simplifié pour maximiser la lisibilité
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black,
-                  Colors.grey[900]!,
+                  Colors.grey.shade900,
                   Colors.black,
                 ]))),
           
-          // Main content
-          Column(
+          // Interface principale optimisée pour les musiciens
+          SafeArea(
+            child: Column(
+              children: [
+                _buildCompactMusicianHeader(_songs[_currentIndex]),
+                Expanded(child: _buildMaximizedSongContent()),
+                _buildMinimalMusicianControls(),
+              ])),
+        ]));
+  }
+
+  // Header compact spécialement conçu pour les musiciens
+  Widget _buildCompactMusicianHeader(Song song) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.amber.withOpacity(0.6), // Couleur musicale
+            Colors.orange.withOpacity(0.4),
+          ]),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16)),
+      ),
+      child: Row(
+        children: [
+          // Bouton retour compact
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8)),
+            child: IconButton(
+              icon: Icon(Icons.close, 
+                color: Theme.of(context).colorScheme.surface, size: 20),
+              onPressed: () => Navigator.pop(context),
+              padding: const EdgeInsets.all(8))),
+          
+          const SizedBox(width: 12),
+          
+          // Info compacte avec indication musicien
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        song.title,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.surface,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis)),
+                    Text(
+                      '🎸',
+                      style: TextStyle(fontSize: 16)),
+                  ]),
+                Text(
+                  '${_currentIndex + 1}/${_songs.length} • ${widget.setlist.name}',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+                    fontSize: 11),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+              ])),
+          
+          // Contrôles essentiels compacts
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              _buildTopBar(),
-              Expanded(child: _buildSongContent()),
-              _buildMusicianControls(),
+              // Tonalité actuelle
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(6)),
+                child: Text(
+                  _transposeSteps == 0 
+                      ? (song.tonality ?? 'C')
+                      : _getTransposedKey(song.tonality ?? 'C'),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold))),
+              const SizedBox(width: 6),
+              // Projection
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6)),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.screen_share,
+                    color: Theme.of(context).colorScheme.surface,
+                    size: 18),
+                  onPressed: _openProjection,
+                  padding: const EdgeInsets.all(6))),
             ]),
         ]));
   }
 
-  Widget _buildTopBar() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.8),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16))),
-      child: SafeArea(
-        bottom: false,
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.close, 
-                color: Theme.of(context).colorScheme.surface),
-              tooltip: 'Fermer'),
-            
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    widget.setlist.name,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.surface,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis),
-                  Text(
-                    'Mode Musicien 🎸',
-                    style: TextStyle(
-                      color: Colors.amber,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500)),
-                ])),
-            
-            // Projection button
-            IconButton(
-              onPressed: _openProjection,
-              icon: Icon(Icons.screen_share, 
-                color: Theme.of(context).colorScheme.surface),
-              tooltip: 'Projection'),
-          ])));
-  }
-
-  Widget _buildSongContent() {
+  // Contenu maximisé pour les paroles et accords
+  Widget _buildMaximizedSongContent() {
     if (_songs.isEmpty) return const SizedBox();
     
     final currentSong = _songs[_currentIndex];
     
     return Container(
-      margin: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          // Song header
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                  Theme.of(context).colorScheme.primaryContainer.withOpacity(0.6),
-                ]),
-              borderRadius: BorderRadius.circular(16)),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            currentSong.title,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
-                          if (currentSong.authors.isNotEmpty)
-                            Text(
-                              currentSong.authors,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
-                                fontSize: 14)),
-                        ])),
-                    
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          '${_currentIndex + 1}/${_songs.length}',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.surface,
-                            fontWeight: FontWeight.w600)),
-                        const SizedBox(height: 4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8)),
-                          child: Text(
-                            _transposeSteps == 0 
-                                ? currentSong.originalKey
-                                : _getTransposedKey(currentSong.originalKey),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold))),
-                      ]),
-                  ]),
-              ])),
-          
-          const SizedBox(height: 16),
-          
-          // Song content based on view mode
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
-                borderRadius: BorderRadius.circular(16)),
-              child: SlideTransition(
-                position: _slideAnimation,
-                child: _buildContentForViewMode(currentSong)))),
-        ]));
+      margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2)),
+        ]),
+      child: SlideTransition(
+        position: _slideAnimation,
+        child: _buildContentForViewMode(currentSong)));
   }
 
-  Widget _buildContentForViewMode(SongModel song) {
+  Widget _buildContentForViewMode(Song song) {
     switch (_viewMode) {
       case 'chords_only':
         return _buildChordsOnlyView(song);
@@ -388,24 +355,24 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     }
   }
 
-  Widget _buildFullLyricsView(SongModel song) {
+  Widget _buildFullLyricsView(Song song) {
     return SingleChildScrollView(
+      padding: EdgeInsets.zero,
       child: Text(
         song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
         style: TextStyle(
-          fontSize: 16,
-          height: 1.6,
+          fontSize: 18, // Taille optimisée pour les musiciens
+          height: 1.7, // Espacement pour faciliter la lecture
           color: Theme.of(context).colorScheme.onSurface,
-          fontWeight: FontWeight.w400)));
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.2)));
   }
 
-  Widget _buildChordsOnlyView(SongModel song) {
-    // Extraction simplifiée des accords (peut être améliorée)
+  Widget _buildChordsOnlyView(Song song) {
     final chords = <String>[];
     final lines = song.lyrics.split('\n');
     
     for (final line in lines) {
-      // Recherche des accords entre crochets [Am], [C], etc.
       final matches = RegExp(r'\[([^\]]+)\]').allMatches(line);
       for (final match in matches) {
         final chord = match.group(1);
@@ -438,16 +405,17 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
               spacing: 12,
               runSpacing: 12,
               children: chords.map((chord) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  color: Colors.amber.withOpacity(0.2),
+                  border: Border.all(color: Colors.amber, width: 2),
                   borderRadius: BorderRadius.circular(8)),
                 child: Text(
                   _transposeChord(chord),
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer)))).toList()),
+                    color: Theme.of(context).colorScheme.onSurface)))).toList()),
           
           const SizedBox(height: 24),
           
@@ -462,35 +430,20 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           Text(
             song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               height: 1.6,
               color: Theme.of(context).colorScheme.onSurface)),
         ]));
   }
 
-  Widget _buildStructureOnlyView(SongModel song) {
-    // Analyse simplifiée de la structure (peut être améliorée)
-    final lines = song.lyrics.split('\n');
+  Widget _buildStructureOnlyView(Song song) {
     final structure = <String>[];
-    String currentSection = '';
+    final lines = song.lyrics.split('\n');
     
     for (final line in lines) {
-      final trimmedLine = line.trim();
-      if (trimmedLine.isEmpty) continue;
-      
-      // Détection des sections (patterns courants)
-      if (trimmedLine.toLowerCase().contains('verse') ||
-          trimmedLine.toLowerCase().contains('couplet')) {
-        currentSection = 'Couplet';
-        if (!structure.contains(currentSection)) structure.add(currentSection);
-      } else if (trimmedLine.toLowerCase().contains('chorus') ||
-                 trimmedLine.toLowerCase().contains('refrain')) {
-        currentSection = 'Refrain';
-        if (!structure.contains(currentSection)) structure.add(currentSection);
-      } else if (trimmedLine.toLowerCase().contains('bridge') ||
-                 trimmedLine.toLowerCase().contains('pont')) {
-        currentSection = 'Pont';
-        if (!structure.contains(currentSection)) structure.add(currentSection);
+      final trimmed = line.trim();
+      if (trimmed.endsWith(':') && trimmed.length < 30) {
+        structure.add(trimmed);
       }
     }
     
@@ -517,14 +470,14 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondaryContainer,
+                color: Colors.amber.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8)),
               child: Text(
                 section,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer)))),
+                  color: Theme.of(context).colorScheme.onSurface)))),
           
           const SizedBox(height: 24),
           
@@ -539,186 +492,228 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           Text(
             song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               height: 1.6,
               color: Theme.of(context).colorScheme.onSurface)),
         ]));
   }
 
-  Widget _buildMusicianControls() {
+  // Contrôles musicaux compacts et professionnels
+  Widget _buildMinimalMusicianControls() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.8),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16))),
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // View mode toggle
-            Row(
-              children: [
-                Expanded(
-                  child: _buildToggleButton(
-                    'Complet',
-                    _viewMode == 'full',
-                    () => setState(() => _viewMode = 'full'))),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _buildToggleButton(
-                    'Accords',
-                    _viewMode == 'chords_only',
-                    () => setState(() => _viewMode = 'chords_only'))),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _buildToggleButton(
-                    'Structure',
-                    _viewMode == 'structure_only',
-                    () => setState(() => _viewMode = 'structure_only'))),
-              ]),
-            
-            const SizedBox(height: 12),
-            
-            // Transpose and BPM controls
-            Row(
-              children: [
-                // Transpose
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () => setState(() => _transposeSteps--),
-                          icon: Icon(Icons.remove, 
-                            color: Theme.of(context).colorScheme.surface),
-                          constraints: const BoxConstraints(),
-                          padding: EdgeInsets.zero),
-                        Column(
-                          children: [
-                            Text(
-                              'Transpose',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.surface, 
-                                fontSize: 10)),
-                            Text(
-                              _transposeSteps == 0 ? 'Original' : '${_transposeSteps > 0 ? '+' : ''}$_transposeSteps',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.surface, 
-                                fontWeight: FontWeight.bold)),
-                          ]),
-                        IconButton(
-                          onPressed: () => setState(() => _transposeSteps++),
-                          icon: Icon(Icons.add, 
-                            color: Theme.of(context).colorScheme.surface),
-                          constraints: const BoxConstraints(),
-                          padding: EdgeInsets.zero),
-                      ]))),
-                
-                const SizedBox(width: 12),
-                
-                // BPM
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () => setState(() => _bpm = (_bpm - 5).clamp(60, 200)),
-                          icon: Icon(Icons.remove, 
-                            color: Theme.of(context).colorScheme.surface),
-                          constraints: const BoxConstraints(),
-                          padding: EdgeInsets.zero),
-                        Column(
-                          children: [
-                            Text(
-                              'BPM',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.surface, 
-                                fontSize: 10)),
-                            Text(
-                              '$_bpm',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.surface, 
-                                fontWeight: FontWeight.bold)),
-                          ]),
-                        IconButton(
-                          onPressed: () => setState(() => _bpm = (_bpm + 5).clamp(60, 200)),
-                          icon: Icon(Icons.add, 
-                            color: Theme.of(context).colorScheme.surface),
-                          constraints: const BoxConstraints(),
-                          padding: EdgeInsets.zero),
-                      ]))),
-              ]),
-            
-            const SizedBox(height: 16),
-            
-            // Navigation controls
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildNavButton(
-                  icon: Icons.skip_previous,
-                  onPressed: _currentIndex > 0 ? _previousSong : null),
-                
-                _buildNavButton(
-                  icon: Icons.list,
-                  onPressed: _showSongList),
-                
-                _buildNavButton(
-                  icon: Icons.skip_next,
-                  onPressed: _currentIndex < _songs.length - 1 ? _nextSong : null),
-              ]),
-          ])));
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.transparent,
+            Colors.black.withOpacity(0.7),
+          ])),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Mode d'affichage compact
+          Row(
+            children: [
+              Expanded(
+                child: _buildCompactToggleButton(
+                  'Complet',
+                  _viewMode == 'full',
+                  () => setState(() => _viewMode = 'full'))),
+              const SizedBox(width: 6),
+              Expanded(
+                child: _buildCompactToggleButton(
+                  'Accords',
+                  _viewMode == 'chords_only',
+                  () => setState(() => _viewMode = 'chords_only'))),
+              const SizedBox(width: 6),
+              Expanded(
+                child: _buildCompactToggleButton(
+                  'Structure',
+                  _viewMode == 'structure_only',
+                  () => setState(() => _viewMode = 'structure_only'))),
+            ]),
+          
+          const SizedBox(height: 8),
+          
+          // Contrôles musicaux en ligne
+          Row(
+            children: [
+              // Navigation
+              _buildMinimalNavButton(
+                icon: Icons.skip_previous_rounded,
+                onPressed: _currentIndex > 0 ? _previousSong : null),
+              
+              const SizedBox(width: 8),
+              
+              // Transposition
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () => setState(() => _transposeSteps--),
+                        child: Icon(Icons.remove, 
+                          color: Theme.of(context).colorScheme.surface, size: 16)),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Transpose',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface, 
+                              fontSize: 9)),
+                          Text(
+                            _transposeSteps == 0 ? 'Original' : '${_transposeSteps > 0 ? '+' : ''}$_transposeSteps',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface, 
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11)),
+                        ]),
+                      GestureDetector(
+                        onTap: () => setState(() => _transposeSteps++),
+                        child: Icon(Icons.add, 
+                          color: Theme.of(context).colorScheme.surface, size: 16)),
+                    ]))),
+              
+              const SizedBox(width: 8),
+              
+              // BPM
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () => setState(() => _bpm = (_bpm - 5).clamp(60, 200)),
+                        child: Icon(Icons.remove, 
+                          color: Theme.of(context).colorScheme.surface, size: 16)),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'BPM',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface, 
+                              fontSize: 9)),
+                          Text(
+                            '$_bpm',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface, 
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11)),
+                        ]),
+                      GestureDetector(
+                        onTap: () => setState(() => _bpm = (_bpm + 5).clamp(60, 200)),
+                        child: Icon(Icons.add, 
+                          color: Theme.of(context).colorScheme.surface, size: 16)),
+                    ]))),
+              
+              const SizedBox(width: 8),
+              
+              // Liste
+              _buildMinimalNavButton(
+                icon: Icons.list_rounded,
+                onPressed: _showSongList),
+              
+              const SizedBox(width: 8),
+              
+              // Navigation suivante
+              _buildMinimalNavButton(
+                icon: Icons.skip_next_rounded,
+                onPressed: _currentIndex < _songs.length - 1 ? _nextSong : null),
+            ]),
+        ]));
   }
 
-  Widget _buildToggleButton(String label, bool isSelected, VoidCallback onTap) {
+  Widget _buildCompactToggleButton(String label, bool isActive, VoidCallback onPressed) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected 
-              ? Theme.of(context).colorScheme.primary
+          color: isActive 
+              ? Colors.amber.withOpacity(0.3)
               : Theme.of(context).colorScheme.surface.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8)),
+          borderRadius: BorderRadius.circular(6)),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: isSelected 
-                ? Theme.of(context).colorScheme.onPrimary
+            color: isActive 
+                ? Colors.amber
                 : Theme.of(context).colorScheme.surface,
-            fontWeight: FontWeight.w600,
-            fontSize: 12))));
+            fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+            fontSize: 11))));
   }
 
-  Widget _buildNavButton({
+  Widget _buildMinimalNavButton({
     required IconData icon,
     required VoidCallback? onPressed,
   }) {
     return Container(
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
         color: onPressed != null 
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.surface.withOpacity(0.1),
+            ? Colors.amber.withOpacity(0.2)
+            : Theme.of(context).colorScheme.surface.withOpacity(0.05),
         shape: BoxShape.circle),
       child: IconButton(
         onPressed: onPressed,
         icon: Icon(
           icon,
           color: onPressed != null 
-              ? Theme.of(context).colorScheme.onPrimary
-              : Theme.of(context).colorScheme.surface.withOpacity(0.4))));
+              ? Colors.amber
+              : Theme.of(context).colorScheme.surface.withOpacity(0.4),
+          size: 20),
+        padding: EdgeInsets.zero));
+  }
+
+  void _openProjection() {
+    if (_songs.isNotEmpty) {
+      final currentSong = _songs[_currentIndex];
+      // Convertir Song en SongModel pour la projection
+      final songModel = SongModel(
+        id: currentSong.id ?? '',
+        title: currentSong.title,
+        authors: currentSong.author ?? '',
+        lyrics: currentSong.lyrics,
+        originalKey: currentSong.tonality ?? '',
+        currentKey: _transposeSteps == 0 ? currentSong.tonality : _getTransposedKey(currentSong.tonality),
+        style: '',
+        tags: currentSong.tags,
+        bibleReferences: [],
+        tempo: _bpm,
+        audioUrl: currentSong.audioUrl,
+        attachmentUrls: [],
+        status: 'active',
+        visibility: currentSong.isPublic ? 'public' : 'private',
+        privateNotes: null,
+        usageCount: currentSong.views,
+        lastUsedAt: null,
+        createdAt: currentSong.createdAt,
+        updatedAt: currentSong.updatedAt,
+        createdBy: currentSong.createdBy,
+        modifiedBy: null,
+        metadata: currentSong.metadata,
+      );
+      
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SongProjectionPage(song: songModel)));
+    }
   }
 
   void _showSongList() {
@@ -741,9 +736,14 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
             
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(
-                'Liste des chants',
-                style: Theme.of(context).textTheme.titleLarge)),
+              child: Row(
+                children: [
+                  Icon(Icons.music_note, color: Colors.amber),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Mode Musicien - Liste des chants',
+                    style: Theme.of(context).textTheme.titleLarge),
+                ])),
             
             Expanded(
               child: ListView.builder(
@@ -755,23 +755,22 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: isCurrentSong 
-                          ? Theme.of(context).colorScheme.primary
+                          ? Colors.amber
                           : Theme.of(context).colorScheme.surfaceContainerHighest,
                       child: Text(
                         '${index + 1}',
                         style: TextStyle(
                           color: isCurrentSong 
-                              ? Theme.of(context).colorScheme.onPrimary
+                              ? Colors.black
                               : Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold))),
                     title: Text(
                       song.title,
                       style: TextStyle(
                         fontWeight: isCurrentSong ? FontWeight.bold : FontWeight.normal)),
-                    subtitle: Text('${song.authors} • ${song.originalKey}'),
+                    subtitle: Text('${song.author ?? 'Auteur inconnu'} • ${song.tonality ?? 'C'}'),
                     trailing: isCurrentSong 
-                        ? Icon(Icons.music_note, 
-                            color: Theme.of(context).colorScheme.primary)
+                        ? Icon(Icons.music_note, color: Colors.amber)
                         : null,
                     onTap: () {
                       Navigator.pop(context);

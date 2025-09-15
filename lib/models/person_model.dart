@@ -16,6 +16,165 @@ DateTime? _parseDateTime(dynamic value) {
   return null;
 }
 
+/// Classe pour représenter un contact d'urgence
+class EmergencyContact {
+  final String id;
+  final String name;
+  final String phone;
+  final String? email;
+  final String relationship;
+  final bool isPrimary;
+  final String? notes;
+
+  EmergencyContact({
+    required this.id,
+    required this.name,
+    required this.phone,
+    this.email,
+    required this.relationship,
+    this.isPrimary = false,
+    this.notes,
+  });
+
+  factory EmergencyContact.fromMap(Map<String, dynamic> map) {
+    return EmergencyContact(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      phone: map['phone'] ?? '',
+      email: map['email'],
+      relationship: map['relationship'] ?? '',
+      isPrimary: map['isPrimary'] ?? false,
+      notes: map['notes'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'phone': phone,
+      'email': email,
+      'relationship': relationship,
+      'isPrimary': isPrimary,
+      'notes': notes,
+    };
+  }
+
+  EmergencyContact copyWith({
+    String? id,
+    String? name,
+    String? phone,
+    String? email,
+    String? relationship,
+    bool? isPrimary,
+    String? notes,
+  }) {
+    return EmergencyContact(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      relationship: relationship ?? this.relationship,
+      isPrimary: isPrimary ?? this.isPrimary,
+      notes: notes ?? this.notes,
+    );
+  }
+}
+
+/// Classe pour représenter une note de famille
+class FamilyNote {
+  final String id;
+  final String content;
+  final String authorId;
+  final String authorName;
+  final DateTime createdAt;
+  final String? category;
+  final bool isPrivate;
+
+  FamilyNote({
+    required this.id,
+    required this.content,
+    required this.authorId,
+    required this.authorName,
+    required this.createdAt,
+    this.category,
+    this.isPrivate = false,
+  });
+
+  factory FamilyNote.fromMap(Map<String, dynamic> map) {
+    return FamilyNote(
+      id: map['id'] ?? '',
+      content: map['content'] ?? '',
+      authorId: map['authorId'] ?? '',
+      authorName: map['authorName'] ?? '',
+      createdAt: _parseDateTime(map['createdAt']) ?? DateTime.now(),
+      category: map['category'],
+      isPrivate: map['isPrivate'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'content': content,
+      'authorId': authorId,
+      'authorName': authorName,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'category': category,
+      'isPrivate': isPrivate,
+    };
+  }
+}
+
+/// Classe pour représenter un événement de famille
+class FamilyEvent {
+  final String id;
+  final String title;
+  final String? description;
+  final DateTime eventDate;
+  final String type; // 'birthday', 'anniversary', 'milestone', 'custom'
+  final bool isRecurring;
+  final String? recurringPattern;
+  final List<String> attendees;
+
+  FamilyEvent({
+    required this.id,
+    required this.title,
+    this.description,
+    required this.eventDate,
+    required this.type,
+    this.isRecurring = false,
+    this.recurringPattern,
+    this.attendees = const [],
+  });
+
+  factory FamilyEvent.fromMap(Map<String, dynamic> map) {
+    return FamilyEvent(
+      id: map['id'] ?? '',
+      title: map['title'] ?? '',
+      description: map['description'],
+      eventDate: _parseDateTime(map['eventDate']) ?? DateTime.now(),
+      type: map['type'] ?? 'custom',
+      isRecurring: map['isRecurring'] ?? false,
+      recurringPattern: map['recurringPattern'],
+      attendees: List<String>.from(map['attendees'] ?? []),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'eventDate': Timestamp.fromDate(eventDate),
+      'type': type,
+      'isRecurring': isRecurring,
+      'recurringPattern': recurringPattern,
+      'attendees': attendees,
+    };
+  }
+}
+
 class PersonModel {
   final String id;
   final String? uid; // Firebase Auth UID - null pour les personnes créées manuellement
@@ -34,6 +193,7 @@ class PersonModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? familyId;
+  final FamilyRole familyRole;
   final List<String> roles;
   final List<String> tags;
   final Map<String, dynamic> customFields;
@@ -57,6 +217,7 @@ class PersonModel {
     required this.createdAt,
     required this.updatedAt,
     this.familyId,
+    this.familyRole = FamilyRole.other,
     this.roles = const [],
     this.tags = const [],
     this.customFields = const {},
@@ -139,6 +300,10 @@ class PersonModel {
       createdAt: _parseDateTime(data['createdAt']) ?? DateTime.now(),
       updatedAt: _parseDateTime(data['updatedAt']) ?? DateTime.now(),
       familyId: data['familyId'],
+      familyRole: FamilyRole.values.firstWhere(
+        (r) => r.toString().split('.').last == (data['familyRole'] ?? 'other'),
+        orElse: () => FamilyRole.other,
+      ),
       roles: List<String>.from(data['roles'] ?? []),
       tags: List<String>.from(data['tags'] ?? []),
       customFields: Map<String, dynamic>.from(data['customFields'] ?? {}),
@@ -164,6 +329,7 @@ class PersonModel {
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
       'familyId': familyId,
+      'familyRole': familyRole.toString().split('.').last,
       'roles': roles,
       'tags': tags,
       'customFields': customFields,
@@ -172,6 +338,7 @@ class PersonModel {
   }
 
   PersonModel copyWith({
+    String? id,
     String? uid,
     String? firstName,
     String? lastName,
@@ -185,15 +352,17 @@ class PersonModel {
     String? profileImageUrl,
     String? privateNotes,
     bool? isActive,
+    DateTime? createdAt,
     DateTime? updatedAt,
     String? familyId,
+    FamilyRole? familyRole,
     List<String>? roles,
     List<String>? tags,
     Map<String, dynamic>? customFields,
     String? lastModifiedBy,
   }) {
     return PersonModel(
-      id: id,
+      id: id ?? this.id,
       uid: uid ?? this.uid,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
@@ -207,9 +376,10 @@ class PersonModel {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       privateNotes: privateNotes ?? this.privateNotes,
       isActive: isActive ?? this.isActive,
-      createdAt: createdAt,
+      createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       familyId: familyId ?? this.familyId,
+      familyRole: familyRole ?? this.familyRole,
       roles: roles ?? this.roles,
       tags: tags ?? this.tags,
       customFields: customFields ?? this.customFields,
@@ -223,10 +393,61 @@ class FamilyModel {
   final String name;
   final String? headOfFamilyId;
   final List<String> memberIds;
+  
+  // Adresse principale
   final String? address;
+  final String? city;
+  final String? state;
+  final String? zipCode;
+  final String? country;
+  
+  // Contacts
   final String? homePhone;
+  final String? mobilePhone;
+  final String? email;
+  final String? website;
+  
+  // Contacts d'urgence multiples
+  final List<EmergencyContact> emergencyContacts;
+  
+  // Statut et métadonnées
+  final FamilyStatus status;
+  final List<String> tags;
+  final Map<String, dynamic> customFields;
+  final String? photoUrl;
+  final String? notes;
+  final bool isActive;
+  
+  // Dates et traçabilité
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String? createdBy;
+  final String? lastModifiedBy;
+  
+  // Informations étendues
+  final String? preferredLanguage;
+  final String? timezone;
+  final Map<String, String> socialMedia;
+  final String? anniversary;
+  final String? churchMembershipDate;
+  final String? familyType; // 'nuclear', 'extended', 'single_parent', 'blended'
+  final int? numberOfChildren;
+  final List<String> allergies;
+  final List<String> interests;
+  final String? primaryIncome;
+  final String? secondaryIncome;
+  
+  // Préférences de communication
+  final bool allowSMS;
+  final bool allowEmail;
+  final bool allowPhone;
+  final bool allowPushNotifications;
+  final List<String> communicationPreferences;
+  
+  // Historique et notes
+  final List<FamilyNote> familyNotes;
+  final List<FamilyEvent> familyEvents;
+  final Map<String, dynamic> membershipHistory;
 
   FamilyModel({
     required this.id,
@@ -234,36 +455,466 @@ class FamilyModel {
     this.headOfFamilyId,
     this.memberIds = const [],
     this.address,
+    this.city,
+    this.state,
+    this.zipCode,
+    this.country,
     this.homePhone,
+    this.mobilePhone,
+    this.email,
+    this.website,
+    this.emergencyContacts = const [],
+    this.status = FamilyStatus.active,
+    this.tags = const [],
+    this.customFields = const {},
+    this.photoUrl,
+    this.notes,
+    this.isActive = true,
     required this.createdAt,
     required this.updatedAt,
+    this.createdBy,
+    this.lastModifiedBy,
+    this.preferredLanguage,
+    this.timezone,
+    this.socialMedia = const {},
+    this.anniversary,
+    this.churchMembershipDate,
+    this.familyType,
+    this.numberOfChildren,
+    this.allergies = const [],
+    this.interests = const [],
+    this.primaryIncome,
+    this.secondaryIncome,
+    this.allowSMS = true,
+    this.allowEmail = true,
+    this.allowPhone = true,
+    this.allowPushNotifications = true,
+    this.communicationPreferences = const [],
+    this.familyNotes = const [],
+    this.familyEvents = const [],
+    this.membershipHistory = const {},
   });
 
+  /// Retourne l'adresse complète formatée
+  String get fullAddress {
+    final addressParts = [
+      address,
+      city,
+      state,
+      zipCode,
+      country,
+    ].where((part) => part != null && part.isNotEmpty);
+    return addressParts.join(', ');
+  }
+
+  /// Retourne le contact d'urgence principal
+  EmergencyContact? get primaryEmergencyContact {
+    try {
+      return emergencyContacts.firstWhere((contact) => contact.isPrimary);
+    } catch (e) {
+      return emergencyContacts.isNotEmpty ? emergencyContacts.first : null;
+    }
+  }
+
+  /// Getters de compatibilité pour l'ancien format
+  String? get emergencyContact {
+    final primary = primaryEmergencyContact;
+    return primary?.name;
+  }
+
+  String? get emergencyPhone {
+    final primary = primaryEmergencyContact;
+    return primary?.phone;
+  }
+
+  /// Retourne tous les contacts d'urgence actifs
+  List<EmergencyContact> get activeEmergencyContacts {
+    return emergencyContacts.where((contact) => contact.phone.isNotEmpty).toList();
+  }
+
+  /// Filtre les membres par rôle familial
+  List<PersonModel> getParents(List<PersonModel> allMembers) {
+    return allMembers.where((member) {
+      return member.familyRole == FamilyRole.parent || 
+             member.familyRole == FamilyRole.head ||
+             member.id == headOfFamilyId;
+    }).toList();
+  }
+
+  List<PersonModel> getChildren(List<PersonModel> allMembers) {
+    return allMembers.where((member) {
+      return member.familyRole == FamilyRole.child;
+    }).toList();
+  }
+
+  List<PersonModel> getOtherMembers(List<PersonModel> allMembers) {
+    return allMembers.where((member) {
+      return member.familyRole == FamilyRole.other;
+    }).toList();
+  }
+
+  /// Retourne le chef de famille
+  PersonModel? getHeadOfFamily(List<PersonModel> allMembers) {
+    if (headOfFamilyId == null) return null;
+    try {
+      return allMembers.firstWhere((member) => member.id == headOfFamilyId);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Méthodes de validation
+  bool get isValid {
+    return name.isNotEmpty && memberIds.isNotEmpty;
+  }
+
+  bool get hasValidAddress {
+    return address != null && address!.isNotEmpty && 
+           city != null && city!.isNotEmpty;
+  }
+
+  bool get hasEmergencyContact {
+    return emergencyContacts.isNotEmpty;
+  }
+
+  /// Statistiques de la famille
+  int get memberCount => memberIds.length;
+  
+  int get childrenCount => numberOfChildren ?? 0;
+  
+  int get adultsCount => memberCount - childrenCount;
+
+  /// Méthodes utilitaires pour les communications
+  bool get canReceiveSMS => allowSMS && (homePhone != null || mobilePhone != null);
+  
+  bool get canReceiveEmail => allowEmail && email != null;
+  
+  bool get canReceivePhoneCalls => allowPhone && (homePhone != null || mobilePhone != null);
+
+  /// Méthodes pour les événements
+  List<FamilyEvent> getUpcomingEvents({int daysAhead = 30}) {
+    final now = DateTime.now();
+    final futureDate = now.add(Duration(days: daysAhead));
+    
+    return familyEvents.where((event) {
+      return event.eventDate.isAfter(now) && event.eventDate.isBefore(futureDate);
+    }).toList()..sort((a, b) => a.eventDate.compareTo(b.eventDate));
+  }
+
+  List<FamilyEvent> getBirthdaysThisMonth() {
+    final now = DateTime.now();
+    return familyEvents.where((event) {
+      return event.type == 'birthday' && 
+             event.eventDate.month == now.month;
+    }).toList();
+  }
+
+  /// Méthodes pour les notes
+  List<FamilyNote> getRecentNotes({int days = 30}) {
+    final cutoffDate = DateTime.now().subtract(Duration(days: days));
+    return familyNotes.where((note) {
+      return note.createdAt.isAfter(cutoffDate);
+    }).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  }
+
+  List<FamilyNote> getNotesByCategory(String category) {
+    return familyNotes.where((note) {
+      return note.category == category;
+    }).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  }
+
+  /// Méthodes pour les préférences
+  bool hasPreference(String preference) {
+    return communicationPreferences.contains(preference);
+  }
+
+  String get preferredContactMethod {
+    if (communicationPreferences.isEmpty) return 'email';
+    return communicationPreferences.first;
+  }
+
+  /// Méthodes de comparaison et recherche
+  bool matchesSearch(String query) {
+    if (query.isEmpty) return true;
+    
+    final searchQuery = query.toLowerCase();
+    return name.toLowerCase().contains(searchQuery) ||
+           (address?.toLowerCase().contains(searchQuery) ?? false) ||
+           (city?.toLowerCase().contains(searchQuery) ?? false) ||
+           tags.any((tag) => tag.toLowerCase().contains(searchQuery)) ||
+           (homePhone?.contains(searchQuery) ?? false) ||
+           (email?.toLowerCase().contains(searchQuery) ?? false);
+  }
+
+  bool hasTag(String tag) {
+    return tags.contains(tag);
+  }
+
+  bool hasAnyTag(List<String> tagList) {
+    return tagList.any((tag) => tags.contains(tag));
+  }
+
+  /// Méthodes pour l'historique
+  Map<String, dynamic> generateSnapshot() {
+    return {
+      'timestamp': DateTime.now().toIso8601String(),
+      'name': name,
+      'status': status.toString(),
+      'memberCount': memberCount,
+      'address': fullAddress,
+      'headOfFamily': headOfFamilyId,
+    };
+  }
+
+  /// Méthodes de formatage
+  String get statusDisplayName {
+    switch (status) {
+      case FamilyStatus.active:
+        return 'Actif';
+      case FamilyStatus.inactive:
+        return 'Inactif';
+      case FamilyStatus.visitor:
+        return 'Visiteur';
+      case FamilyStatus.member:
+        return 'Membre';
+      case FamilyStatus.inactive_member:
+        return 'Ancien membre';
+      case FamilyStatus.attendee:
+        return 'Participant';
+    }
+  }
+
+  String get familyTypeDisplayName {
+    switch (familyType) {
+      case 'nuclear':
+        return 'Famille nucléaire';
+      case 'extended':
+        return 'Famille élargie';
+      case 'single_parent':
+        return 'Famille monoparentale';
+      case 'blended':
+        return 'Famille recomposée';
+      default:
+        return familyType ?? 'Non spécifié';
+    }
+  }
+
+  /// Création depuis Firestore
   factory FamilyModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+    
     return FamilyModel(
       id: doc.id,
       name: data['name'] ?? '',
       headOfFamilyId: data['headOfFamilyId'],
       memberIds: List<String>.from(data['memberIds'] ?? []),
       address: data['address'],
+      city: data['city'],
+      state: data['state'],
+      zipCode: data['zipCode'],
+      country: data['country'],
       homePhone: data['homePhone'],
+      mobilePhone: data['mobilePhone'],
+      email: data['email'],
+      website: data['website'],
+      emergencyContacts: (data['emergencyContacts'] as List<dynamic>?)
+          ?.map((contact) => EmergencyContact.fromMap(contact as Map<String, dynamic>))
+          .toList() ?? [],
+      status: FamilyStatus.values.firstWhere(
+        (s) => s.toString().split('.').last == (data['status'] ?? 'active'),
+        orElse: () => FamilyStatus.active,
+      ),
+      tags: List<String>.from(data['tags'] ?? []),
+      customFields: Map<String, dynamic>.from(data['customFields'] ?? {}),
+      photoUrl: data['photoUrl'],
+      notes: data['notes'],
+      isActive: data['isActive'] ?? true,
       createdAt: _parseDateTime(data['createdAt']) ?? DateTime.now(),
       updatedAt: _parseDateTime(data['updatedAt']) ?? DateTime.now(),
+      createdBy: data['createdBy'],
+      lastModifiedBy: data['lastModifiedBy'],
+      preferredLanguage: data['preferredLanguage'],
+      timezone: data['timezone'],
+      socialMedia: Map<String, String>.from(data['socialMedia'] ?? {}),
+      anniversary: data['anniversary'],
+      churchMembershipDate: data['churchMembershipDate'],
+      familyType: data['familyType'],
+      numberOfChildren: data['numberOfChildren'],
+      allergies: List<String>.from(data['allergies'] ?? []),
+      interests: List<String>.from(data['interests'] ?? []),
+      primaryIncome: data['primaryIncome'],
+      secondaryIncome: data['secondaryIncome'],
+      allowSMS: data['allowSMS'] ?? true,
+      allowEmail: data['allowEmail'] ?? true,
+      allowPhone: data['allowPhone'] ?? true,
+      allowPushNotifications: data['allowPushNotifications'] ?? true,
+      communicationPreferences: List<String>.from(data['communicationPreferences'] ?? []),
+      familyNotes: (data['familyNotes'] as List<dynamic>?)
+          ?.map((note) => FamilyNote.fromMap(note as Map<String, dynamic>))
+          .toList() ?? [],
+      familyEvents: (data['familyEvents'] as List<dynamic>?)
+          ?.map((event) => FamilyEvent.fromMap(event as Map<String, dynamic>))
+          .toList() ?? [],
+      membershipHistory: Map<String, dynamic>.from(data['membershipHistory'] ?? {}),
     );
   }
 
+  /// Conversion vers Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,
       'headOfFamilyId': headOfFamilyId,
       'memberIds': memberIds,
       'address': address,
+      'city': city,
+      'state': state,
+      'zipCode': zipCode,
+      'country': country,
       'homePhone': homePhone,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'mobilePhone': mobilePhone,
+      'email': email,
+      'website': website,
+      'emergencyContacts': emergencyContacts.map((contact) => contact.toMap()).toList(),
+      'status': status.toString().split('.').last,
+      'tags': tags,
+      'customFields': customFields,
+      'photoUrl': photoUrl,
+      'notes': notes,
+      'isActive': isActive,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
+      'createdBy': createdBy,
+      'lastModifiedBy': lastModifiedBy,
+      'preferredLanguage': preferredLanguage,
+      'timezone': timezone,
+      'socialMedia': socialMedia,
+      'anniversary': anniversary,
+      'churchMembershipDate': churchMembershipDate,
+      'familyType': familyType,
+      'numberOfChildren': numberOfChildren,
+      'allergies': allergies,
+      'interests': interests,
+      'primaryIncome': primaryIncome,
+      'secondaryIncome': secondaryIncome,
+      'allowSMS': allowSMS,
+      'allowEmail': allowEmail,
+      'allowPhone': allowPhone,
+      'allowPushNotifications': allowPushNotifications,
+      'communicationPreferences': communicationPreferences,
+      'familyNotes': familyNotes.map((note) => note.toMap()).toList(),
+      'familyEvents': familyEvents.map((event) => event.toMap()).toList(),
+      'membershipHistory': membershipHistory,
     };
   }
+
+  /// Méthode copyWith complète
+  FamilyModel copyWith({
+    String? id,
+    String? name,
+    String? headOfFamilyId,
+    List<String>? memberIds,
+    String? address,
+    String? city,
+    String? state,
+    String? zipCode,
+    String? country,
+    String? homePhone,
+    String? mobilePhone,
+    String? email,
+    String? website,
+    List<EmergencyContact>? emergencyContacts,
+    FamilyStatus? status,
+    List<String>? tags,
+    Map<String, dynamic>? customFields,
+    String? photoUrl,
+    String? notes,
+    bool? isActive,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? createdBy,
+    String? lastModifiedBy,
+    String? preferredLanguage,
+    String? timezone,
+    Map<String, String>? socialMedia,
+    String? anniversary,
+    String? churchMembershipDate,
+    String? familyType,
+    int? numberOfChildren,
+    List<String>? allergies,
+    List<String>? interests,
+    String? primaryIncome,
+    String? secondaryIncome,
+    bool? allowSMS,
+    bool? allowEmail,
+    bool? allowPhone,
+    bool? allowPushNotifications,
+    List<String>? communicationPreferences,
+    List<FamilyNote>? familyNotes,
+    List<FamilyEvent>? familyEvents,
+    Map<String, dynamic>? membershipHistory,
+  }) {
+    return FamilyModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      headOfFamilyId: headOfFamilyId ?? this.headOfFamilyId,
+      memberIds: memberIds ?? this.memberIds,
+      address: address ?? this.address,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      zipCode: zipCode ?? this.zipCode,
+      country: country ?? this.country,
+      homePhone: homePhone ?? this.homePhone,
+      mobilePhone: mobilePhone ?? this.mobilePhone,
+      email: email ?? this.email,
+      website: website ?? this.website,
+      emergencyContacts: emergencyContacts ?? this.emergencyContacts,
+      status: status ?? this.status,
+      tags: tags ?? this.tags,
+      customFields: customFields ?? this.customFields,
+      photoUrl: photoUrl ?? this.photoUrl,
+      notes: notes ?? this.notes,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? DateTime.now(),
+      createdBy: createdBy ?? this.createdBy,
+      lastModifiedBy: lastModifiedBy ?? this.lastModifiedBy,
+      preferredLanguage: preferredLanguage ?? this.preferredLanguage,
+      timezone: timezone ?? this.timezone,
+      socialMedia: socialMedia ?? this.socialMedia,
+      anniversary: anniversary ?? this.anniversary,
+      churchMembershipDate: churchMembershipDate ?? this.churchMembershipDate,
+      familyType: familyType ?? this.familyType,
+      numberOfChildren: numberOfChildren ?? this.numberOfChildren,
+      allergies: allergies ?? this.allergies,
+      interests: interests ?? this.interests,
+      primaryIncome: primaryIncome ?? this.primaryIncome,
+      secondaryIncome: secondaryIncome ?? this.secondaryIncome,
+      allowSMS: allowSMS ?? this.allowSMS,
+      allowEmail: allowEmail ?? this.allowEmail,
+      allowPhone: allowPhone ?? this.allowPhone,
+      allowPushNotifications: allowPushNotifications ?? this.allowPushNotifications,
+      communicationPreferences: communicationPreferences ?? this.communicationPreferences,
+      familyNotes: familyNotes ?? this.familyNotes,
+      familyEvents: familyEvents ?? this.familyEvents,
+      membershipHistory: membershipHistory ?? this.membershipHistory,
+    );
+  }
+}
+
+enum FamilyStatus {
+  active,
+  inactive,
+  visitor,
+  member,
+  inactive_member,
+  attendee,
+}
+
+enum FamilyRole {
+  head,
+  parent,
+  child,
+  other,
 }
 
 

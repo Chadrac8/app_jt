@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/appointment_model.dart';
 import '../models/person_model.dart';
-import 'appointment_notification_service.dart';
-import 'notification_integration_service.dart';
 
 class AppointmentsFirebaseService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -38,27 +36,8 @@ class AppointmentsFirebaseService {
       // Create reminder for 1h before
       await _createReminder(docRef.id, appointment.dateTime.subtract(Duration(hours: 1)), 'reminder_1h');
 
-      // Notify new appointment (legacy)
-      final appointmentWithId = appointment.copyWith(id: docRef.id);
-      await AppointmentNotificationService.notifyNewAppointment(appointmentWithId);
-
-      // Envoyer une notification push
-      try {
-        // Récupérer le nom du membre
-        final membreDoc = await _firestore.collection('persons').doc(appointment.membreId).get();
-        final membreName = membreDoc.exists 
-            ? '${membreDoc.data()?['firstName'] ?? ''} ${membreDoc.data()?['lastName'] ?? ''}'.trim()
-            : 'Un membre';
-        
-        await NotificationIntegrationService.notifyNewAppointment(
-          responsableId: appointment.responsableId,
-          membreName: membreName,
-          dateTime: appointment.dateTime,
-          motif: appointment.motif,
-        );
-      } catch (e) {
-        print('Erreur lors de l\'envoi de la notification push: $e');
-      }
+      // Note: Notification services removed
+      print('✅ Appointment created successfully');
 
       return docRef.id;
     } catch (e) {
@@ -292,11 +271,8 @@ class AppointmentsFirebaseService {
         {'notes': notes},
       );
 
-      // Get appointment data for notification
-      final appointment = await getAppointment(appointmentId);
-      if (appointment != null) {
-        await AppointmentNotificationService.notifyAppointmentConfirmed(appointment);
-      }
+      // Note: Notification services removed
+      print('✅ Appointment confirmed successfully');
     } catch (e) {
       throw Exception('Erreur lors de la confirmation: $e');
     }
@@ -338,11 +314,8 @@ class AppointmentsFirebaseService {
         {'raison': raison},
       );
 
-      // Get appointment data for notification
-      final appointment = await getAppointment(appointmentId);
-      if (appointment != null) {
-        await AppointmentNotificationService.notifyAppointmentCancelled(appointment, raison);
-      }
+      // Note: Notification services removed  
+      print('✅ Appointment cancelled successfully');
     } catch (e) {
       throw Exception('Erreur lors de l\'annulation: $e');
     }

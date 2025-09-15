@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
 import '../theme.dart';
 
@@ -85,16 +86,33 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     });
 
     try {
+      UserCredential? result;
+      
       if (_isLoginMode) {
-        await AuthService.signInWithEmailAndPassword(
+        result = await AuthService.signInWithEmailAndPassword(
           _emailController.text.trim(),
           _passwordController.text,
         );
       } else {
-        await AuthService.createUserWithEmailAndPassword(
+        result = await AuthService.createUserWithEmailAndPassword(
           _emailController.text.trim(),
           _passwordController.text,
         );
+      }
+
+      if (result == null) {
+        // L'opération a échoué
+        if (mounted) {
+          setState(() {
+            _errorMessage = _isLoginMode 
+                ? 'Erreur lors de la connexion. Vérifiez vos identifiants.'
+                : 'Erreur lors de la création du compte. L\'email est peut-être déjà utilisé.';
+            _isLoading = false;
+          });
+        }
+      } else {
+        // Succès - l'état sera géré par AuthWrapper
+        print('✅ ${_isLoginMode ? "Connexion" : "Création de compte"} réussie pour ${_emailController.text}');
       }
     } catch (e) {
       if (mounted) {

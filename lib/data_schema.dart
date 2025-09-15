@@ -14,8 +14,8 @@
 /// - phone: String? (optional) - Primary phone number
 /// - birthDate: Timestamp? (optional) - Date of birth
 /// - address: String? (optional) - Physical address
-/// - gender: String? (optional) - Gender identity ('Male', 'Female', 'Other')
-/// - maritalStatus: String? (optional) - Marital status ('Single', 'Married', 'Divorced', 'Widowed')
+/// - gender: String? (optional) - Gender identity ('Homme', 'Femme')
+/// - maritalStatus: String? (optional) - Marital status ('Célibataire', 'Marié(e)', 'Veuf/Veuve')
 /// - children: Array<String> (default: []) - Names of children
 /// - profileImageUrl: String? (optional) - Base64 encoded profile image
 /// - privateNotes: String? (optional) - Admin-only notes about the person

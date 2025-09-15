@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // Pages de base
 import '../pages/member_dashboard_page.dart';
 import '../pages/member_profile_page.dart';
-import '../pages/member_notifications_page.dart';
 import '../pages/member_settings_page.dart';
 import '../pages/member_calendar_page.dart';
 
@@ -80,7 +79,6 @@ class SimpleRoutes {
     // Navigation membre
     '/member/dashboard': (context) => const MemberDashboardPage(),
     '/member/profile': (context) => const MemberProfilePage(),
-    '/member/notifications': (context) => const MemberNotificationsPage(),
     '/member/settings': (context) => const MemberSettingsPage(),
     '/member/calendar': (context) => const MemberCalendarPage(),
     

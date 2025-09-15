@@ -182,7 +182,7 @@ class CustomFieldsFirebaseService {
   Future<List<String>> getUniqueValuesForField(String fieldName) async {
     try {
       final peopleSnapshot = await FirebaseFirestore.instance
-          .collection('people')
+          .collection('persons')
           .get();
       
       final values = <String>{};

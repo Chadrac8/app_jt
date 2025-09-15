@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../modules/songs/models/song_model.dart';
 import '../services/chord_transposer.dart';
 
-/// Page de projection des chants en plein écran
+/// Page de projection des chants en plein écran - Version réorganisée
 class SongProjectionPage extends StatefulWidget {
   final SongModel song;
 
@@ -23,14 +23,14 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
   int _currentSection = 0;
   List<String> _sections = [];
   bool _showControls = true;
+  late PageController _pageController;
+  
   // Personnalisation thème
   Color _bgColor = Colors.black;
   Color _textColor = Colors.white;
   double _fontSize = 24;
   String _fontFamily = 'Roboto';
   bool _highContrast = false;
-  bool _autoScroll = false;
-  int _autoScrollSeconds = 0;
 
   // Chargement/sauvegarde des préférences
   Future<void> _loadPreferences() async {
@@ -57,46 +57,26 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
     await prefs.setString('projection_current_key', _currentKey);
   }
 
-  Color _colorFromString(String value) {
-    switch (value) {
-      case 'black':
-        return Colors.black;
-      case 'white':
-        return Colors.white;
-      case 'yellow':
-        return Colors.yellowAccent;
-      default:
-        try {
-          return Color(int.parse(value));
-        } catch (_) {
-          return Colors.black;
-        }
-    }
-  }
-
   String _colorToString(Color color) {
     if (color == Colors.black) return 'black';
     if (color == Colors.white) return 'white';
     if (color == Colors.yellowAccent) return 'yellow';
-    return color.value.toString();
+    return 'black';
   }
-  void _startAutoScroll() async {
-    while (_autoScroll && _currentSection < _sections.length - 1) {
-      await Future.delayed(Duration(seconds: _autoScrollSeconds));
-      if (!_autoScroll) break;
-      _nextSection();
+
+  Color _colorFromString(String colorString) {
+    switch (colorString) {
+      case 'white': return Colors.white;
+      case 'yellow': return Colors.yellowAccent;
+      default: return Colors.black;
     }
-    setState(() => _autoScroll = false);
   }
-  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _currentKey = widget.song.originalKey;
-    _loadPreferences().then((_) {
-      setState(() {});
-    });
+    _loadPreferences();
     _parseSections();
     _pageController = PageController(initialPage: _currentSection);
     // Masquer l'interface système
@@ -111,6 +91,7 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     // Restaurer l'interface système
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setPreferredOrientations([
@@ -161,8 +142,8 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
   void _transposeKey(String newKey) {
     setState(() {
       _currentKey = newKey;
-      _parseSections();
     });
+    _parseSections();
     _savePreferences();
   }
 
@@ -176,369 +157,305 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _bgColor,
-      body: GestureDetector(
-        onTap: _toggleControls,
-        onPanEnd: (details) {
-          if (details.velocity.pixelsPerSecond.dx > 300) {
-            _previousSection();
-          } else if (details.velocity.pixelsPerSecond.dx < -300) {
-            _nextSection();
-          }
-        },
-        child: Stack(
-          children: [
-            // Contenu principal avec transition animée
-            Center(
-              child: Container(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Titre du chant
-                    Text(
-                      widget.song.title,
-                      style: TextStyle(
-                        color: _textColor,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: _fontFamily,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    if (widget.song.authors.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        widget.song.authors,
-                        style: TextStyle(
-                          color: _textColor.withOpacity(0.7),
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: _fontFamily,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                    const SizedBox(height: 32),
-                    // Section courante avec animation
-                    Expanded(
-                      child: PageView.builder(
-                        controller: _pageController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _sections.length,
-                        onPageChanged: (i) {
-                          setState(() => _currentSection = i);
-                        },
-                        itemBuilder: (context, index) {
-                          return AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 400),
-                            child: SingleChildScrollView(
-                              key: ValueKey(_sections[index]),
-                              child: _buildFormattedSection(_sections[index]),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    if (_sections.length > 1) ...[
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(_sections.length, (index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: index == _currentSection
-                                  ? _textColor
-                                  : _textColor.withOpacity(0.3),
-                            ),
-                          );
-                        }),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            
-            // Contrôles (affichés/masqués)
-            if (_showControls) ...[
-              // Barre de contrôle en haut
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.7),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                  child: SafeArea(
-                    child: Row(
-                      children: [
-                        // Bouton retour
-                        IconButton(
-                          icon: Icon(Icons.arrow_back, color: _textColor),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        const Spacer(),
-                        // Personnalisation thème
-                        PopupMenuButton<String>(
-                          icon: Icon(Icons.color_lens, color: _textColor),
-                          tooltip: 'Thème',
-                          onSelected: (value) {
-                            setState(() {
-                              if (value == 'noir') {
-                                _bgColor = Colors.black;
-                                _textColor = Colors.white;
-                                _highContrast = false;
-                              } else if (value == 'blanc') {
-                                _bgColor = Colors.white;
-                                _textColor = Colors.black;
-                                _highContrast = false;
-                              } else if (value == 'contraste') {
-                                _bgColor = Colors.black;
-                                _textColor = Colors.yellowAccent;
-                                _highContrast = true;
-                              }
-                              _savePreferences();
-                            });
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(value: 'noir', child: Text('Fond noir')), 
-                            const PopupMenuItem(value: 'blanc', child: Text('Fond blanc')), 
-                            const PopupMenuItem(value: 'contraste', child: Text('Contraste élevé')),
-                          ],
-                        ),
-                        const SizedBox(width: 8),
-                        // Taille de police
-                        PopupMenuButton<double>(
-                          icon: Icon(Icons.format_size, color: _textColor),
-                          tooltip: 'Taille du texte',
-                          onSelected: (value) {
-                            setState(() => _fontSize = value);
-                            _savePreferences();
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(value: 20.0, child: Text('Petit')),
-                            const PopupMenuItem(value: 24.0, child: Text('Moyen')),
-                            const PopupMenuItem(value: 32.0, child: Text('Grand')),
-                            const PopupMenuItem(value: 40.0, child: Text('Très grand')),
-                          ],
-                        ),
-                        const SizedBox(width: 8),
-                        // Police
-                        PopupMenuButton<String>(
-                          icon: Icon(Icons.font_download, color: _textColor),
-                          tooltip: 'Police',
-                          onSelected: (value) {
-                            setState(() => _fontFamily = value);
-                            _savePreferences();
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(value: 'Roboto', child: Text('Roboto')),
-                            const PopupMenuItem(value: 'Arial', child: Text('Arial')),
-                            const PopupMenuItem(value: 'Georgia', child: Text('Georgia')),
-                            const PopupMenuItem(value: 'Courier', child: Text('Courier')),
-                          ],
-                        ),
-                        const SizedBox(width: 8),
-                        // Mode auto-scroll
-                        IconButton(
-                          icon: Icon(_autoScroll ? Icons.timer : Icons.timer_off, color: _textColor),
-                          tooltip: 'Déroulé automatique',
-                          onPressed: () async {
-                            if (_autoScroll) {
-                              setState(() => _autoScroll = false);
-                            } else {
-                              final seconds = await showDialog<int>(
-                                context: context,
-                                builder: (context) {
-                                  int value = 5;
-                                  return AlertDialog(
-                                    title: const Text('Déroulé automatique'),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Text('Temps par section (secondes)'),
-                                        Slider(
-                                          value: value.toDouble(),
-                                          min: 2,
-                                          max: 30,
-                                          divisions: 14,
-                                          label: '$value',
-                                          onChanged: (v) => value = v.round(),
-                                        ),
-                                      ],
-                                    ),
-                                    actions: [
-                                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Annuler')),
-                                      ElevatedButton(onPressed: () => Navigator.pop(context, value), child: const Text('Démarrer')),
-                                    ],
-                                  );
-                                },
-                              );
-                              if (seconds != null) {
-                                setState(() {
-                                  _autoScroll = true;
-                                  _autoScrollSeconds = seconds;
-                                });
-                                _startAutoScroll();
-                              }
-                            }
-                          },
-                        ),
-                        const SizedBox(width: 8),
-                        // Sélecteur de tonalité
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: _textColor.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: DropdownButton<String>(
-                            value: _currentKey,
-                            onChanged: (newKey) {
-                              if (newKey != null) {
-                                _transposeKey(newKey);
-                              }
-                            },
-                            dropdownColor: _bgColor,
-                            underline: Container(),
-                            style: TextStyle(color: _textColor),
-                            items: SongModel.availableKeys.map((key) {
-                              return DropdownMenuItem<String>(
-                                value: key,
-                                child: Text(key),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        // Bouton afficher/masquer accords (non fonctionnel pour l'instant)
-                        IconButton(
-                          icon: Icon(
-                            _showChords ? Icons.music_note : Icons.music_off,
-                            color: _textColor,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _showChords = !_showChords;
-                            });
-                            _savePreferences();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: _toggleControls,
+          onPanEnd: (details) {
+            if (details.velocity.pixelsPerSecond.dx > 300) {
+              _previousSection();
+            } else if (details.velocity.pixelsPerSecond.dx < -300) {
+              _nextSection();
+            }
+          },
+          child: Column(
+            children: [
+              // Barre de contrôle en haut (visible selon _showControls)
+              _buildTopControls(),
+              
+              // Zone de titre avec espacement approprié
+              _buildTitleSection(),
+              
+              // Contenu principal (paroles) - prend tout l'espace disponible
+              Expanded(
+                child: _buildContentSection(),
               ),
               
               // Contrôles de navigation en bas
-              if (_sections.length > 1)
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          Colors.black.withOpacity(0.7),
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                    child: SafeArea(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Bouton précédent
-                          IconButton(
-                            icon: const Icon(Icons.chevron_left, color: Colors.white, size: 32),
-                            onPressed: _currentSection > 0 ? _previousSection : null,
-                          ),
-                          
-                          // Indicateur de progression
-                          Text(
-                            '${_currentSection + 1} / ${_sections.length}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                          
-                          // Bouton suivant
-                          IconButton(
-                            icon: const Icon(Icons.chevron_right, color: Colors.white, size: 32),
-                            onPressed: _currentSection < _sections.length - 1 ? _nextSection : null,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              
-              // Instructions d'utilisation (affichées temporairement)
-              Positioned(
-                bottom: 80,
-                left: 20,
-                right: 20,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                    'Touchez l\'écran pour masquer/afficher les contrôles\n'
-                    'Glissez à gauche/droite pour naviguer entre les sections',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+              if (_sections.length > 1 && _showControls) _buildBottomControls(),
             ],
-            
-            // Zones de navigation invisibles (pour les gestes)
-            Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: 100,
-              child: GestureDetector(
-                onTap: _previousSection,
-                child: Container(color: Colors.transparent),
-              ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopControls() {
+    // Si les contrôles sont masqués, on ne montre rien
+    if (!_showControls) {
+      return const SizedBox.shrink();
+    }
+    
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: _bgColor,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Bouton retour
+          IconButton(
+            icon: Icon(Icons.arrow_back, color: _textColor, size: 28),
+            onPressed: () => Navigator.pop(context),
+          ),
+          const Spacer(),
+          // Contrôles supplémentaires
+          ..._buildAdditionalControls(),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildAdditionalControls() {
+    return [
+      // Personnalisation thème
+      PopupMenuButton<String>(
+        icon: Icon(Icons.color_lens, color: _textColor),
+        tooltip: 'Thème',
+        onSelected: (value) {
+          setState(() {
+            if (value == 'noir') {
+              _bgColor = Colors.black;
+              _textColor = Colors.white;
+              _highContrast = false;
+            } else if (value == 'blanc') {
+              _bgColor = Colors.white;
+              _textColor = Colors.black;
+              _highContrast = false;
+            } else if (value == 'contraste') {
+              _bgColor = Colors.black;
+              _textColor = Colors.yellowAccent;
+              _highContrast = true;
+            }
+            _savePreferences();
+          });
+        },
+        itemBuilder: (context) => [
+          const PopupMenuItem(value: 'noir', child: Text('Fond noir')), 
+          const PopupMenuItem(value: 'blanc', child: Text('Fond blanc')), 
+          const PopupMenuItem(value: 'contraste', child: Text('Contraste élevé')),
+        ],
+      ),
+      
+      // Taille de police
+      PopupMenuButton<double>(
+        icon: Icon(Icons.format_size, color: _textColor),
+        tooltip: 'Taille du texte',
+        onSelected: (value) {
+          setState(() => _fontSize = value);
+          _savePreferences();
+        },
+        itemBuilder: (context) => [
+          const PopupMenuItem(value: 20.0, child: Text('Petit')),
+          const PopupMenuItem(value: 24.0, child: Text('Moyen')),
+          const PopupMenuItem(value: 32.0, child: Text('Grand')),
+          const PopupMenuItem(value: 40.0, child: Text('Très grand')),
+        ],
+      ),
+      
+      // Sélecteur de tonalité
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: DropdownButton<String>(
+          value: _currentKey,
+          onChanged: (newKey) {
+            if (newKey != null) {
+              _transposeKey(newKey);
+            }
+          },
+          dropdownColor: _bgColor,
+          underline: Container(),
+          style: TextStyle(color: _textColor, fontSize: 14),
+          items: SongModel.availableKeys.map((key) {
+            return DropdownMenuItem<String>(
+              value: key,
+              child: Text(key),
+            );
+          }).toList(),
+        ),
+      ),
+      
+      const SizedBox(width: 8),
+      
+      // Bouton accords
+      IconButton(
+        icon: Icon(
+          _showChords ? Icons.music_note : Icons.music_off,
+          color: _textColor,
+        ),
+        onPressed: () {
+          setState(() {
+            _showChords = !_showChords;
+          });
+          _savePreferences();
+        },
+        tooltip: _showChords ? 'Masquer accords' : 'Afficher accords',
+      ),
+    ];
+  }
+
+  Widget _buildTitleSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      child: Column(
+        children: [
+          // Titre du chant
+          Text(
+            widget.song.title,
+            style: TextStyle(
+              color: _textColor,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              fontFamily: _fontFamily,
             ),
-            
-            Positioned(
-              right: 0,
-              top: 0,
-              bottom: 0,
-              width: 100,
-              child: GestureDetector(
-                onTap: _nextSection,
-                child: Container(color: Colors.transparent),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.visible,
+            softWrap: true,
+          ),
+          
+          // Auteur (avec espacement approprié)
+          if (widget.song.authors.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              widget.song.authors,
+              style: TextStyle(
+                color: _textColor.withOpacity(0.7),
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+                fontFamily: _fontFamily,
               ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.visible,
+              softWrap: true,
             ),
           ],
-        ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContentSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: PageView.builder(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: _sections.length,
+        onPageChanged: (i) {
+          setState(() => _currentSection = i);
+        },
+        itemBuilder: (context, index) {
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: SingleChildScrollView(
+              key: ValueKey(_sections[index]),
+              child: Container(
+                width: double.infinity,
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.3,
+                ),
+                child: Center(
+                  child: _buildFormattedSection(_sections[index]),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBottomControls() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: _bgColor,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 4,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Indicateurs de points
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(_sections.length, (index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: index == _currentSection
+                      ? _textColor
+                      : _textColor.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                ),
+              );
+            }),
+          ),
+          
+          const SizedBox(height: 12),
+          
+          // Contrôles de navigation
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Bouton précédent
+              IconButton(
+                icon: Icon(
+                  Icons.chevron_left, 
+                  color: _currentSection > 0 ? _textColor : _textColor.withOpacity(0.3),
+                  size: 32,
+                ),
+                onPressed: _currentSection > 0 ? _previousSection : null,
+              ),
+              
+              // Indicateur de progression textuel
+              Text(
+                '${_currentSection + 1} / ${_sections.length}',
+                style: TextStyle(
+                  color: _textColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              
+              // Bouton suivant
+              IconButton(
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: _currentSection < _sections.length - 1 ? _textColor : _textColor.withOpacity(0.3),
+                  size: 32,
+                ),
+                onPressed: _currentSection < _sections.length - 1 ? _nextSection : null,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -548,41 +465,46 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
     final lines = sectionText.split('\n');
     bool inChorusSection = false;
     
-    return Column(
-      children: lines.map((line) {
-        // Détecter le début d'une section chorus
-        if (line.toLowerCase().contains('chorus') || line.toLowerCase().contains('refrain')) {
-          inChorusSection = true;
-        }
-        
-        // Si la ligne est vide, on sort de la section chorus
-        if (line.trim().isEmpty && inChorusSection) {
-          inChorusSection = false;
-        }
-        
-        final isChorusLine = line.toLowerCase().contains('chorus') || 
-                           line.toLowerCase().contains('refrain') || 
-                           inChorusSection;
-        
-        return Container(
-          margin: EdgeInsets.only(
-            left: isChorusLine ? 20.0 : 0.0, // Retrait réduit pour chorus
-            bottom: 8.0,
-          ),
-          child: Text(
-            line,
-            style: TextStyle(
-              color: _textColor,
-              fontSize: _fontSize,
-              height: 1.5,
-              fontFamily: _fontFamily,
-              fontWeight: _highContrast ? FontWeight.bold : FontWeight.normal,
-              fontStyle: isChorusLine ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        children: lines.map((line) {
+          // Détecter le début d'une section chorus
+          if (line.toLowerCase().contains('chorus') || line.toLowerCase().contains('refrain')) {
+            inChorusSection = true;
+          }
+          
+          // Si la ligne est vide, on sort de la section chorus
+          if (line.trim().isEmpty && inChorusSection) {
+            inChorusSection = false;
+          }
+          
+          final isChorusLine = line.toLowerCase().contains('chorus') || 
+                             line.toLowerCase().contains('refrain') || 
+                             inChorusSection;
+          
+          return Container(
+            margin: EdgeInsets.only(
+              left: isChorusLine ? 20.0 : 0.0, // Retrait réduit pour chorus
+              bottom: 8.0,
             ),
-            textAlign: TextAlign.center,
-          ),
-        );
-      }).toList(),
+            child: Text(
+              line,
+              style: TextStyle(
+                color: _textColor,
+                fontSize: _fontSize,
+                height: 1.5,
+                fontFamily: _fontFamily,
+                fontWeight: _highContrast ? FontWeight.bold : FontWeight.normal,
+                fontStyle: isChorusLine ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.visible,
+              softWrap: true,
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }

@@ -266,7 +266,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         ),
         const SizedBox(height: 16),
         DropdownButtonFormField<String>(
-          value: _selectedGroupId,
+          value: (_groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
           decoration: InputDecoration(
             labelText: 'Groupe',
             labelStyle: GoogleFonts.poppins(),
@@ -459,7 +459,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         if (_selectedActionType == 'navigation') ...[
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            value: _selectedTargetModule,
+            value: (_targetModules.contains(_selectedTargetModule)) ? _selectedTargetModule : null,
             decoration: InputDecoration(
               labelText: 'Module cible',
               labelStyle: GoogleFonts.poppins(),
@@ -486,7 +486,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           if (_selectedTargetModule != null) ...[
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedTargetRoute,
+              value: ((_moduleRoutes[_selectedTargetModule] ?? []).contains(_selectedTargetRoute)) ? _selectedTargetRoute : null,
               decoration: InputDecoration(
                 labelText: 'Route cible',
                 labelStyle: GoogleFonts.poppins(),

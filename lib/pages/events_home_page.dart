@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
+import '../services/event_recurrence_service.dart';
 import '../widgets/event_card.dart';
 import '../widgets/event_search_filter_bar.dart';
 import '../widgets/event_calendar_view.dart';
@@ -401,15 +402,9 @@ class _EventsHomePageState extends State<EventsHomePage>
   }
 
   Widget _buildCalendarView() {
-    return StreamBuilder<List<EventModel>>(
-      stream: EventsFirebaseService.getEventsStream(
-        searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
-        typeFilters: _selectedTypeFilters.isNotEmpty ? _selectedTypeFilters : null,
-        statusFilters: _selectedStatusFilters.isNotEmpty ? _selectedStatusFilters : null,
-        startDate: _startDate,
-        endDate: _endDate,
-        limit: 100,
-      ),
+    return FutureBuilder<List<EventModel>>(
+      key: ValueKey('calendar_${_searchQuery}_${_selectedTypeFilters.join(',')}_${_startDate}_${_endDate}'),
+      future: _getCombinedEventsForCalendar(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -446,6 +441,77 @@ class _EventsHomePageState extends State<EventsHomePage>
           onSelectionChanged: _onEventSelected,
         );
       },
+    );
+  }
+
+  Future<List<EventModel>> _getCombinedEventsForCalendar() async {
+    try {
+      // Get date range for both regular and recurring events (default to 3 months)
+      final now = DateTime.now();
+      final startDate = _startDate ?? DateTime(now.year, now.month - 1);
+      final endDate = _endDate ?? DateTime(now.year, now.month + 2);
+
+      // Get all events (regular + recurring instances) for the period
+      final eventMaps = await EventRecurrenceService.getEventsForPeriod(
+        startDate: startDate,
+        endDate: endDate,
+        searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
+        typeFilters: _selectedTypeFilters.isNotEmpty ? _selectedTypeFilters : null,
+      );
+
+      // Convert maps to EventModel objects
+      final allEvents = eventMaps.map((eventMap) {
+        try {
+          return _createEventModelFromMap(eventMap);
+        } catch (e) {
+          print('Error converting event map to EventModel: $e');
+          print('Event map: $eventMap');
+          return null;
+        }
+      }).whereType<EventModel>().toList();
+
+      return allEvents;
+    } catch (e) {
+      print('Error loading combined events: $e');
+      rethrow;
+    }
+  }
+
+  EventModel _createEventModelFromMap(Map<String, dynamic> data) {
+    return EventModel(
+      id: data['id'] ?? '',
+      title: data['title'] ?? '',
+      description: data['description'] ?? '',
+      startDate: data['startDate'] is Timestamp 
+          ? (data['startDate'] as Timestamp).toDate()
+          : data['startDate'] as DateTime,
+      endDate: data['endDate'] != null 
+          ? (data['endDate'] is Timestamp 
+              ? (data['endDate'] as Timestamp).toDate()
+              : data['endDate'] as DateTime)
+          : null,
+      location: data['location'] ?? '',
+      imageUrl: data['imageUrl'],
+      type: data['type'] ?? 'autre',
+      responsibleIds: List<String>.from(data['responsibleIds'] ?? []),
+      visibility: data['visibility'] ?? 'publique',
+      visibilityTargets: List<String>.from(data['visibilityTargets'] ?? []),
+      status: data['status'] ?? 'brouillon',
+      isRegistrationEnabled: data['isRegistrationEnabled'] ?? false,
+      maxParticipants: data['maxParticipants'],
+      hasWaitingList: data['hasWaitingList'] ?? false,
+      isRecurring: data['isRecurring'] ?? false,
+      recurrencePattern: data['recurrencePattern'],
+      attachmentUrls: List<String>.from(data['attachmentUrls'] ?? []),
+      customFields: Map<String, dynamic>.from(data['customFields'] ?? {}),
+      createdAt: data['createdAt'] is Timestamp 
+          ? (data['createdAt'] as Timestamp).toDate()
+          : (data['createdAt'] as DateTime? ?? DateTime.now()),
+      updatedAt: data['updatedAt'] is Timestamp 
+          ? (data['updatedAt'] as Timestamp).toDate()
+          : (data['updatedAt'] as DateTime? ?? DateTime.now()),
+      createdBy: data['createdBy'],
+      lastModifiedBy: data['lastModifiedBy'],
     );
   }
 

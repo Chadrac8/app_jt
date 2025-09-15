@@ -1523,7 +1523,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
             
             // Catégorie
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              value: (['general','spiritual','community','service','events','resources'].contains(_selectedCategory)) ? _selectedCategory : null,
               decoration: const InputDecoration(
                 labelText: 'Catégorie',
                 border: OutlineInputBorder(),
@@ -1544,7 +1544,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
             
             // Groupe
             DropdownButtonFormField<String>(
-              value: _selectedGroup?.id,
+              value: (_groups.any((g) => g.id == _selectedGroup?.id)) ? _selectedGroup?.id : null,
               decoration: const InputDecoration(
                 labelText: 'Groupe',
                 border: OutlineInputBorder(),

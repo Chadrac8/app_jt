@@ -13,8 +13,6 @@ import 'auth/auth_wrapper.dart';
 import 'services/auth_listener_service.dart';
 import 'services/app_config_firebase_service.dart';
 import 'services/workflow_initialization_service.dart';
-import 'services/push_notification_service.dart';
-import 'services/notification_dev_service.dart';
 import 'services/profile_image_cache_service.dart';
 import 'services/roles_initialization_service.dart';
 import 'modules/roles/services/permission_provider.dart';
@@ -96,21 +94,8 @@ Future<void> _initializeCoreServices() async {
       print('Avertissement: Échec de l\'initialisation du service d\'authentification: $e');
     }
     
-    // Initialiser les notifications push
-    try {
-      await PushNotificationService.initialize();
-      
-      // En mode développement, s'assurer que les tokens de test existent
-      if (kDebugMode) {
-        try {
-          await NotificationDevService.ensureDevTokensExist();
-        } catch (e) {
-          print('Info: Configuration des tokens de dev ignorée: $e');
-        }
-      }
-    } catch (e) {
-      print('Avertissement: Échec de l\'initialisation des notifications push: $e');
-    }
+    // Note: Push notifications module removed
+    print('Info: Push notifications module has been removed');
     
   } catch (e) {
     print('Erreur d\'initialisation des services principaux: $e');

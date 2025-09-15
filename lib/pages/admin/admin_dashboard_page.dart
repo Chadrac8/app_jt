@@ -10,7 +10,7 @@ import '../../widgets/dashboard_widgets/dashboard_list_widget.dart';
 import '../../widgets/member_view_toggle_button.dart';
 import '../../widgets/bottom_navigation_wrapper.dart';
 import 'dashboard_configuration_page.dart';
-import 'admin_home_config_page.dart';
+import 'home_config_admin_page.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -417,7 +417,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   void _navigateToHomeConfiguration() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const AdminHomeConfigPage(),
+        builder: (context) => const HomeConfigAdminPage(),
       ),
     );
   }

@@ -13,7 +13,6 @@ import '../pages/member_appointments_page.dart';
 import '../modules/services/views/member_services_page.dart';
 import '../pages/blog_home_page.dart';
 import '../pages/member_profile_page.dart';
-import '../pages/member_notifications_page.dart';
 import '../pages/member_calendar_page.dart';
 import '../pages/member_settings_page.dart';
 import '../pages/member_tasks_page.dart';
@@ -159,7 +158,8 @@ class ComponentActionService {
         targetPage = const MemberProfilePage();
         break;
       case MemberPageType.notifications:
-        targetPage = const MemberNotificationsPage();
+        // Notifications module removed - redirect to dashboard
+        targetPage = const MemberDashboardPage();
         break;
       case MemberPageType.calendar:
         targetPage = const MemberCalendarPage();

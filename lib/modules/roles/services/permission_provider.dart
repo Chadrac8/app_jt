@@ -249,6 +249,64 @@ class PermissionProvider with ChangeNotifier {
     return hasPermission(permissionId);
   }
 
+  /// Vérifie si l'utilisateur courant a un rôle administrateur
+  bool hasAdminRole() {
+    if (_currentUserId == null) return false;
+    
+    final userRolesList = _userRoles.where((ur) => 
+      ur.userId == _currentUserId && 
+      ur.isActive && 
+      !ur.isExpired
+    ).toList();
+    
+    if (userRolesList.isEmpty) return false;
+    
+    // Vérifier si l'utilisateur a un rôle admin ou super_admin
+    for (final userRole in userRolesList) {
+      final role = _roles.where((r) => r.id == userRole.roleId).firstOrNull;
+      if (role != null && role.isActive) {
+        final roleName = role.name.toLowerCase();
+        final roleId = role.id.toLowerCase();
+        if (roleId == 'admin' || 
+            roleId == 'super_admin' || 
+            roleName.contains('admin') || 
+            roleName.contains('administrateur')) {
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  }
+
+  /// Vérifie si un utilisateur spécifique a un rôle administrateur
+  bool userHasAdminRole(String userId) {
+    final userRolesList = _userRoles.where((ur) => 
+      ur.userId == userId && 
+      ur.isActive && 
+      !ur.isExpired
+    ).toList();
+    
+    if (userRolesList.isEmpty) return false;
+    
+    // Vérifier si l'utilisateur a un rôle admin ou super_admin
+    for (final userRole in userRolesList) {
+      final role = _roles.where((r) => r.id == userRole.roleId).firstOrNull;
+      if (role != null && role.isActive) {
+        final roleName = role.name.toLowerCase();
+        final roleId = role.id.toLowerCase();
+        if (roleId == 'admin' || 
+            roleId == 'super_admin' || 
+            roleName.contains('admin') || 
+            roleName.contains('administrateur')) {
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  }
+
   /// Obtient les permissions de l'utilisateur courant pour un module
   List<String> getUserModulePermissions(String moduleId) {
     if (_currentUserId == null) return [];

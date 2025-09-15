@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/firebase_service.dart';
 import '../services/roles_firebase_service.dart';
 import '../widgets/custom_fields_widget.dart';
+import '../widgets/family_info_widget.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
-import '../theme.dart';
 import 'firebase_storage_diagnostic_page.dart';
+import '../utils/performance_utils.dart';
 
 class PersonFormPage extends StatefulWidget {
   final PersonModel? person;
@@ -36,6 +37,9 @@ class _PersonFormPageState extends State<PersonFormPage>
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+  final _addressComplementController = TextEditingController();
+  final _postalCodeController = TextEditingController();
+  final _cityController = TextEditingController();
   final _privateNotesController = TextEditingController();
   
   // Form values
@@ -51,20 +55,116 @@ class _PersonFormPageState extends State<PersonFormPage>
   
   // Image handling
   String? _profileImageUrl;
-  bool _hasImageChanged = false;
+  String? _countryCode;
+  String? _country;
+  
+  // Performance controller
+  late PersonFormController _formController;
+  
+  void _markAsChanged() {
+    _formController.markAsChanged();
+  }
 
-  final List<String> _genderOptions = ['Male', 'Female', 'Other'];
+  final List<String> _genderOptions = ['Homme', 'Femme'];
   final List<String> _maritalStatusOptions = [
-    'Single',
-    'Married',
-    'Divorced',
-    'Widowed',
-    'Other'
+    'Célibataire',
+    'Marié(e)',
+    'Veuf/Veuve'
   ];
+
+  // Indicatifs de pays (version courte pour person_form_page)
+  final Map<String, String> _countryCodes = {
+    '+33': 'France',
+    '+1': 'États-Unis/Canada',
+    '+32': 'Belgique',
+    '+41': 'Suisse',
+    '+49': 'Allemagne',
+    '+39': 'Italie',
+    '+34': 'Espagne',
+    '+44': 'Royaume-Uni',
+    '+351': 'Portugal',
+    '+31': 'Pays-Bas',
+    '+43': 'Autriche',
+    '+212': 'Maroc',
+    '+213': 'Algérie',
+    '+216': 'Tunisie',
+    '+221': 'Sénégal',
+    '+225': 'Côte d\'Ivoire',
+    '+237': 'Cameroun',
+    '+242': 'République du Congo',
+    '+243': 'République démocratique du Congo',
+    '+262': 'La Réunion',
+    '+590': 'Guadeloupe',
+    '+594': 'Guyane française',
+    '+596': 'Martinique',
+  };
+
+  // Liste des pays principaux
+  final List<String> _countries = [
+    'France',
+    'Belgique',
+    'Suisse',
+    'Canada',
+    'États-Unis',
+    'Allemagne',
+    'Italie',
+    'Espagne',
+    'Royaume-Uni',
+    'Portugal',
+    'Pays-Bas',
+    'Autriche',
+    'Maroc',
+    'Algérie',
+    'Tunisie',
+    'Sénégal',
+    'Côte d\'Ivoire',
+    'Cameroun',
+    'République du Congo',
+    'République démocratique du Congo',
+    'La Réunion',
+    'Guadeloupe',
+    'Guyane française',
+    'Martinique',
+  ];
+
+  // Mapping des pays vers leurs indicatifs principaux
+  final Map<String, String> _countryToCountryCode = {
+    'France': '+33',
+    'Belgique': '+32',
+    'Suisse': '+41',
+    'Canada': '+1',
+    'États-Unis': '+1',
+    'Allemagne': '+49',
+    'Italie': '+39',
+    'Espagne': '+34',
+    'Royaume-Uni': '+44',
+    'Portugal': '+351',
+    'Pays-Bas': '+31',
+    'Autriche': '+43',
+    'Maroc': '+212',
+    'Algérie': '+213',
+    'Tunisie': '+216',
+    'Sénégal': '+221',
+    'Côte d\'Ivoire': '+225',
+    'Cameroun': '+237',
+    'République du Congo': '+242',
+    'République démocratique du Congo': '+243',
+    'La Réunion': '+262',
+    'Guadeloupe': '+590',
+    'Guyane française': '+594',
+    'Martinique': '+596',
+  };
 
   @override
   void initState() {
     super.initState();
+    
+    // Initialiser le contrôleur de performance
+    _formController = PersonFormController();
+    
+    // Valeurs par défaut
+    _countryCode = '+33'; // France par défaut
+    _country = 'France'; // France par défaut
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
@@ -89,6 +189,9 @@ class _PersonFormPageState extends State<PersonFormPage>
     _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    _addressComplementController.dispose();
+    _postalCodeController.dispose();
+    _cityController.dispose();
     _privateNotesController.dispose();
     super.dispose();
   }
@@ -99,8 +202,8 @@ class _PersonFormPageState extends State<PersonFormPage>
       _firstNameController.text = person.firstName;
       _lastNameController.text = person.lastName;
       _emailController.text = person.email;
-      _phoneController.text = person.phone ?? '';
-      _addressController.text = person.address ?? '';
+      _parseExistingPhone(person.phone);
+      _parseExistingAddress(person.address);
       _privateNotesController.text = person.privateNotes ?? '';
       _birthDate = person.birthDate;
       _gender = person.gender;
@@ -139,6 +242,116 @@ class _PersonFormPageState extends State<PersonFormPage>
     }
   }
 
+  String? _buildFullAddress() {
+    final parts = <String>[];
+    
+    if (_addressController.text.trim().isNotEmpty) {
+      parts.add(_addressController.text.trim());
+    }
+    
+    if (_addressComplementController.text.trim().isNotEmpty) {
+      parts.add(_addressComplementController.text.trim());
+    }
+    
+    final cityParts = <String>[];
+    if (_postalCodeController.text.trim().isNotEmpty) {
+      cityParts.add(_postalCodeController.text.trim());
+    }
+    if (_cityController.text.trim().isNotEmpty) {
+      cityParts.add(_cityController.text.trim());
+    }
+    
+    if (cityParts.isNotEmpty) {
+      parts.add(cityParts.join(' '));
+    }
+    
+    return parts.isEmpty ? null : parts.join(', ');
+  }
+
+  String? _buildFullPhone() {
+    if (_phoneController.text.trim().isNotEmpty && _countryCode != null) {
+      return '$_countryCode ${_phoneController.text.trim()}';
+    }
+    return _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null;
+  }
+
+  void _parseExistingPhone(String? phone) {
+    if (phone == null || phone.isEmpty) {
+      _phoneController.clear();
+      _countryCode = '+33';
+      _country = 'France';
+      return;
+    }
+
+    // Rechercher un code de pays dans le numéro de téléphone
+    for (var entry in _countryCodes.entries) {
+      if (phone.startsWith(entry.value)) {
+        _countryCode = entry.value;
+        _country = entry.key;
+        // Extraire le numéro sans le code pays
+        _phoneController.text = phone.substring(entry.value.length).trim();
+        return;
+      }
+    }
+
+    // Si aucun code pays trouvé, utiliser France par défaut
+    _phoneController.text = phone;
+    _countryCode = '+33';
+    _country = 'France';
+  }
+
+  void _parseExistingAddress(String? address) {
+    if (address == null || address.isEmpty) {
+      _addressController.clear();
+      _addressComplementController.clear();
+      _postalCodeController.clear();
+      _cityController.clear();
+      return;
+    }
+
+    // Tentative de parsing intelligent de l'adresse
+    final parts = address.split(', ');
+    
+    if (parts.length >= 3) {
+      // Format attendu: "Adresse, Complément, Code Ville"
+      _addressController.text = parts[0].trim();
+      _addressComplementController.text = parts[1].trim();
+      
+      // Essayer de séparer code postal et ville du dernier élément
+      final lastPart = parts.last.trim();
+      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
+      
+      if (codeVilleMatch != null) {
+        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
+        _cityController.text = codeVilleMatch.group(2) ?? '';
+      } else {
+        _postalCodeController.clear();
+        _cityController.text = lastPart;
+      }
+    } else if (parts.length == 2) {
+      // Format: "Adresse, Code Ville"
+      _addressController.text = parts[0].trim();
+      _addressComplementController.clear();
+      
+      final lastPart = parts[1].trim();
+      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
+      
+      if (codeVilleMatch != null) {
+        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
+        _cityController.text = codeVilleMatch.group(2) ?? '';
+      } else {
+        _postalCodeController.clear();
+        _cityController.text = lastPart;
+      }
+    } else {
+      // Fallback: tout dans l'adresse principale
+      _addressController.text = address;
+      _addressComplementController.clear();
+      _postalCodeController.clear();
+      _cityController.clear();
+    }
+  }
+
   Future<void> _pickProfileImage() async {
     try {
       setState(() => _isLoading = true);
@@ -157,7 +370,6 @@ class _PersonFormPageState extends State<PersonFormPage>
         if (imageUrl != null) {
           setState(() {
             _profileImageUrl = imageUrl;
-            _hasImageChanged = true;
           });
           
           // Supprimer l'ancienne image si elle existe et est stockée sur Firebase
@@ -408,13 +620,149 @@ class _PersonFormPageState extends State<PersonFormPage>
     }
   }
 
-  Future<String> _getRoleName(String roleId) async {
-    try {
-      final role = await RolesFirebaseService.getRole(roleId);
-      return role?.name ?? 'Rôle inconnu';
-    } catch (e) {
-      return 'Rôle inconnu';
-    }
+  Widget _buildCountryCodeDropdown() {
+    return DropdownSearch<String>(
+      selectedItem: _countryCode,
+      items: _countryCodes.values.toList(),
+      itemAsString: (code) => code,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          labelText: 'Indicatif',
+          prefixIcon: const Icon(Icons.flag_outlined, color: Color(0xFF667EEA)),
+          filled: true,
+          fillColor: const Color(0xFFF9FAFB),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        ),
+      ),
+      popupProps: PopupProps.menu(
+        showSearchBox: true,
+        searchFieldProps: TextFieldProps(
+          decoration: InputDecoration(
+            labelText: 'Rechercher un indicatif...',
+            prefixIcon: const Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        itemBuilder: (context, item, isSelected) {
+          // Trouver le pays correspondant à ce code
+          String country = '';
+          for (var entry in _countryCodes.entries) {
+            if (entry.value == item) {
+              country = entry.key;
+              break;
+            }
+          }
+          
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Text(
+                  item,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    country,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        fit: FlexFit.loose,
+      ),
+      filterFn: (item, filter) {
+        // Recherche par code ou par nom de pays
+        String country = '';
+        for (var entry in _countryCodes.entries) {
+          if (entry.value == item) {
+            country = entry.key;
+            break;
+          }
+        }
+        return item.toLowerCase().contains(filter.toLowerCase()) ||
+            country.toLowerCase().contains(filter.toLowerCase());
+      },
+      onChanged: (String? newValue) {
+        setState(() {
+          _countryCode = newValue;
+        });
+      },
+    );
+  }
+
+  Widget _buildCountryDropdown() {
+    return DropdownSearch<String>(
+      selectedItem: _country,
+      items: _countries,
+      itemAsString: (country) => country,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          labelText: 'Pays',
+          prefixIcon: const Icon(Icons.public_outlined, color: Color(0xFF667EEA)),
+          filled: true,
+          fillColor: const Color(0xFFF9FAFB),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        ),
+      ),
+      popupProps: PopupProps.menu(
+        showSearchBox: true,
+        searchFieldProps: TextFieldProps(
+          decoration: InputDecoration(
+            labelText: 'Rechercher un pays...',
+            prefixIcon: const Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        fit: FlexFit.loose,
+      ),
+      filterFn: (item, filter) {
+        return item.toLowerCase().contains(filter.toLowerCase());
+      },
+      onChanged: (String? newValue) {
+        setState(() {
+          _country = newValue;
+          // Remplissage automatique de l'indicatif basé sur le pays choisi
+          if (newValue != null && _countryToCountryCode.containsKey(newValue)) {
+            _countryCode = _countryToCountryCode[newValue];
+          }
+        });
+      },
+    );
   }
 
   Future<List<Widget>> _buildRoleChips() async {
@@ -488,6 +836,9 @@ class _PersonFormPageState extends State<PersonFormPage>
       return;
     }
     
+    // Marquer les changements avec le contrôleur
+    _formController.markAsChanged();
+    
     // Vérifier la validité du formulaire
     if (_formKey.currentState == null) {
       print('ERREUR: _formKey.currentState est null!');
@@ -526,6 +877,7 @@ class _PersonFormPageState extends State<PersonFormPage>
     setState(() {
       _isLoading = true;
     });
+    _formController.setLoading(true);
 
     try {
       final now = DateTime.now();
@@ -538,9 +890,9 @@ class _PersonFormPageState extends State<PersonFormPage>
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
           email: _emailController.text.trim(),
-          phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
+          phone: _buildFullPhone(),
           birthDate: _birthDate,
-          address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
+          address: _buildFullAddress(),
           gender: _gender,
           maritalStatus: _maritalStatus,
           children: _children,
@@ -575,9 +927,9 @@ class _PersonFormPageState extends State<PersonFormPage>
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
           email: _emailController.text.trim(),
-          phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
+          phone: _buildFullPhone(),
           birthDate: _birthDate,
-          address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
+          address: _buildFullAddress(),
           gender: _gender,
           maritalStatus: _maritalStatus,
           children: _children,
@@ -625,6 +977,7 @@ class _PersonFormPageState extends State<PersonFormPage>
         await Future.delayed(const Duration(milliseconds: 500));
         
         print('Navigation vers la page précédente...');
+        _formController.markAsSaved();
         Navigator.pop(context, true);
       }
     } catch (e, stackTrace) {
@@ -651,50 +1004,51 @@ class _PersonFormPageState extends State<PersonFormPage>
         setState(() {
           _isLoading = false;
         });
+        _formController.setLoading(false);
       }
     }
   }
 
 
   
+  // NavigationGuard buildContent implementation
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
-        title: Text(
-          widget.person == null ? 'Nouvelle Personne' : 'Modifier Personne',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
+          title: Text(
+            widget.person == null ? 'Nouvelle Personne' : 'Modifier Personne',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        actions: [
-          if (_isLoading)
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-            )
-          else ...[
-            TextButton(
-              onPressed: _savePerson,
-              child: Text(
-                'Sauvegarder',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w600,
+          actions: [
+            if (_formController.isLoading)
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
+            else
+              TextButton(
+                onPressed: _savePerson,
+                child: Text(
+                  'Sauvegarder',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-          ]
-        ],
-      ),
+          ],
+        ),
       body: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
@@ -767,12 +1121,29 @@ class _PersonFormPageState extends State<PersonFormPage>
                             },
                           ),
                           const SizedBox(height: 16),
-                          _buildTextField(
-                            controller: _phoneController,
-                            label: 'Téléphone',
-                            icon: Icons.phone,
-                            keyboardType: TextInputType.phone,
+                          // Section téléphone avec code pays et pays
+                          Row(
+                            children: [
+                              // Dropdown pour l'indicatif de pays
+                              Container(
+                                width: 120,
+                                child: _buildCountryCodeDropdown(),
+                              ),
+                              const SizedBox(width: 12),
+                              // Champ téléphone
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _phoneController,
+                                  label: 'Téléphone',
+                                  icon: Icons.phone,
+                                  keyboardType: TextInputType.phone,
+                                ),
+                              ),
+                            ],
                           ),
+                          const SizedBox(height: 16),
+                          // Dropdown pour le pays
+                          _buildCountryDropdown(),
                         ],
                       ),
                       const SizedBox(height: 24),
@@ -838,7 +1209,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                           Row(
                             children: [
                               Expanded(
-                                child: _buildDropdown(
+                                child: _buildDropdown(context,
                                   value: _gender,
                                   label: 'Genre',
                                   icon: Icons.wc,
@@ -848,7 +1219,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                               ),
                               const SizedBox(width: 16),
                               Expanded(
-                                child: _buildDropdown(
+                                child: _buildDropdown(context,
                                   value: _maritalStatus,
                                   label: 'Statut marital',
                                   icon: Icons.favorite,
@@ -863,8 +1234,36 @@ class _PersonFormPageState extends State<PersonFormPage>
                           _buildTextField(
                             controller: _addressController,
                             label: 'Adresse',
-                            icon: Icons.location_on,
-                            maxLines: 2,
+                            icon: Icons.home_outlined,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextField(
+                            controller: _addressComplementController,
+                            label: 'Complément d\'adresse',
+                            icon: Icons.add_home_outlined,
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: _buildTextField(
+                                  controller: _postalCodeController,
+                                  label: 'Code postal',
+                                  icon: Icons.local_post_office_outlined,
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                flex: 2,
+                                child: _buildTextField(
+                                  controller: _cityController,
+                                  label: 'Ville',
+                                  icon: Icons.location_city_outlined,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -1270,7 +1669,7 @@ class _PersonFormPageState extends State<PersonFormPage>
     );
   }
 
-  Widget _buildDropdown({
+  Widget _buildDropdown(BuildContext context, {
     required String? value,
     required String label,
     required IconData icon,

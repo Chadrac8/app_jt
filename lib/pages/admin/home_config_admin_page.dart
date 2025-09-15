@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart'; // unused
 import '../../models/home_config_model.dart';
 import '../../services/home_config_service.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import '../../services/image_storage_service.dart';
+import 'package:file_picker/file_picker.dart';
 
 /// Page d'administration pour configurer la dashboard membre
 class HomeConfigAdminPage extends StatefulWidget {
@@ -25,6 +29,9 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
   final _coverSubtitleController = TextEditingController();
   final _coverVideoUrlController = TextEditingController();
   bool _useVideo = false;
+  // Cover assets local lists
+  List<String> _coverImageUrls = [];
+  String? _coverVideoUrl;
 
   // Controllers pour le live
   final _liveUrlController = TextEditingController();
@@ -107,11 +114,14 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
     }
   }
 
+
   void _loadConfigData(HomeConfigModel config) {
     // Couverture
     _coverImageUrlController.text = config.coverImageUrl;
+    _coverImageUrls = List<String>.from(config.coverImageUrls);
     _coverTitleController.text = config.coverTitle ?? '';
     _coverSubtitleController.text = config.coverSubtitle ?? '';
+    _coverVideoUrl = config.coverVideoUrl;
     _coverVideoUrlController.text = config.coverVideoUrl ?? '';
     _useVideo = config.useVideo;
 
@@ -261,12 +271,49 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               label: 'URL de la vidéo',
               hint: 'https://example.com/video.mp4',
             ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _pickAndUploadVideo,
+                  icon: const Icon(Icons.upload_file),
+                  label: const Text('Sélectionner une vidéo'),
+                ),
+                const SizedBox(width: 12),
+                if (_coverVideoUrl != null && _coverVideoUrl!.isNotEmpty)
+                  Expanded(
+                    child: Text(
+                      'Vidéo sélectionnée',
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ),
+              ],
+            ),
           ] else ...[
             _buildTextField(
               controller: _coverImageUrlController,
               label: 'URL de l\'image de couverture',
               hint: 'https://example.com/image.jpg',
             ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _pickAndUploadImages,
+                  icon: const Icon(Icons.photo_library),
+                  label: const Text('Sélectionner des images'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton.icon(
+                  onPressed: _clearCoverImages,
+                  icon: const Icon(Icons.delete_forever),
+                  label: const Text('Effacer toutes'),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _buildCoverThumbnails(),
           ],
           
           const SizedBox(height: 20),
@@ -1155,7 +1202,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         coverImageUrl: _coverImageUrlController.text,
         coverTitle: _coverTitleController.text,
         coverSubtitle: _coverSubtitleController.text,
-        coverVideoUrl: _coverVideoUrlController.text,
+  coverVideoUrl: _coverVideoUrl ?? _coverVideoUrlController.text,
         useVideo: _useVideo,
         
         // Live
@@ -1191,6 +1238,8 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         contactWhatsApp: _contactWhatsAppController.text,
         contactAddress: _contactAddressController.text,
         isContactActive: _isContactActive,
+  // Cover assets
+  coverImageUrls: _coverImageUrls,
       ) ?? HomeConfigModel.defaultConfig.copyWith(
         // Valeurs depuis les contrôleurs...
       );
@@ -1223,4 +1272,123 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       );
     }
   }
+  /// Sélectionner et uploader plusieurs images depuis la galerie
+  Future<void> _pickAndUploadImages() async {
+    try {
+      final picker = ImagePicker();
+      final List<XFile>? files = await picker.pickMultiImage(imageQuality: 80);
+      if (files == null || files.isEmpty) return;
+
+      setState(() => _isSaving = true);
+
+      for (final f in files) {
+        final bytes = await f.readAsBytes();
+        final url = await ImageStorageService.uploadImage(bytes);
+        if (url != null) _coverImageUrls.add(url);
+      }
+
+      setState(() => _isSaving = false);
+    } catch (e) {
+      setState(() => _isSaving = false);
+      _showErrorSnackBar('Erreur lors de la sélection ou l\'upload des images: $e');
+    }
+  }
+
+  /// Sélectionner et uploader une vidéo (via FilePicker)
+  Future<void> _pickAndUploadVideo() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.video,
+        allowMultiple: false,
+      );
+      if (result == null || result.files.isEmpty) return;
+
+      setState(() => _isSaving = true);
+
+      final file = result.files.first;
+      if (file.path == null) {
+        _showErrorSnackBar('Chemin de fichier vidéo introuvable');
+        setState(() => _isSaving = false);
+        return;
+      }
+
+      final bytes = await File(file.path!).readAsBytes();
+      final url = await ImageStorageService.uploadImage(bytes, customPath: 'page_components/videos');
+      if (url != null) {
+        setState(() => _coverVideoUrl = url);
+        _coverVideoUrlController.text = url;
+      }
+
+      setState(() => _isSaving = false);
+    } catch (e) {
+      setState(() => _isSaving = false);
+      _showErrorSnackBar('Erreur lors de la sélection ou l\'upload de la vidéo: $e');
+    }
+  }
+
+  /// Effacer les images locales
+  void _clearCoverImages() {
+    setState(() {
+      _coverImageUrls.clear();
+      _coverImageUrlController.clear();
+    });
+  }
+
+  Widget _buildCoverThumbnails() {
+    if (_coverImageUrls.isEmpty) {
+      return const Card(
+        color: Color(0xFF2A2D3A),
+        child: Padding(
+          padding: EdgeInsets.all(12),
+          child: Center(
+            child: Text('Aucune image sélectionnée', style: TextStyle(color: Colors.grey)),
+          ),
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 100,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: _coverImageUrls.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, index) {
+          final url = _coverImageUrls[index];
+          return Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(url, width: 140, height: 100, fit: BoxFit.cover),
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: GestureDetector(
+                  onTap: () async {
+                    // Optionnel: supprimer du storage
+                    final success = await ImageStorageService.deleteImageByUrl(url);
+                    if (success) {
+                      setState(() => _coverImageUrls.removeAt(index));
+                    } else {
+                      _showErrorSnackBar('Impossible de supprimer l\'image du storage');
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black45,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.all(4),
+                    child: const Icon(Icons.delete, color: Colors.white, size: 18),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
 }

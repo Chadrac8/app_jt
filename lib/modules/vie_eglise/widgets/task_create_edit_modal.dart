@@ -247,7 +247,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
 
   Widget _buildCategoryField() {
     return DropdownButtonFormField<String>(
-      value: _selectedCategory,
+      value: (_categories.contains(_selectedCategory)) ? _selectedCategory : null,
       decoration: InputDecoration(
         labelText: 'Catégorie',
         labelStyle: GoogleFonts.poppins(),

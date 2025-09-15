@@ -179,7 +179,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
       builder: (context, provider, child) {
         return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection('people')
+              .collection('persons')
               .where('isActive', isEqualTo: _showInactiveUsers ? null : true)
               .snapshots(),
           builder: (context, snapshot) {
