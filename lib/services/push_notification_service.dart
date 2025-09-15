@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -8,10 +10,12 @@ class PushNotificationService {
 
   static final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  static GlobalKey<NavigatorState>? _navigatorKey;
 
   /// Initialize FCM + local notifications.
   /// Call this after Firebase.initializeApp() in `main()`.
-  static Future<void> initialize() async {
+  static Future<void> initialize({GlobalKey<NavigatorState>? navigatorKey}) async {
+    _navigatorKey = navigatorKey;
     // NOTE: the background message handler must be registered from main() as it
     // must ensure Firebase is initialized in the background isolate. Do not
     // register a background handler here to avoid conflicts; main.dart already
@@ -43,9 +47,16 @@ class PushNotificationService {
 
     await _localNotifications.initialize(initSettings,
         onDidReceiveNotificationResponse: (NotificationResponse response) {
-      // Handle tap on notification
-      // TODO: route the user to the intended page
+      // Handle tap on local notification
       print('Local notification tapped: ${response.payload}');
+      if (response.payload != null) {
+        try {
+          final Map<String, dynamic> payloadMap = jsonDecode(response.payload!);
+          _routeFromMap(payloadMap);
+        } catch (e) {
+          print('Could not parse local notification payload: $e');
+        }
+      }
     });
 
     if (Platform.isAndroid) {
@@ -83,10 +94,47 @@ class PushNotificationService {
           notification.title,
           notification.body,
           notificationDetails,
-          payload: message.data.isNotEmpty ? message.data.toString() : null,
+          payload: message.data.isNotEmpty ? jsonEncode(message.data) : null,
         );
       }
     });
+
+    // Handle taps when the app is in background
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('User tapped notification (background): ${message.data}');
+      _routeFromRemoteMessage(message);
+    });
+
+    // If the app was terminated and opened by a notification
+    final initialMessage = await _fcm.getInitialMessage();
+    if (initialMessage != null) {
+      print('App opened from terminated state by a notification: ${initialMessage.data}');
+      _routeFromRemoteMessage(initialMessage);
+    }
+  }
+
+  static void _routeFromRemoteMessage(RemoteMessage message) {
+    try {
+      final data = message.data;
+      _routeFromMap(data);
+    } catch (e) {
+      print('Error routing from RemoteMessage: $e');
+    }
+  }
+
+  static void _routeFromMap(Map<String, dynamic>? map) {
+    if (map == null || map.isEmpty) return;
+    final route = map['route'] as String?;
+    final args = map['args'];
+    if (route != null && _navigatorKey != null && _navigatorKey!.currentState != null) {
+      try {
+        _navigatorKey!.currentState!.pushNamed(route, arguments: args);
+      } catch (e) {
+        print('Error navigating to route $route: $e');
+      }
+    } else {
+      print('No route provided in notification data or navigatorKey unavailable');
+    }
   }
 
   /// Gets the current FCM token for this device/app instance.

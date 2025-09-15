@@ -60,7 +60,8 @@ void main() async {
     try {
       // Register the background handler and initialize notification service
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-      await PushNotificationService.initialize();
+      // Initialize with a global navigator key so we can route on notification taps
+      await PushNotificationService.initialize(navigatorKey: AppNavigator.navigatorKey);
       print('✅ PushNotificationService initialized');
     } catch (e) {
       print('Warning: PushNotificationService initialization failed: $e');
@@ -84,6 +85,11 @@ void _setSystemUIOverlayStyle() {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+}
+
+/// Global navigator holder used for routing from notification taps
+class AppNavigator {
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
 
 /// Initialiser les services principaux
@@ -255,6 +261,7 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
         theme: AppTheme.lightTheme,
         home: _hasError ? _buildErrorScreen() : const SafeAuthWrapper(),
         debugShowCheckedModeBanner: false,
+        navigatorKey: AppNavigator.navigatorKey,
         
         // Configuration de localisation française
         locale: LocaleConfig.defaultLocale,
