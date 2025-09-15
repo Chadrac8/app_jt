@@ -1,6 +1,66 @@
 # Miscellaneous
 *.class
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+build/
+pubspec.lock
+/.dart_tool
+/.pub-cache
+/.package
+
+# Android
+/android/.gradle/
+/android/app/debug/
+/android/app/profile/
+/android/key.properties
+/android/local.properties
+/android/.idea/
+**/gradle-wrapper.jar
+
+# iOS
+/ios/Pods/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+Podfile.lock
+
+# Xcode
+*.xcworkspace
+*.xcuserdata
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+DerivedData/
+
+# VS Code
+.vscode/
+
+# IntelliJ
+/.idea/
+*.iml
+
+# Node
+node_modules/
+
+# macOS
+.DS_Store
+
+# Logs
 *.log
+
+# Firebase
+firebase-debug.*
+
+# Others
+coverage/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.buildlog
+
+# Generated files
+**/generated/
+
 *.pyc
 *.swp
 .DS_Store
