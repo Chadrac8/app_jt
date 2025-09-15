@@ -30,6 +30,8 @@ import '../pages/member_prayer_wall_page.dart';
 import '../modules/songs/views/member_songs_page.dart';
 import '../pages/blog_home_page.dart';
 
+import '../pages/member_notifications_page.dart';
+
 
 
 import '../pages/member_dynamic_lists_page.dart';
@@ -200,8 +202,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       case 'calendar':
         return const MemberCalendarPage();
       case 'notifications':
-        // Notifications module removed - redirect to dashboard
-        return const MemberDashboardPage();
+        return const MemberNotificationsPage();
       case 'settings':
         return const MemberSettingsPage();
       case 'pages':

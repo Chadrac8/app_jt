@@ -18,6 +18,7 @@ import '../pages/member_appointments_page.dart';
 import '../pages/member_prayer_wall_page.dart';
 import '../pages/member_pages_view.dart';
 import '../pages/message_page.dart';
+import '../pages/member_notifications_page.dart';
 
 
 import '../pages/blog_home_page.dart';
@@ -81,6 +82,7 @@ class SimpleRoutes {
     '/member/profile': (context) => const MemberProfilePage(),
     '/member/settings': (context) => const MemberSettingsPage(),
     '/member/calendar': (context) => const MemberCalendarPage(),
+  '/member/notifications': (context) => const MemberNotificationsPage(),
     
     // Modules membre
     '/member/groups': (context) => const MemberGroupsPage(),
