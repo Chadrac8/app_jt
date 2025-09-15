@@ -3,15 +3,6 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-/// Background message handler. Must be a top-level function.
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // Note: initialize Firebase in real app entry before using other Firebase APIs here.
-  // For background handling we keep minimal work: you can schedule work or update local storage.
-  // This handler runs in its own isolate.
-  // For now we simply print for debugging.
-  print('FCM background message: ${message.messageId}');
-}
-
 class PushNotificationService {
   PushNotificationService._();
 
@@ -21,8 +12,10 @@ class PushNotificationService {
   /// Initialize FCM + local notifications.
   /// Call this after Firebase.initializeApp() in `main()`.
   static Future<void> initialize() async {
-    // Set up background handler
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    // NOTE: the background message handler must be registered from main() as it
+    // must ensure Firebase is initialized in the background isolate. Do not
+    // register a background handler here to avoid conflicts; main.dart already
+    // registers a handler that initializes Firebase for background isolates.
 
     // Request permissions on iOS / macOS
     if (Platform.isIOS || Platform.isMacOS) {

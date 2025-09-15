@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
+// ...existing code...
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'services/push_notification_service.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import 'firebase_options.dart';
@@ -55,6 +56,15 @@ void main() async {
     firebaseReady = true;
     // Initialiser les services secondaires de manière asynchrone
     _initializeSecondaryServicesAsync();
+    // Initialize push notifications now that Firebase is ready
+    try {
+      // Register the background handler and initialize notification service
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      await PushNotificationService.initialize();
+      print('✅ PushNotificationService initialized');
+    } catch (e) {
+      print('Warning: PushNotificationService initialization failed: $e');
+    }
   } catch (e) {
     print('Erreur lors de l\'initialisation: $e');
   }
