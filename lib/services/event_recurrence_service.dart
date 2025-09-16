@@ -15,9 +15,13 @@ class EventRecurrenceService {
   /// Crée une règle de récurrence pour un événement
   static Future<String> createRecurrence(EventRecurrenceModel recurrence) async {
     try {
+      print('📝 Création récurrence avec isActive: ${recurrence.isActive}');
+      final firestoreData = recurrence.toFirestore();
+      print('📄 Données Firestore isActive: ${firestoreData['isActive']}');
+      
       final docRef = await _firestore
           .collection(recurrencesCollection)
-          .add(recurrence.toFirestore());
+          .add(firestoreData);
 
       // Générer les premières instances (3 mois à l'avance)
       final recurrenceWithId = EventRecurrenceModel(
@@ -37,6 +41,8 @@ class EventRecurrenceService {
         updatedAt: recurrence.updatedAt,
       );
       
+      print('✅ Récurrence créée avec ID: ${docRef.id}, isActive: ${recurrenceWithId.isActive}');
+      
       await _generateInstances(
         recurrenceWithId,
         until: DateTime.now().add(const Duration(days: 90)),
@@ -44,6 +50,7 @@ class EventRecurrenceService {
 
       return docRef.id;
     } catch (e) {
+      print('❌ Erreur création récurrence: $e');
       throw Exception('Erreur lors de la création de la récurrence: $e');
     }
   }

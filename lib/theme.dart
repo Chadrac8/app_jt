@@ -123,6 +123,7 @@ class AppTheme {
       
       // App Bar
       appBarTheme: AppBarTheme(
+        toolbarHeight: 44, // Hauteur encore plus réduite
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: primaryColor, // Rouge bordeaux #860505
@@ -376,6 +377,7 @@ class AppTheme {
       
       // AppBar pour le mode sombre
       appBarTheme: AppBarTheme(
+        toolbarHeight: 44, // Hauteur encore plus réduite
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: primaryColor, // Rouge bordeaux #860505

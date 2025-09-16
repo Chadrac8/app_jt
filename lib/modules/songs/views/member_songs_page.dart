@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
 import '../widgets/setlists_tab_perfect13.dart';
@@ -43,13 +44,14 @@ class _MemberSongsPageState extends State<MemberSongsPage>
         children: [
           // TabBar en haut
           Container(
+            height: 42, // Hauteur réduite de la TabBar
             decoration: BoxDecoration(
-              color: AppTheme.surfaceColor,
+              color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: AppTheme.textTertiaryColor.withOpacity(0.1),
                   spreadRadius: 1,
-                  blurRadius: 2,
+                  blurRadius: 3,
                   offset: const Offset(0, 1),
                 ),
               ],
@@ -58,13 +60,28 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               bottom: false,
               child: TabBar(
                 controller: _tabController,
-                indicatorColor: AppTheme.primaryColor,
-                labelColor: AppTheme.primaryColor,
-                unselectedLabelColor: Colors.grey[600],
+                labelColor: Colors.white, // Texte blanc pour onglet sélectionné
+                unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
+                indicatorColor: Colors.white, // Indicateur blanc
+                indicatorWeight: 3,
+                labelStyle: GoogleFonts.poppins(
+                  fontSize: 13, // Taille de police légèrement réduite
+                  fontWeight: FontWeight.w600,
+                ),
+                unselectedLabelStyle: GoogleFonts.poppins(
+                  fontSize: 13, // Taille de police légèrement réduite
+                  fontWeight: FontWeight.w500,
+                ),
                 tabs: const [
-                  Tab(icon: Icon(Icons.library_music), text: 'Chants'),
-                  Tab(icon: Icon(Icons.favorite), text: 'Favoris'),
-                  Tab(icon: Icon(Icons.playlist_play), text: 'Setlists'),
+                  Tab(
+                    text: 'Chants',
+                  ),
+                  Tab(
+                    text: 'Favoris',
+                  ),
+                  Tab(
+                    text: 'Setlists',
+                  ),
                 ],
               ),
             ),

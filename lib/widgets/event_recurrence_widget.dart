@@ -63,11 +63,12 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
       occurrenceCount: _hasOccurrenceLimit ? _occurrenceCount : null,
       exceptions: widget.initialRecurrence?.exceptions ?? [],
       overrides: widget.initialRecurrence?.overrides ?? [],
-      isActive: true,
+      isActive: true, // Forcé à true pour nouvelles récurrences
       createdAt: widget.initialRecurrence?.createdAt ?? DateTime.now(),
       updatedAt: DateTime.now(),
     );
 
+    print('🔄 Récurrence créée avec isActive: ${recurrence.isActive}');
     widget.onRecurrenceChanged(recurrence);
   }
 

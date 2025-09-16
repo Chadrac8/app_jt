@@ -159,7 +159,6 @@ async function cleanupInvalidTokensFromBatch(batchResult, tokens) {
         const usersSnapshot = await firestore.collection('users')
           .where('fcmToken', '==', token)
           .get();
-        
         usersSnapshot.docs.forEach(doc => {
           batch.update(doc.ref, {
             fcmToken: admin.firestore.FieldValue.delete(),
@@ -433,6 +432,43 @@ exports.onOutboxNotificationCreated = onDocumentCreated(
           notification: { title, body },
           data: data.data || {}
         });
+      } else if (targetType === 'segment') {
+        // Resolve the segment to user IDs and send FCM to their tokens
+        const segmentId = data.segmentId;
+        if (!segmentId) throw new Error('segmentId required for segment targetType');
+
+        const recipientUserIds = await getSegmentUsers(segmentId);
+        // Send FCM in chunks
+        try {
+          let totalSuccess = 0;
+          let totalFailure = 0;
+          const results = [];
+          const SEND_BATCH = 500;
+          for (let i = 0; i < recipientUserIds.length; i += SEND_BATCH) {
+            const batchIds = recipientUserIds.slice(i, i + SEND_BATCH);
+            const tokens = await getUserTokens(batchIds);
+            if (tokens.length === 0) continue;
+            try {
+              const batchResult = await messaging.sendEachForMulticast({
+                tokens,
+                notification: { title, body },
+                data: data.data || {}
+              });
+              results.push(batchResult);
+              totalSuccess += batchResult.successCount || 0;
+              totalFailure += batchResult.failureCount || 0;
+
+              // Cleanup invalid tokens discovered
+              await cleanupInvalidTokensFromBatch(batchResult, tokens);
+            } catch (sendErr) {
+              console.error('Error sending FCM for segment batch:', sendErr);
+            }
+          }
+
+          sendResult = { totalSuccess, totalFailure, batches: results.length };
+        } catch (segErr) {
+          console.error('Failed handling segment send:', segErr);
+        }
       } else if (targetType === 'tokens') {
         const tokens = data.tokens || [];
         if (tokens.length === 0) {
@@ -447,14 +483,96 @@ exports.onOutboxNotificationCreated = onDocumentCreated(
       }
 
       // Update status
-      await firestore.collection('outbox_notifications').doc(notifId).update({
-        status: 'sent',
-        sentAt: admin.firestore.FieldValue.serverTimestamp(),
-        sendResult: sendResult || null
-      });
+      // After sending via FCM, also create per-user notification documents so
+      // the in-app notification list (which queries collection 'notifications'
+      // by targetUserId) will contain entries created from admin outbox.
+      try {
+        let recipientUserIds = [];
 
-      console.log(`Outbox notification ${notifId} sent`);
-      return { success: true, notifId };
+        if (targetType === 'tokens') {
+          const tokens = data.tokens || [];
+          // Map tokens to user IDs by querying users collection in batches of 10
+          const batchSize = 10;
+          for (let i = 0; i < tokens.length; i += batchSize) {
+            const slice = tokens.slice(i, i + batchSize);
+            const usersSnap = await firestore.collection('users')
+              .where('fcmToken', 'in', slice)
+              .get();
+            usersSnap.docs.forEach(d => recipientUserIds.push(d.id));
+          }
+        } else if (targetType === 'segment') {
+          const segmentId = data.segmentId;
+          if (segmentId) {
+            recipientUserIds = await getSegmentUsers(segmentId);
+          }
+        } else if (targetType === 'topic' || targetType === 'all') {
+          // For topics and 'all' we expand to all active persons stored in the
+          // 'persons' collection (this project keeps user profiles in 'persons').
+          // Use the document ID as the UID (UserProfileService writes persons with uid as doc id).
+          try {
+            const personsSnap = await firestore.collection('persons')
+              .where('isActive', '==', true)
+              .get();
+            recipientUserIds = personsSnap.docs.map(d => d.id);
+          } catch (pErr) {
+            console.warn('Could not read persons collection, falling back to users collection:', pErr);
+            const usersSnap = await firestore.collection('users')
+              .where('isActive', '==', true)
+              .get();
+            recipientUserIds = usersSnap.docs.map(d => d.id);
+          }
+        }
+
+        // Create notification documents in batches of 500
+        const CHUNK = 500;
+        let createdCount = 0;
+        const sampleCreatedFor = [];
+        for (let i = 0; i < recipientUserIds.length; i += CHUNK) {
+          const chunk = recipientUserIds.slice(i, i + CHUNK);
+          const writeBatch = firestore.batch();
+          chunk.forEach(userId => {
+            const notifRef = firestore.collection('notifications').doc();
+            const notifPayload = {
+              title,
+              body,
+              targetUserId: userId,
+              isRead: false,
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              data: data.data || {},
+            };
+            // include route if present in data
+            if (data.data && data.data.route) {
+              notifPayload.route = data.data.route;
+            }
+            writeBatch.set(notifRef, notifPayload);
+            createdCount++;
+            if (sampleCreatedFor.length < 50) sampleCreatedFor.push(userId);
+          });
+          await writeBatch.commit();
+        }
+
+        // Update outbox status with counts
+        await firestore.collection('outbox_notifications').doc(notifId).update({
+          status: 'sent',
+          sentAt: admin.firestore.FieldValue.serverTimestamp(),
+          sendResult: sendResult || null,
+          createdNotificationsCount: createdCount,
+          sampleCreatedFor: sampleCreatedFor
+        });
+
+        console.log(`Outbox notification ${notifId} sent and ${createdCount} notifications created`);
+        return { success: true, notifId, createdNotificationsCount: createdCount };
+      } catch (writeErr) {
+        console.error('Error creating per-user notification documents:', writeErr);
+        // still update outbox as sent with sendResult, but note error
+        await firestore.collection('outbox_notifications').doc(notifId).update({
+          status: 'sent_with_errors',
+          sentAt: admin.firestore.FieldValue.serverTimestamp(),
+          sendResult: sendResult || null,
+          notificationCreationError: String(writeErr)
+        });
+        return { success: true, notifId, error: String(writeErr) };
+      }
     } catch (error) {
       console.error('Error sending outbox notification:', error);
       await firestore.collection('outbox_notifications').doc(notifId).update({
@@ -721,6 +839,131 @@ exports.getNotificationAnalytics = onCall({
   } catch (error) {
     console.error('Erreur lors de la récupération des analytics:', error);
     throw new HttpsError('internal', 'Erreur lors de la récupération: ' + error.message);
+  }
+});
+
+/**
+ * HTTP function to create a test outbox notification document.
+ * Useful for triggering the outbox consumer without needing local SDK credentials.
+ * Accessible via a public URL (you can restrict it later if needed).
+ */
+exports.createTestOutboxHttp = require('firebase-functions').https.onRequest(async (req, res) => {
+  try {
+    // Simple auth option: allow a ?key= query param matching an env var to avoid open public use
+    const key = req.query.key || req.headers['x-test-key'];
+    const expected = process.env.CREATE_TEST_OUTBOX_KEY || null;
+
+    if (expected && key !== expected) {
+      res.status(401).json({ success: false, error: 'Unauthorized - invalid key' });
+      return;
+    }
+
+    const payload = req.body && Object.keys(req.body).length ? req.body : {
+      title: 'Test Outbox Notification',
+      body: 'Ceci est un test automatique créé par createTestOutboxHttp',
+      targetType: 'topic',
+      topic: 'annonces',
+      data: { test: 'true', route: '/notifications' },
+    };
+
+    // If segmentId is provided, prefer segment targeting
+    const { segmentId } = payload;
+    if (segmentId) {
+      payload.targetType = 'segment';
+      payload.segmentId = segmentId;
+    }
+
+    const docRef = await firestore.collection('outbox_notifications').add({
+      ...payload,
+      status: 'pending',
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdBy: 'system:createTestOutboxHttp'
+    });
+
+    res.json({ success: true, id: docRef.id, path: docRef.path });
+  } catch (error) {
+    console.error('createTestOutboxHttp error:', error);
+    res.status(500).json({ success: false, error: error.message || String(error) });
+  }
+});
+
+/**
+ * Callable admin-only diagnostic function to fetch recent outbox docs and sample token info.
+ * Helps investigate missed push deliveries without needing direct log access.
+ * Returns the last `limit` outbox documents (default 5) with their sendResult,
+ * createdNotificationsCount and a small sample of recipient user tokens (if segment or tokens).
+ */
+exports.getOutboxDiagnostics = onCall({ region: 'us-central1' }, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Utilisateur non authentifié');
+  }
+
+  // Very simple admin check: require a custom claim `isAdmin` on the user token.
+  const auth = request.auth.token || {};
+  if (!auth.isAdmin) {
+    throw new HttpsError('permission-denied', 'Accès réservé aux administrateurs');
+  }
+
+  try {
+    const limit = parseInt(request.data && request.data.limit, 10) || 5;
+    const outboxSnap = await firestore.collection('outbox_notifications')
+      .orderBy('createdAt', 'desc')
+      .limit(limit)
+      .get();
+
+    const results = [];
+    for (const doc of outboxSnap.docs) {
+      const d = doc.data();
+      const item = {
+        id: doc.id,
+        path: doc.ref.path,
+        title: d.title || null,
+        body: d.body || null,
+        targetType: d.targetType || null,
+        segmentId: d.segmentId || null,
+        status: d.status || null,
+        createdNotificationsCount: d.createdNotificationsCount || 0,
+        sendResult: d.sendResult || null,
+        createdAt: d.createdAt ? d.createdAt.toDate() : null,
+      };
+
+      // If segment target, sample some user tokens
+      if (item.targetType === 'segment' && item.segmentId) {
+        try {
+          // Get up to 20 users that match the segment criteria by reading the segment doc
+          const segDoc = await firestore.collection('userSegments').doc(item.segmentId).get();
+          if (segDoc.exists) {
+            const seg = segDoc.data();
+            // try to resolve a small sample of user IDs using the criteria (best-effort)
+            const sampleQuery = firestore.collection('users').limit(20);
+            // If criteria exists, apply simple filters - supports role/department/location/isActive
+            if (seg.criteria) {
+              const c = seg.criteria;
+              if (c.role) sampleQuery.where('role', '==', c.role);
+              if (c.department) sampleQuery.where('department', '==', c.department);
+              if (c.location) sampleQuery.where('location', '==', c.location);
+              if (c.isActive !== undefined) sampleQuery.where('isActive', '==', c.isActive);
+            }
+            const sampleSnap = await sampleQuery.get();
+            item.sampleUsers = sampleSnap.docs.map(u => ({ id: u.id, fcmToken: u.data().fcmToken || null }));
+          }
+        } catch (segErr) {
+          console.warn('Could not sample segment users for diagnostics', segErr.message || segErr);
+        }
+      }
+
+      // If tokens array was stored on outbox doc, include a small sample
+      if (Array.isArray(d.tokens) && d.tokens.length > 0) {
+        item.sampleTokens = d.tokens.slice(0, 20);
+      }
+
+      results.push(item);
+    }
+
+    return { success: true, items: results };
+  } catch (error) {
+    console.error('getOutboxDiagnostics error:', error);
+    throw new HttpsError('internal', 'Erreur lors de la récupération des diagnostics: ' + (error.message || String(error)));
   }
 });
 

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PushNotificationService {
   PushNotificationService._();
@@ -110,6 +112,54 @@ class PushNotificationService {
     if (initialMessage != null) {
       print('App opened from terminated state by a notification: ${initialMessage.data}');
       _routeFromRemoteMessage(initialMessage);
+    }
+
+    // Register token and listen for token refresh to keep server up-to-date
+    try {
+      await _registerTokenWithServer();
+      FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+        print('FCM token refreshed');
+        await _saveTokenToUserDoc(newToken);
+      });
+      // If the user signs in after app init, ensure we save the token for the newly authenticated user
+      FirebaseAuth.instance.authStateChanges().listen((user) async {
+        if (user != null) {
+          print('User signed in, registering FCM token for user ${user.uid}');
+          await _registerTokenWithServer();
+        }
+      });
+    } catch (e) {
+      print('Error registering FCM token with server: $e');
+    }
+  }
+
+  static Future<void> _registerTokenWithServer() async {
+    try {
+      final token = await getToken();
+      if (token != null) {
+        await _saveTokenToUserDoc(token);
+      }
+    } catch (e) {
+      print('Error getting token: $e');
+    }
+  }
+
+  static Future<void> _saveTokenToUserDoc(String token) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // No authenticated user; don't persist token
+        print('No authenticated user; skipping token save');
+        return;
+      }
+      final ref = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      await ref.set({
+        'fcmToken': token,
+        'fcmTokenUpdatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+      print('Saved FCM token to users/${user.uid}');
+    } catch (e) {
+      print('Error saving token to Firestore: $e');
     }
   }
 

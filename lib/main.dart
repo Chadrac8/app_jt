@@ -22,6 +22,7 @@ import 'utils/date_formatter.dart';
 import 'config/locale_config.dart';
 import 'churchflow_splash.dart';
 import 'modules/roles/roles_module.dart';
+import 'modules/pain_quotidien/services/daily_bread_scheduler.dart';
 
 /// Gestionnaire global pour les messages en background
 @pragma('vm:entry-point')
@@ -151,6 +152,9 @@ void _initializeSecondaryServicesAsync() {
   
   // Initialiser le cache des images de profil
   _initializeProfileImageCacheAsync();
+  
+  // Initialiser le scheduler du pain quotidien
+  _initializeDailyBreadSchedulerAsync();
 }
 
 /// Initialiser la configuration de l'application de manière asynchrone
@@ -203,6 +207,19 @@ void _initializeProfileImageCacheAsync() async {
     );
   } catch (e) {
     print('Avertissement: Impossible d\'initialiser le cache des images de profil: $e');
+  }
+}
+
+/// Initialiser le scheduler du pain quotidien de manière asynchrone
+void _initializeDailyBreadSchedulerAsync() async {
+  try {
+    print('🍞 Initialisation du scheduler pain quotidien...');
+    await DailyBreadScheduler.startScheduler().timeout(
+      const Duration(seconds: 10),
+    );
+    print('✅ Scheduler pain quotidien initialisé - mise à jour automatique à 6h00');
+  } catch (e) {
+    print('⚠️ Erreur lors de l\'initialisation du scheduler pain quotidien: $e');
   }
 }
 

@@ -1134,33 +1134,47 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       data: theme,
       child: Column(
         children: [
-          // TabBar sans AppBar - Style identique au module Message
+          // TabBar sans AppBar - Style identique au module Le Message
           Container(
+            height: 42, // Hauteur réduite de la TabBar
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor, // Rouge bordeaux
+              color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.primaryActive.withOpacity(0.3), // Ombre avec couleur active
-                  blurRadius: 4,
-                  offset: const Offset(0, 2)),
-              ]),
+                  color: AppTheme.textTertiaryColor.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
             child: TabBar(
               controller: _tabController,
-              indicatorColor: AppTheme.backgroundColor, // Indicateur blanc cassé sur rouge bordeaux
+              labelColor: Colors.white, // Texte blanc pour onglet sélectionné
+              unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
+              indicatorColor: Colors.white, // Indicateur blanc
               indicatorWeight: 3,
-              labelColor: AppTheme.surfaceColor,
-              unselectedLabelColor: AppTheme.surfaceColor.withOpacity(0.7),
-              labelStyle: GoogleFonts.inter(
+              labelStyle: GoogleFonts.poppins(
+                fontSize: 13, // Taille de police légèrement réduite
                 fontWeight: FontWeight.w600,
-                fontSize: 14),
-              unselectedLabelStyle: GoogleFonts.inter(
-                fontWeight: FontWeight.w400,
-                fontSize: 14),
+              ),
+              unselectedLabelStyle: GoogleFonts.poppins(
+                fontSize: 13, // Taille de police légèrement réduite
+                fontWeight: FontWeight.w500,
+              ),
               tabs: const [
-                Tab(icon: Icon(Icons.home, size: 20), text: 'Accueil'),
-                Tab(icon: Icon(Icons.menu_book, size: 20), text: 'Lecture'),
-                Tab(icon: Icon(Icons.note_alt, size: 20), text: 'Notes'),
-              ])),
+                Tab(
+                  text: 'Accueil',
+                ),
+                Tab(
+                  text: 'Lecture',
+                ),
+                Tab(
+                  text: 'Notes',
+                ),
+              ],
+            ),
+          ),
           // TabBarView - Style identique au module Message
           Expanded(
             child: TabBarView(

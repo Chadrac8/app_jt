@@ -54,41 +54,48 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
 
   Widget _buildTabBar() {
     return Container(
+      height: 42, // Hauteur réduite de la TabBar
       decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
+        color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
         boxShadow: [
           BoxShadow(
             color: AppTheme.textTertiaryColor.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 3,
-            offset: const Offset(0, 1)),
-        ]),
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
       child: TabBar(
         controller: _tabController,
-        labelColor: AppTheme.primaryColor,
-        unselectedLabelColor: AppTheme.textTertiaryColor,
-        indicatorColor: AppTheme.primaryColor,
+        labelColor: Colors.white, // Texte blanc pour onglet sélectionné
+        unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
+        indicatorColor: Colors.white, // Indicateur blanc
         indicatorWeight: 3,
         labelStyle: GoogleFonts.poppins(
-          fontSize: 14,
-          fontWeight: FontWeight.w600),
+          fontSize: 13, // Taille de police légèrement réduite
+          fontWeight: FontWeight.w600,
+        ),
         unselectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 14,
-          fontWeight: FontWeight.w500),
+          fontSize: 13, // Taille de police légèrement réduite
+          fontWeight: FontWeight.w500,
+        ),
         tabs: const [
           Tab(
-            icon: Icon(Icons.person, size: 20),
-            text: 'Pour vous'),
+            text: 'Pour vous',
+          ),
           Tab(
-            icon: Icon(Icons.play_circle, size: 20),
-            text: 'Sermons'),
+            text: 'Sermons',
+          ),
           Tab(
-            icon: Icon(Icons.volunteer_activism, size: 20),
-            text: 'Bénévolat'),
+            text: 'Bénévolat',
+          ),
           Tab(
-            icon: Icon(Icons.pan_tool, size: 20),
-            text: 'Prières & Témoignages'),
-        ]));
+            text: 'Prières & Témoignages',
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/home_config_service.dart';
 import '../models/home_config_model.dart';
 import '../theme.dart';
@@ -77,8 +78,13 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold)),
             TextButton(
-              onPressed: () {
-                // Navigation vers toutes les prédications
+              onPressed: () async {
+                // Navigation vers la chaîne YouTube
+                const channelUrl = 'https://youtube.com/@jubiletabernaclefrance?si=NUyaAW5dLP7xpD5Y';
+                final uri = Uri.parse(channelUrl);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                }
               },
               child: Text(
                 'Voir tout',
@@ -176,28 +182,39 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(16)),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.play_arrow,
-                              size: 16,
-                              color: AppTheme.primaryColor),
-                            const SizedBox(width: 4),
-                            Text(
-                              'Regarder',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.w600)),
-                          ])),
+                      GestureDetector(
+                        onTap: () async {
+                          // Navigation vers la vidéo YouTube
+                          if (_homeConfig?.sermonYouTubeUrl != null) {
+                            final uri = Uri.parse(_homeConfig!.sermonYouTubeUrl!);
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri, mode: LaunchMode.externalApplication);
+                            }
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6),
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.play_arrow,
+                                size: 16,
+                                color: AppTheme.primaryColor),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Regarder',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.primaryColor,
+                                  fontWeight: FontWeight.w600)),
+                            ])),
+                      ),
                       const Spacer(),
                       Icon(
                         Icons.schedule,

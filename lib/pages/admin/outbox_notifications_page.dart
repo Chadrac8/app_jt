@@ -16,6 +16,10 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
   bool _sendToTopic = true;
   bool _sendNow = true;
   DateTime? _scheduledAt;
+  // segment support
+  bool _sendToSegment = false;
+  String? _selectedSegmentId;
+  List<Map<String, String>> _segments = [];
 
   @override
   void dispose() {
@@ -23,6 +27,30 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
     _bodyController.dispose();
     _topicController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSegments();
+  }
+
+  Future<void> _loadSegments() async {
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection('userSegments')
+          .where('isActive', isEqualTo: true)
+          .orderBy('name')
+          .get();
+      setState(() {
+        _segments = snap.docs.map((d) {
+          final data = d.data();
+          return {'id': d.id, 'name': (data['name'] ?? d.id).toString()};
+        }).toList();
+      });
+    } catch (e) {
+      debugPrint('Failed to load segments: $e');
+    }
   }
 
   Future<void> _submit() async {
@@ -43,6 +71,9 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
     } else if (_sendToTopic) {
       payload['targetType'] = 'topic';
       payload['topic'] = _topicController.text.trim();
+    } else if (_sendToSegment) {
+      payload['targetType'] = 'segment';
+      if (_selectedSegmentId != null) payload['segmentId'] = _selectedSegmentId as Object;
     } else {
       payload['targetType'] = 'tokens';
       payload['tokens'] = [];
@@ -57,7 +88,7 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
     _titleController.clear();
     _bodyController.clear();
     _topicController.clear();
-    setState(() { _sendToAll = false; _sendToTopic = true; _sendNow = true; _scheduledAt = null; });
+    setState(() { _sendToAll = false; _sendToTopic = true; _sendToSegment = false; _selectedSegmentId = null; _sendNow = true; _scheduledAt = null; });
   }
 
   Future<void> _pickSchedule() async {
@@ -94,9 +125,25 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
                 title: const Text('Topic'),
                 value: true,
                 groupValue: _sendToTopic,
-                onChanged: (v) => setState(() => _sendToTopic = v ?? true),
+                onChanged: (v) => setState(() { _sendToTopic = v ?? true; _sendToSegment = false; }),
               ),
               if (_sendToTopic) TextField(controller: _topicController, decoration: const InputDecoration(labelText: 'Topic name (ex: annonces)')),
+
+              RadioListTile<bool>(
+                title: const Text('Segment'),
+                value: true,
+                groupValue: _sendToSegment,
+                onChanged: (v) => setState(() { _sendToSegment = v ?? true; _sendToTopic = false; }),
+              ),
+              if (_sendToSegment) Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: DropdownButtonFormField<String>(
+                  value: _selectedSegmentId,
+                  items: _segments.map((s) => DropdownMenuItem(value: s['id'], child: Text(s['name'] ?? s['id']!))).toList(),
+                  onChanged: (v) => setState(() => _selectedSegmentId = v),
+                  decoration: const InputDecoration(labelText: 'Select segment'),
+                ),
+              ),
             ],
             const SizedBox(height:12),
             SwitchListTile(
@@ -124,12 +171,27 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
                 final docs = snap.data!.docs;
                 return Column(children: docs.map((d) {
                   final data = d.data() as Map<String,dynamic>;
+                  final createdCount = data['createdNotificationsCount'] ?? 0;
+                  final sample = (data['sampleCreatedFor'] as List<dynamic>?)?.take(5).join(', ') ?? '';
+                  final sendResult = data['sendResult'];
                   return ListTile(
                     title: Text(data['title'] ?? 'No title'),
-                    subtitle: Text('Status: ${data['status'] ?? 'unknown'} • Target: ${data['targetType'] ?? '-'}'),
-                    trailing: TextButton(onPressed: () async {
-                      await d.reference.update({'status': 'cancelled'});
-                    }, child: const Text('Cancel')),
+                    subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text('Status: ${data['status'] ?? 'unknown'} • Target: ${data['targetType'] ?? '-'}'),
+                      if (createdCount > 0) Text('Created: $createdCount • Sample: $sample', style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                      if (sendResult != null) Text('SendResult: ${sendResult.totalSuccess ?? sendResult.successCount ?? '-'} success', style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                    ]),
+                    trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                      TextButton(onPressed: () async {
+                        await d.reference.update({'status': 'cancelled'});
+                      }, child: const Text('Cancel')),
+                      const SizedBox(width:8),
+                      TextButton(onPressed: () async {
+                        // Requeue to pending and schedule immediate send
+                        await d.reference.update({'status': 'pending', 'scheduledAt': FieldValue.serverTimestamp()});
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Outbox requeued')));
+                      }, child: const Text('Run now'))
+                    ]),
                   );
                 }).toList());
               }

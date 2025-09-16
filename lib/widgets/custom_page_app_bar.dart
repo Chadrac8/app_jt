@@ -26,7 +26,7 @@ class CustomPageAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<CustomPageAppBar> createState() => _CustomPageAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(44); // Hauteur encore plus réduite
 }
 
 class _CustomPageAppBarState extends State<CustomPageAppBar> {
@@ -77,6 +77,7 @@ class _CustomPageAppBarState extends State<CustomPageAppBar> {
     final theme = Theme.of(context);
     
     return AppBar(
+      toolbarHeight: 44, // Hauteur encore plus réduite
       title: GestureDetector(
         onDoubleTap: _toggleLeading,
         child: Text(
@@ -137,13 +138,14 @@ class SimpleMemberAppBar extends StatelessWidget implements PreferredSizeWidget 
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(44); // Hauteur encore plus réduite
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
     return AppBar(
+      toolbarHeight: 44, // Hauteur encore plus réduite
       title: Text(
         title,
         style: const TextStyle(
@@ -210,13 +212,14 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => Size.fromHeight(subtitle != null ? 70 : kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(subtitle != null ? 66 : 44); // Hauteur encore plus réduite
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
     return AppBar(
+      toolbarHeight: subtitle != null ? 66 : 44, // Hauteur conditionnelle encore plus réduite
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

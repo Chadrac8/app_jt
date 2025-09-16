@@ -10,6 +10,7 @@ import '../models/person_model.dart';
 import '../services/app_config_firebase_service.dart';
 
 import '../auth/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../theme.dart';
 
 import '../pages/member_dashboard_page.dart';
@@ -106,7 +107,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     super.initState();
     _currentRoute = widget.initialRoute;
     _loadConfiguration();
-    _loadUnreadNotificationsCount();
+    _subscribeToUnreadNotificationsCount();
   }
 
   Future<void> _loadConfiguration() async {
@@ -148,16 +149,27 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     }
   }
 
-  Future<void> _loadUnreadNotificationsCount() async {
+  // Subscribe to live unread notifications count for the current user
+  void _subscribeToUnreadNotificationsCount() {
     try {
-      // Notifications module removed - set count to 0
-      if (mounted) {
+      final user = AuthService.currentUser;
+      if (user == null) return;
+
+      FirebaseFirestore.instance
+          .collection('notifications')
+          .where('targetUserId', isEqualTo: user.uid)
+          .where('isRead', isEqualTo: false)
+          .snapshots()
+          .listen((snapshot) {
+        if (!mounted) return;
         setState(() {
-          _unreadNotificationsCount = 0;
+          _unreadNotificationsCount = snapshot.size;
         });
-      }
+      }, onError: (e) {
+        print('Erreur lors de l\'écoute du nombre de notifications non lues: $e');
+      });
     } catch (e) {
-      print('Erreur lors du chargement du nombre de notifications: $e');
+      print('Erreur lors de l\'initialisation du compteur de notifications: $e');
     }
   }
 
@@ -202,7 +214,11 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       case 'calendar':
         return const MemberCalendarPage();
       case 'notifications':
-        return const MemberNotificationsPage();
+        // When the notifications page is shown inside the main app shell
+        // we don't want it to render its own Scaffold/AppBar (that would
+        // duplicate the title). Use scaffolded: false so the shell's
+        // AppBar is kept and the page provides only its body.
+        return const MemberNotificationsPage(scaffolded: false);
       case 'settings':
         return const MemberSettingsPage();
       case 'pages':
@@ -860,6 +876,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   AppBar _buildAppBar() {
     return AppBar(
+      toolbarHeight: 44, // Hauteur encore plus réduite
       backgroundColor: const Color(0xFF860505), // Rouge bordeaux #860505
       elevation: 0,
       systemOverlayStyle: const SystemUiOverlayStyle(
@@ -874,11 +891,11 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
             color: Colors.white,
             shape: BoxShape.circle,
           ),
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(1.5), // Padding encore plus réduit
           child: Image.asset(
             'assets/logo_jt.png',
-            height: 32,
-            width: 32,
+            height: 20, // Logo plus petit pour un cercle réduit
+            width: 20,
             fit: BoxFit.contain,
           ),
         ),
@@ -1006,8 +1023,10 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
             setState(() {
               _currentRoute = 'notifications';
             });
-            // Réinitialiser le count quand on clique
-            _loadUnreadNotificationsCount();
+            // Réinitialiser le badge visuellement quand on clique
+            setState((){
+              _unreadNotificationsCount = 0;
+            });
           },
         ),
         if (_unreadNotificationsCount > 0)

@@ -188,41 +188,43 @@ class _SongsMemberViewState extends State<SongsMemberView>
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48.0),
           child: Container(
+            height: 42, // Hauteur réduite de la TabBar
             decoration: BoxDecoration(
-              color: AppTheme.surfaceColor,
-              border: Border(
-                top: BorderSide(color: Colors.grey[300]!, width: 1),
-                bottom: BorderSide(color: Colors.grey[300]!, width: 1),
-              ),
+              color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: AppTheme.textTertiaryColor.withOpacity(0.1),
                   spreadRadius: 1,
-                  blurRadius: 2,
+                  blurRadius: 3,
                   offset: const Offset(0, 1),
                 ),
               ],
             ),
             child: TabBar(
               controller: _tabController,
-              indicatorColor: AppTheme.primaryColor,
-              labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: Colors.grey[600],
+              labelColor: Colors.white, // Texte blanc pour onglet sélectionné
+              unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
+              indicatorColor: Colors.white, // Indicateur blanc
+              indicatorWeight: 3,
+              labelStyle: GoogleFonts.poppins(
+                fontSize: 13, // Taille de police légèrement réduite
+                fontWeight: FontWeight.w600,
+              ),
+              unselectedLabelStyle: GoogleFonts.poppins(
+                fontSize: 13, // Taille de police légèrement réduite
+                fontWeight: FontWeight.w500,
+              ),
               tabs: const [
                 Tab(
-                  icon: Icon(Icons.library_music),
                   text: 'Tous',
                 ),
                 Tab(
-                  icon: Icon(Icons.favorite),
                   text: 'Favoris',
                 ),
                 Tab(
-                  icon: Icon(Icons.history),
                   text: 'Récents',
                 ),
                 Tab(
-                  icon: Icon(Icons.trending_up),
                   text: 'Populaires',
                 ),
               ],

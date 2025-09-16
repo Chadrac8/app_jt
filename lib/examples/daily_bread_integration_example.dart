@@ -63,9 +63,9 @@ class NavigationExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.auto_stories),
-      title: const Text('Pain quotidien'),
-      subtitle: const Text('Méditation spirituelle du jour'),
-      trailing: const Icon(Icons.arrow_forward_ios),
+      title: const Text('Pain Quotidien'),
+      subtitle: const Text('Verset et citation du jour'),
+      trailing: const Icon(Icons.book_outlined),
       onTap: () {
         Navigator.push(
           context,

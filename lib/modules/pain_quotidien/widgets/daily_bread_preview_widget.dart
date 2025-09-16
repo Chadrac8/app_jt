@@ -172,7 +172,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                       ),
                       const SizedBox(height: 2),
                       const Text(
-                        'Méditation spirituelle du jour',
+                        'Verset et citation du jour',
                         style: TextStyle(
                           color: Color(0xFF64748B),
                           fontSize: 14,
@@ -186,7 +186,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: 18),
             
             // Contenu élégant ou état de chargement
             if (_isLoading)
@@ -274,21 +274,21 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                           size: 16,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       Text(
                         _getPreviewText(),
                         style: const TextStyle(
                           color: Color(0xFF1E293B),
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          height: 1.6,
-                          letterSpacing: 0.2,
+                          height: 1.5,
+                          letterSpacing: 0.1,
                         ),
                         maxLines: 2, // Limite à 2 lignes
                         overflow: TextOverflow.ellipsis,
                       ),
                       if (_dailyQuote!.dailyBreadReference.isNotEmpty) ...[
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 10),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
@@ -354,12 +354,12 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                 ),
               ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: 18),
             
             // Bouton élégant pour accéder à la page complète
             Container(
               width: double.infinity,
-              height: 52,
+              height: 48,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
@@ -389,30 +389,30 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                   borderRadius: BorderRadius.circular(16),
                   onTap: _navigateToDailyBreadPage,
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.auto_stories,
                           color: AppTheme.surfaceColor,
-                          size: 20,
+                          size: 18,
                         ),
-                        SizedBox(width: 12),
+                        SizedBox(width: 10),
                         Text(
-                          'Lire le contenu complet',
+                          'Lire le pain quotidien complet',
                           style: TextStyle(
                             color: AppTheme.surfaceColor,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            letterSpacing: 0.3,
+                            letterSpacing: 0.2,
                           ),
                         ),
-                        SizedBox(width: 8),
+                        SizedBox(width: 6),
                         Icon(
                           Icons.arrow_forward_ios,
                           color: AppTheme.surfaceColor,
-                          size: 14,
+                          size: 12,
                         ),
                       ],
                     ),

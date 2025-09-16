@@ -210,15 +210,44 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
           size: 20,
         ),
       ),
-      title: Text(_getRecurrenceDescription(recurrence)),
+      title: Text(
+        _getRecurrenceDescription(recurrence),
+        style: TextStyle(
+          decoration: recurrence.isActive ? null : TextDecoration.lineThrough,
+          color: recurrence.isActive ? null : Colors.grey,
+        ),
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Type: ${_getTypeLabel(recurrence.type)}'),
+          Text(
+            'Type: ${_getTypeLabel(recurrence.type)}',
+            style: TextStyle(
+              color: recurrence.isActive ? null : Colors.grey,
+            ),
+          ),
           if (recurrence.endDate != null)
-            Text('Fin: ${recurrence.endDate!.day}/${recurrence.endDate!.month}/${recurrence.endDate!.year}'),
+            Text(
+              'Fin: ${recurrence.endDate!.day}/${recurrence.endDate!.month}/${recurrence.endDate!.year}',
+              style: TextStyle(
+                color: recurrence.isActive ? null : Colors.grey,
+              ),
+            ),
           if (recurrence.occurrenceCount != null)
-            Text('Occurrences: ${recurrence.occurrenceCount}'),
+            Text(
+              'Occurrences: ${recurrence.occurrenceCount}',
+              style: TextStyle(
+                color: recurrence.isActive ? null : Colors.grey,
+              ),
+            ),
+          if (!recurrence.isActive)
+            Text(
+              'Récurrence désactivée',
+              style: TextStyle(
+                color: Colors.orange,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
         ],
       ),
       trailing: Row(
@@ -446,16 +475,43 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
   }
 
   void _showEditRecurrenceDialog(EventRecurrenceModel recurrence) {
-    // TODO: Implémenter le dialogue de modification
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Modifier la récurrence'),
-        content: const Text('Fonctionnalité en cours de développement'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Modification de récurrence'),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                const Text('Récurrence active: '),
+                Switch(
+                  value: recurrence.isActive,
+                  onChanged: (value) {
+                    Navigator.pop(context);
+                    _toggleRecurrence(recurrence, value);
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Fermer'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // Pour l'instant, on propose juste l'activation/désactivation
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Utilisez l\'interrupteur pour activer/désactiver')),
+              );
+            },
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -463,16 +519,75 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
   }
 
   void _showExceptionsDialog(EventRecurrenceModel recurrence) {
-    // TODO: Implémenter la gestion des exceptions
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Gestion des exceptions'),
-        content: const Text('Fonctionnalité en cours de développement'),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: Column(
+            children: [
+              const Text('Dates d\'exception (événement annulé ces jours-là):'),
+              const SizedBox(height: 16),
+              Expanded(
+                child: recurrence.exceptions.isEmpty
+                    ? const Center(child: Text('Aucune exception définie'))
+                    : ListView.builder(
+                        itemCount: recurrence.exceptions.length,
+                        itemBuilder: (context, index) {
+                          final exception = recurrence.exceptions[index];
+                          return ListTile(
+                            title: Text('${exception.day}/${exception.month}/${exception.year}'),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                final updatedExceptions = List<DateTime>.from(recurrence.exceptions);
+                                updatedExceptions.removeAt(index);
+                                final updatedRecurrence = recurrence.copyWith(exceptions: updatedExceptions);
+                                EventRecurrenceService.updateRecurrence(updatedRecurrence).then((_) {
+                                  _loadData();
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Exception supprimée')),
+                                  );
+                                });
+                              },
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Fermer'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime.now(),
+                lastDate: DateTime.now().add(const Duration(days: 365)),
+              );
+              if (date != null) {
+                final updatedExceptions = List<DateTime>.from(recurrence.exceptions);
+                updatedExceptions.add(date);
+                final updatedRecurrence = recurrence.copyWith(exceptions: updatedExceptions);
+                EventRecurrenceService.updateRecurrence(updatedRecurrence).then((_) {
+                  _loadData();
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Exception ajoutée')),
+                  );
+                });
+              }
+            },
+            child: const Text('Ajouter exception'),
           ),
         ],
       ),

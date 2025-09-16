@@ -174,102 +174,96 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
             }
           });
 
-          return CustomScrollView(
-            slivers: [
-              // AppBar avec image de couverture
-              _buildSliverAppBar(config),
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(), // Empêche l'effet de bounce au-dessus
+            child: Column(
+              children: [
+                // Image de couverture qui scrolle avec le contenu
+                _buildStaticCoverImage(config),
 
-              // Pain quotidien (si activé)
-              if (config.isDailyBreadActive)
-                SliverToBoxAdapter(
-                  child: SlideTransition(
+                // Pain quotidien (si activé)
+                if (config.isDailyBreadActive)
+                  SlideTransition(
                     position: _slideAnimation,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 32, bottom: 32),
                       child: const DailyBreadPreviewWidget(),
                     ),
                   ),
-                ),
 
-              // Contenu principal
-              SliverToBoxAdapter(
-                child: SlideTransition(
+                // Contenu principal
+                SlideTransition(
                   position: _slideAnimation,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 0.0, left: 20.0, right: 20.0, bottom: 20.0),
                     child: Column(
-                      children: [
-                        // Section Live (si activée)
-                        if (config.isLiveActive)
-                          _buildNextLiveSection(config),
-                        if (config.isLiveActive)
-                          const SizedBox(height: 32),
-                        
-                        // Actions rapides (si activées)
-                        if (config.areQuickActionsActive)
-                          _buildQuickActionsSection(config),
-                        if (config.areQuickActionsActive)
-                          const SizedBox(height: 32),
-                        
-                        // Dernières prédications (si activées)
-                        if (config.isLastSermonActive)
-                          const LatestSermonWidget(),
-                        if (config.isLastSermonActive)
-                          const SizedBox(height: 32),
-                        
-                        // Événements à venir (si activés)
-                        if (config.areEventsActive)
-                          _buildUpcomingEventsSection(config),
-                        if (config.areEventsActive)
-                          const SizedBox(height: 32),
-                        
-                        // Nous contacter (si activé)
-                        if (config.isContactActive)
-                          _buildContactUsSection(config),
-                        if (config.isContactActive)
-                          const SizedBox(height: 32),
-                      ],
-                    ),
-                  ),
+                            children: [
+                              // Section Live (si activée)
+                              if (config.isLiveActive)
+                                _buildNextLiveSection(config),
+                              if (config.isLiveActive)
+                                const SizedBox(height: 32),
+                              
+                              // Actions rapides (si activées)
+                              if (config.areQuickActionsActive)
+                                _buildQuickActionsSection(config),
+                              if (config.areQuickActionsActive)
+                                const SizedBox(height: 32),
+                              
+                              // Dernières prédications (si activées)
+                              if (config.isLastSermonActive)
+                                const LatestSermonWidget(),
+                              if (config.isLastSermonActive)
+                                const SizedBox(height: 32),
+                              
+                              // Événements à venir (si activés)
+                              if (config.areEventsActive)
+                                _buildUpcomingEventsSection(config),
+                              if (config.areEventsActive)
+                                const SizedBox(height: 32),
+                              
+                              // Nous contacter (si activé)
+                              if (config.isContactActive)
+                                _buildContactUsSection(config),
+                              if (config.isContactActive)
+                                const SizedBox(height: 32),
+                            ],
+                          ),
+                        ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _buildSliverAppBar(HomeConfigModel config) {
-    return SliverAppBar(
-      expandedHeight: 230,
-      floating: false,
-      pinned: false,
-      elevation: 0,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
-          fit: StackFit.expand,
-          children: [
-            // Media de couverture (carrousel ou image unique)
-            _buildCoverMedia(config),
-            
-            // Overlay dégradé
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.1),
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.6),
-                  ],
-                ),
+  Widget _buildStaticCoverImage(HomeConfigModel config) {
+    return Container(
+      height: 230,
+      width: double.infinity,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Media de couverture (carrousel ou image unique)
+          _buildCoverMedia(config),
+          
+          // Overlay dégradé
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.1),
+                  Colors.black.withOpacity(0.3),
+                  Colors.black.withOpacity(0.6),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -702,14 +696,14 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Actions rapides',
+                    'Services essentiels',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   Text(
-                    'Accès direct aux fonctionnalités importantes',
+                    'Accès rapide aux ressources de la foi',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),

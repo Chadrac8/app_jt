@@ -8,6 +8,7 @@ import '../theme.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
 import '../widgets/event_recurrence_widget.dart';
+import '../widgets/person_selector_widget.dart';
 import 'firebase_storage_diagnostic_page.dart';
 
 class EventFormPage extends StatefulWidget {
@@ -276,6 +277,11 @@ class _EventFormPageState extends State<EventFormPage>
           _endTime!.minute,
         );
       }
+      // Créer la récurrence EventRecurrence si l'événement est récurrent
+      EventRecurrence? eventRecurrence;
+      if (_isRecurring && _recurrenceModel != null) {
+        eventRecurrence = EventRecurrence.fromEventRecurrenceModel(_recurrenceModel!);
+      }
       
       final event = EventModel(
         id: widget.event?.id ?? '',
@@ -294,6 +300,7 @@ class _EventFormPageState extends State<EventFormPage>
         maxParticipants: _maxParticipants,
         hasWaitingList: _hasWaitingList,
         isRecurring: _isRecurring,
+        recurrence: eventRecurrence,
         createdAt: widget.event?.createdAt ?? DateTime.now(),
         updatedAt: DateTime.now(),
         createdBy: widget.event?.createdBy,
@@ -864,36 +871,16 @@ class _EventFormPageState extends State<EventFormPage>
   }
 
   Widget _buildResponsibleSelector() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Responsables',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            _selectedResponsibleIds.isEmpty 
-                ? 'Aucun responsable sélectionné'
-                : '${_selectedResponsibleIds.length} responsable(s) sélectionné(s)',
-            style: TextStyle(
-              color: _selectedResponsibleIds.isEmpty 
-                  ? AppTheme.textTertiaryColor 
-                  : AppTheme.textPrimaryColor,
-            ),
-          ),
-        ),
-        // TODO: Implement person selector
-      ],
+    return PersonSelectorWidget(
+      selectedPersonIds: _selectedResponsibleIds,
+      onSelectionChanged: (selectedIds) {
+        setState(() {
+          _selectedResponsibleIds = selectedIds;
+        });
+      },
+      label: 'Responsables',
+      hint: 'Sélectionner les responsables de l\'événement',
+      multiSelect: true,
     );
   }
 
