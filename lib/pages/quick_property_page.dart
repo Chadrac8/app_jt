@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../shared/theme/app_theme.dart';
+import '../../theme.dart';
 import 'donation_webview_page.dart';
 
 class QuickPropertyPage extends StatelessWidget {
@@ -9,20 +9,20 @@ class QuickPropertyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white100,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         elevation: 0,
         leading: IconButton(
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppTheme.greenStandard.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: Icon(
               Icons.arrow_back_ios,
-              color: Colors.green,
+              color: AppTheme.greenStandard,
               size: 18,
             ),
           ),
@@ -33,7 +33,7 @@ class QuickPropertyPage extends StatelessWidget {
           style: GoogleFonts.poppins(
             color: AppTheme.textPrimaryColor,
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         centerTitle: true,
@@ -64,19 +64,19 @@ class QuickPropertyPage extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.green.withOpacity(0.1),
+            AppTheme.greenStandard.withOpacity(0.1),
             Colors.lightGreen.withOpacity(0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
       ),
       child: Column(
         children: [
           Icon(
             Icons.business,
-            color: Colors.green,
+            color: AppTheme.greenStandard,
             size: 48,
           ),
           const SizedBox(height: 16),
@@ -85,7 +85,7 @@ class QuickPropertyPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
@@ -107,10 +107,10 @@ class QuickPropertyPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.blueStandard.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.blue.withOpacity(0.2),
+          color: AppTheme.blueStandard.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -120,7 +120,7 @@ class QuickPropertyPage extends StatelessWidget {
             children: [
               Icon(
                 Icons.visibility,
-                color: Colors.blue,
+                color: AppTheme.blueStandard,
                 size: 24,
               ),
               const SizedBox(width: 12),
@@ -128,8 +128,8 @@ class QuickPropertyPage extends StatelessWidget {
                 'Notre vision',
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.blue,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.blueStandard,
                 ),
               ),
             ],
@@ -156,7 +156,7 @@ class QuickPropertyPage extends StatelessWidget {
           'Niveaux de contribution',
           style: GoogleFonts.poppins(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
@@ -165,24 +165,24 @@ class QuickPropertyPage extends StatelessWidget {
           '🌱 Contributeur',
           '50€ - 200€',
           'Participation à l\'effort collectif',
-          Colors.green[100]!,
-          Colors.green,
+          AppTheme.grey100,
+          AppTheme.greenStandard,
         ),
         const SizedBox(height: 12),
         _buildContributionCard(
           '🌿 Partenaire',
           '200€ - 500€',
           'Soutien significatif au projet',
-          Colors.blue[100]!,
-          Colors.blue,
+          AppTheme.grey100,
+          AppTheme.blueStandard,
         ),
         const SizedBox(height: 12),
         _buildContributionCard(
           '🌳 Bâtisseur',
           '500€ - 1000€',
           'Engagement fort pour l\'avenir',
-          Colors.orange[100]!,
-          Colors.orange,
+          AppTheme.grey100,
+          AppTheme.orangeStandard,
         ),
         const SizedBox(height: 12),
         _buildContributionCard(
@@ -201,7 +201,7 @@ class QuickPropertyPage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: textColor!.withOpacity(0.3),
         ),
@@ -216,7 +216,7 @@ class QuickPropertyPage extends StatelessWidget {
                   level,
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: textColor,
                   ),
                 ),
@@ -235,7 +235,7 @@ class QuickPropertyPage extends StatelessWidget {
             amount,
             style: GoogleFonts.poppins(
               fontSize: 14,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: textColor,
             ),
           ),
@@ -249,9 +249,9 @@ class QuickPropertyPage extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.grey.withOpacity(0.2),
+          color: AppTheme.grey500.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -261,12 +261,12 @@ class QuickPropertyPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppTheme.greenStandard.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: const Icon(
                   Icons.web,
-                  color: Colors.green,
+                  color: AppTheme.greenStandard,
                   size: 24,
                 ),
               ),
@@ -279,7 +279,7 @@ class QuickPropertyPage extends StatelessWidget {
                       'Plateforme HelloAsso',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -308,7 +308,7 @@ class QuickPropertyPage extends StatelessWidget {
                       donationType: 'Achat du local',
                       url: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/5',
                       icon: Icons.business,
-                      color: Colors.green,
+                      color: AppTheme.greenStandard,
                     ),
                   ),
                 );
@@ -316,11 +316,11 @@ class QuickPropertyPage extends StatelessWidget {
               icon: const Icon(Icons.open_in_new),
               label: const Text('Contribuer au projet'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.greenStandard,
+                foregroundColor: AppTheme.white100,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
             ),
@@ -334,10 +334,10 @@ class QuickPropertyPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.greenStandard.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.green.withOpacity(0.2),
+          color: AppTheme.greenStandard.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -347,7 +347,7 @@ class QuickPropertyPage extends StatelessWidget {
             children: [
               const Icon(
                 Icons.emoji_events,
-                color: Colors.green,
+                color: AppTheme.greenStandard,
                 size: 24,
               ),
               const SizedBox(width: 12),
@@ -355,8 +355,8 @@ class QuickPropertyPage extends StatelessWidget {
                 'Avantages du projet',
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.green,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.greenStandard,
                 ),
               ),
             ],
@@ -372,7 +372,7 @@ class QuickPropertyPage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.amber.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(
                 color: Colors.amber.withOpacity(0.3),
               ),
@@ -391,7 +391,7 @@ class QuickPropertyPage extends StatelessWidget {
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: Colors.amber[800],
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),

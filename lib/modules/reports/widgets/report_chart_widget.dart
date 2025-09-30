@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/report.dart';
 import '../services/chart_service.dart';
+import '../../../../theme.dart';
 
 /// Widget pour afficher des graphiques de rapport
 class ReportChartWidget extends StatefulWidget {
@@ -50,7 +51,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
+                color: AppTheme.grey500,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
@@ -63,7 +64,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                       child: Text(
                         widget.title!,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                     ),
@@ -179,8 +180,8 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
         Text(
           'Informations',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: Colors.grey.shade600,
+            fontWeight: AppTheme.fontSemiBold,
+            color: AppTheme.grey500,
           ),
         ),
         const SizedBox(height: 8),
@@ -199,14 +200,14 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
+        color: AppTheme.blueStandard,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Text(
         '$key: $value',
         style: TextStyle(
           fontSize: 11,
-          color: Colors.blue.shade700,
+          color: AppTheme.blueStandard,
         ),
       ),
     );
@@ -216,7 +217,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: AppTheme.white100,
           appBar: AppBar(
             title: Text(widget.title ?? 'Graphique'),
             actions: [
@@ -270,7 +271,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
             Text(
               'Résumé',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -285,8 +286,8 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                 return Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(8),
+                    color: AppTheme.blueStandard,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,7 +296,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                         entry.key,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: AppTheme.grey500,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -303,7 +304,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                         entry.value.toString(),
                         style: const TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                     ],
@@ -327,7 +328,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
             Text(
               'Type de graphique',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -359,21 +360,21 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(8),
+          color: isSelected ? AppTheme.blueStandard : AppTheme.grey500,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         ),
         child: Column(
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.grey.shade600,
+              color: isSelected ? AppTheme.white100 : AppTheme.grey500,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
                 fontSize: 12,
-                color: isSelected ? Colors.white : Colors.grey.shade600,
+                color: isSelected ? AppTheme.white100 : AppTheme.grey500,
               ),
             ),
           ],

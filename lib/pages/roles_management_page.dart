@@ -5,7 +5,7 @@ import '../services/roles_firebase_service.dart';
 import '../widgets/role_card.dart';
 import 'role_form_page.dart';
 import 'role_assignments_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class RolesManagementPage extends StatefulWidget {
   const RolesManagementPage({super.key});
@@ -105,7 +105,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Vous n\'avez pas les permissions pour créer des rôles'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
       return;
@@ -122,7 +122,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Rôle créé avec succès'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
         ),
       );
     }
@@ -145,8 +145,8 @@ class _RolesManagementPageState extends State<RolesManagementPage>
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: AppTheme.redStandard,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Supprimer'),
           ),
@@ -174,7 +174,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Rôles supprimés avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -183,7 +183,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -215,7 +215,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Rôles activés avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -224,7 +224,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -256,7 +256,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Rôles désactivés avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -265,7 +265,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -280,7 +280,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
             ? Text('${_selectedRoles.length} rôle(s) sélectionné(s)')
             : const Text('Gestion des Rôles'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         leading: _isSelectionMode
             ? IconButton(
@@ -325,9 +325,9 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         ],
         bottom: TabBar(
           controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
+          indicatorColor: AppTheme.white100,
           tabs: const [
             Tab(text: 'Rôles', icon: Icon(Icons.security)),
             Tab(text: 'Permissions', icon: Icon(Icons.key)),
@@ -356,7 +356,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
               child: FloatingActionButton.extended(
                 onPressed: _addNewRole,
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
                 icon: const Icon(Icons.add),
                 label: const Text('Nouveau rôle'),
               ),
@@ -369,10 +369,10 @@ class _RolesManagementPageState extends State<RolesManagementPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.grey500.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -387,7 +387,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
               hintText: 'Rechercher des rôles...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide.none,
               ),
               filled: true,
@@ -428,20 +428,20 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                 Icon(
                   Icons.error,
                   size: 64,
-                  color: Colors.grey[400],
+                  color: AppTheme.grey400,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'Erreur lors du chargement',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Erreur: ${snapshot.error}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -466,13 +466,13 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                 Icon(
                   Icons.security,
                   size: 64,
-                  color: Colors.grey[400],
+                  color: AppTheme.grey400,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   _searchQuery.isNotEmpty ? 'Aucun rôle trouvé' : 'Aucun rôle',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -481,7 +481,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                       ? 'Aucun rôle ne correspond à votre recherche'
                       : 'Commencez par créer votre premier rôle',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -493,7 +493,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                     label: const Text('Créer un rôle'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
                 ],
@@ -539,7 +539,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
             title: Text(
               category,
               style: const TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             leading: Icon(
@@ -626,14 +626,14 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                             backgroundColor: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
                             child: Icon(
                               _getIconFromString(role.icon),
-                              color: Colors.white,
+                              color: AppTheme.white100,
                               size: 20,
                             ),
                           ),
                           title: Text(role.name),
                           trailing: Chip(
                             label: Text('$usage personne${usage > 1 ? 's' : ''}'),
-                            backgroundColor: usage > 0 ? AppTheme.primaryColor.withOpacity(0.1) : Colors.grey[200],
+                            backgroundColor: usage > 0 ? AppTheme.primaryColor.withOpacity(0.1) : AppTheme.grey200,
                           ),
                         ),
                       );
@@ -660,7 +660,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
               value,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: color,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             Text(

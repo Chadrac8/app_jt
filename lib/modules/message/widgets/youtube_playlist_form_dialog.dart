@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/youtube_playlist_model.dart';
 
 class YouTubePlaylistFormDialog extends StatefulWidget {
@@ -62,7 +62,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: 600,
@@ -89,7 +89,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                       : 'Modifier la playlist',
                     style: GoogleFonts.openSans(
                       fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -114,7 +114,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                           'Titre de la playlist',
                           style: GoogleFonts.openSans(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
@@ -124,11 +124,11 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                           decoration: InputDecoration(
                             hintText: 'Ex: Prédications de William Marrion Branham',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               borderSide: BorderSide(color: AppTheme.surfaceColor),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               borderSide: BorderSide(color: AppTheme.primaryColor),
                             ),
                           ),
@@ -146,7 +146,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                           'URL de la playlist YouTube',
                           style: GoogleFonts.openSans(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
@@ -156,11 +156,11 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                           decoration: InputDecoration(
                             hintText: 'https://www.youtube.com/playlist?list=...',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               borderSide: BorderSide(color: AppTheme.surfaceColor),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               borderSide: BorderSide(color: AppTheme.primaryColor),
                             ),
                             suffixIcon: Icon(
@@ -185,7 +185,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                           'Description (optionnelle)',
                           style: GoogleFonts.openSans(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
@@ -196,11 +196,11 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                           decoration: InputDecoration(
                             hintText: 'Description de la playlist...',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               borderSide: BorderSide(color: AppTheme.surfaceColor),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               borderSide: BorderSide(color: AppTheme.primaryColor),
                             ),
                           ),
@@ -270,20 +270,20 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppTheme.primaryColor,
-                                foregroundColor: Colors.white,
+                                foregroundColor: AppTheme.white100,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 24,
                                   vertical: 12,
                                 ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                 ),
                               ),
                               child: Text(
                                 'Enregistrer',
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
                             ),

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
@@ -92,7 +92,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
         backgroundColor: Colors.transparent,
         title: Text(
           widget.plan == null ? 'Nouveau plan' : 'Modifier le plan',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontBold)),
         centerTitle: true,
         actions: [
           TextButton(
@@ -105,7 +105,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                 : Text(
                     'Sauvegarder',
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: theme.colorScheme.primary))),
         ],
         bottom: PreferredSize(
@@ -114,10 +114,10 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: AppTheme.black100.withOpacity(0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 2)),
               ]),
@@ -125,11 +125,11 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 color: theme.colorScheme.primary),
               labelColor: AppTheme.surfaceColor,
               unselectedLabelColor: theme.colorScheme.onSurface.withOpacity(0.6),
-              labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              labelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
               tabs: const [
                 Tab(text: 'Informations'),
                 Tab(text: 'Jours'),
@@ -157,7 +157,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             'Informations de base',
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 20),
           
           TextFormField(
@@ -166,7 +166,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               labelText: 'Nom du plan *',
               hintText: 'Ex: Bible en 1 an',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Le nom est obligatoire';
@@ -184,7 +184,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               labelText: 'Description *',
               hintText: 'Décrivez le contenu et l\'objectif de ce plan',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'La description est obligatoire';
@@ -203,7 +203,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   decoration: InputDecoration(
                     labelText: 'Catégorie',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   items: [
                     'Classique',
                     'Nouveau Testament',
@@ -227,7 +227,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   decoration: InputDecoration(
                     labelText: 'Difficulté',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   items: const [
                     DropdownMenuItem(value: 'beginner', child: Text('Débutant')),
                     DropdownMenuItem(value: 'intermediate', child: Text('Intermédiaire')),
@@ -251,7 +251,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                     labelText: 'Nombre de jours *',
                     hintText: '365',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Obligatoire';
@@ -271,7 +271,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                     labelText: 'Temps/jour (min) *',
                     hintText: '15',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Obligatoire';
@@ -291,13 +291,13 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             'Options',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 12),
           
           SwitchListTile(
             title: Text(
               'Plan populaire',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
+              style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium)),
             subtitle: Text(
               'Mettre en avant ce plan dans la section populaires',
               style: GoogleFonts.inter(fontSize: 12)),
@@ -326,7 +326,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               Text(
                 '${_days.length} jour(s) configuré(s)',
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.primary)),
               const Spacer(),
               TextButton.icon(
@@ -363,7 +363,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             'Aperçu du plan',
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 16),
           
           // Informations générales
@@ -376,7 +376,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             'Premiers jours (aperçu)',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 12),
           
           ..._days.take(3).map((day) => _buildPreviewDayCard(day)),
@@ -387,7 +387,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               margin: const EdgeInsets.only(top: 8),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
               child: Text(
                 '... et ${_days.length - 3} autres jours',
                 style: GoogleFonts.inter(
@@ -403,7 +403,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -411,7 +411,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             _nameController.text.isEmpty ? 'Nom du plan' : _nameController.text,
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: theme.colorScheme.primary)),
           const SizedBox(height: 8),
           Text(
@@ -438,7 +438,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(8)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
       child: Text(
         label,
         style: GoogleFonts.inter(fontSize: 12)));
@@ -452,13 +452,13 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Jour ${day.day}: ${day.title}',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
           const SizedBox(height: 4),
           Text(
             'Lectures: ${day.readings.map((r) => r.displayText).join(', ')}',
@@ -484,7 +484,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             'Aucun jour configuré',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface.withOpacity(0.7))),
           const SizedBox(height: 8),
           Text(
@@ -505,7 +505,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
       child: ExpansionTile(
         title: Text(
           'Jour ${day.day}: ${day.title}',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
         subtitle: Text(
           'Lectures: ${day.readings.map((r) => r.displayText).join(', ')}',
           style: GoogleFonts.inter(fontSize: 12)),
@@ -525,14 +525,14 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                 if (day.reflection != null) ...[
                   Text(
                     'Réflexion:',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   Text(day.reflection!),
                   const SizedBox(height: 8),
                 ],
                 if (day.prayer != null) ...[
                   Text(
                     'Prière:',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   Text(day.prayer!),
                 ],
               ])),
@@ -625,7 +625,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   children: [
                     Text(
                       'Lectures (${_dayReadings.length})',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                      style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                     const Spacer(),
                     TextButton(
                       onPressed: () => _addReading(setState),

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../models/role.dart';
 import '../models/permission.dart';
 import '../models/user_role.dart';
+import '../../../../theme.dart';
 
 class PrintService {
   /// Imprimer la liste des rôles
@@ -261,7 +262,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Container(
         width: 400,
@@ -288,7 +289,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Icon(
             Icons.print,
@@ -304,13 +305,13 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
               Text(
                 'Imprimer les données',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               Text(
                 'Choisissez le type de données à imprimer',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
             ],
@@ -327,7 +328,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
         Text(
           'Données à imprimer',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 8),
@@ -410,7 +411,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Impression lancée'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -419,7 +420,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'impression: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

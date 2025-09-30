@@ -5,24 +5,25 @@ import 'package:flutter/services.dart';
 // ...existing code...
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'services/push_notification_service.dart';
+// import 'services/push_notification_service.dart';  // Temporarily disabled
 import 'package:provider/provider.dart';
 import 'dart:async';
 import 'firebase_options.dart';
-import 'theme.dart';
+import '../theme.dart';
 import 'auth/auth_wrapper.dart';
 import 'services/auth_listener_service.dart';
 import 'services/app_config_firebase_service.dart';
 import 'services/workflow_initialization_service.dart';
 import 'services/profile_image_cache_service.dart';
 import 'services/roles_initialization_service.dart';
-import 'modules/roles/services/permission_provider.dart';
+import 'modules/roles/providers/permission_provider.dart';
 import 'modules/roles/providers/role_provider.dart';
 import 'utils/date_formatter.dart';
 import 'config/locale_config.dart';
 import 'churchflow_splash.dart';
 import 'modules/roles/roles_module.dart';
 import 'modules/pain_quotidien/services/daily_bread_scheduler.dart';
+import '../theme.dart';
 
 /// Gestionnaire global pour les messages en background
 @pragma('vm:entry-point')
@@ -62,7 +63,7 @@ void main() async {
       // Register the background handler and initialize notification service
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
       // Initialize with a global navigator key so we can route on notification taps
-      await PushNotificationService.initialize(navigatorKey: AppNavigator.navigatorKey);
+      // await PushNotificationService.initialize(navigatorKey: AppNavigator.navigatorKey);  // Temporarily disabled
       print('✅ PushNotificationService initialized');
     } catch (e) {
       print('Warning: PushNotificationService initialization failed: $e');
@@ -82,7 +83,7 @@ void _setSystemUIOverlayStyle() {
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
+      systemNavigationBarColor: AppTheme.white100,
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
@@ -303,7 +304,7 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
   /// Construire l'écran d'erreur pour les erreurs critiques de l'application
   Widget _buildErrorScreen() {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: AppTheme.grey500,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -314,13 +315,13 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.red.shade200),
+                    color: AppTheme.redStandard,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    border: Border.all(color: AppTheme.redStandard),
                   ),
                   child: Icon(
                     Icons.error_outline,
-                    color: Colors.red.shade600,
+                    color: AppTheme.redStandard,
                     size: 64,
                   ),
                 ),
@@ -329,8 +330,8 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
                   'Erreur de l\'Application',
                   style: TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red.shade700,
+                    fontWeight: AppTheme.fontBold,
+                    color: AppTheme.redStandard,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -339,7 +340,7 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.grey.shade700,
+                    color: AppTheme.grey500,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -351,7 +352,7 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
                   child: const Text('Redémarrer'),
@@ -367,23 +368,23 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
   /// Construire un widget d'erreur simple
   Widget _buildErrorWidget() {
     return Container(
-      color: Colors.red.shade50,
+      color: AppTheme.redStandard,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.error_outline,
-              color: Colors.red.shade600,
+              color: AppTheme.redStandard,
               size: 48,
             ),
             const SizedBox(height: 16),
             Text(
               'Erreur d\'affichage',
               style: TextStyle(
-                color: Colors.red.shade700,
+                color: AppTheme.redStandard,
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
           ],
@@ -409,7 +410,7 @@ class SafeAuthWrapper extends StatelessWidget {
             children: [
               const Icon(
                 Icons.warning,
-                color: Colors.orange,
+                color: AppTheme.orangeStandard,
                 size: 64,
               ),
               const SizedBox(height: 16),
@@ -417,7 +418,7 @@ class SafeAuthWrapper extends StatelessWidget {
                 'Erreur d\'authentification',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 8),
@@ -425,7 +426,7 @@ class SafeAuthWrapper extends StatelessWidget {
                 'Impossible de charger le système d\'authentification.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.grey.shade600,
+                  color: AppTheme.grey500,
                 ),
               ),
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
 import '../services/blog_firebase_service.dart';
 import '../auth/auth_service.dart';
+import '../../theme.dart';
 
 class BlogCommentsSection extends StatefulWidget {
   final String postId;
@@ -55,18 +56,18 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
               return Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.red[50],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.red[200]!),
+                  color: AppTheme.grey50,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey200),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.error_outline, color: Colors.red[600]),
+                    Icon(Icons.error_outline, color: AppTheme.grey600),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Erreur lors du chargement des commentaires',
-                        style: TextStyle(color: Colors.red[700]),
+                        style: TextStyle(color: AppTheme.grey700),
                       ),
                     ),
                   ],
@@ -102,9 +103,9 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        color: AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: AppTheme.grey200!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +116,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Row(
                 children: [
@@ -130,7 +131,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                       'Réponse à ${_replyingTo!.authorName}',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                         fontSize: 12,
                       ),
                     ),
@@ -198,20 +199,20 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
           Icon(
             Icons.comment_outlined,
             size: 64,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
             'Aucun commentaire',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Soyez le premier à commenter cet article!',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
             textAlign: TextAlign.center,
           ),
@@ -248,10 +249,10 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isReply ? Colors.grey[50] : Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: isReply ? AppTheme.grey50 : AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
-          color: isReply ? Colors.grey[200]! : Colors.grey[300]!,
+          color: isReply ? AppTheme.grey200! : AppTheme.grey300!,
         ),
       ),
       child: Column(
@@ -267,7 +268,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                     ? NetworkImage(comment.authorPhotoUrl!)
                     : null,
                 child: comment.authorPhotoUrl == null
-                    ? Icon(Icons.person, size: 16, color: Colors.grey[600])
+                    ? Icon(Icons.person, size: 16, color: AppTheme.grey600)
                     : null,
               ),
               
@@ -283,7 +284,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                         Text(
                           comment.authorName,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         if (comment.isAuthorReply) ...[
@@ -300,9 +301,9 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                             child: const Text(
                               'AUTEUR',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppTheme.white100,
                                 fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                             ),
                           ),
@@ -312,7 +313,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                     Text(
                       _formatCommentDate(comment.createdAt),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -343,7 +344,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                 ],
                 child: Icon(
                   Icons.more_vert,
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                   size: 16,
                 ),
               ),
@@ -371,13 +372,13 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                 icon: Icon(
                   Icons.favorite_border,
                   size: 16,
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
                 label: Text(
                   comment.likes > 0 ? comment.likes.toString() : 'J\'aime',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
                 style: TextButton.styleFrom(
@@ -396,13 +397,13 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                   icon: Icon(
                     Icons.reply,
                     size: 16,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                   label: Text(
                     'Répondre',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                   style: TextButton.styleFrom(
@@ -468,7 +469,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -528,7 +529,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                 const SnackBar(content: Text('Commentaire signalé')),
               );
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Signaler'),
           ),
         ],

@@ -7,7 +7,7 @@ import '../../services/component_action_service.dart';
 import '../../services/youtube_service.dart';
 import '../../services/soundcloud_service.dart';
 import 'package:file_picker/file_picker.dart';
-import '../../theme.dart';
+import '../../../theme.dart';
 import '../grid_container_builder.dart';
 import '../image_picker_widget.dart';
 import '../youtube_picker_widget.dart';
@@ -85,7 +85,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Veuillez sélectionner une image'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
         return;
@@ -125,22 +125,22 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 children: [
                   Icon(
                     _getComponentIcon(widget.component.type),
-                    color: Colors.white,
+                    color: AppTheme.white100,
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       'Modifier ${widget.component.typeLabel}',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                   ),
                 ],
               ),
@@ -198,7 +198,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.grey[300]!)),
+                border: Border(top: BorderSide(color: AppTheme.grey300!)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -212,7 +212,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                     onPressed: _saveComponent,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                     child: const Text('Sauvegarder'),
                   ),
@@ -293,7 +293,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Contenu du texte',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -352,7 +352,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration de l\'image',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -433,7 +433,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             Text(
               'Action au clic',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const Spacer(),
@@ -565,7 +565,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Paramètres',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 8),
@@ -664,7 +664,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration du bouton',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -740,7 +740,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration de la vidéo',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -778,7 +778,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 Text(
                   'Options de lecture',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -823,7 +823,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 Text(
                   'Configuration du lecteur',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -881,7 +881,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 Text(
                   'Type: ${urlInfo.displayType}',
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -935,7 +935,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration de la liste',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -986,7 +986,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               label: const Text('Ajouter'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
                 minimumSize: const Size(0, 32),
               ),
             ),
@@ -1027,7 +1027,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                             _data['items'] = items;
                           });
                         },
-                        icon: const Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete, color: AppTheme.redStandard),
                       ),
                     ],
                   ),
@@ -1061,7 +1061,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration des onglets',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -1090,7 +1090,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               label: const Text('Ouvrir l\'éditeur'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
               ),
             ),
           ],
@@ -1115,7 +1115,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       Text(
                         'Aperçu des onglets',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                     ],
@@ -1144,7 +1144,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                                 '${index + 1}',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                   color: AppTheme.primaryColor,
                                 ),
                               ),
@@ -1158,14 +1158,14 @@ class _ComponentEditorState extends State<ComponentEditor> {
                                 Text(
                                   tab['title'] ?? 'Onglet ${index + 1}',
                                   style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                                 Text(
                                   '$componentsCount composant${componentsCount > 1 ? 's' : ''}',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.grey[600],
+                                    color: AppTheme.grey600,
                                   ),
                                 ),
                               ],
@@ -1181,17 +1181,17 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
         ] else ...[
           Card(
-            color: Colors.orange.shade50,
+            color: AppTheme.orangeStandard,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.orange.shade700),
+                  Icon(Icons.info_outline, color: AppTheme.orangeStandard),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       'Aucun onglet configuré. Utilisez l\'éditeur avancé pour créer des onglets.',
-                      style: TextStyle(color: Colors.orange.shade700),
+                      style: TextStyle(color: AppTheme.orangeStandard),
                     ),
                   ),
                 ],
@@ -1206,7 +1206,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Options de style',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 12),
@@ -1255,7 +1255,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration du verset',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -1318,7 +1318,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration de la bannière',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -1384,7 +1384,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration de la carte',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -1455,19 +1455,19 @@ class _ComponentEditorState extends State<ComponentEditor> {
           Text(
             'Configuration audio',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
           // Onglets pour choisir le type d'audio
           Container(
             decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
+              color: AppTheme.grey100,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: const TabBar(
               labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: Colors.grey,
+              unselectedLabelColor: AppTheme.grey500,
               indicatorColor: AppTheme.primaryColor,
               tabs: [
                 Tab(icon: Icon(Icons.audiotrack), text: 'SoundCloud'),
@@ -1489,7 +1489,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   Text(
                     'Configuration du lecteur',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -1537,18 +1537,18 @@ class _ComponentEditorState extends State<ComponentEditor> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.green[50],
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.green[200]!),
+              color: AppTheme.grey50,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(color: AppTheme.grey200),
             ),
             child: Row(
               children: [
-                Icon(Icons.info, color: Colors.green[700], size: 20),
+                Icon(Icons.info, color: AppTheme.grey700, size: 20),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Sélectionnez un fichier audio depuis votre appareil (MP3, WAV, etc.).',
-                    style: TextStyle(color: Colors.green[800], fontSize: 13),
+                    style: TextStyle(color: AppTheme.grey800, fontSize: 13),
                   ),
                 ),
               ],
@@ -1591,7 +1591,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.purple[50],
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               border: Border.all(color: Colors.purple[200]!),
             ),
             child: Row(
@@ -1639,18 +1639,18 @@ class _ComponentEditorState extends State<ComponentEditor> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.orange[50],
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.orange[200]!),
+              color: AppTheme.grey50,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(color: AppTheme.grey200),
             ),
             child: Row(
               children: [
-                Icon(Icons.album, color: Colors.orange[700], size: 20),
+                Icon(Icons.album, color: AppTheme.grey700, size: 20),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Ajoutez un album audio (SoundCloud, OneDrive, Drive, fichiers téléchargés, etc.).',
-                    style: TextStyle(color: Colors.orange[800], fontSize: 13),
+                    style: TextStyle(color: AppTheme.grey800, fontSize: 13),
                   ),
                 ),
               ],
@@ -1705,19 +1705,19 @@ class _ComponentEditorState extends State<ComponentEditor> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.orange[50],
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.orange[200]!),
+              color: AppTheme.grey50,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(color: AppTheme.grey200),
             ),
             child: Row(
               children: [
-                Icon(Icons.info, color: Colors.orange[700], size: 20),
+                Icon(Icons.info, color: AppTheme.grey700, size: 20),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Intégrez facilement des pistes, playlists ou profils SoundCloud. Collez simplement l\'URL depuis votre navigateur.',
                     style: TextStyle(
-                      color: Colors.orange[800],
+                      color: AppTheme.grey800,
                       fontSize: 13,
                     ),
                   ),
@@ -1763,7 +1763,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             Text(
               'Options d\'intégration',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 12),
@@ -1784,9 +1784,9 @@ class _ComponentEditorState extends State<ComponentEditor> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
+        color: AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        border: Border.all(color: AppTheme.grey300!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1800,12 +1800,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   children: [
                     const Text(
                       'Lecture automatique',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: TextStyle(fontWeight: AppTheme.fontMedium),
                     ),
                     Text(
                       'Démarre la lecture dès le chargement',
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         fontSize: 12,
                       ),
                     ),
@@ -1830,12 +1830,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   children: [
                     const Text(
                       'Masquer les contenus associés',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: TextStyle(fontWeight: AppTheme.fontMedium),
                     ),
                     Text(
                       'Cache les suggestions de pistes similaires',
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         fontSize: 12,
                       ),
                     ),
@@ -1860,12 +1860,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   children: [
                     const Text(
                       'Mode visuel',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: TextStyle(fontWeight: AppTheme.fontMedium),
                     ),
                     Text(
                       'Affiche la pochette de l\'album',
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         fontSize: 12,
                       ),
                     ),
@@ -1890,12 +1890,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   children: [
                     const Text(
                       'Couleur du lecteur',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: TextStyle(fontWeight: AppTheme.fontMedium),
                     ),
                     Text(
                       'Couleur de l\'interface SoundCloud',
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         fontSize: 12,
                       ),
                     ),
@@ -1930,19 +1930,19 @@ class _ComponentEditorState extends State<ComponentEditor> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.blue[200]!),
+              color: AppTheme.grey50,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(color: AppTheme.grey200),
             ),
             child: Row(
               children: [
-                Icon(Icons.info, color: Colors.blue[700], size: 20),
+                Icon(Icons.info, color: AppTheme.grey700, size: 20),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Pour les fichiers audio hébergés directement (MP3, WAV, etc.). L\'URL doit pointer vers le fichier audio.',
                     style: TextStyle(
-                      color: Colors.blue[800],
+                      color: AppTheme.grey800,
                       fontSize: 13,
                     ),
                   ),
@@ -1992,7 +1992,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Informations audio',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 12),
@@ -2062,26 +2062,26 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Google Maps',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.blue[50],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.blue[200]!),
+            color: AppTheme.grey50,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            border: Border.all(color: AppTheme.grey200),
           ),
           child: Row(
             children: [
-              Icon(Icons.info, color: Colors.blue[700], size: 20),
+              Icon(Icons.info, color: AppTheme.grey700, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'Saisissez une adresse et elle sera automatiquement reconnue par Google Maps',
                   style: TextStyle(
-                    color: Colors.blue[700],
+                    color: AppTheme.grey700,
                     fontSize: 12,
                   ),
                 ),
@@ -2110,7 +2110,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Ou saisissez les coordonnées GPS :',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -2186,26 +2186,26 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration HTML',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.orange[50],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.orange[200]!),
+            color: AppTheme.grey50,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            border: Border.all(color: AppTheme.grey200),
           ),
           child: Row(
             children: [
-              Icon(Icons.warning, color: Colors.orange[700], size: 20),
+              Icon(Icons.warning, color: AppTheme.grey700, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'Attention : Le code HTML sera exécuté tel quel. Assurez-vous qu\'il soit sûr.',
                   style: TextStyle(
-                    color: Colors.orange[700],
+                    color: AppTheme.grey700,
                     fontSize: 12,
                   ),
                 ),
@@ -2250,7 +2250,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration de la citation',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2292,7 +2292,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Couleurs personnalisées',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -2334,7 +2334,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration des groupes',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2420,7 +2420,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Couleurs personnalisées',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -2462,15 +2462,15 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration générique',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(8),
+            color: AppTheme.grey100,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Text(
             'Éditeur spécialisé non disponible pour ce type de composant.\n'
@@ -2490,7 +2490,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration des événements',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2617,7 +2617,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration WebView',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
                    ),
         ),
         const SizedBox(height: 16),
@@ -2640,7 +2640,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Mur de Prière',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2660,7 +2660,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Grille de Cartes',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2684,7 +2684,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Grille de Statistiques',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2707,7 +2707,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Grille Icône-Texte',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2731,7 +2731,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Grille de Cartes Image',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2755,7 +2755,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Grille de Progression',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -2778,27 +2778,27 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration Conteneur de Grille',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.blue.shade50,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.blue.shade200),
+            color: AppTheme.blueStandard,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            border: Border.all(color: AppTheme.blueStandard),
           ),
           child: Column(
             children: [
               Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.blue.shade600),
+                  Icon(Icons.info_outline, color: AppTheme.blueStandard),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'Le Container Grid permet d\'organiser des composants en grille.',
-                      style: TextStyle(color: Colors.blue.shade700),
+                      style: TextStyle(color: AppTheme.blueStandard),
                     ),
                   ),
                 ],
@@ -2812,7 +2812,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   label: const Text('Ouvrir l\'éditeur avancé'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
@@ -2824,7 +2824,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         Text(
           'Configuration rapide',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 8),

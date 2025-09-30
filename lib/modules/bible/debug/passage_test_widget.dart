@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../services/thematic_passage_service.dart';
 import '../widgets/add_passage_dialog.dart';
 import '../widgets/theme_creation_dialog.dart';
+import '../../../../theme.dart';
 
 /// Widget de diagnostic pour tester l'ajout de passages bibliques
 class PassageTestWidget extends StatefulWidget {
@@ -46,7 +47,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
       _testThemeId = await ThematicPassageService.createTheme(
         name: 'Test UI ${DateTime.now().millisecondsSinceEpoch}',
         description: 'Thème de test pour l\'interface utilisateur',
-        color: Colors.blue,
+        color: AppTheme.blueStandard,
         icon: Icons.star,
         isPublic: false,
       );
@@ -70,7 +71,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Créez d\'abord un thème de test'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -169,8 +170,8 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test Passages Bibliques'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.blueStandard,
+        foregroundColor: AppTheme.white100,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -182,11 +183,11 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: _currentUser != null ? Colors.green[50] : Colors.orange[50],
+                color: _currentUser != null ? AppTheme.grey50 : AppTheme.grey50,
                 border: Border.all(
-                  color: _currentUser != null ? Colors.green : Colors.orange,
+                  color: _currentUser != null ? AppTheme.greenStandard : AppTheme.orangeStandard,
                 ),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,14 +196,14 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                     children: [
                       Icon(
                         _currentUser != null ? Icons.check_circle : Icons.warning,
-                        color: _currentUser != null ? Colors.green : Colors.orange,
+                        color: _currentUser != null ? AppTheme.greenStandard : AppTheme.orangeStandard,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'État de l\'authentification',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: _currentUser != null ? Colors.green : Colors.orange,
+                          fontWeight: AppTheme.fontBold,
+                          color: _currentUser != null ? AppTheme.greenStandard : AppTheme.orangeStandard,
                         ),
                       ),
                     ],
@@ -222,7 +223,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
               'Tests disponibles:',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
 
@@ -238,8 +239,8 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                   icon: const Icon(Icons.add),
                   label: const Text('1. Créer thème test'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.blueStandard,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
                 ElevatedButton.icon(
@@ -247,8 +248,8 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                   icon: const Icon(Icons.library_books),
                   label: const Text('2. Dialog ajout passage'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.greenStandard,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
                 ElevatedButton.icon(
@@ -257,7 +258,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                   label: const Text('3. Test ajout direct'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
                 ElevatedButton.icon(
@@ -265,8 +266,8 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                   icon: const Icon(Icons.create),
                   label: const Text('4. Dialog création thème'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.orangeStandard,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
                 ElevatedButton.icon(
@@ -274,8 +275,8 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                   icon: const Icon(Icons.delete),
                   label: const Text('5. Nettoyer'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.redStandard,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ],
@@ -294,9 +295,9 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[300]!),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey300!),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,7 +305,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                     Text(
                       'État des tests:',
                       style: GoogleFonts.inter(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         fontSize: 16,
                       ),
                     ),
@@ -331,9 +332,9 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.blue[200]!),
+                color: AppTheme.grey50,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                border: Border.all(color: AppTheme.grey200),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,8 +342,8 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                   Text(
                     'Instructions de test:',
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[800],
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.grey800,
                     ),
                   ),
                   const SizedBox(height: 8),

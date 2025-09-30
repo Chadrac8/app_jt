@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
+import '../../../../theme.dart';
 
 class TaskDetailView extends StatelessWidget {
   final TaskModel task;
@@ -37,11 +38,11 @@ class TaskDetailView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -54,8 +55,8 @@ class TaskDetailView extends StatelessWidget {
             task.title,
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[800],
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.grey800,
             ),
           ),
           const SizedBox(height: 8),
@@ -75,11 +76,11 @@ class TaskDetailView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -92,8 +93,8 @@ class TaskDetailView extends StatelessWidget {
             'Informations',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[800],
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.grey800,
             ),
           ),
           const SizedBox(height: 16),
@@ -128,11 +129,11 @@ class TaskDetailView extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -145,8 +146,8 @@ class TaskDetailView extends StatelessWidget {
             'Description',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[800],
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.grey800,
             ),
           ),
           const SizedBox(height: 12),
@@ -154,7 +155,7 @@ class TaskDetailView extends StatelessWidget {
             task.description,
             style: GoogleFonts.poppins(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
               height: 1.5,
             ),
           ),
@@ -168,11 +169,11 @@ class TaskDetailView extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -185,8 +186,8 @@ class TaskDetailView extends StatelessWidget {
             'Assignés (${task.assigneeIds.length})',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[800],
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.grey800,
             ),
           ),
           const SizedBox(height: 12),
@@ -195,7 +196,7 @@ class TaskDetailView extends StatelessWidget {
               'Aucune personne assignée',
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
             )
           else
@@ -208,14 +209,14 @@ class TaskDetailView extends StatelessWidget {
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: Colors.grey[500]),
+        Icon(icon, size: 20, color: AppTheme.grey500),
         const SizedBox(width: 12),
         Text(
           '$label: ',
           style: GoogleFonts.poppins(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Colors.grey[700],
+            fontWeight: AppTheme.fontMedium,
+            color: AppTheme.grey700,
           ),
         ),
         Expanded(
@@ -223,7 +224,7 @@ class TaskDetailView extends StatelessWidget {
             value,
             style: GoogleFonts.poppins(
               fontSize: 14,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ),
@@ -238,13 +239,13 @@ class TaskDetailView extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 16,
-            backgroundColor: Colors.blue.withOpacity(0.1),
+            backgroundColor: AppTheme.blueStandard.withOpacity(0.1),
             child: Text(
               userId.substring(0, 1).toUpperCase(),
               style: GoogleFonts.poppins(
                 fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.blue,
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.blueStandard,
               ),
             ),
           ),
@@ -253,7 +254,7 @@ class TaskDetailView extends StatelessWidget {
             'Utilisateur $userId', // TODO: Get actual user name
             style: GoogleFonts.poppins(
               fontSize: 14,
-              color: Colors.grey[700],
+              color: AppTheme.grey700,
             ),
           ),
         ],
@@ -269,7 +270,7 @@ class TaskDetailView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
@@ -281,7 +282,7 @@ class TaskDetailView extends StatelessWidget {
             label,
             style: GoogleFonts.poppins(
               fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: color,
             ),
           ),
@@ -298,14 +299,14 @@ class TaskDetailView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Text(
         label,
         style: GoogleFonts.poppins(
           fontSize: 12,
-          fontWeight: FontWeight.w600,
+          fontWeight: AppTheme.fontSemiBold,
           color: color,
         ),
       ),
@@ -315,13 +316,13 @@ class TaskDetailView extends StatelessWidget {
   Color _getPriorityColor(String priority) {
     switch (priority) {
       case 'high':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'medium':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'low':
-        return Colors.green;
+        return AppTheme.greenStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -354,13 +355,13 @@ class TaskDetailView extends StatelessWidget {
   Color _getStatusColor(String status) {
     switch (status) {
       case 'completed':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'in_progress':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'todo':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

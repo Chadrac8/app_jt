@@ -3,7 +3,7 @@ import '../models/appointment_model.dart';
 import '../models/person_model.dart';
 import '../services/appointments_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../widgets/appointment_card.dart';
 import 'appointment_booking_page.dart';
 import 'appointment_detail_page.dart';
@@ -189,7 +189,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
       appBar: AppBar(
         title: const Text('Mes Rendez-vous'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           IconButton(
@@ -212,7 +212,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
       floatingActionButton: FloatingActionButton(
         onPressed: _bookNewAppointment,
         backgroundColor: AppTheme.primaryColor,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: AppTheme.white100),
       ),
     );
   }
@@ -233,16 +233,16 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
           Text(
             'Bonjour ${_currentUser!.firstName} !',
             style: const TextStyle(
-              color: Colors.white,
+              color: AppTheme.white100,
               fontSize: 24,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Gérez vos rendez-vous facilement',
             style: TextStyle(
-              color: Colors.white70,
+              color: AppTheme.white100.withOpacity(0.70),
               fontSize: 16,
             ),
           ),
@@ -267,12 +267,12 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
                 onSelected: (selected) {
                   setState(() => _selectedFilter = entry.key);
                 },
-                backgroundColor: Colors.white,
+                backgroundColor: AppTheme.white100,
                 selectedColor: AppTheme.primaryColor.withOpacity(0.2),
                 checkmarkColor: AppTheme.primaryColor,
                 labelStyle: TextStyle(
                   color: isSelected ? AppTheme.primaryColor : AppTheme.textPrimaryColor,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontWeight: isSelected ? AppTheme.fontBold : FontWeight.normal,
                 ),
               ),
             );
@@ -381,7 +381,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
             title,
             style: const TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
@@ -402,7 +402,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
               label: const Text('Prendre rendez-vous'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 12,
@@ -460,7 +460,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
@@ -473,7 +473,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
             style: TextStyle(
               color: color,
               fontSize: 12,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ],

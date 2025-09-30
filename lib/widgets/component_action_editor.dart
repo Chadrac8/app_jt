@@ -7,6 +7,7 @@ import '../services/pages_firebase_service.dart';
 import '../models/form_model.dart';
 import '../models/blog_model.dart';
 import '../models/page_model.dart';
+import '../../theme.dart';
 
 class ComponentActionEditor extends StatefulWidget {
   final ComponentAction? action;
@@ -104,7 +105,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                 Text(
                   'Action au clic',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -159,7 +160,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
           const Text(
             'Aucune action ne sera déclenchée au clic sur ce composant.',
             style: TextStyle(
-              color: Colors.grey,
+              color: AppTheme.grey500,
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -236,7 +237,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
           else if (_availablePages.isEmpty)
             const Text(
               'Aucune page personnalisée publiée disponible.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             )
           else
             DropdownButtonFormField<String>(
@@ -259,7 +260,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                           page.description,
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: AppTheme.grey500,
                           ),
                         ),
                     ],
@@ -284,7 +285,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
           else if (_availableCategories.isEmpty)
             const Text(
               'Aucune catégorie de blog disponible.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             )
           else
             DropdownButtonFormField<String>(
@@ -318,7 +319,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
           else if (_availableForms.isEmpty)
             const Text(
               'Aucun formulaire disponible.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             )
           else
             DropdownButtonFormField<String>(
@@ -341,7 +342,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                           form.description,
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: AppTheme.grey500,
                           ),
                         ),
                     ],

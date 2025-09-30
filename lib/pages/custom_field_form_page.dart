@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/custom_field_model.dart';
 import '../services/custom_fields_firebase_service.dart';
+import '../../theme.dart';
 
 class CustomFieldFormPage extends StatefulWidget {
   final CustomFieldModel? field;
@@ -106,7 +107,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(widget.field == null ? 'Champ créé avec succès' : 'Champ modifié avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         Navigator.pop(context, true);
@@ -116,7 +117,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

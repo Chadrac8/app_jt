@@ -7,6 +7,7 @@ import '../services/firebase_service.dart';
 
 import '../modules/services/views/service_assignments_page.dart' as sap;
 import '../modules/services/views/service_form_page.dart';
+import '../../theme.dart';
 
 class AssignmentsOverviewPage extends StatefulWidget {
   const AssignmentsOverviewPage({super.key});
@@ -520,11 +521,11 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                 image: NetworkImage("https://pixabay.com/get/g0d5e61cb3c35cfa9c47998f5fb75fd460171c73af707cdfc233e6c62c7c50b3b352b54422f5da8cb7f573bee163d17404fada6af3036ce658ff2ddededcef39a_1280.jpg"),
                 fit: BoxFit.cover,
               ),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             ),
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -543,14 +544,14 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                     Text(
                       'Gestion des Assignations',
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        color: AppTheme.white100,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     Text(
                       'Vue d\'ensemble des affectations aux services',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white70,
+                        color: AppTheme.white100.withOpacity(0.70),
                       ),
                     ),
                   ],
@@ -565,7 +566,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
           Text(
             'Statistiques',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -582,19 +583,19 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                 'Services à venir',
                 stats['upcomingServices'].toString(),
                 Icons.event,
-                Colors.blue,
+                AppTheme.blueStandard,
               ),
               _buildStatCard(
                 'Total assignations',
                 stats['totalAssignments'].toString(),
                 Icons.assignment,
-                Colors.green,
+                AppTheme.greenStandard,
               ),
               _buildStatCard(
                 'En attente',
                 stats['pendingAssignments'].toString(),
                 Icons.schedule,
-                Colors.orange,
+                AppTheme.orangeStandard,
               ),
               _buildStatCard(
                 'Confirmées',
@@ -611,7 +612,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
           Text(
             'Assignations récentes',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -794,7 +795,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
             Text(
               value,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: color,
               ),
             ),
@@ -915,10 +916,10 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
           margin: const EdgeInsets.only(bottom: 8),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: isUpcoming ? Colors.green : Colors.grey,
+              backgroundColor: isUpcoming ? AppTheme.greenStandard : AppTheme.grey500,
               child: Icon(
                 isUpcoming ? Icons.schedule : Icons.history,
-                color: Colors.white,
+                color: AppTheme.white100,
               ),
             ),
             title: Text(service.name),
@@ -934,7 +935,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                   '${serviceAssignments.length} assignation(s)',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ],
@@ -952,8 +953,8 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                             .length
                             .toString(),
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.greenStandard,
                         ),
                       ),
                       const Text(
@@ -972,8 +973,8 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                             .length
                             .toString(),
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange,
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.orangeStandard,
                         ),
                       ),
                       const Text(
@@ -1092,8 +1093,8 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                 ? person.fullName.substring(0, 1).toUpperCase()
                 : '?',
             style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              color: AppTheme.white100,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ),
@@ -1119,14 +1120,14 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           decoration: BoxDecoration(
             color: _getStatusColor(assignment.status).withAlpha(25), // ~10% opacity
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Text(
             assignment.statusLabel,
             style: TextStyle(
               color: _getStatusColor(assignment.status),
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ),
@@ -1145,17 +1146,17 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
   Color _getStatusColor(String status) {
     switch (status) {
       case 'invited':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'accepted':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'declined':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'tentative':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'confirmed':
         return Colors.purple;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 }

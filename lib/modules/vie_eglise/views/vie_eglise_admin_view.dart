@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../widgets/admin_pour_vous_tab.dart';
 import '../widgets/admin_sermons_tab.dart';
 
@@ -33,7 +33,7 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
         title: Text(
           'Administration - Vie de l\'Église',
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor)),
         backgroundColor: AppTheme.surfaceColor,
         elevation: 1,
@@ -46,10 +46,10 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
           indicatorWeight: 3,
           labelStyle: GoogleFonts.poppins(
             fontSize: 14,
-            fontWeight: FontWeight.w600),
+            fontWeight: AppTheme.fontSemiBold),
           unselectedLabelStyle: GoogleFonts.poppins(
             fontSize: 14,
-            fontWeight: FontWeight.w500),
+            fontWeight: AppTheme.fontMedium),
           tabs: const [
             Tab(
               icon: Icon(Icons.person, size: 20),
@@ -93,7 +93,7 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
             'Administration $tabName',
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
           const SizedBox(height: 10),
           Text(

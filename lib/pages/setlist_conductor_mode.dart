@@ -4,6 +4,7 @@ import '../modules/songs/models/song_model.dart';
 import '../modules/songs/models/song.dart';
 import '../modules/songs/services/songs_service.dart';
 import 'song_projection_page.dart';
+import '../../theme.dart';
 
 class SetlistConductorMode extends StatefulWidget {
   final SetlistModel setlist;
@@ -95,7 +96,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppTheme.black100,
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -120,7 +121,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
             style: TextStyle(
               color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
               fontSize: 20,
-              fontWeight: FontWeight.w500)),
+              fontWeight: AppTheme.fontMedium)),
           const SizedBox(height: 30),
           ElevatedButton.icon(
             onPressed: () => Navigator.pop(context),
@@ -144,8 +145,8 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.grey.shade900,
-                Colors.black,
+                AppTheme.grey500,
+                AppTheme.black100,
               ]))),
         
         // Interface principale optimisée pour les paroles
@@ -169,7 +170,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.error,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 boxShadow: [
                   BoxShadow(
                     color: Theme.of(context).colorScheme.error.withOpacity(0.3),
@@ -189,7 +190,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.surface,
                       fontSize: 10,
-                      fontWeight: FontWeight.bold)),
+                      fontWeight: AppTheme.fontBold)),
                 ]))),
       ]);
   }
@@ -216,7 +217,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(8)),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
             child: IconButton(
               icon: Icon(Icons.close, 
                 color: Theme.of(context).colorScheme.surface, size: 20),
@@ -236,7 +237,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface,
                     fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: AppTheme.fontSemiBold),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis),
                 Text(
@@ -290,10 +291,10 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black100.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2)),
         ]),
@@ -307,7 +308,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
               fontSize: 20, // Taille de police augmentée pour les conducteurs
               height: 1.8, // Espacement de ligne augmenté pour la lisibilité
               color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.w400,
+              fontWeight: AppTheme.fontRegular,
               letterSpacing: 0.3),
             textAlign: TextAlign.left))));
   }
@@ -319,10 +320,10 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black100.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2)),
         ]),
@@ -355,14 +356,14 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                   'Aperçu des paroles:',
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: Theme.of(context).colorScheme.onSurface)),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                   child: Text(
                     song.lyrics.length > 300 
                         ? '${song.lyrics.substring(0, 300)}...'
@@ -385,7 +386,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
             label,
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)))),
         Expanded(
           child: Text(
@@ -406,7 +407,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            Colors.black.withOpacity(0.6),
+            AppTheme.black100.withOpacity(0.6),
           ])),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -615,11 +616,11 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                           color: isCurrentSong 
                               ? Theme.of(context).colorScheme.onPrimary
                               : Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.bold))),
+                          fontWeight: AppTheme.fontBold))),
                     title: Text(
                       song.title,
                       style: TextStyle(
-                        fontWeight: isCurrentSong ? FontWeight.bold : FontWeight.normal)),
+                        fontWeight: isCurrentSong ? AppTheme.fontBold : FontWeight.normal)),
                     subtitle: Text(song.author ?? 'Auteur inconnu'),
                     trailing: isCurrentSong 
                         ? Icon(Icons.play_arrow, 

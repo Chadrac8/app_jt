@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/dynamic_list_model.dart';
 import '../services/dynamic_lists_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../widgets/custom_card.dart';
 import 'dynamic_list_builder_page.dart';
 import 'dynamic_list_detail_page.dart';
@@ -80,7 +80,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppTheme.redStandard,
       ),
     );
   }
@@ -89,7 +89,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
       ),
     );
   }
@@ -128,26 +128,26 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.blue[700],
+      backgroundColor: AppTheme.grey700,
       elevation: 0,
       title: Text(
         'Listes Dynamiques',
         style: GoogleFonts.poppins(
           fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
+          fontWeight: AppTheme.fontSemiBold,
+          color: AppTheme.white100,
         ),
       ),
       actions: [
         // Bouton de recherche
         IconButton(
-          icon: const Icon(Icons.search, color: Colors.white),
+          icon: const Icon(Icons.search, color: AppTheme.white100),
           onPressed: _showSearchDialog,
           tooltip: 'Rechercher',
         ),
         // Menu templates
         PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert, color: Colors.white),
+          icon: const Icon(Icons.more_vert, color: AppTheme.white100),
           onSelected: _handleMenuAction,
           itemBuilder: (context) => [
             const PopupMenuItem(
@@ -199,32 +199,32 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
               },
               decoration: InputDecoration(
                 hintText: 'Rechercher une liste...',
-                hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                hintStyle: TextStyle(color: AppTheme.white100.withOpacity(0.7)),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.2),
+                fillColor: AppTheme.white100.withOpacity(0.2),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.search, color: Colors.white.withOpacity(0.7)),
+                prefixIcon: Icon(Icons.search, color: AppTheme.white100.withOpacity(0.7)),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: Icon(Icons.clear, color: Colors.white.withOpacity(0.7)),
+                        icon: Icon(Icons.clear, color: AppTheme.white100.withOpacity(0.7)),
                         onPressed: () {
                           setState(() => _searchQuery = '');
                         },
                       )
                     : null,
               ),
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppTheme.white100),
             ),
           ),
           const SizedBox(width: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(20),
+              color: AppTheme.white100.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             ),
             child: DropdownButton<String>(
               value: _selectedCategory,
@@ -232,8 +232,8 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
                 setState(() => _selectedCategory = value!);
               },
               underline: Container(),
-              dropdownColor: Colors.blue[700],
-              style: const TextStyle(color: Colors.white),
+              dropdownColor: AppTheme.grey700,
+              style: const TextStyle(color: AppTheme.white100),
               items: _categories.map((category) {
                 return DropdownMenuItem(
                   value: category,
@@ -250,10 +250,10 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
   Widget _buildTabBar() {
     return TabBar(
       controller: _tabController,
-      indicatorColor: Colors.white,
-      labelColor: Colors.white,
-      unselectedLabelColor: Colors.white.withOpacity(0.7),
-      labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+      indicatorColor: AppTheme.white100,
+      labelColor: AppTheme.white100,
+      unselectedLabelColor: AppTheme.white100.withOpacity(0.7),
+      labelStyle: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
       tabs: const [
         Tab(text: 'Mes listes'),
         Tab(text: 'Partagées'),
@@ -306,14 +306,14 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
           Icon(
             Icons.list_alt,
             size: 80,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
             message,
             style: GoogleFonts.poppins(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 24),
@@ -323,7 +323,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
             label: const Text('Créer une liste'),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
           ),
         ],
@@ -345,7 +345,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
         title: Text(
           list.name,
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 16,
           ),
         ),
@@ -358,31 +358,31 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.poppins(
                 fontSize: 14,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
             const SizedBox(height: 4),
             Row(
               children: [
-                Icon(Icons.category, size: 14, color: Colors.grey[500]),
+                Icon(Icons.category, size: 14, color: AppTheme.grey500),
                 const SizedBox(width: 4),
                 Text(
                   list.category,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[500],
-                    fontWeight: FontWeight.w500,
+                    color: AppTheme.grey500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 const SizedBox(width: 16),
                 if (list.lastUsed != null) ...[
-                  Icon(Icons.access_time, size: 14, color: Colors.grey[500]),
+                  Icon(Icons.access_time, size: 14, color: AppTheme.grey500),
                   const SizedBox(width: 4),
                   Text(
                     'Utilisée ${_formatLastUsed(list.lastUsed!)}',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[500],
+                      color: AppTheme.grey500,
                     ),
                   ),
                 ],
@@ -396,9 +396,9 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
             if (list.isFavorite)
               Icon(Icons.star, color: Colors.amber, size: 20),
             if (list.isPublic)
-              Icon(Icons.public, color: Colors.green, size: 20),
+              Icon(Icons.public, color: AppTheme.greenStandard, size: 20),
             if (list.sharedWith.isNotEmpty)
-              Icon(Icons.share, color: Colors.blue, size: 20),
+              Icon(Icons.share, color: AppTheme.blueStandard, size: 20),
             PopupMenuButton<String>(
               onSelected: (action) => _handleListAction(action, list),
               itemBuilder: (context) => [
@@ -440,8 +440,8 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
                 const PopupMenuItem(
                   value: 'delete',
                   child: ListTile(
-                    leading: Icon(Icons.delete, color: Colors.red),
-                    title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                    leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                    title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                   ),
                 ),
               ],
@@ -457,7 +457,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
     return FloatingActionButton.extended(
       onPressed: _createNewList,
       backgroundColor: AppTheme.primaryColor,
-      foregroundColor: Colors.white,
+      foregroundColor: AppTheme.white100,
       icon: const Icon(Icons.add),
       label: const Text('Nouvelle liste'),
     );
@@ -566,7 +566,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
               AppBar(
                 title: const Text('Templates de listes'),
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
                 automaticallyImplyLeading: false,
                 actions: [
                   IconButton(
@@ -581,7 +581,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
                     return ExpansionTile(
                       title: Text(
                         entry.key,
-                        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                        style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
                       ),
                       children: entry.value.map((template) {
                         return ListTile(
@@ -617,7 +617,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
             children: [
               Text(
                 'Les listes dynamiques vous permettent de créer des vues personnalisées de vos données.',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
               SizedBox(height: 16),
               Text('• Créez des listes sur mesure à partir de vos modules'),
@@ -769,7 +769,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],

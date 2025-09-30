@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_import_export_service.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
@@ -325,7 +325,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${songs.length} chants importés. Vérifiez et sauvegardez.'),
-            backgroundColor: Colors.blue));
+            backgroundColor: AppTheme.blueStandard));
       }
     } catch (e) {
       if (mounted) {
@@ -424,7 +424,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Aucune donnée d\'exemple disponible'),
-        backgroundColor: Colors.blue));
+        backgroundColor: AppTheme.blueStandard));
   }
 
   void _showHelpDialog() {

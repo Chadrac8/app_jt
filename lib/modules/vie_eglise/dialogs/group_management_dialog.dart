@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/action_group.dart';
 import '../services/action_group_service.dart';
 import 'group_form_dialog.dart';
@@ -72,7 +72,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
             'Gestion des groupes',
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
           ),
@@ -102,11 +102,11 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
               )
             : null,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(color: AppTheme.primaryColor),
         ),
       ),
@@ -130,7 +130,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: Border.all(
               color: AppTheme.primaryColor.withOpacity(0.1),
             ),
@@ -187,7 +187,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
           value,
           style: GoogleFonts.poppins(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: color,
           ),
         ),
@@ -308,7 +308,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
           height: 40,
           decoration: BoxDecoration(
             color: groupColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Icon(
             group.icon,
@@ -322,7 +322,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
               child: Text(
                 group.name,
                 style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -332,14 +332,14 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: AppTheme.warningColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Text(
                   'Inactif',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: AppTheme.warningColor,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ),
@@ -365,7 +365,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 );
               },
@@ -553,7 +553,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
       builder: (context) => AlertDialog(
         title: Text(
           'Supprimer le groupe',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
         ),
         content: Text(
           'Êtes-vous sûr de vouloir supprimer le groupe "${group.name}" ?\n\nCette action est irréversible.',

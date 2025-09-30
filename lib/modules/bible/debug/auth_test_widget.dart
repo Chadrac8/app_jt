@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/thematic_passage_service.dart';
+import '../../../../theme.dart';
 
 /// Widget de test pour l'authentification et les opérations de création/modification
 class AuthTestWidget extends StatefulWidget {
@@ -69,7 +70,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
       final themeId = await ThematicPassageService.createTheme(
         name: 'Test Thème ${DateTime.now().millisecondsSinceEpoch}',
         description: 'Thème de test pour vérifier les permissions',
-        color: Colors.blue,
+        color: AppTheme.blueStandard,
         icon: Icons.star,
         isPublic: false,
       );
@@ -93,7 +94,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
         themeId: themeId,
         name: 'Test Thème Modifié',
         description: 'Description modifiée',
-        color: Colors.green,
+        color: AppTheme.greenStandard,
         icon: Icons.favorite,
         isPublic: false,
       );
@@ -168,8 +169,8 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test Authentification'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.blueStandard,
+        foregroundColor: AppTheme.white100,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -181,24 +182,24 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: _currentUser != null ? Colors.green[50] : Colors.red[50],
+                color: _currentUser != null ? AppTheme.grey50 : AppTheme.grey50,
                 border: Border.all(
-                  color: _currentUser != null ? Colors.green : Colors.red,
+                  color: _currentUser != null ? AppTheme.greenStandard : AppTheme.redStandard,
                 ),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Row(
                 children: [
                   Icon(
                     _currentUser != null ? Icons.check_circle : Icons.error,
-                    color: _currentUser != null ? Colors.green : Colors.red,
+                    color: _currentUser != null ? AppTheme.greenStandard : AppTheme.redStandard,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     _currentUser != null ? 'Connecté' : 'Non connecté',
                     style: TextStyle(
-                      color: _currentUser != null ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.bold,
+                      color: _currentUser != null ? AppTheme.greenStandard : AppTheme.redStandard,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ],
@@ -221,8 +222,8 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _signOut,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.redStandard,
+                      foregroundColor: AppTheme.white100,
                     ),
                     child: const Text('Déconnexion'),
                   ),
@@ -235,8 +236,8 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
             ElevatedButton(
               onPressed: _isLoading ? null : _checkAuthStatus,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.blueStandard,
+                foregroundColor: AppTheme.white100,
                 minimumSize: const Size(double.infinity, 48),
               ),
               child: const Text('Retester les opérations'),
@@ -255,9 +256,9 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[300]!),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey300!),
                 ),
                 child: SingleChildScrollView(
                   child: Text(

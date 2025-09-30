@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../models/pepite_or_model.dart';
 import '../../services/pepite_or_firebase_service.dart';
 import '../../shared/widgets/custom_card.dart';
+import '../../../theme.dart';
 
 class PepiteOrFormPage extends StatefulWidget {
   final PepiteOrModel? pepite;
@@ -58,12 +59,12 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
           widget.pepite != null ? 'Modifier la Pépite' : 'Nouvelle Pépite d\'Or',
           style: GoogleFonts.poppins(
             fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+            fontWeight: AppTheme.fontSemiBold,
+            color: AppTheme.white100,
           ),
         ),
         backgroundColor: const Color(0xFF8B4513),
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           TextButton(
@@ -71,8 +72,8 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
             child: Text(
               'Sauvegarder',
               style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
+                color: AppTheme.white100,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
           ),
@@ -112,7 +113,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
               'Informations générales',
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
@@ -123,7 +124,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 labelText: 'Thème de la pépite',
                 hintText: 'Ex: La foi, L\'espoir, La persévérance...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 prefixIcon: const Icon(Icons.auto_awesome),
               ),
@@ -141,7 +142,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 labelText: 'Description',
                 hintText: 'Décrivez brièvement le contenu de cette pépite...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 prefixIcon: const Icon(Icons.description),
               ),
@@ -160,7 +161,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 labelText: 'Tags (séparés par des virgules)',
                 hintText: 'foi, espoir, bible, prière...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 prefixIcon: const Icon(Icons.tag),
                 helperText: 'Les tags aident à organiser et rechercher vos pépites',
@@ -185,7 +186,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                   'Citations (${_citations.length})',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: const Color(0xFF8B4513),
                   ),
                 ),
@@ -196,7 +197,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                   label: const Text('Ajouter'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF8B4513),
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
                 ),
@@ -207,11 +208,11 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
               Center(
                 child: Column(
                   children: [
-                    Icon(Icons.format_quote, size: 48, color: Colors.grey[400]),
+                    Icon(Icons.format_quote, size: 48, color: AppTheme.grey400),
                     const SizedBox(height: 8),
                     Text(
                       'Aucune citation ajoutée',
-                      style: GoogleFonts.poppins(color: Colors.grey[600]),
+                      style: GoogleFonts.poppins(color: AppTheme.grey600),
                     ),
                     const SizedBox(height: 8),
                     ElevatedButton(
@@ -259,7 +260,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                   child: Text(
                     '${index + 1}',
                     style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: const Color(0xFF8B4513),
                     ),
                   ),
@@ -269,14 +270,14 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                   child: Text(
                     'Citation ${index + 1}',
                     style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: const Color(0xFF8B4513),
                     ),
                   ),
                 ),
                 IconButton(
                   onPressed: () => _supprimerCitation(index),
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: AppTheme.redStandard),
                   tooltip: 'Supprimer cette citation',
                 ),
               ],
@@ -288,7 +289,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 labelText: 'Texte de la citation',
                 hintText: 'Saisissez le texte de la citation...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
               ),
               maxLines: 4,
@@ -310,7 +311,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                       labelText: 'Auteur',
                       hintText: 'Nom de l\'auteur',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       prefixIcon: const Icon(Icons.person),
                     ),
@@ -331,7 +332,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                       labelText: 'Référence (optionnel)',
                       hintText: 'Livre, verset...',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       prefixIcon: const Icon(Icons.book),
                     ),
@@ -357,7 +358,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
               'Options de publication',
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
@@ -365,7 +366,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
             SwitchListTile(
               title: Text(
                 'Publier immédiatement',
-                style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(fontWeight: AppTheme.fontMedium),
               ),
               subtitle: Text(
                 _estPubliee 
@@ -402,7 +403,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
             onPressed: _isLoading ? null : _sauvegarder,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF8B4513),
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             child: _isLoading
                 ? const SizedBox(
@@ -410,12 +411,12 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                     width: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                     ),
                   )
                 : Text(
                     widget.pepite != null ? 'Modifier' : 'Créer',
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
                   ),
           ),
         ),
@@ -479,7 +480,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Ajoutez au moins une citation'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -491,7 +492,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('La citation ${i + 1} est incomplète'),
-            backgroundColor: Colors.orange,
+            backgroundColor: AppTheme.orangeStandard,
           ),
         );
         return;
@@ -543,7 +544,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                   ? 'Pépite modifiée avec succès'
                   : 'Pépite créée avec succès',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -552,7 +553,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

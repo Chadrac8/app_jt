@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../shared/theme/app_theme.dart';
+import '../../../../theme.dart';
 import '../services/branham_scraping_service.dart';
 import '../views/daily_bread_page.dart';
 
@@ -120,7 +120,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         Color(0xFF764BA2),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     boxShadow: [
                       BoxShadow(
                         color: AppTheme.primaryColor.withOpacity(0.25),
@@ -147,7 +147,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                             style: TextStyle(
                               color: Color(0xFF0F172A),
                               fontSize: 20,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: AppTheme.fontExtraBold,
                               letterSpacing: -0.5,
                             ),
                           ),
@@ -156,14 +156,14 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: AppTheme.primaryColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                             ),
                             child: const Text(
                               'NOUVEAU',
                               style: TextStyle(
                                 color: AppTheme.primaryColor,
                                 fontSize: 10,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: AppTheme.fontBold,
                                 letterSpacing: 0.5,
                               ),
                             ),
@@ -176,7 +176,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         style: TextStyle(
                           color: Color(0xFF64748B),
                           fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                           letterSpacing: 0.1,
                         ),
                       ),
@@ -201,7 +201,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                       const Color(0xFFF1F5F9).withOpacity(0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
                     color: const Color(0xFFE2E8F0),
                     width: 1,
@@ -225,7 +225,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         style: TextStyle(
                           color: Color(0xFF64748B),
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ],
@@ -243,7 +243,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                       const Color(0xFFF8FAFC).withOpacity(0.7),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
                     color: const Color(0xFFE2E8F0),
                     width: 1,
@@ -266,7 +266,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: const Icon(
                           Icons.format_quote,
@@ -280,7 +280,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         style: const TextStyle(
                           color: Color(0xFF1E293B),
                           fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                           height: 1.5,
                           letterSpacing: 0.1,
                         ),
@@ -298,14 +298,14 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                                 Color(0xFF764BA2),
                               ],
                             ),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           child: Text(
                             _dailyQuote!.dailyBreadReference,
                             style: const TextStyle(
                               color: AppTheme.surfaceColor,
                               fontSize: 13,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               letterSpacing: 0.3,
                             ),
                           ),
@@ -325,7 +325,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                       const Color(0xFFE2E8F0).withOpacity(0.5),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
                     color: const Color(0xFFE2E8F0),
                     width: 1,
@@ -345,7 +345,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         style: TextStyle(
                           color: Color(0xFF64748B),
                           fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -369,7 +369,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                     Color(0xFF764BA2),
                   ],
                 ),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 boxShadow: [
                   BoxShadow(
                     color: AppTheme.primaryColor.withOpacity(0.3),
@@ -377,7 +377,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                     offset: const Offset(0, 6),
                   ),
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: AppTheme.black100.withOpacity(0.05),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -386,7 +386,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   onTap: _navigateToDailyBreadPage,
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -404,7 +404,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                           style: TextStyle(
                             color: AppTheme.surfaceColor,
                             fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             letterSpacing: 0.2,
                           ),
                         ),

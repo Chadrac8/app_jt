@@ -5,7 +5,7 @@ import '../services/pages_firebase_service.dart';
 import '../widgets/page_card.dart';
 import 'page_builder_page.dart';
 import 'page_preview_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class PagesHomePage extends StatefulWidget {
 const PagesHomePage({super.key});
@@ -107,7 +107,7 @@ builder: (context) => const PageBuilderPage(),
 
 if (result == true) {
 // Page créée avec succès
-_showSnackBar('Page créée avec succès', Colors.green);
+_showSnackBar('Page créée avec succès', AppTheme.greenStandard);
 }
 }
 
@@ -129,7 +129,7 @@ builder: (context) => PageBuilderPage(template: selectedTemplate),
 );
 
 if (result == true) {
-_showSnackBar('Page créée à partir du modèle', Colors.green);
+_showSnackBar('Page créée à partir du modèle', AppTheme.greenStandard);
 }
 }
 });
@@ -158,10 +158,10 @@ if (page.status == 'draft') {
 await PagesFirebaseService.publishPage(page.id);
 }
 }
-_showSnackBar('${_selectedPages.length} page(s) publiée(s)', Colors.green);
+_showSnackBar('${_selectedPages.length} page(s) publiée(s)', AppTheme.greenStandard);
 _toggleSelectionMode();
 } catch (e) {
-_showSnackBar('Erreur lors de la publication: $e', Colors.red);
+_showSnackBar('Erreur lors de la publication: $e', AppTheme.redStandard);
 }
 }
 
@@ -172,10 +172,10 @@ if (page.status != 'archived') {
 await PagesFirebaseService.archivePage(page.id);
 }
 }
-_showSnackBar('${_selectedPages.length} page(s) archivée(s)', Colors.orange);
+_showSnackBar('${_selectedPages.length} page(s) archivée(s)', AppTheme.orangeStandard);
 _toggleSelectionMode();
 } catch (e) {
-_showSnackBar('Erreur lors de l\'archivage: $e', Colors.red);
+_showSnackBar('Erreur lors de l\'archivage: $e', AppTheme.redStandard);
 }
 }
 
@@ -195,7 +195,7 @@ child: const Text('Annuler'),
 ),
 ElevatedButton(
 onPressed: () => Navigator.pop(context, true),
-style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
 child: const Text('Supprimer'),
 ),
 ],
@@ -207,10 +207,10 @@ try {
 for (final page in _selectedPages) {
 await PagesFirebaseService.deletePage(page.id);
 }
-_showSnackBar('${_selectedPages.length} page(s) supprimée(s)', Colors.red);
+_showSnackBar('${_selectedPages.length} page(s) supprimée(s)', AppTheme.redStandard);
 _toggleSelectionMode();
 } catch (e) {
-_showSnackBar('Erreur lors de la suppression: $e', Colors.red);
+_showSnackBar('Erreur lors de la suppression: $e', AppTheme.redStandard);
 }
 }
 }
@@ -237,7 +237,7 @@ return Scaffold(
 appBar: AppBar(
 title: const Text('Constructeur de Pages'),
 backgroundColor: AppTheme.primaryColor,
-foregroundColor: Colors.white,
+foregroundColor: AppTheme.white100,
 elevation: 0,
 actions: [
 if (_isSelectionMode) ...[
@@ -260,9 +260,9 @@ tooltip: 'Mode sélection',
 ],
 bottom: TabBar(
 controller: _tabController,
-indicatorColor: Colors.white,
-labelColor: Colors.white,
-unselectedLabelColor: Colors.white70,
+indicatorColor: AppTheme.white100,
+labelColor: AppTheme.white100,
+unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
 tabs: const [
 Tab(text: 'Mes Pages', icon: Icon(Icons.web)),
 Tab(text: 'Modèles', icon: Icon(Icons.web_asset)),
@@ -281,7 +281,7 @@ scale: _fabAnimation,
 child: FloatingActionButton.extended(
 onPressed: _isSelectionMode ? null : _createNewPage,
 backgroundColor: AppTheme.primaryColor,
-foregroundColor: Colors.white,
+foregroundColor: AppTheme.white100,
 icon: const Icon(Icons.add),
 label: const Text('Nouvelle Page'),
 ),
@@ -313,7 +313,7 @@ return Center(
 child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
-Icon(Icons.error, size: 64, color: Colors.grey[400]),
+Icon(Icons.error, size: 64, color: AppTheme.grey400),
 const SizedBox(height: 16),
 Text(
 'Erreur: ${snapshot.error}',
@@ -332,7 +332,7 @@ return Center(
 child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
-Icon(Icons.web_asset, size: 64, color: Colors.grey[400]),
+Icon(Icons.web_asset, size: 64, color: AppTheme.grey400),
 const SizedBox(height: 16),
 Text(
 'Aucun modèle disponible',
@@ -358,10 +358,10 @@ Widget _buildSearchAndFilters() {
 return Container(
 padding: const EdgeInsets.all(16),
 decoration: BoxDecoration(
-color: Colors.white,
+color: AppTheme.white100,
 boxShadow: [
 BoxShadow(
-color: Colors.black.withOpacity(0.05),
+color: AppTheme.black100.withOpacity(0.05),
 blurRadius: 4,
 offset: const Offset(0, 2),
 ),
@@ -386,11 +386,11 @@ icon: const Icon(Icons.clear),
 )
 : null,
 border: OutlineInputBorder(
-borderRadius: BorderRadius.circular(12),
+borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
 borderSide: BorderSide.none,
 ),
 filled: true,
-fillColor: Colors.grey[100],
+fillColor: AppTheme.grey100,
 ),
 ),
 const SizedBox(height: 16),
@@ -403,7 +403,7 @@ value: _statusFilter.isEmpty ? null : _statusFilter,
 decoration: InputDecoration(
 labelText: 'Statut',
 border: OutlineInputBorder(
-borderRadius: BorderRadius.circular(8),
+borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
 ),
 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
 ),
@@ -423,7 +423,7 @@ value: _visibilityFilter.isEmpty ? null : _visibilityFilter,
 decoration: InputDecoration(
 labelText: 'Visibilité',
 border: OutlineInputBorder(
-borderRadius: BorderRadius.circular(8),
+borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
 ),
 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
 ),
@@ -460,7 +460,7 @@ return Center(
 child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
-Icon(Icons.error, size: 64, color: Colors.grey[400]),
+Icon(Icons.error, size: 64, color: AppTheme.grey400),
 const SizedBox(height: 16),
 Text(
 'Erreur: ${snapshot.error}',
@@ -479,7 +479,7 @@ return Center(
 child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
-Icon(Icons.web, size: 64, color: Colors.grey[400]),
+Icon(Icons.web, size: 64, color: AppTheme.grey400),
 const SizedBox(height: 16),
 Text(
 'Aucune page trouvée',
@@ -497,7 +497,7 @@ icon: const Icon(Icons.add),
 label: const Text('Créer une page'),
 style: ElevatedButton.styleFrom(
 backgroundColor: AppTheme.primaryColor,
-foregroundColor: Colors.white,
+foregroundColor: AppTheme.white100,
 ),
 ),
 ],
@@ -551,7 +551,7 @@ Text(
 category,
 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
 color: AppTheme.primaryColor,
-fontWeight: FontWeight.bold,
+fontWeight: AppTheme.fontBold,
 ),
 ),
 const SizedBox(height: 12),
@@ -584,15 +584,15 @@ if (template.isBuiltIn)
 Container(
 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
 decoration: BoxDecoration(
-color: Colors.blue.withOpacity(0.1),
-borderRadius: BorderRadius.circular(12),
+color: AppTheme.blueStandard.withOpacity(0.1),
+borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
 ),
 child: Text(
 'Intégré',
 style: TextStyle(
-color: Colors.blue[700],
+color: AppTheme.grey700,
 fontSize: 12,
-fontWeight: FontWeight.w500,
+fontWeight: AppTheme.fontMedium,
 ),
 ),
 ),
@@ -609,7 +609,7 @@ builder: (context) => PageBuilderPage(template: template),
 );
 
 if (result == true) {
-_showSnackBar('Page créée à partir du modèle', Colors.green);
+_showSnackBar('Page créée à partir du modèle', AppTheme.greenStandard);
 }
 },
 ),
@@ -651,7 +651,7 @@ Container(
 height: 4,
 width: 40,
 decoration: BoxDecoration(
-color: Colors.grey[300],
+color: AppTheme.grey300,
 borderRadius: BorderRadius.circular(2),
 ),
 ),
@@ -662,7 +662,7 @@ style: Theme.of(context).textTheme.titleMedium,
 ),
 const SizedBox(height: 16),
 ListTile(
-leading: const Icon(Icons.publish, color: Colors.green),
+leading: const Icon(Icons.publish, color: AppTheme.greenStandard),
 title: const Text('Publier'),
 onTap: () {
 Navigator.pop(context);
@@ -670,7 +670,7 @@ _performBulkAction('publish');
 },
 ),
 ListTile(
-leading: const Icon(Icons.archive, color: Colors.orange),
+leading: const Icon(Icons.archive, color: AppTheme.orangeStandard),
 title: const Text('Archiver'),
 onTap: () {
 Navigator.pop(context);
@@ -678,7 +678,7 @@ _performBulkAction('archive');
 },
 ),
 ListTile(
-leading: const Icon(Icons.delete, color: Colors.red),
+leading: const Icon(Icons.delete, color: AppTheme.redStandard),
 title: const Text('Supprimer'),
 onTap: () {
 Navigator.pop(context);

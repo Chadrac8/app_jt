@@ -5,7 +5,7 @@ import '../models/group_model.dart';
 import '../models/group_statistics.dart';
 import '../services/groups_firebase_service.dart';
 import '../widgets/group_member_attendance_stats.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class GroupAttendanceStatsPage extends StatefulWidget {
   final GroupModel group;
@@ -56,7 +56,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
           child: Icon(icon, color: color),
         ),
         const SizedBox(height: 8),
-        Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 18)),
+        Text(value, style: TextStyle(fontWeight: AppTheme.fontBold, color: color, fontSize: 18)),
         const SizedBox(height: 4),
         Text(label, style: TextStyle(color: color, fontSize: 12)),
       ],
@@ -78,13 +78,13 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
           Text(
             'Statistiques du groupe',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
           Card(
             elevation: 2,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Row(
@@ -98,7 +98,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
             ),
           ),
           const SizedBox(height: 24),
-          Text('Meilleurs membres', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text('Meilleurs membres', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 8),
           bestMembers.isEmpty
               ? Text('Aucun membre avec une assiduité ≥90%.', style: Theme.of(context).textTheme.bodyMedium)
@@ -111,7 +111,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                   )).toList(),
                 ),
           const SizedBox(height: 24),
-          Text('Absences consécutives', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text('Absences consécutives', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 8),
           absents.isEmpty
               ? Text('Aucun membre avec 3 absences consécutives.', style: Theme.of(context).textTheme.bodyMedium)
@@ -124,7 +124,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                   )).toList(),
                 ),
           const SizedBox(height: 24),
-          Text('Assiduité faible (<50%)', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text('Assiduité faible (<50%)', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 8),
           poorMembers.isEmpty
               ? Text('Aucun membre avec une assiduité faible.', style: Theme.of(context).textTheme.bodyMedium)
@@ -137,7 +137,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                   )).toList(),
                 ),
           const SizedBox(height: 32),
-          Text('Évolution mensuelle', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text('Évolution mensuelle', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 16),
           _buildMonthlyTrendsChart(detailed: true),
         ],
@@ -195,7 +195,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
     final luminance = backgroundColor.computeLuminance();
     // Si la luminance est faible (couleur sombre), utilise du blanc
     // Si la luminance est élevée (couleur claire), utilise du noir
-    return luminance > 0.5 ? Colors.black : Colors.white;
+    return luminance > 0.5 ? AppTheme.black100 : AppTheme.white100;
   }
 
   @override
@@ -209,7 +209,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               'Statistiques d\'assiduité',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: _getContrastColor(_groupColor),
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             Text(
@@ -388,13 +388,13 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
             Icon(
               Icons.error_outline,
               size: 48,
-              color: Colors.red.shade400,
+              color: AppTheme.redStandard,
             ),
             const SizedBox(height: 16),
             Text(
               'Aucun membre ou aucune donnée d’assiduité disponible pour ce groupe.',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.red.shade400,
+                color: AppTheme.redStandard,
               ),
               textAlign: TextAlign.center,
             ),
@@ -402,7 +402,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
             Text(
               'Vérifiez que des membres sont bien ajoutés et que des réunions ont été enregistrées.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.red.shade400,
+                color: AppTheme.redStandard,
               ),
               textAlign: TextAlign.center,
             ),
@@ -423,7 +423,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.2)),
       ),
       child: Column(
@@ -441,7 +441,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                 value,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: color,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ],
@@ -493,7 +493,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
             Text(
               'Répartition de l\'assiduité',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -517,8 +517,8 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                       radius: 60,
                       titleStyle: const TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        fontWeight: AppTheme.fontBold,
+                        color: AppTheme.white100,
                       ),
                     );
                   }).toList(),
@@ -578,7 +578,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
             Text(
               detailed ? 'Évolution détaillée' : 'Tendance sur 6 mois',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -628,7 +628,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                             radius: 4,
                             color: _groupColor,
                             strokeWidth: 2,
-                            strokeColor: Colors.white,
+                            strokeColor: AppTheme.white100,
                           );
                         },
                       ),

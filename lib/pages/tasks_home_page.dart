@@ -9,7 +9,7 @@ import '../widgets/task_search_filter_bar.dart';
 import 'task_form_page.dart';
 import 'task_list_form_page.dart';
 import 'task_detail_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class TasksHomePage extends StatefulWidget {
   const TasksHomePage({super.key});
@@ -411,19 +411,19 @@ class _TasksHomePageState extends State<TasksHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.list_alt, size: 64, color: Colors.grey[400]),
+                Icon(Icons.list_alt, size: 64, color: AppTheme.grey400),
                 const SizedBox(height: 16),
                 Text(
                   'Aucune liste de tâches',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Créez votre première liste pour organiser vos tâches',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -491,7 +491,7 @@ class _TasksHomePageState extends State<TasksHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.task_alt, size: 64, color: Colors.grey[400]),
+                Icon(Icons.task_alt, size: 64, color: AppTheme.grey400),
                 const SizedBox(height: 16),
                 const Text('Aucune tâche trouvée'),
                 const SizedBox(height: 24),

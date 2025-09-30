@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/group_model.dart';
 import '../services/groups_firebase_service.dart';
 import '../pages/group_meeting_page.dart';
-// Removed unused import '../theme.dart';
+import '../theme.dart';
 
 class GroupMeetingsList extends StatefulWidget {
   final GroupModel group;
@@ -55,7 +55,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Réunion créée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -64,7 +64,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -129,7 +129,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                         Text(
                           'Aucune réunion',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -147,7 +147,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                           label: const Text('Créer une réunion'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _groupColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                           ),
                         ),
                       ],
@@ -178,7 +178,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                           child: Text(
                             monthLabel,
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                               color: _groupColor,
                             ),
                           ),
@@ -228,17 +228,17 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
+            color: AppTheme.black100.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
         border: meeting.isCompleted 
             ? Border.all(
-                color: Colors.green.withAlpha(77), // 0.3 * 255 ≈ 77
+                color: AppTheme.greenStandard.withAlpha(77), // 0.3 * 255 ≈ 77
                 width: 2,
               )
             : null,
@@ -256,10 +256,10 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                   height: 12,
                   decoration: BoxDecoration(
                     color: meeting.isCompleted 
-                        ? Colors.green
+                        ? AppTheme.greenStandard
                         : isUpcoming 
                             ? _groupColor
-                            : Colors.orange,
+                            : AppTheme.orangeStandard,
                     borderRadius: BorderRadius.circular(6),
                   ),
                 ),
@@ -271,7 +271,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                   child: Text(
                     meeting.title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -328,7 +328,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       Icons.more_vert,
@@ -399,30 +399,30 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green.withAlpha(25),
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.greenStandard.withAlpha(25),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Row(
                   children: [
                     Icon(
                       Icons.how_to_reg,
                       size: 20,
-                      color: Colors.green,
+                      color: AppTheme.greenStandard,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Présents: ${meeting.presentMemberIds.length} / ${meeting.totalMembers}',
                       style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.greenStandard,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Text(
                       'Taux: ${(meeting.attendanceRate * 100).round()}%',
                       style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.greenStandard,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ],
@@ -433,22 +433,22 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange.withAlpha(25),
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.orangeStandard.withAlpha(25),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Row(
                   children: [
                     Icon(
                       Icons.pending_actions,
                       size: 20,
-                      color: Colors.orange,
+                      color: AppTheme.orangeStandard,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'En attente de prise de présence',
                       style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.orangeStandard,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ],
@@ -463,7 +463,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: _groupColor.withAlpha(25),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -480,7 +480,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                           'Rapport de réunion',
                           style: TextStyle(
                             color: _groupColor,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                             fontSize: 12,
                           ),
                         ),
@@ -517,7 +517,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Réunion modifiée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -526,7 +526,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -550,7 +550,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Présences enregistrées avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -576,7 +576,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Rapport ajouté avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -585,7 +585,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -1032,7 +1032,7 @@ class _AddReportDialogState extends State<_AddReportDialog> {
             Text(
               'Réunion: ${widget.meeting.title}',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
             const SizedBox(height: 16),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/group_model.dart';
 import '../models/group_statistics.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class GroupMemberAttendanceStats extends StatefulWidget {
   final Map<String, MemberAttendance> memberAttendance;
@@ -119,13 +119,13 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
               Icon(
                 Icons.error_outline,
                 size: 48,
-                color: Colors.red.shade400,
+                color: AppTheme.redStandard,
               ),
               const SizedBox(height: 16),
               Text(
                 'Aucun membre ou aucune donnée d’assiduité disponible pour ce groupe.',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.red.shade400,
+                  color: AppTheme.redStandard,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -133,7 +133,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
               Text(
                 'Vérifiez que des membres sont bien ajoutés et que des réunions ont été enregistrées.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.red.shade400,
+                  color: AppTheme.redStandard,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -186,7 +186,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                   'Assiduité des membres',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -322,7 +322,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppTheme.errorColor.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         ),
         child: Row(
           children: [
@@ -343,7 +343,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         border: Border.all(color: AppTheme.backgroundColor),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: ExpansionTile(
         leading: CircleAvatar(
@@ -354,14 +354,14 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                 : '?',
             style: TextStyle(
               color: _getAttendanceColor(member.attendanceRate),
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               fontSize: 14,
             ),
           ),
         ),
         title: Text(
           member.personName,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,14 +373,14 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: _getAttendanceColor(member.attendanceRate).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     '${(member.attendanceRate * 100).toInt()}% - ${member.attendanceLabel}',
                     style: TextStyle(
                       color: _getAttendanceColor(member.attendanceRate),
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                 ),
@@ -390,14 +390,14 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
                       color: AppTheme.errorColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       '${member.consecutiveAbsences} absences',
                       style: TextStyle(
                         color: AppTheme.errorColor,
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                   ),
@@ -479,7 +479,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
           Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: color,
             ),
           ),
@@ -495,7 +495,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
         Text(
           'Taux de présence',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         const SizedBox(height: 8),
@@ -510,7 +510,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
           '${(member.attendanceRate * 100).toInt()}%',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: _getAttendanceColor(member.attendanceRate),
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
       ],
@@ -547,7 +547,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
           Text(
             'Répartition de l\'assiduité',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -571,8 +571,8 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                     radius: 60,
                     titleStyle: const TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.white100,
                     ),
                   );
                 }).toList(),

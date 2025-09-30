@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../theme.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../models/report.dart';
@@ -133,16 +135,66 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
           // En-tête avec informations du rapport
           _buildReportHeader(),
           
-          // Onglets
-          TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            tabs: const [
-              Tab(icon: Icon(Icons.dashboard), text: 'Vue d\'ensemble'),
-              Tab(icon: Icon(Icons.bar_chart), text: 'Graphiques'),
-              Tab(icon: Icon(Icons.table_chart), text: 'Données'),
-              Tab(icon: Icon(Icons.history), text: 'Historique'),
-            ],
+          // Onglets - Conformité Material Design
+          Container(
+            height: 50, // Hauteur Material Design recommandée
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              boxShadow: [
+                BoxShadow(
+                  color: AppTheme.black100.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: TabBar(
+              controller: _tabController,
+              isScrollable: true,
+              // Conformité Material Design - Couleurs et indicateur
+              labelColor: AppTheme.primaryColor,
+              unselectedLabelColor: AppTheme.textSecondaryColor,
+              indicatorColor: AppTheme.primaryColor,
+              indicatorWeight: 3.0, // Épaisseur recommandée Material Design
+              indicatorSize: TabBarIndicatorSize.tab,
+              
+              // Conformité Material Design - Typography
+              labelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontSemiBold,
+              ),
+              unselectedLabelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontMedium,
+              ),
+              
+              // Conformité Material Design - Espacements
+              labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+              
+              tabs: const [
+                Tab(
+                  icon: Icon(Icons.dashboard), 
+                  text: 'Vue d\'ensemble',
+                  iconMargin: EdgeInsets.only(bottom: 4.0),
+                ),
+                Tab(
+                  icon: Icon(Icons.bar_chart), 
+                  text: 'Graphiques',
+                  iconMargin: EdgeInsets.only(bottom: 4.0),
+                ),
+                Tab(
+                  icon: Icon(Icons.table_chart), 
+                  text: 'Données',
+                  iconMargin: EdgeInsets.only(bottom: 4.0),
+                ),
+                Tab(
+                  icon: Icon(Icons.history), 
+                  text: 'Historique',
+                  iconMargin: EdgeInsets.only(bottom: 4.0),
+                ),
+              ],
+            ),
           ),
           
           // Contenu des onglets
@@ -189,14 +241,14 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                       Text(
                         widget.report.name,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       if (widget.report.description != null)
                         Text(
                           widget.report.description!,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                         ),
                     ],
@@ -226,14 +278,14 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 _buildStatChip(
                   'Fréquence',
                   _getFrequencyLabel(widget.report.frequency),
-                  Colors.blue,
+                  AppTheme.blueStandard,
                 ),
                 const SizedBox(width: 8),
                 if (widget.report.lastGenerated != null)
                   _buildStatChip(
                     'Dernière génération',
                     _formatDate(widget.report.lastGenerated!),
-                    Colors.green,
+                    AppTheme.greenStandard,
                   ),
               ],
             ),
@@ -256,8 +308,8 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                     icon: const Icon(Icons.file_download),
                     label: const Text('Exporter'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.greenStandard,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
               ],
@@ -311,7 +363,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
             Text(
               'Résumé des données',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -326,8 +378,8 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 return Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(8),
+                    color: AppTheme.blueStandard,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,7 +388,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                         entry.key,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: AppTheme.grey500,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -344,7 +396,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                         entry.value.toString(),
                         style: const TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                     ],
@@ -378,7 +430,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 Text(
                   'Aperçu graphique',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
                 const Spacer(),
@@ -411,7 +463,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 Text(
                   'Planifications',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
                 const Spacer(),
@@ -442,10 +494,10 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: task.isActive ? Colors.green.shade50 : Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(8),
+        color: task.isActive ? AppTheme.greenStandard : AppTheme.grey500,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(
-          color: task.isActive ? Colors.green.shade200 : Colors.grey.shade200,
+          color: task.isActive ? AppTheme.greenStandard : AppTheme.grey500,
         ),
       ),
       child: Row(
@@ -453,7 +505,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
           Icon(
             task.isActive ? Icons.schedule : Icons.pause,
             size: 16,
-            color: task.isActive ? Colors.green : Colors.grey,
+            color: task.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -462,11 +514,11 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
               children: [
                 Text(
                   _getFrequencyLabel(task.config.frequency.toString()),
-                  style: const TextStyle(fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontWeight: AppTheme.fontMedium),
                 ),
                 Text(
                   'Prochaine: ${_formatDateTime(task.nextExecution)}',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -475,7 +527,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
             task.lastStatus,
             style: TextStyle(
               fontSize: 12,
-              color: task.lastStatus == 'Succès' ? Colors.green : Colors.red,
+              color: task.lastStatus == 'Succès' ? AppTheme.greenStandard : AppTheme.redStandard,
             ),
           ),
         ],
@@ -493,7 +545,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
             Text(
               'Informations détaillées',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -523,8 +575,8 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
             child: Text(
               label,
               style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.grey500,
               ),
             ),
           ),
@@ -542,16 +594,16 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.bar_chart, size: 64, color: Colors.grey),
+            Icon(Icons.bar_chart, size: 64, color: AppTheme.grey500),
             SizedBox(height: 16),
             Text(
               'Aucune donnée disponible',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
             ),
             SizedBox(height: 8),
             Text(
               'Générez le rapport pour voir les graphiques',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             ),
           ],
         ),
@@ -580,16 +632,16 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.table_chart, size: 64, color: Colors.grey),
+            Icon(Icons.table_chart, size: 64, color: AppTheme.grey500),
             SizedBox(height: 16),
             Text(
               'Aucune donnée disponible',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
             ),
             SizedBox(height: 8),
             Text(
               'Générez le rapport pour voir les données',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             ),
           ],
         ),
@@ -614,11 +666,11 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.history, size: 64, color: Colors.grey),
+            Icon(Icons.history, size: 64, color: AppTheme.grey500),
             SizedBox(height: 16),
             Text(
               'Aucun historique disponible',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
             ),
           ],
         ),
@@ -640,8 +692,8 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.blue.shade100,
-          child: const Icon(Icons.analytics, color: Colors.blue),
+          backgroundColor: AppTheme.blueStandard,
+          child: const Icon(Icons.analytics, color: AppTheme.blueStandard),
         ),
         title: Text('Génération du ${_formatDateTime(data.generatedAt)}'),
         subtitle: Text('${data.totalRows} lignes de données'),
@@ -675,14 +727,14 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Text(
         '$label: $value',
         style: TextStyle(
           fontSize: 11,
           color: color,
-          fontWeight: FontWeight.w500,
+          fontWeight: AppTheme.fontMedium,
         ),
       ),
     );
@@ -708,7 +760,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Rapport généré avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -721,7 +773,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la génération: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -781,7 +833,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Rapport dupliqué avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -790,7 +842,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la duplication: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -828,17 +880,17 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
   Color _getTypeColor() {
     switch (widget.report.type) {
       case 'attendance':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'financial':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'membership':
         return Colors.purple;
       case 'event':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'custom':
         return Colors.indigo;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/module_permission_model.dart';
+import '../../../../theme.dart';
 
 class ModulePermissionsSelector extends StatefulWidget {
   final List<ModulePermissionModel> initialPermissions;
@@ -177,7 +178,7 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
         title: Text(
           category,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         subtitle: Text('${modulePermissions.length} module(s)'),
@@ -201,7 +202,7 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
       child: ExpansionTile(
         leading: Icon(
           module.icon,
-          color: hasAnyPermission ? Theme.of(context).primaryColor : Colors.grey,
+          color: hasAnyPermission ? Theme.of(context).primaryColor : AppTheme.grey500,
         ),
         title: Row(
           children: [
@@ -217,13 +218,13 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
                   Text(
                     module.name,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: hasAnyPermission ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: hasAnyPermission ? AppTheme.fontBold : FontWeight.normal,
                     ),
                   ),
                   Text(
                     module.description,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                 ],
@@ -253,20 +254,20 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
                   secondary: Icon(
                     permissionType.icon,
                     size: 20,
-                    color: hasPermission ? Theme.of(context).primaryColor : Colors.grey,
+                    color: hasPermission ? Theme.of(context).primaryColor : AppTheme.grey500,
                   ),
                   title: Text(
                     permissionType.label,
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: hasPermission ? FontWeight.w500 : FontWeight.normal,
+                      fontWeight: hasPermission ? AppTheme.fontMedium : FontWeight.normal,
                     ),
                   ),
                   subtitle: Text(
                     permissionType.description,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                   value: hasPermission,
@@ -335,7 +336,7 @@ class PermissionsSummary extends StatelessWidget {
                 Text(
                   'Résumé des permissions',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 if (onEdit != null)

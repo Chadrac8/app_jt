@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
+import '../../theme.dart';
 
 class BlogPostCard extends StatelessWidget {
   final BlogPost post;
@@ -30,7 +31,7 @@ class BlogPostCard extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,7 +53,7 @@ class BlogPostCard extends StatelessWidget {
                   Text(
                     post.title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       height: 1.2,
                     ),
                     maxLines: 2,
@@ -65,7 +66,7 @@ class BlogPostCard extends StatelessWidget {
                     Text(
                       post.excerpt,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         height: 1.4,
                       ),
                       maxLines: 3,
@@ -112,11 +113,11 @@ class BlogPostCard extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
-                  color: Colors.grey[300],
+                  color: AppTheme.grey300,
                   child: Icon(
                     Icons.image_not_supported,
                     size: 48,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 );
               },
@@ -133,19 +134,19 @@ class BlogPostCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.amber,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.star, size: 16, color: Colors.white),
+                  Icon(Icons.star, size: 16, color: AppTheme.white100),
                   SizedBox(width: 4),
                   Text(
                     'EN VEDETTE',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white100,
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ],
@@ -191,8 +192,8 @@ class BlogPostCard extends StatelessWidget {
                 const PopupMenuItem(
                   value: 'publish',
                   child: ListTile(
-                    leading: Icon(Icons.publish, color: Colors.green),
-                    title: Text('Publier', style: TextStyle(color: Colors.green)),
+                    leading: Icon(Icons.publish, color: AppTheme.greenStandard),
+                    title: Text('Publier', style: TextStyle(color: AppTheme.greenStandard)),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
@@ -200,8 +201,8 @@ class BlogPostCard extends StatelessWidget {
                 const PopupMenuItem(
                   value: 'archive',
                   child: ListTile(
-                    leading: Icon(Icons.archive, color: Colors.orange),
-                    title: Text('Archiver', style: TextStyle(color: Colors.orange)),
+                    leading: Icon(Icons.archive, color: AppTheme.orangeStandard),
+                    title: Text('Archiver', style: TextStyle(color: AppTheme.orangeStandard)),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
@@ -210,8 +211,8 @@ class BlogPostCard extends StatelessWidget {
                 const PopupMenuItem(
                   value: 'delete',
                   child: ListTile(
-                    leading: Icon(Icons.delete, color: Colors.red),
-                    title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                    leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                    title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
@@ -229,22 +230,22 @@ class BlogPostCard extends StatelessWidget {
 
     switch (post.status) {
       case BlogPostStatus.published:
-        color = Colors.green;
+        color = AppTheme.greenStandard;
         icon = Icons.public;
         label = 'PUBLIÉ';
         break;
       case BlogPostStatus.draft:
-        color = Colors.orange;
+        color = AppTheme.orangeStandard;
         icon = Icons.drafts;
         label = 'BROUILLON';
         break;
       case BlogPostStatus.scheduled:
-        color = Colors.blue;
+        color = AppTheme.blueStandard;
         icon = Icons.schedule;
         label = 'PROGRAMMÉ';
         break;
       case BlogPostStatus.archived:
-        color = Colors.grey;
+        color = AppTheme.grey500;
         icon = Icons.archive;
         label = 'ARCHIVÉ';
         break;
@@ -254,7 +255,7 @@ class BlogPostCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
@@ -267,7 +268,7 @@ class BlogPostCard extends StatelessWidget {
             style: TextStyle(
               color: color,
               fontSize: 11,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ],
@@ -285,14 +286,14 @@ class BlogPostCard extends StatelessWidget {
             backgroundImage: NetworkImage(post.authorPhotoUrl!),
             onBackgroundImageError: (error, stackTrace) {},
             child: post.authorPhotoUrl == null 
-                ? Icon(Icons.person, size: 16, color: Colors.grey[600])
+                ? Icon(Icons.person, size: 16, color: AppTheme.grey600)
                 : null,
           )
         else
           CircleAvatar(
             radius: 16,
-            backgroundColor: Colors.grey[300],
-            child: Icon(Icons.person, size: 16, color: Colors.grey[600]),
+            backgroundColor: AppTheme.grey300,
+            child: Icon(Icons.person, size: 16, color: AppTheme.grey600),
           ),
         
         const SizedBox(width: 8),
@@ -305,7 +306,7 @@ class BlogPostCard extends StatelessWidget {
               Text(
                 post.authorName,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
               Text(
@@ -313,7 +314,7 @@ class BlogPostCard extends StatelessWidget {
                     ? post.publishedAt!
                     : post.updatedAt),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
             ],
@@ -333,36 +334,36 @@ class BlogPostCard extends StatelessWidget {
     return Row(
       children: [
         // Temps de lecture
-        Icon(Icons.access_time, size: 14, color: Colors.grey[600]),
+        Icon(Icons.access_time, size: 14, color: AppTheme.grey600),
         const SizedBox(width: 4),
         Text(
           '${post.readingTimeMinutes} min',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
           ),
         ),
         
         const SizedBox(width: 12),
         
         // Vues
-        Icon(Icons.visibility, size: 14, color: Colors.grey[600]),
+        Icon(Icons.visibility, size: 14, color: AppTheme.grey600),
         const SizedBox(width: 4),
         Text(
           post.views.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
           ),
         ),
         
         const SizedBox(width: 12),
         
         // Likes
-        Icon(Icons.favorite, size: 14, color: Colors.grey[600]),
+        Icon(Icons.favorite, size: 14, color: AppTheme.grey600),
         const SizedBox(width: 4),
         Text(
           post.likes.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
           ),
         ),
         
@@ -370,12 +371,12 @@ class BlogPostCard extends StatelessWidget {
           const SizedBox(width: 12),
           
           // Commentaires
-          Icon(Icons.comment, size: 14, color: Colors.grey[600]),
+          Icon(Icons.comment, size: 14, color: AppTheme.grey600),
           const SizedBox(width: 4),
           Text(
             post.commentsCount.toString(),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -396,7 +397,7 @@ class BlogPostCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 border: Border.all(
                   color: Theme.of(context).primaryColor.withOpacity(0.3),
                 ),
@@ -406,7 +407,7 @@ class BlogPostCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             )).toList(),
@@ -422,14 +423,14 @@ class BlogPostCard extends StatelessWidget {
             children: post.tags.take(5).map((tag) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: AppTheme.grey200,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 '#$tag',
                 style: TextStyle(
                   fontSize: 11,
-                  color: Colors.grey[700],
+                  color: AppTheme.grey700,
                 ),
               ),
             )).toList(),
@@ -444,13 +445,13 @@ class BlogPostCard extends StatelessWidget {
       children: [
         // Informations de programmation
         if (post.status == BlogPostStatus.scheduled && post.scheduledAt != null) ...[
-          Icon(Icons.schedule, size: 16, color: Colors.blue[600]),
+          Icon(Icons.schedule, size: 16, color: AppTheme.grey600),
           const SizedBox(width: 4),
           Text(
             'Programmé pour le ${_formatDate(post.scheduledAt!)}',
             style: TextStyle(
               fontSize: 12,
-              color: Colors.blue[600],
+              color: AppTheme.grey600,
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -465,7 +466,7 @@ class BlogPostCard extends StatelessWidget {
             icon: const Icon(Icons.publish, size: 16),
             label: const Text('Publier'),
             style: TextButton.styleFrom(
-              foregroundColor: Colors.green,
+              foregroundColor: AppTheme.greenStandard,
               textStyle: const TextStyle(fontSize: 12),
             ),
           ),

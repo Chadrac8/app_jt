@@ -4,7 +4,7 @@ import '../models/person_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../services/firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class TaskListFormPage extends StatefulWidget {
   final TaskListModel? taskList;
@@ -361,7 +361,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -418,7 +418,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
                   color: colorValue,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isSelected ? Colors.black : Colors.transparent,
+                    color: isSelected ? AppTheme.black100 : Colors.transparent,
                     width: 3,
                   ),
                   boxShadow: [
@@ -431,7 +431,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
                   ],
                 ),
                 child: isSelected
-                    ? const Icon(Icons.check, color: Colors.white)
+                    ? const Icon(Icons.check, color: AppTheme.white100)
                     : null,
               ),
             );

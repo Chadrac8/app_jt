@@ -22,6 +22,7 @@ import '../pages/form_detail_page.dart';
 import '../pages/blog_categories_page.dart';
 import '../services/pages_firebase_service.dart';
 import '../pages/member_pages_view.dart';
+import '../../theme.dart';
 
 class ComponentActionService {
   static Future<void> handleComponentAction(
@@ -100,9 +101,9 @@ class ComponentActionService {
           children: [
             const Text('Impossible d\'ouvrir le lien dans l\'application.'),
             const SizedBox(height: 8),
-            Text('URL: $url', style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text('URL: $url', style: const TextStyle(fontWeight: AppTheme.fontBold)),
             const SizedBox(height: 8),
-            Text('Erreur: $error', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            Text('Erreur: $error', style: const TextStyle(fontSize: 12, color: AppTheme.grey500)),
           ],
         ),
         actions: [
@@ -358,7 +359,7 @@ class ComponentActionService {
             const SizedBox(height: 16),
             const Text(
               'Causes possibles:',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: AppTheme.fontBold),
             ),
             const Text('• La page n\'est pas publiée'),
             const Text('• La page a été supprimée'),
@@ -389,7 +390,7 @@ class ComponentActionService {
             const SizedBox(height: 8),
             Text(
               error,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+              style: const TextStyle(color: AppTheme.redStandard, fontSize: 12),
             ),
             const SizedBox(height: 8),
             Text(
@@ -513,7 +514,7 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
       appBar: AppBar(
         title: const Text('Page Web'),
         backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -572,21 +573,21 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
             const Icon(
               Icons.web_asset_off,
               size: 64,
-              color: Colors.orange,
+              color: AppTheme.orangeStandard,
             ),
             const SizedBox(height: 16),
             const Text(
               'WebView non disponible',
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'URL: ${widget.url}',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: AppTheme.grey500),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -594,7 +595,7 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
             Text(
               'Détails: $error',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
+              style: const TextStyle(color: AppTheme.grey500, fontSize: 12),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
@@ -629,21 +630,21 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
             const Icon(
               Icons.error_outline,
               size: 64,
-              color: Colors.red,
+              color: AppTheme.redStandard,
             ),
             const SizedBox(height: 16),
             const Text(
               'Impossible de charger la page',
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               _errorMessage,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: AppTheme.grey500),
             ),
             const SizedBox(height: 16),
             ElevatedButton(

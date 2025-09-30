@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
 import '../auth/auth_service.dart';
+import '../../theme.dart';
 
 class PlaylistManagerPage extends StatefulWidget {
   PlaylistManagerPage({Key? key}) : super(key: key);
@@ -287,7 +288,7 @@ class _PlaylistManagerPageState extends State<PlaylistManagerPage> {
                 // Liste des playlists
                 Container(
                   width: 260,
-                  color: Colors.grey[100],
+                  color: AppTheme.grey100,
                   child: ListView(
                     children: _playlists.map((playlist) {
                       return ListTile(
@@ -315,7 +316,7 @@ class _PlaylistManagerPageState extends State<PlaylistManagerPage> {
                             if (_error != null)
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(_error!, style: const TextStyle(color: Colors.red)),
+                                child: Text(_error!, style: const TextStyle(color: AppTheme.redStandard)),
                               ),
                             Expanded(
                               child: ReorderableListView(
@@ -328,7 +329,7 @@ class _PlaylistManagerPageState extends State<PlaylistManagerPage> {
                                       title: Text(_playlistSongs[i].title),
                                       trailing: _isEditMode
                                           ? IconButton(
-                                              icon: const Icon(Icons.remove_circle, color: Colors.red),
+                                              icon: const Icon(Icons.remove_circle, color: AppTheme.redStandard),
                                               onPressed: () => _removeSongFromPlaylist(_playlistSongs[i]),
                                             )
                                           : null,

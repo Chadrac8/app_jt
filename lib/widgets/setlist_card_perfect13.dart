@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../modules/songs/models/song_model.dart';
+import '../../theme.dart';
 
-/// Carte de setlist - Reproduction exacte du style Perfect 13
-class SetlistCardPerfect13 extends StatelessWidget {
+/// Carte de setlist Material Design 3 - Version complète avec animations
+class SetlistCardPerfect13 extends StatefulWidget {
   final SetlistModel setlist;
   final VoidCallback? onTap;
   final VoidCallback? onMusicianMode;
@@ -16,233 +19,358 @@ class SetlistCardPerfect13 extends StatelessWidget {
     this.onConductorMode,
   });
 
+  @override
+  State<SetlistCardPerfect13> createState() => _SetlistCardPerfect13State();
+}
+
+class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.98,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 1.0,
+      end: 4.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   String _formatDate(DateTime date) {
     return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
   }
 
   Widget _buildSetlistProgress(BuildContext context) {
-    // Simuler un statut de progression basé sur la date
+    final colorScheme = Theme.of(context).colorScheme;
     final now = DateTime.now();
-    final diff = setlist.serviceDate.difference(now).inDays;
+    final diff = widget.setlist.serviceDate.difference(now).inDays;
     
     if (diff > 7) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceSmall, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6)),
+          color: colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        ),
         child: Text(
           'Planifiée',
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: Colors.blue.shade700)));
+            fontWeight: AppTheme.fontSemiBold,
+            color: colorScheme.onPrimaryContainer,
+            letterSpacing: 0.1,
+          ),
+        ),
+      );
     } else if (diff >= 0) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceSmall, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.orange.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6)),
+          color: colorScheme.tertiaryContainer,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        ),
         child: Text(
           'Bientôt',
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: Colors.orange)));
+            fontWeight: AppTheme.fontSemiBold,
+            color: colorScheme.onTertiaryContainer,
+            letterSpacing: 0.1,
+          ),
+        ),
+      );
     } else if (diff >= -1) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceSmall, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.green.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6)),
+          color: colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        ),
         child: Text(
           'Actuelle',
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: Colors.green)));
+            fontWeight: AppTheme.fontSemiBold,
+            color: colorScheme.onSecondaryContainer,
+            letterSpacing: 0.1,
+          ),
+        ),
+      );
     }
     return const SizedBox.shrink();
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: AppTheme.spaceMedium,
+              vertical: AppTheme.spaceSmall,
+            ),
+            child: Card(
+              elevation: _elevationAnimation.value,
+              surfaceTintColor: colorScheme.surfaceTint,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  widget.onTap?.call();
+                },
+                onTapDown: (_) => _animationController.forward(),
+                onTapUp: (_) => _animationController.reverse(),
+                onTapCancel: () => _animationController.reverse(),
+                child: Padding(
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // En-tête avec icône et actions
+                      Row(
+                        children: [
+                          // Icône moderne avec Material Design 3
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                            ),
+                            child: Icon(
+                              Icons.queue_music,
+                              color: colorScheme.onPrimaryContainer,
+                              size: 24,
+                            ),
+                          ),
+                          
+                          const SizedBox(width: AppTheme.spaceMedium),
+                          
+                          // Titre et infos
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.setlist.name,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 16,
+                                    fontWeight: AppTheme.fontSemiBold,
+                                    color: colorScheme.onSurface,
+                                    letterSpacing: -0.2,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                if (widget.setlist.serviceType != null) ...[
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    widget.setlist.serviceType!,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      fontWeight: AppTheme.fontMedium,
+                                      color: colorScheme.primary,
+                                      letterSpacing: 0.1,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                          
+                          // Actions rapides avec Material Design 3
+                          _buildActionButtons(colorScheme),
+                        ],
+                      ),
+                      
+                      const SizedBox(height: AppTheme.spaceMedium),
+                      
+                      // Description si présente
+                      if (widget.setlist.description.isNotEmpty) ...[
+                        Text(
+                          widget.setlist.description,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: AppTheme.fontRegular,
+                            color: colorScheme.onSurfaceVariant,
+                            height: 1.4,
+                            letterSpacing: 0.1,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: AppTheme.spaceMedium),
+                      ],
+                      
+                      // Informations détaillées avec badges Material Design 3
+                      Row(
+                        children: [
+                          // Badge de date
+                          _buildInfoChip(
+                            context,
+                            icon: Icons.calendar_today_outlined,
+                            label: _formatDate(widget.setlist.serviceDate),
+                            color: colorScheme.secondaryContainer,
+                            onColor: colorScheme.onSecondaryContainer,
+                          ),
+                          
+                          const SizedBox(width: AppTheme.spaceSmall),
+                          
+                          // Badge nombre de chants
+                          _buildInfoChip(
+                            context,
+                            icon: Icons.music_note_outlined,
+                            label: '${widget.setlist.songIds.length} chant${widget.setlist.songIds.length > 1 ? 's' : ''}',
+                            color: colorScheme.tertiaryContainer,
+                            onColor: colorScheme.onTertiaryContainer,
+                          ),
+                          
+                          const Spacer(),
+                          
+                          // Indicateur de progression
+                          _buildSetlistProgress(context),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildActionButtons(ColorScheme colorScheme) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Bouton mode musicien
+        if (widget.onMusicianMode != null)
+          Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                widget.onMusicianMode?.call();
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+                ),
+                child: Icon(
+                  Icons.piano,
+                  color: colorScheme.onTertiaryContainer,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+        
+        if (widget.onMusicianMode != null && widget.onConductorMode != null)
+          const SizedBox(width: AppTheme.spaceSmall),
+        
+        // Bouton mode conducteur
+        if (widget.onConductorMode != null)
+          Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                widget.onConductorMode?.call();
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+                ),
+                child: Icon(
+                  Icons.music_video,
+                  color: colorScheme.onPrimaryContainer,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildInfoChip(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required Color onColor,
+  }) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceSmall,
+        vertical: 4,
+      ),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surface.withOpacity(0.95),
-          ]),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2)),
+        color: color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 12,
+            color: onColor,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 11,
+              fontWeight: AppTheme.fontMedium,
+              color: onColor,
+              letterSpacing: 0.1,
+            ),
+          ),
         ],
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-          width: 1)),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // En-tête avec icône et actions
-                Row(
-                  children: [
-                    // Icône moderne
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Theme.of(context).colorScheme.primary,
-                            Theme.of(context).colorScheme.primaryContainer,
-                          ]),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2)),
-                        ]),
-                      child: Icon(
-                        Icons.playlist_play_rounded,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        size: 20)),
-                    
-                    const SizedBox(width: 12),
-                    
-                    // Titre et infos
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            setlist.name,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onSurface),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis),
-                          if (setlist.serviceType != null) ...[
-                            const SizedBox(height: 2),
-                            Text(
-                              setlist.serviceType!,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w500)),
-                          ],
-                        ])),
-                    
-                    // Bouton mode musicien rapide
-                    if (onMusicianMode != null)
-                      IconButton(
-                        icon: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8)),
-                          child: const Icon(
-                            Icons.piano,
-                            color: Colors.orange,
-                            size: 20)),
-                        tooltip: 'Mode Musicien',
-                        onPressed: onMusicianMode),
-                    
-                    // Bouton mode conducteur rapide
-                    if (onConductorMode != null)
-                      IconButton(
-                        icon: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8)),
-                          child: const Icon(
-                            Icons.music_video_rounded,
-                            color: Colors.green,
-                            size: 20)),
-                        tooltip: 'Mode Conducteur',
-                        onPressed: onConductorMode),
-                  ]),
-                
-                const SizedBox(height: 12),
-                
-                // Description si présente
-                if (setlist.description.isNotEmpty) ...[
-                  Text(
-                    setlist.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 12),
-                ],
-                
-                // Informations détaillées
-                Row(
-                  children: [
-                    // Badge de date
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(8)),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.calendar_today_outlined,
-                            size: 12,
-                            color: Theme.of(context).colorScheme.onSecondaryContainer),
-                          const SizedBox(width: 4),
-                          Text(
-                            _formatDate(setlist.serviceDate),
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onSecondaryContainer)),
-                        ])),
-                    
-                    const SizedBox(width: 8),
-                    
-                    // Badge nombre de chants
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                        borderRadius: BorderRadius.circular(8)),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.music_note_rounded,
-                            size: 12,
-                            color: Theme.of(context).colorScheme.onTertiaryContainer),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onTertiaryContainer)),
-                        ])),
-                    
-                    const Spacer(),
-                    
-                    // Indicateur de progression si applicable
-                    _buildSetlistProgress(context),
-                  ]),
-              ])))));
+      ),
+    );
   }
 }

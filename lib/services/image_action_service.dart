@@ -14,6 +14,7 @@ import '../pages/member_dashboard_page.dart';
 import '../pages/member_profile_page.dart';
 import '../pages/member_calendar_page.dart';
 import '../pages/form_public_page.dart';
+import '../../theme.dart';
 
 class ImageActionService {
   static Future<void> handleImageAction(
@@ -148,7 +149,7 @@ class ImageActionService {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'ouverture de ${pageDefinition.name}'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

@@ -4,6 +4,7 @@ import '../models/blog_model.dart';
 import '../services/blog_firebase_service.dart';
 
 import '../widgets/blog_post_preview_dialog.dart';
+import '../../theme.dart';
 
 class BlogPostFormPage extends StatefulWidget {
   final BlogPost? post;
@@ -298,15 +299,15 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
       width: double.infinity,
       height: 200,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.grey[50],
+        border: Border.all(color: AppTheme.grey300!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        color: AppTheme.grey50,
       ),
       child: _featuredImageUrl != null
           ? Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   child: Image.network(
                     _featuredImageUrl!,
                     width: double.infinity,
@@ -314,7 +315,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: Colors.grey[300],
+                        color: AppTheme.grey300,
                         child: const Icon(Icons.error, size: 64),
                       );
                     },
@@ -327,8 +328,8 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                     onPressed: () => setState(() => _featuredImageUrl = null),
                     icon: const Icon(Icons.delete),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.redStandard,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
                 ),
@@ -339,7 +340,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_photo_alternate, size: 48, color: Colors.grey),
+                  Icon(Icons.add_photo_alternate, size: 48, color: AppTheme.grey500),
                   SizedBox(height: 8),
                   Text('Ajouter une image en vedette'),
                 ],
@@ -354,9 +355,9 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
         width: double.infinity,
         height: 100,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[300]!),
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.grey[50],
+          border: Border.all(color: AppTheme.grey300!),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+          color: AppTheme.grey50,
         ),
         child: const Center(
           child: Text('Aucune image additionnelle'),
@@ -378,7 +379,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
         return Stack(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               child: Image.network(
                 imageUrl,
                 width: double.infinity,
@@ -386,7 +387,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey[300],
+                    color: AppTheme.grey300,
                     child: const Icon(Icons.error),
                   );
                 },
@@ -400,12 +401,12 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: const BoxDecoration(
-                    color: Colors.red,
+                    color: AppTheme.redStandard,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.close,
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     size: 16,
                   ),
                 ),
@@ -459,8 +460,8 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
               trailing: const Icon(Icons.date_range),
               onTap: _selectScheduledDate,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: BorderSide(color: Colors.grey[300]!),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                side: BorderSide(color: AppTheme.grey300!),
               ),
             ),
             const SizedBox(height: 16),
@@ -544,9 +545,9 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                         ? _metaTitleController.text 
                         : _titleController.text,
                     style: const TextStyle(
-                      color: Colors.blue,
+                      color: AppTheme.blueStandard,
                       fontSize: 18,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -556,7 +557,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                         : _excerptController.text.isNotEmpty
                             ? _excerptController.text
                             : 'Aucune description disponible',
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(color: AppTheme.grey600),
                   ),
                 ],
               ),
@@ -687,7 +688,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la sauvegarde: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

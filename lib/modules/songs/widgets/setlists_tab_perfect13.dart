@@ -1,74 +1,60 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
-import '../../../widgets/setlist_card_perfect13.dart';
 import '../../../pages/setlist_detail_page.dart';
 
-/// Onglet Setlists - Style Perfect 13
-class SetlistsTabPerfect13 extends StatefulWidget {
-  const SetlistsTabPerfect13({super.key});
+/// Onglet Setlists - Material Design 3
+class SetlistsTabMD3 extends StatefulWidget {
+  const SetlistsTabMD3({super.key});
 
   @override
-  State<SetlistsTabPerfect13> createState() => _SetlistsTabPerfect13State();
+  State<SetlistsTabMD3> createState() => _SetlistsTabMD3State();
 }
 
-class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
+class _SetlistsTabMD3State extends State<SetlistsTabMD3>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late AnimationController _searchAnimationController;
+  
   String _searchQuery = '';
   String? _selectedSetlistFilter;
+  bool _isSearchExpanded = false;
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+    _searchAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    
+    // Démarrer l'animation des cartes
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _searchAnimationController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Barre de recherche et filtres pour setlists
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 4,
-                offset: const Offset(0, 2)),
-            ]),
-          child: Column(
-            children: [
-              // Recherche de setlists
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Rechercher une setlist...',
-                  prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none),
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                  });
-                }),
-              
-              const SizedBox(height: 12),
-              
-              // Filtres rapides
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildFilterChip('Tous', null),
-                    const SizedBox(width: 8),
-                    _buildFilterChip('Cette semaine', 'week'),
-                    const SizedBox(width: 8),
-                    _buildFilterChip('Ce mois', 'month'),
-                    const SizedBox(width: 8),
-                    _buildFilterChip('Favoris', 'favorites'),
-                    const SizedBox(width: 8),
-                    _buildFilterChip('Récents', 'recent'),
-                  ])),
-            ])),
+        // En-tête de recherche et filtres
+        _buildSearchHeader(),
+        
+        // Filtres rapides
+        _buildQuickFilters(),
         
         // Liste des setlists
         Expanded(
@@ -76,86 +62,135 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
             stream: SongsFirebaseService.getSetlists(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return _buildLoadingState();
               }
 
               if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.error),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Erreur de chargement',
-                        style: Theme.of(context).textTheme.titleMedium),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Impossible de charger les setlists',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                      const SizedBox(height: 16),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('Réessayer')),
-                    ]));
+                return _buildErrorState(snapshot.error.toString());
               }
 
               final allSetlists = snapshot.data ?? [];
               final filteredSetlists = _filterSetlists(allSetlists);
 
               if (filteredSetlists.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.playlist_play_outlined,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant),
-                      const SizedBox(height: 16),
-                      Text(
-                        allSetlists.isEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                      const SizedBox(height: 8),
-                      Text(
-                        allSetlists.isEmpty 
-                          ? 'Les setlists créées apparaîtront ici'
-                          : 'Essayez de modifier votre recherche',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                    ]));
+                return _buildEmptyState(allSetlists.isEmpty);
               }
 
-              return RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {});
+              return _buildSetlistsList(filteredSetlists);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSearchHeader() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: 48,
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: _isSearchExpanded 
+                      ? colorScheme.primary 
+                      : colorScheme.outline.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: TextField(
+                controller: _searchController,
+                onTap: () {
+                  if (!_isSearchExpanded) {
+                    setState(() {
+                      _isSearchExpanded = true;
+                    });
+                    _searchAnimationController.forward();
+                  }
                 },
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 80),
-                  itemCount: filteredSetlists.length,
-                  itemBuilder: (context, index) {
-                    final setlist = filteredSetlists[index];
-                    return SetlistCardPerfect13(
-                      setlist: setlist,
-                      onTap: () => _showSetlistDetails(setlist),
-                      onMusicianMode: () => _startMusicianMode(setlist),
-                      onConductorMode: () => _startConductorMode(setlist),
-                    );
-                  }));
-            })),
-      ]);
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Rechercher une setlist...',
+                  hintStyle: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                    color: colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
+                  suffixIcon: _searchQuery.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _searchController.clear();
+                              _searchQuery = '';
+                              _isSearchExpanded = false;
+                            });
+                            _searchAnimationController.reverse();
+                          },
+                          icon: Icon(
+                            Icons.clear_rounded,
+                            color: colorScheme.onSurfaceVariant,
+                            size: 18,
+                          ),
+                        )
+                      : null,
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickFilters() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: _searchQuery.isNotEmpty || _isSearchExpanded ? 60 : 56,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _buildFilterChip('Tous', null),
+            const SizedBox(width: 12),
+            _buildFilterChip('Cette semaine', 'week'),
+            const SizedBox(width: 12),
+            _buildFilterChip('Ce mois', 'month'),
+            const SizedBox(width: 12),
+            _buildFilterChip('Récents', 'recent'),
+            const SizedBox(width: 12),
+            _buildFilterChip('Favoris', 'favorites'),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildFilterChip(String label, String? filterType) {
+    final colorScheme = Theme.of(context).colorScheme;
     final isSelected = _selectedSetlistFilter == filterType;
+    
     return FilterChip(
       label: Text(label),
       selected: isSelected,
@@ -164,241 +199,523 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
           _selectedSetlistFilter = selected ? filterType : null;
         });
       },
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
-      selectedColor: Theme.of(context).colorScheme.primaryContainer,
-      labelStyle: TextStyle(
+      backgroundColor: colorScheme.surfaceContainer,
+      selectedColor: colorScheme.primaryContainer,
+      labelStyle: GoogleFonts.inter(
+        fontSize: 13,
+        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
         color: isSelected 
-          ? Theme.of(context).colorScheme.onPrimaryContainer
-          : Theme.of(context).colorScheme.onSurfaceVariant,
-        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal));
+            ? colorScheme.onPrimaryContainer
+            : colorScheme.onSurfaceVariant,
+      ),
+      side: BorderSide(
+        color: isSelected 
+            ? colorScheme.primary 
+            : colorScheme.outline.withValues(alpha: 0.3),
+        width: 1,
+      ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    );
   }
 
-  Widget _buildEnhancedSetlistCard(SetlistModel setlist) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surface.withOpacity(0.95),
-          ]),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2)),
+  Widget _buildLoadingState() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(
+            color: colorScheme.primary,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Chargement des setlists...',
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
+            ),
+          ),
         ],
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-          width: 1)),
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String error) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline_rounded,
+              size: 64,
+              color: colorScheme.error,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Erreur de chargement',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Impossible de charger les setlists',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh_rounded),
+              label: Text(
+                'Réessayer',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(bool isCompletelyEmpty) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isCompletelyEmpty ? Icons.playlist_add_outlined : Icons.search_off_rounded,
+              size: 64,
+              color: colorScheme.onSurface.withValues(alpha: 0.4),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              isCompletelyEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              isCompletelyEmpty 
+                  ? 'Les setlists créées apparaîtront ici'
+                  : 'Essayez de modifier votre recherche',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSetlistsList(List<SetlistModel> setlists) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {});
+      },
+      child: ListView.builder(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 80),
+        itemCount: setlists.length,
+        itemBuilder: (context, index) {
+          final setlist = setlists[index];
+          return AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) {
+              final offset = index * 0.1;
+              
+              return FadeTransition(
+                opacity: Tween<double>(begin: 0, end: 1).animate(
+                  CurvedAnimation(
+                    parent: _animationController,
+                    curve: Interval(offset, (offset + 0.3).clamp(0.0, 1.0), curve: Curves.easeOut),
+                  ),
+                ),
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 0.3),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: _animationController,
+                      curve: Interval(offset, (offset + 0.3).clamp(0.0, 1.0), curve: Curves.easeOutCubic),
+                    ),
+                  ),
+                  child: _buildSetlistCard(setlist, index),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSetlistCard(SetlistModel setlist, int index) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
       child: Material(
-        color: Colors.transparent,
+        color: colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(20),
+        elevation: 0,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
           onTap: () => _showSetlistDetails(setlist),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: colorScheme.outline.withValues(alpha: 0.2),
+                width: 1,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // En-tête avec icône et actions
                 Row(
                   children: [
-                    // Icône moderne
+                    // Icône de setlist avec gradient
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      width: 48,
+                      height: 48,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Theme.of(context).colorScheme.primary,
-                            Theme.of(context).colorScheme.primaryContainer,
-                          ]),
-                        borderRadius: BorderRadius.circular(12),
+                            colorScheme.primary,
+                            colorScheme.primary.withValues(alpha: 0.8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(14),
                         boxShadow: [
                           BoxShadow(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2)),
-                        ]),
+                            color: colorScheme.primary.withValues(alpha: 0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
                       child: Icon(
                         Icons.playlist_play_rounded,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        size: 20)),
+                        color: colorScheme.onPrimary,
+                        size: 24,
+                      ),
+                    ),
                     
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 16),
                     
-                    // Titre et infos
+                    // Titre et type de service
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             setlist.name,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onSurface),
+                            style: GoogleFonts.inter(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: colorScheme.onSurface,
+                              height: 1.2,
+                            ),
                             maxLines: 2,
-                            overflow: TextOverflow.ellipsis),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          
                           if (setlist.serviceType != null) ...[
-                            const SizedBox(height: 2),
-                            Text(
-                              setlist.serviceType!,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w500)),
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: colorScheme.primaryContainer,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                setlist.serviceType!,
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: colorScheme.onPrimaryContainer,
+                                ),
+                              ),
+                            ),
                           ],
-                        ])),
+                        ],
+                      ),
+                    ),
                     
-                    // Actions rapides
+                    // Menu d'actions
                     PopupMenuButton<String>(
                       icon: Icon(
-                        Icons.more_vert,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant),
+                        Icons.more_vert_rounded,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                       onSelected: (value) => _handleSetlistAction(value, setlist),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       itemBuilder: (context) => [
                         PopupMenuItem(
                           value: 'view',
-                          child: ListTile(
-                            leading: Icon(Icons.visibility),
-                            title: Text('Voir les détails'),
-                            contentPadding: EdgeInsets.zero)),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.visibility_rounded,
+                                size: 20,
+                                color: colorScheme.onSurface,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Voir les détails',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         PopupMenuItem(
                           value: 'play',
-                          child: ListTile(
-                            leading: Icon(Icons.play_arrow),
-                            title: Text('Jouer la setlist'),
-                            contentPadding: EdgeInsets.zero)),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.play_arrow_rounded,
+                                size: 20,
+                                color: colorScheme.onSurface,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Jouer la setlist',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         PopupMenuItem(
                           value: 'share',
-                          child: ListTile(
-                            leading: Icon(Icons.share),
-                            title: Text('Partager'),
-                            contentPadding: EdgeInsets.zero)),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.share_rounded,
+                                size: 20,
+                                color: colorScheme.onSurface,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Partager',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         PopupMenuItem(
                           value: 'copy',
-                          child: ListTile(
-                            leading: Icon(Icons.copy),
-                            title: Text('Dupliquer'),
-                            contentPadding: EdgeInsets.zero)),
-                      ]),
-                  ]),
-                
-                const SizedBox(height: 12),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.copy_rounded,
+                                size: 20,
+                                color: colorScheme.onSurface,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Dupliquer',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 
                 // Description si présente
                 if (setlist.description.isNotEmpty) ...[
+                  const SizedBox(height: 16),
                   Text(
                     setlist.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
+                      height: 1.4,
+                    ),
                     maxLines: 2,
-                    overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 12),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
                 
-                // Informations détaillées
+                const SizedBox(height: 16),
+                
+                // Informations et badges
                 Row(
                   children: [
                     // Badge de date
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(8)),
+                        color: colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.calendar_today_outlined,
-                            size: 12,
-                            color: Theme.of(context).colorScheme.onSecondaryContainer),
-                          const SizedBox(width: 4),
+                            Icons.calendar_today_rounded,
+                            size: 14,
+                            color: colorScheme.onSecondaryContainer,
+                          ),
+                          const SizedBox(width: 6),
                           Text(
                             _formatDate(setlist.serviceDate),
-                            style: TextStyle(
-                              fontSize: 11,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onSecondaryContainer)),
-                        ])),
+                              color: colorScheme.onSecondaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 12),
                     
                     // Badge nombre de chants
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                        borderRadius: BorderRadius.circular(8)),
+                        color: colorScheme.tertiaryContainer,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.music_note_rounded,
-                            size: 12,
-                            color: Theme.of(context).colorScheme.onTertiaryContainer),
-                          const SizedBox(width: 4),
+                            size: 14,
+                            color: colorScheme.onTertiaryContainer,
+                          ),
+                          const SizedBox(width: 6),
                           Text(
                             '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
-                            style: TextStyle(
-                              fontSize: 11,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onTertiaryContainer)),
-                        ])),
+                              color: colorScheme.onTertiaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     
                     const Spacer(),
                     
-                    // Indicateur de progression si applicable
+                    // Indicateur de statut
                     _buildSetlistProgress(setlist),
-                  ]),
-              ])))));
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildSetlistProgress(SetlistModel setlist) {
-    // Simuler un statut de progression basé sur la date
+    final colorScheme = Theme.of(context).colorScheme;
     final now = DateTime.now();
     final diff = setlist.serviceDate.difference(now).inDays;
     
+    String label;
+    Color backgroundColor;
+    Color textColor;
+    IconData icon;
+    
     if (diff > 7) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6)),
-        child: Text(
-          'Planifiée',
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: Colors.blue.shade700)));
+      label = 'Planifiée';
+      backgroundColor = colorScheme.surfaceVariant;
+      textColor = colorScheme.onSurfaceVariant;
+      icon = Icons.schedule_rounded;
     } else if (diff >= 0) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: AppTheme.warningColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6)),
-        child: Text(
-          'Bientôt',
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: AppTheme.warningColor)));
+      label = 'Bientôt';
+      backgroundColor = colorScheme.errorContainer.withValues(alpha: 0.7);
+      textColor = colorScheme.onErrorContainer;
+      icon = Icons.warning_rounded;
     } else if (diff >= -1) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: AppTheme.successColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6)),
-        child: Text(
-          'Actuelle',
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: AppTheme.successColor)));
+      label = 'Actuelle';
+      backgroundColor = colorScheme.primaryContainer;
+      textColor = colorScheme.onPrimaryContainer;
+      icon = Icons.play_circle_rounded;
+    } else {
+      return const SizedBox.shrink();
     }
-    return const SizedBox.shrink();
+    
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 12,
+            color: textColor,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: textColor,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   List<SetlistModel> _filterSetlists(List<SetlistModel> setlists) {
@@ -459,7 +776,9 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SetlistDetailPage(setlist: setlist)));
+            builder: (context) => SetlistDetailPage(setlist: setlist),
+          ),
+        );
         break;
       case 'play':
         _playSetlist(setlist);
@@ -474,11 +793,25 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
   }
 
   void _playSetlist(SetlistModel setlist) async {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     if (setlist.songIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Cette setlist ne contient aucun chant'),
-          backgroundColor: AppTheme.warningColor));
+        SnackBar(
+          content: Text(
+            'Cette setlist ne contient aucun chant',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          backgroundColor: colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
       return;
     }
 
@@ -489,51 +822,81 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SetlistDetailPage(setlist: setlist)));
+            builder: (context) => SetlistDetailPage(setlist: setlist),
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: AppTheme.errorColor));
+            content: Text(
+              'Erreur lors du chargement: $e',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            backgroundColor: colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        );
       }
     }
   }
 
   void _shareSetlist(SetlistModel setlist) {
-    // Implémenter le partage de setlist
+    final colorScheme = Theme.of(context).colorScheme;
+    
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Fonctionnalité de partage bientôt disponible')));
+      SnackBar(
+        content: Text(
+          'Fonctionnalité de partage bientôt disponible',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        backgroundColor: colorScheme.surfaceVariant,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
   }
 
   void _duplicateSetlist(SetlistModel setlist) {
-    // Implémenter la duplication de setlist
+    final colorScheme = Theme.of(context).colorScheme;
+    
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Fonctionnalité de duplication bientôt disponible')));
-  }
-
-  void _startMusicianMode(SetlistModel setlist) {
-    // Implémenter le mode musicien
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Mode musicien bientôt disponible')));
-  }
-
-  void _startConductorMode(SetlistModel setlist) {
-    // Implémenter le mode conducteur
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Mode conducteur bientôt disponible')));
+      SnackBar(
+        content: Text(
+          'Fonctionnalité de duplication bientôt disponible',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        backgroundColor: colorScheme.surfaceVariant,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
   }
 
   void _showSetlistDetails(SetlistModel setlist) async {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SetlistDetailPage(setlist: setlist)));
+        builder: (context) => SetlistDetailPage(setlist: setlist),
+      ),
+    );
   }
 
   String _formatDate(DateTime date) {

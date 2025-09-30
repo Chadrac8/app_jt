@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
+import '../../theme.dart';
 
 class BlogPostActions extends StatelessWidget {
   final BlogPost post;
@@ -25,7 +26,7 @@ class BlogPostActions extends StatelessWidget {
           _buildActionButton(
             icon: hasLiked ? Icons.favorite : Icons.favorite_border,
             label: '${post.likes}',
-            color: hasLiked ? Colors.red : null,
+            color: hasLiked ? AppTheme.redStandard : null,
             onTap: onLike,
           ),
           
@@ -68,7 +69,7 @@ class BlogPostActions extends StatelessWidget {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Row(
@@ -77,14 +78,14 @@ class BlogPostActions extends StatelessWidget {
             Icon(
               icon,
               size: 20,
-              color: color ?? Colors.grey[600],
+              color: color ?? AppTheme.grey600,
             ),
             const SizedBox(width: 4),
             Text(
               label,
               style: TextStyle(
-                color: color ?? Colors.grey[600],
-                fontWeight: FontWeight.w500,
+                color: color ?? AppTheme.grey600,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ],

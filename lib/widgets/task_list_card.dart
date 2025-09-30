@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/task_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class TaskListCard extends StatefulWidget {
   final TaskListModel taskList;
@@ -115,14 +115,14 @@ class _TaskListCardState extends State<TaskListCard>
       child: Card(
         elevation: widget.isSelected ? 8 : 2,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           side: widget.isSelected
               ? BorderSide(color: AppTheme.primaryColor, width: 2)
               : BorderSide.none,
         ),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -149,7 +149,7 @@ class _TaskListCardState extends State<TaskListCard>
                               : Icons.radio_button_unchecked,
                           color: widget.isSelected
                               ? AppTheme.primaryColor
-                              : Colors.grey,
+                              : AppTheme.grey500,
                         ),
                       ),
                     Container(
@@ -157,7 +157,7 @@ class _TaskListCardState extends State<TaskListCard>
                       height: 48,
                       decoration: BoxDecoration(
                         color: _listColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Icon(
                         widget.taskList.iconName != null
@@ -175,7 +175,7 @@ class _TaskListCardState extends State<TaskListCard>
                           Text(
                             widget.taskList.name,
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                               color: AppTheme.textPrimaryColor,
                             ),
                           ),
@@ -250,14 +250,14 @@ class _TaskListCardState extends State<TaskListCard>
             Text(
               'Progression',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
             Text(
               '${(progress * 100).round()}%',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: _listColor,
               ),
             ),
@@ -267,7 +267,7 @@ class _TaskListCardState extends State<TaskListCard>
         Container(
           height: 8,
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: AppTheme.grey200,
             borderRadius: BorderRadius.circular(4),
           ),
           child: ClipRRect(
@@ -292,7 +292,7 @@ class _TaskListCardState extends State<TaskListCard>
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
@@ -305,7 +305,7 @@ class _TaskListCardState extends State<TaskListCard>
             style: TextStyle(
               color: color,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -318,8 +318,8 @@ class _TaskListCardState extends State<TaskListCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: AppTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: AppTheme.grey300!),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -331,7 +331,7 @@ class _TaskListCardState extends State<TaskListCard>
             style: TextStyle(
               color: AppTheme.textTertiaryColor,
               fontSize: 11,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -367,7 +367,7 @@ class _TaskListCardState extends State<TaskListCard>
                   '${index + 1}',
                   style: TextStyle(
                     fontSize: 8,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: _listColor,
                   ),
                 ),
@@ -381,7 +381,7 @@ class _TaskListCardState extends State<TaskListCard>
             width: 20,
             height: 20,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: AppTheme.grey300,
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -389,8 +389,8 @@ class _TaskListCardState extends State<TaskListCard>
                 '+${memberCount - 3}',
                 style: const TextStyle(
                   fontSize: 8,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
+                  fontWeight: AppTheme.fontBold,
+                  color: AppTheme.grey500,
                 ),
               ),
             ),

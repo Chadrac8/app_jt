@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/dashboard_widget_model.dart';
+import '../../../theme.dart';
 
 class DashboardChartWidget extends StatelessWidget {
   final DashboardChartModel chart;
@@ -23,7 +24,7 @@ class DashboardChartWidget extends StatelessWidget {
             Text(
               chart.title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 fontSize: compactView ? 14 : 16,
               ),
             ),
@@ -101,7 +102,7 @@ class DashboardChartWidget extends StatelessWidget {
                     Text(
                       '$percentage%',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ],
@@ -215,13 +216,13 @@ class DashboardChartWidget extends StatelessWidget {
           Icon(
             Icons.bar_chart,
             size: compactView ? 32 : 48,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 8),
           Text(
             'Aucune donnée disponible',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -239,7 +240,7 @@ class DashboardChartWidget extends StatelessWidget {
       }
       return Color(int.parse(colorString, radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 }
@@ -291,7 +292,7 @@ class PieChartPainter extends CustomPainter {
       }
       return Color(int.parse(colorString, radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 }
@@ -308,12 +309,12 @@ class LineChartPainter extends CustomPainter {
     if (data.isEmpty || maxValue == 0) return;
 
     final paint = Paint()
-      ..color = Colors.blue
+      ..color = AppTheme.blueStandard
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
     final dotPaint = Paint()
-      ..color = Colors.blue
+      ..color = AppTheme.blueStandard
       ..style = PaintingStyle.fill;
 
     final path = Path();

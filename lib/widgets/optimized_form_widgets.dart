@@ -3,6 +3,7 @@ import '../services/roles_firebase_service.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
 import '../auth/auth_service.dart';
+import '../../theme.dart';
 
 /// Widget d'amélioration des performances pour gérer le lazy loading des rôles
 class LazyRoleChipsList extends StatefulWidget {
@@ -54,7 +55,7 @@ class _LazyRoleChipsListState extends State<LazyRoleChipsList> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                 ),
               ),
@@ -81,11 +82,11 @@ class _LazyRoleChipsListState extends State<LazyRoleChipsList> {
           height: 24,
           decoration: BoxDecoration(
             color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Icon(
             _getIconData(role.icon),
-            color: Colors.white,
+            color: AppTheme.white100,
             size: 12,
           ),
         ),
@@ -103,7 +104,7 @@ class _LazyRoleChipsListState extends State<LazyRoleChipsList> {
   
   Widget _buildErrorChip(String roleId) {
     return Chip(
-      avatar: const Icon(Icons.error, size: 16, color: Colors.red),
+      avatar: const Icon(Icons.error, size: 16, color: AppTheme.redStandard),
       label: const Text('Erreur', style: TextStyle(fontSize: 12)),
       deleteIcon: const Icon(Icons.close, size: 16),
       onDeleted: () => widget.onRoleRemoved(roleId),
@@ -373,7 +374,7 @@ class ResponsiveFormSection extends StatelessWidget {
                     child: Text(
                       title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),

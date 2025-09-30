@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/permission_model.dart';
+import '../../../../theme.dart';
 
 class RoleCard extends StatelessWidget {
   final Role role;
@@ -22,7 +23,7 @@ class RoleCard extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -34,7 +35,7 @@ class RoleCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: _parseColor(role.color).withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       _parseIcon(role.icon),
@@ -53,7 +54,7 @@ class RoleCard extends StatelessWidget {
                               child: Text(
                                 role.name,
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                 ),
                               ),
                             ),
@@ -61,15 +62,15 @@ class RoleCard extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: Colors.orange[100],
-                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppTheme.grey100,
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                                 child: Text(
                                   'SYSTÈME',
                                   style: TextStyle(
                                     fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.orange[800],
+                                    fontWeight: AppTheme.fontBold,
+                                    color: AppTheme.grey800,
                                   ),
                                 ),
                               ),
@@ -77,15 +78,15 @@ class RoleCard extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: Colors.red[100],
-                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppTheme.grey100,
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                                 child: Text(
                                   'INACTIF',
                                   style: TextStyle(
                                     fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red[800],
+                                    fontWeight: AppTheme.fontBold,
+                                    color: AppTheme.grey800,
                                   ),
                                 ),
                               ),
@@ -95,7 +96,7 @@ class RoleCard extends StatelessWidget {
                         Text(
                           role.description,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -132,9 +133,9 @@ class RoleCard extends StatelessWidget {
                             value: 'delete',
                             child: Row(
                               children: [
-                                Icon(Icons.delete, size: 20, color: Colors.red),
+                                Icon(Icons.delete, size: 20, color: AppTheme.redStandard),
                                 SizedBox(width: 8),
-                                Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                               ],
                             ),
                           ),
@@ -150,13 +151,13 @@ class RoleCard extends StatelessWidget {
                   _buildStatChip(
                     Icons.security,
                     '${role.allPermissions.length} permissions',
-                    Colors.blue,
+                    AppTheme.blueStandard,
                   ),
                   const SizedBox(width: 8),
                   _buildStatChip(
                     Icons.widgets,
                     '${role.modulePermissions.length} modules',
-                    Colors.green,
+                    AppTheme.greenStandard,
                   ),
                 ],
               ),
@@ -168,7 +169,7 @@ class RoleCard extends StatelessWidget {
                 Text(
                   'Modules avec accès:',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -181,7 +182,7 @@ class RoleCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         module?.name ?? moduleId,
@@ -196,14 +197,14 @@ class RoleCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(12),
+                          color: AppTheme.grey200,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           '+${role.modulePermissions.length - 5}',
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: AppTheme.grey500,
                           ),
                         ),
                       ),
@@ -215,22 +216,22 @@ class RoleCard extends StatelessWidget {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(Icons.access_time, size: 14, color: Colors.grey[600]),
+                  Icon(Icons.access_time, size: 14, color: AppTheme.grey600),
                   const SizedBox(width: 4),
                   Text(
                     'Créé le ${_formatDate(role.createdAt)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                   if (role.createdBy != null) ...[
                     const SizedBox(width: 12),
-                    Icon(Icons.person, size: 14, color: Colors.grey[600]),
+                    Icon(Icons.person, size: 14, color: AppTheme.grey600),
                     const SizedBox(width: 4),
                     Text(
                       'par ${role.createdBy}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -248,7 +249,7 @@ class RoleCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -260,7 +261,7 @@ class RoleCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               color: color,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -274,7 +275,7 @@ class RoleCard extends StatelessWidget {
       final hexColor = colorString.replaceAll('#', '');
       return Color(int.parse('FF$hexColor', radix: 16));
     } catch (e) {
-      return Colors.blue; // Couleur par défaut
+      return AppTheme.blueStandard; // Couleur par défaut
     }
   }
 

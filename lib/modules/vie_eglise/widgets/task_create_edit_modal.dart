@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
+import '../../../../theme.dart';
 
 class TaskCreateEditModal extends StatefulWidget {
   final TaskModel? task;
@@ -57,7 +58,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -102,7 +103,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
+        color: AppTheme.grey50,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Row(
@@ -112,8 +113,8 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
               widget.task == null ? 'Créer une tâche' : 'Modifier la tâche',
               style: GoogleFonts.poppins(
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[800],
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.grey800,
               ),
             ),
           ),
@@ -133,7 +134,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
         labelText: 'Titre de la tâche',
         labelStyle: GoogleFonts.poppins(),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
       ),
       validator: (value) {
@@ -153,7 +154,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
         labelText: 'Description',
         labelStyle: GoogleFonts.poppins(),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
       ),
     );
@@ -167,7 +168,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
           'Priorité',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -198,7 +199,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
           'Statut',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -229,7 +230,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
           labelText: 'Date d\'échéance',
           labelStyle: GoogleFonts.poppins(),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           suffixIcon: const Icon(Icons.calendar_today),
         ),
@@ -238,7 +239,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
               ? '${_dueDate!.day}/${_dueDate!.month}/${_dueDate!.year}'
               : 'Sélectionner une date',
           style: GoogleFonts.poppins(
-            color: _dueDate != null ? Colors.black87 : Colors.grey[600],
+            color: _dueDate != null ? AppTheme.black100.withOpacity(0.87) : AppTheme.grey600,
           ),
         ),
       ),
@@ -252,7 +253,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
         labelText: 'Catégorie',
         labelStyle: GoogleFonts.poppins(),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
       ),
       items: _categories.map((category) {
@@ -273,7 +274,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
         labelText: 'Heures estimées',
         labelStyle: GoogleFonts.poppins(),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         suffixText: 'h',
       ),
@@ -290,7 +291,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
         labelText: 'Lieu',
         labelStyle: GoogleFonts.poppins(),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         prefixIcon: const Icon(Icons.location_on),
       ),
@@ -318,8 +319,8 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
           child: ElevatedButton(
             onPressed: _saveTask,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
+              backgroundColor: AppTheme.blueStandard,
+              foregroundColor: AppTheme.white100,
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             child: Text(

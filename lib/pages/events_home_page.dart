@@ -11,7 +11,7 @@ import '../widgets/recurring_event_card.dart';
 import 'event_detail_page.dart';
 import 'event_form_page.dart';
 import 'recurring_events_test_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class EventsHomePage extends StatefulWidget {
@@ -260,7 +260,7 @@ class _EventsHomePageState extends State<EventsHomePage>
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.errorColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Supprimer'),
           ),
@@ -304,7 +304,7 @@ class _EventsHomePageState extends State<EventsHomePage>
         children: [
           // Header avec recherche et filtres
           Container(
-            color: Colors.white,
+            color: AppTheme.white100,
             child: SafeArea(
               bottom: false,
               child: Column(
@@ -336,7 +336,7 @@ class _EventsHomePageState extends State<EventsHomePage>
                             child: Text(
                               'Événements',
                               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                                 color: AppTheme.textPrimaryColor,
                               ),
                             ),
@@ -408,7 +408,7 @@ class _EventsHomePageState extends State<EventsHomePage>
               child: FloatingActionButton.extended(
                 onPressed: _addNewEvent,
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
                 icon: const Icon(Icons.add),
                 label: const Text('Nouvel événement'),
               ),
@@ -638,7 +638,7 @@ class _EventsHomePageState extends State<EventsHomePage>
                   label: const Text('Créer un événement'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   ),
                 ),

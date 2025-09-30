@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import '../../theme.dart';
 
 class MemberNotificationsPage extends StatefulWidget {
   final bool scaffolded;
@@ -72,8 +73,8 @@ class _MemberNotificationsPageState extends State<MemberNotificationsPage> {
 
             return Dismissible(
               key: ValueKey(d.id),
-              background: _swipeBackground(Colors.green, Icons.mark_email_read, 'Marquer lu'),
-              secondaryBackground: _swipeBackground(Colors.red, Icons.delete, 'Supprimer'),
+              background: _swipeBackground(AppTheme.greenStandard, Icons.mark_email_read, 'Marquer lu'),
+              secondaryBackground: _swipeBackground(AppTheme.redStandard, Icons.delete, 'Supprimer'),
               confirmDismiss: (direction) async {
                 if (direction == DismissDirection.startToEnd) {
                   // mark read
@@ -107,20 +108,20 @@ class _MemberNotificationsPageState extends State<MemberNotificationsPage> {
                     child: Row(children: [
                       CircleAvatar(
                         radius: 26,
-                        backgroundColor: isRead ? Colors.grey.shade200 : Theme.of(context).colorScheme.primary.withAlpha((0.15 * 255).round()),
-                        child: Text(title.isNotEmpty ? title[0].toUpperCase() : 'N', style: TextStyle(color: isRead ? Colors.grey : Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
+                        backgroundColor: isRead ? AppTheme.grey500 : Theme.of(context).colorScheme.primary.withAlpha((0.15 * 255).round()),
+                        child: Text(title.isNotEmpty ? title[0].toUpperCase() : 'N', style: TextStyle(color: isRead ? AppTheme.grey500 : Theme.of(context).colorScheme.primary, fontWeight: AppTheme.fontBold)),
                       ),
                       const SizedBox(width: 12),
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
-                          Expanded(child: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: isRead ? Colors.grey[800] : Colors.black))),
+                          Expanded(child: Text(title, style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontSemiBold, color: isRead ? AppTheme.grey800 : AppTheme.black100))),
                           const SizedBox(width: 8),
-                          Text(_formatTimestamp(ts), style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                          Text(_formatTimestamp(ts), style: TextStyle(fontSize: 12, color: AppTheme.grey600)),
                         ]),
                         const SizedBox(height: 6),
-                        Text(body, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: isRead ? Colors.grey[700] : Colors.grey[800])),
+                        Text(body, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: isRead ? AppTheme.grey700 : AppTheme.grey800)),
                         const SizedBox(height: 8),
-                        if (!isRead) Align(alignment: Alignment.centerLeft, child: Container(padding: const EdgeInsets.symmetric(horizontal:8, vertical:4), decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(6)), child: const Text('Nouveau', style: TextStyle(color: Colors.white, fontSize: 12))))
+                        if (!isRead) Align(alignment: Alignment.centerLeft, child: Container(padding: const EdgeInsets.symmetric(horizontal:8, vertical:4), decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(6)), child: const Text('Nouveau', style: TextStyle(color: AppTheme.white100, fontSize: 12))))
                       ])),
                     ]),
                   ),
@@ -184,11 +185,11 @@ class _MemberNotificationsPageState extends State<MemberNotificationsPage> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(Icons.notifications_none, size: 72, color: Colors.grey.shade400),
+          Icon(Icons.notifications_none, size: 72, color: AppTheme.grey500),
           const SizedBox(height: 12),
-          Text('Aucune notification', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey[700])),
+          Text('Aucune notification', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppTheme.grey700)),
           const SizedBox(height: 8),
-          Text('Vous êtes à jour. Les notifications importantes apparaîtront ici.', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey[600])),
+          Text('Vous êtes à jour. Les notifications importantes apparaîtront ici.', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.grey600)),
         ]),
       ),
     );
@@ -199,7 +200,7 @@ class _MemberNotificationsPageState extends State<MemberNotificationsPage> {
       decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(10)),
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(children: [Icon(icon, color: Colors.white), const SizedBox(width:8), Text(label, style: const TextStyle(color: Colors.white))]),
+      child: Row(children: [Icon(icon, color: AppTheme.white100), const SizedBox(width:8), Text(label, style: const TextStyle(color: AppTheme.white100))]),
     );
   }
 

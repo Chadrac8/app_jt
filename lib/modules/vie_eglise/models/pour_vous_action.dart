@@ -49,10 +49,7 @@ class PourVousAction {
       id: doc.id,
       title: data['title'] ?? '',
       description: data['description'] ?? '',
-      icon: IconData(
-        data['iconCodePoint'] ?? Icons.help_outline.codePoint,
-        fontFamily: 'MaterialIcons',
-      ),
+      icon: _iconFromData(data),
       iconCodePoint: data['iconCodePoint']?.toString() ?? Icons.help_outline.codePoint.toString(),
       actionType: data['actionType'] ?? 'navigation',
       targetModule: data['targetModule'],
@@ -238,5 +235,10 @@ class PourVousAction {
         color: '#607D8B',
       ),
     ];
+  }
+
+  static IconData _iconFromData(Map<String, dynamic> data) {
+    final codePoint = data['iconCodePoint'] ?? Icons.help_outline.codePoint;
+    return IconData(codePoint, fontFamily: 'MaterialIcons');
   }
 }

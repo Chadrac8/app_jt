@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/people_module_service.dart';
 import '../shared/widgets/custom_card.dart';
+import '../../theme.dart';
 
 /// Dashboard des statistiques des personnes (Module)
 class StatisticsDashboardModule extends StatefulWidget {
@@ -57,7 +58,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
             Icon(
               Icons.error_outline,
               size: 64,
-              color: Colors.red.shade400,
+              color: AppTheme.redStandard,
             ),
             const SizedBox(height: 16),
             Text(
@@ -117,14 +118,14 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               'Total',
               _statistics!['total']?.toString() ?? '0',
               Icons.people,
-              Colors.blue,
+              AppTheme.blueStandard,
             ),
             const SizedBox(width: 12),
             _buildStatCard(
               'Actives',
               _statistics!['actives']?.toString() ?? '0',
               Icons.person,
-              Colors.green,
+              AppTheme.greenStandard,
             ),
           ],
         ),
@@ -135,7 +136,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               'Inactives',
               _statistics!['inactives']?.toString() ?? '0',
               Icons.person_outline,
-              Colors.orange,
+              AppTheme.orangeStandard,
             ),
             const SizedBox(width: 12),
             _buildStatCard(
@@ -183,7 +184,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               'Avec date naissance',
               _statistics!['withBirthDate']?.toString() ?? '0',
               Icons.cake,
-              Colors.pink,
+              AppTheme.pinkStandard,
             ),
             const SizedBox(width: 12),
             _buildStatCard(
@@ -254,7 +255,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               value,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: color,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 4),
@@ -408,7 +409,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
           Text(label),
           Text(
             value.toString(),
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: AppTheme.fontBold),
           ),
         ],
       ),

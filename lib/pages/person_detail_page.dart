@@ -10,7 +10,7 @@ import '../widgets/workflow_tracker.dart';
 import '../widgets/custom_fields_widget.dart';
 import '../widgets/my_assigned_workflows_widget.dart';
 import 'person_form_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class PersonDetailPage extends StatefulWidget {
@@ -100,14 +100,14 @@ class _PersonDetailPageState extends State<PersonDetailPage>
           SnackBar(
             content: const Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
+                Icon(Icons.check_circle, color: AppTheme.white100),
                 SizedBox(width: 8),
                 Text('Informations mises à jour avec succès'),
               ],
             ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
           ),
         );
       }
@@ -231,7 +231,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
           _currentPerson?.displayInitials ?? '??',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
       ),
@@ -284,8 +284,8 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                       Text(
                         _currentPerson!.fullName,
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: AppTheme.white100,
+                          fontWeight: AppTheme.fontBold,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -296,11 +296,11 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                         decoration: BoxDecoration(
                           color: _currentPerson!.isActive
-                              ? Colors.green.withOpacity(0.2)
-                              : Colors.red.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
+                              ? AppTheme.greenStandard.withOpacity(0.2)
+                              : AppTheme.redStandard.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                           border: Border.all(
-                            color: _currentPerson!.isActive ? Colors.green : Colors.red,
+                            color: _currentPerson!.isActive ? AppTheme.greenStandard : AppTheme.redStandard,
                           ),
                         ),
                         child: Row(
@@ -308,15 +308,15 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                           children: [
                             Icon(
                               _currentPerson!.isActive ? Icons.check_circle : Icons.cancel,
-                              color: _currentPerson!.isActive ? Colors.green : Colors.red,
+                              color: _currentPerson!.isActive ? AppTheme.greenStandard : AppTheme.redStandard,
                               size: 16,
                             ),
                             const SizedBox(width: 6),
                             Text(
                               _currentPerson!.isActive ? 'Actif' : 'Inactif',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: _currentPerson!.isActive ? Colors.green : Colors.red,
-                                fontWeight: FontWeight.w600,
+                                color: _currentPerson!.isActive ? AppTheme.greenStandard : AppTheme.redStandard,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                           ],
@@ -396,7 +396,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 unselectedLabelColor: Theme.of(context).colorScheme.outline,
                 indicatorColor: Theme.of(context).colorScheme.primary,
                 indicatorWeight: 3,
-                labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                labelStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontSemiBold),
                 unselectedLabelStyle: const TextStyle(fontSize: 12),
               ),
             ),
@@ -512,11 +512,11 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 icon: Icons.local_offer,
                 children: [
                   if (_currentPerson!.roles.isNotEmpty) ...[
-                    _buildTagSection('Rôles', _currentPerson!.roles, Colors.blue),
+                    _buildTagSection('Rôles', _currentPerson!.roles, AppTheme.blueStandard),
                     if (_currentPerson!.tags.isNotEmpty) const SizedBox(height: 12),
                   ],
                   if (_currentPerson!.tags.isNotEmpty)
-                    _buildTagSection('Tags', _currentPerson!.tags, Colors.green),
+                    _buildTagSection('Tags', _currentPerson!.tags, AppTheme.greenStandard),
                 ],
               ),
             
@@ -532,7 +532,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
                         color: Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
                       ),
@@ -580,7 +580,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
         ),
@@ -612,7 +612,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
@@ -642,7 +642,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(12),
@@ -652,7 +652,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     icon,
@@ -669,14 +669,14 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                         label,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         value,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                       if (subtitle != null) ...[
@@ -685,7 +685,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                           subtitle,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ],
@@ -714,7 +714,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
           title,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -726,14 +726,14 @@ class _PersonDetailPageState extends State<PersonDetailPage>
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 border: Border.all(color: color.withOpacity(0.3)),
               ),
               child: Text(
                 item,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: color,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             );
@@ -772,7 +772,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
           Text(
             'Historique des modifications',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -783,14 +783,14 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                   'Création du profil',
                   _currentPerson!.createdAt,
                   Icons.person_add,
-                  Colors.green,
+                  AppTheme.greenStandard,
                 ),
                 if (_currentPerson!.createdAt != _currentPerson!.updatedAt)
                   _buildHistoryItem(
                     'Dernière modification',
                     _currentPerson!.updatedAt,
                     Icons.edit,
-                    Colors.blue,
+                    AppTheme.blueStandard,
                   ),
               ],
             ),
@@ -806,7 +806,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
         ),
@@ -817,7 +817,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
@@ -829,7 +829,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 Text(
@@ -866,7 +866,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
         context: context,
         builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
             title: Row(
               children: [
                 Icon(
@@ -900,7 +900,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                           margin: const EdgeInsets.only(bottom: 8),
                           child: ListTile(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               side: BorderSide(
                                 color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                               ),
@@ -909,7 +909,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: Color(int.parse(workflow.color.replaceAll('#', '0xFF'))).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               ),
                               child: Icon(
                                 _getIconFromString(workflow.icon),
@@ -920,7 +920,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                             title: Text(
                               workflow.name,
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                             subtitle: Column(
@@ -940,7 +940,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                                       workflow.category,
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: Theme.of(context).colorScheme.secondary,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: AppTheme.fontMedium,
                                       ),
                                     ),
                                     const SizedBox(width: 16),
@@ -954,7 +954,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                                       '${workflow.steps.length} étape(s)',
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: Theme.of(context).colorScheme.secondary,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: AppTheme.fontMedium,
                                       ),
                                     ),
                                   ],
@@ -1000,7 +1000,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
               SnackBar(
                 content: Row(
                   children: [
-                    const Icon(Icons.check_circle, color: Colors.white),
+                    const Icon(Icons.check_circle, color: AppTheme.white100),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text('Workflow "${selectedWorkflow.name}" démarré avec succès'),
@@ -1009,7 +1009,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 ),
                 backgroundColor: Theme.of(context).colorScheme.secondary,
                 behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                 duration: const Duration(seconds: 4),
               ),
             );

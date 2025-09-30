@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
@@ -88,7 +88,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                     width: 120,
                     decoration: BoxDecoration(
                       color: theme.colorScheme.onSurface.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall))),
                   const SizedBox(height: 8),
                   Container(
                     height: 12,
@@ -131,7 +131,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                   children: [
                     Text(
                       'Plans de lecture',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 18)),
+                      style: GoogleFonts.inter(fontWeight: AppTheme.fontBold, fontSize: 18)),
                     const SizedBox(height: 4),
                     Text(
                       'Découvre des plans pour lire la Bible chaque jour.',
@@ -140,7 +140,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
               Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(16)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                 padding: const EdgeInsets.all(8),
                 child: const Icon(Icons.chevron_right, size: 24)),
             ]))));
@@ -195,7 +195,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                         Text(
                           _activePlan!.name,
                           style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: AppTheme.fontBold,
                             fontSize: 18)),
                         const SizedBox(height: 4),
                         Row(
@@ -205,7 +205,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w600)),
+                                fontWeight: AppTheme.fontSemiBold)),
                             const SizedBox(width: 8),
                             if (isUpToDate)
                               Container(
@@ -214,19 +214,19 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                                   vertical: 2),
                                 decoration: BoxDecoration(
                                   color: AppTheme.successColor.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8)),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                                 child: Text(
                                   '✓',
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
                                     color: AppTheme.successColor,
-                                    fontWeight: FontWeight.bold))),
+                                    fontWeight: AppTheme.fontBold))),
                           ]),
                       ])),
                   Container(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(16)),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                     padding: const EdgeInsets.all(8),
                     child: const Icon(Icons.chevron_right, size: 24)),
                 ]),
@@ -257,7 +257,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                     '${(progressPercentage * 100).toInt()}%',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: theme.colorScheme.primary)),
                 ]),
               
@@ -282,7 +282,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
         color: isCompleted 
             ? AppTheme.successColor.withOpacity(0.1)
             : theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: isCompleted 
               ? AppTheme.successColor.withOpacity(0.3)
@@ -303,7 +303,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                 isCompleted ? 'Lecture terminée' : 'Lecture du jour',
                 style: GoogleFonts.inter(
                   fontSize: 12,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: isCompleted 
                       ? AppTheme.successColor
                       : theme.colorScheme.primary)),
@@ -313,7 +313,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
             todayReading.title,
             style: GoogleFonts.inter(
               fontSize: 14,
-              fontWeight: FontWeight.w500)),
+              fontWeight: AppTheme.fontMedium)),
           const SizedBox(height: 4),
           Text(
             todayReading.readings.map((r) => r.displayText).join(' • '),

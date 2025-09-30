@@ -7,6 +7,7 @@ import '../widgets/blog_post_actions.dart';
 import '../widgets/blog_post_metadata.dart';
 import '../widgets/blog_related_posts.dart';
 import 'blog_post_form_page.dart';
+import '../../theme.dart';
 
 
 class BlogPostDetailPage extends StatefulWidget {
@@ -91,7 +92,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error_outline, size: 64, color: Colors.grey),
+              Icon(Icons.error_outline, size: 64, color: AppTheme.grey500),
               SizedBox(height: 16),
               Text('Article non trouvé ou supprimé'),
             ],
@@ -131,13 +132,13 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
         title: Text(
           _post!.title,
           style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+            color: AppTheme.white100,
+            fontWeight: AppTheme.fontBold,
             shadows: [
               Shadow(
                 offset: Offset(0, 1),
                 blurRadius: 3,
-                color: Colors.black54,
+                color: AppTheme.black100,
               ),
             ],
           ),
@@ -151,11 +152,11 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: Colors.grey[300],
+                        color: AppTheme.grey300,
                         child: Icon(
                           Icons.image_not_supported,
                           size: 64,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       );
                     },
@@ -167,7 +168,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          AppTheme.black100.withOpacity(0.7),
                         ],
                       ),
                     ),
@@ -239,7 +240,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
               _post!.excerpt,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontStyle: FontStyle.italic,
-                color: Colors.grey[700],
+                color: AppTheme.grey700,
               ),
             ),
             const SizedBox(height: 16),
@@ -313,7 +314,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
             child: GestureDetector(
               onTap: () => _showImageDialog(imageUrl),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Image.network(
@@ -321,10 +322,10 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: Colors.grey[300],
+                        color: AppTheme.grey300,
                         child: Icon(
                           Icons.image_not_supported,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       );
                     },
@@ -356,9 +357,9 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
               right: 8,
               child: IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const Icon(Icons.close, color: AppTheme.white100),
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.black54,
+                  backgroundColor: AppTheme.black100,
                 ),
               ),
             ),

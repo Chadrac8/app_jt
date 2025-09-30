@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/report.dart';
+import '../../../../theme.dart';
 
 /// Service pour générer des graphiques à partir des données de rapport
 class ChartService {
@@ -28,12 +29,12 @@ class ChartService {
         barRods: [
           BarChartRodData(
             toY: value,
-            color: primaryColor ?? Colors.blue,
+            color: primaryColor ?? AppTheme.blueStandard,
             width: 20,
             borderRadius: BorderRadius.circular(4),
             backDrawRodData: BackgroundBarChartRodData(
               show: true,
-              color: Colors.grey.withOpacity(0.1),
+              color: AppTheme.grey500.withOpacity(0.1),
               toY: _getMaxValue(chartData) * 1.1,
             ),
           ),
@@ -93,7 +94,7 @@ class ChartService {
             show: true,
             horizontalInterval: _getMaxValue(chartData) / 5,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.withOpacity(0.3),
+              color: AppTheme.grey500.withOpacity(0.3),
               strokeWidth: 1,
             ),
             drawVerticalLine: false,
@@ -134,21 +135,21 @@ class ChartService {
           lineBarsData: [
             LineChartBarData(
               spots: spots,
-              color: primaryColor ?? Colors.blue,
+              color: primaryColor ?? AppTheme.blueStandard,
               barWidth: 3,
               isStrokeCapRound: true,
               dotData: FlDotData(
                 show: true,
                 getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
                   radius: 4,
-                  color: primaryColor ?? Colors.blue,
+                  color: primaryColor ?? AppTheme.blueStandard,
                   strokeWidth: 2,
-                  strokeColor: Colors.white,
+                  strokeColor: AppTheme.white100,
                 ),
               ),
               belowBarData: BarAreaData(
                 show: true,
-                color: (primaryColor ?? Colors.blue).withOpacity(0.1),
+                color: (primaryColor ?? AppTheme.blueStandard).withOpacity(0.1),
               ),
             ),
           ],
@@ -197,11 +198,11 @@ class ChartService {
             show: true,
             horizontalInterval: _getMaxValue(chartData) / 5,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.withOpacity(0.3),
+              color: AppTheme.grey500.withOpacity(0.3),
               strokeWidth: 1,
             ),
             getDrawingVerticalLine: (value) => FlLine(
-              color: Colors.grey.withOpacity(0.3),
+              color: AppTheme.grey500.withOpacity(0.3),
               strokeWidth: 1,
             ),
           ),
@@ -239,8 +240,8 @@ class ChartService {
         radius: 60,
         titleStyle: const TextStyle(
           fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
+          fontWeight: AppTheme.fontBold,
+          color: AppTheme.white100,
         ),
       );
     }).toList();
@@ -328,7 +329,7 @@ class ChartService {
                 'Affichage des ${maxRows} premiers éléments sur ${reportData.rows.length}',
                 style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.grey,
+                  color: AppTheme.grey500,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -341,13 +342,13 @@ class ChartService {
                   const DataColumn(
                     label: Text(
                       '#',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: AppTheme.fontBold),
                     ),
                   ),
                 ...headers.map((header) => DataColumn(
                   label: Text(
                     header,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: AppTheme.fontBold),
                   ),
                 )),
               ],
@@ -449,14 +450,14 @@ class ChartService {
   
   List<Color> _generateColors(int count) {
     final baseColors = [
-      Colors.blue,
-      Colors.green,
-      Colors.orange,
+      AppTheme.blueStandard,
+      AppTheme.greenStandard,
+      AppTheme.orangeStandard,
       Colors.purple,
-      Colors.red,
+      AppTheme.redStandard,
       Colors.teal,
       Colors.indigo,
-      Colors.pink,
+      AppTheme.pinkStandard,
       Colors.cyan,
       Colors.amber,
     ];

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 
 class AdminSermonsTab extends StatefulWidget {
   const AdminSermonsTab({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                 'Administration - Sermons locaux',
                 style: GoogleFonts.poppins(
                   fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor)),
             ]),
           const SizedBox(height: 12),
@@ -97,14 +97,14 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             'Sermons publiés',
             '0',
             Icons.public,
-            Colors.green)),
+            AppTheme.greenStandard)),
         const SizedBox(width: 12),
         Expanded(
           child: _buildStatCard(
             'Brouillons',
             '0',
             Icons.edit,
-            Colors.orange)),
+            AppTheme.orangeStandard)),
         const SizedBox(width: 12),
         Expanded(
           child: _buildStatCard(
@@ -120,7 +120,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: color.withOpacity(0.2),
           width: 1)),
@@ -132,7 +132,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             value,
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color)),
           const SizedBox(height: 4),
           Text(
@@ -158,7 +158,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             'Aucun sermon ajouté',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
           const SizedBox(height: 8),
           Text(
@@ -174,13 +174,13 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             label: Text(
               'Ajouter un sermon',
               style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.surfaceColor)),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium)))),
         ]));
   }
 
@@ -189,11 +189,11 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppTheme.surfaceColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
         title: Text(
           'Ajouter un sermon',
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor)),
         content: Text(
           'Cette fonctionnalité sera disponible prochainement.\n\nElle permettra d\'ajouter et de gérer les sermons de votre église locale.',
@@ -206,7 +206,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
               'Fermer',
               style: GoogleFonts.poppins(
                 color: AppTheme.primaryColor,
-                fontWeight: FontWeight.w600))),
+                fontWeight: AppTheme.fontSemiBold))),
         ]));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/event_recurrence_model.dart';
+import '../../theme.dart';
 
 /// Widget pour configurer la récurrence d'événements
 /// Interface inspirée de Planning Center Online
@@ -83,7 +84,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
             Text(
               'Configuration de la récurrence',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -260,14 +261,14 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
                   shape: BoxShape.circle,
                   color: isSelected 
                       ? Theme.of(context).primaryColor
-                      : Colors.grey.shade200,
+                      : AppTheme.grey500,
                 ),
                 child: Center(
                   child: Text(
                     day['label'] as String,
                     style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.bold,
+                      color: isSelected ? AppTheme.white100 : AppTheme.black100,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -390,7 +391,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
               if (_hasEndDate && _endDate != null)
                 Text(
                   '${_endDate!.day}/${_endDate!.month}/${_endDate!.year}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: AppTheme.fontBold),
                 ),
               const Spacer(),
               if (_hasEndDate)
@@ -483,22 +484,22 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.blue.shade200),
+        color: AppTheme.blueStandard,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        border: Border.all(color: AppTheme.blueStandard),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
+              Icon(Icons.info_outline, color: AppTheme.blueStandard, size: 20),
               const SizedBox(width: 8),
               Text(
                 'Aperçu de la récurrence',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue.shade700,
+                  fontWeight: AppTheme.fontBold,
+                  color: AppTheme.blueStandard,
                 ),
               ),
             ],
@@ -506,7 +507,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           const SizedBox(height: 8),
           Text(
             _getRecurrenceDescription(),
-            style: TextStyle(color: Colors.blue.shade800),
+            style: TextStyle(color: AppTheme.blueStandard),
           ),
         ],
       ),

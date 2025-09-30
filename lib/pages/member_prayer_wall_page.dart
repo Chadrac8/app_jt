@@ -3,7 +3,7 @@ import '../models/prayer_model.dart';
 import '../services/prayers_firebase_service.dart';
 import '../widgets/prayer_card.dart';
 import '../widgets/prayer_search_filter_bar.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../auth/auth_service.dart';
 import 'prayer_form_page.dart';
 import 'prayer_detail_page.dart';
@@ -121,7 +121,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -139,7 +139,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                   'Mur de Prière Communautaire',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -149,7 +149,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
               'Partagez vos demandes, témoignages et actions de grâce avec la communauté',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: AppTheme.grey500,
               ),
             ),
             const SizedBox(height: 16),
@@ -168,7 +168,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                     'Aujourd\'hui',
                     '${_stats!.todayPrayers}',
                     Icons.today,
-                    Colors.blue,
+                    AppTheme.blueStandard,
                   ),
                 ),
                 Expanded(
@@ -176,7 +176,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                     'Cette semaine',
                     '${_stats!.weekPrayers}',
                     Icons.date_range,
-                    Colors.green,
+                    AppTheme.greenStandard,
                   ),
                 ),
                 Expanded(
@@ -184,7 +184,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                     'Intercessions',
                     '${_stats!.totalPrayerCount}',
                     Icons.favorite,
-                    Colors.red,
+                    AppTheme.redStandard,
                   ),
                 ),
               ],
@@ -204,7 +204,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
           value,
           style: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: color,
           ),
         ),
@@ -212,7 +212,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
           label,
           style: const TextStyle(
             fontSize: 10,
-            color: Colors.grey,
+            color: AppTheme.grey500,
           ),
           textAlign: TextAlign.center,
         ),
@@ -266,14 +266,14 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
       duration: const Duration(milliseconds: 200),
       child: InkWell(
         onTap: () => setState(() => _selectedTab = tabId),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
           decoration: BoxDecoration(
             color: isSelected 
                 ? AppTheme.primaryColor.withOpacity(0.1)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             border: isSelected 
                 ? Border.all(color: AppTheme.primaryColor, width: 1)
                 : null,
@@ -286,7 +286,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                 size: 16,
                 color: isSelected 
                     ? AppTheme.primaryColor 
-                    : Colors.grey,
+                    : AppTheme.grey500,
               ),
               const SizedBox(width: 4),
               Flexible(
@@ -294,10 +294,10 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                   label,
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal,
                     color: isSelected 
                         ? AppTheme.primaryColor 
-                        : Colors.grey,
+                        : AppTheme.grey500,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -342,7 +342,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
         title: const Text('Mur de Prière'),
         elevation: 0,
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
       ),
       body: Column(
         children: [
@@ -387,12 +387,12 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                         const Icon(
                           Icons.error_outline,
                           size: 64,
-                          color: Colors.red,
+                          color: AppTheme.redStandard,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'Erreur: ${snapshot.error}',
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: AppTheme.redStandard),
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
@@ -439,21 +439,21 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                         Icon(
                           emptyIcon,
                           size: 64,
-                          color: Colors.grey[400],
+                          color: AppTheme.grey400,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           emptyMessage,
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
                         Text(
                           emptySubtitle,
-                          style: const TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: AppTheme.grey500),
                           textAlign: TextAlign.center,
                         ),
                         if (_selectedTab == 'all' || _selectedTab == 'my_prayers') ...[
@@ -464,7 +464,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                             label: const Text('Créer une prière'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.primaryColor,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppTheme.white100,
                             ),
                           ),
                         ],
@@ -504,7 +504,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                                 ),
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(true),
-                                  style: TextButton.styleFrom(foregroundColor: Colors.red),
+                                  style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
                                   child: const Text('Supprimer'),
                                 ),
                               ],
@@ -518,7 +518,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Prière supprimée avec succès'),
-                                    backgroundColor: Colors.green,
+                                    backgroundColor: AppTheme.greenStandard,
                                   ),
                                 );
                               }
@@ -527,7 +527,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('Erreur: $e'),
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: AppTheme.redStandard,
                                   ),
                                 );
                               }
@@ -549,7 +549,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
           onPressed: () => _navigateToPrayerForm(),
           tooltip: 'Ajouter une prière',
           backgroundColor: AppTheme.primaryColor,
-          child: const Icon(Icons.add, color: Colors.white),
+          child: const Icon(Icons.add, color: AppTheme.white100),
         ),
       ),
     );

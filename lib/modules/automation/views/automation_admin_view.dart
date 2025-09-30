@@ -3,7 +3,7 @@ import '../models/automation.dart';
 import '../models/automation_execution.dart';
 import '../models/automation_template.dart';
 import '../services/automation_service.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
 
 /// Vue admin pour la gestion des automatisations
@@ -58,7 +58,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -107,7 +107,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
 
   Widget _buildTabBar() {
     return Container(
-      color: Colors.white,
+      color: AppTheme.white100,
       child: TabBar(
         controller: _tabController,
         tabs: const [
@@ -117,7 +117,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           Tab(text: 'Templates', icon: Icon(Icons.folder_copy_outlined)),
         ],
         labelColor: Theme.of(context).primaryColor,
-        unselectedLabelColor: Colors.grey,
+        unselectedLabelColor: AppTheme.grey500,
       ),
     );
   }
@@ -151,19 +151,19 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           'Total Automatisations',
           '${_stats['total'] ?? 0}',
           Icons.auto_awesome,
-          Colors.blue,
+          AppTheme.blueStandard,
         ),
         _buildStatCard(
           'Automatisations Actives',
           '${_stats['active'] ?? 0}',
           Icons.play_circle_filled,
-          Colors.green,
+          AppTheme.greenStandard,
         ),
         _buildStatCard(
           'Exécutions Totales',
           '${_stats['totalExecutions'] ?? 0}',
           Icons.play_arrow,
-          Colors.orange,
+          AppTheme.orangeStandard,
         ),
         _buildStatCard(
           'Taux de Succès Moyen',
@@ -188,7 +188,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
               value,
               style: const TextStyle(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 4),
@@ -196,7 +196,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
                 fontSize: 12,
               ),
             ),
@@ -217,19 +217,19 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       children: [
         const Text(
           'Activité Récente',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
         ),
         const SizedBox(height: 12),
         if (recentFailures.isNotEmpty) ...[
           const Text(
             'Échecs Récents à Examiner:',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.red),
+            style: TextStyle(fontSize: 14, fontWeight: AppTheme.fontMedium, color: AppTheme.redStandard),
           ),
           const SizedBox(height: 8),
           ...recentFailures.map((execution) => Card(
             margin: const EdgeInsets.only(bottom: 8),
             child: ListTile(
-              leading: const Icon(Icons.error, color: Colors.red),
+              leading: const Icon(Icons.error, color: AppTheme.redStandard),
               title: Text(execution.automationName),
               subtitle: Text(execution.error ?? 'Erreur inconnue'),
               trailing: Text(_formatDateTime(execution.triggeredAt)),
@@ -239,7 +239,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
         ] else ...[
           const Card(
             child: ListTile(
-              leading: Icon(Icons.check_circle, color: Colors.green),
+              leading: Icon(Icons.check_circle, color: AppTheme.greenStandard),
               title: Text('Aucun échec récent'),
               subtitle: Text('Toutes les automatisations fonctionnent correctement'),
             ),
@@ -260,7 +260,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           children: [
             const Text(
               'Templates Populaires',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             TextButton(
               onPressed: () => _tabController.animateTo(3),
@@ -315,7 +315,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
   Widget _buildAutomationsHeader() {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: Colors.grey[50],
+      color: AppTheme.grey50,
       child: Column(
         children: [
           Row(
@@ -326,7 +326,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                     hintText: 'Rechercher une automatisation...',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -362,7 +362,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           const SizedBox(height: 8),
           Text(
             '${_filteredAutomations.length} automatisation(s) trouvée(s)',
-            style: TextStyle(color: Colors.grey[600]),
+            style: TextStyle(color: AppTheme.grey600),
           ),
         ],
       ),
@@ -377,7 +377,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           Icon(
             Icons.auto_awesome,
             size: 64,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
@@ -385,7 +385,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                 ? 'Aucune automatisation créée'
                 : 'Aucun résultat pour "$_searchQuery"',
             style: TextStyle(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
               fontSize: 16,
             ),
           ),
@@ -417,7 +417,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       Text(
                         automation.name,
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           fontSize: 16,
                         ),
                       ),
@@ -425,7 +425,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       Text(
                         automation.description,
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                           fontSize: 14,
                         ),
                       ),
@@ -480,9 +480,9 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       value: 'delete',
                       child: Row(
                         children: const [
-                          Icon(Icons.delete, color: Colors.red),
+                          Icon(Icons.delete, color: AppTheme.redStandard),
                           SizedBox(width: 8),
-                          Text('Supprimer', style: TextStyle(color: Colors.red)),
+                          Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                         ],
                       ),
                     ),
@@ -496,19 +496,19 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                 _buildInfoChip(
                   Icons.flash_on,
                   automation.trigger.label,
-                  Colors.blue,
+                  AppTheme.blueStandard,
                 ),
                 const SizedBox(width: 8),
                 _buildInfoChip(
                   Icons.settings,
                   '${automation.actions.length} actions',
-                  Colors.green,
+                  AppTheme.greenStandard,
                 ),
                 const SizedBox(width: 8),
                 _buildInfoChip(
                   Icons.bar_chart,
                   '${automation.successRate.toStringAsFixed(0)}% succès',
-                  Colors.orange,
+                  AppTheme.orangeStandard,
                 ),
               ],
             ),
@@ -529,13 +529,13 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
               children: [
                 Text(
                   '${automation.executionCount} exécutions',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                  style: TextStyle(color: AppTheme.grey600, fontSize: 12),
                 ),
                 const SizedBox(width: 16),
                 if (automation.lastExecutedAt != null)
                   Text(
                     'Dernière: ${_formatDateTime(automation.lastExecutedAt!)}',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: 12),
                   ),
               ],
             ),
@@ -549,16 +549,16 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
     Color color;
     switch (status) {
       case AutomationStatus.active:
-        color = Colors.green;
+        color = AppTheme.greenStandard;
         break;
       case AutomationStatus.inactive:
-        color = Colors.grey;
+        color = AppTheme.grey500;
         break;
       case AutomationStatus.draft:
-        color = Colors.orange;
+        color = AppTheme.orangeStandard;
         break;
       case AutomationStatus.error:
-        color = Colors.red;
+        color = AppTheme.redStandard;
         break;
     }
 
@@ -566,14 +566,14 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Text(
         status.label,
         style: const TextStyle(
-          color: Colors.white,
+          color: AppTheme.white100,
           fontSize: 12,
-          fontWeight: FontWeight.w500,
+          fontWeight: AppTheme.fontMedium,
         ),
       ),
     );
@@ -584,7 +584,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -596,7 +596,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
             style: TextStyle(
               color: color,
               fontSize: 11,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -609,13 +609,13 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          color: Colors.grey[50],
+          color: AppTheme.grey50,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 '${_executions.length} exécutions',
-                style: const TextStyle(fontWeight: FontWeight.w500),
+                style: const TextStyle(fontWeight: AppTheme.fontMedium),
               ),
               TextButton.icon(
                 onPressed: _loadData,
@@ -668,7 +668,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           execution.isManual ? 'Manuel' : 'Auto',
           style: TextStyle(
             fontSize: 11,
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
           ),
         ),
         onTap: () => _showExecutionDetails(execution),
@@ -684,14 +684,14 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       child: Column(
         children: [
           Container(
-            color: Colors.grey[50],
+            color: AppTheme.grey50,
             child: TabBar(
               isScrollable: true,
               tabs: categories.map((category) => 
                 Tab(text: category.label)
               ).toList(),
               labelColor: Theme.of(context).primaryColor,
-              unselectedLabelColor: Colors.grey,
+              unselectedLabelColor: AppTheme.grey500,
             ),
           ),
           Expanded(
@@ -741,7 +741,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       Text(
                         template.name,
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           fontSize: 16,
                         ),
                       ),
@@ -749,7 +749,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       Text(
                         template.description,
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                           fontSize: 14,
                         ),
                       ),
@@ -757,7 +757,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                   ),
                 ),
                 if (template.isPopular)
-                  const Icon(Icons.star, color: Colors.orange, size: 20),
+                  const Icon(Icons.star, color: AppTheme.orangeStandard, size: 20),
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () => _createFromTemplate(template),
@@ -792,15 +792,15 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
   Color _getExecutionStatusColor(ExecutionStatus status) {
     switch (status) {
       case ExecutionStatus.completed:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case ExecutionStatus.failed:
-        return Colors.red;
+        return AppTheme.redStandard;
       case ExecutionStatus.running:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case ExecutionStatus.pending:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case ExecutionStatus.cancelled:
-        return Colors.grey;
+        return AppTheme.grey500;
       case ExecutionStatus.skipped:
         return Colors.yellow[700]!;
     }
@@ -843,7 +843,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Automatisation "${template.name}" créée avec succès!'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         _loadData();
@@ -854,7 +854,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la création: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -927,7 +927,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                 _showError('Erreur lors de la suppression: $e');
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -956,7 +956,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
         ),
       );
     }
@@ -967,7 +967,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }

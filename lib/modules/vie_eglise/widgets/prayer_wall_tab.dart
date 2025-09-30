@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../../models/prayer_model.dart';
@@ -29,35 +29,35 @@ class _PrayerWallTabState extends State<PrayerWallTab>
   
   late AnimationController _animationController;
 
-  // Catégories de prières avec couleurs modernes
+  // Catégories de prières avec couleurs modernes Material Design 3
   final List<Map<String, dynamic>> _categories = [
     {
       'type': null,
       'label': 'Toutes',
       'icon': Icons.all_inclusive,
-      'color': const Color(0xFF6B73FF),
-      'gradient': [const Color(0xFF6B73FF), const Color(0xFF9DD5EA)],
+      'color': AppTheme.textSecondaryColor, // MD3 color token
+      'gradient': [AppTheme.primaryColor.withOpacity(0.1), AppTheme.primaryColor.withOpacity(0.05)],
     },
     {
       'type': PrayerType.request,
       'label': 'Demandes',
       'icon': Icons.volunteer_activism,
-      'color': const Color(0xFFFF6B6B),
-      'gradient': [const Color(0xFFFF6B6B), const Color(0xFFFFB8B8)],
+      'color': AppTheme.primaryColor, // MD3 color token
+      'gradient': [AppTheme.primaryColor.withOpacity(0.1), AppTheme.primaryColor.withOpacity(0.05)],
     },
     {
       'type': PrayerType.thanksgiving,
       'label': 'Actions de grâce',
       'icon': Icons.celebration,
-      'color': const Color(0xFF4ECDC4),
-      'gradient': [const Color(0xFF4ECDC4), const Color(0xFF44A08D)],
+      'color': AppTheme.secondaryColor, // MD3 color token
+      'gradient': [AppTheme.secondaryColor.withOpacity(0.1), AppTheme.secondaryColor.withOpacity(0.05)],
     },
     {
       'type': PrayerType.testimony,
       'label': 'Témoignages',
       'icon': Icons.auto_awesome,
-      'color': const Color(0xFFFFD93D),
-      'gradient': [const Color(0xFFFFD93D), const Color(0xFF6BCF7F)],
+      'color': AppTheme.tertiaryColor, // MD3 color token
+      'gradient': [AppTheme.tertiaryColor.withOpacity(0.1), AppTheme.tertiaryColor.withOpacity(0.05)],
     },
   ];
 
@@ -146,6 +146,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       body: RefreshIndicator(
         onRefresh: _loadPrayers,
         color: const Color(0xFF6B73FF),
@@ -161,11 +162,11 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                     // Barre de recherche
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
+                        color: AppTheme.white100,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
+                            color: AppTheme.black100.withValues(alpha: 0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 2),
                           ),
@@ -243,7 +244,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                           ]
                                         : [
                                             BoxShadow(
-                                              color: Colors.black.withValues(alpha: 0.05),
+                                              color: AppTheme.black100.withValues(alpha: 0.05),
                                               blurRadius: 4,
                                               offset: const Offset(0, 2)),
                                           ]),
@@ -261,7 +262,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                         category['label'],
                                         style: GoogleFonts.inter(
                                           fontSize: 12,
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: AppTheme.fontSemiBold,
                                           color: isSelected
                                               ? AppTheme.surfaceColor
                                               : AppTheme.textSecondaryColor),
@@ -300,7 +301,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
           'Nouvelle prière',
           style: GoogleFonts.inter(
             fontSize: 14,
-            fontWeight: FontWeight.w600)),
+            fontWeight: AppTheme.fontSemiBold)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30))));
   }
@@ -326,17 +327,17 @@ class _PrayerWallTabState extends State<PrayerWallTab>
         child: Container(
           decoration: BoxDecoration(
             color: AppTheme.surfaceColor,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
+                color: AppTheme.black100.withValues(alpha: 0.08),
                 blurRadius: 20,
                 offset: const Offset(0, 4)),
             ]),
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               onTap: () => _navigateToPrayerDetail(prayer),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -351,7 +352,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: category['gradient']),
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge)),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -364,7 +365,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                 category['label'],
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.surfaceColor)),
                             ])),
                         const Spacer(),
@@ -373,17 +374,17 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             color: AppTheme.textTertiaryColor,
-                            fontWeight: FontWeight.w500)),
+                            fontWeight: AppTheme.fontMedium)),
                       ]),
                     const SizedBox(height: 12),
 
                     // Titre
                     Text(
                       prayer.title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppTheme.textTertiaryColor,
+                      style: GoogleFonts.inter( // Material Design 3 typography
+                        fontSize: 14, // bodyLarge
+                        fontWeight: AppTheme.fontSemiBold,
+                        color: AppTheme.textPrimaryColor, // MD3 color token
                         height: 1.3),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
@@ -418,13 +419,13 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                             prayer.authorName,
                             style: GoogleFonts.inter(
                               fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: AppTheme.textTertiaryColor))),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             color: const Color(0xFFF8F9FE),
-                            borderRadius: BorderRadius.circular(12)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -437,7 +438,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                 'Prier',
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.textTertiaryColor)),
                             ])),
                       ]),
@@ -463,7 +464,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
             'Chargement des prières...',
             style: GoogleFonts.inter(
               fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: AppTheme.textTertiaryColor)),
         ]));
   }
@@ -486,10 +487,10 @@ class _PrayerWallTabState extends State<PrayerWallTab>
           const SizedBox(height: 24),
           Text(
             'Aucune prière trouvée',
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.textTertiaryColor)),
+            style: GoogleFonts.inter( // Material Design 3 typography
+              fontSize: 16, // titleMedium
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.textSecondaryColor)), // MD3 color token
           const SizedBox(height: 8),
           Text(
             'Soyez le premier à partager une prière\nou modifiez vos filtres de recherche',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../models/pepite_or_model.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 
 class PepiteFormDialog extends StatefulWidget {
   final PepiteOrModel? pepite; // null = création, non-null = édition
@@ -103,7 +103,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.9,
@@ -124,7 +124,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                   widget.pepite == null ? 'Nouvelle Pépite d\'Or' : 'Modifier la Pépite',
                   style: GoogleFonts.poppins(
                     fontSize: 24,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -150,7 +150,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                         'Thème de la pépite',
                         style: GoogleFonts.inter(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -159,7 +159,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                         decoration: InputDecoration(
                           hintText: 'Ex: La Foi, L\'Amour de Dieu...',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                         ),
                         validator: (value) {
@@ -176,7 +176,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                         'Description',
                         style: GoogleFonts.inter(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -186,7 +186,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                         decoration: InputDecoration(
                           hintText: 'Description courte de la pépite...',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                         ),
                       ),
@@ -199,7 +199,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                             'Citations de William Branham',
                             style: GoogleFonts.inter(
                               fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
                           const Spacer(),
@@ -209,9 +209,9 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                             label: const Text('Ajouter'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.primaryColor,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppTheme.white100,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               ),
                             ),
                           ),
@@ -231,7 +231,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                         'Tags',
                         style: GoogleFonts.inter(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -243,7 +243,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                               decoration: InputDecoration(
                                 hintText: 'Ajouter un tag...',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                               ),
                               onFieldSubmitted: (_) => _addTag(),
@@ -255,7 +255,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                             icon: const Icon(Icons.add),
                             style: IconButton.styleFrom(
                               backgroundColor: AppTheme.primaryColor,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppTheme.white100,
                             ),
                           ),
                         ],
@@ -285,14 +285,14 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                           'Publier immédiatement',
                           style: GoogleFonts.inter(
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                         subtitle: Text(
                           'La pépite sera visible par tous les utilisateurs',
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                         ),
                         value: _estPubliee,
@@ -319,7 +319,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     child: const Text('Annuler'),
@@ -331,10 +331,10 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                     onPressed: _savePepite,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     child: Text(widget.pepite == null ? 'Créer' : 'Modifier'),
@@ -355,8 +355,8 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.grey300!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,7 +367,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                 'Citation ${index + 1}',
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.primaryColor,
                 ),
               ),
@@ -375,7 +375,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
               if (_citationsControllers.length > 1)
                 IconButton(
                   onPressed: () => _removeCitation(index),
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: AppTheme.redStandard),
                   visualDensity: VisualDensity.compact,
                 ),
             ],
@@ -390,7 +390,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
               labelText: 'Texte de la citation',
               hintText: 'Saisissez le texte de la citation...',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
             ),
             validator: (value) {
@@ -409,7 +409,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
               labelText: 'Titre de la brochure',
               hintText: 'Ex: La Foi Parfaite, Le Message de l\'Heure...',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
             ),
             validator: (value) {
@@ -428,7 +428,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
               labelText: 'Référence (optionnel)',
               hintText: 'Page, paragraphe, etc.',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
             ),
           ),

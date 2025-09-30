@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class EventSearchFilterBar extends StatefulWidget {
   final TextEditingController searchController;
@@ -144,7 +144,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: AppTheme.white100,
       child: Column(
         children: [
           // Barre de recherche principale
@@ -223,7 +223,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                         icon: Icon(
                           Icons.tune,
                           color: _isFilterExpanded || _totalActiveFilters > 0
-                              ? Colors.white
+                              ? AppTheme.white100
                               : AppTheme.textTertiaryColor,
                         ),
                       ),
@@ -244,9 +244,9 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                             child: Text(
                               '$_totalActiveFilters',
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: AppTheme.white100,
                                 fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -289,7 +289,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                           Text(
                             'Filtres',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
                           if (_totalActiveFilters > 0)
@@ -306,7 +306,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                       Text(
                         'Types',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -319,7 +319,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                             label: Text(type['label']!),
                             selected: isSelected,
                             onSelected: (selected) => _onTypeFilterChanged(type['value']!, selected),
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppTheme.white100,
                             selectedColor: AppTheme.primaryColor.withOpacity(0.2),
                             checkmarkColor: AppTheme.primaryColor,
                             side: BorderSide(
@@ -337,7 +337,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                       Text(
                         'Statuts',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -350,7 +350,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                             label: Text(status['label']!),
                             selected: isSelected,
                             onSelected: (selected) => _onStatusFilterChanged(status['value']!, selected),
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppTheme.white100,
                             selectedColor: AppTheme.secondaryColor.withOpacity(0.2),
                             checkmarkColor: AppTheme.secondaryColor,
                             side: BorderSide(
@@ -370,7 +370,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                           Text(
                             'Période',
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
                           const Spacer(),

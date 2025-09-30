@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/task_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class TaskCard extends StatefulWidget {
   final TaskModel task;
@@ -89,7 +89,7 @@ class _TaskCardState extends State<TaskCard>
       case 'in_progress':
         return AppTheme.warningColor;
       case 'cancelled':
-        return Colors.grey;
+        return AppTheme.grey500;
       default:
         return AppTheme.primaryColor;
     }
@@ -136,7 +136,7 @@ class _TaskCardState extends State<TaskCard>
       child: Card(
         elevation: widget.isSelected ? 8 : 2,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           side: widget.isSelected
               ? BorderSide(color: AppTheme.primaryColor, width: 2)
               : BorderSide.none,
@@ -171,19 +171,19 @@ class _TaskCardState extends State<TaskCard>
                                 : Icons.radio_button_unchecked,
                             color: widget.isSelected
                                 ? AppTheme.primaryColor
-                                : Colors.grey,
+                                : AppTheme.grey500,
                           ),
                         ),
                       Expanded(
                         child: Text(
                           widget.task.title,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             decoration: widget.task.isCompleted
                                 ? TextDecoration.lineThrough
                                 : null,
                             color: widget.task.isCompleted
-                                ? Colors.grey[600]
+                                ? AppTheme.grey600
                                 : null,
                           ),
                         ),
@@ -201,7 +201,7 @@ class _TaskCardState extends State<TaskCard>
                     Text(
                       widget.task.description,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -304,7 +304,7 @@ class _TaskCardState extends State<TaskCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: _statusColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: _statusColor.withOpacity(0.3)),
       ),
       child: Row(
@@ -317,7 +317,7 @@ class _TaskCardState extends State<TaskCard>
             style: TextStyle(
               color: _statusColor,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -330,14 +330,14 @@ class _TaskCardState extends State<TaskCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: _priorityColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Text(
         widget.task.priorityLabel,
         style: TextStyle(
           color: _priorityColor,
           fontSize: 12,
-          fontWeight: FontWeight.w500,
+          fontWeight: AppTheme.fontMedium,
         ),
       ),
     );
@@ -347,7 +347,7 @@ class _TaskCardState extends State<TaskCard>
     final isOverdue = widget.task.isOverdue;
     final isDueSoon = widget.task.isDueSoon;
     
-    Color badgeColor = Colors.grey;
+    Color badgeColor = AppTheme.grey500;
     IconData badgeIcon = Icons.schedule;
     
     if (isOverdue) {
@@ -362,7 +362,7 @@ class _TaskCardState extends State<TaskCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: badgeColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -374,7 +374,7 @@ class _TaskCardState extends State<TaskCard>
             style: TextStyle(
               color: badgeColor,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -387,7 +387,7 @@ class _TaskCardState extends State<TaskCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: AppTheme.secondaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -399,7 +399,7 @@ class _TaskCardState extends State<TaskCard>
             style: TextStyle(
               color: AppTheme.secondaryColor,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -412,7 +412,7 @@ class _TaskCardState extends State<TaskCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: AppTheme.tertiaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -424,7 +424,7 @@ class _TaskCardState extends State<TaskCard>
             style: TextStyle(
               color: AppTheme.tertiaryColor,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -440,14 +440,14 @@ class _TaskCardState extends State<TaskCard>
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
+            color: AppTheme.grey200,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Text(
             tag,
             style: const TextStyle(
               fontSize: 11,
-              color: Colors.grey,
+              color: AppTheme.grey500,
             ),
           ),
         );
@@ -465,7 +465,7 @@ class _TaskCardState extends State<TaskCard>
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
@@ -477,7 +477,7 @@ class _TaskCardState extends State<TaskCard>
             style: TextStyle(
               color: color,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],

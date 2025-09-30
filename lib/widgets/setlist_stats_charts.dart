@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 
 class SetlistStatsPieChart extends StatelessWidget {
   final Map<String, int> data;
@@ -25,7 +26,7 @@ class SetlistStatsPieChart extends StatelessWidget {
         value: value.toDouble(),
         title: '$label\n$percent%',
         radius: 60,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ));
       i++;
     });

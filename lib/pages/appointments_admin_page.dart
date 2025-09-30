@@ -4,7 +4,7 @@ import '../models/person_model.dart';
 import '../services/appointments_firebase_service.dart';
 import '../services/firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../widgets/appointment_card.dart';
 import '../widgets/availability_editor.dart';
 import '../widgets/appointment_statistics_widget.dart';
@@ -204,13 +204,13 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
       appBar: AppBar(
         title: const Text('Gestion des rendez-vous'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          indicatorColor: AppTheme.white100,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
           tabs: const [
             Tab(text: 'Mes RDV', icon: Icon(Icons.person, size: 20)),
             Tab(text: 'Tous les RDV', icon: Icon(Icons.list, size: 20)),
@@ -284,12 +284,12 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
                 onSelected: (selected) {
                   setState(() => _selectedFilter = entry.key);
                 },
-                backgroundColor: Colors.white,
+                backgroundColor: AppTheme.white100,
                 selectedColor: AppTheme.primaryColor.withOpacity(0.2),
                 checkmarkColor: AppTheme.primaryColor,
                 labelStyle: TextStyle(
                   color: isSelected ? AppTheme.primaryColor : AppTheme.textPrimaryColor,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontWeight: isSelected ? AppTheme.fontBold : FontWeight.normal,
                 ),
               ),
             );
@@ -307,7 +307,7 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
         decoration: InputDecoration(
           labelText: 'Filtrer par responsable',
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
@@ -400,7 +400,7 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
             'Aucun rendez-vous trouvé',
             style: const TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
@@ -460,7 +460,7 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
@@ -473,7 +473,7 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
             style: TextStyle(
               color: color,
               fontSize: 12,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ],

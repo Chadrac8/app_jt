@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/permission_model.dart';
 import '../dialogs/assign_role_to_persons_dialog.dart';
 import '../dialogs/assign_roles_to_person_dialog.dart';
+import '../../../../theme.dart';
 
 /// Widget pour l'assignation en masse de rôles
 class BulkRoleAssignmentWidget extends StatefulWidget {
@@ -78,14 +79,14 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
           Text(
             'Sélectionnez un rôle à assigner à plusieurs personnes',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Choisissez un rôle dans la liste ci-dessous, puis sélectionnez les personnes qui doivent recevoir ce rôle.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 16),
@@ -106,14 +107,14 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
           Text(
             'Sélectionnez une personne pour lui assigner plusieurs rôles',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Choisissez une personne dans la liste ci-dessous, puis sélectionnez les rôles à lui assigner.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -198,7 +199,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: _parseColor(role.color).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     _parseIcon(role.icon),
@@ -213,15 +214,15 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withValues(alpha: 0.1),
+                          color: AppTheme.orangeStandard.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           'Système',
                           style: TextStyle(
-                            color: Colors.orange[700],
+                            color: AppTheme.grey700,
                             fontSize: 10,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),
@@ -290,19 +291,19 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
             
             return Card(
               margin: const EdgeInsets.only(bottom: 8),
-              color: isActive ? null : Colors.grey[100],
+              color: isActive ? null : AppTheme.grey100,
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundColor: isActive 
                       ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-                      : Colors.grey.withValues(alpha: 0.3),
+                      : AppTheme.grey500.withValues(alpha: 0.3),
                   child: Text(
                     '${firstName.isNotEmpty ? firstName[0] : ''}${lastName.isNotEmpty ? lastName[0] : ''}',
                     style: TextStyle(
                       color: isActive 
                           ? Theme.of(context).colorScheme.primary
-                          : Colors.grey,
-                      fontWeight: FontWeight.bold,
+                          : AppTheme.grey500,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -313,12 +314,12 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
+                          color: AppTheme.grey300,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
                           'Inactif',
-                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                          style: TextStyle(fontSize: 10, color: AppTheme.grey500),
                         ),
                       ),
                   ],
@@ -332,9 +333,9 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
                       Text(
                         '${roles.length} rôle(s) assigné(s)',
                         style: TextStyle(
-                          color: Colors.green[600],
+                          color: AppTheme.grey600,
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ],
@@ -358,12 +359,12 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
+          Icon(Icons.error_outline, size: 48, color: AppTheme.grey300),
           const SizedBox(height: 16),
           Text(
             'Erreur',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.red[700],
+              color: AppTheme.grey700,
             ),
           ),
           const SizedBox(height: 8),
@@ -371,7 +372,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
             message,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -384,12 +385,12 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 48, color: Colors.grey[400]),
+          Icon(icon, size: 48, color: AppTheme.grey400),
           const SizedBox(height: 16),
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -399,7 +400,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
               message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
             ),
           ),
@@ -432,17 +433,17 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
         return Color(int.parse(colorString.substring(1), radix: 16) + 0xFF000000);
       }
       switch (colorString.toLowerCase()) {
-        case 'blue': return Colors.blue;
-        case 'green': return Colors.green;
-        case 'red': return Colors.red;
-        case 'orange': return Colors.orange;
+        case 'blue': return AppTheme.blueStandard;
+        case 'green': return AppTheme.greenStandard;
+        case 'red': return AppTheme.redStandard;
+        case 'orange': return AppTheme.orangeStandard;
         case 'purple': return Colors.purple;
         case 'teal': return Colors.teal;
         case 'indigo': return Colors.indigo;
-        default: return Colors.blue;
+        default: return AppTheme.blueStandard;
       }
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 

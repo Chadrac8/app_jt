@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -250,7 +250,7 @@ class _BenevolatTabState extends State<BenevolatTab>
           ]),
         backgroundColor: AppTheme.errorColor,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))));
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium))));
   }
 
   @override
@@ -258,7 +258,7 @@ class _BenevolatTabState extends State<BenevolatTab>
     super.build(context);
     
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FE),
+      backgroundColor: AppTheme.backgroundColor,
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: SlideTransition(
@@ -293,7 +293,7 @@ class _BenevolatTabState extends State<BenevolatTab>
             'Mes Contributions',
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: const Color(0xFF1a1a1a),
               letterSpacing: -0.5))),
         const SizedBox(height: 20),
@@ -395,7 +395,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.surfaceColor.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   child: Icon(
                     icon,
                     color: AppTheme.surfaceColor,
@@ -404,7 +404,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                   count,
                   style: GoogleFonts.poppins(
                     fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.surfaceColor)),
               ]),
             const Spacer(),
@@ -412,7 +412,7 @@ class _BenevolatTabState extends State<BenevolatTab>
               title,
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.surfaceColor)),
             const SizedBox(height: 2),
             Text(
@@ -434,7 +434,7 @@ class _BenevolatTabState extends State<BenevolatTab>
             'Actions Rapides',
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: const Color(0xFF1a1a1a),
               letterSpacing: -0.5))),
         const SizedBox(height: 20),
@@ -543,7 +543,7 @@ class _BenevolatTabState extends State<BenevolatTab>
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 gradient: gradient,
-                borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
               child: Icon(
                 icon,
                 color: AppTheme.surfaceColor,
@@ -553,7 +553,7 @@ class _BenevolatTabState extends State<BenevolatTab>
               title,
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF1a1a1a))),
             const SizedBox(height: 2),
             Text(

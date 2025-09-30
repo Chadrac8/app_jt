@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/task_model.dart';
 import '../services/tasks_firebase_service.dart';
 import 'task_card.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class TaskKanbanView extends StatefulWidget {
   final String? searchQuery;
@@ -140,7 +140,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
     return Container(
       decoration: BoxDecoration(
         color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.2)),
       ),
       child: Column(
@@ -163,7 +163,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
                   child: Text(
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: color,
                     ),
                   ),
@@ -172,14 +172,14 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: color,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     '${tasks.length}',
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white100,
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -235,7 +235,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
       data: task,
       feedback: Material(
         elevation: 8,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
           width: 280,
           child: TaskCard(
@@ -292,7 +292,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
               style: TextStyle(
                 color: color.withOpacity(0.6),
                 fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
             const SizedBox(height: 16),

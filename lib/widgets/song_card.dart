@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
+import '../../theme.dart';
 
 /// Widget pour afficher un chant dans une liste
 class SongCard extends StatefulWidget {
@@ -58,13 +59,13 @@ class _SongCardState extends State<SongCard> {
   Color _getStatusColor() {
     switch (widget.song.status) {
       case 'published':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'draft':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'archived':
-        return Colors.grey;
+        return AppTheme.grey500;
       default:
-        return Colors.blue;
+        return AppTheme.blueStandard;
     }
   }
 
@@ -129,7 +130,7 @@ class _SongCardState extends State<SongCard> {
                     child: Text(
                       widget.song.title,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -140,7 +141,7 @@ class _SongCardState extends State<SongCard> {
                   IconButton(
                     icon: Icon(
                       _isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: _isFavorite ? Colors.red : null,
+                      color: _isFavorite ? AppTheme.redStandard : null,
                     ),
                     onPressed: _toggleFavorite,
                   ),
@@ -173,9 +174,9 @@ class _SongCardState extends State<SongCard> {
                           value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.delete, color: Colors.red),
+                              Icon(Icons.delete, color: AppTheme.redStandard),
                               SizedBox(width: 8),
-                              Text('Supprimer', style: TextStyle(color: Colors.red)),
+                              Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                             ],
                           ),
                         ),
@@ -205,11 +206,11 @@ class _SongCardState extends State<SongCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       widget.song.originalKey,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: AppTheme.fontBold),
                     ),
                   ),
                   
@@ -219,8 +220,8 @@ class _SongCardState extends State<SongCard> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppTheme.greenStandard.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         '${widget.song.tempo} BPM',
@@ -236,7 +237,7 @@ class _SongCardState extends State<SongCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _getStatusColor().withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -252,7 +253,7 @@ class _SongCardState extends State<SongCard> {
                           style: TextStyle(
                             fontSize: 12,
                             color: _getStatusColor(),
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ],
@@ -270,8 +271,8 @@ class _SongCardState extends State<SongCard> {
                   children: widget.song.tags.take(3).map((tag) => Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppTheme.grey500.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       tag,
@@ -290,14 +291,14 @@ class _SongCardState extends State<SongCard> {
                     Icon(
                       Icons.play_arrow,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '${widget.song.usageCount} utilisations',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -308,14 +309,14 @@ class _SongCardState extends State<SongCard> {
                     Icon(
                       Icons.audiotrack,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       'Audio',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -327,14 +328,14 @@ class _SongCardState extends State<SongCard> {
                     Icon(
                       Icons.attachment,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '${widget.song.attachmentUrls.length} fichier(s)',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -347,7 +348,7 @@ class _SongCardState extends State<SongCard> {
                       'Utilisé le ${_formatDate(widget.song.lastUsedAt!)}',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                 ],

@@ -5,6 +5,7 @@ import '../models/blog_post.dart';
 import '../models/blog_comment.dart';
 import '../models/blog_category.dart';
 import '../services/blog_service.dart';
+import '../../../../theme.dart';
 
 /// Vue admin du module Blog
 class BlogAdminView extends StatefulWidget {
@@ -116,7 +117,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
           TabBar(
             controller: _tabController,
             labelColor: Theme.of(context).primaryColor,
-            unselectedLabelColor: Colors.grey,
+            unselectedLabelColor: AppTheme.grey500,
             tabs: [
               Tab(
                 text: 'Articles',
@@ -169,11 +170,11 @@ class _BlogAdminViewState extends State<BlogAdminView>
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buildStatChip('Total', _statistics['total'] ?? 0, Colors.blue),
-            _buildStatChip('Publiés', _statistics['published'] ?? 0, Colors.green),
-            _buildStatChip('Brouillons', _statistics['drafts'] ?? 0, Colors.orange),
+            _buildStatChip('Total', _statistics['total'] ?? 0, AppTheme.blueStandard),
+            _buildStatChip('Publiés', _statistics['published'] ?? 0, AppTheme.greenStandard),
+            _buildStatChip('Brouillons', _statistics['drafts'] ?? 0, AppTheme.orangeStandard),
             _buildStatChip('Programmés', _statistics['scheduled'] ?? 0, Colors.purple),
-            _buildStatChip('Commentaires', _statistics['pendingComments'] ?? 0, Colors.red),
+            _buildStatChip('Commentaires', _statistics['pendingComments'] ?? 0, AppTheme.redStandard),
           ],
         ),
       ),
@@ -186,7 +187,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
@@ -195,7 +196,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
             value.toString(),
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -224,7 +225,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                   hintText: 'Rechercher des articles...',
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                 ),
                 onChanged: (value) => setState(() => _searchQuery = value),
@@ -265,7 +266,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.article_outlined, size: 64, color: Colors.grey),
+                      Icon(Icons.article_outlined, size: 64, color: AppTheme.grey500),
                       SizedBox(height: 16),
                       Text('Aucun article trouvé'),
                     ],
@@ -292,7 +293,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             color: _getStatusColor(post.status).withOpacity(0.1),
           ),
           child: Icon(
@@ -302,7 +303,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
         ),
         title: Text(
           post.title,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: AppTheme.fontMedium),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -322,7 +323,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                   child: Text(
                     post.statusLabel,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white100,
                       fontSize: 10,
                     ),
                   ),
@@ -384,8 +385,8 @@ class _BlogAdminViewState extends State<BlogAdminView>
             const PopupMenuItem(
               value: 'delete',
               child: ListTile(
-                leading: Icon(Icons.delete, color: Colors.red),
-                title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 contentPadding: EdgeInsets.zero,
               ),
             ),
@@ -402,7 +403,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.comment_outlined, size: 64, color: Colors.grey),
+                Icon(Icons.comment_outlined, size: 64, color: AppTheme.grey500),
                 SizedBox(height: 16),
                 Text('Aucun commentaire en attente'),
               ],
@@ -444,11 +445,11 @@ class _BlogAdminViewState extends State<BlogAdminView>
                     children: [
                       Text(
                         comment.authorName,
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontWeight: AppTheme.fontMedium),
                       ),
                       Text(
                         _formatDate(comment.createdAt),
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
                       ),
                     ],
                   ),
@@ -456,7 +457,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
+                    color: AppTheme.orangeStandard.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
@@ -476,7 +477,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                   onPressed: () => _rejectComment(comment),
                   icon: const Icon(Icons.close, size: 16),
                   label: const Text('Rejeter'),
-                  style: TextButton.styleFrom(foregroundColor: Colors.red),
+                  style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton.icon(
@@ -502,7 +503,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
             children: [
               const Text(
                 'Catégories',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
               ),
               ElevatedButton.icon(
                 onPressed: _addCategory,
@@ -518,7 +519,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.category_outlined, size: 64, color: Colors.grey),
+                      Icon(Icons.category_outlined, size: 64, color: AppTheme.grey500),
                       SizedBox(height: 16),
                       Text('Aucune catégorie'),
                     ],
@@ -548,17 +549,17 @@ class _BlogAdminViewState extends State<BlogAdminView>
             color: category.colorCode != null 
                 ? Color(int.parse(category.colorCode!.substring(1, 7), radix: 16) + 0xFF000000)
                 : Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Icon(
             Icons.category,
-            color: Colors.white,
+            color: AppTheme.white100,
             size: 20,
           ),
         ),
         title: Text(
           category.name,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: AppTheme.fontMedium),
         ),
         subtitle: Text('${category.postCount} articles'),
         trailing: Switch(
@@ -651,7 +652,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                 );
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -703,13 +704,13 @@ class _BlogAdminViewState extends State<BlogAdminView>
   Color _getStatusColor(BlogPostStatus status) {
     switch (status) {
       case BlogPostStatus.draft:
-        return Colors.grey;
+        return AppTheme.grey500;
       case BlogPostStatus.published:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case BlogPostStatus.scheduled:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case BlogPostStatus.archived:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
     }
   }
 

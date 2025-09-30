@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/permission_provider.dart';
-import '../widgets/user_role_assignment_widget.dart';
-import '../widgets/bulk_role_assignment_widget.dart';
+import '../models/permission_model.dart';
+import '../models/user_role_model.dart';
+import '../services/enhanced_permission_provider.dart';
+import '../services/roles_permissions_service.dart';
 
-/// Écran principal pour l'assignation de rôles
+/// Écran d'assignation de rôles aux utilisateurs avec Material Design 3
 class RoleAssignmentScreen extends StatefulWidget {
   const RoleAssignmentScreen({super.key});
 

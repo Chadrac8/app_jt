@@ -5,6 +5,7 @@ import '../services/blog_service.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
+import '../../../../theme.dart';
 
 /// Vue de formulaire pour créer/modifier un article de blog
 class BlogFormView extends StatefulWidget {
@@ -127,7 +128,7 @@ class _BlogFormViewState extends State<BlogFormView>
           TabBar(
             controller: _tabController,
             labelColor: Theme.of(context).primaryColor,
-            unselectedLabelColor: Colors.grey,
+            unselectedLabelColor: AppTheme.grey500,
             isScrollable: true,
             tabs: const [
               Tab(text: 'Contenu', icon: Icon(Icons.edit)),
@@ -163,7 +164,7 @@ class _BlogFormViewState extends State<BlogFormView>
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border(
-          bottom: BorderSide(color: Colors.grey.withOpacity(0.2)),
+          bottom: BorderSide(color: AppTheme.grey500.withOpacity(0.2)),
         ),
       ),
       child: Row(
@@ -173,14 +174,14 @@ class _BlogFormViewState extends State<BlogFormView>
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: _getStatusColor(_status),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             ),
             child: Text(
               _getStatusLabel(_status),
               style: const TextStyle(
-                color: Colors.white,
+                color: AppTheme.white100,
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),
@@ -194,8 +195,8 @@ class _BlogFormViewState extends State<BlogFormView>
               icon: const Icon(Icons.publish, size: 16),
               label: const Text('Publier'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.greenStandard,
+                foregroundColor: AppTheme.white100,
               ),
             ),
           
@@ -225,7 +226,7 @@ class _BlogFormViewState extends State<BlogFormView>
               hintText: 'Saisissez un titre accrocheur...',
               border: OutlineInputBorder(),
             ),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 18, fontWeight: AppTheme.fontMedium),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Le titre est obligatoire';
@@ -318,7 +319,7 @@ class _BlogFormViewState extends State<BlogFormView>
           children: [
             const Text(
               'Informations sur l\'article',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 12),
             Row(
@@ -343,15 +344,15 @@ class _BlogFormViewState extends State<BlogFormView>
           value,
           style: const TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.blueStandard,
           ),
         ),
         Text(
           label,
           style: const TextStyle(
             fontSize: 12,
-            color: Colors.grey,
+            color: AppTheme.grey500,
           ),
         ),
       ],
@@ -369,7 +370,7 @@ class _BlogFormViewState extends State<BlogFormView>
             children: [
               const Text(
                 'Catégories',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
               ),
               TextButton.icon(
                 onPressed: _addNewCategory,
@@ -387,7 +388,7 @@ class _BlogFormViewState extends State<BlogFormView>
             const Center(
               child: Column(
                 children: [
-                  Icon(Icons.category_outlined, size: 64, color: Colors.grey),
+                  Icon(Icons.category_outlined, size: 64, color: AppTheme.grey500),
                   SizedBox(height: 16),
                   Text('Aucune catégorie disponible'),
                 ],
@@ -426,7 +427,7 @@ class _BlogFormViewState extends State<BlogFormView>
           
           const Text(
             'Catégories sélectionnées',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontMedium),
           ),
           
           const SizedBox(height: 8),
@@ -434,7 +435,7 @@ class _BlogFormViewState extends State<BlogFormView>
           if (_selectedCategories.isEmpty)
             const Text(
               'Aucune catégorie sélectionnée',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             )
           else
             Wrap(
@@ -462,7 +463,7 @@ class _BlogFormViewState extends State<BlogFormView>
         children: [
           const Text(
             'Image en vedette',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
           ),
           
           const SizedBox(height: 16),
@@ -487,9 +488,9 @@ class _BlogFormViewState extends State<BlogFormView>
                         top: 8,
                         right: 8,
                         child: CircleAvatar(
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppTheme.redStandard,
                           child: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.white, size: 20),
+                            icon: const Icon(Icons.delete, color: AppTheme.white100, size: 20),
                             onPressed: () {
                               setState(() {
                                 _featuredImageUrl = null;
@@ -505,14 +506,14 @@ class _BlogFormViewState extends State<BlogFormView>
                     width: double.infinity,
                     height: 200,
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey[300]!),
+                      color: AppTheme.grey200,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                      border: Border.all(color: AppTheme.grey300!),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.image, size: 64, color: Colors.grey),
+                        const Icon(Icons.image, size: 64, color: AppTheme.grey500),
                         const SizedBox(height: 16),
                         ElevatedButton.icon(
                           onPressed: _selectFeaturedImage,
@@ -547,7 +548,7 @@ class _BlogFormViewState extends State<BlogFormView>
           // SEO
           const Text(
             'Optimisation pour les moteurs de recherche',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
           ),
           
           const SizedBox(height: 16),
@@ -597,7 +598,7 @@ class _BlogFormViewState extends State<BlogFormView>
         children: [
           const Text(
             'Publication',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
           ),
           
           const SizedBox(height: 16),
@@ -642,7 +643,7 @@ class _BlogFormViewState extends State<BlogFormView>
           // Options
           const Text(
             'Options',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
           ),
           
           const SizedBox(height: 16),
@@ -675,7 +676,7 @@ class _BlogFormViewState extends State<BlogFormView>
           if (widget.isEdit) ...[
             const Text(
               'Actions avancées',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             
             const SizedBox(height: 16),
@@ -688,8 +689,8 @@ class _BlogFormViewState extends State<BlogFormView>
             ),
             
             ListTile(
-              leading: const Icon(Icons.delete, color: Colors.red),
-              title: const Text('Supprimer l\'article', style: TextStyle(color: Colors.red)),
+              leading: const Icon(Icons.delete, color: AppTheme.redStandard),
+              title: const Text('Supprimer l\'article', style: TextStyle(color: AppTheme.redStandard)),
               subtitle: const Text('Action irréversible'),
               onTap: _confirmDeletePost,
             ),
@@ -917,7 +918,7 @@ class _BlogFormViewState extends State<BlogFormView>
                 }
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -928,13 +929,13 @@ class _BlogFormViewState extends State<BlogFormView>
   Color _getStatusColor(BlogPostStatus status) {
     switch (status) {
       case BlogPostStatus.draft:
-        return Colors.grey;
+        return AppTheme.grey500;
       case BlogPostStatus.published:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case BlogPostStatus.scheduled:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case BlogPostStatus.archived:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
     }
   }
 

@@ -5,7 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../models/branham_message.dart';
-import '../../../shared/theme/app_theme.dart';
+import '../../../../theme.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final BranhamMessage message;
@@ -76,7 +76,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -106,7 +106,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: _buildAppBar(),
       body: _buildBody(),
     );
@@ -115,7 +115,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white100,
       foregroundColor: AppTheme.primaryColor,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +124,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             widget.message.title,
             style: GoogleFonts.inter(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
             maxLines: 1,
@@ -134,7 +134,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             '${widget.message.formattedDate} • ${widget.message.location}',
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: Colors.grey.shade600,
+              color: AppTheme.grey500,
             ),
           ),
         ],
@@ -188,7 +188,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 border: Border.all(
                   color: AppTheme.primaryColor.withOpacity(0.3),
                 ),
@@ -205,7 +205,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     widget.message.title,
                     style: GoogleFonts.inter(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
                     textAlign: TextAlign.center,
@@ -215,7 +215,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     'Cliquez sur le bouton ci-dessous pour ouvrir le PDF dans un nouvel onglet',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: Colors.grey.shade600,
+                      color: AppTheme.grey500,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -226,13 +226,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     label: const Text('Ouvrir le PDF'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                   ),
@@ -247,7 +247,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
   Widget _buildLoadingState() {
     return Container(
-      color: Colors.white.withOpacity(0.9),
+      color: AppTheme.white100.withOpacity(0.9),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -279,10 +279,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.red.shade50,
-                borderRadius: BorderRadius.circular(16),
+                color: AppTheme.redStandard,
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 border: Border.all(
-                  color: Colors.red.shade200,
+                  color: AppTheme.redStandard,
                 ),
               ),
               child: Column(
@@ -290,15 +290,15 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                   Icon(
                     Icons.error_outline,
                     size: 64,
-                    color: Colors.red.shade400,
+                    color: AppTheme.redStandard,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     'Erreur de chargement',
                     style: GoogleFonts.inter(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.shade700,
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: AppTheme.redStandard,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -306,7 +306,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     _error ?? 'Une erreur s\'est produite',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: Colors.red.shade600,
+                      color: AppTheme.redStandard,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -319,8 +319,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                         icon: const Icon(Icons.refresh),
                         label: const Text('Réessayer'),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.red.shade600,
-                          side: BorderSide(color: Colors.red.shade300),
+                          foregroundColor: AppTheme.redStandard,
+                          side: BorderSide(color: AppTheme.redStandard),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -329,8 +329,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                         icon: const Icon(Icons.open_in_new),
                         label: const Text('Ouvrir dans le navigateur'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red.shade600,
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppTheme.redStandard,
+                          foregroundColor: AppTheme.white100,
                         ),
                       ),
                     ],

@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../models/appointment_model.dart';
 import '../services/appointments_firebase_service.dart';
 // Removed unused import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class AppointmentStatisticsWidget extends StatefulWidget {
   final String? responsableId;
@@ -105,8 +105,8 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
             color: Color(0x0D000000), // 5% opacity black
@@ -126,7 +126,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                 'Vue d\'ensemble',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -163,7 +163,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                 'Terminés',
                 _statistics!.completedAppointments.toString(),
                 Icons.done_all,
-                Colors.green,
+                AppTheme.greenStandard,
               ),
             ],
           ),
@@ -189,7 +189,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withAlpha(25), // 0.1 * 255 ≈ 25
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withAlpha(51)), // 0.2 * 255 ≈ 51
       ),
       child: Column(
@@ -201,7 +201,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
             value,
             style: TextStyle(
               fontSize: 24,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -230,7 +230,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
               label,
               style: const TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -238,7 +238,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
               '${(rate * 100).toStringAsFixed(1)}%',
               style: TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: color,
               ),
             ),
@@ -247,7 +247,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
         const SizedBox(height: 8),
         LinearProgressIndicator(
           value: rate,
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: AppTheme.grey500,
           valueColor: AlwaysStoppedAnimation<Color>(color),
         ),
       ],
@@ -258,11 +258,11 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13), // 0.05 * 255 ≈ 13
+            color: AppTheme.black100.withAlpha(13), // 0.05 * 255 ≈ 13
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -279,7 +279,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                 'Rendez-vous par mois',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -352,11 +352,11 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
+            color: AppTheme.black100.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -373,7 +373,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                 'Répartition par statut',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -402,7 +402,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                   children: [
                     _buildLegendItem('En attente', AppTheme.warningColor, _statistics!.pendingAppointments),
                     _buildLegendItem('Confirmés', AppTheme.successColor, _statistics!.confirmedAppointments),
-                    _buildLegendItem('Terminés', Colors.green, _statistics!.completedAppointments),
+                    _buildLegendItem('Terminés', AppTheme.greenStandard, _statistics!.completedAppointments),
                     _buildLegendItem('Annulés', AppTheme.errorColor, _statistics!.cancelledAppointments),
                   ],
                 ),
@@ -424,28 +424,28 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
         value: _statistics!.pendingAppointments.toDouble(),
         title: '${((_statistics!.pendingAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
       PieChartSectionData(
         color: AppTheme.successColor,
         value: _statistics!.confirmedAppointments.toDouble(),
         title: '${((_statistics!.confirmedAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
       PieChartSectionData(
-        color: Colors.green,
+        color: AppTheme.greenStandard,
         value: _statistics!.completedAppointments.toDouble(),
         title: '${((_statistics!.completedAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
       PieChartSectionData(
         color: AppTheme.errorColor,
         value: _statistics!.cancelledAppointments.toDouble(),
         title: '${((_statistics!.cancelledAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
     ];
   }
@@ -477,7 +477,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
             value.toString(),
             style: const TextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
@@ -490,11 +490,11 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
+            color: AppTheme.black100.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -511,7 +511,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                 'Répartition par lieu',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -552,7 +552,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
         break;
       default:
         icon = Icons.help;
-        color = Colors.grey;
+        color = AppTheme.grey500;
         label = lieu;
     }
 
@@ -561,7 +561,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: color.withAlpha(25),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(color: color.withAlpha(51)),
       ),
       child: Row(
@@ -573,7 +573,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
               label,
               style: const TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -582,7 +582,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
             count.toString(),
             style: TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),

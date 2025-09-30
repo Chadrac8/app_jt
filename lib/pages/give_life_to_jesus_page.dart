@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class GiveLifeToJesusPage extends StatelessWidget {
   const GiveLifeToJesusPage({super.key});
@@ -29,12 +29,12 @@ class GiveLifeToJesusPage extends StatelessWidget {
   Widget _buildHeader() {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -53,7 +53,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               'Un nouveau départ',
               style: TextStyle(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.surfaceColor)),
             const SizedBox(height: 8),
             Text(
@@ -68,7 +68,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
   Widget _buildSteps() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -78,7 +78,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               'Comment donner sa vie à Jésus ?',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 20),
             
@@ -134,7 +134,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               number,
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.surfaceColor)))),
         const SizedBox(width: 16),
         Expanded(
@@ -145,7 +145,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor)),
               const SizedBox(height: 4),
               Text(
@@ -158,7 +158,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                 child: Text(
                   verse,
                   style: TextStyle(
@@ -172,7 +172,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
   Widget _buildPrayer() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -182,7 +182,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               'Prière de salut',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 16),
             Text(
@@ -197,7 +197,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 border: Border.all(color: AppTheme.primaryColor.withOpacity(0.2))),
               child: Text(
                 '"Seigneur Jésus, je reconnais que je suis pécheur et que j\'ai besoin de Toi. Je crois que Tu es mort sur la croix pour mes péchés et que Tu es ressuscité. Je Te demande de me pardonner et de venir dans ma vie. Je veux Te suivre et T\'obéir. Merci pour Ton amour et Ton salut. Amen."',
@@ -213,13 +213,13 @@ class GiveLifeToJesusPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.green.withOpacity(0.3))),
+                color: AppTheme.greenStandard.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                border: Border.all(color: AppTheme.greenStandard.withOpacity(0.3))),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.celebration, color: Colors.green, size: 24),
+                  Icon(Icons.celebration, color: AppTheme.greenStandard, size: 24),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -229,14 +229,14 @@ class GiveLifeToJesusPage extends StatelessWidget {
                           'Félicitations !',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green.shade700)),
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.greenStandard)),
                         const SizedBox(height: 4),
                         Text(
                           'Si vous avez prié cette prière avec sincérité, vous êtes maintenant enfant de Dieu !',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.green.shade700)),
+                            color: AppTheme.greenStandard)),
                       ])),
                 ])),
           ])));
@@ -245,7 +245,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
   Widget _buildContact() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -255,7 +255,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               'Prochaines étapes',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 16),
             
@@ -292,13 +292,13 @@ class GiveLifeToJesusPage extends StatelessWidget {
                   foregroundColor: AppTheme.surfaceColor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12))),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                 icon: const Icon(Icons.contact_support),
                 label: const Text(
                   'Nous contacter pour plus d\'aide',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600)))),
+                    fontWeight: AppTheme.fontSemiBold)))),
           ])));
   }
 
@@ -323,7 +323,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
                   title,
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor)),
                 Text(
                   description,

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import '../bible_page.dart';
+import '../../../../theme.dart';
 
 class ReadingPlanDetailView extends StatefulWidget {
   final ReadingPlan plan;
@@ -53,8 +54,8 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
               title: Text(
                 widget.plan.name,
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  fontWeight: AppTheme.fontBold,
+                  color: AppTheme.white100,
                 ),
               ),
               background: Container(
@@ -72,7 +73,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                   child: Icon(
                     _getCategoryIcon(widget.plan.category),
                     size: 80,
-                    color: Colors.white.withOpacity(0.3),
+                    color: AppTheme.white100.withOpacity(0.3),
                   ),
                 ),
               ),
@@ -97,12 +98,12 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                       _buildInfoBadge(
                         icon: Icons.calendar_today,
                         label: '${widget.plan.totalDays} jours',
-                        color: Colors.blue,
+                        color: AppTheme.blueStandard,
                       ),
                       _buildInfoBadge(
                         icon: Icons.access_time,
                         label: '${widget.plan.estimatedReadingTime}min/jour',
-                        color: Colors.green,
+                        color: AppTheme.greenStandard,
                       ),
                       _buildInfoBadge(
                         icon: Icons.signal_cellular_alt,
@@ -119,7 +120,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                     'Description',
                     style: GoogleFonts.inter(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -145,7 +146,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                     'Aperçu du plan',
                     style: GoogleFonts.inter(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -178,7 +179,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                 color: theme.colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: AppTheme.black100.withOpacity(0.05),
                     blurRadius: 10,
                     offset: const Offset(0, -5),
                   ),
@@ -201,7 +202,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,14 +214,14 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                 'Votre progrès',
                 style: GoogleFonts.inter(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               Text(
                 '${_progress!.completedDays.length}/${widget.plan.totalDays}',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.primary,
                 ),
               ),
@@ -264,7 +265,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -275,7 +276,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
             label,
             style: GoogleFonts.inter(
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: color,
             ),
           ),
@@ -292,7 +293,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: theme.colorScheme.outline.withOpacity(0.2),
         ),
@@ -307,13 +308,13 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                 height: 32,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Center(
                   child: Text(
                     '${day.day}',
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: theme.colorScheme.primary,
                     ),
                   ),
@@ -324,7 +325,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                 child: Text(
                   day.title,
                   style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     fontSize: 16,
                   ),
                 ),
@@ -365,10 +366,10 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: theme.colorScheme.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           ),
         ),
         onPressed: _isStarting ? null : _startPlan,
@@ -377,7 +378,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: AppTheme.white100,
                   strokeWidth: 2,
                 ),
               )
@@ -385,7 +386,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                 'Commencer ce plan',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
       ),
@@ -400,10 +401,10 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: theme.colorScheme.secondary,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           ),
         ),
         onPressed: () {
@@ -419,7 +420,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
           'Continuer la lecture',
           style: GoogleFonts.inter(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
       ),
@@ -438,7 +439,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Plan "${widget.plan.name}" commencé !'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         
@@ -491,13 +492,13 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
   Color _getDifficultyColor(String difficulty) {
     switch (difficulty) {
       case 'beginner':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'intermediate':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'advanced':
-        return Colors.red;
+        return AppTheme.redStandard;
       default:
-        return Colors.green;
+        return AppTheme.greenStandard;
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/dashboard_widget_model.dart';
+import '../../../theme.dart';
 
 class DashboardListWidget extends StatelessWidget {
   final DashboardListModel listData;
@@ -27,7 +28,7 @@ class DashboardListWidget extends StatelessWidget {
                   child: Text(
                     listData.title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       fontSize: compactView ? 14 : 16,
                     ),
                   ),
@@ -52,7 +53,7 @@ class DashboardListWidget extends StatelessWidget {
                       itemCount: listData.items.length,
                       separatorBuilder: (context, index) => Divider(
                         height: compactView ? 8 : 12,
-                        color: Colors.grey[200],
+                        color: AppTheme.grey200,
                       ),
                       itemBuilder: (context, index) {
                         final item = listData.items[index];
@@ -72,7 +73,7 @@ class DashboardListWidget extends StatelessWidget {
 
     return InkWell(
       onTap: item.onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       child: Padding(
         padding: EdgeInsets.symmetric(
           vertical: compactView ? 6 : 8,
@@ -87,7 +88,7 @@ class DashboardListWidget extends StatelessWidget {
                 height: compactView ? 32 : 40,
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   _getIconData(item.icon!),
@@ -105,7 +106,7 @@ class DashboardListWidget extends StatelessWidget {
                   Text(
                     item.title,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                       fontSize: compactView ? 12 : 14,
                     ),
                     maxLines: 1,
@@ -116,7 +117,7 @@ class DashboardListWidget extends StatelessWidget {
                     Text(
                       item.subtitle!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         fontSize: compactView ? 10 : 12,
                       ),
                       maxLines: 1,
@@ -130,7 +131,7 @@ class DashboardListWidget extends StatelessWidget {
             if (item.onTap != null)
               Icon(
                 Icons.chevron_right,
-                color: Colors.grey[400],
+                color: AppTheme.grey400,
                 size: compactView ? 16 : 20,
               ),
           ],
@@ -147,13 +148,13 @@ class DashboardListWidget extends StatelessWidget {
           Icon(
             Icons.inbox_outlined,
             size: compactView ? 32 : 48,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 8),
           Text(
             'Aucun élément à afficher',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
               fontSize: compactView ? 12 : 14,
             ),
           ),
@@ -172,7 +173,7 @@ class DashboardListWidget extends StatelessWidget {
       }
       return Color(int.parse(colorString, radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 

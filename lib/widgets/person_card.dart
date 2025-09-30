@@ -4,7 +4,7 @@ import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/firebase_service.dart';
 import '../services/roles_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class PersonCard extends StatefulWidget {
@@ -109,7 +109,7 @@ class _PersonCardState extends State<PersonCard>
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 border: Border.all(
                   color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
                   width: 1,
@@ -119,7 +119,7 @@ class _PersonCardState extends State<PersonCard>
                 role.name,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                   fontSize: 10,
                 ),
               ),
@@ -198,7 +198,7 @@ class _PersonCardState extends State<PersonCard>
           widget.person.displayInitials,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
       ),
@@ -244,7 +244,7 @@ class _PersonCardState extends State<PersonCard>
             color: widget.isSelected
                 ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
                 : Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             border: Border.all(
               color: widget.isSelected
                   ? Theme.of(context).colorScheme.primary
@@ -293,7 +293,7 @@ class _PersonCardState extends State<PersonCard>
                             child: Text(
                               widget.person.fullName,
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -306,13 +306,13 @@ class _PersonCardState extends State<PersonCard>
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
                                 color: _getStatusBadgeColor(),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               ),
                               child: Text(
                                 _getStatusBadgeText(),
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.white100,
+                                  fontWeight: AppTheme.fontMedium,
                                   fontSize: 10,
                                 ),
                               ),
@@ -432,7 +432,7 @@ class _PersonCardState extends State<PersonCard>
           color: widget.isSelected
               ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
               : Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: Border.all(
             color: widget.isSelected
                 ? Theme.of(context).colorScheme.primary
@@ -476,7 +476,7 @@ class _PersonCardState extends State<PersonCard>
               Text(
                 widget.person.fullName,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
@@ -515,13 +515,13 @@ class _PersonCardState extends State<PersonCard>
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     color: _getStatusBadgeColor(),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     _getStatusBadgeText(),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                      color: AppTheme.white100,
+                      fontWeight: AppTheme.fontMedium,
                       fontSize: 10,
                     ),
                   ),

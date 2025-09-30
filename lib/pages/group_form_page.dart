@@ -8,7 +8,7 @@ import '../services/groups_firebase_service.dart';
 import '../services/firebase_service.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
-import '../theme.dart';
+import '../../theme.dart';
 import 'firebase_storage_diagnostic_page.dart';
 
 class GroupFormPage extends StatefulWidget {
@@ -239,7 +239,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Erreur : l\'image n\'a pas pu être uploadée. Vérifiez votre connexion ou réessayez.'),
-                backgroundColor: Colors.red,
+                backgroundColor: AppTheme.redStandard,
                 duration: Duration(seconds: 5),
               ),
             );
@@ -251,7 +251,7 @@ class _GroupFormPageState extends State<GroupFormPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'upload de l\'image : $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             duration: const Duration(seconds: 6),
           ),
         );
@@ -309,7 +309,7 @@ class _GroupFormPageState extends State<GroupFormPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -336,7 +336,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                 'Enregistrer',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ),
@@ -513,7 +513,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Row(
                   children: [
@@ -529,7 +529,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                           Text(
                             'Groupe public',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                           Text(
@@ -556,7 +556,7 @@ class _GroupFormPageState extends State<GroupFormPage>
               Text(
                 'Couleur du groupe',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 8),
@@ -572,7 +572,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                       height: 40,
                       decoration: BoxDecoration(
                         color: Color(int.parse(color.replaceFirst('#', '0xFF'))),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                         border: Border.all(
                           color: isSelected
                               ? Theme.of(context).colorScheme.primary
@@ -590,7 +590,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                       child: isSelected
                           ? const Icon(
                               Icons.check,
-                              color: Colors.white,
+                              color: AppTheme.white100,
                               size: 20,
                             )
                           : null,
@@ -650,10 +650,10 @@ class _GroupFormPageState extends State<GroupFormPage>
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -670,7 +670,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     icon,
@@ -682,7 +682,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -716,10 +716,10 @@ class _GroupFormPageState extends State<GroupFormPage>
         labelText: label,
         prefixIcon: Icon(icon),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
             width: 2,
@@ -746,10 +746,10 @@ class _GroupFormPageState extends State<GroupFormPage>
         labelText: label,
         prefixIcon: Icon(icon),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
             width: 2,
@@ -768,7 +768,7 @@ class _GroupFormPageState extends State<GroupFormPage>
       width: double.infinity,
       height: 200,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           width: 2,
@@ -805,7 +805,7 @@ class _GroupFormPageState extends State<GroupFormPage>
           if (_isLoading)
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.4),
+                color: AppTheme.black100.withOpacity(0.4),
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -816,7 +816,7 @@ class _GroupFormPageState extends State<GroupFormPage>
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.black.withOpacity(0.3),
+                  color: AppTheme.black100.withOpacity(0.3),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -830,7 +830,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                           label: const Text('Changer'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -845,7 +845,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                           label: const Text('Supprimer'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.errorColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                           ),
                         ),
                       ],
@@ -862,7 +862,7 @@ class _GroupFormPageState extends State<GroupFormPage>
   Widget _buildImagePlaceholder() {
     return InkWell(
       onTap: _pickGroupImage,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       child: Container(
         width: double.infinity,
         height: double.infinity,
@@ -882,7 +882,7 @@ class _GroupFormPageState extends State<GroupFormPage>
               'Ajouter une photo',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
             const SizedBox(height: 4),

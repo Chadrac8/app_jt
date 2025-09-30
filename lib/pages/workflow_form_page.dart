@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
 import '../services/workflow_initialization_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class WorkflowFormPage extends StatefulWidget {
@@ -324,7 +324,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
               height: 120,
               margin: const EdgeInsets.only(bottom: 24),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 image: DecorationImage(
                   image: NetworkImage("https://pixabay.com/get/g333a9455ffb685a7ace2267c54bb92110854647fae340b791a399723a68c3d006c491fd6bd23a4f8da1f26fa9988a7a68aba6d3d4bacff2439ad728db0948592_1280.jpg"),
                   fit: BoxFit.cover,
@@ -332,13 +332,13 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.5),
+                      AppTheme.black100.withOpacity(0.5),
                     ],
                   ),
                 ),
@@ -349,14 +349,14 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                       Icon(
                         _getIconData(_selectedIcon),
                         size: 32,
-                        color: Colors.white,
+                        color: AppTheme.white100,
                       ),
                       const SizedBox(height: 8),
                       Text(
                         _existingWorkflow != null ? 'Modifier le workflow' : 'Créer un nouveau workflow',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: AppTheme.white100,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                     ],
@@ -375,7 +375,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                     Text(
                       'Informations générales',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -444,7 +444,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                     Text(
                       'Apparence',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -471,13 +471,13 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                             height: 40,
                             decoration: BoxDecoration(
                               color: Color(int.parse(colorOption['value']!.replaceFirst('#', '0xFF'))),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               border: isSelected
                                   ? Border.all(color: Theme.of(context).colorScheme.primary, width: 3)
                                   : null,
                             ),
                             child: isSelected
-                                ? const Icon(Icons.check, color: Colors.white)
+                                ? const Icon(Icons.check, color: AppTheme.white100)
                                 : null,
                           ),
                         );
@@ -509,7 +509,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                               color: isSelected
                                   ? Color(int.parse(_selectedColor.replaceFirst('#', '0xFF'))).withOpacity(0.1)
                                   : Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               border: Border.all(
                                 color: isSelected
                                     ? Color(int.parse(_selectedColor.replaceFirst('#', '0xFF')))
@@ -546,7 +546,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                           child: Text(
                             'Étapes du workflow',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                         ),
@@ -568,7 +568,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         padding: const EdgeInsets.all(32),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                           ),
@@ -619,7 +619,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                     Text(
                       'Statut',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -655,7 +655,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: ExpansionTile(
         title: Row(
@@ -665,15 +665,15 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
               height: 24,
               decoration: BoxDecoration(
                 color: Color(int.parse(_selectedColor.replaceFirst('#', '0xFF'))),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: Center(
                 child: Text(
                   '${index + 1}',
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
@@ -683,7 +683,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
               child: Text(
                 step.name.isEmpty ? 'Étape ${index + 1}' : step.name,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ),
@@ -692,13 +692,13 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.error.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Text(
                   'Obligatoire',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.error,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ),
@@ -709,7 +709,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
             PopupMenuItem(
               child: const Row(
                 children: [
-                  Icon(Icons.delete, color: Colors.red),
+                  Icon(Icons.delete, color: AppTheme.redStandard),
                   SizedBox(width: 8),
                   Text('Supprimer'),
                 ],

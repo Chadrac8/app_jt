@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/family_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../pages/family_detail_page.dart';
 import '../pages/family_form_page.dart';
 
@@ -73,7 +73,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                   Text(
                     'Famille',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.primaryColor,
                         ),
                   ),
@@ -108,7 +108,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                 Text(
                   'Famille',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
                 ),
@@ -142,7 +142,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Column(
                 children: [
@@ -155,7 +155,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                   Text(
                     'Aucune famille',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                   ),
                   const SizedBox(height: 4),
@@ -195,7 +195,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                   child: Text(
                     'Famille ${_family!.name}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.primaryColor,
                         ),
                   ),
@@ -222,8 +222,8 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                     const PopupMenuItem(
                       value: 'leave',
                       child: ListTile(
-                        leading: Icon(Icons.exit_to_app, color: Colors.red),
-                        title: Text('Quitter la famille', style: TextStyle(color: Colors.red)),
+                        leading: Icon(Icons.exit_to_app, color: AppTheme.redStandard),
+                        title: Text('Quitter la famille', style: TextStyle(color: AppTheme.redStandard)),
                         contentPadding: EdgeInsets.zero,
                       ),
                     ),
@@ -238,7 +238,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: _getStatusColor(_family!.status).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -253,7 +253,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                     _getRoleLabel(widget.person.familyRole),
                     style: TextStyle(
                       color: _getStatusColor(_family!.status),
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                       fontSize: 12,
                     ),
                   ),
@@ -324,7 +324,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
               Text(
                 'Membres de la famille',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
               ),
               const SizedBox(height: 8),
@@ -367,7 +367,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
         Text(
           title,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
         ),
@@ -379,7 +379,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -532,7 +532,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         title: const Text('Quitter la famille'),
         content: Text(
           'Êtes-vous sûr de vouloir quitter la famille "${_family!.name}" ?',
@@ -545,7 +545,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Quitter'),
@@ -589,15 +589,15 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
   Color _getStatusColor(FamilyStatus status) {
     switch (status) {
       case FamilyStatus.member:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case FamilyStatus.visitor:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case FamilyStatus.attendee:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case FamilyStatus.inactive:
-        return Colors.grey;
+        return AppTheme.grey500;
       case FamilyStatus.inactive_member:
-        return Colors.red;
+        return AppTheme.redStandard;
       default:
         return AppTheme.primaryColor;
     }

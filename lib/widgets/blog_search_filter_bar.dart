@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
+import '../../theme.dart';
 
 class BlogSearchFilterBar extends StatefulWidget {
   final Function(String) onSearchChanged;
@@ -65,7 +66,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
         color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -107,14 +108,14 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
                 decoration: BoxDecoration(
                   color: hasActiveFilters 
                       ? Theme.of(context).primaryColor
-                      : Colors.grey[200],
+                      : AppTheme.grey200,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: IconButton(
                   onPressed: () => setState(() => _isExpanded = !_isExpanded),
                   icon: Icon(
                     Icons.tune,
-                    color: hasActiveFilters ? Colors.white : Colors.grey[600],
+                    color: hasActiveFilters ? AppTheme.white100 : AppTheme.grey600,
                   ),
                 ),
               ),
@@ -146,7 +147,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
           Text(
             'Statut',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 8),
@@ -168,7 +169,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
           Text(
             'Catégories',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 8),
@@ -201,7 +202,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
           Text(
             'Tags populaires',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 8),
@@ -283,10 +284,10 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
     if (widget.selectedTags.length > 3) {
       activeFilters.add(Chip(
         label: Text('+${widget.selectedTags.length - 3}'),
-        backgroundColor: Colors.grey[200],
+        backgroundColor: AppTheme.grey200,
         labelStyle: TextStyle(
           fontSize: 12,
-          color: Colors.grey[600],
+          color: AppTheme.grey600,
         ),
       ));
     }
@@ -299,8 +300,8 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
             Text(
               'Filtres actifs:',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.grey600,
               ),
             ),
             const Spacer(),
@@ -365,7 +366,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
     try {
       return Color(int.parse(colorHex.replaceFirst('#', '0xFF')));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 }

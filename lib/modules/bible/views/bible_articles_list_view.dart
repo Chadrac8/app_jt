@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../theme.dart';
 import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import 'bible_article_detail_view.dart';
@@ -105,12 +106,13 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
+        toolbarHeight: 56.0, // Hauteur standard Material Design
         title: Text(
           'Articles bibliques',
           style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         backgroundColor: theme.colorScheme.surface,
@@ -150,19 +152,19 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
               hintText: 'Rechercher des articles...',
               prefixIcon: const Icon(Icons.search_outlined),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(
                   color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(
                   color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: theme.primaryColor),
               ),
               filled: true,
@@ -185,7 +187,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                   decoration: InputDecoration(
                     labelText: 'Catégorie',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -210,7 +212,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                   decoration: InputDecoration(
                     labelText: 'Trier par',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -280,11 +282,11 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: InkWell(
         onTap: () => _navigateToArticleDetail(article),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -297,13 +299,13 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: theme.primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                     ),
                     child: Text(
                       article.category,
                       style: GoogleFonts.inter(
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                         color: theme.primaryColor,
                       ),
                     ),
@@ -313,15 +315,15 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.orange.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppTheme.orangeStandard.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         'Brouillon',
                         style: GoogleFonts.inter(
                           fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.orange,
+                          fontWeight: AppTheme.fontMedium,
+                          color: AppTheme.orangeStandard,
                         ),
                       ),
                     ),
@@ -358,9 +360,9 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                           value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.delete_outline, size: 18, color: Colors.red),
+                              Icon(Icons.delete_outline, size: 18, color: AppTheme.redStandard),
                               SizedBox(width: 8),
-                              Text('Supprimer', style: TextStyle(color: Colors.red)),
+                              Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                             ],
                           ),
                         ),
@@ -375,7 +377,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                 article.title,
                 style: GoogleFonts.inter(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: theme.textTheme.titleLarge?.color,
                 ),
                 maxLines: 2,
@@ -458,7 +460,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       tag,
@@ -575,7 +577,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
               Navigator.pop(context);
               _deleteArticle(article);
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],

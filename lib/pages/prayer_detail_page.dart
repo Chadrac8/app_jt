@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import '../models/prayer_model.dart';
 import '../services/prayers_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'prayer_form_page.dart';
 
 class PrayerDetailPage extends StatefulWidget {
@@ -46,9 +46,9 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
   Color _getTypeColor() {
     switch (widget.prayer.type) {
       case PrayerType.request:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case PrayerType.testimony:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
         return Colors.purple;
     }
@@ -113,7 +113,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
             content: Text(hasPrayed 
                 ? 'Prière retirée' 
                 : 'Merci pour votre prière 🙏'),
-            backgroundColor: hasPrayed ? Colors.grey : Colors.green,
+            backgroundColor: hasPrayed ? AppTheme.grey500 : AppTheme.greenStandard,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -123,7 +123,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -159,7 +159,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Commentaire ajouté avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -168,7 +168,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -180,7 +180,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Fonctionnalité de partage non disponible'),
-        backgroundColor: Colors.orange,
+        backgroundColor: AppTheme.orangeStandard,
       ),
     );
   }
@@ -206,7 +206,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -221,7 +221,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Prière supprimée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -230,7 +230,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -281,7 +281,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete, size: 16, color: Colors.red),
+                      Icon(Icons.delete, size: 16, color: AppTheme.redStandard),
                       SizedBox(width: 8),
                       Text('Supprimer'),
                     ],
@@ -320,7 +320,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                   ),
                                   decoration: BoxDecoration(
                                     color: _getTypeColor().withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                                     border: Border.all(
                                       color: _getTypeColor(),
                                       width: 2,
@@ -340,7 +340,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                         style: TextStyle(
                                           color: _getTypeColor(),
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: AppTheme.fontSemiBold,
                                         ),
                                       ),
                                     ],
@@ -354,14 +354,14 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                       vertical: 8,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppTheme.grey500.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                                     ),
                                     child: Text(
                                       prayer.category,
                                       style: const TextStyle(
                                         fontSize: 14,
-                                        color: Colors.grey,
+                                        color: AppTheme.grey500,
                                       ),
                                     ),
                                   ),
@@ -372,7 +372,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                               prayer.title,
                               style: const TextStyle(
                                 fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -380,7 +380,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                               _formatRelativeDate(prayer.createdAt),
                               style: const TextStyle(
                                 fontSize: 12,
-                                color: Colors.grey,
+                                color: AppTheme.grey500,
                               ),
                             ),
                           ],
@@ -409,8 +409,8 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                 'Mots-clés:',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.grey500,
+                                  fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -468,21 +468,21 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                           prayer.authorName,
                                           style: const TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.w600,
+                                            fontWeight: AppTheme.fontSemiBold,
                                           ),
                                         ),
                                         Text(
                                           'Auteur de cette prière',
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: Colors.grey[600],
+                                            color: AppTheme.grey600,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ] else ...[
-                                  const Icon(Icons.person_outline, size: 40, color: Colors.grey),
+                                  const Icon(Icons.person_outline, size: 40, color: AppTheme.grey500),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
@@ -492,16 +492,16 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                           'Anonyme',
                                           style: TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.w600,
+                                            fontWeight: AppTheme.fontSemiBold,
                                             fontStyle: FontStyle.italic,
-                                            color: Colors.grey,
+                                            color: AppTheme.grey500,
                                           ),
                                         ),
                                         Text(
                                           'Prière anonyme',
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: Colors.grey[600],
+                                            color: AppTheme.grey600,
                                           ),
                                         ),
                                       ],
@@ -526,7 +526,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                             size: 24,
                                             color: prayer.prayerCount > 0 
                                                 ? AppTheme.primaryColor 
-                                                : Colors.grey,
+                                                : AppTheme.grey500,
                                           ),
                                         );
                                       },
@@ -536,17 +536,17 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                       '${prayer.prayerCount}',
                                       style: TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: AppTheme.fontBold,
                                         color: prayer.prayerCount > 0 
                                             ? AppTheme.primaryColor 
-                                            : Colors.grey,
+                                            : AppTheme.grey500,
                                       ),
                                     ),
                                     const Text(
                                       'Prières',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Colors.grey,
+                                        color: AppTheme.grey500,
                                       ),
                                     ),
                                   ],
@@ -557,25 +557,25 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                       Icons.comment,
                                       size: 24,
                                       color: prayer.comments.isNotEmpty 
-                                          ? Colors.blue 
-                                          : Colors.grey,
+                                          ? AppTheme.blueStandard 
+                                          : AppTheme.grey500,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
                                       '${prayer.comments.length}',
                                       style: TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: AppTheme.fontBold,
                                         color: prayer.comments.isNotEmpty 
-                                            ? Colors.blue 
-                                            : Colors.grey,
+                                            ? AppTheme.blueStandard 
+                                            : AppTheme.grey500,
                                       ),
                                     ),
                                     const Text(
                                       'Commentaires',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Colors.grey,
+                                        color: AppTheme.grey500,
                                       ),
                                     ),
                                   ],
@@ -600,7 +600,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                 'Commentaires d\'encouragement (${prayer.comments.length})',
                                 style: const TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
                               const SizedBox(height: 12),
@@ -635,7 +635,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                                   comment.authorName,
                                                   style: const TextStyle(
                                                     fontSize: 14,
-                                                    fontWeight: FontWeight.w600,
+                                                    fontWeight: AppTheme.fontSemiBold,
                                                   ),
                                                 ),
                                                 const SizedBox(width: 8),
@@ -643,7 +643,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                                   _formatRelativeDate(comment.createdAt),
                                                   style: const TextStyle(
                                                     fontSize: 12,
-                                                    color: Colors.grey,
+                                                    color: AppTheme.grey500,
                                                   ),
                                                 ),
                                               ],
@@ -679,7 +679,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                   color: Theme.of(context).scaffoldBackgroundColor,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: AppTheme.black100.withOpacity(0.1),
                       blurRadius: 4,
                       offset: const Offset(0, -2),
                     ),
@@ -699,12 +699,12 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                 onPressed: _isProcessing ? null : _handlePrayerAction,
                                 icon: Icon(
                                   hasPrayed ? Icons.favorite : Icons.favorite_border,
-                                  color: hasPrayed ? Colors.white : null,
+                                  color: hasPrayed ? AppTheme.white100 : null,
                                 ),
                                 label: Text(
                                   hasPrayed ? 'Je ne prie plus' : 'Je prie pour toi',
                                   style: TextStyle(
-                                    color: hasPrayed ? Colors.white : null,
+                                    color: hasPrayed ? AppTheme.white100 : null,
                                   ),
                                 ),
                                 style: ElevatedButton.styleFrom(
@@ -740,7 +740,7 @@ class _PrayerDetailPageState extends State<PrayerDetailPage>
                                         'Ajouter un commentaire d\'encouragement',
                                         style: TextStyle(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: AppTheme.fontSemiBold,
                                         ),
                                       ),
                                       const SizedBox(height: 16),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 
 class ServiceFormPage extends StatefulWidget {
   final ServiceModel? service;
@@ -227,7 +227,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                 'Enregistrer',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ),
@@ -388,14 +388,14 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: Colors.white,
+                          color: AppTheme.white100,
                         ),
                       )
                     : Text(
                         widget.service == null ? 'Créer le Service' : 'Enregistrer les Modifications',
                         style: const TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
               ),
@@ -415,7 +415,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
         ),
@@ -436,7 +436,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   icon,
@@ -448,7 +448,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
@@ -475,16 +475,16 @@ class _ServiceFormPageState extends State<ServiceFormPage>
         labelText: label,
         prefixIcon: Icon(icon),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
             width: 2,
@@ -513,16 +513,16 @@ class _ServiceFormPageState extends State<ServiceFormPage>
         labelText: label,
         prefixIcon: Icon(icon),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
             width: 2,
@@ -551,7 +551,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           border: Border.all(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
         ),
         child: Row(
@@ -593,7 +593,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           border: Border.all(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
         ),
         child: Row(
@@ -656,7 +656,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                 color: isSelected
                     ? Theme.of(context).colorScheme.onPrimaryContainer
                     : Theme.of(context).colorScheme.onSurface,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal,
               ),
             );
           }).toList(),
@@ -681,10 +681,10 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.flag),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/event_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class EventCalendarView extends StatefulWidget {
   final List<EventModel> events;
@@ -82,7 +82,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
       children: [
         // En-tête du calendrier
         Container(
-          color: Colors.white,
+          color: AppTheme.white100,
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
@@ -94,7 +94,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                 child: Text(
                   _getMonthYear(_currentMonth),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -123,7 +123,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                   day,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -177,8 +177,8 @@ class _EventCalendarViewState extends State<EventCalendarView> {
         decoration: BoxDecoration(
           color: isToday 
               ? AppTheme.primaryColor.withOpacity(0.1)
-              : Colors.white,
-          borderRadius: BorderRadius.circular(8),
+              : AppTheme.white100,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           border: isToday 
               ? Border.all(color: AppTheme.primaryColor, width: 2)
               : Border.all(color: AppTheme.backgroundColor),
@@ -192,7 +192,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                 child: Text(
                   '${date.day}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isToday ? AppTheme.fontBold : FontWeight.normal,
                     color: isCurrentMonth 
                         ? (isToday ? AppTheme.primaryColor : AppTheme.textPrimaryColor)
                         : AppTheme.textTertiaryColor,
@@ -224,9 +224,9 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                                 child: Text(
                                   event.title,
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: AppTheme.white100,
                                     fontSize: 8,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -246,7 +246,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                                   style: TextStyle(
                                     color: AppTheme.textSecondaryColor,
                                     fontSize: 8,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                               ),
@@ -271,7 +271,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
           maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.white100,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -300,7 +300,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                     child: Text(
                       _formatDate(date),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
@@ -338,7 +338,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: AppTheme.backgroundColor,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         border: isSelected
                             ? Border.all(color: AppTheme.primaryColor, width: 2)
                             : null,
@@ -365,7 +365,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                                 Text(
                                   event.title,
                                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: AppTheme.fontSemiBold,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -413,14 +413,14 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                               color: _getEventColor(event).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                             ),
                             child: Text(
                               event.statusLabel,
                               style: TextStyle(
                                 color: _getEventColor(event),
                                 fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                           ),

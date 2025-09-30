@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import '../models/prayer_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../auth/auth_service.dart';
 import '../services/prayers_firebase_service.dart';
 
@@ -54,9 +54,9 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
   Color _getTypeColor() {
     switch (widget.prayer.type) {
       case PrayerType.request:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case PrayerType.testimony:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
         return Colors.purple;
     }
@@ -118,7 +118,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'action: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -144,7 +144,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                   child: Text(
                     'Aucun commentaire pour le moment.\nSoyez le premier à encourager !',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: AppTheme.grey500),
                   ),
                 )
               : ListView.builder(
@@ -170,7 +170,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                           const SizedBox(height: 4),
                           Text(
                             _formatDate(comment.createdAt),
-                            style: const TextStyle(fontSize: 12, color: Colors.grey),
+                            style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
                           ),
                         ],
                       ),
@@ -237,7 +237,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Commentaire ajouté avec succès'),
-                          backgroundColor: Colors.green,
+                          backgroundColor: AppTheme.greenStandard,
                         ),
                       );
                     }
@@ -246,7 +246,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Erreur: $e'),
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppTheme.redStandard,
                         ),
                       );
                     }
@@ -270,10 +270,10 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: InkWell(
         onTap: widget.onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -286,7 +286,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _getTypeColor().withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(color: _getTypeColor(), width: 1),
                     ),
                     child: Row(
@@ -299,7 +299,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                           style: TextStyle(
                             color: _getTypeColor(),
                             fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                       ],
@@ -310,14 +310,14 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppTheme.grey500.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         widget.prayer.category,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.grey,
+                          color: AppTheme.grey500,
                         ),
                       ),
                     ),
@@ -326,15 +326,15 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.orange.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppTheme.orangeStandard.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: const Text(
                         'En attente',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.orange,
-                          fontWeight: FontWeight.w600,
+                          color: AppTheme.orangeStandard,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                     ),
@@ -342,7 +342,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                     _formatDate(widget.prayer.createdAt),
                     style: const TextStyle(
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: AppTheme.grey500,
                     ),
                   ),
                 ],
@@ -354,7 +354,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                 widget.prayer.title,
                 style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -366,7 +366,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                 widget.prayer.content,
                 style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: AppTheme.grey500,
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
@@ -397,17 +397,17 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       widget.prayer.authorName,
                       style: const TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ] else ...[
-                    const Icon(Icons.person_outline, size: 16, color: Colors.grey),
+                    const Icon(Icons.person_outline, size: 16, color: AppTheme.grey500),
                     const SizedBox(width: 4),
                     const Text(
                       'Anonyme',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey,
+                        color: AppTheme.grey500,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -426,7 +426,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                     if (widget.prayer.comments.isNotEmpty)
                       Text(
                         '${widget.prayer.comments.length}',
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
                       ),
                     const SizedBox(width: 8),
 
@@ -441,7 +441,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                             icon: Icon(
                               hasPrayed ? Icons.favorite : Icons.favorite_border,
                               size: 20,
-                              color: hasPrayed ? AppTheme.primaryColor : Colors.grey,
+                              color: hasPrayed ? AppTheme.primaryColor : AppTheme.grey500,
                             ),
                             tooltip: hasPrayed ? 'Je ne prie plus' : 'Je prie pour toi',
                             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -454,8 +454,8 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                         '${widget.prayer.prayerCount}',
                         style: TextStyle(
                           fontSize: 12,
-                          color: hasPrayed ? AppTheme.primaryColor : Colors.grey,
-                          fontWeight: hasPrayed ? FontWeight.w600 : FontWeight.normal,
+                          color: hasPrayed ? AppTheme.primaryColor : AppTheme.grey500,
+                          fontWeight: hasPrayed ? AppTheme.fontSemiBold : FontWeight.normal,
                         ),
                       ),
                   ],
@@ -500,7 +500,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                             value: 'delete',
                             child: Row(
                               children: [
-                                Icon(Icons.delete, size: 16, color: Colors.red),
+                                Icon(Icons.delete, size: 16, color: AppTheme.redStandard),
                                 SizedBox(width: 8),
                                 Text('Supprimer'),
                               ],
@@ -513,7 +513,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                               value: 'approve',
                               child: Row(
                                 children: [
-                                  Icon(Icons.check, size: 16, color: Colors.green),
+                                  Icon(Icons.check, size: 16, color: AppTheme.greenStandard),
                                   SizedBox(width: 8),
                                   Text('Approuver'),
                                 ],
@@ -523,7 +523,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                             value: 'reject',
                             child: Row(
                               children: [
-                                Icon(Icons.close, size: 16, color: Colors.red),
+                                Icon(Icons.close, size: 16, color: AppTheme.redStandard),
                                 SizedBox(width: 8),
                                 Text('Rejeter'),
                               ],

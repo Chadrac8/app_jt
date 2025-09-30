@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../services/image_storage_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class ImageGalleryWidget extends StatefulWidget {
   final Function(String) onImageSelected;
@@ -66,8 +66,8 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: AppTheme.redStandard,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Supprimer'),
           ),
@@ -85,7 +85,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Image supprimée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -94,7 +94,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Erreur lors de la suppression'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -113,7 +113,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
             Text(
               'Mes images (${_userImages.length})',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const Spacer(),
@@ -155,12 +155,12 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error, size: 48, color: Colors.red),
+            const Icon(Icons.error, size: 48, color: AppTheme.redStandard),
             const SizedBox(height: 16),
             Text(
               'Erreur: $_error',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.red),
+              style: const TextStyle(color: AppTheme.redStandard),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -180,22 +180,22 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
             Icon(
               Icons.photo_library_outlined,
               size: 64,
-              color: Colors.grey[400],
+              color: AppTheme.grey400,
             ),
             const SizedBox(height: 16),
             Text(
               'Aucune image trouvée',
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
+                color: AppTheme.grey600,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Uploadez des images depuis l\'onglet précédent',
               style: TextStyle(
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
             ),
           ],
@@ -219,11 +219,11 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           onTap: () => widget.onImageSelected(imageUrl),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               border: Border.all(
                 color: isSelected 
                     ? AppTheme.primaryColor 
-                    : Colors.grey[300]!,
+                    : AppTheme.grey300!,
                 width: isSelected ? 3 : 1,
               ),
             ),
@@ -238,15 +238,15 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
                     width: double.infinity,
                     height: double.infinity,
                     placeholder: (context, url) => Container(
-                      color: Colors.grey[200],
+                      color: AppTheme.grey200,
                       child: const Center(
                         child: CircularProgressIndicator(),
                       ),
                     ),
                     errorWidget: (context, url, error) => Container(
-                      color: Colors.grey[200],
+                      color: AppTheme.grey200,
                       child: const Center(
-                        child: Icon(Icons.error, color: Colors.grey),
+                        child: Icon(Icons.error, color: AppTheme.grey500),
                       ),
                     ),
                   ),
@@ -263,7 +263,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
                       child: const Center(
                         child: Icon(
                           Icons.check_circle,
-                          color: Colors.white,
+                          color: AppTheme.white100,
                           size: 32,
                         ),
                       ),
@@ -276,14 +276,14 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
                   right: 4,
                   child: Container(
                     decoration: const BoxDecoration(
-                      color: Colors.black54,
+                      color: AppTheme.black100,
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
                       onPressed: () => _deleteImage(imageUrl),
                       icon: const Icon(
                         Icons.delete,
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         size: 16,
                       ),
                       padding: const EdgeInsets.all(4),

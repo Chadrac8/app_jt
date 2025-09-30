@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class EventCard extends StatefulWidget {
@@ -140,7 +140,7 @@ class _EventCardState extends State<EventCard>
           child: Icon(
             _getEventIcon(),
             size: 40,
-            color: Colors.white.withOpacity(0.8),
+            color: AppTheme.white100.withOpacity(0.8),
           ),
         ),
       ),
@@ -180,11 +180,11 @@ class _EventCardState extends State<EventCard>
       child: Container(
         height: 280,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(widget.isSelected ? 0.15 : 0.08),
+              color: AppTheme.black100.withOpacity(widget.isSelected ? 0.15 : 0.08),
               blurRadius: widget.isSelected ? 20 : 10,
               offset: const Offset(0, 4),
             ),
@@ -225,14 +225,14 @@ class _EventCardState extends State<EventCard>
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _statusColor,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       widget.event.statusLabel,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                   ),
@@ -247,7 +247,7 @@ class _EventCardState extends State<EventCard>
                       width: 28,
                       height: 28,
                       decoration: BoxDecoration(
-                        color: widget.isSelected ? AppTheme.primaryColor : Colors.white,
+                        color: widget.isSelected ? AppTheme.primaryColor : AppTheme.white100,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: widget.isSelected ? AppTheme.primaryColor : AppTheme.textTertiaryColor,
@@ -257,7 +257,7 @@ class _EventCardState extends State<EventCard>
                       child: widget.isSelected
                           ? const Icon(
                               Icons.check,
-                              color: Colors.white,
+                              color: AppTheme.white100,
                               size: 16,
                             )
                           : null,
@@ -272,7 +272,7 @@ class _EventCardState extends State<EventCard>
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: AppTheme.white100.withOpacity(0.9),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -299,7 +299,7 @@ class _EventCardState extends State<EventCard>
                           child: Text(
                             widget.event.title,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                               color: AppTheme.textPrimaryColor,
                             ),
                             maxLines: 2,
@@ -310,14 +310,14 @@ class _EventCardState extends State<EventCard>
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: AppTheme.primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Text(
                             widget.event.typeLabel,
                             style: TextStyle(
                               color: AppTheme.primaryColor,
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ),
@@ -394,7 +394,7 @@ class _EventCardState extends State<EventCard>
                                     '$count inscrit${count > 1 ? 's' : ''}',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: AppTheme.secondaryColor,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: AppTheme.fontMedium,
                                     ),
                                   ),
                                 ],

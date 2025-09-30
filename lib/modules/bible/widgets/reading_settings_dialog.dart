@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 
 class ReadingSettingsDialog extends StatefulWidget {
   final double fontSize;
@@ -71,7 +71,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.85,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -82,7 +82,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
             height: 4,
             width: 40,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: AppTheme.grey300,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -96,7 +96,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                   'Paramètres de lecture',
                   style: GoogleFonts.inter(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -152,25 +152,25 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           'Aperçu',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: _isDarkMode ? const Color(0xFF121212) : Colors.grey[50],
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[300]!),
+            color: _isDarkMode ? const Color(0xFF121212) : AppTheme.grey50,
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            border: Border.all(color: AppTheme.grey300!),
           ),
           child: RichText(
             text: TextSpan(
               style: GoogleFonts.crimsonText(
                 fontSize: _fontSize,
-                color: _isDarkMode ? Colors.white.withOpacity(0.87) : Colors.black87,
+                color: _isDarkMode ? AppTheme.white100.withOpacity(0.87) : AppTheme.black100.withOpacity(0.87),
                 height: _lineHeight,
-                fontWeight: FontWeight.w400,
+                fontWeight: AppTheme.fontRegular,
               ),
               children: [
                 if (_showVerseNumbers)
@@ -178,7 +178,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                     text: '16 ',
                     style: GoogleFonts.inter(
                       fontSize: _fontSize - 2,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.primaryColor,
                     ),
                   ),
@@ -201,8 +201,8 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           'Paramètres du texte',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
         const SizedBox(height: 16),
@@ -255,8 +255,8 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           'Affichage',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
         const SizedBox(height: 16),
@@ -318,8 +318,8 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           'Navigation',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
         const SizedBox(height: 16),
@@ -378,21 +378,21 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
               title,
               style: GoogleFonts.inter(
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.black100.withOpacity(0.87),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Text(
                 displayValue,
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.primaryColor,
                 ),
               ),
@@ -428,9 +428,9 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        color: AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: AppTheme.grey200!),
       ),
       child: Row(
         children: [
@@ -438,7 +438,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(
               icon,
@@ -455,15 +455,15 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                   title,
                   style: GoogleFonts.inter(
                     fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                    fontWeight: AppTheme.fontMedium,
+                    color: AppTheme.black100.withOpacity(0.87),
                   ),
                 ),
                 Text(
                   subtitle,
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
               ],
@@ -495,8 +495,8 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           'Police de caractères',
           style: GoogleFonts.inter(
             fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
+            fontWeight: AppTheme.fontMedium,
+            color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
         const SizedBox(height: 8),
@@ -517,20 +517,20 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                 decoration: BoxDecoration(
                   color: isSelected 
                       ? AppTheme.primaryColor 
-                      : Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+                      : AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   border: Border.all(
                     color: isSelected 
                         ? AppTheme.primaryColor 
-                        : Colors.grey[300]!,
+                        : AppTheme.grey300!,
                   ),
                 ),
                 child: Text(
                   font['name']!,
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: isSelected ? Colors.white : Colors.black87,
+                    fontWeight: AppTheme.fontMedium,
+                    color: isSelected ? AppTheme.white100 : AppTheme.black100.withOpacity(0.87),
                   ),
                 ),
               ),

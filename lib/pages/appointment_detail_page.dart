@@ -5,7 +5,7 @@ import '../models/person_model.dart';
 import '../services/appointments_firebase_service.dart';
 import '../services/firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class AppointmentDetailPage extends StatefulWidget {
   final AppointmentModel appointment;
@@ -291,7 +291,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       appBar: AppBar(
         title: const Text('Détail du rendez-vous'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
       ),
       body: FadeTransition(
@@ -360,12 +360,12 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           color: statusColor.withOpacity(0.1),
         ),
         child: Column(
@@ -376,7 +376,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
               statusText,
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: statusColor,
               ),
             ),
@@ -400,7 +400,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
   Widget _buildDetailsCard() {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -414,7 +414,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   'Informations',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -438,7 +438,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
   Widget _buildParticipantsCard() {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -452,7 +452,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   'Participants',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -472,7 +472,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
   Widget _buildNotesCard() {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -486,7 +486,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   'Notes du membre',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -505,7 +505,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
   Widget _buildPrivateNotesCard() {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -519,7 +519,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   'Notes privées',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -544,7 +544,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
 
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -558,7 +558,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   'Actions',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -575,7 +575,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                         label: const Text('Confirmer'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.successColor,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppTheme.white100,
                         ),
                       ),
                     ),
@@ -587,7 +587,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                         label: const Text('Refuser'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.errorColor,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppTheme.white100,
                         ),
                       ),
                     ),
@@ -603,7 +603,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                     label: const Text('Marquer comme terminé'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
                 ),
@@ -619,7 +619,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   label: Text(isResponsable ? 'Annuler le rendez-vous' : 'Annuler ma demande'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.errorColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ),
@@ -635,7 +635,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   label: const Text('Rejoindre l\'appel vidéo'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.secondaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ),
@@ -650,7 +650,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   label: const Text('Appeler'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.tertiaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ),
@@ -680,7 +680,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                     style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.textTertiaryColor,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -711,8 +711,8 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
           child: Text(
             person.displayInitials,
             style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              color: AppTheme.white100,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ),
@@ -725,7 +725,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                 person.fullName,
                 style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),

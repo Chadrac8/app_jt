@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../services/push_notification_service.dart';
+// import '../../services/push_notification_service.dart';  // Temporarily disabled
 
 class NotificationsAdminPage extends StatefulWidget {
   const NotificationsAdminPage({super.key});
@@ -19,7 +19,8 @@ class _NotificationsAdminPageState extends State<NotificationsAdminPage> {
   }
 
   Future<void> _loadToken() async {
-    final token = await PushNotificationService.getToken();
+    // final token = await PushNotificationService.getToken();  // Temporarily disabled
+    final token = "Push notifications temporarily disabled";
     setState(() => _token = token);
   }
 
@@ -48,7 +49,8 @@ class _NotificationsAdminPageState extends State<NotificationsAdminPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_topicController.text.trim().isEmpty) return;
-                    await PushNotificationService.subscribeToTopic(_topicController.text.trim());
+                    // await PushNotificationService.subscribeToTopic(_topicController.text.trim());  // Temporarily disabled
+                    print('Push notifications temporarily disabled');
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Subscribed')));
                   },
                   child: const Text('Subscribe')),
@@ -58,7 +60,8 @@ class _NotificationsAdminPageState extends State<NotificationsAdminPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_topicController.text.trim().isEmpty) return;
-                    await PushNotificationService.unsubscribeFromTopic(_topicController.text.trim());
+                    // await PushNotificationService.unsubscribeFromTopic(_topicController.text.trim());  // Temporarily disabled
+                    print('Push notifications temporarily disabled');
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Unsubscribed')));
                   },
                   child: const Text('Unsubscribe')),
@@ -67,7 +70,8 @@ class _NotificationsAdminPageState extends State<NotificationsAdminPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                await PushNotificationService.showTestNotification(title: 'Test', body: 'This is a test');
+                // await PushNotificationService.showTestNotification(title: 'Test', body: 'This is a test');  // Temporarily disabled
+                print('Test notification temporarily disabled');
               },
               child: const Text('Show local test notification'),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
+import '../../../../theme.dart';
 
 class ThemeCreationDialog extends StatefulWidget {
   final BiblicalTheme? themeToEdit;
@@ -20,19 +21,19 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   
-  Color _selectedColor = Colors.blue;
+  Color _selectedColor = AppTheme.blueStandard;
   IconData _selectedIcon = Icons.bookmark;
   bool _isPublic = false;
   bool _isLoading = false;
 
   final List<Color> _availableColors = [
-    Colors.blue,
-    Colors.green,
-    Colors.orange,
+    AppTheme.blueStandard,
+    AppTheme.greenStandard,
+    AppTheme.orangeStandard,
     Colors.purple,
-    Colors.red,
+    AppTheme.redStandard,
     Colors.teal,
-    Colors.pink,
+    AppTheme.pinkStandard,
     Colors.indigo,
     Colors.amber,
     Colors.deepOrange,
@@ -85,7 +86,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
     
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
@@ -104,7 +105,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: _selectedColor.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Icon(
                       _selectedIcon,
@@ -118,7 +119,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                       isEditing ? 'Modifier le thème' : 'Nouveau thème',
                       style: GoogleFonts.inter(
                         fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: AppTheme.fontBold,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
@@ -142,7 +143,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                   labelText: 'Nom du thème',
                   hintText: 'Ex: Amour de Dieu',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   prefixIcon: Icon(_selectedIcon),
                 ),
@@ -164,7 +165,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                   labelText: 'Description',
                   hintText: 'Décrivez le thème et son objectif...',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   alignLabelWithHint: true,
                 ),
@@ -183,7 +184,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 'Couleur du thème',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
@@ -206,7 +207,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                             : null,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: AppTheme.black100.withOpacity(0.1),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -215,7 +216,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                       child: isSelected
                           ? Icon(
                               Icons.check,
-                              color: Colors.white,
+                              color: AppTheme.white100,
                               size: 20,
                             )
                           : null,
@@ -231,7 +232,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 'Icône du thème',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
@@ -256,7 +257,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                           color: isSelected
                               ? _selectedColor.withOpacity(0.2)
                               : theme.colorScheme.surface,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           border: isSelected
                               ? Border.all(color: _selectedColor, width: 2)
                               : Border.all(color: theme.colorScheme.outline.withOpacity(0.2)),
@@ -279,7 +280,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 title: Text(
                   'Thème public',
                   style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
                 subtitle: Text(
@@ -306,12 +307,12 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                       ),
                       child: Text(
                         'Annuler',
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                        style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
                       ),
                     ),
                   ),
@@ -321,10 +322,10 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                       onPressed: _isLoading ? null : _saveTheme,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _selectedColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppTheme.white100,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                       ),
                       child: _isLoading
@@ -333,12 +334,12 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                               ),
                             )
                           : Text(
                               isEditing ? 'Modifier' : 'Créer',
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                              style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
                             ),
                     ),
                   ),
@@ -411,7 +412,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
           builder: (context) => AlertDialog(
             title: Row(
               children: [
-                Icon(Icons.error_outline, color: Colors.red),
+                Icon(Icons.error_outline, color: AppTheme.redStandard),
                 const SizedBox(width: 8),
                 Text(errorMessage),
               ],
@@ -424,7 +425,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 const SizedBox(height: 16),
                 const Text(
                   'Solutions possibles:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: AppTheme.fontBold),
                 ),
                 const SizedBox(height: 8),
                 const Text('• Activez l\'authentification anonyme dans Firebase'),

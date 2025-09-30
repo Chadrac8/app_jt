@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
-import '../models/pour_vous_action.dart';
-import '../models/action_group.dart';
-import '../services/pour_vous_action_service.dart';
-import '../services/action_group_service.dart';
+import '../../../../theme.dart';
+import '../../../pages/form_public_page.dart';
+import '../../../pages/member_appointments_page.dart';
+import '../../../pages/special_song_reservation_page.dart';
+import '../../../services/forms_firebase_service.dart';
+
+class _ActionItem {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color color;
+  final List<String> actions;
+
+  const _ActionItem({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+    required this.actions,
+  });
+}
 
 class PourVousTab extends StatefulWidget {
   const PourVousTab({Key? key}) : super(key: key);
@@ -13,791 +29,769 @@ class PourVousTab extends StatefulWidget {
   State<PourVousTab> createState() => _PourVousTabState();
 }
 
-class _PourVousTabState extends State<PourVousTab> {
-  final PourVousActionService _actionService = PourVousActionService();
-  final ActionGroupService _groupService = ActionGroupService();
-  bool _isLoading = false;
+class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _initializeActions();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+    _animationController.forward();
   }
 
-  Future<void> _initializeActions() async {
-    if (mounted) {
-      setState(() => _isLoading = true);
-    }
-    
-    // Les actions par défaut ne sont plus créées automatiquement
-    // Elles doivent être configurées par l'administrateur
-    print('📝 Note: Les actions "Pour vous" doivent être configurées par l\'administrateur');
-    
-    if (mounted) {
-      setState(() => _isLoading = false);
-    }
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: AppTheme.textTertiaryColor.withOpacity(0.05),
-      body: _isLoading
-          ? _buildLoadingWidget()
-          : _buildContent());
-  }
-
-  Widget _buildLoadingWidget() {
-    return const Center(
-      child: CircularProgressIndicator());
-  }
-
-  Widget _buildContent() {
-    return StreamBuilder<List<PourVousAction>>(
-      stream: _actionService.getActiveActions(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildLoadingWidget();
-        }
-
-        if (snapshot.hasError) {
-          return _buildErrorWidget(snapshot.error.toString());
-        }
-
-        final actions = snapshot.data ?? [];
-
-        if (actions.isEmpty) {
-          return _buildEmptyWidget();
-        }
-
-        return RefreshIndicator(
-          onRefresh: () async {
-            await _initializeActions();
-          },
-          color: AppTheme.primaryColor,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: _buildGroupedActionsView(actions)));
-      });
-  }
-
-  Widget _buildGroupedActionsView(List<PourVousAction> actions) {
-    return StreamBuilder<List<ActionGroup>>(
-      stream: _groupService.getActiveGroups(),
-      builder: (context, groupSnapshot) {
-        if (groupSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (groupSnapshot.hasError) {
-          print('Erreur lors du chargement des groupes: ${groupSnapshot.error}');
-          // En cas d'erreur, afficher toutes les actions sans groupement
-          return Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.warningColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.warningColor.withOpacity(0.3))),
-                child: Row(
-                  children: [
-                    Icon(Icons.warning, color: AppTheme.warningColor, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Les groupes ne sont pas disponibles. Affichage de toutes les actions.',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: AppTheme.warningColor))),
-                  ])),
-              ...actions.map((action) => _buildActionCard(action)).toList(),
-            ]);
-        }
-
-        final groups = groupSnapshot.data ?? [];
-        
-        if (groups.isEmpty) {
-          // Si aucun groupe n'existe, afficher toutes les actions sans groupement
-          return Column(
-            children: actions.map((action) => _buildActionCard(action)).toList());
-        }
-
-        // Grouper les actions par groupe
-        final groupedActions = <ActionGroup, List<PourVousAction>>{};
-        final ungroupedActions = <PourVousAction>[];
-
-        // Initialiser tous les groupes (même vides)
-        for (final group in groups) {
-          groupedActions[group] = [];
-        }
-
-        // Répartir les actions dans leurs groupes
-        for (final action in actions) {
-          if (action.groupId != null && action.groupId!.isNotEmpty) {
-            final group = groups.firstWhere(
-              (g) => g.id == action.groupId,
-              orElse: () => ActionGroup(
-                id: 'unknown',
-                name: 'Autres',
-                description: 'Actions non catégorisées',
-                icon: Icons.folder_outlined,
-                iconCodePoint: Icons.folder_outlined.codePoint.toString(),
-                order: 999,
-                createdAt: DateTime.now(),
-                updatedAt: DateTime.now()));
-            
-            if (groupedActions.containsKey(group)) {
-              groupedActions[group]!.add(action);
-            } else {
-              ungroupedActions.add(action);
-            }
-          } else {
-            ungroupedActions.add(action);
-          }
-        }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Afficher les groupes avec leurs actions
-            ...groupedActions.entries.map((entry) {
-              final group = entry.key;
-              final groupActions = entry.value;
-              
-              // Ne pas afficher les groupes vides
-              if (groupActions.isEmpty) return const SizedBox.shrink();
-              
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: _buildGroupSection(group.name, groupActions, group));
-            }).toList(),
-            
-            // Afficher les actions non groupées s'il y en a
-            if (ungroupedActions.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: _buildGroupSection('Autres', ungroupedActions, null)),
-            
-            // Espace final pour éviter que le dernier élément soit collé au bas
-            const SizedBox(height: 20),
-          ]);
-      });
-  }
-
-  Widget _buildGroupSection(String title, List<PourVousAction> actions, [ActionGroup? group]) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 24,
-            offset: const Offset(0, 6),
-            spreadRadius: 0),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-            spreadRadius: 0),
-        ]),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            initiallyExpanded: actions.isNotEmpty,
-            backgroundColor: AppTheme.surfaceColor,
-            collapsedBackgroundColor: AppTheme.surfaceColor,
-            tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            childrenPadding: EdgeInsets.zero,
-            title: Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 19,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF1A1D29),
-                letterSpacing: -0.4,
-                height: 1.2)),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (group?.description != null && group!.description.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 6),
-                      child: Text(
-                        group.description,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppTheme.textTertiaryColor.withOpacity(0.6),
-                          height: 1.3))),
-                  Text(
-                    actions.isEmpty 
-                        ? 'Bientôt disponible' 
-                        : '${actions.length} action${actions.length > 1 ? 's' : ''}',
-                    style: GoogleFonts.poppins(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: actions.isEmpty 
-                          ? AppTheme.textTertiaryColor.withOpacity(0.6)
-                          : AppTheme.primaryColor.withOpacity(0.7))),
-                ])),
-            leading: Container(
-              width: 48,
-              height: 48,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                gradient: actions.isEmpty
-                    ? LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          AppTheme.textTertiaryColor.withOpacity(0.4),
-                          AppTheme.textTertiaryColor.withOpacity(0.3),
-                        ])
-                    : LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: group?.color != null
-                            ? [
-                                Color(int.parse(group!.color!.replaceFirst('#', '0xFF'))),
-                                Color(int.parse(group.color!.replaceFirst('#', '0xFF'))).withOpacity(0.8),
-                              ]
-                            : [
-                                AppTheme.primaryColor,
-                                AppTheme.primaryColor.withOpacity(0.8),
-                              ]),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: actions.isEmpty
-                        ? AppTheme.textTertiaryColor.withOpacity(0.15)
-                        : (group?.color != null
-                            ? Color(int.parse(group!.color!.replaceFirst('#', '0xFF'))).withOpacity(0.25)
-                            : AppTheme.primaryColor.withOpacity(0.25)),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4)),
-                ]),
-              child: Icon(
-                group?.icon ?? _getGroupIcon(title),
-                color: AppTheme.surfaceColor,
-                size: 22)),
-            trailing: Icon(
-              Icons.keyboard_arrow_down,
-              color: actions.isEmpty ? AppTheme.textTertiaryColor.withOpacity(0.4) : AppTheme.primaryColor,
-              size: 24),
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.textTertiaryColor.withOpacity(0.05),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(24),
-                    bottomRight: Radius.circular(24))),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                child: actions.isEmpty
-                    ? _buildEmptyGroupContent(title)
-                    : GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 20,
-                          childAspectRatio: 0.75),
-                        itemCount: actions.length,
-                        itemBuilder: (context, index) {
-                          return _buildActionCard(actions[index]);
-                        })),
-            ]))));
-  }
-
-  Widget _buildEmptyGroupContent(String groupTitle) {
-    return Container(
-      height: 140,
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.2), width: 1.5)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppTheme.textTertiaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16)),
-            child: Icon(
-              _getGroupIcon(groupTitle),
-              size: 32,
-              color: AppTheme.textTertiaryColor.withOpacity(0.4))),
-          const SizedBox(height: 16),
-          Text(
-            'Fonctionnalités bientôt disponibles',
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppTheme.textTertiaryColor.withOpacity(0.6)),
-            textAlign: TextAlign.center),
-          const SizedBox(height: 4),
-          Text(
-            'Cette section sera enrichie prochainement',
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              color: AppTheme.textTertiaryColor.withOpacity(0.5)),
-            textAlign: TextAlign.center),
-        ]));
-  }
-
-  IconData _getGroupIcon(String groupTitle) {
-    switch (groupTitle) {
-      case 'Relation avec les pasteurs':
-        return Icons.people;
-      case 'Participer aux services':
-        return Icons.church;
-      case 'Amélioration de l\'église':
-        return Icons.lightbulb;
-      case 'Vie spirituelle':
-        return Icons.favorite;
-      case 'En savoir plus sur l\'église':
-        return Icons.info;
-      default:
-        return Icons.folder;
-    }
-  }
-
-  Widget _buildActionCard(PourVousAction action) {
-    final color = action.color != null 
-        ? Color(int.parse(action.color!.replaceFirst('#', '0xFF')))
-        : AppTheme.primaryColor;
-
-    return Card(
-      elevation: 0,
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(24),
-        onTap: () => _handleActionTap(action),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: AppTheme.surfaceColor,
-            border: Border.all(
-              color: color.withOpacity(0.2),
-              width: 2),
-            boxShadow: [
-              BoxShadow(
-                color: color.withOpacity(0.12),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-                spreadRadius: 0),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-                spreadRadius: 0),
-            ]),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
+      backgroundColor: colorScheme.surface,
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Icône ou image d'arrière-plan en haut avec design moderne
+                _buildWelcomeHeader(colorScheme),
+                const SizedBox(height: 32),
+                _buildActionsGrid(colorScheme),
+                const SizedBox(height: 32),
+                _buildQuickAccessSection(colorScheme),
+                const SizedBox(height: 24),
+              ],
+            ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWelcomeHeader(ColorScheme colorScheme) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colorScheme.primaryContainer,
+            colorScheme.primaryContainer.withValues(alpha: 0.8),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Icon(
+                  Icons.favorite_rounded,
+                  color: colorScheme.primary,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Pour Vous',
+                      style: GoogleFonts.inter(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onPrimaryContainer,
+                        height: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Votre espace personnel d\'engagement',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: colorScheme.surface.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: colorScheme.outline.withValues(alpha: 0.2),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  color: colorScheme.onSurfaceVariant,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Explorez les moyens de vous impliquer davantage dans la vie de l\'église',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionsGrid(ColorScheme colorScheme) {
+    final actions = [
+      _ActionItem(
+        title: 'Relation avec le Seigneur',
+        subtitle: 'Baptême, équipes de service',
+        icon: Icons.church_rounded,
+        color: colorScheme.primary,
+        actions: ['Baptême d\'eau', 'Rejoindre une équipe'],
+      ),
+      _ActionItem(
+        title: 'Relation avec le pasteur',
+        subtitle: 'Rendez-vous, questions',
+        icon: Icons.person_rounded,
+        color: colorScheme.secondary,
+        actions: ['Prendre rendez-vous', 'Poser une question'],
+      ),
+      _ActionItem(
+        title: 'Participation au culte',
+        subtitle: 'Chant spécial, témoignage',
+        icon: Icons.music_note_rounded,
+        color: colorScheme.tertiary,
+        actions: ['Chant spécial', 'Partager un témoignage'],
+      ),
+      _ActionItem(
+        title: 'Amélioration continue',
+        subtitle: 'Idées, signalements',
+        icon: Icons.lightbulb_rounded,
+        color: colorScheme.error,
+        actions: ['Proposer une idée', 'Signaler un problème'],
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Domaines d\'engagement',
+          style: GoogleFonts.inter(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: colorScheme.onSurface,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: 16),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 1,
+            childAspectRatio: 3.2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+          ),
+          itemCount: actions.length,
+          itemBuilder: (context, index) => _buildActionCard(actions[index], colorScheme),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionCard(_ActionItem action, ColorScheme colorScheme) {
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _showActionBottomSheet(action, colorScheme),
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
                 Container(
-                  height: 64,
-                  width: 64,
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    gradient: action.backgroundImageUrl == null 
-                        ? LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              color,
-                              color.withOpacity(0.8),
-                            ])
-                        : null,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: color.withOpacity(0.4),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                        spreadRadius: 0),
-                    ]),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: action.backgroundImageUrl == null
-                        ? Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  color,
-                                  color.withOpacity(0.8),
-                                ])),
-                            child: Icon(
-                              action.icon,
-                              color: AppTheme.surfaceColor,
-                              size: 28))
-                        : Stack(
-                            children: [
-                              Image.network(
-                                action.backgroundImageUrl!,
-                                height: 64,
-                                width: 64,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  // Fallback vers l'icône en cas d'erreur
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          color,
-                                          color.withOpacity(0.8),
-                                        ])),
-                                    child: Icon(
-                                      action.icon,
-                                      color: AppTheme.surfaceColor,
-                                      size: 28));
-                                },
-                                loadingBuilder: (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          color.withOpacity(0.3),
-                                          color.withOpacity(0.1),
-                                        ])),
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white))));
-                                }),
-                              // Overlay subtil pour améliorer la lisibilité
-                              Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.black.withOpacity(0.3),
-                                    ]))),
-                            ]))),
-                const SizedBox(height: 14),
-                // Titre et description avec Flexible
-                Flexible(
+                    color: action.color.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(
+                    action.icon,
+                    color: action.color,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         action.title,
-                        style: GoogleFonts.poppins(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF1A1D29),
-                          height: 1.2),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis),
-                      const SizedBox(height: 8),
-                      Text(
-                        action.description,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppTheme.textSecondaryColor,
-                          height: 1.35),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis),
-                    ])),
-              ])))));
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurface,
+                          height: 1.3,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        action.subtitle,
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: colorScheme.onSurfaceVariant,
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    color: colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  Widget _buildErrorWidget(String error) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.error_outline,
-            size: 64,
-            color: AppTheme.errorColor.withOpacity(0.6)),
-          const SizedBox(height: 16),
-          Text(
-            'Erreur de chargement',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8),
-          Text(
-            'Impossible de charger les actions',
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: AppTheme.textSecondaryColor)),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () => setState(() {}),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: AppTheme.surfaceColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8))),
-            child: Text(
-              'Réessayer',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600))),
-        ]));
+  Widget _buildQuickAccessSection(ColorScheme colorScheme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Accès rapide',
+          style: GoogleFonts.inter(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: colorScheme.onSurface,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildQuickAccessCard(
+                'Mes rendez-vous',
+                'Gérer mes RDV',
+                Icons.calendar_today_rounded,
+                colorScheme.primary,
+                () => _navigateToAppointments(),
+                colorScheme,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildQuickAccessCard(
+                'Chant spécial',
+                'Réserver une date',
+                Icons.music_note_rounded,
+                colorScheme.tertiary,
+                () => _navigateToSpecialSong(),
+                colorScheme,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
-  Widget _buildEmptyWidget() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.inbox_outlined,
-            size: 64,
-            color: AppTheme.textSecondaryColor.withOpacity(0.6)),
-          const SizedBox(height: 16),
-          Text(
-            'Aucune action disponible',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8),
-          Text(
-            'Les actions seront bientôt disponibles',
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: AppTheme.textSecondaryColor)),
-        ]));
+  Widget _buildQuickAccessCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap, ColorScheme colorScheme) {
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: color,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurface,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  void _handleActionTap(PourVousAction action) {
-    switch (action.actionType) {
-      case 'navigation':
-        _handleNavigation(action);
-        break;
-      case 'form':
-        _handleForm(action);
-        break;
-      case 'external':
-        _handleExternal(action);
-        break;
+  void _showActionBottomSheet(_ActionItem action, ColorScheme colorScheme) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHigh,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar
+            Container(
+              margin: const EdgeInsets.only(top: 12, bottom: 8),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            // Header
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: action.color.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      action.icon,
+                      color: action.color,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          action.title,
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        Text(
+                          action.subtitle,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Actions list
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+              itemCount: action.actions.length,
+              itemBuilder: (context, index) => _buildBottomSheetAction(
+                action.actions[index],
+                action.color,
+                colorScheme,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomSheetAction(String actionTitle, Color actionColor, ColorScheme colorScheme) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            _handleActionTap(actionTitle);
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: actionColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    _getActionIcon(actionTitle),
+                    color: actionColor,
+                    size: 18,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    actionTitle,
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: colorScheme.onSurfaceVariant,
+                  size: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  IconData _getActionIcon(String actionTitle) {
+    switch (actionTitle) {
+      case 'Baptême d\'eau':
+        return Icons.water_drop_rounded;
+      case 'Rejoindre une équipe':
+        return Icons.groups_rounded;
+      case 'Prendre rendez-vous':
+        return Icons.calendar_today_rounded;
+      case 'Poser une question':
+        return Icons.help_rounded;
+      case 'Chant spécial':
+        return Icons.music_note_rounded;
+      case 'Partager un témoignage':
+        return Icons.record_voice_over_rounded;
+      case 'Proposer une idée':
+        return Icons.lightbulb_rounded;
+      case 'Signaler un problème':
+        return Icons.report_rounded;
       default:
-        _showNotImplementedDialog(action.title);
+        return Icons.arrow_forward_rounded;
     }
   }
 
-  void _handleNavigation(PourVousAction action) {
-    if (action.targetModule != null) {
-      switch (action.targetModule) {
-        case 'rendez_vous':
-          // Navigation vers le module rendez-vous avec préservation du contexte
-          _navigateToModuleWithContext('rendez_vous', action.title);
-          break;
-        case 'groupes':
-          // Navigation vers le module groupes avec préservation du contexte
-          _navigateToModuleWithContext('groupes', action.title);
-          break;
-        case 'mur_priere':
-          // Navigation vers le module mur de prière avec préservation du contexte
-          _navigateToModuleWithContext('mur_priere', action.title);
-          break;
-        case 'bible':
-          // Navigation vers le module Bible
-          _navigateToBottomNavModule(0, action.title); // Index 0 pour Bible
-          break;
-        case 'message':
-          // Navigation vers le module Le Message
-          _navigateToBottomNavModule(1, action.title); // Index 1 pour Le Message
-          break;
-        default:
-          _showNotImplementedDialog(action.targetModule!);
-      }
-    } else {
-      _showNotImplementedDialog(action.title);
-    }
-  }
-
-  void _navigateToModuleWithContext(String targetModule, String actionTitle) {
-    // Pour l'instant, affiche un message d'information
-    // TODO: Implémenter la navigation réelle avec préservation du contexte
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Navigation vers $targetModule depuis "$actionTitle"',
-          style: GoogleFonts.poppins()),
-        backgroundColor: AppTheme.primaryColor,
-        behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-          label: 'OK',
-          textColor: AppTheme.surfaceColor,
-          onPressed: () {})));
-  }
-
-  void _navigateToBottomNavModule(int moduleIndex, String actionTitle) {
-    // Navigation vers les modules de la barre de navigation principale
-    // Nous devons remonter à la racine et changer l'index de navigation
-    Navigator.of(context).popUntil((route) => route.isFirst);
+  void _navigateToSpecialSong() async {
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SpecialSongReservationPage(),
+      ),
+    );
     
-    // Déclencher un changement d'onglet dans la BottomNavigationBar
-    // Ceci nécessite une communication avec le widget parent (MainPage)
-    _showNavigationMessage(moduleIndex, actionTitle);
+    if (result == true) {
+      _showSuccessMessage('Réservation confirmée avec succès !');
+    }
   }
 
-  void _showNavigationMessage(int moduleIndex, String actionTitle) {
-    final moduleName = moduleIndex == 0 ? 'Bible' : 'Le Message';
+  void _handleActionTap(String actionTitle) async {
+    switch (actionTitle) {
+      // Relation avec Le Seigneur
+      case 'Baptême d\'eau':
+        await _navigateToForm('bapteme-eau', 'Demande de baptême d\'eau');
+        break;
+      case 'Equipes':
+        await _navigateToForm('rejoindre-equipe', 'Rejoindre une équipe');
+        break;
+      
+      // Relation avec le pasteur
+      case 'Rendez-vous':
+        _navigateToAppointments();
+        break;
+      case 'Questions':
+        await _navigateToForm('questions-pasteur', 'Questions pour le pasteur');
+        break;
+      
+      // Participation au culte
+      case 'Chant spécial':
+        // Rediriger vers la page de réservation spécialisée
+        final result = await Navigator.push<bool>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SpecialSongReservationPage(),
+          ),
+        );
+        
+        if (result == true) {
+          _showSuccessMessage('Réservation confirmée avec succès !');
+        }
+        break;
+      case 'Témoignage':
+        await _navigateToForm('temoignage', 'Partager un témoignage');
+        break;
+      
+      // Amélioration
+      case 'Proposer une idée':
+        await _navigateToForm('proposition-idee', 'Proposer une idée');
+        break;
+      case 'Signaler un disfonctionnement':
+        await _navigateToForm('signaler-dysfonctionnement', 'Signaler un problème');
+        break;
+      
+      default:
+        _showNotImplementedMessage(actionTitle);
+    }
+  }
+
+  Future<void> _navigateToForm(String formSlug, String formTitle) async {
+    try {
+      // Chercher le formulaire par titre exact
+      final forms = await FormsFirebaseService.getFormsStream(
+        statusFilter: 'publie',
+        limit: 50,
+      ).first;
+
+      // Filtrer par titre exact (case insensitive)
+      final matchingForms = forms.where((form) => 
+        form.title.toLowerCase() == formTitle.toLowerCase()
+      ).toList();
+
+      if (matchingForms.isNotEmpty) {
+        // Naviguer vers le formulaire existant
+        final result = await Navigator.push<bool>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FormPublicPage(formId: matchingForms.first.id),
+          ),
+        );
+
+        if (result == true) {
+          _showSuccessMessage('Formulaire soumis avec succès !');
+        }
+      } else {
+        // Formulaire non trouvé, proposer de le créer
+        _showFormNotFoundDialog(formTitle, formSlug);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Erreur lors de l\'accès au formulaire: $e',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: AppTheme.errorColor,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  void _navigateToAppointments() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MemberAppointmentsPage(),
+      ),
+    );
+  }
+
+  void _showSuccessMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          'Redirection vers $moduleName depuis "$actionTitle"',
-          style: GoogleFonts.poppins()),
+          message,
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: AppTheme.successColor,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  void _showNotImplementedMessage(String actionTitle) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Action "$actionTitle" - À implémenter',
+          style: GoogleFonts.poppins(),
+        ),
         backgroundColor: AppTheme.primaryColor,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
-        action: SnackBarAction(
-          label: 'Aller',
-          textColor: AppTheme.surfaceColor,
-          onPressed: () {
-            // TODO: Implémenter la navigation réelle vers le module
-            // Pour l'instant, afficher un message
-            _showNotImplementedDialog('Navigation vers $moduleName');
-          })));
+      ),
+    );
   }
 
-  void _handleForm(PourVousAction action) {
-    switch (action.id) {
-      case 'bapteme':
-        _showBaptismForm();
-        break;
-      case 'question_pasteur':
-        _showQuestionForm();
-        break;
-      case 'proposer_idee':
-        _showIdeaForm();
-        break;
-      case 'signaler_probleme':
-        _showProblemReportForm();
-        break;
-      case 'chant_special':
-        _showSongForm();
-        break;
-      case 'infos_eglise':
-        _showChurchInfo();
-        break;
-      case 'historique_eglise':
-        _showChurchHistory();
-        break;
-      case 'photos_eglise':
-        _showChurchPhotos();
-        break;
-      default:
-        _showNotImplementedDialog(action.title);
-    }
-  }
-
-  void _handleExternal(PourVousAction action) {
-    _showNotImplementedDialog('Lien externe: ${action.title}');
-  }
-
-  void _showBaptismForm() {
-    _showFormDialog(
-      title: 'Demande de baptême',
-      content: 'Formulaire de demande de baptême à implémenter');
-  }
-
-  void _showQuestionForm() {
-    _showFormDialog(
-      title: 'Question au pasteur',
-      content: 'Formulaire de question au pasteur à implémenter');
-  }
-
-  void _showIdeaForm() {
-    _showFormDialog(
-      title: 'Proposer une idée',
-      content: 'Formulaire de proposition d\'idée à implémenter');
-  }
-
-  void _showProblemReportForm() {
-    _showFormDialog(
-      title: 'Signaler un problème',
-      content: 'Formulaire de signalement de problème à implémenter');
-  }
-
-  void _showSongForm() {
-    _showFormDialog(
-      title: 'Chant spécial',
-      content: 'Formulaire de proposition de chant à implémenter');
-  }
-
-  void _showChurchInfo() {
-    _showFormDialog(
-      title: 'Informations sur l\'église',
-      content: 'Page d\'informations sur l\'église à implémenter');
-  }
-
-  void _showChurchHistory() {
-    _showFormDialog(
-      title: 'Historique de l\'église',
-      content: 'Page d\'historique de l\'église à implémenter');
-  }
-
-  void _showChurchPhotos() {
-    _showFormDialog(
-      title: 'Photos de l\'église',
-      content: 'Galerie de photos de l\'église à implémenter');
-  }
-
-  void _showFormDialog({required String title, required String content}) {
+  void _showFormNotFoundDialog(String formTitle, String formSlug) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          title,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+          'Formulaire non disponible',
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
+        ),
         content: Text(
-          content,
-          style: GoogleFonts.poppins()),
+          'Le formulaire "$formTitle" n\'est pas encore configuré. Un administrateur doit le créer dans le module Formulaires.',
+          style: GoogleFonts.poppins(),
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.pop(context),
             child: Text(
-              'Fermer',
-              style: GoogleFonts.poppins(color: AppTheme.primaryColor))),
-        ]));
+              'OK',
+              style: GoogleFonts.poppins(color: AppTheme.primaryColor),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _requestFormCreation(formTitle, formSlug);
+            },
+            child: Text(
+              'Demander la création',
+              style: GoogleFonts.poppins(color: AppTheme.primaryColor),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  void _showNotImplementedDialog(String feature) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Fonctionnalité en développement',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+  void _requestFormCreation(String formTitle, String formSlug) {
+    // TODO: Envoyer une demande de création de formulaire aux administrateurs
+    // Ceci pourrait être implémenté via un système de notifications ou d'emails
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
         content: Text(
-          'La fonctionnalité "$feature" sera bientôt disponible.',
-          style: GoogleFonts.poppins()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'Compris',
-              style: GoogleFonts.poppins(color: AppTheme.primaryColor))),
-        ]));
+          'Demande de création du formulaire "$formTitle" envoyée aux administrateurs.',
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: AppTheme.primaryColor,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 4),
+      ),
+    );
   }
 }

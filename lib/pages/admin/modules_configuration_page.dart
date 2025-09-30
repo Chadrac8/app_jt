@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../models/app_config_model.dart';
 import '../../services/app_config_firebase_service.dart';
 import '../../services/pages_firebase_service.dart';
-import '../../theme.dart';
+import '../../../theme.dart';
 import '../../widgets/icon_selector.dart';
 
 class ModulesConfigurationPage extends StatefulWidget {
@@ -50,7 +50,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -78,7 +78,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Configuration sauvegardée avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -87,7 +87,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la sauvegarde: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -226,8 +226,8 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: AppTheme.redStandard,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Réinitialiser'),
           ),
@@ -248,7 +248,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Configuration réinitialisée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -257,7 +257,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la réinitialisation: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -302,7 +302,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${_customPages.length} pages synchronisées avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -312,7 +312,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la synchronisation: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -732,7 +732,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Modules mis à jour avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -742,7 +742,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la mise à jour: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -760,7 +760,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
         title: const Text('Configuration des Modules'),
         elevation: 0,
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         actions: [
           if (_isResetting)
             const Padding(
@@ -770,7 +770,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                 ),
               ),
             )
@@ -798,7 +798,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                 ),
               ),
             )
@@ -843,7 +843,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                   'Information',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -874,7 +874,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
               '• Cliquez sur l\'icône d\'un module ou d\'une page pour la changer parmi plus de 100 icônes disponibles',
               style: TextStyle(
                 color: AppTheme.primaryColor,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ],
@@ -894,7 +894,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
               'Modules disponibles',
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.primaryColor,
               ),
             ),
@@ -920,11 +920,11 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.grey300!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         color: module.isEnabledForMembers
             ? AppTheme.primaryColor.withOpacity(0.05)
-            : Colors.grey[50],
+            : AppTheme.grey50,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -934,12 +934,12 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
               // Icône cliquable pour changer
               InkWell(
                 onTap: () => _changeModuleIcon(index),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     border: Border.all(
                       color: AppTheme.primaryColor.withOpacity(0.3),
                     ),
@@ -971,7 +971,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                       module.name,
                       style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -1000,7 +1000,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     'Menu principal',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.white,
+                      color: AppTheme.white100,
                     ),
                   ),
                   backgroundColor: AppTheme.primaryColor,
@@ -1037,7 +1037,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                       style: TextStyle(
                         color: (canMakePrimary || canRemoveFromPrimary)
                             ? AppTheme.textPrimaryColor
-                            : Colors.grey,
+                            : AppTheme.grey500,
                       ),
                     ),
                   ],
@@ -1092,7 +1092,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                   'Pages personnalisées',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -1111,23 +1111,23 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[300]!),
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.grey[50],
+                  border: Border.all(color: AppTheme.grey300!),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  color: AppTheme.grey50,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.info_outline, color: Colors.grey[600]),
+                        Icon(Icons.info_outline, color: AppTheme.grey600),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             'Aucune page personnalisée trouvée',
                             style: TextStyle(
-                              color: Colors.grey[600],
-                              fontWeight: FontWeight.w500,
+                              color: AppTheme.grey600,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ),
@@ -1137,7 +1137,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       'Pour voir vos pages ici :',
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         fontSize: 13,
                       ),
                     ),
@@ -1145,7 +1145,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       '1. Allez dans le module Constructeur de Pages\n2. Créez ou modifiez une page\n3. Sauvegardez la page (même en brouillon)\n4. Revenez ici et actualisez',
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         fontSize: 13,
                       ),
                     ),
@@ -1161,7 +1161,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                       label: const Text('Synchroniser les pages'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.primaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppTheme.white100,
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       ),
                     ),
@@ -1190,11 +1190,11 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.grey300!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         color: page.isEnabledForMembers
             ? AppTheme.primaryColor.withOpacity(0.05)
-            : Colors.grey[50],
+            : AppTheme.grey50,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1204,12 +1204,12 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
               // Icône cliquable pour changer
               InkWell(
                 onTap: () => _changePageIcon(index),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     border: Border.all(
                       color: AppTheme.primaryColor.withOpacity(0.3),
                     ),
@@ -1241,7 +1241,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                       page.title,
                       style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -1270,7 +1270,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     'Menu principal',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.white,
+                      color: AppTheme.white100,
                     ),
                   ),
                   backgroundColor: AppTheme.primaryColor,
@@ -1307,7 +1307,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                       style: TextStyle(
                         color: (canMakePrimary || canRemoveFromPrimary)
                             ? AppTheme.textPrimaryColor
-                            : Colors.grey,
+                            : AppTheme.grey500,
                       ),
                     ),
                   ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/admin_branham_sermon_model.dart';
 import '../services/admin_branham_sermon_service.dart';
 import '../../../auth/auth_service.dart';
@@ -86,14 +86,14 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('URL audio invalide'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('URL audio valide'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
         ),
       );
     }
@@ -169,7 +169,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
             content: Text(widget.sermon == null 
                 ? 'Prédication ajoutée avec succès' 
                 : 'Prédication modifiée avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       } else {
@@ -179,7 +179,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     } finally {
@@ -205,7 +205,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                       : 'Modifier la Prédication',
                   style: GoogleFonts.poppins(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const Spacer(),
@@ -364,7 +364,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                               children: [
                                 Text(
                                   'Durée',
-                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                                  style: GoogleFonts.poppins(fontWeight: AppTheme.fontMedium),
                                 ),
                                 const SizedBox(height: 8),
                                 Row(
@@ -469,7 +469,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
             title,
             style: GoogleFonts.poppins(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
           ),

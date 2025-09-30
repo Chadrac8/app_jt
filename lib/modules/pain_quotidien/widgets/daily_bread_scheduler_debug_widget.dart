@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/daily_bread_scheduler.dart';
+import '../../../../theme.dart';
 
 /// Widget de debug pour surveiller et tester le scheduler du pain quotidien
 class DailyBreadSchedulerDebugWidget extends StatefulWidget {
@@ -64,7 +65,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
       ),
     );
   }
@@ -73,7 +74,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppTheme.redStandard,
       ),
     );
   }
@@ -83,8 +84,8 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
     return Scaffold(
       appBar: AppBar(
         title: const Text('Debug Scheduler Pain Quotidien'),
-        backgroundColor: Colors.orange,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.orangeStandard,
+        foregroundColor: AppTheme.white100,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -104,7 +105,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                             '📊 Statut du Scheduler',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -135,7 +136,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                             '🔧 Actions de Test',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -147,8 +148,8 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                               icon: const Icon(Icons.refresh),
                               label: const Text('Actualiser le statut'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppTheme.blueStandard,
+                                foregroundColor: AppTheme.white100,
                               ),
                             ),
                           ),
@@ -162,8 +163,8 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                               icon: const Icon(Icons.update),
                               label: const Text('Forcer la mise à jour'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange,
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppTheme.orangeStandard,
+                                foregroundColor: AppTheme.white100,
                               ),
                             ),
                           ),
@@ -177,8 +178,8 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                               icon: const Icon(Icons.bug_report),
                               label: const Text('Test Debug'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppTheme.redStandard,
+                                foregroundColor: AppTheme.white100,
                               ),
                             ),
                           ),
@@ -200,7 +201,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                             'ℹ️ Informations',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -210,7 +211,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                             '• Le contenu est récupéré depuis branham.org\n'
                             '• En cas d\'échec, le contenu en cache est conservé\n'
                             '• Les dates de mise à jour sont stockées localement',
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(color: AppTheme.grey500),
                           ),
                         ],
                       ),
@@ -232,13 +233,13 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
             width: 150,
             child: Text(
               '$label:',
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: AppTheme.fontMedium),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: AppTheme.grey500),
             ),
           ),
         ],

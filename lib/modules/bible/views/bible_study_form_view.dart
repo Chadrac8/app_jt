@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/bible_study.dart';
@@ -92,7 +92,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
         backgroundColor: Colors.transparent,
         title: Text(
           widget.study == null ? 'Nouvelle étude' : 'Modifier l\'étude',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontBold)),
         centerTitle: true,
         actions: [
           TextButton(
@@ -105,7 +105,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 : Text(
                     'Sauvegarder',
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: theme.colorScheme.primary))),
         ],
         bottom: PreferredSize(
@@ -114,16 +114,16 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16)),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
             child: TabBar(
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 color: theme.colorScheme.primary),
               labelColor: AppTheme.surfaceColor,
               unselectedLabelColor: theme.colorScheme.onSurface.withOpacity(0.6),
-              labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              labelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
               tabs: const [
                 Tab(text: 'Informations'),
                 Tab(text: 'Leçons'),
@@ -150,7 +150,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Informations générales',
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 20),
           
           // Titre
@@ -160,7 +160,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Titre de l\'étude *',
               hintText: 'Ex: Les Paraboles de Jésus',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Le titre est obligatoire';
@@ -178,7 +178,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Description *',
               hintText: 'Décrivez le contenu et l\'objectif de cette étude',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'La description est obligatoire';
@@ -195,7 +195,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Auteur *',
               hintText: 'Nom de l\'auteur de l\'étude',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'L\'auteur est obligatoire';
@@ -214,7 +214,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   decoration: InputDecoration(
                     labelText: 'Catégorie',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   items: [
                     'Nouveau Testament',
                     'Ancien Testament',
@@ -238,7 +238,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   decoration: InputDecoration(
                     labelText: 'Difficulté',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   items: const [
                     DropdownMenuItem(value: 'beginner', child: Text('Débutant')),
                     DropdownMenuItem(value: 'intermediate', child: Text('Intermédiaire')),
@@ -259,7 +259,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'Durée totale estimée (minutes) *',
               hintText: '120',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'La durée est obligatoire';
@@ -280,7 +280,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               labelText: 'URL de l\'image',
               hintText: 'https://example.com/image.jpg',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12)))),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium)))),
           
           const SizedBox(height: 20),
           
@@ -292,7 +292,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 'Mots-clés',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600)),
+                  fontWeight: AppTheme.fontSemiBold)),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -302,7 +302,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                       decoration: InputDecoration(
                         hintText: 'Ajouter un mot-clé',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12))),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                       onSubmitted: _addTag)),
                   const SizedBox(width: 8),
                   IconButton(
@@ -328,13 +328,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Options',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 12),
           
           SwitchListTile(
             title: Text(
               'Étude populaire',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
+              style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium)),
             subtitle: Text(
               'Mettre en avant cette étude',
               style: GoogleFonts.inter(fontSize: 12)),
@@ -346,7 +346,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
           SwitchListTile(
             title: Text(
               'Étude active',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
+              style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium)),
             subtitle: Text(
               'Rendre cette étude disponible aux utilisateurs',
               style: GoogleFonts.inter(fontSize: 12)),
@@ -373,7 +373,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               Text(
                 '${_lessons.length} leçon(s)',
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: Theme.of(context).colorScheme.primary)),
               const Spacer(),
               TextButton.icon(
@@ -405,7 +405,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Aperçu de l\'étude',
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const SizedBox(height: 16),
           
           _buildPreviewCard(),
@@ -417,7 +417,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               'Leçons (${_lessons.length})',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold)),
+                fontWeight: AppTheme.fontBold)),
             const SizedBox(height: 12),
             
             ..._lessons.take(3).map((lesson) => _buildPreviewLessonCard(lesson)),
@@ -428,7 +428,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 margin: const EdgeInsets.only(top: 8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                 child: Text(
                   '... et ${_lessons.length - 3} autres leçons',
                   style: GoogleFonts.inter(
@@ -445,7 +445,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -456,7 +456,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 height: 50,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                 child: Icon(
                   Icons.school,
                   color: theme.colorScheme.primary,
@@ -470,7 +470,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                       _titleController.text.isEmpty ? 'Titre de l\'étude' : _titleController.text,
                       style: GoogleFonts.inter(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: theme.colorScheme.primary)),
                     Text(
                       'Par ${_authorController.text.isEmpty ? 'Auteur' : _authorController.text}',
@@ -483,12 +483,12 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppTheme.warningColor,
-                    borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                   child: Text(
                     'POPULAIRE',
                     style: GoogleFonts.inter(
                       fontSize: 10,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.surfaceColor))),
             ]),
           
@@ -523,7 +523,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   child: Text(
                     '#$tag',
                     style: GoogleFonts.inter(
@@ -541,12 +541,12 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Text(
         label,
         style: GoogleFonts.inter(
           fontSize: 12,
-          fontWeight: FontWeight.w500)));
+          fontWeight: AppTheme.fontMedium)));
   }
 
   Widget _buildPreviewLessonCard(BibleStudyLesson lesson) {
@@ -557,13 +557,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Leçon ${lesson.order}: ${lesson.title}',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
           if (lesson.references.isNotEmpty) ...[
             const SizedBox(height: 4),
             Text(
@@ -589,7 +589,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Aucune leçon',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
           const SizedBox(height: 8),
           Text(
@@ -610,7 +610,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       child: ExpansionTile(
         title: Text(
           'Leçon ${lesson.order}: ${lesson.title}',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
         subtitle: Text(
           '${lesson.estimatedDuration}min • ${lesson.references.length} passage(s)',
           style: GoogleFonts.inter(fontSize: 12)),
@@ -630,21 +630,21 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 if (lesson.content.isNotEmpty) ...[
                   Text(
                     'Contenu:',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   Text(lesson.content),
                   const SizedBox(height: 8),
                 ],
                 if (lesson.references.isNotEmpty) ...[
                   Text(
                     'Passages bibliques:',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   ...lesson.references.map((ref) => Text('• ${ref.displayText}')),
                   const SizedBox(height: 8),
                 ],
                 if (lesson.questions.isNotEmpty) ...[
                   Text(
                     'Questions (${lesson.questions.length}):',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   ...lesson.questions.take(2).map((q) => Text('• ${q.question}')),
                   if (lesson.questions.length > 2)
                     Text('• ... et ${lesson.questions.length - 2} autres questions'),
@@ -746,7 +746,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
           title: Text(
             'Éditer la leçon',
             style: GoogleFonts.plusJakartaSans(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.primaryColor,
             ),
           ),
@@ -759,7 +759,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   decoration: InputDecoration(
                     labelText: 'Titre de la leçon',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                 ),
@@ -771,7 +771,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   decoration: InputDecoration(
                     labelText: 'Contenu',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                 ),
@@ -783,7 +783,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   decoration: InputDecoration(
                     labelText: 'Durée estimée (minutes)',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                 ),
@@ -825,7 +825,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
               ),
               child: const Text('Sauvegarder'),
             ),

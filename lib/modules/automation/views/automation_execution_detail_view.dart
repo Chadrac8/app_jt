@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/automation_execution.dart';
 import '../services/automation_service.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
 
 /// Vue détaillée d'une exécution d'automatisation
@@ -122,7 +122,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
                       _execution!.status.label,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: _getStatusColor(_execution!.status),
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     Text(
@@ -139,14 +139,14 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.red[50],
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.red[200]!),
+                color: AppTheme.grey50,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                border: Border.all(color: AppTheme.grey200),
               ),
               child: Text(
                 _execution!.error!,
                 style: TextStyle(
-                  color: Colors.red[700],
+                  color: AppTheme.grey700,
                   fontSize: 14,
                 ),
               ),
@@ -238,18 +238,18 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
 
   Widget _buildErrorCard() {
     return CustomCard(
-      color: Colors.red[50],
+      color: AppTheme.grey50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.error, color: Colors.red[700]),
+              Icon(Icons.error, color: AppTheme.grey700),
               const SizedBox(width: 8),
               Text(
                 'Erreur',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.red[700],
+                  color: AppTheme.grey700,
                 ),
               ),
             ],
@@ -259,14 +259,14 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.red[200]!),
+              color: AppTheme.white100,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(color: AppTheme.grey200),
             ),
             child: Text(
               _execution!.error!,
               style: TextStyle(
-                color: Colors.red[700],
+                color: AppTheme.grey700,
                 fontFamily: 'monospace',
               ),
             ),
@@ -286,7 +286,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             width: 120,
             child: Text(
               '$label:',
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: AppTheme.fontMedium),
             ),
           ),
           Expanded(
@@ -317,17 +317,17 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
   Color _getStatusColor(ExecutionStatus status) {
     switch (status) {
       case ExecutionStatus.pending:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case ExecutionStatus.running:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case ExecutionStatus.completed:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case ExecutionStatus.failed:
-        return Colors.red;
+        return AppTheme.redStandard;
       case ExecutionStatus.cancelled:
-        return Colors.grey;
+        return AppTheme.grey500;
       case ExecutionStatus.skipped:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
     }
   }
 

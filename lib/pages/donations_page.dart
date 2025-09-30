@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
-import '../shared/theme/app_theme.dart';
+import '../../theme.dart';
 import 'donation_webview_page.dart';
 import 'simple_donation_webview_page.dart';
 
@@ -22,25 +22,25 @@ class _DonationsPageState extends State<DonationsPage> {
       title: 'Offrande',
       description: 'Offrande libre pour soutenir l\'œuvre de Dieu',
       icon: Icons.favorite,
-      color: Colors.pink,
+      color: AppTheme.pinkStandard,
     ),
     DonationType(
       title: 'Loyer de l\'église',
       description: 'Participation aux frais de location du lieu de culte',
       icon: Icons.home_filled,
-      color: Colors.blue,
+      color: AppTheme.blueStandard,
     ),
     DonationType(
       title: 'Achat du local',
       description: 'Contribution pour l\'acquisition de notre propre lieu',
       icon: Icons.business,
-      color: Colors.green,
+      color: AppTheme.greenStandard,
     ),
     DonationType(
       title: 'Dîme',
       description: 'Dîme selon les enseignements bibliques (10%)',
       icon: Icons.percent,
-      color: Colors.orange,
+      color: AppTheme.orangeStandard,
     ),
   ];
 
@@ -59,36 +59,19 @@ class _DonationsPageState extends State<DonationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: AppTheme.textPrimaryColor),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Faire un don',
-          style: GoogleFonts.poppins(
-            color: AppTheme.textPrimaryColor,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+    return Container(
+      color: AppTheme.surfaceColor, // Material Design 3 background
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24), // 8px grid compliant
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildBiblicalVerse(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 32), // 8px grid
             _buildDonationTypes(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 32), // 8px grid
             _buildPaymentMethods(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24), // 8px grid
             if (_showRIB) _buildRIBSection(),
           ],
         ),
@@ -108,7 +91,7 @@ class _DonationsPageState extends State<DonationsPage> {
             const Color(0xFF6366F1).withOpacity(0.1),
           ],
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(
           color: AppTheme.primaryColor.withOpacity(0.2),
           width: 1,
@@ -123,7 +106,7 @@ class _DonationsPageState extends State<DonationsPage> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Icon(
                   Icons.auto_stories,
@@ -135,9 +118,9 @@ class _DonationsPageState extends State<DonationsPage> {
               Expanded(
                 child: Text(
                   'Parole de Dieu',
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                  style: GoogleFonts.inter( // Material Design 3 typography
+                    fontSize: 16, // titleMedium
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -152,15 +135,15 @@ class _DonationsPageState extends State<DonationsPage> {
               height: 1.6,
               fontStyle: FontStyle.italic,
               color: AppTheme.textPrimaryColor,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
           const SizedBox(height: 12),
           Text(
             '2 Corinthiens 9:7',
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+            style: GoogleFonts.inter( // Material Design 3 typography
+              fontSize: 14, // bodyLarge
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
           ),
@@ -175,9 +158,9 @@ class _DonationsPageState extends State<DonationsPage> {
       children: [
         Text(
           'Types de dons',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 20,
-            fontWeight: FontWeight.w700,
+            fontWeight: AppTheme.fontBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
@@ -226,9 +209,9 @@ class _DonationsPageState extends State<DonationsPage> {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: isSelected ? donation.color.withOpacity(0.1) : AppTheme.surfaceColor,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
-                    color: isSelected ? donation.color : Colors.grey.withOpacity(0.2),
+                    color: isSelected ? donation.color : AppTheme.grey500.withOpacity(0.2),
                     width: isSelected ? 2 : 1,
                   ),
                   boxShadow: isSelected ? [
@@ -239,7 +222,7 @@ class _DonationsPageState extends State<DonationsPage> {
                     ),
                   ] : [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: AppTheme.black100.withOpacity(0.05),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -251,7 +234,7 @@ class _DonationsPageState extends State<DonationsPage> {
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: donation.color.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Icon(
                         donation.icon,
@@ -266,9 +249,9 @@ class _DonationsPageState extends State<DonationsPage> {
                         children: [
                           Text(
                             donation.title,
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: AppTheme.textPrimaryColor,
                             ),
                           ),
@@ -305,9 +288,9 @@ class _DonationsPageState extends State<DonationsPage> {
       children: [
         Text(
           'Moyens de paiement',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 20,
-            fontWeight: FontWeight.w700,
+            fontWeight: AppTheme.fontBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
@@ -345,14 +328,14 @@ class _DonationsPageState extends State<DonationsPage> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: Border.all(
-            color: Colors.grey.withOpacity(0.2),
+            color: AppTheme.grey500.withOpacity(0.2),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: AppTheme.black100.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -364,7 +347,7 @@ class _DonationsPageState extends State<DonationsPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: Icon(
                 icon,
@@ -379,9 +362,9 @@ class _DonationsPageState extends State<DonationsPage> {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -412,14 +395,14 @@ class _DonationsPageState extends State<DonationsPage> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(
           color: AppTheme.primaryColor.withOpacity(0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: AppTheme.black100.withOpacity(0.08),
             blurRadius: 15,
             offset: const Offset(0, 4),
           ),
@@ -438,9 +421,9 @@ class _DonationsPageState extends State<DonationsPage> {
               const SizedBox(width: 12),
               Text(
                 'Informations bancaires',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -474,10 +457,10 @@ class _DonationsPageState extends State<DonationsPage> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppTheme.blueStandard.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(
-                color: Colors.blue.withOpacity(0.2),
+                color: AppTheme.blueStandard.withOpacity(0.2),
                 width: 1,
               ),
             ),
@@ -485,7 +468,7 @@ class _DonationsPageState extends State<DonationsPage> {
               children: [
                 Icon(
                   Icons.info_outline,
-                  color: Colors.blue[700],
+                  color: AppTheme.grey700,
                   size: 20,
                 ),
                 const SizedBox(width: 12),
@@ -494,8 +477,8 @@ class _DonationsPageState extends State<DonationsPage> {
                     'Précisez le type de don en commentaire du virement',
                     style: GoogleFonts.inter(
                       fontSize: 13,
-                      color: Colors.blue[700],
-                      fontWeight: FontWeight.w500,
+                      color: AppTheme.grey700,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),
@@ -517,7 +500,7 @@ class _DonationsPageState extends State<DonationsPage> {
             label,
             style: GoogleFonts.inter(
               fontSize: 13,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: AppTheme.textSecondaryColor,
             ),
           ),
@@ -526,10 +509,10 @@ class _DonationsPageState extends State<DonationsPage> {
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              color: AppTheme.grey500.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               border: Border.all(
-                color: Colors.grey.withOpacity(0.2),
+                color: AppTheme.grey500.withOpacity(0.2),
                 width: 1,
               ),
             ),
@@ -538,7 +521,7 @@ class _DonationsPageState extends State<DonationsPage> {
               style: GoogleFonts.robotoMono(
                 fontSize: 14,
                 color: AppTheme.textPrimaryColor,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),
@@ -554,15 +537,15 @@ class _DonationsPageState extends State<DonationsPage> {
       label: Text(text),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         elevation: 2,
-        textStyle: GoogleFonts.poppins(
+        textStyle: GoogleFonts.inter(
           fontSize: 13,
-          fontWeight: FontWeight.w500,
+          fontWeight: AppTheme.fontMedium,
         ),
       ),
     );
@@ -573,7 +556,7 @@ class _DonationsPageState extends State<DonationsPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -607,7 +590,7 @@ Merci pour votre générosité ! 🙏
       builder: (context) => Container(
         padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.white100,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -624,9 +607,9 @@ Merci pour votre générosité ! 🙏
                 const SizedBox(width: 12),
                 Text(
                   'Paiement par chèque',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -643,17 +626,17 @@ Merci pour votre générosité ! 🙏
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
                 child: Text(
                   'Compris',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ),
@@ -688,7 +671,7 @@ Merci pour votre générosité ! 🙏
                   label,
                   style: GoogleFonts.inter(
                     fontSize: 13,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -698,7 +681,7 @@ Merci pour votre générosité ! 🙏
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: AppTheme.textPrimaryColor,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ],
@@ -720,7 +703,7 @@ Merci pour votre générosité ! 🙏
       builder: (context) => Container(
         padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.white100,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -732,7 +715,7 @@ Merci pour votre générosité ! 🙏
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: donation.color.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Icon(
                     donation.icon,
@@ -744,9 +727,9 @@ Merci pour votre générosité ! 🙏
                 Expanded(
                   child: Text(
                     'Options de chargement',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -759,7 +742,7 @@ Merci pour votre générosité ! 🙏
               'Chargement normal',
               'Version complète avec toutes les fonctionnalités',
               Icons.web,
-              Colors.blue,
+              AppTheme.blueStandard,
               () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -781,7 +764,7 @@ Merci pour votre générosité ! 🙏
               'Chargement simplifié',
               'Version basique si problème de paiement',
               Icons.speed,
-              Colors.green,
+              AppTheme.greenStandard,
               () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -817,9 +800,9 @@ Merci pour votre générosité ! 🙏
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
-            color: Colors.grey.withOpacity(0.2),
+            color: AppTheme.grey500.withOpacity(0.2),
           ),
         ),
         child: Row(
@@ -843,9 +826,9 @@ Merci pour votre générosité ! 🙏
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -862,7 +845,7 @@ Merci pour votre générosité ! 🙏
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: Colors.grey,
+              color: AppTheme.grey500,
               size: 16,
             ),
           ],

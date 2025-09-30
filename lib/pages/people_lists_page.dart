@@ -3,6 +3,7 @@ import '../models/person_model.dart';
 import '../services/people_lists_firebase_service.dart';
 import 'people_list_create_page.dart';
 import 'people_list_detail_page.dart';
+import '../../theme.dart';
 
 class PeopleListsPage extends StatefulWidget {
   const PeopleListsPage({Key? key}) : super(key: key);
@@ -92,9 +93,9 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                       final list = lists[index];
                       return Card(
                         elevation: 2,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -145,7 +146,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                           child: Stack(
                                             children: [
                                               Center(
-                                                child: Icon(Icons.list, color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black, size: 28, semanticLabel: 'Icône liste'),
+                                                child: Icon(Icons.list, color: color.computeLuminance() < 0.5 ? AppTheme.white100 : AppTheme.black100, size: 28, semanticLabel: 'Icône liste'),
                                               ),
                                               if (list.filters.length > 0)
                                                 Positioned(
@@ -156,11 +157,11 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                                     decoration: BoxDecoration(
                                                       color: color,
                                                       shape: BoxShape.circle,
-                                                      border: Border.all(color: Colors.white, width: 1),
+                                                      border: Border.all(color: AppTheme.white100, width: 1),
                                                     ),
                                                     child: Text(
                                                       '${list.filters.length}',
-                                                      style: TextStyle(fontSize: 10, color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
+                                                      style: TextStyle(fontSize: 10, color: color.computeLuminance() < 0.5 ? AppTheme.white100 : AppTheme.black100, fontWeight: AppTheme.fontBold),
                                                       semanticsLabel: '${list.filters.length} filtre(s)',
                                                     ),
                                                   ),
@@ -177,7 +178,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(list.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                                      Text(list.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
                                       const SizedBox(height: 4),
                                       Text('${list.filters.length} critère(s)', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6))),
                                     ],
@@ -191,7 +192,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Row(
-                                              children: const [Icon(Icons.delete, color: Colors.red), SizedBox(width: 8), Text('Liste supprimée')],
+                                              children: const [Icon(Icons.delete, color: AppTheme.redStandard), SizedBox(width: 8), Text('Liste supprimée')],
                                             ),
                                             duration: const Duration(seconds: 2),
                                             behavior: SnackBarBehavior.floating,
@@ -218,7 +219,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Row(
-                                              children: const [Icon(Icons.check_circle, color: Colors.green), SizedBox(width: 8), Text('Liste modifiée')],
+                                              children: const [Icon(Icons.check_circle, color: AppTheme.greenStandard), SizedBox(width: 8), Text('Liste modifiée')],
                                             ),
                                             duration: const Duration(seconds: 2),
                                             behavior: SnackBarBehavior.floating,
@@ -244,7 +245,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Row(
-                                              children: const [Icon(Icons.copy, color: Colors.blue), SizedBox(width: 8), Text('Liste dupliquée')],
+                                              children: const [Icon(Icons.copy, color: AppTheme.blueStandard), SizedBox(width: 8), Text('Liste dupliquée')],
                                             ),
                                             duration: const Duration(seconds: 2),
                                             behavior: SnackBarBehavior.floating,

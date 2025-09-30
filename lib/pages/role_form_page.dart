@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/roles_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class RoleFormPage extends StatefulWidget {
   final RoleModel? role;
@@ -151,7 +151,7 @@ class _RoleFormPageState extends State<RoleFormPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -170,7 +170,7 @@ class _RoleFormPageState extends State<RoleFormPage>
       appBar: AppBar(
         title: Text(widget.role == null ? 'Nouveau rôle' : 'Modifier le rôle'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           if (_isLoading)
@@ -181,7 +181,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                   width: 20,
                   height: 20,
                   child: CircularProgressIndicator(
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     strokeWidth: 2,
                   ),
                 ),
@@ -193,8 +193,8 @@ class _RoleFormPageState extends State<RoleFormPage>
               child: const Text(
                 'Enregistrer',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                  color: AppTheme.white100,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ),
@@ -229,13 +229,13 @@ class _RoleFormPageState extends State<RoleFormPage>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _isLoading ? null : _saveRole,
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         icon: _isLoading 
             ? const SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: AppTheme.white100,
                   strokeWidth: 2,
                 ),
               )
@@ -300,7 +300,7 @@ class _RoleFormPageState extends State<RoleFormPage>
           'Couleur',
           style: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 12),
@@ -322,7 +322,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                       : null,
                 ),
                 child: isSelected
-                    ? const Icon(Icons.check, color: Colors.white)
+                    ? const Icon(Icons.check, color: AppTheme.white100)
                     : null,
               ),
             );
@@ -333,7 +333,7 @@ class _RoleFormPageState extends State<RoleFormPage>
           'Icône',
           style: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 12),
@@ -367,7 +367,7 @@ class _RoleFormPageState extends State<RoleFormPage>
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Color(int.parse(_selectedColor.replaceFirst('#', '0xFF'))).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: Border.all(
               color: Color(int.parse(_selectedColor.replaceFirst('#', '0xFF'))).withOpacity(0.3),
             ),
@@ -378,7 +378,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                 backgroundColor: Color(int.parse(_selectedColor.replaceFirst('#', '0xFF'))),
                 child: Icon(
                   _getIconFromString(_selectedIcon),
-                  color: Colors.white,
+                  color: AppTheme.white100,
                 ),
               ),
               const SizedBox(width: 12),
@@ -388,14 +388,14 @@ class _RoleFormPageState extends State<RoleFormPage>
                   Text(
                     _nameController.text.isNotEmpty ? _nameController.text : 'Aperçu du rôle',
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const Text(
                     'Aperçu de l\'apparence du rôle',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: AppTheme.grey500,
                     ),
                   ),
                 ],
@@ -417,7 +417,7 @@ class _RoleFormPageState extends State<RoleFormPage>
         Text(
           '${_selectedPermissions.length} permission${_selectedPermissions.length > 1 ? 's' : ''} sélectionnée${_selectedPermissions.length > 1 ? 's' : ''}',
           style: TextStyle(
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
             fontSize: 14,
           ),
         ),
@@ -436,7 +436,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                 subtitle: Text('$selectedInCategory/${permissions.length} sélectionnée${selectedInCategory > 1 ? 's' : ''}'),
                 leading: Icon(
                   _getCategoryIcon(category),
-                  color: selectedInCategory > 0 ? AppTheme.primaryColor : Colors.grey,
+                  color: selectedInCategory > 0 ? AppTheme.primaryColor : AppTheme.grey500,
                 ),
                 children: permissions.map((permission) {
                   final isSelected = _selectedPermissions.contains(permission);
@@ -505,7 +505,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                   title,
                   style: const TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],

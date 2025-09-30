@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../modules/roles/roles_module.dart';
+import '../../theme.dart';
 
 /// Exemple d'utilisation du module de rôles et permissions
 class RoleModuleExample extends StatelessWidget {
@@ -15,7 +16,7 @@ class RoleModuleExample extends StatelessWidget {
       child: MaterialApp(
         title: 'Rôles et Permissions Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: AppTheme.blueStandard,
           useMaterial3: true,
         ),
         home: const RoleModuleMenuWidget(),
@@ -91,12 +92,12 @@ class MainMenuWithRoles extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: AppTheme.blueStandard,
             ),
             child: Text(
               'Menu Principal',
               style: TextStyle(
-                color: Colors.white,
+                color: AppTheme.white100,
                 fontSize: 24,
               ),
             ),

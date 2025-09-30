@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/group_model.dart';
 import '../models/person_model.dart';
 import '../services/groups_firebase_service.dart';
+import '../../theme.dart';
 
 class GroupMeetingPage extends StatefulWidget {
   final GroupModel group;
@@ -86,7 +87,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement des membres: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -118,7 +119,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Aucun membre trouvé dans ce groupe'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -178,7 +179,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Présences enregistrées avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -187,7 +188,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -205,7 +206,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
     final luminance = backgroundColor.computeLuminance();
     // Si la luminance est faible (couleur sombre), utilise du blanc
     // Si la luminance est élevée (couleur claire), utilise du noir
-    return luminance > 0.5 ? Colors.black : Colors.white;
+    return luminance > 0.5 ? AppTheme.black100 : AppTheme.white100;
   }
 
   @override
@@ -225,7 +226,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                 'Enregistrer',
                 style: TextStyle(
                   color: _getContrastColor(_groupColor),
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ),
@@ -255,10 +256,10 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: AppTheme.black100.withOpacity(0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -273,7 +274,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: _groupColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Icon(
                       Icons.groups,
@@ -289,7 +290,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                         Text(
                           widget.group.name,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         Text(
@@ -312,10 +313,10 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                 decoration: InputDecoration(
                   labelText: 'Titre de la réunion',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     borderSide: BorderSide(color: _groupColor, width: 2),
                   ),
                 ),
@@ -329,10 +330,10 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                 decoration: InputDecoration(
                   labelText: 'Notes de réunion (optionnel)',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     borderSide: BorderSide(color: _groupColor, width: 2),
                   ),
                 ),
@@ -348,10 +349,10 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
             margin: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: AppTheme.black100.withOpacity(0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -384,7 +385,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                             Text(
                               'Prise de présence',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                                 color: _groupColor,
                               ),
                             ),
@@ -434,7 +435,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: _groupColor.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Icon(
                             Icons.more_vert,
@@ -491,10 +492,10 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: AppTheme.black100.withOpacity(0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -514,7 +515,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                   Text(
                     'Rapport de réunion',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: _groupColor,
                     ),
                   ),
@@ -526,10 +527,10 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                 decoration: InputDecoration(
                   hintText: 'Ajoutez des notes sur la réunion, les points clés, les décisions prises...',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     borderSide: BorderSide(color: _groupColor, width: 2),
                   ),
                 ),
@@ -553,7 +554,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
           color: isPresent 
               ? _groupColor.withOpacity(0.1)
               : Theme.of(context).colorScheme.surfaceVariant,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: isPresent 
                 ? _groupColor
@@ -573,11 +574,11 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                   color: isPresent 
                       ? _groupColor.withOpacity(0.2)
                       : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 ),
                 child: member.profileImageUrl != null
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                         child: Image.memory(
                           Uri.parse(member.profileImageUrl!).data!.contentAsBytes(),
                           fit: BoxFit.cover,
@@ -590,7 +591,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                             color: isPresent 
                                 ? _groupColor
                                 : Theme.of(context).colorScheme.onSurface,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ),
@@ -606,7 +607,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                     Text(
                       member.fullName,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: isPresent 
                             ? _groupColor
                             : Theme.of(context).colorScheme.onSurface,
@@ -630,7 +631,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                 height: 24,
                 decoration: BoxDecoration(
                   color: isPresent ? _groupColor : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   border: Border.all(
                     color: isPresent 
                         ? _groupColor
@@ -642,7 +643,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                     ? const Icon(
                         Icons.check,
                         size: 16,
-                        color: Colors.white,
+                        color: AppTheme.white100,
                       )
                     : null,
               ),

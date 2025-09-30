@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../models/home_widget_model.dart';
 
 class HomeWidgetRenderer extends StatelessWidget {
@@ -40,7 +40,7 @@ class HomeWidgetRenderer extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -49,7 +49,7 @@ class HomeWidgetRenderer extends StatelessWidget {
             Text(
               widget.title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold)),
+                fontWeight: AppTheme.fontBold)),
             const SizedBox(height: 16),
             ...actions.map<Widget>((action) => _buildQuickActionItem(context, action)),
           ])));
@@ -63,12 +63,12 @@ class HomeWidgetRenderer extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: isPreview ? null : () => _handleAction(context, action['action']),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12)),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
           child: Row(
             children: [
               Icon(_getIconData(iconName), color: color, size: 24),
@@ -80,7 +80,7 @@ class HomeWidgetRenderer extends StatelessWidget {
                     Text(
                       action['title'] ?? '',
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor)),
                     if (action['subtitle'] != null)
                       Text(
@@ -96,11 +96,11 @@ class HomeWidgetRenderer extends StatelessWidget {
   Widget _buildVerseCardWidget(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -119,7 +119,7 @@ class HomeWidgetRenderer extends StatelessWidget {
                   widget.title,
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
               ]),
             const SizedBox(height: 16),
@@ -135,7 +135,7 @@ class HomeWidgetRenderer extends StatelessWidget {
               'Jean 3:16',
               style: TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.primaryColor)),
           ])));
   }
@@ -143,7 +143,7 @@ class HomeWidgetRenderer extends StatelessWidget {
   Widget _buildSermonCardWidget(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -166,7 +166,7 @@ class HomeWidgetRenderer extends StatelessWidget {
                   widget.title,
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
                 const SizedBox(height: 8),
                 if (widget.description != null)
@@ -182,30 +182,30 @@ class HomeWidgetRenderer extends StatelessWidget {
   Widget _buildDonationCardWidget(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.green.withOpacity(0.1),
-              Colors.green.withOpacity(0.05),
+              AppTheme.greenStandard.withOpacity(0.1),
+              AppTheme.greenStandard.withOpacity(0.05),
             ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(Icons.favorite, color: Colors.green, size: 24),
+                Icon(Icons.favorite, color: AppTheme.greenStandard, size: 24),
                 const SizedBox(width: 12),
                 Text(
                   widget.title,
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
               ]),
             const SizedBox(height: 12),
@@ -221,10 +221,10 @@ class HomeWidgetRenderer extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: isPreview ? null : () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppTheme.greenStandard,
+                  foregroundColor: AppTheme.white100,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12))),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                 child: const Text('Faire un don'))),
           ])));
   }
@@ -232,7 +232,7 @@ class HomeWidgetRenderer extends StatelessWidget {
   Widget _buildTextCardWidget(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -241,7 +241,7 @@ class HomeWidgetRenderer extends StatelessWidget {
             Text(
               widget.title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold)),
+                fontWeight: AppTheme.fontBold)),
             if (widget.description != null) ...[
               const SizedBox(height: 12),
               Text(
@@ -254,7 +254,7 @@ class HomeWidgetRenderer extends StatelessWidget {
   Widget _buildDefaultWidget(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -263,7 +263,7 @@ class HomeWidgetRenderer extends StatelessWidget {
             Text(
               widget.title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold)),
+                fontWeight: AppTheme.fontBold)),
             if (widget.description != null) ...[
               const SizedBox(height: 8),
               Text(

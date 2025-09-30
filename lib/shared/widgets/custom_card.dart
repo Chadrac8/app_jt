@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 
 /// Carte personnalisée avec style cohérent
 class CustomCard extends StatelessWidget {
@@ -28,7 +29,7 @@ class CustomCard extends StatelessWidget {
       color: color,
       margin: margin ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(
-        borderRadius: borderRadius ?? BorderRadius.circular(12),
+        borderRadius: borderRadius ?? BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Container(
         padding: padding ?? const EdgeInsets.all(16),
@@ -39,7 +40,7 @@ class CustomCard extends StatelessWidget {
     if (onTap != null) {
       return InkWell(
         onTap: onTap,
-        borderRadius: borderRadius ?? BorderRadius.circular(12),
+        borderRadius: borderRadius ?? BorderRadius.circular(AppTheme.radiusMedium),
         child: card,
       );
     }
@@ -135,9 +136,9 @@ class StatusCard extends StatelessWidget {
             child: Text(
               status,
               style: const TextStyle(
-                color: Colors.white,
+                color: AppTheme.white100,
                 fontSize: 12,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
           ),
@@ -176,7 +177,7 @@ class ActionCard extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: (iconColor ?? Theme.of(context).primaryColor).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(
               icon,
@@ -192,7 +193,7 @@ class ActionCard extends StatelessWidget {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 if (subtitle != null) ...[

@@ -11,7 +11,7 @@ import '../widgets/group_meetings_list.dart';
 import 'group_form_page.dart';
 import 'group_meeting_page.dart';
 import 'group_attendance_stats_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class GroupDetailPage extends StatefulWidget {
@@ -65,22 +65,22 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     switch (type) {
       case 'file':
       case 'pdf':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'doc':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'excel':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'image':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'audio':
         return Colors.purple;
       case 'media':
       case 'youtube':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'spotify':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'photo_gallery':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'video_file':
         return Colors.purple;
       case 'podcast':
@@ -88,9 +88,9 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
       case 'stream':
         return Colors.teal;
       case 'link':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
   late TabController _tabController;
@@ -144,7 +144,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du rafraîchissement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -165,7 +165,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Groupe mis à jour avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -202,7 +202,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   ? 'Groupe réactivé'
                   : 'Groupe désactivé',
             ),
-            backgroundColor: updatedGroup.isActive ? Colors.green : Colors.orange,
+            backgroundColor: updatedGroup.isActive ? AppTheme.greenStandard : AppTheme.orangeStandard,
           ),
         );
       }
@@ -211,7 +211,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -238,7 +238,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     final luminance = backgroundColor.computeLuminance();
     // Si la luminance est faible (couleur sombre), utilise du blanc
     // Si la luminance est élevée (couleur claire), utilise du noir
-    return luminance > 0.5 ? Colors.black : Colors.white;
+    return luminance > 0.5 ? AppTheme.black100 : AppTheme.white100;
   }
 
   Widget _buildGroupImage() {
@@ -246,7 +246,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
       width: 120,
       height: 120,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         color: _groupColor.withOpacity(0.1),
         boxShadow: [
           BoxShadow(
@@ -257,7 +257,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         child: _currentGroup!.groupImageUrl != null && _currentGroup!.groupImageUrl!.isNotEmpty
             ? (_currentGroup!.groupImageUrl!.startsWith('data:image')
                 ? Image.memory(
@@ -335,7 +335,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppTheme.grey50,
       appBar: AppBar(
         title: Text(_currentGroup!.name),
         backgroundColor: _groupColor,
@@ -438,7 +438,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         children: [
           // Sélecteur d'onglets directement après l'AppBar
           Container(
-            color: Colors.white,
+            color: AppTheme.white100,
             child: TabBar(
               controller: _tabController,
               tabs: const [
@@ -447,7 +447,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 Tab(text: 'Ressources'),
               ],
               labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: Colors.grey[600],
+              unselectedLabelColor: AppTheme.grey600,
               indicatorColor: AppTheme.primaryColor,
             ),
           ),
@@ -473,7 +473,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               heroTag: "attendance",
               onPressed: _takeAttendance,
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
               child: const Icon(Icons.how_to_reg),
             ),
             const SizedBox(height: 16),
@@ -492,7 +492,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Réunion créée avec succès'),
-                          backgroundColor: Colors.green,
+                          backgroundColor: AppTheme.greenStandard,
                         ),
                       );
                     }
@@ -501,7 +501,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Erreur: $e'),
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppTheme.redStandard,
                         ),
                       );
                     }
@@ -534,7 +534,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 Text(
                   _currentGroup!.name,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: _groupColor,
                   ),
                   textAlign: TextAlign.center,
@@ -544,14 +544,14 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: _groupColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                     border: Border.all(color: _groupColor.withOpacity(0.3)),
                   ),
                   child: Text(
                     _currentGroup!.type,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: _groupColor,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                 ),
@@ -637,7 +637,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   height: 24,
                   decoration: BoxDecoration(
                     color: _groupColor,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,
                     ),
@@ -679,13 +679,13 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               Text(
                 'Ressources du groupe',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: _groupColor,
                 ),
               ),
               const SizedBox(height: 24),
               if (resources.isEmpty)
-                const Text('Aucune ressource pour le moment', style: TextStyle(color: Colors.grey)),
+                const Text('Aucune ressource pour le moment', style: TextStyle(color: AppTheme.grey500)),
               if (resources.isNotEmpty)
                 ...resources.map((res) => _buildResourceItem(
                   title: res['title'] ?? '',
@@ -735,7 +735,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                           Text(
                             'Actions rapides',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                         ],
@@ -747,7 +747,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                             child: _buildActionButton(
                               'Ajouter fichier',
                               Icons.upload_file,
-                              Colors.blue,
+                              AppTheme.blueStandard,
                               () {
                                 _showAddResourceDialog('file');
                               },
@@ -769,7 +769,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                             child: _buildActionButton(
                               'Ajouter lien',
                               Icons.add_link,
-                              Colors.green,
+                              AppTheme.greenStandard,
                               () {
                                 _showAddResourceDialog('link');
                               },
@@ -802,7 +802,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
@@ -812,7 +812,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               height: 40,
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Icon(icon, color: color, size: 20),
             ),
@@ -824,7 +824,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -915,7 +915,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                     backgroundColor: AppTheme.successColor,
                     action: SnackBarAction(
                       label: 'Voir',
-                      textColor: Colors.white,
+                      textColor: AppTheme.white100,
                       onPressed: () {
                         // TODO: Ouvrir la ressource ajoutée
                       },
@@ -929,7 +929,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Erreur lors de l\'enregistrement de la ressource: $e'),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppTheme.redStandard,
                 ),
               );
             }
@@ -968,7 +968,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Erreur lors de la suppression: $e'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppTheme.redStandard,
                     ),
                   );
                 }
@@ -1002,10 +1002,10 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -1022,7 +1022,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: _groupColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     icon,
@@ -1034,7 +1034,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -1056,7 +1056,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
@@ -1081,7 +1081,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                     Text(
                       value,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                 ],
@@ -1104,10 +1104,10 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -1121,7 +1121,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
             Text(
               title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 12),
@@ -1132,13 +1132,13 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Text(
                   item,
                   style: TextStyle(
                     color: color,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               )).toList(),
@@ -1406,18 +1406,18 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
   bool _isLoading = false;
 
   final List<Map<String, dynamic>> _fileTypes = [
-    {'value': 'pdf', 'label': 'Document PDF', 'icon': Icons.picture_as_pdf, 'color': Colors.red},
-    {'value': 'doc', 'label': 'Document Word', 'icon': Icons.description, 'color': Colors.blue},
-    {'value': 'excel', 'label': 'Feuille Excel', 'icon': Icons.table_chart, 'color': Colors.green},
-    {'value': 'image', 'label': 'Image', 'icon': Icons.image, 'color': Colors.orange},
+    {'value': 'pdf', 'label': 'Document PDF', 'icon': Icons.picture_as_pdf, 'color': AppTheme.redStandard},
+    {'value': 'doc', 'label': 'Document Word', 'icon': Icons.description, 'color': AppTheme.blueStandard},
+    {'value': 'excel', 'label': 'Feuille Excel', 'icon': Icons.table_chart, 'color': AppTheme.greenStandard},
+    {'value': 'image', 'label': 'Image', 'icon': Icons.image, 'color': AppTheme.orangeStandard},
     {'value': 'audio', 'label': 'Fichier audio', 'icon': Icons.audio_file, 'color': Colors.purple},
-    {'value': 'other', 'label': 'Autre', 'icon': Icons.insert_drive_file, 'color': Colors.grey},
+    {'value': 'other', 'label': 'Autre', 'icon': Icons.insert_drive_file, 'color': AppTheme.grey500},
   ];
 
   final List<Map<String, dynamic>> _mediaTypes = [
-    {'value': 'youtube', 'label': 'Vidéo YouTube', 'icon': Icons.play_circle, 'color': Colors.red},
-    {'value': 'spotify', 'label': 'Playlist Spotify', 'icon': Icons.music_note, 'color': Colors.green},
-    {'value': 'photo_gallery', 'label': 'Galerie photos', 'icon': Icons.photo_library, 'color': Colors.orange},
+    {'value': 'youtube', 'label': 'Vidéo YouTube', 'icon': Icons.play_circle, 'color': AppTheme.redStandard},
+    {'value': 'spotify', 'label': 'Playlist Spotify', 'icon': Icons.music_note, 'color': AppTheme.greenStandard},
+    {'value': 'photo_gallery', 'label': 'Galerie photos', 'icon': Icons.photo_library, 'color': AppTheme.orangeStandard},
     {'value': 'video_file', 'label': 'Fichier vidéo', 'icon': Icons.video_file, 'color': Colors.purple},
     {'value': 'podcast', 'label': 'Podcast', 'icon': Icons.podcasts, 'color': Colors.indigo},
     {'value': 'stream', 'label': 'Diffusion en direct', 'icon': Icons.live_tv, 'color': Colors.teal},
@@ -1441,14 +1441,14 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Fonctionnalité de sélection de fichier à venir'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors de la sélection du fichier: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     } finally {
@@ -1574,7 +1574,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
           onPressed: _isLoading ? null : _addResource,
           style: ElevatedButton.styleFrom(
             backgroundColor: widget.groupColor,
-            foregroundColor: Colors.white,
+            foregroundColor: AppTheme.white100,
           ),
           child: _isLoading
               ? const SizedBox(
@@ -1582,7 +1582,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
                   height: 16,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                   ),
                 )
               : const Text('Ajouter'),
@@ -1610,7 +1610,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
       Text(
         'Type de fichier',
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.bold,
+          fontWeight: AppTheme.fontBold,
         ),
       ),
       const SizedBox(height: 8),
@@ -1630,12 +1630,12 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
               fileType['icon'],
               size: 18,
               color: _selectedFileType == fileType['value'] 
-                  ? Colors.white 
+                  ? AppTheme.white100 
                   : fileType['color'],
             ),
             label: Text(fileType['label']),
             selectedColor: fileType['color'],
-            checkmarkColor: Colors.white,
+            checkmarkColor: AppTheme.white100,
           ),
         ).toList(),
       ),
@@ -1663,7 +1663,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
       Text(
         'Type de média',
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.bold,
+          fontWeight: AppTheme.fontBold,
         ),
       ),
       const SizedBox(height: 8),
@@ -1683,12 +1683,12 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
               mediaType['icon'],
               size: 18,
               color: _selectedMediaType == mediaType['value'] 
-                  ? Colors.white 
+                  ? AppTheme.white100 
                   : mediaType['color'],
             ),
             label: Text(mediaType['label']),
             selectedColor: mediaType['color'],
-            checkmarkColor: Colors.white,
+            checkmarkColor: AppTheme.white100,
           ),
         ).toList(),
       ),
@@ -1747,19 +1747,19 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
       Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.blue.shade200),
+          color: AppTheme.blueStandard,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+          border: Border.all(color: AppTheme.blueStandard),
         ),
         child: Row(
           children: [
-            Icon(Icons.info_outline, color: Colors.blue.shade600, size: 20),
+            Icon(Icons.info_outline, color: AppTheme.blueStandard, size: 20),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 'Vous pouvez ajouter des liens vers des sites web, des documents en ligne, ou des ressources externes.',
                 style: TextStyle(
-                  color: Colors.blue.shade700,
+                  color: AppTheme.blueStandard,
                   fontSize: 12,
                 ),
               ),
@@ -1789,13 +1789,13 @@ class _GroupMembersPageState extends State<_GroupMembersPage> {
     final luminance = backgroundColor.computeLuminance();
     // Si la luminance est faible (couleur sombre), utilise du blanc
     // Si la luminance est élevée (couleur claire), utilise du noir
-    return luminance > 0.5 ? Colors.black : Colors.white;
+    return luminance > 0.5 ? AppTheme.black100 : AppTheme.white100;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppTheme.grey50,
       appBar: AppBar(
         title: Text('Membres - ${widget.group.name}'),
         backgroundColor: _groupColor,

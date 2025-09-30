@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../widgets/song_lyrics_viewer.dart';
 import 'song_form_page.dart';
@@ -69,7 +69,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
         color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black100.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2)),
         ]),
@@ -87,7 +87,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
                     Text(
                       widget.song.title,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                     if (widget.song.authors.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
@@ -103,7 +103,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: _getStatusColor().withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -117,7 +117,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       style: TextStyle(
                         fontSize: 12,
                         color: _getStatusColor(),
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                   ])),
             ]),
           
@@ -202,8 +202,8 @@ class _SongDetailPageState extends State<SongDetailPage> {
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
+                color: AppTheme.blueStandard.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -212,21 +212,21 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       const Icon(
                         Icons.menu_book,
                         size: 16,
-                        color: Colors.blue),
+                        color: AppTheme.blueStandard),
                       const SizedBox(width: 4),
                       Text(
                         'Références bibliques:',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue[700])),
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.grey700)),
                     ]),
                   const SizedBox(height: 4),
                   Text(
                     widget.song.bibleReferences.join(', '),
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.blue[700])),
+                      color: AppTheme.grey700)),
                 ])),
           ],
           
@@ -238,7 +238,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.amber.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -253,7 +253,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
                         'Notes privées:',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: Colors.amber[700])),
                     ]),
                   const SizedBox(height: 4),
@@ -273,7 +273,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.purple.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
               child: Row(
                 children: [
                   Icon(
@@ -286,7 +286,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       'Média disponible',
                       style: TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: Colors.purple[700]))),
                   TextButton(
                     onPressed: () {
@@ -303,7 +303,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -313,7 +313,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
             label,
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color)),
         ]));
   }
@@ -327,7 +327,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
       case 'archived':
         return AppTheme.textTertiaryColor;
       default:
-        return Colors.blue;
+        return AppTheme.blueStandard;
     }
   }
 

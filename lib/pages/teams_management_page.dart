@@ -5,6 +5,7 @@ import '../services/services_firebase_service.dart';
 import '../widgets/team_card.dart';
 import 'team_form_page.dart';
 import 'team_detail_page.dart';
+import '../../theme.dart';
 
 
 class TeamsManagementPage extends StatefulWidget {
@@ -296,7 +297,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                         Text(
                           '${_selectedTeams.length} sélectionné(s)',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                         const Spacer(),
@@ -327,7 +328,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           child: Icon(
                             Icons.groups,
@@ -343,7 +344,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                               Text(
                                 'Équipes',
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
@@ -388,7 +389,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                               )
                             : null,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
@@ -497,17 +498,17 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
             height: 200,
             margin: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: AppTheme.black100.withOpacity(0.1),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               child: CachedNetworkImage(
                 imageUrl: "https://images.unsplash.com/photo-1571069424149-c456e0b413d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDk3NDE0Njd8&ixlib=rb-4.1.0&q=80&w=1080",
                 fit: BoxFit.cover,
@@ -536,7 +537,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
           Text(
             'Aucune équipe',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 8),

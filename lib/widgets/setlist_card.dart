@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../modules/songs/models/song_model.dart';
+import '../../theme.dart';
 
 /// Widget pour afficher une setlist dans une liste
 class SetlistCard extends StatelessWidget {
@@ -38,7 +39,7 @@ class SetlistCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Color(0x1A1976D2), // 10% opacity of primaryColor (#1976D2)
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       Icons.playlist_play,
@@ -57,7 +58,7 @@ class SetlistCard extends StatelessWidget {
                         Text(
                           setlist.name,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -67,7 +68,7 @@ class SetlistCard extends StatelessWidget {
                           Text(
                             setlist.description,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
+                              color: AppTheme.grey600,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -105,9 +106,9 @@ class SetlistCard extends StatelessWidget {
                           value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.delete, color: Colors.red),
+                              Icon(Icons.delete, color: AppTheme.redStandard),
                               SizedBox(width: 8),
-                              Text('Supprimer', style: TextStyle(color: Colors.red)),
+                              Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                             ],
                           ),
                         ),
@@ -126,19 +127,19 @@ class SetlistCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Color(0x1A2196F3), // 10% opacity of blue (#2196F3)
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.calendar_today, size: 14, color: Colors.blue),
+                        const Icon(Icons.calendar_today, size: 14, color: AppTheme.blueStandard),
                         const SizedBox(width: 4),
                         Text(
                           _formatDate(setlist.serviceDate),
                           style: const TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.blueStandard,
                           ),
                         ),
                       ],
@@ -152,14 +153,14 @@ class SetlistCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Color(0x1A4CAF50), // 10% opacity of green (#4CAF50)
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         setlist.serviceType!,
                         style: const TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.greenStandard,
                         ),
                       ),
                     ),
@@ -175,15 +176,15 @@ class SetlistCard extends StatelessWidget {
                   Icon(
                     Icons.music_note,
                     size: 16,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[700],
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.grey700,
                     ),
                   ),
                   
@@ -194,14 +195,14 @@ class SetlistCard extends StatelessWidget {
                     Icon(
                       Icons.note,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       'Notes',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -214,7 +215,7 @@ class SetlistCard extends StatelessWidget {
                 'Créé le ${_formatDate(setlist.createdAt)}',
                 style: TextStyle(
                   fontSize: 11,
-                  color: Colors.grey[500],
+                  color: AppTheme.grey500,
                 ),
               ),
             ],

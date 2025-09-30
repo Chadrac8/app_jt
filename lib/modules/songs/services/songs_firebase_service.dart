@@ -145,7 +145,7 @@ class SongsFirebaseService {
         .collection(_songsCollection)
         .where('status', isEqualTo: 'published')
         .where('visibility', whereIn: ['public', 'members_only'])
-        .orderBy('title')
+        .orderBy('number')
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => SongModel.fromFirestore(doc))
@@ -189,14 +189,31 @@ class SongsFirebaseService {
         .where('status', isEqualTo: 'published')
         .where('visibility', whereIn: ['public', 'members_only'])
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => SongModel.fromFirestore(doc))
-            .where((song) => 
-                song.title.toLowerCase().contains(query.toLowerCase()) ||
-                song.authors.toLowerCase().contains(query.toLowerCase()) ||
-                song.lyrics.toLowerCase().contains(query.toLowerCase()) ||
-                song.tags.any((tag) => tag.toLowerCase().contains(query.toLowerCase())))
-            .toList());
+        .map((snapshot) {
+          var songs = snapshot.docs
+              .map((doc) => SongModel.fromFirestore(doc))
+              .where((song) => 
+                  song.title.toLowerCase().contains(query.toLowerCase()) ||
+                  song.authors.toLowerCase().contains(query.toLowerCase()) ||
+                  song.lyrics.toLowerCase().contains(query.toLowerCase()) ||
+                  song.tags.any((tag) => tag.toLowerCase().contains(query.toLowerCase())))
+              .toList();
+          
+          // Trier les résultats par numéro
+          songs.sort((a, b) {
+            if (a.number != null && b.number != null) {
+              return a.number!.compareTo(b.number!);
+            } else if (a.number != null) {
+              return -1; // a avec numéro avant b sans numéro
+            } else if (b.number != null) {
+              return 1; // b avec numéro avant a sans numéro
+            } else {
+              return a.title.toLowerCase().compareTo(b.title.toLowerCase());
+            }
+          });
+          
+          return songs;
+        });
   }
 
   /// Obtient un chant par son ID
@@ -560,5 +577,155 @@ class SongsFirebaseService {
       distribution[song.originalKey] = (distribution[song.originalKey] ?? 0) + 1;
     }
     return distribution;
+  }
+
+  /// Renumérote les cantiques à partir de 1
+  /// Cette méthode identifie automatiquement les cantiques et leur attribue des numéros séquentiels
+  static Future<Map<String, dynamic>> renumberCantiques() async {
+    try {
+      // Récupérer tous les chants
+      final snapshot = await _firestore.collection(_songsCollection).get();
+      final allSongs = snapshot.docs.map((doc) => {
+        'id': doc.id,
+        'data': SongModel.fromFirestore(doc),
+        'doc': doc,
+      }).toList();
+
+      // Identifier les cantiques
+      final cantiques = allSongs.where((song) => _isCantique(song['data'] as SongModel)).toList();
+      
+      if (cantiques.isEmpty) {
+        return {
+          'success': false,
+          'message': 'Aucun cantique identifié',
+          'cantiquesFound': 0,
+        };
+      }
+
+      // Trier les cantiques par titre pour une renumération cohérente
+      cantiques.sort((a, b) => (a['data'] as SongModel).title
+          .toLowerCase()
+          .compareTo((b['data'] as SongModel).title.toLowerCase()));
+
+      // Renumérotter avec un batch
+      final batch = _firestore.batch();
+      final updates = <String, int>{};
+
+      for (int i = 0; i < cantiques.length; i++) {
+        final cantique = cantiques[i];
+        final songData = cantique['data'] as SongModel;
+        final newNumber = i + 1;
+        
+        // Mettre à jour seulement si le numéro change
+        if (songData.number != newNumber) {
+          final docRef = (cantique['doc'] as DocumentSnapshot).reference;
+          batch.update(docRef, {
+            'number': newNumber,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+          updates[songData.title] = newNumber;
+        }
+      }
+
+      // Appliquer les modifications
+      if (updates.isNotEmpty) {
+        await batch.commit();
+      }
+
+      return {
+        'success': true,
+        'message': 'Cantiques renumérrotés avec succès',
+        'cantiquesFound': cantiques.length,
+        'cantiquesUpdated': updates.length,
+        'updates': updates,
+      };
+
+    } catch (e) {
+      print('Erreur lors de la renumération des cantiques: $e');
+      return {
+        'success': false,
+        'message': 'Erreur: $e',
+        'cantiquesFound': 0,
+      };
+    }
+  }
+
+  /// Détermine si un chant est un cantique
+  static bool _isCantique(SongModel song) {
+    final titleLower = song.title.toLowerCase();
+    final tagsLower = song.tags.join(' ').toLowerCase();
+    
+    // Vérification par catégories/tags
+    if (tagsLower.contains('cantique') || 
+        tagsLower.contains('hymne') ||
+        tagsLower.contains('traditionnel')) {
+      return true;
+    }
+
+    // Patterns typiques des cantiques
+    final cantiquePatterns = [
+      'ô ',
+      'o ',
+      'mon dieu',
+      'mon jésus',
+      'mon sauveur',
+      'ma foi',
+      'gloire à dieu',
+      'seigneur jésus',
+      'éternel',
+      'christ',
+      'agneau de dieu',
+      'roi des rois',
+      'cantique',
+      'hymne',
+      'alléluia',
+      'alleluia',
+      'hosanna',
+      'saint esprit',
+      'père céleste',
+      'grâce',
+      'salut',
+      'croix',
+      'résurrection',
+      'rédemption',
+    ];
+
+    // Vérifier les patterns de début
+    final startsWithPatterns = [
+      'ô',
+      'o',
+      'mon',
+      'ma',
+      'mes',
+      'il est',
+      'elle est',
+      'nous',
+      'vous',
+      'que',
+      'quand',
+      'comme',
+      'dans',
+      'sur',
+      'avec',
+    ];
+
+    // Vérifier si le titre commence par un pattern typique
+    for (final pattern in startsWithPatterns) {
+      if (titleLower.startsWith('$pattern ')) {
+        return true;
+      }
+    }
+
+    // Vérifier si le titre contient des mots-clés de cantiques
+    for (final pattern in cantiquePatterns) {
+      if (titleLower.contains(pattern)) {
+        return true;
+      }
+    }
+
+    // Patterns de style traditionnel
+    final traditionalPatterns = RegExp(r'^(il|elle|nous|vous|ils|elles|que|quand|comme|dans|sur|avec|par|pour)\s+\w+');
+    
+    return traditionalPatterns.hasMatch(titleLower);
   }
 }

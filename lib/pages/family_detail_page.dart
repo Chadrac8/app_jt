@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/family_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'family_form_page.dart';
 import 'person_form_page.dart';
 
@@ -115,8 +115,8 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
               const PopupMenuItem(
                 value: 'delete',
                 child: ListTile(
-                  leading: Icon(Icons.delete, color: Colors.red),
-                  title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                  leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                  title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -182,7 +182,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             Text(
               _family!.name,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -191,13 +191,13 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: _getStatusColor(_family!.status).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               ),
               child: Text(
                 _getStatusLabel(_family!.status),
                 style: TextStyle(
                   color: _getStatusColor(_family!.status),
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ),
@@ -233,7 +233,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             Text(
               'Informations générales',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -277,7 +277,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             Text(
               'Adresse',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -321,7 +321,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             Text(
               'Contact',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -365,7 +365,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             Text(
               'Notes',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -447,7 +447,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             Text(
               title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -490,13 +490,13 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+                  border: Border.all(color: AppTheme.white100, width: 2),
                 ),
                 padding: const EdgeInsets.all(2),
                 child: const Icon(
                   Icons.star,
                   size: 12,
-                  color: Colors.white,
+                  color: AppTheme.white100,
                 ),
               ),
             ),
@@ -504,7 +504,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
       ),
       title: Text(
         member.fullName,
-        style: const TextStyle(fontWeight: FontWeight.w500),
+        style: const TextStyle(fontWeight: AppTheme.fontMedium),
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,7 +514,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
               'Chef de famille',
               style: TextStyle(
                 color: AppTheme.primaryColor,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           if (member.birthDate != null)
@@ -552,8 +552,8 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
           const PopupMenuItem(
             value: 'remove',
             child: ListTile(
-              leading: Icon(Icons.remove_circle, color: Colors.red),
-              title: Text('Retirer de la famille', style: TextStyle(color: Colors.red)),
+              leading: Icon(Icons.remove_circle, color: AppTheme.redStandard),
+              title: Text('Retirer de la famille', style: TextStyle(color: AppTheme.redStandard)),
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -571,17 +571,17 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
           Icon(
             Icons.history,
             size: 64,
-            color: Colors.grey,
+            color: AppTheme.grey500,
           ),
           SizedBox(height: 16),
           Text(
             'Historique d\'activité',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
           ),
           SizedBox(height: 8),
           Text(
             'Fonctionnalité en cours de développement',
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: AppTheme.grey500),
           ),
         ],
       ),
@@ -599,7 +599,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             child: Text(
               label,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
             ),
           ),
@@ -690,7 +690,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         title: const Text('Supprimer la famille'),
         content: Text(
           'Êtes-vous sûr de vouloir supprimer la famille "${_family!.name}" ?\n\n'
@@ -704,7 +704,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Supprimer'),
@@ -775,7 +775,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         title: const Text('Retirer de la famille'),
         content: Text(
           'Êtes-vous sûr de vouloir retirer ${member.fullName} de cette famille ?',
@@ -788,7 +788,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Retirer'),
@@ -825,15 +825,15 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
   Color _getStatusColor(FamilyStatus status) {
     switch (status) {
       case FamilyStatus.member:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case FamilyStatus.visitor:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case FamilyStatus.attendee:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case FamilyStatus.inactive:
-        return Colors.grey;
+        return AppTheme.grey500;
       case FamilyStatus.inactive_member:
-        return Colors.red;
+        return AppTheme.redStandard;
       default:
         return AppTheme.primaryColor;
     }

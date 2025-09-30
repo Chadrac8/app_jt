@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../modules/pain_quotidien/pain_quotidien.dart';
+import '../../theme.dart';
 
 /// Exemple d'intégration du pain quotidien dans la page d'accueil
 class HomePageWithDailyBread extends StatelessWidget {
@@ -27,11 +28,11 @@ class HomePageWithDailyBread extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 20),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                color: AppTheme.white100,
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: AppTheme.black100.withOpacity(0.08),
                     blurRadius: 20,
                     offset: const Offset(0, 4),
                   ),

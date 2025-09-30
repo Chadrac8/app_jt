@@ -3,6 +3,7 @@ import '../models/role.dart';
 import '../models/permission.dart';
 import '../models/user_role.dart';
 import '../services/print_service.dart';
+import '../../../../theme.dart';
 
 class PrintOptionsDialog extends StatelessWidget {
   final List<Role> roles;
@@ -88,7 +89,7 @@ class PrintOptionsDialog extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: Icon(icon, color: Theme.of(context).primaryColor),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(title, style: const TextStyle(fontWeight: AppTheme.fontBold)),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () {

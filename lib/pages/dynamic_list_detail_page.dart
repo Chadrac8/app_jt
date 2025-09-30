@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/dynamic_list_model.dart';
 import '../services/dynamic_lists_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../widgets/custom_card.dart';
 import 'dynamic_list_builder_page.dart';
 
@@ -247,28 +247,28 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.blue[700],
+      backgroundColor: AppTheme.grey700,
       title: Text(
         _list.name,
         style: GoogleFonts.poppins(
           fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
+          fontWeight: AppTheme.fontSemiBold,
+          color: AppTheme.white100,
         ),
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.search, color: Colors.white),
+          icon: const Icon(Icons.search, color: AppTheme.white100),
           onPressed: _showSearchDialog,
           tooltip: 'Rechercher',
         ),
         IconButton(
-          icon: const Icon(Icons.sort, color: Colors.white),
+          icon: const Icon(Icons.sort, color: AppTheme.white100),
           onPressed: _showSortDialog,
           tooltip: 'Trier',
         ),
         PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert, color: Colors.white),
+          icon: const Icon(Icons.more_vert, color: AppTheme.white100),
           onSelected: _handleMenuAction,
           itemBuilder: (context) => [
             const PopupMenuItem(
@@ -331,24 +331,24 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
           },
           decoration: InputDecoration(
             hintText: 'Rechercher dans la liste...',
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+            hintStyle: TextStyle(color: AppTheme.white100.withOpacity(0.7)),
             filled: true,
-            fillColor: Colors.white.withOpacity(0.2),
+            fillColor: AppTheme.white100.withOpacity(0.2),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25),
               borderSide: BorderSide.none,
             ),
-            prefixIcon: Icon(Icons.search, color: Colors.white.withOpacity(0.7)),
+            prefixIcon: Icon(Icons.search, color: AppTheme.white100.withOpacity(0.7)),
             suffixIcon: _searchQuery.isNotEmpty
                 ? IconButton(
-                    icon: Icon(Icons.clear, color: Colors.white.withOpacity(0.7)),
+                    icon: Icon(Icons.clear, color: AppTheme.white100.withOpacity(0.7)),
                     onPressed: () {
                       setState(() => _searchQuery = '');
                     },
                   )
                 : null,
           ),
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: AppTheme.white100),
         ),
       ),
     );
@@ -400,7 +400,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             '$count résultat${count > 1 ? 's' : ''}',
             style: GoogleFonts.poppins(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
           ),
@@ -410,7 +410,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
               'Dernière utilisation: ${_formatDate(_list.lastUsed!)}',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
         ],
@@ -426,7 +426,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
           Icon(
             Icons.search_off,
             size: 80,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
@@ -435,7 +435,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
               : 'Aucune donnée disponible',
             style: GoogleFonts.poppins(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 24),
@@ -445,7 +445,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             label: const Text('Actualiser'),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
           ),
         ],
@@ -465,21 +465,21 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             '${index + 1}',
             style: TextStyle(
               color: AppTheme.primaryColor,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ),
         title: Text(
           _getItemTitle(item),
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 16,
           ),
         ),
         subtitle: Text(
           _getItemSubtitle(item),
           style: TextStyle(
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
             fontSize: 14,
           ),
         ),
@@ -509,7 +509,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             child: Text(
               field.displayName,
               style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 fontSize: 14,
               ),
             ),
@@ -519,7 +519,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
               _formatValue(value, field.fieldType),
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey[700],
+                color: AppTheme.grey700,
               ),
             ),
           ),
@@ -541,7 +541,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
     return FloatingActionButton(
       onPressed: _editList,
       backgroundColor: AppTheme.primaryColor,
-      foregroundColor: Colors.white,
+      foregroundColor: AppTheme.white100,
       child: const Icon(Icons.edit),
       tooltip: 'Modifier la liste',
     );
@@ -633,7 +633,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppTheme.redStandard,
       ),
     );
   }
@@ -642,7 +642,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
       ),
     );
   }

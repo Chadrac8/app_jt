@@ -7,6 +7,7 @@ import 'blog_post_detail_page.dart';
 import 'blog_post_form_page.dart';
 import 'blog_categories_page.dart';
 import '../auth/auth_service.dart';
+import '../../theme.dart';
 
 class BlogHomePage extends StatefulWidget {
   const BlogHomePage({super.key});
@@ -248,19 +249,19 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
               _buildStatCard(
                 'Publiés',
                 stats['posts_published']?.toString() ?? '0',
-                Colors.green,
+                AppTheme.greenStandard,
                 Icons.publish,
               ),
               _buildStatCard(
                 'Brouillons',
                 stats['posts_draft']?.toString() ?? '0',
-                Colors.orange,
+                AppTheme.orangeStandard,
                 Icons.drafts,
               ),
               _buildStatCard(
                 'Commentaires',
                 stats['total_comments']?.toString() ?? '0',
-                Colors.blue,
+                AppTheme.blueStandard,
                 Icons.comment,
               ),
               _buildStatCard(
@@ -289,7 +290,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
               value,
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: color,
               ),
             ),
@@ -341,7 +342,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
                 Icon(
                   Icons.error_outline,
                   size: 64,
-                  color: Colors.red[300],
+                  color: AppTheme.grey300,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -406,7 +407,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
           Icon(
             isPublicView ? Icons.article_outlined : Icons.create_outlined,
             size: 64,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
@@ -414,7 +415,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
                 ? 'Aucun article publié'
                 : 'Aucun article trouvé',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -424,7 +425,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
                 : 'Créez votre premier article ou ajustez vos filtres.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           if (!isPublicView) ...[
@@ -483,7 +484,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../theme.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import 'bible_study_detail_view.dart';
@@ -81,12 +82,12 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
         title: Text(
           'Études bibliques',
           style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         backgroundColor: theme.colorScheme.surface,
@@ -113,7 +114,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
         color: theme.colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -127,15 +128,15 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
               hintText: 'Rechercher une étude...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.3)),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: theme.colorScheme.outline.withOpacity(0.3)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: theme.colorScheme.primary),
               ),
               filled: true,
@@ -167,9 +168,9 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                       category,
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                        fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
                         color: isSelected 
-                            ? Colors.white 
+                            ? AppTheme.white100 
                             : theme.colorScheme.onSurface,
                       ),
                     ),
@@ -182,7 +183,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                     },
                     backgroundColor: theme.colorScheme.surface,
                     selectedColor: theme.colorScheme.primary,
-                    checkmarkColor: Colors.white,
+                    checkmarkColor: AppTheme.white100,
                     side: BorderSide(
                       color: isSelected 
                           ? theme.colorScheme.primary 
@@ -231,7 +232,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
             'Aucune étude trouvée',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onBackground.withOpacity(0.6),
             ),
           ),
@@ -254,10 +255,10 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -265,7 +266,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
       ),
       child: InkWell(
         onTap: () => _navigateToStudyDetail(study),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -279,12 +280,12 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       color: theme.colorScheme.primary.withOpacity(0.1),
                     ),
                     child: study.imageUrl.isNotEmpty
                         ? ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             child: Image.asset(
                               study.imageUrl,
                               width: 80,
@@ -309,7 +310,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                                 study.title,
                                 style: GoogleFonts.inter(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: theme.colorScheme.onSurface,
                                 ),
                                 maxLines: 2,
@@ -321,15 +322,15 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                                 margin: const EdgeInsets.only(left: 8),
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppTheme.orangeStandard.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                                 child: Text(
                                   'Populaire',
                                   style: GoogleFonts.inter(
                                     fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.orange,
+                                    fontWeight: AppTheme.fontSemiBold,
+                                    color: AppTheme.orangeStandard,
                                   ),
                                 ),
                               ),
@@ -386,7 +387,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                     '${study.lessons.length} leçon${study.lessons.length > 1 ? 's' : ''}',
                     style: GoogleFonts.inter(
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                       color: theme.colorScheme.primary,
                     ),
                   ),
@@ -403,13 +404,13 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       '#$tag',
                       style: GoogleFonts.inter(
                         fontSize: 11,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                         color: theme.colorScheme.primary,
                       ),
                     ),
@@ -428,7 +429,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
       width: 80,
       height: 80,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         color: theme.colorScheme.primary.withOpacity(0.1),
       ),
       child: Icon(
@@ -448,7 +449,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.background,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(
           color: theme.colorScheme.outline.withOpacity(0.2),
         ),
@@ -466,7 +467,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
             label,
             style: GoogleFonts.inter(
               fontSize: 11,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: theme.colorScheme.onBackground.withOpacity(0.7),
             ),
           ),

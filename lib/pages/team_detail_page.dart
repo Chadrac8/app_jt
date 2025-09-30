@@ -7,6 +7,7 @@ import 'team_form_page.dart';
 import 'position_form_page.dart';
 import 'team_assignments_page.dart';
 import '../widgets/position_card.dart';
+import '../../theme.dart';
 
 
 class TeamDetailPage extends StatefulWidget {
@@ -291,15 +292,15 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: const Icon(Icons.arrow_back, color: AppTheme.white100),
                           style: IconButton.styleFrom(
                             backgroundColor: Color(0x4D000000), // 0.3 opacity
                           ),
                         ),
                         const Spacer(),
                         PopupMenuButton<String>(
-                          icon: const Icon(Icons.more_vert, color: Colors.white),
-                          iconColor: Colors.white,
+                          icon: const Icon(Icons.more_vert, color: AppTheme.white100),
+                          iconColor: AppTheme.white100,
                           color: Theme.of(context).colorScheme.surface,
                           onSelected: (value) {
                             switch (value) {
@@ -335,8 +336,8 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                             const PopupMenuItem(
                               value: 'delete',
                               child: ListTile(
-                                leading: Icon(Icons.delete, color: Colors.red),
-                                title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                                title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                 contentPadding: EdgeInsets.zero,
                               ),
                             ),
@@ -355,11 +356,11 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: teamColor.withAlpha(230), // 0.9 opacity
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                           ),
                           child: const Icon(
                             Icons.groups,
-                            color: Colors.white,
+                            color: AppTheme.white100,
                             size: 32,
                           ),
                         ),
@@ -375,8 +376,8 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                                       _team!.name,
                                       style: const TextStyle(
                                         fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                        fontWeight: AppTheme.fontBold,
+                                        color: AppTheme.white100,
                                       ),
                                     ),
                                   ),
@@ -388,14 +389,14 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                                       ),
                                       decoration: BoxDecoration(
                                         color: Color(0xE6FFA726), // 0.9 opacity for orange
-                                        borderRadius: BorderRadius.circular(12),
+                                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                       ),
                                       child: const Text(
                                         'Inactif',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
+                                          fontWeight: AppTheme.fontSemiBold,
+                                          color: AppTheme.white100,
                                         ),
                                       ),
                                     ),
@@ -406,9 +407,9 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                                 _team!.description.isNotEmpty 
                                     ? _team!.description 
                                     : 'Aucune description',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.white70,
+                                  color: AppTheme.white100.withOpacity(0.70),
                                 ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -418,7 +419,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                                 '${_positions.length} position(s) • Créée le ${_formatDate(_team!.createdAt)}',
                                 style: const TextStyle(
                                   fontSize: 14,
-                                  color: Colors.white60,
+                                  color: AppTheme.white100,
                                 ),
                               ),
                             ],
@@ -477,7 +478,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
               icon: const Icon(Icons.add),
               label: const Text('Nouvelle Position'),
               backgroundColor: teamColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             )
           : null,
     );
@@ -563,7 +564,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       Text(
                         'Détails de l\'équipe',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                     ],
@@ -600,7 +601,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       Text(
                         'Statistiques',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                     ],
@@ -638,7 +639,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       Text(
                         'Actions',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                     ],
@@ -691,7 +692,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
               label,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface.withAlpha(179), // 0.7 opacity
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Modèle de données pour un chant
 class SongModel {
   final String id;
+  final int? number;
   final String title;
   final String authors;
   final String lyrics;
@@ -27,6 +28,7 @@ class SongModel {
 
   SongModel({
     required this.id,
+    this.number,
     required this.title,
     required this.authors,
     required this.lyrics,
@@ -54,6 +56,7 @@ class SongModel {
     final data = doc.data() as Map<String, dynamic>;
     return SongModel(
       id: doc.id,
+      number: data['number'],
       title: data['title'] ?? '',
       authors: data['authors'] ?? '',
       lyrics: data['lyrics'] ?? '',
@@ -80,6 +83,7 @@ class SongModel {
 
   Map<String, dynamic> toFirestore() {
     return {
+      'number': number,
       'title': title,
       'authors': authors,
       'lyrics': lyrics,

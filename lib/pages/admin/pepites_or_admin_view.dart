@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../models/pepite_or_model.dart';
 import '../../services/pepite_or_firebase_service.dart';
 import '../../shared/widgets/custom_card.dart';
-import '../../theme.dart';
+import '../../../theme.dart';
 import 'pepite_or_form_page.dart';
 import 'pepite_or_detail_page.dart';
 
@@ -47,7 +47,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement des statistiques: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -62,18 +62,18 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
           'Pépites d\'Or - Administration',
           style: GoogleFonts.poppins(
             fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+            fontWeight: AppTheme.fontSemiBold,
+            color: AppTheme.white100,
           ),
         ),
         backgroundColor: const Color(0xFF8B4513),
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          indicatorColor: AppTheme.white100,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
           tabs: const [
             Tab(icon: Icon(Icons.auto_awesome), text: 'Toutes'),
             Tab(icon: Icon(Icons.published_with_changes), text: 'Publiées'),
@@ -104,7 +104,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _ajouterPepiteOr,
         backgroundColor: const Color(0xFF8B4513),
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         icon: const Icon(Icons.add),
         label: const Text('Nouvelle Pépite'),
       ),
@@ -124,16 +124,16 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
+                Icon(Icons.error_outline, size: 64, color: AppTheme.grey400),
                 const SizedBox(height: 16),
                 Text(
                   'Erreur lors du chargement',
-                  style: GoogleFonts.poppins(fontSize: 18, color: Colors.grey[600]),
+                  style: GoogleFonts.poppins(fontSize: 18, color: AppTheme.grey600),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   snapshot.error.toString(),
-                  style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey[500]),
+                  style: GoogleFonts.poppins(fontSize: 14, color: AppTheme.grey500),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -219,7 +219,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
             'Aperçu général',
             style: GoogleFonts.poppins(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: const Color(0xFF8B4513),
             ),
           ),
@@ -230,14 +230,14 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                 'Total Pépites',
                 _statistiques['totalPepites']?.toString() ?? '0',
                 Icons.auto_awesome,
-                Colors.blue,
+                AppTheme.blueStandard,
               )),
               const SizedBox(width: 12),
               Expanded(child: _buildStatCard(
                 'Publiées',
                 _statistiques['pepitesPubliees']?.toString() ?? '0',
                 Icons.published_with_changes,
-                Colors.green,
+                AppTheme.greenStandard,
               )),
             ],
           ),
@@ -248,7 +248,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                 'Brouillons',
                 _statistiques['pepitesBrouillons']?.toString() ?? '0',
                 Icons.edit_note,
-                Colors.orange,
+                AppTheme.orangeStandard,
               )),
               const SizedBox(width: 12),
               Expanded(child: _buildStatCard(
@@ -264,7 +264,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
             'Performance',
             style: GoogleFonts.poppins(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: const Color(0xFF8B4513),
             ),
           ),
@@ -285,10 +285,10 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: InkWell(
         onTap: () => _voirDetail(pepite),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -304,7 +304,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                           pepite.theme,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: const Color(0xFF8B4513),
                           ),
                         ),
@@ -313,7 +313,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                           pepite.description,
                           style: GoogleFonts.poppins(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -329,15 +329,15 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: pepite.estPubliee ? Colors.green : Colors.orange,
-                          borderRadius: BorderRadius.circular(12),
+                          color: pepite.estPubliee ? AppTheme.greenStandard : AppTheme.orangeStandard,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           pepite.estPubliee ? 'Publiée' : 'Brouillon',
                           style: GoogleFonts.poppins(
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                            fontWeight: AppTheme.fontMedium,
+                            color: AppTheme.white100,
                           ),
                         ),
                       ),
@@ -384,9 +384,9 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                             value: 'supprimer',
                             child: Row(
                               children: [
-                                Icon(Icons.delete, size: 18, color: Colors.red),
+                                Icon(Icons.delete, size: 18, color: AppTheme.redStandard),
                                 SizedBox(width: 8),
-                                Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                               ],
                             ),
                           ),
@@ -401,8 +401,8 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(8),
+                    color: AppTheme.grey50,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     border: const Border(
                       left: BorderSide(
                         width: 3,
@@ -418,7 +418,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                         style: GoogleFonts.poppins(
                           fontSize: 13,
                           fontStyle: FontStyle.italic,
-                          color: Colors.grey[700],
+                          color: AppTheme.grey700,
                         ),
                       ),
                       if (pepite.premierAuteur.isNotEmpty) ...[
@@ -427,7 +427,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                           '— ${pepite.premierAuteur}',
                           style: GoogleFonts.poppins(
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                             color: const Color(0xFF8B4513),
                           ),
                         ),
@@ -439,35 +439,35 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
               ],
               Row(
                 children: [
-                  Icon(Icons.person, size: 14, color: Colors.grey[500]),
+                  Icon(Icons.person, size: 14, color: AppTheme.grey500),
                   const SizedBox(width: 4),
                   Text(
                     pepite.nomAuteur,
-                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                    style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
                   ),
                   const SizedBox(width: 16),
-                  Icon(Icons.schedule, size: 14, color: Colors.grey[500]),
+                  Icon(Icons.schedule, size: 14, color: AppTheme.grey500),
                   const SizedBox(width: 4),
                   Text(
                     '${pepite.dureeDeeLectureMinutes} min',
-                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                    style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
                   ),
                   const Spacer(),
                   if (pepite.estPubliee) ...[
                     Row(
                       children: [
-                        Icon(Icons.visibility, size: 14, color: Colors.grey[500]),
+                        Icon(Icons.visibility, size: 14, color: AppTheme.grey500),
                         const SizedBox(width: 4),
                         Text(
                           '${pepite.nbVues}',
-                          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                          style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
                         ),
                         const SizedBox(width: 12),
-                        Icon(Icons.share, size: 14, color: Colors.grey[500]),
+                        Icon(Icons.share, size: 14, color: AppTheme.grey500),
                         const SizedBox(width: 4),
                         Text(
                           '${pepite.nbPartages}',
-                          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600]),
+                          style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
                         ),
                       ],
                     ),
@@ -501,7 +501,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: couleur.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(icone, color: couleur, size: 20),
                 ),
@@ -514,7 +514,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                         valeur,
                         style: GoogleFonts.poppins(
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: couleur,
                         ),
                       ),
@@ -522,7 +522,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                         titre,
                         style: GoogleFonts.poppins(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -541,14 +541,14 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icone, size: 64, color: Colors.grey[400]),
+          Icon(icone, size: 64, color: AppTheme.grey400),
           const SizedBox(height: 16),
           Text(
             titre,
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[600],
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -556,7 +556,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
             description,
             style: GoogleFonts.poppins(
               fontSize: 14,
-              color: Colors.grey[500],
+              color: AppTheme.grey500,
             ),
             textAlign: TextAlign.center,
           ),
@@ -567,7 +567,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
             label: const Text('Créer une pépite'),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF8B4513),
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
           ),
         ],
@@ -654,7 +654,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
             content: Text(
               publier ? 'Pépite publiée avec succès' : 'Pépite dépubliée',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -663,7 +663,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -686,7 +686,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -700,7 +700,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Pépite supprimée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -709,7 +709,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }

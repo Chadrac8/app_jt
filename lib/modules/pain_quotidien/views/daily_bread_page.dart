@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../shared/theme/app_theme.dart';
+import '../../../../theme.dart';
 import '../services/branham_scraping_service.dart';
 import '../services/ios_branham_service.dart';
 
@@ -82,49 +82,6 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
     );
   }
 
-  Future<void> _refreshContent() async {
-    // Utiliser le même système que _loadContent pour iOS vs Web
-    if (defaultTargetPlatform == TargetPlatform.iOS || 
-        defaultTargetPlatform == TargetPlatform.android) {
-      print('📱 Rafraîchissement iOS optimisé');
-      final iosQuote = await IOSBranhamService.getTodaysQuote();
-      if (mounted) {
-        setState(() {
-          _quote = BranhamQuoteModel(
-            text: iosQuote.text,
-            reference: iosQuote.reference,
-            date: iosQuote.date,
-            dailyBread: iosQuote.dailyBread,
-            dailyBreadReference: iosQuote.dailyBreadReference,
-            sermonTitle: 'Citation du jour',
-            sermonDate: 'Mobile',
-            audioUrl: '',
-          );
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Pain quotidien mis à jour (iOS)'),
-            backgroundColor: AppTheme.primaryColor,
-          ),
-        );
-      }
-    } else {
-      // Web - utiliser le service normal
-      final refreshedBread = await _scrapingService.getQuoteOfTheDay();
-      if (refreshedBread != null && mounted) {
-        setState(() {
-          _quote = refreshedBread;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Pain quotidien mis à jour'),
-            backgroundColor: AppTheme.primaryColor,
-          ),
-        );
-      }
-    }
-  }
-
   String _getFormattedDate() {
     final now = DateTime.now();
     final months = [
@@ -139,70 +96,14 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
-        backgroundColor: AppTheme.surfaceColor,
-        elevation: 0,
-        shadowColor: Colors.black.withOpacity(0.1),
-        leading: IconButton(
-          icon: Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: AppTheme.textSecondaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xFF374151),
-              size: 16,
-            ),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'Pain quotidien',
-          style: TextStyle(
-            color: Color(0xFF1A1A1A),
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.3,
-          ),
-        ),
-        centerTitle: true,
+        toolbarHeight: 56.0, // Hauteur standard Material Design
+        title: const Text('Pain quotidien'),
         actions: [
           if (_quote != null)
             IconButton(
-              icon: Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.share,
-                  color: AppTheme.primaryColor,
-                  size: 16,
-                ),
-              ),
+              icon: const Icon(Icons.share),
               onPressed: _shareContent,
             ),
-          IconButton(
-            icon: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.refresh,
-                color: AppTheme.primaryColor,
-                size: 16,
-              ),
-            ),
-            onPressed: _refreshContent,
-          ),
-          const SizedBox(width: 8),
         ],
       ),
       body: _isLoading
@@ -260,10 +161,10 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                               padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
                                 color: AppTheme.surfaceColor,
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.08),
+                                    color: AppTheme.black100.withOpacity(0.08),
                                     blurRadius: 20,
                                     offset: const Offset(0, 4),
                                   ),
@@ -276,7 +177,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                                     height: 60,
                                     decoration: BoxDecoration(
                                       color: AppTheme.primaryColor.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     ),
                                     child: const Icon(
                                       Icons.today_rounded,
@@ -290,7 +191,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                                     style: TextStyle(
                                       color: Color(0xFF1A1A1A),
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: AppTheme.fontBold,
                                       letterSpacing: -0.5,
                                     ),
                                   ),
@@ -300,7 +201,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                                     style: const TextStyle(
                                       color: AppTheme.textSecondaryColor,
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: AppTheme.fontMedium,
                                     ),
                                   ),
                                 ],
@@ -312,8 +213,19 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
 
                             const SizedBox(height: 32),
 
-                            // Bouton pour voir l'historique
-                            _buildHistoryButton(),
+                            // Source attribution
+                            Center(
+                              child: Text(
+                                'Source : www.branham.org',
+                                style: TextStyle(
+                                  color: AppTheme.textSecondaryColor.withOpacity(0.6),
+                                  fontSize: 12,
+                                  fontWeight: AppTheme.fontRegular,
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 16),
                           ],
                         ),
                       ),
@@ -325,10 +237,10 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: AppTheme.black100.withOpacity(0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -348,7 +260,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                     height: 48,
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: const Icon(
                       Icons.menu_book,
@@ -363,7 +275,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                       style: TextStyle(
                         color: Color(0xFF1A1A1A),
                         fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: AppTheme.fontBold,
                         letterSpacing: -0.3,
                       ),
                     ),
@@ -378,7 +290,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                 style: const TextStyle(
                   color: Color(0xFF1E293B),
                   fontSize: 19,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                   height: 1.7,
                   letterSpacing: 0.2,
                 ),
@@ -394,14 +306,14 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                       gradient: const LinearGradient(
                         colors: [AppTheme.primaryColor, Color(0xFF764BA2)],
                       ),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       _quote!.dailyBreadReference,
                       style: const TextStyle(
                         color: AppTheme.surfaceColor,
                         fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         letterSpacing: 0.3,
                       ),
                     ),
@@ -434,7 +346,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       Icons.auto_awesome,
@@ -470,7 +382,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                     height: 48,
                     decoration: BoxDecoration(
                       color: const Color(0xFFAA6C39).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: const Icon(
                       Icons.format_quote,
@@ -485,7 +397,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                       style: TextStyle(
                         color: Color(0xFF1A1A1A),
                         fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: AppTheme.fontBold,
                         letterSpacing: -0.3,
                       ),
                     ),
@@ -503,7 +415,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                     style: const TextStyle(
                       color: Color(0xFF1E293B),
                       fontSize: 18,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                       height: 1.6,
                       letterSpacing: 0.2,
                       fontStyle: FontStyle.italic,
@@ -521,7 +433,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                           style: const TextStyle(
                             color: Color(0xFFAA6C39),
                             fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             letterSpacing: 0.1,
                           ),
                         ),
@@ -532,7 +444,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                         style: TextStyle(
                           color: const Color(0xFF1E293B).withOpacity(0.7),
                           fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ],
@@ -553,7 +465,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                         const Color(0xFFAA6C39).withOpacity(0.05),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: Border.all(
                       color: const Color(0xFFAA6C39).withOpacity(0.3),
                       width: 1,
@@ -562,7 +474,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       onTap: () {
                         // TODO: Implémenter la lecture audio
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -588,7 +500,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                               style: TextStyle(
                                 color: Color(0xFFAA6C39),
                                 fontSize: 15,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                           ],
@@ -600,72 +512,6 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
               ],
             ],
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHistoryButton() {
-    return Container(
-      width: double.infinity,
-      height: 56,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppTheme.primaryColor.withOpacity(0.1),
-            const Color(0xFF764BA2).withOpacity(0.1),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: () {
-            // TODO: Navigate to history page
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Historique - Bientôt disponible'),
-                backgroundColor: AppTheme.primaryColor,
-              ),
-            );
-          },
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.history,
-                  color: AppTheme.primaryColor,
-                  size: 20,
-                ),
-                SizedBox(width: 12),
-                Text(
-                  'Voir l\'historique',
-                  style: TextStyle(
-                    color: AppTheme.primaryColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppTheme.primaryColor,
-                  size: 14,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

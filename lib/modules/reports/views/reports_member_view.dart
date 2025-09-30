@@ -3,6 +3,7 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../services/reports_service.dart';
 import '../models/report.dart';
+import '../../../../theme.dart';
 
 class ReportsMemberView extends StatefulWidget {
   const ReportsMemberView({Key? key}) : super(key: key);
@@ -177,7 +178,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
           const Icon(
             Icons.assessment_outlined,
             size: 80,
-            color: Colors.grey,
+            color: AppTheme.grey500,
           ),
           const SizedBox(height: 16),
           Text(
@@ -185,14 +186,14 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                 ? 'Aucun rapport trouvé pour "$_searchQuery"'
                 : 'Aucun rapport disponible',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Les rapports publics et partagés apparaîtront ici',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[500],
+              color: AppTheme.grey500,
             ),
           ),
         ],
@@ -208,7 +209,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: () => _viewReport(report),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -221,7 +222,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: typeColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -233,7 +234,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                           style: TextStyle(
                             color: typeColor,
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ],
@@ -241,9 +242,9 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                   ),
                   const Spacer(),
                   if (report.isPublic)
-                    const Icon(Icons.public, size: 16, color: Colors.green),
+                    const Icon(Icons.public, size: 16, color: AppTheme.greenStandard),
                   if (!report.isPublic)
-                    const Icon(Icons.people, size: 16, color: Colors.blue),
+                    const Icon(Icons.people, size: 16, color: AppTheme.blueStandard),
                   const SizedBox(width: 8),
                   PopupMenuButton<String>(
                     onSelected: (value) => _handleAction(value, report),
@@ -274,7 +275,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
               Text(
                 report.name,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
               if (report.description != null) ...[
@@ -282,7 +283,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                 Text(
                   report.description!,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -296,26 +297,26 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                   _buildMetaChip(
                     Icons.schedule,
                     _getFrequencyLabel(report.frequency),
-                    Colors.orange,
+                    AppTheme.orangeStandard,
                   ),
                   const SizedBox(width: 8),
                   if (report.lastGenerated != null)
                     _buildMetaChip(
                       Icons.update,
                       _formatDate(report.lastGenerated!),
-                      Colors.green,
+                      AppTheme.greenStandard,
                     ),
                   if (report.lastGenerated == null)
                     _buildMetaChip(
                       Icons.new_releases,
                       'Nouveau',
-                      Colors.red,
+                      AppTheme.redStandard,
                     ),
                   const Spacer(),
                   Text(
                     '${report.generationCount} générations',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[500],
+                      color: AppTheme.grey500,
                     ),
                   ),
                 ],
@@ -332,7 +333,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -344,7 +345,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
             style: TextStyle(
               color: color,
               fontSize: 11,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -392,7 +393,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Rapport généré avec succès'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
         ),
       );
       
@@ -403,7 +404,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors de la génération: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -429,17 +430,17 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
   Color _getTypeColor(String type) {
     switch (type) {
       case 'attendance':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'financial':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'membership':
         return Colors.purple;
       case 'event':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'custom':
         return Colors.indigo;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

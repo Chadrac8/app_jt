@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/family_service.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FamilyFormPage extends StatefulWidget {
   final FamilyModel? family;
@@ -146,7 +146,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
             Text(
               'Informations générales',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -201,7 +201,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
             Text(
               'Adresse',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -279,7 +279,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
             Text(
               'Contact',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),
@@ -330,7 +330,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                 Text(
                   'Membres de la famille',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
                 ),
@@ -423,7 +423,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
             Text(
               'Informations supplémentaires',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
             ),

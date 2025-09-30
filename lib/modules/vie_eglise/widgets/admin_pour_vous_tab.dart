@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../services/pour_vous_action_service.dart';
 import '../dialogs/action_form_dialog.dart';
@@ -99,7 +99,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   'Gestion des actions "Pour vous"',
                   style: GoogleFonts.poppins(
                     fontSize: 20,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor))),
               // Boutons d'actions rapides
               IconButton(
@@ -140,10 +140,10 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                       })
                   : null,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: AppTheme.textTertiaryColor.withOpacity(0.3))),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: AppTheme.primaryColor)),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
             style: GoogleFonts.poppins()),
@@ -203,7 +203,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         boxShadow: [
           BoxShadow(
             color: AppTheme.textTertiaryColor.withOpacity(0.1),
@@ -251,7 +251,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
           value,
           style: GoogleFonts.poppins(
             fontSize: 20,
-            fontWeight: FontWeight.w700,
+            fontWeight: AppTheme.fontBold,
             color: color)),
         Text(
           label,
@@ -267,7 +267,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
       child: Row(
         children: [
           Icon(Icons.search, color: AppTheme.primaryColor, size: 20),
@@ -278,7 +278,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 color: AppTheme.primaryColor,
-                fontWeight: FontWeight.w500))),
+                fontWeight: AppTheme.fontMedium))),
         ]));
   }
 
@@ -301,14 +301,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       margin: const EdgeInsets.only(bottom: 8),
       elevation: 1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8)),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
           child: Icon(
             action.icon,
             color: color,
@@ -316,7 +316,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         title: Text(
           action.title,
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,12 +336,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                     color: action.isActive 
                         ? AppTheme.successColor.withOpacity(0.1)
                         : AppTheme.warningColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   child: Text(
                     action.isActive ? 'Active' : 'Inactive',
                     style: GoogleFonts.poppins(
                       fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: action.isActive 
                           ? AppTheme.successColor
                           : AppTheme.warningColor))),
@@ -350,12 +350,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   child: Text(
                     action.actionType,
                     style: GoogleFonts.poppins(
                       fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor))),
               ]),
           ]),
@@ -431,7 +431,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             'Erreur de chargement',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
           const SizedBox(height: 8),
           Text(
@@ -457,14 +457,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             'Aucune action configurée',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3))),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -476,7 +476,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w500)),
+                    fontWeight: AppTheme.fontMedium)),
               ])),
         ]));
   }
@@ -495,7 +495,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             'Aucun résultat trouvé',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
           const SizedBox(height: 8),
           Text(
@@ -526,7 +526,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       builder: (context) => AlertDialog(
         title: Text(
           'Supprimer l\'action',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold)),
         content: Text(
           'Êtes-vous sûr de vouloir supprimer "${action.title}" ?',
           style: GoogleFonts.poppins()),
@@ -568,7 +568,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       builder: (context) => AlertDialog(
         title: Text(
           'Prévisualisation',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -577,7 +577,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               action.title,
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w600)),
+                fontWeight: AppTheme.fontSemiBold)),
             const SizedBox(height: 8),
             Text(
               action.description,
@@ -636,7 +636,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       builder: (context) => AlertDialog(
         title: Text(
           'Exporter les actions',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -693,7 +693,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       builder: (context) => AlertDialog(
         title: Text(
           'Importer des actions',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,

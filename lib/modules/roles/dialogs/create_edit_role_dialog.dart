@@ -5,6 +5,7 @@ import '../models/role.dart';
 import '../providers/role_provider.dart';
 import '../services/current_user_service.dart';
 import '../widgets/module_permissions_selector.dart';
+import '../../../../theme.dart';
 
 class CreateEditRoleDialog extends StatefulWidget {
   final Role? existingRole;
@@ -139,7 +140,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
             content: Text(widget.existingRole != null
                 ? 'Rôle modifié avec succès'
                 : 'Rôle créé avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -148,7 +149,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -168,7 +169,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
         height: MediaQuery.of(context).size.height * 0.9,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         ),
         child: Column(
           children: [
@@ -186,7 +187,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                 children: [
                   Icon(
                     _getIconFromName(_selectedIcon),
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     size: 28,
                   ),
                   const SizedBox(width: 12),
@@ -194,15 +195,15 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                     child: Text(
                       widget.existingRole != null ? 'Modifier le rôle' : 'Créer un nouveau rôle',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                   ),
                 ],
               ),
@@ -233,7 +234,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(color: Colors.grey.shade300),
+                  top: BorderSide(color: AppTheme.grey500),
                 ),
               ),
               child: Row(
@@ -330,13 +331,13 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                     height: 40,
                     decoration: BoxDecoration(
                       color: Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                       border: isSelected
-                          ? Border.all(color: Colors.black, width: 3)
+                          ? Border.all(color: AppTheme.black100, width: 3)
                           : null,
                     ),
                     child: isSelected
-                        ? const Icon(Icons.check, color: Colors.white)
+                        ? const Icon(Icons.check, color: AppTheme.white100)
                         : null,
                   ),
                 );
@@ -363,12 +364,12 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                     decoration: BoxDecoration(
                       color: isSelected
                           ? Theme.of(context).primaryColor
-                          : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(8),
+                          : AppTheme.grey500,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       iconData['icon'],
-                      color: isSelected ? Colors.white : Colors.grey.shade600,
+                      color: isSelected ? AppTheme.white100 : AppTheme.grey500,
                     ),
                   ),
                 );
@@ -384,7 +385,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
               onChanged: (value) => setState(() => _isActive = value),
               secondary: Icon(
                 _isActive ? Icons.toggle_on : Icons.toggle_off,
-                color: _isActive ? Colors.green : Colors.grey,
+                color: _isActive ? AppTheme.greenStandard : AppTheme.grey500,
               ),
             ),
           ],

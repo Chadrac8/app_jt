@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
 import '../services/dashboard_firebase_service.dart';
+import '../../theme.dart';
 
 class DashboardDiagnosticWidget extends StatefulWidget {
   const DashboardDiagnosticWidget({Key? key}) : super(key: key);
@@ -113,8 +114,8 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Diagnostic Dashboard'),
-        backgroundColor: Colors.orange,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.orangeStandard,
+        foregroundColor: AppTheme.white100,
         actions: [
           IconButton(
             onPressed: _isRunning ? null : _runDiagnostic,
@@ -124,7 +125,7 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                     ),
                   )
                 : const Icon(Icons.refresh),
@@ -154,7 +155,7 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
                         Text(
                           'Résultats du Diagnostic',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -180,10 +181,10 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isOk ? Colors.green[50] : Colors.red[50],
-        borderRadius: BorderRadius.circular(8),
+        color: isOk ? AppTheme.grey50 : AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(
-          color: isOk ? Colors.green[200]! : Colors.red[200]!,
+          color: isOk ? AppTheme.grey200 : AppTheme.grey200,
         ),
       ),
       child: Column(
@@ -193,15 +194,15 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
             children: [
               Icon(
                 isOk ? Icons.check_circle : Icons.error,
-                color: isOk ? Colors.green[600] : Colors.red[600],
+                color: isOk ? AppTheme.grey600 : AppTheme.grey600,
                 size: 20,
               ),
               const SizedBox(width: 8),
               Text(
                 _getTestName(key),
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: isOk ? Colors.green[800] : Colors.red[800],
+                  fontWeight: AppTheme.fontBold,
+                  color: isOk ? AppTheme.grey800 : AppTheme.grey800,
                 ),
               ),
             ],
@@ -211,7 +212,7 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
             _formatDiagnosticData(value),
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey[700],
+              color: AppTheme.grey700,
             ),
           ),
         ],

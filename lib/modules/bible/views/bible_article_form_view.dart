@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
+import '../../../../theme.dart';
 
 class BibleArticleFormView extends StatefulWidget {
   final BibleArticle? article;
@@ -91,7 +92,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
       appBar: AppBar(
         title: Text(
           _isEditing ? 'Modifier l\'article' : 'Nouvel article',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
         ),
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
@@ -101,7 +102,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
             child: Text(
               _isEditing ? 'Mettre à jour' : 'Publier',
               style: GoogleFonts.inter(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: _isLoading ? theme.hintColor : theme.primaryColor,
               ),
             ),
@@ -144,7 +145,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               'Informations de base',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
@@ -157,7 +158,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 labelText: 'Titre de l\'article *',
                 hintText: 'Entrez un titre accrocheur',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
               validator: (value) {
@@ -177,7 +178,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 labelText: 'Résumé *',
                 hintText: 'Décrivez brièvement le contenu de l\'article',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
               validator: (value) {
@@ -200,7 +201,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     decoration: InputDecoration(
                       labelText: 'Catégorie',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     items: _articleService.getAvailableCategories()
@@ -218,7 +219,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     decoration: InputDecoration(
                       labelText: 'Auteur *',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     validator: (value) {
@@ -248,7 +249,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               'Contenu de l\'article',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
@@ -260,7 +261,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 labelText: 'Contenu de l\'article *',
                 hintText: 'Rédigez le contenu complet de votre article...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 alignLabelWithHint: true,
               ),
@@ -293,7 +294,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     'Références bibliques',
                     style: GoogleFonts.inter(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: theme.textTheme.titleLarge?.color,
                     ),
                   ),
@@ -312,7 +313,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: theme.hintColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Row(
                   children: [
@@ -337,7 +338,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: theme.primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       border: Border.all(
                         color: theme.primaryColor.withValues(alpha: 0.2),
                       ),
@@ -354,7 +355,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                           child: Text(
                             ref.displayText,
                             style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                               color: theme.primaryColor,
                             ),
                           ),
@@ -386,7 +387,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               'Métadonnées',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
@@ -399,7 +400,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 labelText: 'Mots-clés',
                 hintText: 'Séparez les mots-clés par des virgules',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
             ),
@@ -415,7 +416,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     decoration: InputDecoration(
                       labelText: 'Temps de lecture (min)',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     keyboardType: TextInputType.number,
@@ -438,7 +439,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     decoration: InputDecoration(
                       labelText: 'URL de l\'image (optionnel)',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                   ),
@@ -462,7 +463,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               'Publication',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
@@ -473,7 +474,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               onChanged: (value) => setState(() => _isPublished = value),
               title: Text(
                 'Publier l\'article',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium),
               ),
               subtitle: Text(
                 _isPublished 
@@ -491,17 +492,17 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 onPressed: _isLoading ? null : _saveArticle,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
                 child: Text(
                   _isEditing ? 'Mettre à jour l\'article' : 'Créer l\'article',
                   style: GoogleFonts.inter(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ),

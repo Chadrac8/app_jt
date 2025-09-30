@@ -7,7 +7,7 @@ import '../widgets/event_registrations_list.dart';
 import '../widgets/event_statistics_view.dart';
 import '../widgets/recurring_event_manager_widget.dart';
 import 'event_form_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class EventDetailPage extends StatefulWidget {
@@ -233,7 +233,7 @@ class _EventDetailPageState extends State<EventDetailPage>
           child: Icon(
             Icons.event,
             size: 80,
-            color: Colors.white.withOpacity(0.8),
+            color: AppTheme.white100.withOpacity(0.8),
           ),
         ),
       ),
@@ -258,17 +258,17 @@ class _EventDetailPageState extends State<EventDetailPage>
               floating: false,
               pinned: true,
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   _currentEvent!.title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     shadows: [
                       Shadow(
                         offset: Offset(0, 1),
                         blurRadius: 3,
-                        color: Colors.black26,
+                        color: AppTheme.black100,
                       ),
                     ],
                   ),
@@ -284,7 +284,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.7),
+                            AppTheme.black100.withOpacity(0.7),
                           ],
                         ),
                       ),
@@ -338,7 +338,7 @@ class _EventDetailPageState extends State<EventDetailPage>
         child: FloatingActionButton(
           onPressed: _editEvent,
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           child: const Icon(Icons.edit),
         ),
       ),
@@ -366,13 +366,13 @@ class _EventDetailPageState extends State<EventDetailPage>
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       color: _statusColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       _currentEvent!.statusLabel,
                       style: TextStyle(
                         color: _statusColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                         fontSize: 12,
                       ),
                     ),
@@ -431,7 +431,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                             Text(
                               'Description',
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                           ],
@@ -539,11 +539,11 @@ class _EventDetailPageState extends State<EventDetailPage>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -560,7 +560,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     icon,
@@ -572,7 +572,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
@@ -612,7 +612,7 @@ class _EventDetailPageState extends State<EventDetailPage>
           trailing ?? Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -752,7 +752,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.white,
+      color: AppTheme.white100,
       child: _tabBar,
     );
   }

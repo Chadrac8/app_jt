@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../views/role_assignment_screen.dart';
+import '../../../../theme.dart';
 
 /// Widget de navigation pour le module des rôles et permissions
 class RoleModuleMenuWidget extends StatelessWidget {
@@ -24,7 +25,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
               title: 'Gestion des Rôles',
               subtitle: 'Créer, modifier et supprimer des rôles',
               icon: Icons.admin_panel_settings,
-              color: Colors.blue,
+              color: AppTheme.blueStandard,
               onTap: () => _showComingSoon(context),
             ),
             _buildMenuCard(
@@ -32,7 +33,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
               title: 'Assignation des Rôles',
               subtitle: 'Assigner des rôles aux utilisateurs',
               icon: Icons.people,
-              color: Colors.green,
+              color: AppTheme.greenStandard,
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const RoleAssignmentScreen(),
@@ -44,7 +45,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
               title: 'Aperçu des Permissions',
               subtitle: 'Visualiser la matrice des permissions',
               icon: Icons.security,
-              color: Colors.orange,
+              color: AppTheme.orangeStandard,
               onTap: () => _showComingSoon(context),
             ),
             _buildMenuCard(
@@ -73,7 +74,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
       elevation: 4,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -95,7 +96,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -103,7 +104,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
               Text(
                 subtitle,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,

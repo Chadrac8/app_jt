@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/roles_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class RoleCard extends StatefulWidget {
   final RoleModel role;
@@ -103,14 +103,14 @@ class _RoleCardState extends State<RoleCard>
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: widget.isSelected
               ? Border.all(color: AppTheme.primaryColor, width: 2)
               : null,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: AppTheme.black100.withOpacity(0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -145,7 +145,7 @@ class _RoleCardState extends State<RoleCard>
             radius: 24,
             child: Icon(
               _roleIcon,
-              color: Colors.white,
+              color: AppTheme.white100,
               size: 24,
             ),
           ),
@@ -160,7 +160,7 @@ class _RoleCardState extends State<RoleCard>
                       child: Text(
                         widget.role.name,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: _roleColor,
                         ),
                       ),
@@ -188,14 +188,14 @@ class _RoleCardState extends State<RoleCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: widget.role.isActive ? AppTheme.successColor : AppTheme.warningColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Text(
         widget.role.isActive ? 'Actif' : 'Inactif',
         style: const TextStyle(
-          color: Colors.white,
+          color: AppTheme.white100,
           fontSize: 12,
-          fontWeight: FontWeight.w500,
+          fontWeight: AppTheme.fontMedium,
         ),
       ),
     );
@@ -210,7 +210,7 @@ class _RoleCardState extends State<RoleCard>
           Text(
             widget.role.description,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 12),
@@ -224,26 +224,26 @@ class _RoleCardState extends State<RoleCard>
                   Icon(
                     Icons.people,
                     size: 16,
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     '$personCount personne${personCount > 1 ? 's' : ''}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[500],
+                      color: AppTheme.grey500,
                     ),
                   ),
                   const Spacer(),
                   Icon(
                     Icons.security,
                     size: 16,
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     '${widget.role.permissions.length} permission${widget.role.permissions.length > 1 ? 's' : ''}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[500],
+                      color: AppTheme.grey500,
                     ),
                   ),
                 ],
@@ -268,8 +268,8 @@ class _RoleCardState extends State<RoleCard>
           Text(
             'Permissions principales',
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[700],
+              fontWeight: AppTheme.fontMedium,
+              color: AppTheme.grey700,
             ),
           ),
           const SizedBox(height: 8),
@@ -281,7 +281,7 @@ class _RoleCardState extends State<RoleCard>
               if (remainingCount > 0)
                 Chip(
                   label: Text('+$remainingCount'),
-                  backgroundColor: Colors.grey[200],
+                  backgroundColor: AppTheme.grey200,
                   labelStyle: const TextStyle(fontSize: 12),
                 ),
             ],
@@ -311,13 +311,13 @@ class _RoleCardState extends State<RoleCard>
           Icon(
             Icons.access_time,
             size: 14,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(width: 4),
           Text(
             'Créé le ${_formatDate(widget.role.createdAt)}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.grey[400],
+              color: AppTheme.grey400,
             ),
           ),
           const Spacer(),
@@ -328,14 +328,14 @@ class _RoleCardState extends State<RoleCard>
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: widget.onTap,
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                   iconSize: 20,
                   tooltip: 'Modifier',
                 ),
                 IconButton(
                   icon: const Icon(Icons.more_vert),
                   onPressed: () => _showActionMenu(context),
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                   iconSize: 20,
                   tooltip: 'Plus d\'actions',
                 ),
@@ -361,7 +361,7 @@ class _RoleCardState extends State<RoleCard>
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: AppTheme.grey300,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -395,7 +395,7 @@ class _RoleCardState extends State<RoleCard>
             if (widget.role.permissions.contains('system_admin')) ...[
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.warning, color: Colors.orange),
+                leading: const Icon(Icons.warning, color: AppTheme.orangeStandard),
                 title: const Text('Rôle système'),
                 subtitle: const Text('Ce rôle ne peut pas être supprimé'),
                 enabled: false,
@@ -403,7 +403,7 @@ class _RoleCardState extends State<RoleCard>
             ] else ...[
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.delete, color: Colors.red),
+                leading: const Icon(Icons.delete, color: AppTheme.redStandard),
                 title: const Text('Supprimer'),
                 onTap: () {
                   Navigator.pop(context);
@@ -436,7 +436,7 @@ class _RoleCardState extends State<RoleCard>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Rôle ${widget.role.isActive ? 'désactivé' : 'activé'} avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -445,7 +445,7 @@ class _RoleCardState extends State<RoleCard>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -478,8 +478,8 @@ class _RoleCardState extends State<RoleCard>
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: AppTheme.redStandard,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Supprimer'),
           ),
@@ -495,7 +495,7 @@ class _RoleCardState extends State<RoleCard>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Rôle supprimé avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -504,7 +504,7 @@ class _RoleCardState extends State<RoleCard>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }

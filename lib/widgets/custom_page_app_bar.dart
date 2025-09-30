@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../routes/simple_routes.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class CustomPageAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -26,7 +26,7 @@ class CustomPageAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<CustomPageAppBar> createState() => _CustomPageAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(44); // Hauteur encore plus réduite
+  Size get preferredSize => const Size.fromHeight(56.0); // Hauteur standard Material Design
 }
 
 class _CustomPageAppBarState extends State<CustomPageAppBar> {
@@ -66,7 +66,7 @@ class _CustomPageAppBarState extends State<CustomPageAppBar> {
         child: const Icon(
           Icons.church,
           size: 28,
-          color: Colors.white,
+          color: AppTheme.white100,
         ),
       ),
     );
@@ -77,18 +77,18 @@ class _CustomPageAppBarState extends State<CustomPageAppBar> {
     final theme = Theme.of(context);
     
     return AppBar(
-      toolbarHeight: 44, // Hauteur encore plus réduite
+      toolbarHeight: 56.0, // Hauteur standard Material Design (était 44 - trop petit)
       title: GestureDetector(
         onDoubleTap: _toggleLeading,
         child: Text(
           widget.title,
           style: theme.appBarTheme.titleTextStyle?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
       ),
       backgroundColor: theme.primaryColor,
-      foregroundColor: Colors.white,
+      foregroundColor: AppTheme.white100,
       elevation: 2,
       leading: _buildLeading(),
       centerTitle: true,
@@ -138,22 +138,22 @@ class SimpleMemberAppBar extends StatelessWidget implements PreferredSizeWidget 
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(44); // Hauteur encore plus réduite
+  Size get preferredSize => const Size.fromHeight(56.0); // Hauteur standard Material Design
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
     return AppBar(
-      toolbarHeight: 44, // Hauteur encore plus réduite
+      toolbarHeight: 56.0, // Hauteur standard Material Design (était 44 - trop petit)
       title: Text(
         title,
         style: const TextStyle(
-          fontWeight: FontWeight.w600,
+          fontWeight: AppTheme.fontSemiBold,
         ),
       ),
       backgroundColor: theme.primaryColor,
-      foregroundColor: Colors.white,
+      foregroundColor: AppTheme.white100,
       elevation: 1,
       leading: showBackButton 
         ? IconButton(
@@ -212,14 +212,14 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => Size.fromHeight(subtitle != null ? 66 : 44); // Hauteur encore plus réduite
+  Size get preferredSize => Size.fromHeight(subtitle != null ? 72.0 : 56.0); // Hauteurs standard Material Design
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
     return AppBar(
-      toolbarHeight: subtitle != null ? 66 : 44, // Hauteur conditionnelle encore plus réduite
+      toolbarHeight: subtitle != null ? 72.0 : 56.0, // Hauteurs standard Material Design
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -227,7 +227,7 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
             title,
             style: const TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           if (subtitle != null)
@@ -235,14 +235,14 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
               subtitle!,
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.white.withOpacity(0.8),
-                fontWeight: FontWeight.w400,
+                color: AppTheme.white100.withOpacity(0.8),
+                fontWeight: AppTheme.fontRegular,
               ),
             ),
         ],
       ),
       backgroundColor: backgroundColor ?? theme.primaryColor,
-      foregroundColor: Colors.white,
+      foregroundColor: AppTheme.white100,
       elevation: elevation,
       leading: leading ?? (showBackButton 
         ? IconButton(

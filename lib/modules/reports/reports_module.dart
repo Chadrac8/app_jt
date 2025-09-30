@@ -7,6 +7,7 @@ import 'views/report_detail_view.dart';
 import 'views/report_form_view.dart';
 import 'models/report.dart';
 import 'services/reports_service.dart';
+import '../../../theme.dart';
 
 class ReportsModule extends AppModule {
   @override
@@ -113,15 +114,15 @@ class ReportsModule extends AppModule {
         trailing: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            color: AppTheme.blueStandard.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: const Text(
             'Analytics',
             style: TextStyle(
-              color: Colors.blue,
+              color: AppTheme.blueStandard,
               fontSize: 10,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ),
@@ -207,8 +208,8 @@ class ReportsModule extends AppModule {
       Card(
         child: ListTile(
           leading: const CircleAvatar(
-            backgroundColor: Colors.blue,
-            child: Icon(Icons.add, color: Colors.white),
+            backgroundColor: AppTheme.blueStandard,
+            child: Icon(Icons.add, color: AppTheme.white100),
           ),
           title: const Text('Nouveau rapport'),
           subtitle: const Text('Créer un rapport personnalisé'),
@@ -219,8 +220,8 @@ class ReportsModule extends AppModule {
         Card(
           child: ListTile(
             leading: const CircleAvatar(
-              backgroundColor: Colors.green,
-              child: Icon(Icons.description, color: Colors.white),
+              backgroundColor: AppTheme.greenStandard,
+              child: Icon(Icons.description, color: AppTheme.white100),
             ),
             title: const Text('Utiliser un template'),
             subtitle: const Text('Démarrer avec un modèle prédéfini'),
@@ -232,8 +233,8 @@ class ReportsModule extends AppModule {
       Card(
         child: ListTile(
           leading: const CircleAvatar(
-            backgroundColor: Colors.orange,
-            child: Icon(Icons.history, color: Colors.white),
+            backgroundColor: AppTheme.orangeStandard,
+            child: Icon(Icons.history, color: AppTheme.white100),
           ),
           title: const Text('Rapports récents'),
           subtitle: const Text('Voir les dernières générations'),
@@ -282,15 +283,15 @@ class ReportsModule extends AppModule {
                         trailing: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Colors.blue.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            color: AppTheme.blueStandard.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           child: Text(
                             template.category,
                             style: const TextStyle(
-                              color: Colors.blue,
+                              color: AppTheme.blueStandard,
                               fontSize: 11,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ),
@@ -331,17 +332,17 @@ class ReportsModule extends AppModule {
   Color _getTypeColor(String type) {
     switch (type) {
       case 'attendance':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'financial':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'membership':
         return Colors.purple;
       case 'event':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'custom':
         return Colors.indigo;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 }

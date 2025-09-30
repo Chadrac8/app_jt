@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/current_user_service.dart';
+import '../../../../theme.dart';
 
 /// Dialogue pour assigner plusieurs rôles à une personne existante
 class AssignRolesToPersonDialog extends StatefulWidget {
@@ -96,14 +97,14 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
               Text(
                 'Assigner des rôles à',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               Text(
                 widget.personName,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ],
@@ -134,7 +135,7 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
+                Icon(Icons.error_outline, size: 48, color: AppTheme.grey300),
                 const SizedBox(height: 16),
                 Text('Erreur: ${snapshot.error}'),
               ],
@@ -149,12 +150,12 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.admin_panel_settings_outlined, size: 48, color: Colors.grey[400]),
+                Icon(Icons.admin_panel_settings_outlined, size: 48, color: AppTheme.grey400),
                 const SizedBox(height: 16),
                 Text(
                   'Aucun rôle disponible',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
               ],
@@ -210,15 +211,15 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withValues(alpha: 0.1),
+                          color: AppTheme.orangeStandard.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           'Système',
                           style: TextStyle(
-                            color: Colors.orange[700],
+                            color: AppTheme.grey700,
                             fontSize: 10,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),
@@ -232,7 +233,7 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
                       Text(
                         roleDescription,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -241,15 +242,15 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.green.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          color: AppTheme.greenStandard.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           'Déjà assigné',
                           style: TextStyle(
-                            color: Colors.green[700],
+                            color: AppTheme.grey700,
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),
@@ -270,7 +271,7 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
         Text(
           '${_selectedRoleIds.length} nouveau(x) rôle(s) sélectionné(s)',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
           ),
         ),
         const Spacer(),
@@ -333,7 +334,7 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
             content: Text(
               '${_selectedRoleIds.length} rôle(s) assigné(s) à ${widget.personName}',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -342,7 +343,7 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'assignation: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -362,17 +363,17 @@ class _AssignRolesToPersonDialogState extends State<AssignRolesToPersonDialog> {
         return Color(int.parse(colorString.substring(1), radix: 16) + 0xFF000000);
       }
       switch (colorString.toLowerCase()) {
-        case 'blue': return Colors.blue;
-        case 'green': return Colors.green;
-        case 'red': return Colors.red;
-        case 'orange': return Colors.orange;
+        case 'blue': return AppTheme.blueStandard;
+        case 'green': return AppTheme.greenStandard;
+        case 'red': return AppTheme.redStandard;
+        case 'orange': return AppTheme.orangeStandard;
         case 'purple': return Colors.purple;
         case 'teal': return Colors.teal;
         case 'indigo': return Colors.indigo;
-        default: return Colors.blue;
+        default: return AppTheme.blueStandard;
       }
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 

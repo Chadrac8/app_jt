@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import 'bible_study_lesson_view.dart';
+import '../../../../theme.dart';
 
 class BibleStudyDetailView extends StatefulWidget {
   final BibleStudy study;
@@ -81,8 +82,8 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(16),
+                          color: AppTheme.white100.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         ),
                         child: Icon(
                           _getCategoryIcon(widget.study.category),
@@ -100,15 +101,15 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                 margin: const EdgeInsets.only(bottom: 8),
                                 decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.9),
-                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppTheme.orangeStandard.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                                 child: Text(
                                   'POPULAIRE',
                                   style: GoogleFonts.inter(
                                     fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                                    fontWeight: AppTheme.fontSemiBold,
+                                    color: AppTheme.white100,
                                   ),
                                 ),
                               ),
@@ -116,8 +117,8 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                               widget.study.title,
                               style: GoogleFonts.inter(
                                 fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                fontWeight: AppTheme.fontBold,
+                                color: AppTheme.white100,
                                 height: 1.2,
                               ),
                             ),
@@ -126,7 +127,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                               'Par ${widget.study.author}',
                               style: GoogleFonts.inter(
                                 fontSize: 14,
-                                color: Colors.white.withOpacity(0.9),
+                                color: AppTheme.white100.withOpacity(0.9),
                               ),
                             ),
                           ],
@@ -179,10 +180,10 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -257,7 +258,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
             value,
             style: GoogleFonts.inter(
               fontSize: 14,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface,
             ),
           ),
@@ -271,7 +272,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: theme.colorScheme.primary.withOpacity(0.2),
           width: 1,
@@ -292,7 +293,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                 'Votre progression',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.primary,
                 ),
               ),
@@ -301,7 +302,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                 '${_progress!.progressPercentage.round()}%',
                 style: GoogleFonts.inter(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: theme.colorScheme.primary,
                 ),
               ),
@@ -334,7 +335,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
           'À propos de cette étude',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: theme.colorScheme.onSurface,
           ),
         ),
@@ -357,13 +358,13 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Text(
                   '#$tag',
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: theme.colorScheme.primary,
                   ),
                 ),
@@ -383,7 +384,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
           'Leçons (${widget.study.lessons.length})',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: theme.colorScheme.onSurface,
           ),
         ),
@@ -416,12 +417,12 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
         color: Colors.transparent,
         child: InkWell(
           onTap: isAccessible ? () => _openLesson(lesson) : null,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: isCurrent
                   ? Border.all(color: theme.colorScheme.primary, width: 2)
                   : Border.all(color: theme.colorScheme.outline.withOpacity(0.2)),
@@ -433,13 +434,13 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                   height: 40,
                   decoration: BoxDecoration(
                     color: isCompleted
-                        ? Colors.green
+                        ? AppTheme.greenStandard
                         : isCurrent
                             ? theme.colorScheme.primary
                             : isAccessible
                                 ? theme.colorScheme.primary.withOpacity(0.1)
                                 : theme.colorScheme.onSurface.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   ),
                   child: Icon(
                     isCompleted
@@ -450,7 +451,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                                 ? Icons.book_outlined
                                 : Icons.lock_outline,
                     color: isCompleted || isCurrent
-                        ? Colors.white
+                        ? AppTheme.white100
                         : isAccessible
                             ? theme.colorScheme.primary
                             : theme.colorScheme.onSurface.withOpacity(0.4),
@@ -466,7 +467,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                         'Leçon $number: ${lesson.title}',
                         style: GoogleFonts.inter(
                           fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: isAccessible
                               ? theme.colorScheme.onSurface
                               : theme.colorScheme.onSurface.withOpacity(0.4),
@@ -524,15 +525,15 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppTheme.greenStandard.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       'TERMINÉE',
                       style: GoogleFonts.inter(
                         fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.green,
+                        fontWeight: AppTheme.fontSemiBold,
+                        color: AppTheme.greenStandard,
                       ),
                     ),
                   )
@@ -541,13 +542,13 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       'EN COURS',
                       style: GoogleFonts.inter(
                         fontSize: 10,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: theme.colorScheme.primary,
                       ),
                     ),
@@ -570,7 +571,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
         color: theme.colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black100.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -585,14 +586,14 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
                 child: Text(
                   'Continuer',
                   style: GoogleFonts.inter(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ),
@@ -605,7 +606,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
               child: _isLoading
@@ -614,7 +615,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                       ),
                     )
                   : Text(
@@ -625,7 +626,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                               : 'Commencer',
                       style: GoogleFonts.inter(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
             ),
@@ -638,17 +639,17 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
   Color _getCategoryColor(String category) {
     switch (category) {
       case 'Nouveau Testament':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'Ancien Testament':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'Spiritualité':
         return Colors.purple;
       case 'Théologie':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'Paraboles':
         return Colors.teal;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -684,7 +685,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
                   ? 'Étude redémarrée !' 
                   : 'Étude commencée !',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         _continueStudy();

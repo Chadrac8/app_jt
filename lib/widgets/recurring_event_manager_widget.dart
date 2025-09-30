@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/event_model.dart';
 import '../models/event_recurrence_model.dart';
 import '../services/event_recurrence_service.dart';
+import '../../theme.dart';
 
 /// Widget pour gérer les événements récurrents existants
 /// Permet de voir, modifier ou supprimer des occurrences
@@ -88,7 +89,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
         Text(
           'Gestion des récurrences',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const Spacer(),
@@ -110,7 +111,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
             Icon(
               Icons.event_busy,
               size: 48,
-              color: Colors.grey.shade400,
+              color: AppTheme.grey500,
             ),
             const SizedBox(height: 16),
             Text(
@@ -120,7 +121,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
             const SizedBox(height: 8),
             const Text(
               'Cet événement n\'a pas de récurrence définie.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             ),
           ],
         ),
@@ -148,7 +149,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
                 _getMonthYearText(_selectedMonth),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ),
@@ -184,7 +185,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
                 Text(
                   'Règles de récurrence (${_recurrences.length})',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -201,12 +202,12 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: recurrence.isActive ? Colors.green : Colors.grey,
+          color: recurrence.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           shape: BoxShape.circle,
         ),
         child: Icon(
           _getRecurrenceIcon(recurrence.type),
-          color: Colors.white,
+          color: AppTheme.white100,
           size: 20,
         ),
       ),
@@ -214,7 +215,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
         _getRecurrenceDescription(recurrence),
         style: TextStyle(
           decoration: recurrence.isActive ? null : TextDecoration.lineThrough,
-          color: recurrence.isActive ? null : Colors.grey,
+          color: recurrence.isActive ? null : AppTheme.grey500,
         ),
       ),
       subtitle: Column(
@@ -223,28 +224,28 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
           Text(
             'Type: ${_getTypeLabel(recurrence.type)}',
             style: TextStyle(
-              color: recurrence.isActive ? null : Colors.grey,
+              color: recurrence.isActive ? null : AppTheme.grey500,
             ),
           ),
           if (recurrence.endDate != null)
             Text(
               'Fin: ${recurrence.endDate!.day}/${recurrence.endDate!.month}/${recurrence.endDate!.year}',
               style: TextStyle(
-                color: recurrence.isActive ? null : Colors.grey,
+                color: recurrence.isActive ? null : AppTheme.grey500,
               ),
             ),
           if (recurrence.occurrenceCount != null)
             Text(
               'Occurrences: ${recurrence.occurrenceCount}',
               style: TextStyle(
-                color: recurrence.isActive ? null : Colors.grey,
+                color: recurrence.isActive ? null : AppTheme.grey500,
               ),
             ),
           if (!recurrence.isActive)
             Text(
               'Récurrence désactivée',
               style: TextStyle(
-                color: Colors.orange,
+                color: AppTheme.orangeStandard,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -287,7 +288,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
                 Text(
                   'Occurrences du mois (${_instances.length})',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -298,7 +299,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
               padding: EdgeInsets.all(24.0),
               child: Text(
                 'Aucune occurrence ce mois-ci',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(color: AppTheme.grey500),
               ),
             )
           else
@@ -314,10 +315,10 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: instance.isCancelled 
-              ? Colors.red 
+              ? AppTheme.redStandard 
               : instance.isOverride 
-                  ? Colors.orange 
-                  : Colors.blue,
+                  ? AppTheme.orangeStandard 
+                  : AppTheme.blueStandard,
           shape: BoxShape.circle,
         ),
         child: Icon(
@@ -326,7 +327,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
               : instance.isOverride 
                   ? Icons.edit
                   : Icons.event,
-          color: Colors.white,
+          color: AppTheme.white100,
           size: 20,
         ),
       ),
@@ -627,7 +628,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
                 }
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],

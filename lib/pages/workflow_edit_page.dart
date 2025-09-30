@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class WorkflowEditPage extends StatefulWidget {
   final PersonWorkflowModel personWorkflow;
@@ -42,10 +42,10 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
   };
 
   final Map<String, Color> _statusColors = {
-    'pending': Colors.orange,
-    'in_progress': Colors.blue,
-    'completed': Colors.green,
-    'paused': Colors.grey,
+    'pending': AppTheme.orangeStandard,
+    'in_progress': AppTheme.blueStandard,
+    'completed': AppTheme.greenStandard,
+    'paused': AppTheme.grey500,
   };
 
   @override
@@ -82,7 +82,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement des personnes : $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -108,7 +108,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Modifications sauvegardées avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         Navigator.pop(context, true); // Indiquer que des changements ont été faits
@@ -118,7 +118,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la sauvegarde : $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -136,7 +136,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Aucune personne disponible pour l\'assignation'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -176,7 +176,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Responsable assigné : \${selectedPerson.fullName}'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -185,7 +185,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de l\'assignation : $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -212,7 +212,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Confirmer'),
           ),
         ],
@@ -243,7 +243,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Assignation supprimée'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -252,7 +252,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression : $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -300,7 +300,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Étape mise à jour avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -309,7 +309,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la mise à jour : $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -329,7 +329,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
       appBar: AppBar(
         title: const Text('Modifier le suivi'),
         backgroundColor: Color(int.parse(_currentWorkflow?.color.replaceFirst('#', '0xFF') ?? '0xFF2196F3')),
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         actions: [
           if (_hasChanges)
             IconButton(
@@ -376,7 +376,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                 Text(
                   'Informations du suivi',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -416,7 +416,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
             Text(
               'Statut du suivi',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -470,7 +470,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
             Text(
               'Notes',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -503,7 +503,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                 Text(
                   'Étapes du workflow',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 Text(
@@ -536,16 +536,16 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: isCompleted ? Colors.green : Colors.grey.shade300,
+                        color: isCompleted ? AppTheme.greenStandard : AppTheme.grey500,
                         shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: Text(
                           '\${index + 1}',
                           style: TextStyle(
-                            color: isCompleted ? Colors.white : Colors.grey.shade700,
+                            color: isCompleted ? AppTheme.white100 : AppTheme.grey500,
                             fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ),
@@ -554,7 +554,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                       step.name,
                       style: TextStyle(
                         decoration: isCompleted ? TextDecoration.lineThrough : null,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                     subtitle: Column(
@@ -568,14 +568,14 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                             Icon(
                               Icons.access_time,
                               size: 14,
-                              color: Colors.grey.shade600,
+                              color: AppTheme.grey500,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               '\${step.estimatedDuration} min',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.grey.shade600,
+                                color: AppTheme.grey500,
                               ),
                             ),
                             if (step.isRequired) ...[
@@ -583,15 +583,15 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: Colors.red.shade100,
-                                  borderRadius: BorderRadius.circular(8),
+                                  color: AppTheme.redStandard,
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                 ),
                                 child: Text(
                                   'Requis',
                                   style: TextStyle(
                                     fontSize: 10,
-                                    color: Colors.red.shade700,
-                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.redStandard,
+                                    fontWeight: AppTheme.fontBold,
                                   ),
                                 ),
                               ),
@@ -605,15 +605,15 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                               Icon(
                                 Icons.person,
                                 size: 14,
-                                color: Colors.blue.shade600,
+                                color: AppTheme.blueStandard,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 'Assigné à : \${step.assignedToName}',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.blue.shade600,
-                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.blueStandard,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -812,7 +812,7 @@ class _StepEditDialogState extends State<_StepEditDialog> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Le nom de l\'étape est requis'),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppTheme.redStandard,
                 ),
               );
               return;

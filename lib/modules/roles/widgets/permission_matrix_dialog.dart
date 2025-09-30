@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/permission_model.dart';
-import '../services/permission_provider.dart';
+import '../providers/permission_provider.dart';
+import '../../../../theme.dart';
 
 class PermissionMatrixDialog extends StatefulWidget {
   const PermissionMatrixDialog({super.key});
@@ -49,7 +51,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
           child: Text(
             'Matrice des Permissions',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ),
@@ -71,7 +73,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
             Text(
               'Filtres',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 12),
@@ -163,7 +165,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.filter_alt_off, size: 64, color: Colors.grey[400]),
+                Icon(Icons.filter_alt_off, size: 64, color: AppTheme.grey400),
                 const SizedBox(height: 16),
                 Text(
                   'Aucune donnée correspondant aux filtres',
@@ -189,20 +191,20 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                       width: 200,
                       child: Text(
                         'Permission',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: AppTheme.fontBold),
                       ),
                     ),
                   ),
                   const DataColumn(
                     label: Text(
                       'Module',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: AppTheme.fontBold),
                     ),
                   ),
                   const DataColumn(
                     label: Text(
                       'Niveau',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: AppTheme.fontBold),
                     ),
                   ),
                   ...roles.map((role) {
@@ -229,7 +231,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                               role.name,
                               style: const TextStyle(
                                 fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                               textAlign: TextAlign.center,
                               maxLines: 2,
@@ -255,7 +257,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                             children: [
                               Text(
                                 permission.name,
-                                style: const TextStyle(fontWeight: FontWeight.w500),
+                                style: const TextStyle(fontWeight: AppTheme.fontMedium),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -263,7 +265,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                                 permission.description,
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.grey[600],
+                                  color: AppTheme.grey600,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -279,7 +281,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                             Icon(
                               _getModuleIcon(module?.icon ?? ''),
                               size: 16,
-                              color: Colors.grey[600],
+                              color: AppTheme.grey600,
                             ),
                             const SizedBox(width: 4),
                             Text(
@@ -294,7 +296,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: _getPermissionLevelColor(permission.level).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -309,7 +311,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                                 permission.level.displayName,
                                 style: TextStyle(
                                   fontSize: 10,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                   color: _getPermissionLevelColor(permission.level),
                                 ),
                               ),
@@ -327,21 +329,21 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                               height: 24,
                               decoration: BoxDecoration(
                                 color: hasPermission
-                                    ? Colors.green[100]
-                                    : Colors.grey[100],
-                                borderRadius: BorderRadius.circular(12),
+                                    ? AppTheme.grey100
+                                    : AppTheme.grey100,
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 border: Border.all(
                                   color: hasPermission
-                                      ? Colors.green[400]!
-                                      : Colors.grey[300]!,
+                                      ? AppTheme.grey400
+                                      : AppTheme.grey300!,
                                 ),
                               ),
                               child: Icon(
                                 hasPermission ? Icons.check : Icons.close,
                                 size: 16,
                                 color: hasPermission
-                                    ? Colors.green[700]
-                                    : Colors.grey[500],
+                                    ? AppTheme.grey700
+                                    : AppTheme.grey500,
                               ),
                             ),
                           ),
@@ -412,26 +414,197 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
     return filtered;
   }
 
-  void _exportMatrix() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Export de la matrice des permissions copié dans le presse-papiers'),
-        backgroundColor: Colors.green,
-      ),
-    );
+  void _exportMatrix() async {
+    try {
+      final provider = Provider.of<PermissionProvider>(context, listen: false);
+      final roles = _getFilteredRoles(provider.roles);
+      final permissions = _getFilteredPermissions(provider.permissions);
+      
+      // Créer le contenu CSV
+      final csvContent = _generateMatrixCSV(roles, permissions);
+      
+      // Copier dans le presse-papiers
+      await Clipboard.setData(ClipboardData(text: csvContent));
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Matrice des permissions exportée dans le presse-papiers (format CSV)'),
+          backgroundColor: AppTheme.greenStandard,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de l\'export: $e'),
+          backgroundColor: AppTheme.redStandard,
+        ),
+      );
+    }
+  }
+  
+  String _generateMatrixCSV(List<Role> roles, List<Permission> permissions) {
+    final buffer = StringBuffer();
     
-    // TODO: Implémenter l'export vers les services une fois les types de données unifiés
+    // En-têtes
+    buffer.write('Permission,Module,Niveau');
+    for (final role in roles) {
+      buffer.write(',${role.name}');
+    }
+    buffer.writeln();
+    
+    // Lignes de permissions
+    for (final permission in permissions) {
+      final module = AppModule.findById(permission.module);
+      buffer.write('${permission.name},${module?.name ?? permission.module},${permission.level.displayName}');
+      
+      for (final role in roles) {
+        final hasPermission = role.hasPermission(permission.id);
+        buffer.write(',${hasPermission ? "✓" : "✗"}');
+      }
+      buffer.writeln();
+    }
+    
+    return buffer.toString();
   }
 
-  void _printMatrix() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Fonction d\'impression de la matrice disponible'),
-        backgroundColor: Colors.blue,
-      ),
-    );
+  void _printMatrix() async {
+    try {
+      final provider = Provider.of<PermissionProvider>(context, listen: false);
+      final roles = _getFilteredRoles(provider.roles);
+      final permissions = _getFilteredPermissions(provider.permissions);
+      
+      // Créer le contenu d'impression formaté
+      final printContent = _generatePrintableMatrix(roles, permissions);
+      
+      // Afficher le dialogue d'aperçu d'impression
+      await _showPrintPreview(printContent);
+      
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la préparation d\'impression: $e'),
+          backgroundColor: AppTheme.redStandard,
+        ),
+      );
+    }
+  }
+  
+  String _generatePrintableMatrix(List<Role> roles, List<Permission> permissions) {
+    final buffer = StringBuffer();
+    final now = DateTime.now();
+    final dateStr = '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute.toString().padLeft(2, '0')}';
     
-    // TODO: Implémenter l'impression une fois les types de données unifiés
+    // En-tête du document
+    buffer.writeln('MATRICE DES PERMISSIONS - JUBILÉ TABERNACLE');
+    buffer.writeln('Généré le $dateStr');
+    buffer.writeln('=' * 80);
+    buffer.writeln();
+    
+    // Statistiques
+    buffer.writeln('STATISTIQUES:');
+    buffer.writeln('- Rôles: ${roles.length}');
+    buffer.writeln('- Permissions: ${permissions.length}');
+    buffer.writeln('- Modules concernés: ${permissions.map((p) => p.module).toSet().length}');
+    buffer.writeln();
+    
+    // Matrice détaillée
+    buffer.writeln('MATRICE DÉTAILLÉE:');
+    buffer.writeln('-' * 80);
+    
+    // Grouper par module
+    final permissionsByModule = <String, List<Permission>>{};
+    for (final permission in permissions) {
+      permissionsByModule.putIfAbsent(permission.module, () => []).add(permission);
+    }
+    
+    for (final moduleId in permissionsByModule.keys) {
+      final module = AppModule.findById(moduleId);
+      buffer.writeln('MODULE: ${module?.name ?? moduleId}');
+      buffer.writeln();
+      
+      // En-têtes des rôles
+      buffer.write('${'Permission'.padRight(30)}');
+      for (final role in roles) {
+        buffer.write(role.name.padRight(12));
+      }
+      buffer.writeln();
+      buffer.writeln('-' * (30 + (roles.length * 12)));
+      
+      // Permissions pour ce module
+      for (final permission in permissionsByModule[moduleId]!) {
+        buffer.write(permission.name.length > 30 
+          ? '${permission.name.substring(0, 27)}...'
+          : permission.name.padRight(30));
+        
+        for (final role in roles) {
+          final hasPermission = role.hasPermission(permission.id);
+          buffer.write((hasPermission ? '✓' : '✗').padRight(12));
+        }
+        buffer.writeln();
+      }
+      buffer.writeln();
+    }
+    
+    return buffer.toString();
+  }
+  
+  Future<void> _showPrintPreview(String content) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.print),
+              SizedBox(width: 8),
+              Text('Aperçu d\'impression'),
+            ],
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: 400,
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  border: Border.all(color: Colors.grey[300]!),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: SelectableText(
+                  content,
+                  style: const TextStyle(
+                    fontFamily: 'Courier',
+                    fontSize: 12,
+                    height: 1.2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: content));
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Contenu copié dans le presse-papiers pour impression'),
+                    backgroundColor: AppTheme.greenStandard,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.copy),
+              label: const Text('Copier'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Color _parseColor(String colorString) {
@@ -439,7 +612,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
       final hexColor = colorString.replaceAll('#', '');
       return Color(int.parse('FF$hexColor', radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 
@@ -490,10 +663,10 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
 
   Color _getPermissionLevelColor(PermissionLevel level) {
     switch (level) {
-      case PermissionLevel.read: return Colors.blue;
-      case PermissionLevel.write: return Colors.green;
-      case PermissionLevel.create: return Colors.orange;
-      case PermissionLevel.delete: return Colors.red;
+      case PermissionLevel.read: return AppTheme.blueStandard;
+      case PermissionLevel.write: return AppTheme.greenStandard;
+      case PermissionLevel.create: return AppTheme.orangeStandard;
+      case PermissionLevel.delete: return AppTheme.redStandard;
       case PermissionLevel.admin: return Colors.purple;
     }
   }

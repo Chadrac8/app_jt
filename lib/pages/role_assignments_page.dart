@@ -3,7 +3,7 @@ import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/roles_firebase_service.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class RoleAssignmentsPage extends StatefulWidget {
   const RoleAssignmentsPage({super.key});
@@ -104,7 +104,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Rôle "${_selectedRole!.name}" assigné à ${personIds.length} personne(s)'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -113,7 +113,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -136,8 +136,8 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: AppTheme.redStandard,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Retirer'),
           ),
@@ -153,7 +153,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Rôle "${role.name}" retiré de ${person.fullName}'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -162,7 +162,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -178,7 +178,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
             ? Text('${_selectedPersons.length} personne(s) sélectionnée(s)')
             : const Text('Assignations de rôles'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         leading: _isAssignMode
             ? IconButton(
@@ -205,9 +205,9 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
         ],
         bottom: TabBar(
           controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
+          indicatorColor: AppTheme.white100,
           tabs: const [
             Tab(text: 'Par personne', icon: Icon(Icons.people)),
             Tab(text: 'Par rôle', icon: Icon(Icons.security)),
@@ -239,10 +239,10 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.grey500.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -255,7 +255,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
           hintText: 'Rechercher...',
           prefixIcon: const Icon(Icons.search),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             borderSide: BorderSide.none,
           ),
           filled: true,
@@ -271,7 +271,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.1),
         border: Border(
-          bottom: BorderSide(color: Colors.grey.withOpacity(0.2)),
+          bottom: BorderSide(color: AppTheme.grey500.withOpacity(0.2)),
         ),
       ),
       child: Column(
@@ -280,7 +280,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
           const Text(
             'Sélectionner un rôle à assigner:',
             style: TextStyle(
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
           const SizedBox(height: 12),
@@ -306,7 +306,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                     avatar: Icon(
                       _getIconFromString(role.icon),
                       size: 16,
-                      color: isSelected ? Colors.white : roleColor,
+                      color: isSelected ? AppTheme.white100 : roleColor,
                     ),
                     onSelected: (selected) {
                       setState(() {
@@ -314,9 +314,9 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                       });
                     },
                     selectedColor: roleColor,
-                    checkmarkColor: Colors.white,
+                    checkmarkColor: AppTheme.white100,
                     labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : roleColor,
+                      color: isSelected ? AppTheme.white100 : roleColor,
                     ),
                   );
                 }).toList(),
@@ -381,7 +381,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                 backgroundColor: AppTheme.primaryColor,
                 child: Text(
                   person.displayInitials,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppTheme.white100),
                 ),
               ),
         title: Text(person.fullName),
@@ -471,13 +471,13 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
           backgroundColor: roleColor,
           child: Icon(
             _getIconFromString(role.icon),
-            color: Colors.white,
+            color: AppTheme.white100,
           ),
         ),
         title: Text(
           role.name,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: roleColor,
           ),
         ),
@@ -513,7 +513,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                   return ListTile(
                     dense: true,
                     leading: CircleAvatar(
-                      backgroundColor: Colors.grey[300],
+                      backgroundColor: AppTheme.grey300,
                       radius: 16,
                       child: Text(
                         person.displayInitials,
@@ -524,7 +524,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                     subtitle: Text(person.email),
                     trailing: _hasManageRolesPermission
                         ? IconButton(
-                            icon: const Icon(Icons.remove_circle, color: Colors.red),
+                            icon: const Icon(Icons.remove_circle, color: AppTheme.redStandard),
                             onPressed: () => _removeRole(person, role),
                             tooltip: 'Retirer ce rôle',
                           )

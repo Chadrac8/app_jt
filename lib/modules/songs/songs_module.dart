@@ -9,6 +9,7 @@ import 'views/song_form_view.dart';
 import 'views/songs_home_page.dart';
 import 'views/member_songs_page.dart';
 import 'services/songs_service.dart';
+import '../../../theme.dart';
 
 /// Module de gestion des chants
 class SongsModule extends BaseModule {
@@ -95,7 +96,7 @@ class SongsModule extends BaseModule {
     return CustomCard(
       child: InkWell(
         onTap: () => Navigator.of(context).pushNamed('/member/songs'),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -107,7 +108,7 @@ class SongsModule extends BaseModule {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Colors.purple.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: const Icon(
                       Icons.library_music,
@@ -124,14 +125,14 @@ class SongsModule extends BaseModule {
                           config.name,
                           style: const TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           config.description,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                             fontSize: 14,
                           ),
                           maxLines: 2,
@@ -195,7 +196,7 @@ class SongsModule extends BaseModule {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.purple.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -207,7 +208,7 @@ class SongsModule extends BaseModule {
             style: const TextStyle(
               fontSize: 10,
               color: Colors.purple,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -219,20 +220,20 @@ class SongsModule extends BaseModule {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
+        color: AppTheme.grey200,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 10, color: Colors.grey[600]),
+          Icon(icon, size: 10, color: AppTheme.grey600),
           const SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
               fontSize: 9,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
+              color: AppTheme.grey600,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],

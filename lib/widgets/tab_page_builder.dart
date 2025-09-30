@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 import '../models/page_model.dart';
 import 'custom_tabs_widget.dart';
 import 'page_components/component_editor.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 /// Widget pour créer et éditer les onglets d'un composant TabsWidget
 class TabPageBuilder extends StatefulWidget {
@@ -112,7 +112,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Il faut au moins un onglet'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -247,21 +247,21 @@ class _TabPageBuilderState extends State<TabPageBuilder>
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.tab, color: Colors.white),
+                  const Icon(Icons.tab, color: AppTheme.white100),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Text(
                       'Éditeur d\'onglets',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                   ),
                 ],
               ),
@@ -270,12 +270,12 @@ class _TabPageBuilderState extends State<TabPageBuilder>
             // Onglets principaux
             Container(
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+                border: Border(bottom: BorderSide(color: AppTheme.grey500)),
               ),
               child: TabBar(
                 controller: _mainTabController,
                 labelColor: AppTheme.primaryColor,
-                unselectedLabelColor: Colors.grey,
+                unselectedLabelColor: AppTheme.grey500,
                 indicatorColor: AppTheme.primaryColor,
                 tabs: const [
                   Tab(text: 'Configuration'),
@@ -299,8 +299,8 @@ class _TabPageBuilderState extends State<TabPageBuilder>
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
-                border: Border(top: BorderSide(color: Colors.grey.shade300)),
+                color: AppTheme.grey500,
+                border: Border(top: BorderSide(color: AppTheme.grey500)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -314,7 +314,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                     onPressed: _saveChanges,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                     child: const Text('Enregistrer'),
                   ),
@@ -344,7 +344,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                     Text(
                       'Configuration générale',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -400,7 +400,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                     Text(
                       'Style et apparence',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -416,7 +416,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                           height: 30,
                           decoration: BoxDecoration(
                             color: Color(int.parse(_componentStyling['backgroundColor']!.substring(1), radix: 16) + 0xFF000000),
-                            border: Border.all(color: Colors.grey),
+                            border: Border.all(color: AppTheme.grey500),
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
@@ -444,7 +444,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                           height: 30,
                           decoration: BoxDecoration(
                             color: Color(int.parse(_componentStyling['indicatorColor']!.substring(1), radix: 16) + 0xFF000000),
-                            border: Border.all(color: Colors.grey),
+                            border: Border.all(color: AppTheme.grey500),
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
@@ -479,7 +479,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                           child: Text(
                             'Liste des onglets',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                         ),
@@ -489,7 +489,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                           label: const Text('Ajouter'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.primaryColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                           ),
                         ),
                       ],
@@ -516,7 +516,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                               ),
                               IconButton(
                                 onPressed: () => _removeTab(index),
-                                icon: const Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(Icons.delete, color: AppTheme.redStandard),
                                 tooltip: 'Supprimer l\'onglet',
                               ),
                             ],
@@ -541,14 +541,14 @@ class _TabPageBuilderState extends State<TabPageBuilder>
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.grey.shade50,
-            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+            color: AppTheme.grey500,
+            border: Border(bottom: BorderSide(color: AppTheme.grey500)),
           ),
           child: Row(
             children: [
               const Text(
                 'Onglet sélectionné:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -575,7 +575,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                 label: const Text('Ajouter composant'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                 ),
               ),
             ],
@@ -601,13 +601,13 @@ class _TabPageBuilderState extends State<TabPageBuilder>
             Icon(
               Icons.widgets_outlined,
               size: 64,
-              color: Colors.grey.shade400,
+              color: AppTheme.grey500,
             ),
             const SizedBox(height: 16),
             Text(
               'Aucun composant dans cet onglet',
               style: TextStyle(
-                color: Colors.grey.shade600,
+                color: AppTheme.grey500,
                 fontSize: 16,
               ),
             ),
@@ -618,7 +618,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
               label: const Text('Ajouter un composant'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
               ),
             ),
           ],
@@ -649,10 +649,10 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                 ),
                 IconButton(
                   onPressed: () => _removeComponent(tabIndex, index),
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: AppTheme.redStandard),
                   tooltip: 'Supprimer le composant',
                 ),
-                const Icon(Icons.drag_handle, color: Colors.grey),
+                const Icon(Icons.drag_handle, color: AppTheme.grey500),
               ],
             ),
           ),
@@ -841,7 +841,7 @@ class _TabEditDialogState extends State<_TabEditDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Le titre ne peut pas être vide'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
       return;
@@ -877,8 +877,8 @@ class _TabEditDialogState extends State<_TabEditDialog> {
             height: 200,
             width: double.maxFinite,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppTheme.grey500),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: GridView.builder(
               padding: const EdgeInsets.all(8),
@@ -900,7 +900,7 @@ class _TabEditDialogState extends State<_TabEditDialog> {
                     ),
                     child: Icon(
                       icon,
-                      color: isSelected ? Colors.white : Colors.grey.shade700,
+                      color: isSelected ? AppTheme.white100 : AppTheme.grey500,
                     ),
                   ),
                 );
@@ -931,28 +931,28 @@ class _ComponentTypeSelector extends StatelessWidget {
 
   final Map<String, List<Map<String, dynamic>>> _componentCategories = {
     'Contenu textuel': [
-      {'type': 'text', 'label': 'Texte', 'icon': Icons.text_fields, 'color': Colors.blue, 'description': 'Paragraphe de texte avec formatage'},
+      {'type': 'text', 'label': 'Texte', 'icon': Icons.text_fields, 'color': AppTheme.blueStandard, 'description': 'Paragraphe de texte avec formatage'},
       {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': Colors.indigo, 'description': 'Citation biblique avec référence'},
       {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': Colors.amber, 'description': 'Message d\'annonce avec style'},
       {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': Colors.deepPurple, 'description': 'Citation avec auteur et contexte'},
     ],
     'Médias': [
-      {'type': 'image', 'label': 'Image', 'icon': Icons.image, 'color': Colors.green, 'description': 'Photo ou illustration'},
-      {'type': 'video', 'label': 'Vidéo', 'icon': Icons.video_library, 'color': Colors.red, 'description': 'Vidéo YouTube ou fichier'},
-      {'type': 'audio', 'label': 'Audio', 'icon': Icons.music_note, 'color': Colors.pink, 'description': 'Fichier audio ou musique'},
+      {'type': 'image', 'label': 'Image', 'icon': Icons.image, 'color': AppTheme.greenStandard, 'description': 'Photo ou illustration'},
+      {'type': 'video', 'label': 'Vidéo', 'icon': Icons.video_library, 'color': AppTheme.redStandard, 'description': 'Vidéo YouTube ou fichier'},
+      {'type': 'audio', 'label': 'Audio', 'icon': Icons.music_note, 'color': AppTheme.pinkStandard, 'description': 'Fichier audio ou musique'},
     ],
     'Interactif': [
-      {'type': 'button', 'label': 'Bouton', 'icon': Icons.smart_button, 'color': Colors.orange, 'description': 'Bouton d\'action cliquable'},
+      {'type': 'button', 'label': 'Bouton', 'icon': Icons.smart_button, 'color': AppTheme.orangeStandard, 'description': 'Bouton d\'action cliquable'},
       {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': Colors.cyan, 'description': 'Code HTML personnalisé'},
-      {'type': 'webview', 'label': 'WebView', 'icon': Icons.web, 'color': Colors.blue, 'description': 'Intégrer une page web externe dans votre application'},
+      {'type': 'webview', 'label': 'WebView', 'icon': Icons.web, 'color': AppTheme.blueStandard, 'description': 'Intégrer une page web externe dans votre application'},
     ],
     'Organisation': [
       {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': Colors.purple, 'description': 'Liste d\'éléments à puces ou numérotée'},
       {'type': 'grid_container', 'label': 'Container Grid', 'icon': Icons.grid_view, 'color': Colors.deepPurple, 'description': 'Container configurable pour organiser des composants en grille'},
       {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': Colors.brown, 'description': 'Carte géographique interactive'},
-      {'type': 'googlemap', 'label': 'Google Map', 'icon': Icons.location_on, 'color': Colors.redAccent, 'description': 'Carte Google avec reconnaissance d\'adresse'},
+      {'type': 'googlemap', 'label': 'Google Map', 'icon': Icons.location_on, 'color': AppTheme.redStandard, 'description': 'Carte Google avec reconnaissance d\'adresse'},
       {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': Colors.deepOrange, 'description': 'Affichage et gestion des groupes d\'utilisateurs'},
-      {'type': 'events', 'label': 'Evénements', 'icon': Icons.event, 'color': Colors.green, 'description': 'Calendrier et liste d\'événements'},
+      {'type': 'events', 'label': 'Evénements', 'icon': Icons.event, 'color': AppTheme.greenStandard, 'description': 'Calendrier et liste d\'événements'},
     ],
   };
 
@@ -985,8 +985,8 @@ class _ComponentTypeSelector extends StatelessWidget {
                       categoryName,
                       style: const TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        fontWeight: AppTheme.fontBold,
+                        color: AppTheme.black100,
                       ),
                     ),
                   ),
@@ -1006,7 +1006,7 @@ class _ComponentTypeSelector extends StatelessWidget {
                         elevation: 2,
                         child: InkWell(
                           onTap: () => onComponentTypeSelected(componentType['type']),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(

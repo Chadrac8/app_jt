@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/family_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'family_detail_page.dart';
 import 'family_form_page.dart';
 
@@ -121,7 +121,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
         icon: const Icon(Icons.add),
         label: const Text('Nouvelle Famille'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
       ),
     );
   }
@@ -146,7 +146,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                 )
               : null,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
         ),
         onChanged: (value) {
@@ -167,7 +167,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -176,7 +176,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
               Text(
                 'Statistiques des Familles',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.primaryColor,
                     ),
               ),
@@ -225,7 +225,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
           value,
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: color,
           ),
         ),
@@ -335,9 +335,9 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
   Widget _buildFamilyCard(FamilyModel family) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         onTap: () => _navigateToFamilyDetail(family),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -370,7 +370,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                         Text(
                           family.name,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                         ),
                         const SizedBox(height: 4),
@@ -380,14 +380,14 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
                                 color: _getStatusColor(family.status).withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               ),
                               child: Text(
                                 _getStatusLabel(family.status),
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: _getStatusColor(family.status),
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),
@@ -429,8 +429,8 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                       const PopupMenuItem(
                         value: 'delete',
                         child: ListTile(
-                          leading: Icon(Icons.delete, color: Colors.red),
-                          title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                          leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                          title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                           contentPadding: EdgeInsets.zero,
                         ),
                       ),
@@ -499,15 +499,15 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
   Color _getStatusColor(FamilyStatus status) {
     switch (status) {
       case FamilyStatus.member:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case FamilyStatus.visitor:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case FamilyStatus.attendee:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case FamilyStatus.inactive:
-        return Colors.grey;
+        return AppTheme.grey500;
       case FamilyStatus.inactive_member:
-        return Colors.red;
+        return AppTheme.redStandard;
       default:
         return AppTheme.primaryColor;
     }
@@ -548,7 +548,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         title: const Text('Supprimer la famille'),
         content: Text(
           'Êtes-vous sûr de vouloir supprimer la famille "${family.name}" ?\n\n'
@@ -562,7 +562,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Supprimer'),

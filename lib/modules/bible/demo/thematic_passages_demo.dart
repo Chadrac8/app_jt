@@ -6,6 +6,7 @@ import '../widgets/theme_creation_dialog.dart';
 import '../widgets/add_passage_dialog.dart';
 import '../services/thematic_passage_service.dart';
 import '../services/predefined_themes.dart';
+import '../../../../theme.dart';
 
 /// Fichier de démonstration des passages thématiques
 /// 
@@ -24,7 +25,7 @@ class ThematicPassagesDemoApp extends StatelessWidget {
     return MaterialApp(
       title: 'Passages Thématiques - Démo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: AppTheme.blueStandard,
         fontFamily: 'Inter',
       ),
       home: const DemoHomePage(),
@@ -62,7 +63,7 @@ class DemoHomePage extends StatelessWidget {
               context,
               'Voir tous les thèmes',
               Icons.collections_bookmark,
-              Colors.blue,
+              AppTheme.blueStandard,
               () => _showFullView(context),
             ),
             
@@ -72,7 +73,7 @@ class DemoHomePage extends StatelessWidget {
               context,
               'Créer un nouveau thème',
               Icons.add_circle_outline,
-              Colors.green,
+              AppTheme.greenStandard,
               () => _showCreateThemeDialog(context),
             ),
             
@@ -82,7 +83,7 @@ class DemoHomePage extends StatelessWidget {
               context,
               'Ajouter un passage',
               Icons.add,
-              Colors.orange,
+              AppTheme.orangeStandard,
               () => _showAddPassageDialog(context),
             ),
             
@@ -105,7 +106,7 @@ class DemoHomePage extends StatelessWidget {
               'Thèmes pré-définis',
               '10 thèmes avec 58 passages bibliques',
               Icons.auto_awesome,
-              Colors.blue,
+              AppTheme.blueStandard,
             ),
             
             const SizedBox(height: 12),
@@ -114,7 +115,7 @@ class DemoHomePage extends StatelessWidget {
               'Fonctionnalités',
               'Création, édition, suppression, ajout de passages',
               Icons.build,
-              Colors.green,
+              AppTheme.greenStandard,
             ),
             
             const SizedBox(height: 12),
@@ -123,7 +124,7 @@ class DemoHomePage extends StatelessWidget {
               'Support des plages',
               'Versets individuels ou plages (ex: Matthieu 5:3-12)',
               Icons.view_agenda,
-              Colors.orange,
+              AppTheme.orangeStandard,
             ),
             
             const SizedBox(height: 32),
@@ -141,10 +142,10 @@ class DemoHomePage extends StatelessWidget {
   Widget _buildSectionHeader(String title) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.w700,
-        color: Colors.black87,
+        fontWeight: AppTheme.fontBold,
+        color: AppTheme.black100.withOpacity(0.87),
       ),
     );
   }
@@ -164,10 +165,10 @@ class DemoHomePage extends StatelessWidget {
         label: Text(title),
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
         ),
       ),
@@ -184,7 +185,7 @@ class DemoHomePage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
@@ -193,7 +194,7 @@ class DemoHomePage extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
@@ -206,7 +207,7 @@ class DemoHomePage extends StatelessWidget {
                   title,
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -214,7 +215,7 @@ class DemoHomePage extends StatelessWidget {
                   subtitle,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.black.withOpacity(0.6),
+                    color: AppTheme.black100.withOpacity(0.6),
                   ),
                 ),
               ],
@@ -235,9 +236,9 @@ class DemoHomePage extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 8),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey[300]!),
+            color: AppTheme.grey50,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            border: Border.all(color: AppTheme.grey300!),
           ),
           child: Row(
             children: [
@@ -245,7 +246,7 @@ class DemoHomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Color(themeData['color'] as int).withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   IconData(
@@ -265,14 +266,14 @@ class DemoHomePage extends StatelessWidget {
                       themeData['name'] as String,
                       style: const TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     Text(
                       '${passages.length} passages',
                       style: const TextStyle(
                         fontSize: 12,
-                        color: Colors.grey,
+                        color: AppTheme.grey500,
                       ),
                     ),
                   ],
@@ -320,7 +321,7 @@ class DemoHomePage extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Thèmes par défaut initialisés (simulation)'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -329,7 +330,7 @@ class DemoHomePage extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur : $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

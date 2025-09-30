@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../../../../theme.dart';
 
 /// Modèle représentant une catégorie de chant
 class SongCategory {
@@ -18,7 +19,7 @@ class SongCategory {
     required this.name,
     required this.description,
     this.icon,
-    this.color = Colors.blue,
+    this.color = AppTheme.blueStandard,
     this.sortOrder = 0,
     this.isActive = true,
     required this.createdAt,
@@ -32,7 +33,7 @@ class SongCategory {
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       icon: map['icon'],
-      color: Color(map['color'] ?? Colors.blue.value),
+      color: Color(map['color'] ?? AppTheme.blueStandard.value),
       sortOrder: map['sortOrder'] ?? 0,
       isActive: map['isActive'] ?? true,
       createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
@@ -101,7 +102,7 @@ class DefaultSongCategories {
       name: 'Louange',
       description: 'Chants de louange et d\'adoration',
       icon: 'music_note',
-      color: Colors.orange,
+      color: AppTheme.orangeStandard,
       sortOrder: 1,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -110,7 +111,7 @@ class DefaultSongCategories {
       name: 'Adoration',
       description: 'Chants d\'adoration et de recueillement',
       icon: 'favorite',
-      color: Colors.red,
+      color: AppTheme.redStandard,
       sortOrder: 2,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -128,7 +129,7 @@ class DefaultSongCategories {
       name: 'Évangélisation',
       description: 'Chants d\'évangélisation et témoignage',
       icon: 'share',
-      color: Colors.green,
+      color: AppTheme.greenStandard,
       sortOrder: 4,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -137,7 +138,7 @@ class DefaultSongCategories {
       name: 'Noël',
       description: 'Chants de Noël et de l\'Avent',
       icon: 'star',
-      color: Colors.red,
+      color: AppTheme.redStandard,
       sortOrder: 5,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

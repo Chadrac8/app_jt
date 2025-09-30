@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/sermon.dart';
 
 class SermonNotesView extends StatelessWidget {
@@ -20,11 +20,11 @@ class SermonNotesView extends StatelessWidget {
         title: Text(
           'Notes du sermon',
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         elevation: 1,
         iconTheme: IconThemeData(color: AppTheme.textPrimaryColor),
       ),
@@ -45,10 +45,10 @@ class SermonNotesView extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.grey500.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 1),
@@ -63,13 +63,13 @@ class SermonNotesView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             ),
             child: Text(
               DateFormat('dd MMMM yyyy', 'fr_FR').format(sermon.date),
               style: GoogleFonts.poppins(
                 fontSize: 12,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.primaryColor,
               ),
             ),
@@ -81,7 +81,7 @@ class SermonNotesView extends StatelessWidget {
             sermon.titre,
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
               height: 1.3,
             ),
@@ -101,7 +101,7 @@ class SermonNotesView extends StatelessWidget {
                 sermon.orateur,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                   color: AppTheme.textSecondaryColor,
                 ),
               ),
@@ -141,7 +141,7 @@ class SermonNotesView extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               )).toList(),
@@ -162,14 +162,14 @@ class SermonNotesView extends StatelessWidget {
               Icon(
                 Icons.notes_outlined,
                 size: 64,
-                color: Colors.grey.shade400,
+                color: AppTheme.grey500,
               ),
               const SizedBox(height: 16),
               Text(
                 'Aucune note disponible',
                 style: GoogleFonts.poppins(
                   fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -191,11 +191,11 @@ class SermonNotesView extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.grey500.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 6,
             offset: const Offset(0, 2),
@@ -218,7 +218,7 @@ class SermonNotesView extends StatelessWidget {
                 'Notes du sermon',
                 style: GoogleFonts.poppins(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -255,7 +255,7 @@ class SermonNotesView extends StatelessWidget {
               line.substring(2),
               style: GoogleFonts.poppins(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -273,7 +273,7 @@ class SermonNotesView extends StatelessWidget {
               line.substring(3),
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -295,7 +295,7 @@ class SermonNotesView extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 Expanded(
@@ -323,7 +323,7 @@ class SermonNotesView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border(
                 left: BorderSide(
                   color: AppTheme.primaryColor,

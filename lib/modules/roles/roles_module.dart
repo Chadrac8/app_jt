@@ -7,6 +7,7 @@ import 'models/role.dart';
 import 'models/user_role.dart';
 import 'services/role_service.dart';
 import 'providers/role_provider.dart';
+import '../../../theme.dart';
 
 // Modeles
 export 'models/permission.dart';
@@ -138,14 +139,14 @@ class RolesModule {
   /// Obtient la couleur associee a un module
   static Color getModuleColor(String module) {
     switch (module.toLowerCase()) {
-      case 'users': return Colors.blue;
+      case 'users': return AppTheme.blueStandard;
       case 'roles': return Colors.purple;
-      case 'content': return Colors.green;
-      case 'settings': return Colors.orange;
-      case 'notifications': return Colors.red;
+      case 'content': return AppTheme.greenStandard;
+      case 'settings': return AppTheme.orangeStandard;
+      case 'notifications': return AppTheme.redStandard;
       case 'analytics': return Colors.teal;
       case 'reports': return Colors.indigo;
-      default: return Colors.grey;
+      default: return AppTheme.grey500;
     }
   }
   

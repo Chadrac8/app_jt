@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/service_model.dart';
+import '../../theme.dart';
 
 class PositionCard extends StatelessWidget {
   final PositionModel position;
@@ -29,11 +30,11 @@ class PositionCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         onLongPress: onLongPress,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: isSelected
                 ? Border.all(
                     color: Theme.of(context).colorScheme.primary,
@@ -79,7 +80,7 @@ class PositionCard extends StatelessWidget {
                               child: Text(
                                 position.name,
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                                 maxLines: 1,
@@ -95,13 +96,13 @@ class PositionCard extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: teamColor.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                                 child: Text(
                                   'Leader',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: teamColor,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: AppTheme.fontSemiBold,
                                   ),
                                 ),
                               ),
@@ -115,13 +116,13 @@ class PositionCard extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                                 child: Text(
                                   'Inactif',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: Theme.of(context).colorScheme.outline,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                               ),
@@ -167,7 +168,7 @@ class PositionCard extends StatelessWidget {
                           position.maxAssignments.toString(),
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).colorScheme.outline,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ],
@@ -190,13 +191,13 @@ class PositionCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: Text(
                         skill,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     );
@@ -209,13 +210,13 @@ class PositionCard extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Text(
                           '+${position.requiredSkills.length - 3}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).colorScheme.onSurface,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),

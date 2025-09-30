@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
@@ -55,10 +55,10 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: AppTheme.black100.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2)),
         ]),
@@ -98,7 +98,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppTheme.surfaceColor.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(12)),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             child: Icon(
               Icons.article_outlined,
               color: AppTheme.surfaceColor,
@@ -112,7 +112,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                   'Articles bibliques',
                   style: GoogleFonts.inter(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.surfaceColor)),
                 const SizedBox(height: 4),
                 Text(
@@ -169,7 +169,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
           width: 1)),
@@ -181,7 +181,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
             value,
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color)),
           const SizedBox(height: 4),
           Text(
@@ -229,7 +229,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
             'Articles récents',
             style: GoogleFonts.inter(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: theme.textTheme.titleLarge?.color)),
           const SizedBox(height: 16),
           ListView.separated(
@@ -247,12 +247,12 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
   Widget _buildArticleCard(BibleArticle article, ThemeData theme) {
     return InkWell(
       onTap: () => _navigateToArticleDetail(article),
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 1)),
@@ -270,7 +270,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                         article.title,
                         style: GoogleFonts.inter(
                           fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: theme.textTheme.titleMedium?.color),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis),
@@ -288,12 +288,12 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: theme.primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                   child: Text(
                     article.category,
                     style: GoogleFonts.inter(
                       fontSize: 11,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                       color: theme.primaryColor))),
               ]),
             const SizedBox(height: 12),
@@ -348,13 +348,13 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
               label: Text(
                 'Voir tous les articles',
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w600)),
+                  fontWeight: AppTheme.fontSemiBold)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.primaryColor,
                 foregroundColor: AppTheme.surfaceColor,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12))))),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium))))),
           if (widget.isAdmin) ...[
             const SizedBox(height: 12),
             SizedBox(
@@ -365,13 +365,13 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                 label: Text(
                   'Gérer les articles',
                   style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w600)),
+                    fontWeight: AppTheme.fontSemiBold)),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: theme.primaryColor,
                   side: BorderSide(color: theme.primaryColor),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12))))),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium))))),
           ],
         ]));
   }

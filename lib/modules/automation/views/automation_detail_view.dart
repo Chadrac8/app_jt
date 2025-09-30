@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/automation.dart';
 import '../models/automation_execution.dart';
 import '../services/automation_service.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
 
 /// Vue détaillée d'une automatisation
@@ -46,7 +46,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -127,7 +127,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
           Icon(
             _automation!.isActive ? Icons.check_circle : Icons.pause_circle,
             size: 32,
-            color: _automation!.isActive ? Colors.green : Colors.grey,
+            color: _automation!.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -137,7 +137,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                 Text(
                   _automation!.status.label,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: _automation!.isActive ? Colors.green : Colors.grey,
+                    color: _automation!.isActive ? AppTheme.greenStandard : AppTheme.grey500,
                   ),
                 ),
                 Text(
@@ -162,8 +162,8 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                 Text(
                   '${_automation!.executionCount}',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
+                    color: AppTheme.blueStandard,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const Text('Exécutions'),
@@ -179,8 +179,8 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                 Text(
                   '${_automation!.successRate.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
+                    color: AppTheme.greenStandard,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const Text('Succès'),
@@ -196,8 +196,8 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                 Text(
                   '${_automation!.failureCount}',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
+                    color: AppTheme.redStandard,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const Text('Échecs'),
@@ -213,8 +213,8 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                 Text(
                   '${_automation!.actions.length}',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
+                    color: AppTheme.orangeStandard,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const Text('Actions'),
@@ -235,7 +235,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             children: [
               Icon(
                 _getTriggerIcon(_automation!.trigger),
-                color: Colors.blue,
+                color: AppTheme.blueStandard,
               ),
               const SizedBox(width: 8),
               Text(
@@ -286,15 +286,15 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: Colors.blue[100],
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppTheme.grey100,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Center(
                         child: Text(
                           '${entry.key + 1}',
                           style: TextStyle(
-                            color: Colors.blue[800],
-                            fontWeight: FontWeight.bold,
+                            color: AppTheme.grey800,
+                            fontWeight: AppTheme.fontBold,
                             fontSize: 12,
                           ),
                         ),
@@ -337,12 +337,12 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: entry.value.enabled ? Colors.green[100] : Colors.grey[100],
-                        borderRadius: BorderRadius.circular(16),
+                        color: entry.value.enabled ? AppTheme.grey100 : AppTheme.grey100,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                       ),
                       child: Icon(
                         _getActionIcon(entry.value.action),
-                        color: entry.value.enabled ? Colors.green[800] : Colors.grey[600],
+                        color: entry.value.enabled ? AppTheme.grey800 : AppTheme.grey600,
                         size: 16,
                       ),
                     ),
@@ -354,8 +354,8 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                           Text(
                             entry.value.action.label,
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: entry.value.enabled ? null : Colors.grey[600],
+                              fontWeight: AppTheme.fontMedium,
+                              color: entry.value.enabled ? null : AppTheme.grey600,
                             ),
                           ),
                           if (entry.value.delayMinutes != null && entry.value.delayMinutes! > 0)
@@ -369,7 +369,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                     if (!entry.value.enabled)
                       Icon(
                         Icons.pause,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         size: 16,
                       ),
                   ],
@@ -420,7 +420,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                         children: [
                           Text(
                             execution.status.label,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
+                            style: const TextStyle(fontWeight: AppTheme.fontMedium),
                           ),
                           Text(
                             _formatDateTime(execution.triggeredAt),
@@ -458,7 +458,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             Text(
               'Tags',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
             const SizedBox(height: 8),
@@ -467,8 +467,8 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
               children: _automation!.tags.map((tag) =>
                 Chip(
                   label: Text(tag),
-                  backgroundColor: Colors.blue[100],
-                  labelStyle: TextStyle(color: Colors.blue[800]),
+                  backgroundColor: AppTheme.grey100,
+                  labelStyle: TextStyle(color: AppTheme.grey800),
                 ),
               ).toList(),
             ),
@@ -488,7 +488,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             width: 120,
             child: Text(
               '$label:',
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: AppTheme.fontMedium),
             ),
           ),
           Expanded(
@@ -569,17 +569,17 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
   Color _getExecutionStatusColor(ExecutionStatus status) {
     switch (status) {
       case ExecutionStatus.pending:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case ExecutionStatus.running:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case ExecutionStatus.completed:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case ExecutionStatus.failed:
-        return Colors.red;
+        return AppTheme.redStandard;
       case ExecutionStatus.cancelled:
-        return Colors.grey;
+        return AppTheme.grey500;
       case ExecutionStatus.skipped:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
     }
   }
 

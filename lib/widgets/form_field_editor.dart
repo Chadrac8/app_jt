@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/form_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormFieldEditor extends StatefulWidget {
   final CustomFormField field;
@@ -197,18 +197,18 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.edit, color: Colors.white),
+                  const Icon(Icons.edit, color: AppTheme.white100),
                   const SizedBox(width: 8),
                   Text(
                     'Modifier le champ',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      color: AppTheme.white100,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -254,7 +254,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                     onPressed: _saveField,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                     child: const Text('Sauvegarder'),
                   ),
@@ -274,7 +274,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
         Text(
           'Paramètres de base',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -377,7 +377,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             Text(
               'Options',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const Spacer(),
@@ -387,7 +387,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               label: const Text('Ajouter'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
               ),
             ),
           ],
@@ -399,8 +399,8 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: AppTheme.backgroundColor,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(color: AppTheme.grey500),
             ),
             child: Column(
               children: [
@@ -455,7 +455,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
         Text(
           'Champ personne',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -504,7 +504,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                 Text(
                   'Validation',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -564,7 +564,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               Text(
                 'Logique conditionnelle',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 8),
@@ -572,7 +572,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundColor,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Text(
                   'Fonctionnalité disponible prochainement',

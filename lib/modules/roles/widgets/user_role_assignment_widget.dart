@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/permission_model.dart';
-import '../services/permission_provider.dart';
+import '../providers/permission_provider.dart';
+import '../../../../theme.dart';
 
 /// Widget pour l'assignation de rôles aux utilisateurs
 class UserRoleAssignmentWidget extends StatefulWidget {
@@ -41,17 +42,17 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
         return Color(int.parse(colorString.substring(1), radix: 16) + 0xFF000000);
       }
       switch (colorString.toLowerCase()) {
-        case 'blue': return Colors.blue;
-        case 'green': return Colors.green;
-        case 'red': return Colors.red;
-        case 'orange': return Colors.orange;
+        case 'blue': return AppTheme.blueStandard;
+        case 'green': return AppTheme.greenStandard;
+        case 'red': return AppTheme.redStandard;
+        case 'orange': return AppTheme.orangeStandard;
         case 'purple': return Colors.purple;
         case 'teal': return Colors.teal;
         case 'indigo': return Colors.indigo;
-        default: return Colors.blue;
+        default: return AppTheme.blueStandard;
       }
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 
@@ -102,7 +103,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
               hintText: 'Rechercher un utilisateur...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide.none,
               ),
               filled: true,
@@ -132,7 +133,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                       decoration: InputDecoration(
                         labelText: 'Filtrer par rôle',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
@@ -209,7 +210,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.people_outline, size: 64, color: Colors.grey),
+                    Icon(Icons.people_outline, size: 64, color: AppTheme.grey500),
                     SizedBox(height: 16),
                     Text('Aucun utilisateur trouvé'),
                   ],
@@ -244,20 +245,20 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
       margin: const EdgeInsets.only(bottom: 12),
       child: ExpansionTile(
         leading: CircleAvatar(
-          backgroundColor: isActive ? Colors.green : Colors.grey,
+          backgroundColor: isActive ? AppTheme.greenStandard : AppTheme.grey500,
           backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
           child: photoUrl == null
               ? Text(
                   firstName.isNotEmpty ? firstName[0].toUpperCase() : '?',
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppTheme.white100),
                 )
               : null,
         ),
         title: Text(
           '$firstName $lastName',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: isActive ? null : Colors.grey,
+            fontWeight: AppTheme.fontSemiBold,
+            color: isActive ? null : AppTheme.grey500,
           ),
         ),
         subtitle: Column(
@@ -274,14 +275,14 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                 if (userRoles.isEmpty) {
                   return const Text(
                     'Aucun rôle assigné',
-                    style: TextStyle(color: Colors.orange),
+                    style: TextStyle(color: AppTheme.orangeStandard),
                   );
                 }
                 return Text(
                   '${userRoles.length} rôle(s) assigné(s)',
                   style: TextStyle(
-                    color: Colors.green[600],
-                    fontWeight: FontWeight.w500,
+                    color: AppTheme.grey600,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 );
               },
@@ -326,7 +327,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                       Text(
                         'Rôles assignés (${userRoleDocs.length})',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       ElevatedButton.icon(
@@ -344,12 +345,12 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.orange[50],
-                        borderRadius: BorderRadius.circular(8),
+                        color: AppTheme.grey50,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.warning_amber, color: Colors.orange),
+                          Icon(Icons.warning_amber, color: AppTheme.orangeStandard),
                           SizedBox(width: 8),
                           Text('Aucun rôle assigné à cet utilisateur'),
                         ],
@@ -425,7 +426,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Révoquer'),
           ),
         ],
@@ -449,7 +450,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Rôle "$roleName" révoqué avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -458,7 +459,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la révocation: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -487,17 +488,17 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
         return Color(int.parse(colorString.substring(1), radix: 16) + 0xFF000000);
       }
       switch (colorString.toLowerCase()) {
-        case 'blue': return Colors.blue;
-        case 'green': return Colors.green;
-        case 'red': return Colors.red;
-        case 'orange': return Colors.orange;
+        case 'blue': return AppTheme.blueStandard;
+        case 'green': return AppTheme.greenStandard;
+        case 'red': return AppTheme.redStandard;
+        case 'orange': return AppTheme.orangeStandard;
         case 'purple': return Colors.purple;
         case 'teal': return Colors.teal;
         case 'indigo': return Colors.indigo;
-        default: return Colors.blue;
+        default: return AppTheme.blueStandard;
       }
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 
@@ -576,7 +577,7 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(role.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                                    Text(role.name, style: const TextStyle(fontWeight: AppTheme.fontSemiBold)),
                                     if (role.description.isNotEmpty)
                                       Text(
                                         role.description,
@@ -645,7 +646,7 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Rôle assigné avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -658,7 +659,7 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'assignation: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

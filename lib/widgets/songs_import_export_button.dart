@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/songs_import_export_page.dart';
+import '../../theme.dart';
 
 /// Widget bouton pour accéder à l'import/export des chants
 class SongsImportExportButton extends StatelessWidget {
@@ -27,7 +28,7 @@ class SongsImportExportButton extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () => _navigateToImportExport(context),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

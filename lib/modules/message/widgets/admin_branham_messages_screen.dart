@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../models/branham_message.dart';
-import '../../../shared/theme/app_theme.dart';
+import '../../../../theme.dart';
 import '../services/admin_branham_messages_service.dart';
 
 class AdminBranhamMessagesScreen extends StatefulWidget {
@@ -37,7 +37,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -47,16 +47,16 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         foregroundColor: AppTheme.primaryColor,
         title: Text(
           'Administration - Prédications',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -71,18 +71,18 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
       body: Column(
         children: [
           Container(
-            color: Colors.white,
+            color: AppTheme.white100,
             padding: const EdgeInsets.all(16),
             child: TextField(
               onChanged: (value) => setState(() => _searchQuery = value),
               decoration: InputDecoration(
                 hintText: 'Rechercher une prédication...',
-                hintStyle: GoogleFonts.inter(color: Colors.grey.shade500),
-                prefixIcon: Icon(Icons.search, color: Colors.grey.shade500),
+                hintStyle: GoogleFonts.inter(color: AppTheme.grey500),
+                prefixIcon: Icon(Icons.search, color: AppTheme.grey500),
                 filled: true,
-                fillColor: Colors.grey.shade100,
+                fillColor: AppTheme.grey500,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   borderSide: BorderSide.none,
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -97,7 +97,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                         child: Text(
                           'Aucune prédication trouvée.\nCommencez par en ajouter une !',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          style: TextStyle(fontSize: 16, color: AppTheme.grey500),
                         ),
                       )
                     : ListView.builder(
@@ -108,11 +108,11 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                           return Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
+                              color: AppTheme.white100,
+                              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
+                                  color: AppTheme.black100.withOpacity(0.05),
                                   blurRadius: 4,
                                   offset: const Offset(0, 2),
                                 ),
@@ -124,7 +124,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                                 message.title,
                                 style: GoogleFonts.inter(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.primaryColor,
                                 ),
                               ),
@@ -132,7 +132,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                                 '${message.formattedDate} • ${message.location}',
                                 style: GoogleFonts.inter(
                                   fontSize: 13,
-                                  color: Colors.grey.shade600,
+                                  color: AppTheme.grey500,
                                 ),
                               ),
                               trailing: PopupMenuButton<String>(
@@ -147,7 +147,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                                   const PopupMenuItem(
                                     value: 'edit',
                                     child: ListTile(
-                                      leading: Icon(Icons.edit, color: Colors.blue),
+                                      leading: Icon(Icons.edit, color: AppTheme.blueStandard),
                                       title: Text('Modifier'),
                                       dense: true,
                                     ),
@@ -155,8 +155,8 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                                   const PopupMenuItem(
                                     value: 'delete',
                                     child: ListTile(
-                                      leading: Icon(Icons.delete, color: Colors.red),
-                                      title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                      leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                                      title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                       dense: true,
                                     ),
                                   ),
@@ -173,7 +173,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddDialog,
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         icon: const Icon(Icons.add),
         label: const Text('Ajouter'),
       ),
@@ -202,7 +202,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -217,7 +217,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Prédication supprimée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -339,7 +339,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Veuillez remplir tous les champs obligatoires (*)'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppTheme.redStandard,
                     ),
                   );
                   return;
@@ -373,14 +373,14 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(isEditing ? 'Prédication modifiée avec succès' : 'Prédication ajoutée avec succès'),
-                      backgroundColor: Colors.green,
+                      backgroundColor: AppTheme.greenStandard,
                     ),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(isEditing ? 'Erreur lors de la modification' : 'Erreur lors de l\'ajout'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppTheme.redStandard,
                     ),
                   );
                 }

@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -343,7 +343,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       expandedHeight: 300,
       pinned: true,
       backgroundColor: eventColor,
-      foregroundColor: Colors.white,
+      foregroundColor: AppTheme.white100,
       actions: [
         // Bouton Ajouter au calendrier
         IconButton(
@@ -391,7 +391,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
         placeholder: (context, url) => Container(
           color: _getEventColor(widget.event.type).withOpacity(0.3),
           child: const Center(
-            child: CircularProgressIndicator(color: Colors.white),
+            child: CircularProgressIndicator(color: AppTheme.white100),
           ),
         ),
         errorWidget: (context, url, error) => _buildDefaultEventImage(),
@@ -418,7 +418,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
         child: Icon(
           _getEventIcon(widget.event.type),
           size: 80,
-          color: Colors.white.withOpacity(0.8),
+          color: AppTheme.white100.withOpacity(0.8),
         ),
       ),
     );
@@ -433,7 +433,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
             color: _getEventColor(widget.event.type).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             border: Border.all(
               color: _getEventColor(widget.event.type).withOpacity(0.3),
             ),
@@ -451,7 +451,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                 widget.event.typeLabel,
                 style: TextStyle(
                   color: _getEventColor(widget.event.type),
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   fontSize: 12,
                 ),
               ),
@@ -465,7 +465,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
           widget.event.title,
           style: const TextStyle(
             fontSize: 28,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
@@ -476,7 +476,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
   Widget _buildEventDetails() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -514,7 +514,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: _getEventColor(widget.event.type).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Icon(
             icon,
@@ -531,7 +531,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                 title,
                 style: const TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textSecondaryColor,
                 ),
               ),
@@ -557,7 +557,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -574,7 +574,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                   'Description',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -598,7 +598,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
   Widget _buildQuickActions() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -615,7 +615,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                   'Actions rapides',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -631,10 +631,10 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                     label: const Text('Ajouter au calendrier'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _getEventColor(widget.event.type),
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                   ),
@@ -650,7 +650,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                       side: BorderSide(color: _getEventColor(widget.event.type)),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                   ),
@@ -686,7 +686,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -714,7 +714,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                         'Votre inscription',
                         style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: AppTheme.textSecondaryColor,
                         ),
                       ),
@@ -723,7 +723,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                         statusText,
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: statusColor,
                         ),
                       ),
@@ -764,7 +764,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
   Widget _buildRegistrationCard() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -792,7 +792,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                         'Participer',
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
@@ -819,14 +819,14 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                         ),
                       )
                     : const Icon(Icons.add),
                 label: Text(_isRegistering ? 'Inscription...' : 'S\'inscrire'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _getEventColor(widget.event.type),
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
@@ -844,7 +844,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       return FloatingActionButton.extended(
         onPressed: _unregisterFromEvent,
         backgroundColor: AppTheme.errorColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         icon: const Icon(Icons.cancel),
         label: const Text('Se désinscrire'),
       );
@@ -852,14 +852,14 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       return FloatingActionButton.extended(
         onPressed: _isRegistering ? null : _registerForEvent,
         backgroundColor: _getEventColor(widget.event.type),
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         icon: _isRegistering
             ? const SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                 ),
               )
             : const Icon(Icons.add),

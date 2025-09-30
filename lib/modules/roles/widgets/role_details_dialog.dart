@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/role.dart';
 import '../dialogs/create_edit_role_dialog.dart';
+import '../../../../theme.dart';
 
 class RoleDetailsDialog extends StatelessWidget {
   final Role role;
@@ -29,7 +30,7 @@ class RoleDetailsDialog extends StatelessWidget {
                   height: 50,
                   decoration: BoxDecoration(
                     color: _parseColor(role.color).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Icon(
                     _parseIcon(role.icon),
@@ -45,14 +46,14 @@ class RoleDetailsDialog extends StatelessWidget {
                       Text(
                         role.name,
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         role.description,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -76,7 +77,7 @@ class RoleDetailsDialog extends StatelessWidget {
                     Text(
                       'Informations générales',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -90,7 +91,7 @@ class RoleDetailsDialog extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: _parseColor(role.color),
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: Colors.grey[300]!),
+                          border: Border.all(color: AppTheme.grey300!),
                         ),
                       ),
                     ),
@@ -106,15 +107,15 @@ class RoleDetailsDialog extends StatelessWidget {
                       trailing: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: role.isActive ? Colors.green[100] : Colors.red[100],
-                          borderRadius: BorderRadius.circular(12),
+                          color: role.isActive ? AppTheme.grey100 : AppTheme.grey100,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           role.isActive ? 'Actif' : 'Inactif',
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: role.isActive ? Colors.green[700] : Colors.red[700],
+                            fontWeight: AppTheme.fontBold,
+                            color: role.isActive ? AppTheme.grey700 : AppTheme.grey700,
                           ),
                         ),
                       ),
@@ -148,7 +149,7 @@ class RoleDetailsDialog extends StatelessWidget {
                       Text(
                         'Permissions (${role.permissions.length})',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -171,7 +172,7 @@ class RoleDetailsDialog extends StatelessWidget {
                           child: Text(
                             '... et ${role.permissions.length - 10} autres',
                             style: TextStyle(
-                              color: Colors.grey[600],
+                              color: AppTheme.grey600,
                               fontSize: 12,
                             ),
                           ),
@@ -222,11 +223,11 @@ class RoleDetailsDialog extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: Colors.grey[600]),
+          Icon(icon, size: 20, color: AppTheme.grey600),
           const SizedBox(width: 12),
           Text(
             '$label:',
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: AppTheme.fontMedium),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -243,7 +244,7 @@ class RoleDetailsDialog extends StatelessWidget {
       final hexColor = colorString.replaceAll('#', '');
       return Color(int.parse('FF$hexColor', radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 

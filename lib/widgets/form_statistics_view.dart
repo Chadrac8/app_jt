@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormStatisticsView extends StatefulWidget {
   final FormModel form;
@@ -120,7 +120,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -133,7 +133,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: const Icon(
                     Icons.analytics,
@@ -145,7 +145,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 Text(
                   'Vue d\'ensemble',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -196,7 +196,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: color.withOpacity(0.2),
         ),
@@ -213,7 +213,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 value,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: color,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ],
@@ -223,7 +223,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppTheme.textSecondaryColor,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -239,7 +239,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -252,7 +252,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.secondaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: const Icon(
                     Icons.show_chart,
@@ -264,7 +264,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 Text(
                   'Évolution des soumissions',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -279,7 +279,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                     drawVerticalLine: false,
                     getDrawingHorizontalLine: (value) {
                       return FlLine(
-                        color: Colors.grey.shade300,
+                        color: AppTheme.grey500,
                         strokeWidth: 1,
                       );
                     },
@@ -335,7 +335,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                   ),
                   borderData: FlBorderData(
                     show: true,
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(color: AppTheme.grey500),
                   ),
                   minX: 0,
                   maxX: (_statistics!.submissionsByDate.length - 1).toDouble(),
@@ -393,7 +393,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -406,7 +406,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.warningColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: const Icon(
                     Icons.pie_chart,
@@ -418,7 +418,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 Text(
                   'Répartition par statut',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -441,8 +441,8 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                             radius: 50,
                             titleStyle: const TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              fontWeight: AppTheme.fontBold,
+                              color: AppTheme.white100,
                             ),
                           ),
                           PieChartSectionData(
@@ -452,8 +452,8 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                             radius: 50,
                             titleStyle: const TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              fontWeight: AppTheme.fontBold,
+                              color: AppTheme.white100,
                             ),
                           ),
                           PieChartSectionData(
@@ -463,8 +463,8 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                             radius: 50,
                             titleStyle: const TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              fontWeight: AppTheme.fontBold,
+                              color: AppTheme.white100,
                             ),
                           ),
                         ],
@@ -524,7 +524,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
           Text(
             value.toString(),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ],
@@ -538,7 +538,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -551,7 +551,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.tertiaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: const Icon(
                     Icons.analytics,
@@ -563,7 +563,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 Text(
                   'Analyse des réponses par champ',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -595,7 +595,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: AppTheme.textTertiaryColor.withOpacity(0.3),
         ),
@@ -615,7 +615,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 child: Text(
                   field.label,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
@@ -650,7 +650,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                       Text(
                         '$count ($percentage%)',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ],
@@ -658,7 +658,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                   const SizedBox(height: 4),
                   LinearProgressIndicator(
                     value: count / totalResponses,
-                    backgroundColor: Colors.grey.shade300,
+                    backgroundColor: AppTheme.grey500,
                     valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
                   ),
                 ],

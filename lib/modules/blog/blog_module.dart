@@ -8,6 +8,7 @@ import 'views/blog_admin_view.dart';
 import 'views/blog_detail_view.dart';
 import 'views/blog_form_view.dart';
 import 'services/blog_service.dart';
+import '../../../theme.dart';
 
 /// Module de gestion du blog
 class BlogModule extends BaseModule {
@@ -76,7 +77,7 @@ class BlogModule extends BaseModule {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Icon(
                           Icons.article,
@@ -93,13 +94,13 @@ class BlogModule extends BaseModule {
                               config.name,
                               style: const TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                             ),
                             Text(
                               config.description,
                               style: TextStyle(
-                                color: Colors.grey[600],
+                                color: AppTheme.grey600,
                                 fontSize: 14,
                               ),
                             ),
@@ -175,15 +176,15 @@ class BlogModule extends BaseModule {
           value.toString(),
           style: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.blueStandard,
           ),
         ),
         Text(
           label,
           style: const TextStyle(
             fontSize: 11,
-            color: Colors.grey,
+            color: AppTheme.grey500,
           ),
           textAlign: TextAlign.center,
         ),
@@ -306,7 +307,7 @@ class BlogModule extends BaseModule {
           Text(label),
           Text(
             value.toString(),
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: AppTheme.fontBold),
           ),
         ],
       ),

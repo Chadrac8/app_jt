@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
 import '../pages/workflow_detail_page.dart';
+import '../../theme.dart';
 
 class MyAssignedWorkflowsWidget extends StatefulWidget {
   final String personId;
@@ -167,14 +168,14 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         side: BorderSide(
           color: Color(int.parse('0xFF${workflowTemplate.color.substring(1)}')).withOpacity(0.3),
           width: 1,
         ),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         onTap: () => _openWorkflowDetails(personWorkflow, workflowTemplate, followedPerson),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -188,7 +189,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Color(int.parse('0xFF${workflowTemplate.color.substring(1)}')).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       _getIconData(workflowTemplate.icon),
@@ -204,7 +205,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                         Text(
                           workflowTemplate.name,
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                         const SizedBox(height: 2),
@@ -221,13 +222,13 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: statusColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       statusText,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: statusColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -241,7 +242,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +258,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                         Text(
                           'Mes étapes assignées (${assignedSteps.length})',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
@@ -331,7 +332,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                             Text(
                               '$completedSteps/$totalSteps étapes',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                           ],
@@ -393,16 +394,16 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'completed':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'in_progress':
       case 'active':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'pending':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'cancelled':
-        return Colors.red;
+        return AppTheme.redStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

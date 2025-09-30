@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 
 /// Page de base avec structure commune
 /// Fournit une structure cohérente pour toutes les pages de l'application
@@ -44,7 +45,7 @@ class BasePage extends StatelessWidget {
               automaticallyImplyLeading: automaticallyImplyLeading,
               elevation: 0,
               backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             )
           : null,
       body: SafeArea(

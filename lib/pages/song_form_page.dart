@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
 
@@ -118,7 +118,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Informations générales',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                     const SizedBox(height: 16),
                     
                     // Titre
@@ -201,7 +201,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Paroles et Accords',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                     const SizedBox(height: 8),
                     Text(
                       'Tapez les paroles avec les accords. Les accords doivent être placés au-dessus des mots correspondants.',
@@ -236,7 +236,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Tags',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                     const SizedBox(height: 16),
                     
                     Wrap(
@@ -271,7 +271,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Références bibliques',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                     const SizedBox(height: 16),
                     
                     TextFormField(
@@ -295,7 +295,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Médias',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                     const SizedBox(height: 16),
                     
                     // URL Audio
@@ -328,7 +328,7 @@ class _SongFormPageState extends State<SongFormPage> {
                     Text(
                       'Paramètres de publication',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: AppTheme.fontBold)),
                     const SizedBox(height: 16),
                     
                     Row(

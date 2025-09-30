@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/service_model.dart';
 import '../services/services_firebase_service.dart';
+import '../../theme.dart';
 
 class TeamCard extends StatelessWidget {
   final TeamModel team;
@@ -38,11 +39,11 @@ class TeamCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         onLongPress: onLongPress,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: isSelected
                 ? Border.all(
                     color: Theme.of(context).colorScheme.primary,
@@ -86,7 +87,7 @@ class TeamCard extends StatelessWidget {
                               child: Text(
                                 team.name,
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                                 maxLines: 1,
@@ -102,13 +103,13 @@ class TeamCard extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 ),
                                 child: Text(
                                   'Inactif',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: Theme.of(context).colorScheme.outline,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                               ),
@@ -158,7 +159,7 @@ class TeamCard extends StatelessWidget {
                               count.toString(),
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: Theme.of(context).colorScheme.outline,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             );
                           },

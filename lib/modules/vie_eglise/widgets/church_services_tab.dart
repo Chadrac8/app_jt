@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/church_service.dart';
 import '../services/church_service_service.dart';
 
@@ -66,7 +66,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
             'Services & Activités',
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.primaryColor,
             ),
           ),
@@ -85,11 +85,11 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
               hintText: 'Rechercher des services...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppTheme.white100,
             ),
             onChanged: (value) {
               setState(() {});
@@ -119,10 +119,10 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.primaryColor : Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                  color: isSelected ? AppTheme.primaryColor : AppTheme.white100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   border: Border.all(
-                    color: isSelected ? AppTheme.primaryColor : Colors.grey.shade300,
+                    color: isSelected ? AppTheme.primaryColor : AppTheme.grey500,
                   ),
                 ),
                 child: Column(
@@ -130,7 +130,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                   children: [
                     Icon(
                       type['icon'],
-                      color: isSelected ? Colors.white : AppTheme.primaryColor,
+                      color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       size: 20,
                     ),
                     const SizedBox(height: 4),
@@ -138,8 +138,8 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                       type['label'],
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: isSelected ? Colors.white : AppTheme.primaryColor,
+                        fontWeight: AppTheme.fontMedium,
+                        color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       ),
                     ),
                   ],
@@ -165,13 +165,13 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
+                Icon(Icons.error_outline, size: 64, color: AppTheme.redStandard),
                 const SizedBox(height: 16),
                 Text(
                   'Erreur de chargement',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -228,7 +228,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
           Icon(
             Icons.event_busy,
             size: 80,
-            color: Colors.grey.shade400,
+            color: AppTheme.grey500,
           ),
           const SizedBox(height: 16),
           Text(
@@ -237,7 +237,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                 : 'Aucun service de ce type',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: AppTheme.textSecondaryColor,
             ),
           ),
@@ -254,10 +254,10 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: InkWell(
         onTap: () => _showServiceDetails(service),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -276,12 +276,12 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
                         height: 150,
-                        color: Colors.grey.shade200,
+                        color: AppTheme.grey500,
                         child: const Center(child: CircularProgressIndicator()),
                       ),
                       errorWidget: (context, url, error) => Container(
                         height: 150,
-                        color: Colors.grey.shade200,
+                        color: AppTheme.grey500,
                         child: const Center(child: Icon(Icons.error)),
                       ),
                     ),
@@ -291,15 +291,15 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: isUpcoming ? Colors.green.withOpacity(0.9) : Colors.grey.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(8),
+                          color: isUpcoming ? AppTheme.greenStandard.withOpacity(0.9) : AppTheme.grey500.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Text(
                           isUpcoming ? 'À venir' : 'Passé',
                           style: GoogleFonts.poppins(
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                            fontWeight: AppTheme.fontMedium,
+                            color: AppTheme.white100,
                           ),
                         ),
                       ),
@@ -318,7 +318,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -333,7 +333,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                               type.label,
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                                 color: AppTheme.primaryColor,
                               ),
                             ),
@@ -345,15 +345,15 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            color: AppTheme.orangeStandard.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Text(
                             _getTimeUntilText(timeUntil),
                             style: GoogleFonts.poppins(
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.orange.shade700,
+                              fontWeight: AppTheme.fontMedium,
+                              color: AppTheme.orangeStandard,
                             ),
                           ),
                         ),
@@ -364,7 +364,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                     service.title,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -392,7 +392,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                           _formatDateTimeWithTime(service.scheduleDate!, service.scheduleTime),
                           style: GoogleFonts.poppins(
                             fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                             color: AppTheme.primaryColor,
                           ),
                         ),
@@ -406,7 +406,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                         Icon(
                           Icons.location_on,
                           size: 16,
-                          color: Colors.grey.shade600,
+                          color: AppTheme.grey500,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
@@ -414,7 +414,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                             service.location!,
                             style: GoogleFonts.poppins(
                               fontSize: 13,
-                              color: Colors.grey.shade600,
+                              color: AppTheme.grey500,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -429,14 +429,14 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                         Icon(
                           Icons.person,
                           size: 16,
-                          color: Colors.grey.shade600,
+                          color: AppTheme.grey500,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           'Pasteur: ${service.pastor}',
                           style: GoogleFonts.poppins(
                             fontSize: 13,
-                            color: Colors.grey.shade600,
+                            color: AppTheme.grey500,
                           ),
                         ),
                       ],
@@ -463,7 +463,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
         builder: (context, scrollController) {
           return Container(
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppTheme.white100,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -480,7 +480,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                       width: 40,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: AppTheme.grey500,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -488,7 +488,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                   const SizedBox(height: 20),
                   if (service.imageUrl != null && service.imageUrl!.isNotEmpty) ...[
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       child: CachedNetworkImage(
                         imageUrl: service.imageUrl!,
                         width: double.infinity,
@@ -502,7 +502,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                     service.title,
                     style: GoogleFonts.poppins(
                       fontSize: 24,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -523,7 +523,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                     'Description',
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -542,7 +542,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
                       'Récurrence',
                       style: GoogleFonts.poppins(
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -575,7 +575,7 @@ class _ChurchServicesTabState extends State<ChurchServicesTab> {
             '$label: ',
             style: GoogleFonts.poppins(
               fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: AppTheme.textSecondaryColor,
             ),
           ),

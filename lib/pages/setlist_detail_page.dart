@@ -5,6 +5,7 @@ import 'setlist_form_page.dart';
 import 'song_detail_page.dart';
 import 'setlist_conductor_mode.dart';
 import 'setlist_musician_mode.dart';
+import '../../theme.dart';
 
 /// Page de détail d'une setlist
 class SetlistDetailPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement des chants: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -94,7 +95,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
         color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black100.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -111,7 +112,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Icon(
                   Icons.playlist_play,
@@ -129,7 +130,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                     Text(
                       widget.setlist.name,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     if (widget.setlist.description.isNotEmpty) ...[
@@ -137,7 +138,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                       Text(
                         widget.setlist.description,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -157,7 +158,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
               // Date du service
               _buildInfoChip(
                 _formatDate(widget.setlist.serviceDate),
-                Colors.blue,
+                AppTheme.blueStandard,
                 Icons.calendar_today,
               ),
               
@@ -165,7 +166,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
               if (widget.setlist.serviceType != null)
                 _buildInfoChip(
                   widget.setlist.serviceType!,
-                  Colors.green,
+                  AppTheme.greenStandard,
                   Icons.event,
                 ),
               
@@ -186,7 +187,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.amber.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +204,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                         'Notes:',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: Colors.amber[700],
                         ),
                       ),
@@ -228,7 +229,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
             'Créé le ${_formatDate(widget.setlist.createdAt)}',
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           
@@ -243,10 +244,10 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                   label: const Text('Mode Conducteur'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                   ),
                 ),
@@ -259,10 +260,10 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                   label: const Text('Mode Musicien'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber,
-                    foregroundColor: Colors.black,
+                    foregroundColor: AppTheme.black100,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                   ),
                 ),
@@ -279,7 +280,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -290,7 +291,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
             label,
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -312,12 +313,12 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
             const Icon(
               Icons.music_off,
               size: 64,
-              color: Colors.grey,
+              color: AppTheme.grey500,
             ),
             const SizedBox(height: 16),
             const Text(
               'Aucun chant dans cette setlist',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -349,14 +350,14 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
               child: Text(
                 '${index + 1}',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
             title: Text(
               song.title,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
             subtitle: Text('${song.authors} • ${song.originalKey}'),
             trailing: Row(
@@ -367,15 +368,15 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppTheme.greenStandard.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       '${song.tempo} BPM',
                       style: const TextStyle(
                         fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        fontWeight: AppTheme.fontBold,
+                        color: AppTheme.greenStandard,
                       ),
                     ),
                   ),

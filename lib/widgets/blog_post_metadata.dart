@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
+import '../../theme.dart';
 
 class BlogPostMetadata extends StatelessWidget {
   final BlogPost post;
@@ -20,7 +21,7 @@ class BlogPostMetadata extends StatelessWidget {
               ? NetworkImage(post.authorPhotoUrl!)
               : null,
           child: post.authorPhotoUrl == null
-              ? Icon(Icons.person, color: Colors.grey[600])
+              ? Icon(Icons.person, color: AppTheme.grey600)
               : null,
         ),
         
@@ -34,7 +35,7 @@ class BlogPostMetadata extends StatelessWidget {
               Text(
                 post.authorName,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 2),
@@ -43,19 +44,19 @@ class BlogPostMetadata extends StatelessWidget {
                   Text(
                     _formatDate(post.publishedAt ?? post.updatedAt),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                   const SizedBox(width: 8),
                   Text(
                     '•',
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(color: AppTheme.grey600),
                   ),
                   const SizedBox(width: 8),
                   Text(
                     '${post.readingTimeMinutes} min de lecture',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                 ],
@@ -70,7 +71,7 @@ class BlogPostMetadata extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.amber.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(color: Colors.amber),
             ),
             child: Row(
@@ -83,7 +84,7 @@ class BlogPostMetadata extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.amber[700],
                     fontSize: 10,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],

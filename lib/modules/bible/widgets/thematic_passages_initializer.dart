@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/thematic_passage_service.dart';
+import '../../../../theme.dart';
 
 class ThematicPassagesInitializer extends StatefulWidget {
   final Widget child;
@@ -91,7 +92,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
               'Initialisation des passages thématiques',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: theme.colorScheme.onBackground,
               ),
               textAlign: TextAlign.center,
@@ -136,7 +137,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
                 'Erreur d\'initialisation',
                 style: GoogleFonts.inter(
                   fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.onBackground,
                 ),
                 textAlign: TextAlign.center,
@@ -180,7 +181,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
                     onPressed: _checkAndInitializeThemes,
                     child: Text(
                       'Réessayer',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                      style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
                     ),
                   ),
                 ],

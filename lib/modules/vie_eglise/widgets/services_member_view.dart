@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../theme.dart';
 
 class ServicesMemberView extends StatelessWidget {
   const ServicesMemberView({super.key});
@@ -19,7 +20,7 @@ class ServicesMemberView extends StatelessWidget {
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: Colors.grey[50],
+      color: AppTheme.grey50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,8 +33,8 @@ class ServicesMemberView extends StatelessWidget {
                   'Services & Événements',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey[800],
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.grey800,
                   ),
                 ),
               ),
@@ -44,7 +45,7 @@ class ServicesMemberView extends StatelessWidget {
             'Participez aux services et événements de l\'église',
             style: GoogleFonts.poppins(
               fontSize: 14,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -120,12 +121,12 @@ class ServicesMemberView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: AppTheme.grey200!),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -157,8 +158,8 @@ class ServicesMemberView extends StatelessWidget {
                       service['name'] as String,
                       style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
+                        fontWeight: AppTheme.fontSemiBold,
+                        color: AppTheme.grey800,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -166,7 +167,7 @@ class ServicesMemberView extends StatelessWidget {
                       service['description'] as String,
                       style: GoogleFonts.poppins(
                         fontSize: 14,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -180,21 +181,21 @@ class ServicesMemberView extends StatelessWidget {
               Icon(
                 Icons.access_time,
                 size: 16,
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
               const SizedBox(width: 4),
               Text(
                 _formatServiceDate(service['date'] as DateTime),
                 style: GoogleFonts.poppins(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
               const SizedBox(width: 16),
               Icon(
                 Icons.location_on,
                 size: 16,
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
               const SizedBox(width: 4),
               Expanded(
@@ -202,7 +203,7 @@ class ServicesMemberView extends StatelessWidget {
                   service['location'] as String,
                   style: GoogleFonts.poppins(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
               ),
@@ -214,14 +215,14 @@ class ServicesMemberView extends StatelessWidget {
               Icon(
                 Icons.group,
                 size: 16,
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
               const SizedBox(width: 4),
               Text(
                 '${service['volunteers']}/${service['maxVolunteers']} bénévoles',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
               const Spacer(),
@@ -231,8 +232,8 @@ class ServicesMemberView extends StatelessWidget {
                     // TODO: Implémenter l'inscription au service
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.greenStandard,
+                    foregroundColor: AppTheme.white100,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     minimumSize: Size.zero,
                   ),
@@ -245,16 +246,16 @@ class ServicesMemberView extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.orange.withOpacity(0.3)),
+                    color: AppTheme.orangeStandard.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    border: Border.all(color: AppTheme.orangeStandard.withOpacity(0.3)),
                   ),
                   child: Text(
                     'Complet',
                     style: GoogleFonts.poppins(
                       fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.orange,
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: AppTheme.orangeStandard,
                     ),
                   ),
                 ),
@@ -270,15 +271,15 @@ class ServicesMemberView extends StatelessWidget {
       case 'worship':
         return Colors.purple;
       case 'children':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'youth':
         return Colors.teal;
       case 'prayer':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'event':
-        return Colors.green;
+        return AppTheme.greenStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

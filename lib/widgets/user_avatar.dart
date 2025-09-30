@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/person_model.dart';
 import '../services/profile_image_cache_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 /// Widget réutilisable pour afficher l'avatar d'un utilisateur
 /// Ce widget gère automatiquement le fallback vers l'icône par défaut,
@@ -67,7 +67,7 @@ class _UserAvatarState extends State<UserAvatar> {
           shape: BoxShape.circle,
           border: widget.showBorder
               ? Border.all(
-                  color: widget.borderColor ?? Colors.white,
+                  color: widget.borderColor ?? AppTheme.white100,
                   width: widget.borderWidth,
                 )
               : null,
@@ -174,7 +174,7 @@ class NavigationUserAvatar extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppTheme.black100.withOpacity(0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -184,7 +184,7 @@ class NavigationUserAvatar extends StatelessWidget {
           person: person,
           radius: 16,
           showBorder: true,
-          borderColor: Colors.white,
+          borderColor: AppTheme.white100,
           borderWidth: 1.5,
         ),
       ),
@@ -216,10 +216,10 @@ class ProfileUserAvatar extends StatelessWidget {
             height: 120,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 4),
+              border: Border.all(color: AppTheme.white100, width: 4),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: AppTheme.black100.withOpacity(0.2),
                   blurRadius: 10,
                   offset: const Offset(0, 5),
                 ),
@@ -245,7 +245,7 @@ class ProfileUserAvatar extends StatelessWidget {
                 child: const Icon(
                   Icons.camera_alt,
                   size: 20,
-                  color: Colors.white,
+                  color: AppTheme.white100,
                 ),
               ),
             ),

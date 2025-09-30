@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/admin_branham_sermon_model.dart';
 import '../services/admin_branham_sermon_service.dart';
 import '../widgets/sermon_form_dialog.dart';
@@ -55,7 +55,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement des prédications: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -117,7 +117,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
                 ? 'Prédication désactivée' 
                 : 'Prédication activée'
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -126,7 +126,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la mise à jour: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -147,7 +147,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: const Text('Supprimer'),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
           ),
         ],
       ),
@@ -160,7 +160,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Prédication supprimée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -170,7 +170,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -184,20 +184,46 @@ class _MessageAdminViewState extends State<MessageAdminView>
       appBar: AppBar(
         title: Text(
           'Gestion des Prédications',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
         ),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          tabs: const [
-            Tab(text: 'Lire'),
-            Tab(text: 'Liste des Prédications'),
-            Tab(text: 'Pépites d\'Or'),
-          ],
+        foregroundColor: AppTheme.white100,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: Container(
+            height: 50,
+            color: AppTheme.primaryColor,
+            child: TabBar(
+              controller: _tabController,
+              indicatorColor: AppTheme.white100,
+              indicatorWeight: 3.0,
+              labelColor: AppTheme.white100,
+              unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              labelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontSemiBold,
+              ),
+              unselectedLabelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontMedium,
+              ),
+              tabs: const [
+                Tab(
+                  text: 'Lire',
+                  iconMargin: EdgeInsets.only(bottom: 4),
+                ),
+                Tab(
+                  text: 'Liste des Prédications',
+                  iconMargin: EdgeInsets.only(bottom: 4),
+                ),
+                Tab(
+                  text: 'Pépites d\'Or',
+                  iconMargin: EdgeInsets.only(bottom: 4),
+                ),
+              ],
+            ),
+          ),
         ),
         actions: [
           IconButton(
@@ -237,10 +263,10 @@ class _MessageAdminViewState extends State<MessageAdminView>
                   hintText: 'Rechercher par titre ou lieu...',
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   filled: true,
-                  fillColor: Colors.grey[50],
+                  fillColor: AppTheme.grey50,
                 ),
                 onChanged: (value) {
                   _searchQuery = value;
@@ -258,7 +284,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
                       decoration: InputDecoration(
                         labelText: 'Trier par',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12,
@@ -301,7 +327,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
                   ? const Center(
                       child: Text(
                         'Aucune prédication trouvée',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                        style: TextStyle(fontSize: 16, color: AppTheme.grey500),
                       ),
                     )
                   : ListView.builder(
@@ -321,15 +347,15 @@ class _MessageAdminViewState extends State<MessageAdminView>
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: sermon.isActive ? Colors.green : Colors.grey,
+          backgroundColor: sermon.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           child: Text(
             sermon.displayOrder.toString(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: AppTheme.white100, fontWeight: AppTheme.fontBold),
           ),
         ),
         title: Text(
           sermon.title,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,8 +366,8 @@ class _MessageAdminViewState extends State<MessageAdminView>
             Text(
               'Statut: ${sermon.isActive ? "Actif" : "Inactif"}',
               style: TextStyle(
-                color: sermon.isActive ? Colors.green : Colors.red,
-                fontWeight: FontWeight.w500,
+                color: sermon.isActive ? AppTheme.greenStandard : AppTheme.redStandard,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ],
@@ -372,9 +398,9 @@ class _MessageAdminViewState extends State<MessageAdminView>
               value: 'delete',
               child: Row(
                 children: const [
-                  Icon(Icons.delete, color: Colors.red),
+                  Icon(Icons.delete, color: AppTheme.redStandard),
                   SizedBox(width: 8),
-                  Text('Supprimer', style: TextStyle(color: Colors.red)),
+                  Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 ],
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class EventFormBuilder extends StatefulWidget {
   final EventModel event;
@@ -232,7 +232,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.errorColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Supprimer'),
           ),
@@ -307,11 +307,11 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                color: AppTheme.white100,
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: AppTheme.black100.withOpacity(0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -326,7 +326,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                         child: Text(
                           _eventForm?.title ?? 'Formulaire d\'inscription',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ),
@@ -357,7 +357,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                             label: const Text('Ajouter un champ'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.primaryColor,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppTheme.white100,
                             ),
                           ),
                         ),
@@ -366,7 +366,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                           onPressed: _saveEventForm,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.successColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                           ),
                           child: const Text('Sauvegarder'),
                         ),
@@ -393,8 +393,8 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(40),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  color: AppTheme.white100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Column(
                   children: [
@@ -426,7 +426,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                         label: const Text('Ajouter un champ'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.primaryColor,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppTheme.white100,
                         ),
                       ),
                     ],
@@ -442,11 +442,11 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
   Widget _buildFieldCard(EventFormField field, int index) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -463,7 +463,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: _getFieldColor(field.type).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     _getFieldIcon(field.type),
@@ -482,7 +482,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                             child: Text(
                               field.label,
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                           ),
@@ -498,7 +498,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                                 style: TextStyle(
                                   color: AppTheme.errorColor,
                                   fontSize: 10,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),

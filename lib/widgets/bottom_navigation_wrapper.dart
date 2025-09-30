@@ -11,7 +11,7 @@ import '../services/app_config_firebase_service.dart';
 
 import '../auth/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 import '../pages/member_dashboard_page.dart';
 import '../modules/bible/bible_module_page.dart';
@@ -29,6 +29,7 @@ import '../pages/member_appointments_page.dart';
 import '../pages/member_profile_page.dart';
 import '../pages/member_prayer_wall_page.dart';
 import '../modules/songs/views/member_songs_page.dart';
+import '../modules/songs/widgets/songs_search_delegate.dart';
 import '../pages/blog_home_page.dart';
 
 import '../pages/member_notifications_page.dart';
@@ -69,6 +70,8 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   PersonModel? _currentUser;
   bool _isLoading = true;
   int _unreadNotificationsCount = 0;
+  bool _searchInLyrics = false; // État pour le mode de recherche des cantiques
+  VoidCallback? _toggleSearch; // Callback pour activer/désactiver la recherche
 
   /// Check if user profile is complete with all required fields
   bool _isProfileComplete(PersonModel? profile) {
@@ -208,7 +211,9 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       case 'prayers':
         return const MemberPrayerWallPage();
       case 'songs':
-        return const MemberSongsPage();
+        return MemberSongsPage(
+          onToggleSearchChanged: (callback) => _toggleSearch = callback,
+        );
       case 'blog':
         return const BlogHomePage();
       case 'calendar':
@@ -676,7 +681,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         expand: false,
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppTheme.white100,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -687,7 +692,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
                 height: 4,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: AppTheme.grey300,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -700,7 +705,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
                     Text(
                       'Plus de modules',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
                     ),
@@ -712,11 +717,11 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
                   padding: EdgeInsets.all(32),
                   child: Column(
                     children: [
-                      Icon(Icons.apps, size: 48, color: Colors.grey),
+                      Icon(Icons.apps, size: 48, color: AppTheme.grey500),
                       SizedBox(height: 16),
                       Text(
                         'Aucun module ou page secondaire configuré',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: AppTheme.grey500),
                       ),
                     ],
                   ),
@@ -766,7 +771,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       child: Container(
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: AppTheme.primaryColor.withOpacity(0.3),
           ),
@@ -783,7 +788,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
             Text(
               module.name,
               style: TextStyle(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: AppTheme.primaryColor,
                 fontSize: 12,
               ),
@@ -808,7 +813,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       child: Container(
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: AppTheme.primaryColor.withOpacity(0.3),
           ),
@@ -825,7 +830,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
             Text(
               page.title,
               style: TextStyle(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: AppTheme.primaryColor,
                 fontSize: 12,
               ),
@@ -876,7 +881,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      toolbarHeight: 44, // Hauteur encore plus réduite
+      toolbarHeight: 56.0, // Hauteur standard Material Design (était 44 - trop petit)
       backgroundColor: const Color(0xFF860505), // Rouge bordeaux #860505
       elevation: 0,
       systemOverlayStyle: const SystemUiOverlayStyle(
@@ -888,7 +893,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         padding: const EdgeInsets.only(left: 12, right: 4),
         child: Container(
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppTheme.white100,
             shape: BoxShape.circle,
           ),
           padding: const EdgeInsets.all(1.5), // Padding encore plus réduit
@@ -905,11 +910,13 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         _getPageTitle(),
         style: GoogleFonts.poppins(
           fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.white, // Texte blanc sur fond rouge
+          fontWeight: AppTheme.fontSemiBold,
+          color: AppTheme.white100, // Texte blanc sur fond rouge
         ),
       ),
       actions: [
+        // Bouton de recherche pour les cantiques (visible uniquement sur la page cantiques)
+        if (_currentRoute == 'songs') _buildSongsSearchButton(),
         // Notifications avec badge
         _buildNotificationButton(),
         // Icône Mon profil
@@ -1017,7 +1024,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return Stack(
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications, color: Colors.white),
+          icon: const Icon(Icons.notifications, color: AppTheme.white100),
           tooltip: 'Notifications',
           onPressed: () {
             setState(() {
@@ -1036,8 +1043,8 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
             child: Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(8),
+                color: AppTheme.redStandard,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               constraints: const BoxConstraints(
                 minWidth: 16,
@@ -1046,9 +1053,9 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
               child: Text(
                 _unreadNotificationsCount > 99 ? '99+' : _unreadNotificationsCount.toString(),
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppTheme.white100,
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -1056,6 +1063,26 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
           ),
       ],
     );
+  }
+
+  Widget _buildSongsSearchButton() {
+    return IconButton(
+      icon: const Icon(
+        Icons.search,
+        color: AppTheme.white100,
+      ),
+      tooltip: 'Rechercher des cantiques',
+      onPressed: () {
+        _toggleSearch?.call();
+      },
+    );
+  }
+
+
+  void _handleSongSelected(dynamic song) {
+    // Cette méthode sera appelée quand un cantique est sélectionné depuis la recherche
+    // La navigation vers les détails du cantique sera gérée par le SearchDelegate
+    print('Cantique sélectionné: ${song.title}');
   }
 
   Widget _buildBottomNavigationBar(List<ModuleConfig> primaryModules) {
@@ -1185,7 +1212,7 @@ class _ProfileMenuSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SafeArea(
@@ -1198,7 +1225,7 @@ class _ProfileMenuSheet extends StatelessWidget {
               height: 4,
               width: 48,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: AppTheme.grey300,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -1226,7 +1253,7 @@ class _ProfileMenuSheet extends StatelessWidget {
                           currentUser?.fullName ?? 'Utilisateur',
                           style: GoogleFonts.poppins(
                             fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
@@ -1245,7 +1272,7 @@ class _ProfileMenuSheet extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               color: AppTheme.primaryColor,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ],
@@ -1349,7 +1376,7 @@ class _ProfileMenuSheet extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         ),
         child: Icon(
           icon,
@@ -1361,7 +1388,7 @@ class _ProfileMenuSheet extends StatelessWidget {
         title,
         style: GoogleFonts.poppins(
           fontSize: 16,
-          fontWeight: FontWeight.w500,
+          fontWeight: AppTheme.fontMedium,
           color: AppTheme.textPrimaryColor,
         ),
       ),
@@ -1462,14 +1489,14 @@ class _CustomPageDirectViewState extends State<CustomPageDirectView> {
               Icon(
                 Icons.error_outline,
                 size: 64,
-                color: Colors.grey[400],
+                color: AppTheme.grey400,
               ),
               const SizedBox(height: 16),
               Text(
                 _errorMessage!,
                 style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.grey,
+                  color: AppTheme.grey500,
                 ),
                 textAlign: TextAlign.center,
               ),

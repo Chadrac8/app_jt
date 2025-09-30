@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
 import '../services/blog_firebase_service.dart';
+import '../../theme.dart';
 
 class BlogCategoriesPage extends StatefulWidget {
   const BlogCategoriesPage({super.key});
@@ -75,7 +76,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                         Icon(
                           Icons.error_outline,
                           size: 64,
-                          color: Colors.red[300],
+                          color: AppTheme.grey300,
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -134,7 +135,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
           Icon(
             Icons.category_outlined,
             size: 64,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
@@ -142,7 +143,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                 ? 'Aucune catégorie trouvée'
                 : 'Aucune catégorie',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -152,7 +153,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                 : 'Créez votre première catégorie pour organiser vos articles',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 16),
@@ -176,7 +177,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: () => _showCategoryDialog(category: category),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -187,7 +188,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                 height: 48,
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   border: Border.all(color: color.withOpacity(0.3)),
                 ),
                 child: Icon(
@@ -207,7 +208,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                     Text(
                       category.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     if (category.description.isNotEmpty) ...[
@@ -215,7 +216,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                       Text(
                         category.description,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -226,7 +227,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                       '${category.postCount} article${category.postCount > 1 ? 's' : ''}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: color,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ],
@@ -248,8 +249,8 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                   const PopupMenuItem(
                     value: 'delete',
                     child: ListTile(
-                      leading: Icon(Icons.delete, color: Colors.red),
-                      title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                      leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                      title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -321,11 +322,11 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                           color: _parseColor(color),
                           shape: BoxShape.circle,
                           border: isSelected
-                              ? Border.all(color: Colors.black, width: 2)
+                              ? Border.all(color: AppTheme.black100, width: 2)
                               : null,
                         ),
                         child: isSelected
-                            ? const Icon(Icons.check, color: Colors.white, size: 20)
+                            ? const Icon(Icons.check, color: AppTheme.white100, size: 20)
                             : null,
                       ),
                     );
@@ -352,17 +353,17 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                         height: 40,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: isSelected ? _parseColor(selectedColor) : Colors.grey,
+                            color: isSelected ? _parseColor(selectedColor) : AppTheme.grey500,
                             width: isSelected ? 2 : 1,
                           ),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           color: isSelected 
                               ? _parseColor(selectedColor).withOpacity(0.1)
                               : null,
                         ),
                         child: Icon(
                           _getIconData(iconName),
-                          color: isSelected ? _parseColor(selectedColor) : Colors.grey,
+                          color: isSelected ? _parseColor(selectedColor) : AppTheme.grey500,
                           size: 20,
                         ),
                       ),
@@ -443,7 +444,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -476,8 +477,8 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
               Text(
                 'Attention: ${category.postCount} article${category.postCount > 1 ? 's' : ''} ${category.postCount > 1 ? 'utilisent' : 'utilise'} cette catégorie.',
                 style: const TextStyle(
-                  color: Colors.orange,
-                  fontWeight: FontWeight.w500,
+                  color: AppTheme.orangeStandard,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             ],
@@ -490,7 +491,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -510,7 +511,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -531,7 +532,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -576,7 +577,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
     try {
       return Color(int.parse(colorHex.replaceFirst('#', '0xFF')));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 

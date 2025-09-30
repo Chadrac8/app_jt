@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import 'bible_article_form_view.dart';
+import '../../../../theme.dart';
 
 class BibleArticleDetailView extends StatefulWidget {
   final BibleArticle article;
@@ -76,20 +77,20 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
       expandedHeight: 200,
       pinned: true,
       backgroundColor: theme.primaryColor,
-      foregroundColor: Colors.white,
+      foregroundColor: AppTheme.white100,
       actions: [
         IconButton(
           onPressed: _toggleBookmark,
           icon: Icon(
             _isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-            color: Colors.white,
+            color: AppTheme.white100,
           ),
           tooltip: _isBookmarked ? 'Retirer des favoris' : 'Ajouter aux favoris',
         ),
         if (widget.isAdmin)
           PopupMenuButton<String>(
             onSelected: _handleAdminAction,
-            icon: const Icon(Icons.more_vert, color: Colors.white),
+            icon: const Icon(Icons.more_vert, color: AppTheme.white100),
             itemBuilder: (context) => [
               const PopupMenuItem(
                 value: 'edit',
@@ -142,15 +143,15 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(20),
+                      color: AppTheme.white100.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                     ),
                     child: Text(
                       _article.category,
                       style: GoogleFonts.inter(
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                        fontWeight: AppTheme.fontMedium,
+                        color: AppTheme.white100,
                       ),
                     ),
                   ),
@@ -161,8 +162,8 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                     _article.title,
                     style: GoogleFonts.inter(
                       fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.white100,
                     ),
                   ),
                 ],
@@ -253,7 +254,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.primaryColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: theme.primaryColor.withValues(alpha: 0.2),
           width: 1,
@@ -274,7 +275,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                 'Résumé',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: theme.primaryColor,
                 ),
               ),
@@ -302,7 +303,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
           'Article',
           style: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: theme.textTheme.titleLarge?.color,
           ),
         ),
@@ -335,7 +336,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
               'Références bibliques',
               style: GoogleFonts.inter(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
@@ -349,7 +350,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 width: 1,
@@ -359,7 +360,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
               ref.displayText,
               style: GoogleFonts.inter(
                 fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: theme.textTheme.bodyMedium?.color,
               ),
             ),
@@ -385,7 +386,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
               'Mots-clés',
               style: GoogleFonts.inter(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
@@ -399,13 +400,13 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             ),
             child: Text(
               '#$tag',
               style: GoogleFonts.inter(
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: theme.primaryColor,
               ),
             ),
@@ -420,7 +421,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.2),
           width: 1,
@@ -435,7 +436,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
               _article.author.substring(0, 1).toUpperCase(),
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: theme.primaryColor,
               ),
             ),
@@ -449,7 +450,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                   _article.author,
                   style: GoogleFonts.inter(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: theme.textTheme.titleMedium?.color,
                   ),
                 ),

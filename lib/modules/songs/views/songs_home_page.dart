@@ -8,6 +8,7 @@ import '../../../pages/song_detail_page.dart';
 import '../../../pages/setlist_form_page.dart';
 import '../../../pages/songs_import_export_page.dart';
 import '../../../pages/setlist_statistics_page.dart';
+import '../../../../theme.dart';
 
 /// Page d'administration des chants
 class SongsHomePage extends StatefulWidget {
@@ -86,9 +87,9 @@ class _SongsHomePageState extends State<SongsHomePage>
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete, color: Colors.red),
+                        Icon(Icons.delete, color: AppTheme.redStandard),
                         SizedBox(width: 8),
-                        Text('Supprimer', style: TextStyle(color: Colors.red)),
+                        Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                       ],
                     ),
                   ),
@@ -204,7 +205,7 @@ class _SongsHomePageState extends State<SongsHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
+                const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
                 const SizedBox(height: 16),
                 Text('Erreur: ${snapshot.error}'),
                 const SizedBox(height: 16),
@@ -224,11 +225,11 @@ class _SongsHomePageState extends State<SongsHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.music_off, size: 64, color: Colors.grey),
+                const Icon(Icons.music_off, size: 64, color: AppTheme.grey500),
                 const SizedBox(height: 16),
                 const Text(
                   'Aucun chant trouvé',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
@@ -273,7 +274,7 @@ class _SongsHomePageState extends State<SongsHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
+                const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
                 const SizedBox(height: 16),
                 Text('Erreur: ${snapshot.error}'),
               ],
@@ -288,11 +289,11 @@ class _SongsHomePageState extends State<SongsHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.playlist_play, size: 64, color: Colors.grey),
+                const Icon(Icons.playlist_play, size: 64, color: AppTheme.grey500),
                 const SizedBox(height: 16),
                 const Text(
                   'Aucune setlist créée',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
@@ -357,9 +358,9 @@ class _SongsHomePageState extends State<SongsHomePage>
               value: 'delete',
               child: Row(
                 children: [
-                  Icon(Icons.delete, color: Colors.red),
+                  Icon(Icons.delete, color: AppTheme.redStandard),
                   SizedBox(width: 8),
-                  Text('Supprimer', style: TextStyle(color: Colors.red)),
+                  Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 ],
               ),
             ),
@@ -383,7 +384,7 @@ class _SongsHomePageState extends State<SongsHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
+                const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
                 const SizedBox(height: 16),
                 Text('Erreur: ${snapshot.error}'),
               ],
@@ -415,7 +416,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                             'Total des chants',
                             '${stats['totalSongs'] ?? 0}',
                             Icons.music_note,
-                            Colors.blue,
+                            AppTheme.blueStandard,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -424,7 +425,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                             'Publiés',
                             '${stats['publishedSongs'] ?? 0}',
                             Icons.check_circle,
-                            Colors.green,
+                            AppTheme.greenStandard,
                           ),
                         ),
                       ],
@@ -437,7 +438,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                             'Brouillons',
                             '${stats['draftSongs'] ?? 0}',
                             Icons.edit,
-                            Colors.orange,
+                            AppTheme.orangeStandard,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -446,7 +447,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                             'Archivés',
                             '${stats['archivedSongs'] ?? 0}',
                             Icons.archive,
-                            Colors.grey,
+                            AppTheme.grey500,
                           ),
                         ),
                       ],
@@ -519,7 +520,7 @@ class _SongsHomePageState extends State<SongsHomePage>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Column(
         children: [
@@ -529,7 +530,7 @@ class _SongsHomePageState extends State<SongsHomePage>
             value,
             style: TextStyle(
               fontSize: 24,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/role.dart';
 import '../models/permission.dart';
 import '../providers/role_provider.dart';
+import '../../../../theme.dart';
 
 class RoleCreationDialog extends StatefulWidget {
   final Role? role; // null pour création, non-null pour édition
@@ -73,7 +74,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
       scale: _scaleAnimation,
       child: Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         ),
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
@@ -118,7 +119,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Icon(
             widget.role == null ? Icons.add_circle : Icons.edit,
@@ -134,7 +135,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
               Text(
                 widget.role == null ? 'Créer un rôle' : 'Modifier le rôle',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               Text(
@@ -142,7 +143,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
                     ? 'Définir un nouveau rôle avec ses permissions'
                     : 'Modifier les détails et permissions du rôle',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
             ],
@@ -164,7 +165,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
         Text(
           'Informations de base',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -220,14 +221,14 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
               Text(
                 'Permissions',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const Spacer(),
               Text(
                 '${_selectedPermissions.length} sélectionnée(s)',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
             ],
@@ -236,8 +237,8 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]!),
-                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppTheme.grey300!),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Consumer<RoleProvider>(
                 builder: (context, roleProvider, child) {
@@ -275,14 +276,14 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
     return ExpansionTile(
       title: Text(
         module,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: AppTheme.fontBold),
       ),
       subtitle: Text(
         '${selectedInModule.length}/${permissions.length} sélectionnées',
         style: TextStyle(
           color: selectedInModule.length == permissions.length 
-              ? Colors.green[600]
-              : Colors.grey[600],
+              ? AppTheme.grey600
+              : AppTheme.grey600,
         ),
       ),
       trailing: Checkbox(
@@ -323,7 +324,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
         permission.description,
         style: TextStyle(
           fontSize: 12,
-          color: Colors.grey[600],
+          color: AppTheme.grey600,
         ),
       ),
       value: isSelected,
@@ -346,7 +347,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
         Text(
           'Statut',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(width: 16),
@@ -362,8 +363,8 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
         Text(
           _isActive ? 'Actif' : 'Inactif',
           style: TextStyle(
-            color: _isActive ? Colors.green[600] : Colors.grey[600],
-            fontWeight: FontWeight.w500,
+            color: _isActive ? AppTheme.grey600 : AppTheme.grey600,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
       ],
@@ -403,7 +404,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Veuillez sélectionner au moins une permission'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -442,7 +443,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
                   ? 'Rôle créé avec succès' 
                   : 'Rôle modifié avec succès',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       } else if (mounted) {
@@ -450,7 +451,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $error'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -459,7 +460,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

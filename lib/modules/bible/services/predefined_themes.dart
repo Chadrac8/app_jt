@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../theme.dart';
 
 /// Classe contenant les thèmes prédéfinis avec leurs passages bibliques
 class PredefinedThemes {
@@ -7,7 +8,7 @@ class PredefinedThemes {
       {
         'name': 'Amour',
         'description': 'Versets sur l\'amour de Dieu et l\'amour fraternel',
-        'color': Colors.pink.value,
+        'color': AppTheme.pinkStandard.value,
         'iconCodePoint': Icons.favorite.codePoint,
         'iconFontFamily': Icons.favorite.fontFamily,
         'passages': [
@@ -61,7 +62,7 @@ class PredefinedThemes {
       {
         'name': 'Espoir',
         'description': 'Messages d\'espérance et de confiance en Dieu',
-        'color': Colors.green.value,
+        'color': AppTheme.greenStandard.value,
         'iconCodePoint': Icons.brightness_high.codePoint,
         'iconFontFamily': Icons.brightness_high.fontFamily,
         'passages': [
@@ -113,7 +114,7 @@ class PredefinedThemes {
       {
         'name': 'Paix',
         'description': 'Versets sur la paix intérieure et la réconciliation',
-        'color': Colors.blue.value,
+        'color': AppTheme.blueStandard.value,
         'iconCodePoint': Icons.spa.codePoint,
         'iconFontFamily': Icons.spa.fontFamily,
         'passages': [
@@ -165,7 +166,7 @@ class PredefinedThemes {
       {
         'name': 'Sagesse',
         'description': 'Enseignements sur la sagesse divine et la connaissance',
-        'color': Colors.orange.value,
+        'color': AppTheme.orangeStandard.value,
         'iconCodePoint': Icons.lightbulb.codePoint,
         'iconFontFamily': Icons.lightbulb.fontFamily,
         'passages': [

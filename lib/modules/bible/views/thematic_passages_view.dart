@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../theme.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
 import '../bible_service.dart';
@@ -41,7 +42,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
@@ -55,7 +56,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
         title: Text(
           'Passages thématiques',
           style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: theme.colorScheme.onSurface,
           ),
         ),
@@ -64,7 +65,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
           labelColor: theme.colorScheme.primary,
           unselectedLabelColor: theme.colorScheme.onSurface.withOpacity(0.6),
           indicatorColor: theme.colorScheme.primary,
-          labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
+          labelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
           tabs: const [
             Tab(text: 'Thèmes'),
             Tab(text: 'Mes passages'),
@@ -126,14 +127,14 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
               margin: const EdgeInsets.only(bottom: 12),
               child: InkWell(
                 onTap: () => _showThemeDetails(theme),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? theme.color.withOpacity(0.1)
                         : Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: Border.all(
                       color: isSelected
                           ? theme.color
@@ -142,7 +143,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
+                        color: AppTheme.black100.withOpacity(0.04),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -154,7 +155,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: theme.color.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Icon(
                           theme.icon,
@@ -171,7 +172,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                               theme.name,
                               style: GoogleFonts.inter(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
@@ -193,13 +194,13 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                                   ),
                                   decoration: BoxDecoration(
                                     color: theme.color.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                   child: Text(
                                     '${theme.passages.length} passages',
                                     style: GoogleFonts.inter(
                                       fontSize: 12,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: AppTheme.fontSemiBold,
                                       color: theme.color,
                                     ),
                                   ),
@@ -251,7 +252,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                     'Erreur de chargement',
                     style: GoogleFonts.inter(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: Theme.of(context).colorScheme.error,
                     ),
                   ),
@@ -293,15 +294,15 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
               margin: const EdgeInsets.only(bottom: 12),
               child: InkWell(
                 onTap: () => _showThemeDetails(theme),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
+                        color: AppTheme.black100.withOpacity(0.04),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -313,7 +314,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: theme.color.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Icon(
                           theme.icon,
@@ -330,7 +331,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                               theme.name,
                               style: GoogleFonts.inter(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
@@ -352,13 +353,13 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                                   ),
                                   decoration: BoxDecoration(
                                     color: theme.color.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                   child: Text(
                                     '${theme.passages.length} passages',
                                     style: GoogleFonts.inter(
                                       fontSize: 12,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: AppTheme.fontSemiBold,
                                       color: theme.color,
                                     ),
                                   ),
@@ -391,9 +392,9 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                             value: 'delete',
                             child: Row(
                               children: [
-                                Icon(Icons.delete, size: 16, color: Colors.red),
+                                Icon(Icons.delete, size: 16, color: AppTheme.redStandard),
                                 SizedBox(width: 8),
-                                Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                               ],
                             ),
                           ),
@@ -429,7 +430,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
               'Aucun thème disponible',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
@@ -449,7 +450,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
               },
               child: Text(
                 'Initialiser les thèmes',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
               ),
             ),
           ],
@@ -477,7 +478,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
               'Connectez-vous pour créer des thèmes',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
               textAlign: TextAlign.center,
@@ -501,14 +502,14 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Fonctionnalité de connexion à implémenter'),
-                        backgroundColor: Colors.orange,
+                        backgroundColor: AppTheme.orangeStandard,
                       ),
                     );
                   },
                   icon: const Icon(Icons.login),
                   label: Text(
                     'Se connecter',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -517,7 +518,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
                   icon: const Icon(Icons.add),
                   label: Text(
                     'Créer un thème',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
                   ),
                 ),
               ],
@@ -557,7 +558,7 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
       builder: (context) => AlertDialog(
         title: Text(
           'Supprimer le thème',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
         ),
         content: Text(
           'Êtes-vous sûr de vouloir supprimer le thème "${theme.name}" ?',
@@ -579,8 +580,8 @@ class _ThematicPassagesViewState extends State<ThematicPassagesView>
             child: Text(
               'Supprimer',
               style: GoogleFonts.inter(
-                color: Colors.red,
-                fontWeight: FontWeight.w600,
+                color: AppTheme.redStandard,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
           ),
@@ -620,7 +621,7 @@ class _ThemeDetailsSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: theme.color.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Icon(
                     theme.icon,
@@ -637,7 +638,7 @@ class _ThemeDetailsSheet extends StatelessWidget {
                         theme.name,
                         style: GoogleFonts.inter(
                           fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: AppTheme.fontBold,
                           color: themeData.colorScheme.onSurface,
                         ),
                       ),
@@ -713,7 +714,7 @@ class _PassageCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.background,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: theme.colorScheme.outline.withOpacity(0.2),
         ),
@@ -725,7 +726,7 @@ class _PassageCard extends StatelessWidget {
             passage.reference,
             style: GoogleFonts.inter(
               fontSize: 14,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.primary,
             ),
           ),
@@ -762,7 +763,7 @@ class _PassageCard extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Text(
                 passage.description,

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../models/appointment_model.dart';
 import '../services/appointments_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class AvailabilityEditor extends StatefulWidget {
   final String? responsableId;
@@ -224,7 +224,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Column(
         children: [
@@ -237,7 +237,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                   'Gestion des disponibilités',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -254,7 +254,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                   label: const Text('Récurrence hebdo'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ),
@@ -302,13 +302,13 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.schedule, size: 64, color: Colors.grey.shade400),
+                Icon(Icons.schedule, size: 64, color: AppTheme.grey500),
                 const SizedBox(height: 16),
                 Text(
                   'Aucune disponibilité définie',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.grey.shade600,
+                    color: AppTheme.grey500,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -316,7 +316,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                   'Ajoutez des créneaux pour permettre aux membres de prendre rendez-vous',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.grey.shade500,
+                    color: AppTheme.grey500,
                   ),
                 ),
               ],
@@ -339,12 +339,12 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: AppTheme.grey500),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -361,7 +361,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     disponibilite.type == 'recurrence_hebdo' ? Icons.repeat : Icons.event,
@@ -375,7 +375,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                     _getDisponibiliteTitle(disponibilite),
                     style: const TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -396,14 +396,14 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppTheme.secondaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       _formatJour(jour),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppTheme.secondaryColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   );
@@ -434,14 +434,14 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppTheme.tertiaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Text(
                     '${creneau.debut} - ${creneau.fin}',
                     style: TextStyle(
                       fontSize: 12,
                       color: AppTheme.tertiaryColor,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 );
@@ -585,7 +585,7 @@ class _WeeklyRecurrenceDialogState extends State<_WeeklyRecurrenceDialog> {
                 ],
               ),
               if (_creneaux.isEmpty)
-                const Text('Aucun créneau défini', style: TextStyle(color: Colors.grey))
+                const Text('Aucun créneau défini', style: TextStyle(color: AppTheme.grey500))
               else
                 Column(
                   children: _creneaux.asMap().entries.map((entry) {
@@ -700,7 +700,7 @@ class _SpecificDateDialogState extends State<_SpecificDateDialog> {
             ],
           ),
           if (_creneaux.isEmpty)
-            const Text('Aucun créneau', style: TextStyle(color: Colors.grey))
+            const Text('Aucun créneau', style: TextStyle(color: AppTheme.grey500))
           else
             Column(
               children: _creneaux.asMap().entries.map((entry) {

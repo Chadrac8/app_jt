@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
+import '../../theme.dart';
 
 /// Widget pour créer des événements récurrents avec une interface complète
 class RecurringEventFormWidget extends StatefulWidget {
@@ -337,14 +338,14 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                   Icon(
                     Icons.event_note,
                     size: 64,
-                    color: Colors.grey[400],
+                    color: AppTheme.grey400,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     'Activez la récurrence pour configurer\\ndes événements répétitifs',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                       fontSize: 16,
                     ),
                   ),
@@ -650,7 +651,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
 
   Widget _buildRecurrenceEndConfig() {
     return Card(
-      color: Colors.grey[50],
+      color: AppTheme.grey50,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -957,7 +958,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
           content: Text(widget.existingEvent != null 
               ? 'Événement modifié avec succès!' 
               : 'Événement créé avec succès!'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
         ),
       );
 
@@ -967,7 +968,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     } finally {

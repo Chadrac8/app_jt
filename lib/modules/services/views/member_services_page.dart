@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../auth/auth_service.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 
 
 class MemberServicesPage extends StatefulWidget {
@@ -241,15 +241,15 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.white : AppTheme.primaryColor,
+                        color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         '$count',
                         style: TextStyle(
-                          color: isSelected ? AppTheme.primaryColor : Colors.white,
+                          color: isSelected ? AppTheme.primaryColor : AppTheme.white100,
                           fontSize: 11,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                     ),
@@ -262,9 +262,9 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                 });
               },
               selectedColor: AppTheme.primaryColor,
-              checkmarkColor: Colors.white,
+              checkmarkColor: AppTheme.white100,
               labelStyle: TextStyle(
-                color: isSelected ? Colors.white : AppTheme.textPrimaryColor,
+                color: isSelected ? AppTheme.white100 : AppTheme.textPrimaryColor,
               ),
             ),
           );
@@ -319,7 +319,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -334,7 +334,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
               value,
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: color,
               ),
             ),
@@ -405,7 +405,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Column(
         children: [
           // En-tête avec statut
@@ -425,7 +425,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                   ),
                   child: Icon(
                     _getStatusIcon(assignment.status),
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     size: 20,
                   ),
                 ),
@@ -438,7 +438,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                         'Service ID: ${assignment.serviceId}', // TODO: Charger le nom du service
                         style: const TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
@@ -455,14 +455,14 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: statusColor,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     _getStatusLabel(assignment.status),
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white100,
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -519,8 +519,8 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppTheme.grey100,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -528,7 +528,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                         const Text(
                           'Notes :',
                           style: TextStyle(
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
@@ -607,7 +607,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
       case 'declined':
         return AppTheme.errorColor;
       case 'tentative':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'confirmed':
         return AppTheme.primaryColor;
       default:

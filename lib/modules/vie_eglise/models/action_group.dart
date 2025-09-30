@@ -35,10 +35,7 @@ class ActionGroup {
       id: doc.id,
       name: data['name'] ?? '',
       description: data['description'] ?? '',
-      icon: IconData(
-        data['iconCodePoint'] ?? Icons.folder.codePoint,
-        fontFamily: 'MaterialIcons',
-      ),
+      icon: _iconFromData(data),
       iconCodePoint: data['iconCodePoint']?.toString() ?? Icons.folder.codePoint.toString(),
       color: data['color'],
       order: data['order'] ?? 0,
@@ -95,6 +92,11 @@ class ActionGroup {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is ActionGroup && other.id == id;
+  }
+
+  static IconData _iconFromData(Map<String, dynamic> data) {
+    final codePoint = data['iconCodePoint'] ?? Icons.folder.codePoint;
+    return IconData(codePoint, fontFamily: 'MaterialIcons');
   }
 
   @override

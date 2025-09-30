@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -143,7 +143,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                           Text(
                             'Informations générales',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold)),
+                              fontWeight: AppTheme.fontBold)),
                           const SizedBox(height: 16),
                           
                           // Nom de la setlist
@@ -229,7 +229,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               Text(
                                 'Chants sélectionnés (${_selectedSongs.length})',
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold)),
+                                  fontWeight: AppTheme.fontBold)),
                               const Spacer(),
                               TextButton.icon(
                                 onPressed: _showSongSelection,
@@ -245,7 +245,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               padding: const EdgeInsets.all(32),
                               decoration: BoxDecoration(
                                 color: AppTheme.textTertiaryColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                               child: Column(
                                 children: [
                                   const Icon(

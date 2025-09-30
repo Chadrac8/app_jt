@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/service_model.dart';
 import '../services/services_firebase_service.dart';
+import '../../theme.dart';
 
 
 class TeamFormPage extends StatefulWidget {
@@ -134,7 +135,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: AppTheme.black100.withOpacity(0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -168,9 +169,9 @@ class _TeamFormPageState extends State<TeamFormPage> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.3),
+                          AppTheme.black100.withOpacity(0.3),
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          AppTheme.black100.withOpacity(0.7),
                         ],
                       ),
                     ),
@@ -180,9 +181,9 @@ class _TeamFormPageState extends State<TeamFormPage> {
                     left: 16,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: AppTheme.white100),
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.black.withOpacity(0.3),
+                        backgroundColor: AppTheme.black100.withOpacity(0.3),
                       ),
                     ),
                   ),
@@ -199,11 +200,11 @@ class _TeamFormPageState extends State<TeamFormPage> {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: _parseColor(_selectedColor).withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               ),
                               child: const Icon(
                                 Icons.groups,
-                                color: Colors.white,
+                                color: AppTheme.white100,
                                 size: 24,
                               ),
                             ),
@@ -213,8 +214,8 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                 isEditing ? 'Modifier l\'équipe' : 'Nouvelle équipe',
                                 style: const TextStyle(
                                   fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  fontWeight: AppTheme.fontBold,
+                                  color: AppTheme.white100,
                                 ),
                               ),
                             ),
@@ -225,9 +226,9 @@ class _TeamFormPageState extends State<TeamFormPage> {
                           isEditing 
                               ? 'Modifiez les informations de votre équipe'
                               : 'Créez une nouvelle équipe de service',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: Colors.white70,
+                            color: AppTheme.white100.withOpacity(0.70),
                           ),
                         ),
                       ],
@@ -254,7 +255,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                           hintText: 'Ex: Équipe louange, Équipe technique...',
                           prefixIcon: const Icon(Icons.groups),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                         ),
                         validator: (value) {
@@ -276,7 +277,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                           hintText: 'Décrivez le rôle et les responsabilités de cette équipe...',
                           prefixIcon: const Icon(Icons.description),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           alignLabelWithHint: true,
                         ),
@@ -290,7 +291,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                       Text(
                         'Couleur de l\'équipe',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -300,7 +301,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Column(
                           children: [
@@ -320,7 +321,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                   ),
                                   child: const Icon(
                                     Icons.groups,
-                                    color: Colors.white,
+                                    color: AppTheme.white100,
                                     size: 20,
                                   ),
                                 ),
@@ -332,7 +333,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                       Text(
                                         'Couleur sélectionnée',
                                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: AppTheme.fontMedium,
                                         ),
                                       ),
                                       Text(
@@ -375,7 +376,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: color,
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                       border: isSelected
                                           ? Border.all(
                                               color: Theme.of(context).colorScheme.primary,
@@ -388,7 +389,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                     child: isSelected
                                         ? const Icon(
                                             Icons.check,
-                                            color: Colors.white,
+                                            color: AppTheme.white100,
                                             size: 20,
                                           )
                                         : null,
@@ -409,7 +410,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Row(
                           children: [
@@ -427,7 +428,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                   Text(
                                     'Statut de l\'équipe',
                                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: AppTheme.fontSemiBold,
                                     ),
                                   ),
                                   Text(
@@ -481,7 +482,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   child: const Text('Annuler'),
@@ -496,7 +497,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                     backgroundColor: _parseColor(_selectedColor),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   child: _isLoading
@@ -505,14 +506,14 @@ class _TeamFormPageState extends State<TeamFormPage> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                           ),
                         )
                       : Text(
                           isEditing ? 'Modifier' : 'Créer l\'équipe',
                           style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                            fontWeight: AppTheme.fontSemiBold,
+                            color: AppTheme.white100,
                           ),
                         ),
                 ),

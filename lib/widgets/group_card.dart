@@ -4,7 +4,7 @@ import 'dart:convert';
 import '../models/group_model.dart';
 import '../models/person_model.dart';
 import '../services/groups_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class GroupCard extends StatefulWidget {
@@ -218,10 +218,10 @@ class _GroupCardState extends State<GroupCard>
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -253,7 +253,7 @@ class _GroupCardState extends State<GroupCard>
                         child: Text(
                           widget.group.name,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -277,13 +277,13 @@ class _GroupCardState extends State<GroupCard>
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: _groupColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           widget.group.type,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: _groupColor,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),
@@ -438,7 +438,7 @@ class _GroupCardState extends State<GroupCard>
                               'Prochaine: ${_formatDate(nextMeeting.date)}',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                           ],
@@ -459,10 +459,10 @@ class _GroupCardState extends State<GroupCard>
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -492,7 +492,7 @@ class _GroupCardState extends State<GroupCard>
                       color: widget.isSelected
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
                         color: Theme.of(context).colorScheme.primary,
                         width: 2,
@@ -521,7 +521,7 @@ class _GroupCardState extends State<GroupCard>
                   Text(
                     widget.group.name,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -534,13 +534,13 @@ class _GroupCardState extends State<GroupCard>
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: _groupColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       widget.group.type,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: _groupColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -616,7 +616,7 @@ class _GroupCardState extends State<GroupCard>
                             '${members.length} membre${members.length > 1 ? 's' : ''}',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ],

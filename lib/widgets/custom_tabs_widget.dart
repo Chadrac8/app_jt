@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/page_model.dart';
 import 'page_components/component_renderer.dart';
+import '../../theme.dart';
 
 /// Widget pour afficher des onglets avec sous-pages
 class CustomTabsWidget extends StatefulWidget {
@@ -61,13 +62,13 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppTheme.grey500),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         ),
         child: const Text(
           'Aucun onglet configuré',
           style: TextStyle(
-            color: Colors.grey,
+            color: AppTheme.grey500,
             fontStyle: FontStyle.italic,
           ),
         ),
@@ -88,7 +89,7 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
       height: widget.component.data['height']?.toDouble() ?? 400.0, // Hauteur par défaut
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: _buildTabsInterface(
         tabPosition: tabPosition,
@@ -110,7 +111,7 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
       isScrollable: _tabs.length > 3,
       indicatorColor: indicatorColor,
       labelColor: indicatorColor,
-      unselectedLabelColor: Colors.grey,
+      unselectedLabelColor: AppTheme.grey500,
       tabs: _tabs.map((tab) => Tab(
         icon: showIcons ? Icon(tab.icon) : null,
         text: tab.title,
@@ -176,15 +177,15 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
               Icon(
                 Icons.dashboard_customize_outlined,
                 size: 48,
-                color: Colors.grey.shade400,
+                color: AppTheme.grey500,
               ),
               const SizedBox(height: 16),
               Text(
                 'Onglet "${tab.title}" vide',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w500,
+                  color: AppTheme.grey500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
               const SizedBox(height: 8),
@@ -192,7 +193,7 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
                 'Ajoutez des composants pour créer le contenu',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey.shade500,
+                  color: AppTheme.grey500,
                 ),
               ),
             ],

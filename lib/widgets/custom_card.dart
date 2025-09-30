@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 
 /// Widget de carte personnalisée simple pour remplacer l'ancien CustomCard des modules
 class CustomCard extends StatelessWidget {
@@ -23,7 +24,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget card = Card(
       elevation: elevation ?? 2.0,
-      color: color ?? Colors.white,
+      color: color ?? AppTheme.white100,
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius ?? BorderRadius.circular(12.0),
       ),

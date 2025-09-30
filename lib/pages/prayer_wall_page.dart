@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class PrayerWallPage extends StatefulWidget {
   const PrayerWallPage({super.key});
@@ -45,12 +45,12 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
   Widget _buildHeader() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -69,7 +69,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
               'Partagez vos demandes de prière',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 8),
             Text(
@@ -84,7 +84,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
   Widget _buildForm() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -96,7 +96,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                 'Nouvelle demande de prière',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor)),
               const SizedBox(height: 20),
               
@@ -126,7 +126,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                     labelText: 'Votre prénom',
                     hintText: 'Comment vous appelez-vous ?',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                     prefixIcon: const Icon(Icons.person)),
                   validator: (value) {
                     if (!_isAnonymous && (value == null || value.trim().isEmpty)) {
@@ -145,7 +145,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                   labelText: 'Votre demande de prière',
                   hintText: 'Partagez ce pour quoi vous aimeriez que nous priions...',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.message)),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -166,19 +166,19 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                     foregroundColor: AppTheme.surfaceColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   child: _isSubmitting
                       ? const SizedBox(
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white)))
+                            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100)))
                       : const Text(
                           'Partager ma demande',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600)))),
+                            fontWeight: AppTheme.fontSemiBold)))),
             ])),
       ),
     );
@@ -187,7 +187,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
   Widget _buildRecentPrayers() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -197,7 +197,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
               'Prières récentes',
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 16),
             
@@ -241,7 +241,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                   name[0],
                   style: TextStyle(
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.bold))),
+                    fontWeight: AppTheme.fontBold))),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -250,7 +250,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                     Text(
                       name,
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor)),
                     Text(
                       time,
@@ -262,7 +262,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -275,7 +275,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                       '$prayerCount',
                       style: TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.primaryColor)),
                   ])),
             ]),
@@ -305,7 +305,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Votre demande de prière a été partagée'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
             behavior: SnackBarBehavior.floating));
 
         // Réinitialiser le formulaire
@@ -320,7 +320,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             behavior: SnackBarBehavior.floating));
       }
     } finally {

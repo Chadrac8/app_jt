@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
+import '../../theme.dart';
 
 
 class FamiliesManagementPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusXLarge)),
         title: Row(
           children: [
             Icon(Icons.family_restroom, color: Theme.of(context).colorScheme.primary),
@@ -72,8 +73,8 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              foregroundColor: AppTheme.white100,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             ),
             onPressed: () async {
               if (formKey.currentState?.validate() != true) return;
@@ -115,7 +116,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusXLarge)),
         title: const Text('Supprimer la famille'),
         content: Text('Voulez-vous vraiment supprimer la famille "${family.name}" ?'),
         actions: [
@@ -126,8 +127,8 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              foregroundColor: AppTheme.white100,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             ),
             onPressed: () async {
               await FirebaseService.deleteFamily(family.id);
@@ -194,7 +195,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                   ),
                   title: Text(
                     family.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,7 +235,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                     ],
                   ),
                   trailing: PopupMenuButton<String>(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                     onSelected: (value) {
                       if (value == 'edit') {
                         _showFamilyForm(family: family);
@@ -253,7 +254,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                       const PopupMenuItem(
                         value: 'delete',
                         child: ListTile(
-                          leading: Icon(Icons.delete, color: Colors.red),
+                          leading: Icon(Icons.delete, color: AppTheme.redStandard),
                           title: Text('Supprimer'),
                         ),
                       ),
@@ -266,7 +267,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusXLarge)),
                         title: Text('Famille: ${family.name}'),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,

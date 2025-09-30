@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../theme.dart';
 
 /// Script pour nettoyer les tokens FCM invalides
 class TokenCleanupScript {
@@ -196,8 +197,8 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nettoyage Tokens FCM'),
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.redStandard,
+        foregroundColor: AppTheme.white100,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -229,8 +230,8 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
                           icon: const Icon(Icons.delete),
                           label: const Text('Supprimer mon token'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
-                            foregroundColor: Colors.white,
+                            backgroundColor: AppTheme.orangeStandard,
+                            foregroundColor: AppTheme.white100,
                           ),
                         ),
                         ElevatedButton.icon(
@@ -238,8 +239,8 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
                           icon: const Icon(Icons.cleaning_services),
                           label: const Text('Nettoyer tous'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
+                            backgroundColor: AppTheme.redStandard,
+                            foregroundColor: AppTheme.white100,
                           ),
                         ),
                       ],
@@ -258,9 +259,9 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[300]!),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey300!),
                 ),
                 child: _isLoading 
                     ? const Center(child: CircularProgressIndicator())

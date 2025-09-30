@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../shared/theme/app_theme.dart';
+import '../../theme.dart';
 import 'offer_webview_page.dart';
 
 class QuickOfferPage extends StatelessWidget {
@@ -9,16 +9,16 @@ class QuickOfferPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white100,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         elevation: 0,
         leading: IconButton(
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: Icon(
               Icons.arrow_back_ios,
@@ -33,7 +33,7 @@ class QuickOfferPage extends StatelessWidget {
           style: GoogleFonts.poppins(
             color: AppTheme.textPrimaryColor,
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         centerTitle: true,
@@ -63,12 +63,12 @@ class QuickOfferPage extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             AppTheme.primaryColor.withOpacity(0.1),
-            Colors.pink.withOpacity(0.05),
+            AppTheme.pinkStandard.withOpacity(0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
       ),
       child: Column(
         children: [
@@ -83,7 +83,7 @@ class QuickOfferPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
@@ -111,7 +111,7 @@ class QuickOfferPage extends StatelessWidget {
           'Montants suggérés',
           style: GoogleFonts.poppins(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
@@ -139,7 +139,7 @@ class QuickOfferPage extends StatelessWidget {
         '${amount}€',
         style: GoogleFonts.poppins(
           fontSize: 16,
-          fontWeight: FontWeight.w600,
+          fontWeight: AppTheme.fontSemiBold,
           color: AppTheme.primaryColor,
         ),
       ),
@@ -151,9 +151,9 @@ class QuickOfferPage extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.grey.withOpacity(0.2),
+          color: AppTheme.grey500.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -163,12 +163,12 @@ class QuickOfferPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppTheme.blueStandard.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: const Icon(
                   Icons.web,
-                  color: Colors.blue,
+                  color: AppTheme.blueStandard,
                   size: 24,
                 ),
               ),
@@ -181,7 +181,7 @@ class QuickOfferPage extends StatelessWidget {
                       'Plateforme HelloAsso',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -213,11 +213,11 @@ class QuickOfferPage extends StatelessWidget {
               icon: const Icon(Icons.open_in_new),
               label: const Text('Accéder à HelloAsso'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.blueStandard,
+                foregroundColor: AppTheme.white100,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
             ),
@@ -231,10 +231,10 @@ class QuickOfferPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.greenStandard.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.green.withOpacity(0.2),
+          color: AppTheme.greenStandard.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -243,7 +243,7 @@ class QuickOfferPage extends StatelessWidget {
             children: [
               const Icon(
                 Icons.security,
-                color: Colors.green,
+                color: AppTheme.greenStandard,
                 size: 24,
               ),
               const SizedBox(width: 12),
@@ -251,8 +251,8 @@ class QuickOfferPage extends StatelessWidget {
                 'Paiement 100% sécurisé',
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.green,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.greenStandard,
                 ),
               ),
             ],

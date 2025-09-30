@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 
 /// Widget simple pour basculer entre les modes de lecture média
 class MediaPlayerModeToggle extends StatelessWidget {
@@ -32,7 +33,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 Text(
                   'Mode de lecture',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -42,17 +43,17 @@ class MediaPlayerModeToggle extends StatelessWidget {
             // Mode intégré
             Container(
               decoration: BoxDecoration(
-                color: currentMode == 'integrated' ? Colors.green[50] : Colors.grey[50],
-                borderRadius: BorderRadius.circular(8),
+                color: currentMode == 'integrated' ? AppTheme.grey50 : AppTheme.grey50,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 border: Border.all(
-                  color: currentMode == 'integrated' ? Colors.green : Colors.grey[300]!,
+                  color: currentMode == 'integrated' ? AppTheme.greenStandard : AppTheme.grey300!,
                   width: currentMode == 'integrated' ? 2 : 1,
                 ),
               ),
               child: RadioListTile<String>(
                 title: const Text(
                   'Lecteur intégré',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: AppTheme.fontSemiBold),
                 ),
                 subtitle: Text(
                   componentType == 'video' 
@@ -62,16 +63,16 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 value: 'integrated',
                 groupValue: currentMode,
                 onChanged: (value) => onModeChanged(value!),
-                activeColor: Colors.green,
+                activeColor: AppTheme.greenStandard,
                 secondary: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.green[100],
+                    color: AppTheme.grey100,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.play_circle_filled,
-                    color: Colors.green[700],
+                    color: AppTheme.grey700,
                   ),
                 ),
               ),
@@ -82,17 +83,17 @@ class MediaPlayerModeToggle extends StatelessWidget {
             // Mode externe
             Container(
               decoration: BoxDecoration(
-                color: currentMode == 'external' ? Colors.blue[50] : Colors.grey[50],
-                borderRadius: BorderRadius.circular(8),
+                color: currentMode == 'external' ? AppTheme.grey50 : AppTheme.grey50,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 border: Border.all(
-                  color: currentMode == 'external' ? Colors.blue : Colors.grey[300]!,
+                  color: currentMode == 'external' ? AppTheme.blueStandard : AppTheme.grey300!,
                   width: currentMode == 'external' ? 2 : 1,
                 ),
               ),
               child: RadioListTile<String>(
                 title: const Text(
                   'Ouverture externe',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: AppTheme.fontSemiBold),
                 ),
                 subtitle: Text(
                   componentType == 'video' 
@@ -102,16 +103,16 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 value: 'external',
                 groupValue: currentMode,
                 onChanged: (value) => onModeChanged(value!),
-                activeColor: Colors.blue,
+                activeColor: AppTheme.blueStandard,
                 secondary: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.blue[100],
+                    color: AppTheme.grey100,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.open_in_new,
-                    color: Colors.blue[700],
+                    color: AppTheme.grey700,
                   ),
                 ),
               ),
@@ -123,22 +124,22 @@ class MediaPlayerModeToggle extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
+                color: AppTheme.grey100,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Row(
                 children: [
                   Icon(
                     Icons.info_outline,
                     size: 20,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       _getModeDescription(),
                       style: TextStyle(
-                        color: Colors.grey[700],
+                        color: AppTheme.grey700,
                         fontSize: 12,
                       ),
                     ),

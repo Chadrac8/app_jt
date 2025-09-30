@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/appointment_model.dart';
 import '../services/appointments_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class AvailabilityManagementPage extends StatefulWidget {
   final String? responsableId;
@@ -187,7 +187,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
             'Gérer mes disponibilités',
             style: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 8),
@@ -207,7 +207,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                   label: const Text('Récurrence hebdo'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ),
@@ -219,7 +219,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                   label: const Text('Date spécifique'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.secondaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ),
@@ -278,7 +278,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                   'Aucune disponibilité définie',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -312,7 +312,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -331,7 +331,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                     _getDisponibiliteTitle(disponibilite),
                     style: const TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -358,13 +358,13 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: AppTheme.secondaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Text(
                   _formatDate(disponibilite.dateSpecifique!),
                   style: TextStyle(
                     color: AppTheme.secondaryColor,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
@@ -373,7 +373,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
             const Text(
               'Créneaux horaires:',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 fontSize: 16,
               ),
             ),
@@ -488,7 +488,7 @@ class _WeeklyAvailabilityDialogState extends State<_WeeklyAvailabilityDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Jours de la semaine:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Jours de la semaine:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -512,7 +512,7 @@ class _WeeklyAvailabilityDialogState extends State<_WeeklyAvailabilityDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Créneaux horaires:', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Créneaux horaires:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                   TextButton.icon(
                     onPressed: _addCreneau,
                     icon: const Icon(Icons.add),
@@ -608,15 +608,15 @@ class _SpecificDateDialogState extends State<_SpecificDateDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Date:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Date:', style: TextStyle(fontWeight: AppTheme.fontBold)),
             const SizedBox(height: 8),
             InkWell(
               onTap: _selectDate,
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppTheme.grey500),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Row(
                   children: [
@@ -633,7 +633,7 @@ class _SpecificDateDialogState extends State<_SpecificDateDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Créneaux horaires:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Créneaux horaires:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                 TextButton.icon(
                   onPressed: _addCreneau,
                   icon: const Icon(Icons.add),
@@ -732,8 +732,8 @@ class _CreneauDialogState extends State<_CreneauDialog> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppTheme.grey500),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -752,8 +752,8 @@ class _CreneauDialogState extends State<_CreneauDialog> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppTheme.grey500),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

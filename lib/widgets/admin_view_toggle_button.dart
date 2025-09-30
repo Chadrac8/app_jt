@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../modules/roles/services/permission_provider.dart';
+import '../modules/roles/providers/permission_provider.dart';
 import '../widgets/admin_navigation_wrapper.dart';
+import '../../theme.dart';
 
 /// Widget bouton pour basculer vers la vue administrateur
 /// Ne s'affiche que si l'utilisateur a des privilèges administrateur
@@ -36,8 +37,8 @@ class AdminViewToggleButton extends StatelessWidget {
         return Container(
           margin: margin ?? const EdgeInsets.only(right: 8),
           decoration: BoxDecoration(
-            color: backgroundColor ?? Colors.white.withValues(alpha: 0.2),
-            borderRadius: borderRadius ?? BorderRadius.circular(8),
+            color: backgroundColor ?? AppTheme.white100.withValues(alpha: 0.2),
+            borderRadius: borderRadius ?? BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: IconButton(
             icon: const Icon(Icons.admin_panel_settings_outlined),
@@ -51,7 +52,7 @@ class AdminViewToggleButton extends StatelessWidget {
             },
             tooltip: 'Vue Administrateur',
             iconSize: iconSize,
-            color: iconColor ?? Colors.white,
+            color: iconColor ?? AppTheme.white100,
           ),
         );
       },

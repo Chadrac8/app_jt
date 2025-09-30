@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FamilyWidget extends StatefulWidget {
   final PersonModel person;
@@ -45,7 +45,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
           title: Row(
             children: [
               Icon(
@@ -67,7 +67,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                     hintText: 'ex: Famille Martin',
                     prefixIcon: const Icon(Icons.home),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   autofocus: true,
@@ -79,7 +79,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                     labelText: 'Adresse familiale',
                     prefixIcon: const Icon(Icons.location_on),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   maxLines: 2,
@@ -91,7 +91,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                     labelText: 'Téléphone familial',
                     prefixIcon: const Icon(Icons.phone),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   keyboardType: TextInputType.phone,
@@ -117,7 +117,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
               child: const Text('Créer'),
@@ -152,14 +152,14 @@ class _FamilyWidgetState extends State<FamilyWidget>
             SnackBar(
               content: const Row(
                 children: [
-                  Icon(Icons.check_circle, color: Colors.white),
+                  Icon(Icons.check_circle, color: AppTheme.white100),
                   SizedBox(width: 8),
                   Text('Famille créée avec succès'),
                 ],
               ),
               backgroundColor: Theme.of(context).colorScheme.secondary,
               behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             ),
           );
         }
@@ -187,7 +187,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
         context: context,
         builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
             title: Row(
               children: [
                 Icon(
@@ -204,7 +204,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   ? const Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.family_restroom, size: 64, color: Colors.grey),
+                        Icon(Icons.family_restroom, size: 64, color: AppTheme.grey500),
                         SizedBox(height: 16),
                         Text('Aucune famille disponible'),
                       ],
@@ -272,14 +272,14 @@ class _FamilyWidgetState extends State<FamilyWidget>
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
           title: Row(
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: const Color(0x1A1976D2), // 10% opacity of primaryColor (#1976D2)
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   Icons.edit,
@@ -300,7 +300,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   decoration: InputDecoration(
                     labelText: 'Nom de la famille',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     prefixIcon: const Icon(Icons.home),
                   ),
@@ -311,7 +311,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   decoration: InputDecoration(
                     labelText: 'Adresse (optionnel)',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     prefixIcon: const Icon(Icons.location_on),
                   ),
@@ -323,7 +323,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   decoration: InputDecoration(
                     labelText: 'Téléphone fixe (optionnel)',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     prefixIcon: const Icon(Icons.phone),
                   ),
@@ -346,7 +346,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
               child: const Text('Enregistrer'),
@@ -380,14 +380,14 @@ class _FamilyWidgetState extends State<FamilyWidget>
             SnackBar(
               content: const Row(
                 children: [
-                  Icon(Icons.check_circle, color: Colors.white),
+                  Icon(Icons.check_circle, color: AppTheme.white100),
                   SizedBox(width: 8),
                   Text('Famille modifiée avec succès'),
                 ],
               ),
               backgroundColor: Theme.of(context).colorScheme.secondary,
               behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             ),
           );
           setState(() {});
@@ -399,7 +399,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
               content: Text('Erreur lors de la modification: $e'),
               backgroundColor: Theme.of(context).colorScheme.error,
               behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             ),
           );
         }
@@ -412,7 +412,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
           title: const Text('Quitter la famille'),
           content: const Text('Êtes-vous sûr de vouloir quitter cette famille ?'),
           actions: [
@@ -492,7 +492,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
           Text(
             'Aucune famille',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
@@ -571,7 +571,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0x4D1976D2), // 30% opacity of primaryColor (#1976D2)
@@ -585,13 +585,13 @@ class _FamilyWidgetState extends State<FamilyWidget>
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: const BoxDecoration(
-                        color: Colors.white24,
+                        color: AppTheme.white100,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.home,
                         size: 32,
-                        color: Colors.white,
+                        color: AppTheme.white100,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -602,22 +602,22 @@ class _FamilyWidgetState extends State<FamilyWidget>
                           Text(
                             family.name,
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              color: AppTheme.white100,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             '${family.memberIds.length} membre(s)',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.white70,
+                              color: AppTheme.white100.withOpacity(0.70),
                             ),
                           ),
                         ],
                       ),
                     ),
                     PopupMenuButton(
-                      icon: const Icon(Icons.more_vert, color: Colors.white),
+                      icon: const Icon(Icons.more_vert, color: AppTheme.white100),
                       itemBuilder: (context) => [
                         const PopupMenuItem(
                           value: 'edit',
@@ -665,7 +665,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     border: Border.all(
                       color: const Color(0x33000000), // 20% opacity black
                     ),
@@ -684,7 +684,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                           Text(
                             'Informations familiales',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
@@ -735,7 +735,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
               Text(
                 'Membres de la famille',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 16),
@@ -751,7 +751,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         border: Border.all(
                           color: const Color(0x33000000), // 20% opacity black
                         ),
@@ -798,7 +798,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                           border: Border.all(
                             color: isHead
                                 ? Theme.of(context).colorScheme.secondary
@@ -822,7 +822,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                 member.displayInitials,
                                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                 ),
                               ),
                             ),
@@ -836,7 +836,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                       Text(
                                         member.fullName,
                                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: AppTheme.fontSemiBold,
                                         ),
                                       ),
                                       if (isHead) ...[
@@ -848,13 +848,13 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                           ),
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).colorScheme.secondary,
-                                            borderRadius: BorderRadius.circular(12),
+                                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                           ),
                                           child: Text(
                                             'Chef de famille',
                                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
+                                              color: AppTheme.white100,
+                                              fontWeight: AppTheme.fontMedium,
                                               fontSize: 10,
                                             ),
                                           ),
@@ -879,13 +879,13 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.tertiary.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                 ),
                                 child: Text(
                                   'Vous',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: Theme.of(context).colorScheme.tertiary,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                               ),

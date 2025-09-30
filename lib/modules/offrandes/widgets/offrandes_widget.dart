@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 
 class OffrandesWidget extends StatelessWidget {
   const OffrandesWidget({super.key});
@@ -8,30 +8,30 @@ class OffrandesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.green.withOpacity(0.1),
-              Colors.green.withOpacity(0.05),
+              AppTheme.greenStandard.withOpacity(0.1),
+              AppTheme.greenStandard.withOpacity(0.05),
             ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(Icons.favorite, color: Colors.green, size: 28),
+                Icon(Icons.favorite, color: AppTheme.greenStandard, size: 28),
                 const SizedBox(width: 12),
                 Text(
                   'Soutenir l\'œuvre',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
               ]),
             const SizedBox(height: 16),
@@ -47,28 +47,29 @@ class OffrandesWidget extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       // Navigation vers la page de don
+                      Navigator.of(context).pushNamed('/admin/offrandes');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.greenStandard,
+                      foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12))),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                     icon: const Icon(Icons.volunteer_activism, size: 20),
                     label: const Text(
                       'Faire un don',
-                      style: TextStyle(fontWeight: FontWeight.w600)))),
+                      style: TextStyle(fontWeight: AppTheme.fontSemiBold)))),
                 const SizedBox(width: 12),
                 OutlinedButton.icon(
                   onPressed: () {
                     // Afficher plus d'informations sur les dons
                   },
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.green),
-                    foregroundColor: Colors.green,
+                    side: BorderSide(color: AppTheme.greenStandard),
+                    foregroundColor: AppTheme.greenStandard,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   icon: const Icon(Icons.info_outline, size: 20),
                   label: const Text('Info')),
               ]),

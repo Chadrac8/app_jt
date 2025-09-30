@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../message/models/branham_sermon_model.dart';
 import '../../message/services/admin_branham_sermon_service.dart';
@@ -258,12 +258,12 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
             style: GoogleFonts.inter(
               color: AppTheme.surfaceColor,
               fontSize: 24,
-              fontWeight: FontWeight.bold)),
+              fontWeight: AppTheme.fontBold)),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
               color: _primaryColor,
-              borderRadius: BorderRadius.circular(12)),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             child: IconButton(
               onPressed: _showSermonsBottomSheet,
               icon: const Icon(
@@ -286,7 +286,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
             width: 280,
             height: 280,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               gradient: LinearGradient(
                 colors: [_primaryColor, _primaryColor.withOpacity(0.7)]),
               boxShadow: [
@@ -309,7 +309,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               style: GoogleFonts.inter(
                 color: AppTheme.surfaceColor,
                 fontSize: 20,
-                fontWeight: FontWeight.w600),
+                fontWeight: AppTheme.fontSemiBold),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis),
@@ -366,7 +366,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     'Choisir une prédication',
                     style: GoogleFonts.inter(
                       color: AppTheme.surfaceColor,
-                      fontWeight: FontWeight.w600)),
+                      fontWeight: AppTheme.fontSemiBold)),
                 ])),
           ],
         ]));
@@ -502,7 +502,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                             style: GoogleFonts.inter(
                               color: AppTheme.surfaceColor,
                               fontSize: 24,
-                              fontWeight: FontWeight.w700))),
+                              fontWeight: AppTheme.fontBold))),
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
                           child: Container(
@@ -522,7 +522,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppTheme.surfaceColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         border: Border.all(
                           color: AppTheme.surfaceColor.withOpacity(0.2),
                           width: 1)),
@@ -601,7 +601,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   ])
               : null,
           color: isSelected ? null : AppTheme.surfaceColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: Border.all(
             color: isSelected 
                 ? _primaryColor 
@@ -612,7 +612,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
           style: GoogleFonts.inter(
             color: isSelected ? AppTheme.surfaceColor : AppTheme.surfaceColor.withOpacity(0.8),
             fontSize: 14,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500))));
+            fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium))));
   }
 
   Widget _buildSermonTile(BranhamSermon sermon, bool isCurrentSermon) {
@@ -630,7 +630,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   AppTheme.surfaceColor.withOpacity(0.1),
                   AppTheme.surfaceColor.withOpacity(0.05),
                 ]),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: isCurrentSermon 
               ? _primaryColor.withOpacity(0.5)
@@ -664,7 +664,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
           style: GoogleFonts.inter(
             color: AppTheme.surfaceColor,
             fontSize: 16,
-            fontWeight: FontWeight.w600),
+            fontWeight: AppTheme.fontSemiBold),
           maxLines: 2,
           overflow: TextOverflow.ellipsis),
         subtitle: Padding(

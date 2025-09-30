@@ -12,6 +12,7 @@ import '../../widgets/bottom_navigation_wrapper.dart';
 import 'dashboard_configuration_page.dart';
 import 'home_config_admin_page.dart';
 import 'outbox_notifications_page.dart';
+import '../../../theme.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -80,7 +81,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Dashboard actualisé'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
             duration: Duration(seconds: 2),
           ),
         );
@@ -95,7 +96,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'actualisation: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -108,7 +109,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
       appBar: AppBar(
         title: const Text('Dashboard Admin'),
         backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           // Bouton de basculement vers la vue membre
@@ -137,7 +138,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                     ),
                   )
                 : const Icon(Icons.refresh),
@@ -170,7 +171,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             end: Alignment.bottomCenter,
             colors: [
               Theme.of(context).primaryColor.withOpacity(0.1),
-              Colors.white,
+              AppTheme.white100,
             ],
           ),
         ),
@@ -201,7 +202,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             Icon(
               Icons.error_outline,
               size: 64,
-              color: Colors.red[300],
+              color: AppTheme.grey300,
             ),
             const SizedBox(height: 16),
             Text(
@@ -230,7 +231,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                 Icon(
                   Icons.error_outline,
                   size: 64,
-                  color: Colors.red[300],
+                  color: AppTheme.grey300,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -275,13 +276,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           Icon(
             Icons.dashboard,
             size: 80,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
             'Aucun widget configuré',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -289,7 +290,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             'Configurez votre dashboard pour afficher les statistiques importantes',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[500],
+              color: AppTheme.grey500,
             ),
           ),
           const SizedBox(height: 24),

@@ -3,6 +3,7 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../services/reports_service.dart';
 import '../models/report.dart';
+import '../../../../theme.dart';
 
 class ReportsAdminView extends StatefulWidget {
   const ReportsAdminView({Key? key}) : super(key: key);
@@ -231,7 +232,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   'Total des rapports',
                   '${_statistics['total_reports'] ?? 0}',
                   Icons.assessment,
-                  Colors.blue,
+                  AppTheme.blueStandard,
                 ),
               ),
               const SizedBox(width: 16),
@@ -240,7 +241,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   'Rapports actifs',
                   '${_statistics['active_reports'] ?? 0}',
                   Icons.check_circle,
-                  Colors.green,
+                  AppTheme.greenStandard,
                 ),
               ),
             ],
@@ -253,7 +254,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   'Total générations',
                   '${_statistics['total_generations'] ?? 0}',
                   Icons.refresh,
-                  Colors.orange,
+                  AppTheme.orangeStandard,
                 ),
               ),
               const SizedBox(width: 16),
@@ -262,7 +263,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   'À régénérer',
                   '${_statistics['reports_needing_regeneration'] ?? 0}',
                   Icons.schedule,
-                  Colors.red,
+                  AppTheme.redStandard,
                 ),
               ),
             ],
@@ -325,7 +326,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
           child: ExpansionTile(
             title: Text(
               category,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
             subtitle: Text('${templates.length} templates disponibles'),
             children: templates.map((template) => _buildTemplateCard(template)).toList(),
@@ -397,12 +398,12 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                 if (!report.isActive)
                   const Chip(
                     label: Text('Inactif'),
-                    backgroundColor: Colors.grey,
+                    backgroundColor: AppTheme.grey500,
                   ),
                 if (report.shouldRegenerate())
                   const Chip(
                     label: Text('À régénérer'),
-                    backgroundColor: Colors.orange,
+                    backgroundColor: AppTheme.orangeStandard,
                   ),
               ],
             ),
@@ -462,8 +463,8 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
             const PopupMenuItem(
               value: 'delete',
               child: ListTile(
-                leading: Icon(Icons.delete, color: Colors.red),
-                title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 contentPadding: EdgeInsets.zero,
               ),
             ),
@@ -489,7 +490,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   value,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: color,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -498,7 +499,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
             Text(
               title,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
           ],
@@ -524,7 +525,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
             Expanded(
               child: LinearProgressIndicator(
                 value: total > 0 ? entry.value / total : 0,
-                backgroundColor: Colors.grey[300],
+                backgroundColor: AppTheme.grey300,
                 valueColor: AlwaysStoppedAnimation(_getTypeColor(entry.key)),
               ),
             ),
@@ -553,7 +554,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
             Expanded(
               child: LinearProgressIndicator(
                 value: total > 0 ? entry.value / total : 0,
-                backgroundColor: Colors.grey[300],
+                backgroundColor: AppTheme.grey300,
               ),
             ),
             const SizedBox(width: 8),
@@ -758,17 +759,17 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
   Color _getTypeColor(String type) {
     switch (type) {
       case 'attendance':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'financial':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'membership':
         return Colors.purple;
       case 'event':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'custom':
         return Colors.indigo;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

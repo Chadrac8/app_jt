@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
 import '../widgets/blog_post_metadata.dart';
+import '../../theme.dart';
 
 class BlogPostPreviewDialog extends StatelessWidget {
   final BlogPost post;
@@ -31,21 +32,21 @@ class BlogPostPreviewDialog extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.preview,
-                    color: Colors.white,
+                    color: AppTheme.white100,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'Aperçu de l\'article',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        color: AppTheme.white100,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                   ),
                 ],
               ),
@@ -61,7 +62,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                     // Image en vedette
                     if (post.featuredImageUrl != null) ...[
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         child: AspectRatio(
                           aspectRatio: 16 / 9,
                           child: Image.network(
@@ -70,11 +71,11 @@ class BlogPostPreviewDialog extends StatelessWidget {
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
-                                color: Colors.grey[300],
+                                color: AppTheme.grey300,
                                 child: Icon(
                                   Icons.image_not_supported,
                                   size: 64,
-                                  color: Colors.grey[600],
+                                  color: AppTheme.grey600,
                                 ),
                               );
                             },
@@ -88,7 +89,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                     Text(
                       post.title,
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         height: 1.2,
                       ),
                     ),
@@ -105,15 +106,15 @@ class BlogPostPreviewDialog extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey[300]!),
+                          color: AppTheme.grey100,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                          border: Border.all(color: AppTheme.grey300!),
                         ),
                         child: Text(
                           post.excerpt,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontStyle: FontStyle.italic,
-                            color: Colors.grey[700],
+                            color: AppTheme.grey700,
                             height: 1.4,
                           ),
                         ),
@@ -152,16 +153,16 @@ class BlogPostPreviewDialog extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final imageUrl = post.imageUrls[index];
                           return ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                             child: Image.network(
                               imageUrl,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
-                                  color: Colors.grey[300],
+                                  color: AppTheme.grey300,
                                   child: Icon(
                                     Icons.image_not_supported,
-                                    color: Colors.grey[600],
+                                    color: AppTheme.grey600,
                                   ),
                                 );
                               },
@@ -182,7 +183,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                         Text(
                           'Catégories',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -204,7 +205,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                         Text(
                           'Tags',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -213,8 +214,8 @@ class BlogPostPreviewDialog extends StatelessWidget {
                           runSpacing: 8,
                           children: post.tags.map((tag) => Chip(
                             label: Text('#$tag'),
-                            backgroundColor: Colors.grey[200],
-                            labelStyle: TextStyle(color: Colors.grey[700]),
+                            backgroundColor: AppTheme.grey200,
+                            labelStyle: TextStyle(color: AppTheme.grey700),
                           )).toList(),
                         ),
                       ],
@@ -227,7 +228,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: _getStatusColor().withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         border: Border.all(color: _getStatusColor().withOpacity(0.3)),
                       ),
                       child: Column(
@@ -245,7 +246,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                                 'Statut: ${post.status.displayName}',
                                 style: TextStyle(
                                   color: _getStatusColor(),
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                 ),
                               ),
                             ],
@@ -270,13 +271,13 @@ class BlogPostPreviewDialog extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: Colors.green.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    color: AppTheme.greenStandard.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                   child: const Text(
                                     'Commentaires autorisés',
                                     style: TextStyle(
-                                      color: Colors.green,
+                                      color: AppTheme.greenStandard,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -288,7 +289,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
                                     color: Colors.amber.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                   child: const Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -324,13 +325,13 @@ class BlogPostPreviewDialog extends StatelessWidget {
   Color _getStatusColor() {
     switch (post.status) {
       case BlogPostStatus.published:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case BlogPostStatus.draft:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case BlogPostStatus.scheduled:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case BlogPostStatus.archived:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

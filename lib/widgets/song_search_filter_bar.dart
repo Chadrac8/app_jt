@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../modules/songs/models/song_model.dart';
+import '../../theme.dart';
 
 /// Widget de recherche et filtrage pour les chants
 class SongSearchFilterBar extends StatefulWidget {
@@ -173,7 +174,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                         top: 48,
                         child: Material(
                           elevation: 4,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           child: ListView(
                             shrinkWrap: true,
                             children: _suggestions.map((s) => ListTile(
@@ -282,7 +283,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(0x0D1976D2), // 5% opacity of primaryColor (#1976D2)
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,7 +291,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
           Text(
             'Filtres avancés',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           
@@ -396,7 +397,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
           Text(
             'Tags',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           const SizedBox(height: 8),

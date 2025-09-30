@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class MemberHomePage extends StatefulWidget {
   const MemberHomePage({super.key});
@@ -24,7 +24,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
           'Page d\'accueil membre en construction',
           style: TextStyle(
             fontSize: 18,
-            color: Colors.grey,
+            color: AppTheme.grey500,
           ),
         ),
       ),

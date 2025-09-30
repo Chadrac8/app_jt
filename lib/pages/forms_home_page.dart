@@ -5,7 +5,7 @@ import '../services/forms_firebase_service.dart';
 import '../widgets/form_card.dart';
 import 'form_builder_page.dart';
 import 'form_detail_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormsHomePage extends StatefulWidget {
   const FormsHomePage({super.key});
@@ -257,7 +257,7 @@ class _FormsHomePageState extends State<FormsHomePage>
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.errorColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Supprimer'),
           ),
@@ -314,7 +314,7 @@ class _FormsHomePageState extends State<FormsHomePage>
       appBar: AppBar(
         title: const Text('Formulaires'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           if (_isSelectionMode) ...[
@@ -335,9 +335,9 @@ class _FormsHomePageState extends State<FormsHomePage>
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          indicatorColor: AppTheme.white100,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
           tabs: const [
             Tab(text: 'Tous'),
             Tab(text: 'Brouillons'),
@@ -367,7 +367,7 @@ class _FormsHomePageState extends State<FormsHomePage>
         child: FloatingActionButton.extended(
           onPressed: _showCreateOptions,
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           icon: const Icon(Icons.add),
           label: const Text('Nouveau'),
         ),
@@ -379,10 +379,10 @@ class _FormsHomePageState extends State<FormsHomePage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: AppTheme.black100,
             blurRadius: 4,
             offset: Offset(0, 2),
           ),
@@ -397,7 +397,7 @@ class _FormsHomePageState extends State<FormsHomePage>
               hintText: 'Rechercher des formulaires...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide.none,
               ),
               filled: true,
@@ -414,7 +414,7 @@ class _FormsHomePageState extends State<FormsHomePage>
                   decoration: InputDecoration(
                     labelText: 'Statut',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -434,7 +434,7 @@ class _FormsHomePageState extends State<FormsHomePage>
                   decoration: InputDecoration(
                     labelText: 'Visibilité',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -530,7 +530,7 @@ class _FormsHomePageState extends State<FormsHomePage>
                   label: const Text('Créer un formulaire'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ],
@@ -592,7 +592,7 @@ class _FormsHomePageState extends State<FormsHomePage>
               'Créer un formulaire',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 24),
@@ -632,7 +632,7 @@ class _FormsHomePageState extends State<FormsHomePage>
               '${_selectedForms.length} formulaire(s) sélectionné(s)',
               style: const TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 24),

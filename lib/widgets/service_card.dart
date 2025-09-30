@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/service_model.dart';
 import '../services/services_firebase_service.dart';
-// Removed unused import '../theme.dart';
+import '../theme.dart';
 
 
 class ServiceCard extends StatefulWidget {
@@ -68,11 +68,11 @@ class _ServiceCardState extends State<ServiceCard>
 
   Color get _statusColor {
     switch (widget.service.status) {
-      case 'publie': return Colors.green;
-      case 'brouillon': return Colors.orange;
-      case 'archive': return Colors.grey;
-      case 'annule': return Colors.red;
-      default: return Colors.grey;
+      case 'publie': return AppTheme.greenStandard;
+      case 'brouillon': return AppTheme.orangeStandard;
+      case 'archive': return AppTheme.grey500;
+      case 'annule': return AppTheme.redStandard;
+      default: return AppTheme.grey500;
     }
   }
 
@@ -146,7 +146,7 @@ class _ServiceCardState extends State<ServiceCard>
         child: Icon(
           iconData,
           size: 48,
-          color: Colors.white,
+          color: AppTheme.white100,
         ),
       ),
     );
@@ -178,7 +178,7 @@ class _ServiceCardState extends State<ServiceCard>
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: Border.all(
             color: widget.isSelected 
                 ? Theme.of(context).colorScheme.primary
@@ -237,13 +237,13 @@ class _ServiceCardState extends State<ServiceCard>
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _statusColor,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       widget.service.statusLabel,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                        color: AppTheme.white100,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                   ),
@@ -257,13 +257,13 @@ class _ServiceCardState extends State<ServiceCard>
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Color(0xB3000000), // 70% opacity black
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       widget.service.typeLabel,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.white100,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -281,7 +281,7 @@ class _ServiceCardState extends State<ServiceCard>
                   Text(
                     widget.service.name,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                     maxLines: 2,
@@ -316,7 +316,7 @@ class _ServiceCardState extends State<ServiceCard>
                           _formatDateTime(widget.service.dateTime),
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),
@@ -357,7 +357,7 @@ class _ServiceCardState extends State<ServiceCard>
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.secondaryContainer,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -372,7 +372,7 @@ class _ServiceCardState extends State<ServiceCard>
                               '${widget.service.durationMinutes}min',
                               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                 color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                           ],
@@ -387,7 +387,7 @@ class _ServiceCardState extends State<ServiceCard>
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.tertiaryContainer,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -402,7 +402,7 @@ class _ServiceCardState extends State<ServiceCard>
                                 '${widget.service.teamIds.length} équipe(s)',
                                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                   color: Theme.of(context).colorScheme.onTertiaryContainer,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -488,9 +488,9 @@ class _ServiceCardState extends State<ServiceCard>
                               value: 'delete',
                               child: Row(
                                 children: [
-                                  Icon(Icons.delete, color: Colors.red),
+                                  Icon(Icons.delete, color: AppTheme.redStandard),
                                   SizedBox(width: 8),
-                                  Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                  Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                 ],
                               ),
                             ),
@@ -596,7 +596,7 @@ class _ServiceCardState extends State<ServiceCard>
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.errorContainer,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Row(
                 children: [
@@ -627,12 +627,12 @@ class _ServiceCardState extends State<ServiceCard>
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Text(
                 '${widget.service.name} - ${_formatDateTime(widget.service.dateTime)}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             ),
@@ -689,12 +689,12 @@ class _ServiceCardState extends State<ServiceCard>
           SnackBar(
             content: const Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
+                Icon(Icons.check_circle, color: AppTheme.white100),
                 SizedBox(width: 12),
                 Text('Service supprimé avec succès'),
               ],
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -707,14 +707,14 @@ class _ServiceCardState extends State<ServiceCard>
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.error, color: Colors.white),
+                const Icon(Icons.error, color: AppTheme.white100),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text('Erreur lors de la suppression: ${e.toString()}'),
                 ),
               ],
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 5),
           ),

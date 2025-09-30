@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/event_model.dart';
+import '../../theme.dart';
 
 /// Widget pour afficher une carte d'événement avec support des récurrences
 class RecurringEventCard extends StatelessWidget {
@@ -35,7 +36,7 @@ class RecurringEventCard extends StatelessWidget {
       child: InkWell(
         onTap: isSelectionMode ? _toggleSelection : onTap,
         onLongPress: isSelectionMode ? null : onLongPress,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -61,7 +62,7 @@ class RecurringEventCard extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: _getTypeColor().withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Icon(
             _getTypeIcon(),
@@ -82,7 +83,7 @@ class RecurringEventCard extends StatelessWidget {
                     child: Text(
                       event.title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -96,7 +97,7 @@ class RecurringEventCard extends StatelessWidget {
                 Text(
                   recurrenceDescription!,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.blue[700],
+                    color: AppTheme.grey700,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -125,13 +126,13 @@ class RecurringEventCard extends StatelessWidget {
             Icon(
               Icons.schedule,
               size: 16,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
             const SizedBox(width: 4),
             Text(
               _formatDateTime(),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[700],
+                color: AppTheme.grey700,
               ),
             ),
           ],
@@ -145,14 +146,14 @@ class RecurringEventCard extends StatelessWidget {
               Icon(
                 Icons.location_on,
                 size: 16,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   event.location,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[700],
+                    color: AppTheme.grey700,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -184,14 +185,14 @@ class RecurringEventCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             color: _getStatusColor().withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Text(
             event.statusLabel,
             style: TextStyle(
               color: _getStatusColor(),
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ),
@@ -202,13 +203,13 @@ class RecurringEventCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(12),
+            color: AppTheme.grey200,
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Text(
             event.typeLabel,
             style: TextStyle(
-              color: Colors.grey[700],
+              color: AppTheme.grey700,
               fontSize: 12,
             ),
           ),
@@ -221,7 +222,7 @@ class RecurringEventCard extends StatelessWidget {
           Icon(
             Icons.how_to_reg,
             size: 16,
-            color: Colors.green[600],
+            color: AppTheme.grey600,
           ),
         
         // Récurrence originale
@@ -229,7 +230,7 @@ class RecurringEventCard extends StatelessWidget {
           Icon(
             Icons.repeat,
             size: 16,
-            color: Colors.blue[600],
+            color: AppTheme.grey600,
           ),
       ],
     );
@@ -239,8 +240,8 @@ class RecurringEventCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: Colors.blue[100],
-        borderRadius: BorderRadius.circular(8),
+        color: AppTheme.grey100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -248,15 +249,15 @@ class RecurringEventCard extends StatelessWidget {
           Icon(
             Icons.repeat,
             size: 12,
-            color: Colors.blue[700],
+            color: AppTheme.grey700,
           ),
           const SizedBox(width: 2),
           Text(
             'Instance',
             style: TextStyle(
-              color: Colors.blue[700],
+              color: AppTheme.grey700,
               fontSize: 10,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -299,25 +300,25 @@ class RecurringEventCard extends StatelessWidget {
 
   Color _getTypeColor() {
     switch (event.type) {
-      case 'celebration': return Colors.orange;
-      case 'bapteme': return Colors.blue;
-      case 'formation': return Colors.green;
+      case 'celebration': return AppTheme.orangeStandard;
+      case 'bapteme': return AppTheme.blueStandard;
+      case 'formation': return AppTheme.greenStandard;
       case 'sortie': return Colors.purple;
-      case 'conference': return Colors.red;
+      case 'conference': return AppTheme.redStandard;
       case 'reunion': return Colors.indigo;
-      case 'priere': return Colors.pink;
+      case 'priere': return AppTheme.pinkStandard;
       case 'culte': return Colors.amber;
-      default: return Colors.grey;
+      default: return AppTheme.grey500;
     }
   }
 
   Color _getStatusColor() {
     switch (event.status) {
-      case 'publie': return Colors.green;
-      case 'brouillon': return Colors.orange;
-      case 'archive': return Colors.grey;
-      case 'annule': return Colors.red;
-      default: return Colors.grey;
+      case 'publie': return AppTheme.greenStandard;
+      case 'brouillon': return AppTheme.orangeStandard;
+      case 'archive': return AppTheme.grey500;
+      case 'annule': return AppTheme.redStandard;
+      default: return AppTheme.grey500;
     }
   }
 
@@ -357,13 +358,13 @@ class RecurringEventsList extends StatelessWidget {
             Icon(
               Icons.event_busy,
               size: 64,
-              color: Colors.grey[400],
+              color: AppTheme.grey400,
             ),
             const SizedBox(height: 16),
             Text(
               'Aucun événement trouvé',
               style: TextStyle(
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
                 fontSize: 18,
               ),
             ),
@@ -421,7 +422,7 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
             Text(
               'Statistiques des événements',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -435,7 +436,7 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
                     'Total',
                     totalEvents.toString(),
                     Icons.event,
-                    Colors.blue,
+                    AppTheme.blueStandard,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -445,7 +446,7 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
                     'Instances récurrentes',
                     recurringInstances.toString(),
                     Icons.repeat,
-                    Colors.green,
+                    AppTheme.greenStandard,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -455,7 +456,7 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
                     'Événements simples',
                     simpleEvents.toString(),
                     Icons.event_note,
-                    Colors.orange,
+                    AppTheme.orangeStandard,
                   ),
                 ),
               ],
@@ -467,7 +468,7 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
               Text(
                 'Répartition par fréquence',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
               const SizedBox(height: 8),
@@ -481,12 +482,12 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(12),
+                          color: AppTheme.grey200,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           entry.value.toString(),
-                          style: const TextStyle(fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontWeight: AppTheme.fontMedium),
                         ),
                       ),
                     ],
@@ -511,7 +512,7 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Column(
         children: [
@@ -521,7 +522,7 @@ class RecurrenceStatisticsWidget extends StatelessWidget {
             value,
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),

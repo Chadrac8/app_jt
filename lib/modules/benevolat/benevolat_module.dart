@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../vie_eglise/widgets/benevolat_tab.dart';
+import '../../../theme.dart';
 
 class BenevolatModule extends StatelessWidget {
   const BenevolatModule({super.key});
@@ -14,7 +15,7 @@ class BenevolatModule extends StatelessWidget {
           children: [
             Icon(
               Icons.volunteer_activism,
-              color: Colors.blue,
+              color: AppTheme.blueStandard,
               size: 28,
             ),
             const SizedBox(width: 8),
@@ -22,15 +23,15 @@ class BenevolatModule extends StatelessWidget {
               'Bénévolat',
               style: GoogleFonts.poppins(
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[800],
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.grey800,
               ),
             ),
           ],
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.grey[800]),
+        iconTheme: IconThemeData(color: AppTheme.grey800),
       ),
       body: const BenevolatTab(),
     );

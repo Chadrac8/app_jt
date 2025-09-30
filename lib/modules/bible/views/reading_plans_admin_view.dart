@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../theme.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:convert';
 import '../models/reading_plan.dart';
@@ -77,13 +78,13 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
           'Administration - Plans de lecture',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontBold),
         ),
         centerTitle: true,
         actions: [
@@ -106,7 +107,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete, color: Colors.red),
+                        Icon(Icons.delete, color: AppTheme.redStandard),
                         SizedBox(width: 8),
                         Text('Supprimer'),
                       ],
@@ -147,11 +148,11 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
+              color: AppTheme.backgroundColor,
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: AppTheme.black100.withOpacity(0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -161,12 +162,12 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 color: theme.colorScheme.primary,
               ),
-              labelColor: Colors.white,
+              labelColor: AppTheme.white100,
               unselectedLabelColor: theme.colorScheme.onSurface.withOpacity(0.6),
-              labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              labelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
               tabs: const [
                 Tab(text: 'Gestion'),
                 Tab(text: 'Statistiques'),
@@ -188,11 +189,11 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
           ? FloatingActionButton.extended(
               onPressed: _createNewPlan,
               backgroundColor: theme.colorScheme.primary,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
               icon: const Icon(Icons.add),
               label: Text(
                 'Nouveau plan',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
               ),
             )
           : null,
@@ -221,7 +222,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                   '${_selectedPlans.length} plan(s) sélectionné(s)',
                   style: GoogleFonts.inter(
                     color: theme.colorScheme.primary,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
                 const Spacer(),
@@ -269,7 +270,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
             'Statistiques générales',
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -293,19 +294,19 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                 title: 'Catégories',
                 value: '$categoriesCount',
                 icon: Icons.category,
-                color: Colors.blue,
+                color: AppTheme.blueStandard,
               ),
               _buildStatCard(
                 title: 'Plans populaires',
                 value: '$popularPlans',
                 icon: Icons.star,
-                color: Colors.orange,
+                color: AppTheme.orangeStandard,
               ),
               _buildStatCard(
                 title: 'Durée moyenne',
                 value: '${avgDuration.round()} jours',
                 icon: Icons.calendar_today,
-                color: Colors.green,
+                color: AppTheme.greenStandard,
               ),
             ],
           ),
@@ -317,7 +318,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
             'Répartition par catégorie',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -338,7 +339,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
@@ -350,7 +351,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
             value,
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -385,7 +386,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
               children: [
                 Text(
                   entry.key,
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                  style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium),
                 ),
                 Text(
                   '${entry.value} (${(percentage * 100).toInt()}%)',
@@ -425,7 +426,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
             'Aucun plan de lecture',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
@@ -443,7 +444,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
             label: const Text('Créer un plan'),
             style: ElevatedButton.styleFrom(
               backgroundColor: theme.colorScheme.primary,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
           ),
         ],
@@ -457,14 +458,14 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
     
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         onTap: () => _isSelectionMode ? _toggleSelection(plan.id) : _viewPlanDetail(plan),
         onLongPress: () => _toggleSelectionMode(plan.id),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: isSelected 
                 ? Border.all(color: theme.colorScheme.primary, width: 2)
                 : null,
@@ -485,7 +486,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: Icon(
                         _getCategoryIcon(plan.category),
@@ -504,7 +505,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                                   plan.name,
                                   style: GoogleFonts.inter(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: AppTheme.fontBold,
                                   ),
                                 ),
                               ),
@@ -515,15 +516,15 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.orange.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(8),
+                                    color: AppTheme.orangeStandard.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                   ),
                                   child: Text(
                                     'Populaire',
                                     style: GoogleFonts.inter(
                                       fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.orange[800],
+                                      fontWeight: AppTheme.fontSemiBold,
+                                      color: AppTheme.grey800,
                                     ),
                                   ),
                                 ),
@@ -534,7 +535,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ],
@@ -577,7 +578,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                           value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.delete, color: Colors.red),
+                              Icon(Icons.delete, color: AppTheme.redStandard),
                               SizedBox(width: 8),
                               Text('Supprimer'),
                             ],
@@ -881,7 +882,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
               Navigator.pop(context);
               _deletePlan(plan);
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -907,7 +908,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
               Navigator.pop(context);
               _bulkDelete();
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],

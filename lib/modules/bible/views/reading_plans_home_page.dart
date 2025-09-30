@@ -4,6 +4,7 @@ import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import 'reading_plan_detail_view.dart';
 import 'active_reading_plan_view.dart';
+import '../../../../theme.dart';
 
 class ReadingPlansHomePage extends StatefulWidget {
   const ReadingPlansHomePage({Key? key}) : super(key: key);
@@ -91,7 +92,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
         backgroundColor: Colors.transparent,
         title: Text(
           'Plans de lecture',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+          style: GoogleFonts.inter(fontWeight: AppTheme.fontBold),
         ),
         centerTitle: true,
         bottom: PreferredSize(
@@ -100,10 +101,10 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: AppTheme.black100.withOpacity(0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -113,12 +114,12 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 color: theme.colorScheme.primary,
               ),
-              labelColor: Colors.white,
+              labelColor: AppTheme.white100,
               unselectedLabelColor: theme.colorScheme.onSurface.withOpacity(0.6),
-              labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              labelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
               tabs: const [
                 Tab(text: 'Actuel'),
                 Tab(text: 'Découvrir'),
@@ -179,7 +180,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
               'Aucun plan actif',
               style: GoogleFonts.inter(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: theme.colorScheme.onSurface,
               ),
             ),
@@ -196,16 +197,16 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
               ),
               onPressed: () => _tabController.animateTo(1),
               child: Text(
                 'Découvrir les plans',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold),
               ),
             ),
           ],
@@ -228,7 +229,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                   hintText: 'Rechercher un plan...',
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
@@ -298,9 +299,9 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
     
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         onTap: () => _navigateToPlanDetail(plan),
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -313,7 +314,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Icon(
                       _getCategoryIcon(plan.category),
@@ -333,7 +334,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                                 plan.name,
                                 style: GoogleFonts.inter(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                 ),
                               ),
                             ),
@@ -344,15 +345,15 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8),
+                                  color: AppTheme.orangeStandard.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                 ),
                                 child: Text(
                                   'Populaire',
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.orange[800],
+                                    fontWeight: AppTheme.fontSemiBold,
+                                    color: AppTheme.grey800,
                                   ),
                                 ),
                               ),
@@ -364,7 +365,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ],
@@ -419,7 +420,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -491,7 +492,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Plan "${plan.name}" commencé !'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         _tabController.animateTo(0); // Aller à l'onglet "Actuel"

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
 
@@ -880,7 +880,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Veuillez sélectionner votre date de naissance'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
         return;
@@ -891,7 +891,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Veuillez sélectionner votre genre'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
         return;
@@ -902,7 +902,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Veuillez sélectionner votre pays'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
         return;
@@ -1107,13 +1107,13 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(20),
+              color: AppTheme.white100.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             ),
             child: const Icon(
               Icons.person_add_alt_1,
               size: 48,
-              color: Colors.white,
+              color: AppTheme.white100,
             ),
           ),
           const SizedBox(height: 20),
@@ -1121,8 +1121,8 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             'Configuration du profil',
             style: TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+              fontWeight: AppTheme.fontBold,
+              color: AppTheme.white100,
             ),
           ),
           const SizedBox(height: 8),
@@ -1130,7 +1130,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             'Complétez votre profil pour accéder à l\'application',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.white.withOpacity(0.9),
+              color: AppTheme.white100.withOpacity(0.9),
             ),
             textAlign: TextAlign.center,
           ),
@@ -1159,7 +1159,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               child: Container(
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: AppTheme.grey500,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -1169,7 +1169,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               child: Container(
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: AppTheme.grey500,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -1184,7 +1184,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               'Informations',
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF667EEA),
               ),
             ),
@@ -1192,14 +1192,14 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               'Adresse',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey.shade600,
+                color: AppTheme.grey500,
               ),
             ),
             Text(
               'Validation',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey.shade600,
+                color: AppTheme.grey500,
               ),
             ),
           ],
@@ -1242,7 +1242,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: AppTheme.black100.withOpacity(0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -1254,26 +1254,26 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                       imageUrl: _profileImageUrl!,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
-                        color: Colors.grey.shade200,
+                        color: AppTheme.grey500,
                         child: const Center(
                           child: CircularProgressIndicator(),
                         ),
                       ),
                       errorWidget: (context, url, error) => Container(
-                        color: Colors.grey.shade200,
+                        color: AppTheme.grey500,
                         child: const Icon(
                           Icons.person,
                           size: 60,
-                          color: Colors.grey,
+                          color: AppTheme.grey500,
                         ),
                       ),
                     )
                   : Container(
-                      color: Colors.grey.shade100,
+                      color: AppTheme.grey500,
                       child: const Icon(
                         Icons.person,
                         size: 60,
-                        color: Colors.grey,
+                        color: AppTheme.grey500,
                       ),
                     ),
             ),
@@ -1290,12 +1290,12 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                   color: const Color(0xFF667EEA),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     width: 3,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: AppTheme.black100.withOpacity(0.2),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -1303,7 +1303,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                 ),
                 child: const Icon(
                   Icons.camera_alt,
-                  color: Colors.white,
+                  color: AppTheme.white100,
                   size: 20,
                 ),
               ),
@@ -1497,11 +1497,11 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 20,
             offset: const Offset(0, 5),
           ),
@@ -1531,7 +1531,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                   title,
                   style: const TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: Color(0xFF1F2937),
                   ),
                 ),
@@ -1564,30 +1564,30 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         labelText: label,
         prefixIcon: Icon(icon, color: const Color(0xFF667EEA)),
         labelStyle: TextStyle(
-          color: Colors.grey.shade600,
+          color: AppTheme.grey500,
           fontSize: 14,
         ),
         filled: true,
         fillColor: const Color(0xFFF9FAFB),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderSide: BorderSide(color: AppTheme.grey500),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderSide: BorderSide(color: AppTheme.grey500),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.red, width: 2),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderSide: const BorderSide(color: AppTheme.redStandard, width: 2),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.red, width: 2),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderSide: const BorderSide(color: AppTheme.redStandard, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
@@ -1601,8 +1601,8 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
           color: const Color(0xFFF9FAFB),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          border: Border.all(color: AppTheme.grey500),
         ),
         child: Row(
           children: [
@@ -1617,7 +1617,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                   fontSize: 16,
                   color: _birthDate != null 
                       ? const Color(0xFF1F2937) 
-                      : Colors.grey.shade600,
+                      : AppTheme.grey500,
                 ),
               ),
             ),
@@ -1639,15 +1639,15 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
           filled: true,
           fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -1682,15 +1682,15 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
           filled: true,
           fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -1725,15 +1725,15 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
           filled: true,
           fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -1746,7 +1746,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             labelText: 'Rechercher un indicatif...',
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
           ),
         ),
@@ -1757,14 +1757,14 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               children: [
                 Text(
                   item,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: AppTheme.fontBold),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     _countryCodes[item] ?? '',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                       fontSize: 13,
                     ),
                   ),
@@ -1799,15 +1799,15 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
           filled: true,
           fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -1820,7 +1820,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             labelText: 'Rechercher un pays...',
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
           ),
         ),
@@ -1855,7 +1855,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         gradient: const LinearGradient(
           colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF667EEA).withOpacity(0.3),
@@ -1867,7 +1867,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           onTap: _isLoading ? null : _completeSetup,
           child: Center(
             child: _isLoading
@@ -1876,7 +1876,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                     height: 24,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                     ),
                   )
                 : const Row(
@@ -1884,16 +1884,16 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                     children: [
                       Icon(
                         Icons.check_circle_outline,
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         size: 24,
                       ),
                       SizedBox(width: 12),
                       Text(
                         'Finaliser la configuration',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppTheme.white100,
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                     ],

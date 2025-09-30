@@ -9,7 +9,7 @@ import 'service_detail_page.dart';
 import 'service_form_page.dart';
 import '../../../pages/teams_management_page.dart';
 import '../../../pages/assignments_overview_page.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 
 
 class ServicesHomePage extends StatefulWidget {
@@ -351,7 +351,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                     Text(
                       '${_selectedServices.length} sélectionné(s)',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     const Spacer(),
@@ -382,7 +382,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Icon(
                         Icons.event_note,
@@ -398,7 +398,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                           Text(
                             'Services',
                             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                               color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
@@ -546,7 +546,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                           Text(
                             'Aucun service trouvé',
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
                           const SizedBox(height: 8),

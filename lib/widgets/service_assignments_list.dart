@@ -3,7 +3,7 @@ import '../models/service_model.dart';
 import '../models/person_model.dart';
 import '../services/services_firebase_service.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../widgets/user_avatar.dart';
 
 class ServiceAssignmentsList extends StatefulWidget {
@@ -253,13 +253,13 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
     switch (status) {
       case 'accepted':
       case 'confirmed':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'declined':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'tentative':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -289,7 +289,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                       child: Text(
                         'Équipes et affectations',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                     ),
@@ -362,7 +362,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                             Text(
                               'Aucune affectation',
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -469,7 +469,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                     color: position.isLeaderPosition 
                         ? Theme.of(context).colorScheme.primaryContainer
                         : Theme.of(context).colorScheme.secondaryContainer,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     position.isLeaderPosition ? Icons.star : Icons.person,
@@ -487,7 +487,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                       Text(
                         position.name,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       if (position.description.isNotEmpty)
@@ -558,7 +558,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                 Text(
                   person.fullName,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
                 Row(
@@ -567,13 +567,13 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
                         color: statusColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         assignment.statusLabel,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: statusColor,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                     ),
@@ -625,7 +625,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                   value: 'accept',
                   child: Row(
                     children: [
-                      Icon(Icons.check, color: Colors.green),
+                      Icon(Icons.check, color: AppTheme.greenStandard),
                       SizedBox(width: 8),
                       Text('Accepter'),
                     ],
@@ -635,7 +635,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                   value: 'decline',
                   child: Row(
                     children: [
-                      Icon(Icons.close, color: Colors.red),
+                      Icon(Icons.close, color: AppTheme.redStandard),
                       SizedBox(width: 8),
                       Text('Refuser'),
                     ],
@@ -645,7 +645,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                   value: 'tentative',
                   child: Row(
                     children: [
-                      Icon(Icons.help, color: Colors.orange),
+                      Icon(Icons.help, color: AppTheme.orangeStandard),
                       SizedBox(width: 8),
                       Text('Peut-être'),
                     ],
@@ -677,7 +677,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                 value: 'remove',
                 child: Row(
                   children: [
-                    Icon(Icons.delete, color: Colors.red),
+                    Icon(Icons.delete, color: AppTheme.redStandard),
                     SizedBox(width: 8),
                     Text('Supprimer'),
                   ],
@@ -723,7 +723,7 @@ class _TeamSelectionDialog extends StatelessWidget {
                 height: 40,
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   Icons.groups,

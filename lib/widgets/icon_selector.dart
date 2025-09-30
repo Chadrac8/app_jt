@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 /// Widget pour sélectionner une icône parmi une large collection
 class IconSelector extends StatefulWidget {
@@ -63,20 +63,20 @@ class _IconSelectorState extends State<IconSelector> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.palette, color: Colors.white),
+                  Icon(Icons.palette, color: AppTheme.white100),
                   const SizedBox(width: 8),
                   Text(
                     'Sélectionner une icône',
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: AppTheme.white100,
                     ),
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                   ),
                 ],
               ),
@@ -91,10 +91,10 @@ class _IconSelectorState extends State<IconSelector> {
                   hintText: 'Rechercher une icône...',
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   filled: true,
-                  fillColor: Colors.grey[50],
+                  fillColor: AppTheme.grey50,
                 ),
               ),
             ),
@@ -106,7 +106,7 @@ class _IconSelectorState extends State<IconSelector> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
                 ),
                 child: Row(
@@ -120,7 +120,7 @@ class _IconSelectorState extends State<IconSelector> {
                       'Actuellement sélectionné: ${widget.currentIcon}',
                       style: TextStyle(
                         color: AppTheme.primaryColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ],
@@ -152,24 +152,24 @@ class _IconSelectorState extends State<IconSelector> {
                           widget.onIconSelected(iconOption.name);
                           Navigator.of(context).pop();
                         },
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         child: Container(
                           decoration: BoxDecoration(
                             color: isSelected 
                                 ? AppTheme.primaryColor 
-                                : Colors.grey[50],
-                            borderRadius: BorderRadius.circular(8),
+                                : AppTheme.grey50,
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                             border: Border.all(
                               color: isSelected 
                                   ? AppTheme.primaryColor 
-                                  : Colors.grey[300]!,
+                                  : AppTheme.grey300!,
                               width: isSelected ? 2 : 1,
                             ),
                           ),
                           child: Icon(
                             iconOption.iconData,
                             color: isSelected 
-                                ? Colors.white 
+                                ? AppTheme.white100 
                                 : AppTheme.textPrimaryColor,
                             size: 24,
                           ),

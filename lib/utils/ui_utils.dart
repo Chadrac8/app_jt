@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 
 /// Service de gestion des notifications optimisé
 class NotificationService {
@@ -11,7 +12,7 @@ class NotificationService {
   static void showSuccess(String message, {Duration? duration}) {
     _showSnackBar(
       message: message,
-      backgroundColor: Colors.green[600],
+      backgroundColor: AppTheme.grey600,
       icon: Icons.check_circle,
       duration: duration ?? const Duration(seconds: 2),
     );
@@ -20,13 +21,13 @@ class NotificationService {
   static void showError(String message, {Duration? duration, VoidCallback? onRetry}) {
     _showSnackBar(
       message: message,
-      backgroundColor: Colors.red[600],
+      backgroundColor: AppTheme.grey600,
       icon: Icons.error,
       duration: duration ?? const Duration(seconds: 4),
       action: onRetry != null
           ? SnackBarAction(
               label: 'Réessayer',
-              textColor: Colors.white,
+              textColor: AppTheme.white100,
               onPressed: onRetry,
             )
           : null,
@@ -36,7 +37,7 @@ class NotificationService {
   static void showWarning(String message, {Duration? duration}) {
     _showSnackBar(
       message: message,
-      backgroundColor: Colors.orange[600],
+      backgroundColor: AppTheme.grey600,
       icon: Icons.warning,
       duration: duration ?? const Duration(seconds: 3),
     );
@@ -45,7 +46,7 @@ class NotificationService {
   static void showInfo(String message, {Duration? duration}) {
     _showSnackBar(
       message: message,
-      backgroundColor: Colors.blue[600],
+      backgroundColor: AppTheme.grey600,
       icon: Icons.info,
       duration: duration ?? const Duration(seconds: 3),
     );
@@ -61,7 +62,7 @@ class NotificationService {
               height: 20,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
               ),
             ),
             const SizedBox(width: 16),
@@ -69,7 +70,7 @@ class NotificationService {
           ],
         ),
         duration: const Duration(seconds: 30), // Long duration for loading
-        backgroundColor: Colors.blue[600],
+        backgroundColor: AppTheme.grey600,
       ),
     );
   }
@@ -89,12 +90,12 @@ class NotificationService {
       SnackBar(
         content: Row(
           children: [
-            Icon(icon, color: Colors.white, size: 20),
+            Icon(icon, color: AppTheme.white100, size: 20),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
                 message,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppTheme.white100),
               ),
             ),
           ],
@@ -104,7 +105,7 @@ class NotificationService {
         action: action,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         ),
         margin: const EdgeInsets.all(16),
       ),
@@ -139,7 +140,7 @@ class ConfirmationDialog extends StatelessWidget {
       title: Text(title),
       content: Text(content),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       actions: [
         TextButton(
@@ -158,7 +159,7 @@ class ConfirmationDialog extends StatelessWidget {
             backgroundColor: isDestructive 
                 ? Theme.of(context).colorScheme.error
                 : Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.white,
+            foregroundColor: AppTheme.white100,
           ),
           child: Text(confirmText),
         ),
@@ -209,7 +210,7 @@ class LoadingOverlay extends StatelessWidget {
         child,
         if (isLoading)
           Container(
-            color: backgroundColor ?? Colors.black.withOpacity(0.3),
+            color: backgroundColor ?? AppTheme.black100.withOpacity(0.3),
             child: Center(
               child: Card(
                 child: Padding(
@@ -266,7 +267,7 @@ class AdaptiveFloatingActionButton extends StatelessWidget {
           height: 24,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
           ),
         ),
       );

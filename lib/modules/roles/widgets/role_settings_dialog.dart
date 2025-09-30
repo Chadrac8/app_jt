@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../theme.dart';
 
 class RoleSettingsDialog extends StatefulWidget {
   const RoleSettingsDialog({super.key});
@@ -43,7 +44,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                   child: Text(
                     'Paramètres des rôles',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -142,13 +143,13 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                   color: Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                                   border: isSelected
-                                      ? Border.all(color: Colors.black, width: 3)
-                                      : Border.all(color: Colors.grey[300]!),
+                                      ? Border.all(color: AppTheme.black100, width: 3)
+                                      : Border.all(color: AppTheme.grey300!),
                                 ),
                                 child: isSelected
-                                    ? const Icon(Icons.check, color: Colors.white)
+                                    ? const Icon(Icons.check, color: AppTheme.white100)
                                     : null,
                               ),
                             );
@@ -179,7 +180,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Paramètres sauvegardés avec succès'),
-                        backgroundColor: Colors.green,
+                        backgroundColor: AppTheme.greenStandard,
                       ),
                     );
                   },
@@ -207,7 +208,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -221,8 +222,102 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
   }
 
   Future<void> _saveSettings() async {
-    // TODO: Implémenter la sauvegarde des paramètres
-    // Pour l'instant, on simule une sauvegarde
-    await Future.delayed(const Duration(milliseconds: 500));
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Créer l'objet des paramètres
+      final settings = {
+        'role_expiration_enabled': _roleExpirationEnabled,
+        'role_expiration_days': _roleExpirationDays,
+        'auto_cleanup_enabled': _autoCleanupEnabled,
+        'notifications_enabled': _notificationsEnabled,
+        'email_notifications': _emailNotifications,
+        'role_hierarchy_enabled': _roleHierarchyEnabled,
+        'audit_log_enabled': _auditLogEnabled,
+        'backup_enabled': _backupEnabled,
+        'updated_at': FieldValue.serverTimestamp(),
+        'updated_by': 'current_user_id', // TODO: Récupérer l'ID utilisateur actuel
+      };
+
+      // Sauvegarder dans Firebase
+      await FirebaseFirestore.instance
+          .collection('app_settings')
+          .doc('roles_permissions')
+          .set(settings, SetOptions(merge: true));
+
+      // Journalisation de l'action
+      await _logSettingsChange(settings);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Afficher message de succès
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Paramètres sauvegardés avec succès'),
+          backgroundColor: AppTheme.greenStandard,
+        ),
+      );
+
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la sauvegarde: $e'),
+          backgroundColor: AppTheme.redStandard,
+        ),
+      );
+    }
+  }
+
+  Future<void> _logSettingsChange(Map<String, dynamic> settings) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('audit_logs')
+          .add({
+        'action': 'settings_update',
+        'module': 'roles_permissions',
+        'details': {
+          'changed_settings': settings.keys.toList(),
+          'timestamp': FieldValue.serverTimestamp(),
+        },
+        'user_id': 'current_user_id', // TODO: Récupérer l'ID utilisateur actuel
+        'created_at': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print('Erreur lors de la journalisation: $e');
+    }
+  }
+
+  Future<void> _loadExistingSettings() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('app_settings')
+          .doc('roles_permissions')
+          .get();
+
+      if (doc.exists && mounted) {
+        final data = doc.data() as Map<String, dynamic>;
+        setState(() {
+          _roleExpirationEnabled = data['role_expiration_enabled'] ?? false;
+          _roleExpirationDays = data['role_expiration_days'] ?? 365;
+          _autoCleanupEnabled = data['auto_cleanup_enabled'] ?? false;
+          _notificationsEnabled = data['notifications_enabled'] ?? true;
+          _emailNotifications = data['email_notifications'] ?? false;
+          _roleHierarchyEnabled = data['role_hierarchy_enabled'] ?? false;
+          _auditLogEnabled = data['audit_log_enabled'] ?? true;
+          _backupEnabled = data['backup_enabled'] ?? false;
+        });
+      }
+    } catch (e) {
+      print('Erreur lors du chargement des paramètres: $e');
+    }
   }
 }

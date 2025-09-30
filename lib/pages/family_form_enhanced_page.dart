@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/person_model.dart';
 import '../services/family_service.dart';
+import '../../theme.dart';
 
 // Mutable version of EmergencyContact for form editing
 class MutableEmergencyContact {
@@ -455,7 +456,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppTheme.redStandard,
       ),
     );
   }
@@ -464,7 +465,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
       ),
     );
   }
@@ -503,7 +504,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                       decoration: BoxDecoration(
                         color: index <= _currentStep
                             ? Theme.of(context).colorScheme.primary
-                            : Colors.grey[300],
+                            : AppTheme.grey300,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -582,12 +583,12 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
       label,
       style: TextStyle(
         fontSize: 12,
-        fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+        fontWeight: isActive ? AppTheme.fontBold : FontWeight.normal,
         color: isActive
             ? Theme.of(context).colorScheme.primary
             : isCompleted
-                ? Colors.green
-                : Colors.grey,
+                ? AppTheme.greenStandard
+                : AppTheme.grey500,
       ),
     );
   }
@@ -995,7 +996,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                   Icon(
                     Icons.contact_emergency,
                     size: 64,
-                    color: Colors.grey[400],
+                    color: AppTheme.grey400,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -1032,7 +1033,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                             const Spacer(),
                             IconButton(
                               onPressed: () => _removeEmergencyContact(index),
-                              icon: const Icon(Icons.delete, color: Colors.red),
+                              icon: const Icon(Icons.delete, color: AppTheme.redStandard),
                             ),
                           ],
                         ),
@@ -1135,7 +1136,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                   Icon(
                     Icons.people,
                     size: 64,
-                    color: Colors.grey[400],
+                    color: AppTheme.grey400,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -1159,7 +1160,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Row(
                     children: [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../message/models/branham_sermon_model.dart';
 import '../../message/services/admin_branham_sermon_service.dart';
@@ -527,7 +527,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               'Découvrez votre lecteur',
               style: GoogleFonts.inter(
                 color: AppTheme.surfaceColor,
-                fontWeight: FontWeight.w600)),
+                fontWeight: AppTheme.fontSemiBold)),
           ]),
         content: SizedBox(
           width: double.maxFinite,
@@ -567,7 +567,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               'Compris',
               style: GoogleFonts.inter(
                 color: _primaryColor,
-                fontWeight: FontWeight.w600))),
+                fontWeight: AppTheme.fontSemiBold))),
         ]));
   }
 
@@ -681,7 +681,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   style: GoogleFonts.inter(
                     color: AppTheme.surfaceColor,
                     fontSize: 22,
-                    fontWeight: FontWeight.bold)),
+                    fontWeight: AppTheme.fontBold)),
                 textDirection: TextDirection.ltr);
               textPainter.layout();
               
@@ -696,7 +696,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     style: GoogleFonts.inter(
                       color: AppTheme.surfaceColor,
                       fontSize: 22,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: AppTheme.fontBold),
                     textAlign: TextAlign.center));
               }
               
@@ -713,7 +713,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     style: GoogleFonts.inter(
                       color: AppTheme.surfaceColor,
                       fontSize: 22,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: AppTheme.fontBold),
                     textAlign: TextAlign.center));
               }
               
@@ -732,7 +732,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                       style: GoogleFonts.inter(
                         color: AppTheme.surfaceColor,
                         fontSize: 22,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: AppTheme.fontBold),
                       maxLines: 1,
                       overflow: TextOverflow.visible))));
             });
@@ -790,19 +790,19 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                       width: 220,
                       height: 220,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                         boxShadow: [
                           BoxShadow(
                             color: _primaryColor.withOpacity(_isPlaying ? 0.4 : 0.3),
                             blurRadius: _isPlaying ? 25 : 20,
                             spreadRadius: _isPlaying ? 8 : 5),
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
+                            color: AppTheme.black100.withOpacity(0.3),
                             blurRadius: 15,
                             offset: const Offset(0, 10)),
                         ]),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                         child: Stack(
                           children: [
                             // Image de base
@@ -856,7 +856,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                 style: GoogleFonts.inter(
                   color: AppTheme.surfaceColor,
                   fontSize: 17,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   height: 1.1),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -929,7 +929,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     'Choisir une prédication',
                     style: GoogleFonts.inter(
                       color: AppTheme.surfaceColor,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       fontSize: 14)),
                 ])),
           ],
@@ -946,7 +946,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            Colors.black.withOpacity(0.1),
+            AppTheme.black100.withOpacity(0.1),
           ])),
       child: Column(
         children: [
@@ -960,7 +960,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   style: GoogleFonts.inter(
                     color: AppTheme.surfaceColor.withOpacity(0.7),
                     fontSize: 12,
-                    fontWeight: FontWeight.w500)),
+                    fontWeight: AppTheme.fontMedium)),
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -988,7 +988,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   style: GoogleFonts.inter(
                     color: AppTheme.surfaceColor.withOpacity(0.7),
                     fontSize: 12,
-                    fontWeight: FontWeight.w500)),
+                    fontWeight: AppTheme.fontMedium)),
               ])),
           
           const SizedBox(height: 20),
@@ -1029,7 +1029,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                           blurRadius: _isPlaying ? 25 * _pulseAnimation.value : 20,
                           spreadRadius: _isPlaying ? 5 * _pulseAnimation.value : 2),
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: AppTheme.black100.withOpacity(0.3),
                           blurRadius: 10,
                           offset: const Offset(0, 5)),
                       ]),
@@ -1073,7 +1073,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   onTap: _showBackgroundPlayInfo,
                   child: Padding(
                     padding: const EdgeInsets.all(12),
@@ -1088,7 +1088,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   onTap: _showAdvancedControls,
                   child: Padding(
                     padding: const EdgeInsets.all(12),
@@ -1103,7 +1103,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   onTap: _showSermonsBottomSheet,
                   child: Padding(
                     padding: const EdgeInsets.all(12),
@@ -1185,7 +1185,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                             style: GoogleFonts.inter(
                               color: AppTheme.surfaceColor,
                               fontSize: 24,
-                              fontWeight: FontWeight.w700))),
+                              fontWeight: AppTheme.fontBold))),
                         const SizedBox(width: 16),
                         Icon(
                           Icons.library_music_rounded,
@@ -1211,7 +1211,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppTheme.surfaceColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         border: Border.all(
                           color: AppTheme.surfaceColor.withOpacity(0.2),
                           width: 1)),
@@ -1290,7 +1290,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   ])
               : null,
           color: isSelected ? null : AppTheme.surfaceColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: Border.all(
             color: isSelected 
                 ? _primaryColor 
@@ -1301,7 +1301,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
           style: GoogleFonts.inter(
             color: isSelected ? AppTheme.surfaceColor : AppTheme.surfaceColor.withOpacity(0.8),
             fontSize: 14,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500))));
+            fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium))));
   }
 
   Widget _buildSermonTile(BranhamSermon sermon, bool isCurrentSermon) {
@@ -1319,7 +1319,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   AppTheme.surfaceColor.withOpacity(0.1),
                   AppTheme.surfaceColor.withOpacity(0.05),
                 ]),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: isCurrentSermon 
               ? _primaryColor.withOpacity(0.5)
@@ -1353,7 +1353,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
           style: GoogleFonts.inter(
             color: AppTheme.surfaceColor,
             fontSize: 16,
-            fontWeight: FontWeight.w600),
+            fontWeight: AppTheme.fontSemiBold),
           maxLines: 2,
           overflow: TextOverflow.ellipsis),
         subtitle: Padding(
@@ -1433,7 +1433,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     style: GoogleFonts.inter(
                       color: AppTheme.surfaceColor,
                       fontSize: 22,
-                      fontWeight: FontWeight.w700))),
+                      fontWeight: AppTheme.fontBold))),
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
                   child: Container(
@@ -1471,7 +1471,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                               style: GoogleFonts.inter(
                                 color: _primaryColor,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600)),
+                                fontWeight: AppTheme.fontSemiBold)),
                             Text(
                               '2.0x',
                               style: GoogleFonts.inter(
@@ -1517,13 +1517,13 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                 decoration: BoxDecoration(
                                   color: isSelected ? _primaryColor : AppTheme.surfaceColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(16)),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                                 child: Text(
                                   '${speed}x',
                                   style: GoogleFonts.inter(
                                     color: AppTheme.surfaceColor,
                                     fontSize: 12,
-                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal))));
+                                    fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal))));
                           }).toList()),
                       ])),
                   
@@ -1547,7 +1547,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                               style: GoogleFonts.inter(
                                 color: _primaryColor,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600)),
+                                fontWeight: AppTheme.fontSemiBold)),
                             Icon(
                               Icons.volume_up_rounded,
                               color: AppTheme.surfaceColor.withOpacity(0.7),
@@ -1593,7 +1593,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                               style: GoogleFonts.inter(
                                 color: _sleepTimerMinutes > 0 ? _primaryColor : AppTheme.surfaceColor.withOpacity(0.7),
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600)),
+                                fontWeight: AppTheme.fontSemiBold)),
                           ]),
                         const SizedBox(height: 16),
                         Wrap(
@@ -1607,7 +1607,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: isSelected ? _primaryColor : AppTheme.surfaceColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                                   border: Border.all(
                                     color: isSelected ? _primaryColor : AppTheme.surfaceColor.withOpacity(0.2),
                                     width: 1)),
@@ -1616,7 +1616,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                                   style: GoogleFonts.inter(
                                     color: AppTheme.surfaceColor,
                                     fontSize: 12,
-                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal))));
+                                    fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal))));
                           }).toList()),
                       ])),
                   
@@ -1689,7 +1689,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: AppTheme.surfaceColor.withOpacity(0.1),
           width: 1)),
@@ -1708,7 +1708,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                 style: GoogleFonts.inter(
                   color: AppTheme.surfaceColor,
                   fontSize: 16,
-                  fontWeight: FontWeight.w600)),
+                  fontWeight: AppTheme.fontSemiBold)),
             ]),
           const SizedBox(height: 16),
           content,
@@ -1722,7 +1722,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: value ? _primaryColor.withOpacity(0.1) : AppTheme.surfaceColor.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: value ? _primaryColor.withOpacity(0.3) : AppTheme.surfaceColor.withOpacity(0.1),
             width: 1)),
@@ -1742,7 +1742,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     style: GoogleFonts.inter(
                       color: AppTheme.surfaceColor,
                       fontSize: 14,
-                      fontWeight: FontWeight.w600)),
+                      fontWeight: AppTheme.fontSemiBold)),
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
@@ -1766,7 +1766,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: AppTheme.surfaceColor.withOpacity(0.2),
             width: 1)),
@@ -1783,7 +1783,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               style: GoogleFonts.inter(
                 color: AppTheme.surfaceColor,
                 fontSize: 11,
-                fontWeight: FontWeight.w500),
+                fontWeight: AppTheme.fontMedium),
               textAlign: TextAlign.center),
           ])));
   }

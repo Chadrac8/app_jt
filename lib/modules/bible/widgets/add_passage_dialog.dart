@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/thematic_passage_service.dart';
 import '../bible_service.dart';
@@ -66,7 +66,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
     
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         constraints: const BoxConstraints(maxWidth: 600, maxHeight: 700),
@@ -93,7 +93,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                           'Ajouter un passage',
                           style: GoogleFonts.inter(
                             fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: AppTheme.fontBold,
                             color: theme.colorScheme.onSurface)),
                         Text(
                           'au thème "${widget.themeName}"',
@@ -122,7 +122,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                           labelText: 'Référence complète',
                           hintText: 'Ex: Jean 3:16 ou Matthieu 5:3-12',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                           prefixIcon: const Icon(Icons.bookmark_border)),
                         onChanged: (value) => _parseReference(value),
                         validator: (value) {
@@ -144,7 +144,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               decoration: InputDecoration(
                                 labelText: 'Livre',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                               items: _bibleBooks.map((book) {
                                 return DropdownMenuItem(
                                   value: book,
@@ -163,7 +163,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               decoration: InputDecoration(
                                 labelText: 'Chapitre',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                               keyboardType: TextInputType.number,
                               onChanged: (value) => _updateReference(),
                               validator: (value) {
@@ -187,7 +187,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               decoration: InputDecoration(
                                 labelText: 'Verset début',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                               keyboardType: TextInputType.number,
                               onChanged: (value) => _updateReference(),
                               validator: (value) {
@@ -206,7 +206,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               decoration: InputDecoration(
                                 labelText: 'Verset fin (optionnel)',
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12))),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                               keyboardType: TextInputType.number,
                               onChanged: (value) => _updateReference())),
                         ]),
@@ -221,7 +221,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                           labelText: 'Description ou note personnelle',
                           hintText: 'Pourquoi ce passage est-il important pour ce thème ?',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                           alignLabelWithHint: true),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -239,7 +239,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             border: Border.all(
                               color: theme.colorScheme.primary.withOpacity(0.2))),
                           child: Column(
@@ -249,7 +249,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                                 'Aperçu du texte :',
                                 style: GoogleFonts.inter(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: theme.colorScheme.primary)),
                               const SizedBox(height: 8),
                               Text(
@@ -270,7 +270,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                             icon: const Icon(Icons.preview),
                             label: Text(
                               'Prévisualiser le texte',
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600)))),
+                              style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)))),
                     ]))),
               
               const SizedBox(height: 20),
@@ -284,10 +284,10 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                       child: Text(
                         'Annuler',
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w600)))),
+                        style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)))),
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
@@ -297,17 +297,17 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                         foregroundColor: AppTheme.surfaceColor,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                       child: _isLoading
                           ? const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white)))
+                                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100)))
                           : Text(
                               'Ajouter',
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600)))),
+                              style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)))),
                 ]),
             ]))));
   }
@@ -475,7 +475,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                 const SizedBox(height: 16),
                 const Text(
                   'Solutions possibles:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontWeight: AppTheme.fontBold)),
                 const SizedBox(height: 8),
                 const Text('• Activez l\'authentification anonyme dans Firebase'),
                 const Text('• Connectez-vous avec un compte utilisateur'),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class MemberSettingsPage extends StatefulWidget {
   const MemberSettingsPage({super.key});
@@ -169,7 +169,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             Text(
               'Cette action est définitive et irréversible.',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.errorColor,
               ),
             ),
@@ -242,7 +242,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           children: [
             Text(
               'Jubilé Tabernacle',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             SizedBox(height: 8),
             Text('Version: 1.0.0'),
@@ -281,7 +281,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           children: [
             Text(
               'Aidez-nous à faire connaître Jubilé Tabernacle !',
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
             SizedBox(height: 8),
             Text(
@@ -368,7 +368,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           const SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
+                Icon(Icons.check_circle, color: AppTheme.white100),
                 SizedBox(width: 8),
                 Expanded(child: Text('✅ Merci de partager l\'application !')),
               ],
@@ -384,7 +384,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.error, color: Colors.white),
+                const Icon(Icons.error, color: AppTheme.white100),
                 const SizedBox(width: 8),
                 Expanded(child: Text('❌ Erreur lors du partage: ${e.toString()}')),
               ],
@@ -393,7 +393,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             duration: const Duration(seconds: 4),
             action: SnackBarAction(
               label: 'Réessayer',
-              textColor: Colors.white,
+              textColor: AppTheme.white100,
               onPressed: _performShare,
             ),
           ),
@@ -523,7 +523,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
   }) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Column(
         children: [
           Container(
@@ -544,7 +544,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
                   title,
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: headerColor ?? AppTheme.primaryColor,
                   ),
                 ),
@@ -706,7 +706,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: const Icon(
               Icons.share,
@@ -715,7 +715,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           ),
           title: const Text(
             'Partager l\'application',
-            style: TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(fontWeight: AppTheme.fontSemiBold),
           ),
           subtitle: Text(
             _shareCount > 0 

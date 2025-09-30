@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormResponsesList extends StatefulWidget {
   final FormModel form;
@@ -131,10 +131,10 @@ class _FormResponsesListState extends State<FormResponsesList>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: AppTheme.black100,
             blurRadius: 4,
             offset: Offset(0, 2),
           ),
@@ -152,7 +152,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                     hintText: 'Rechercher par nom ou email...',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
@@ -167,7 +167,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                 label: const Text('Exporter'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                 ),
               ),
             ],
@@ -182,7 +182,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                   decoration: InputDecoration(
                     labelText: 'Statut',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -315,11 +315,11 @@ class _FormResponsesListState extends State<FormResponsesList>
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: InkWell(
         onTap: () => _showSubmissionDetails(submission),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -334,7 +334,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                       submission.fullName.substring(0, 1).toUpperCase(),
                       style: TextStyle(
                         color: AppTheme.primaryColor,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
@@ -346,7 +346,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                         Text(
                           submission.fullName,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         if (submission.email != null)
@@ -369,14 +369,14 @@ class _FormResponsesListState extends State<FormResponsesList>
                         ),
                         decoration: BoxDecoration(
                           color: _getStatusColor(submission.status),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           _getStatusLabel(submission.status),
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppTheme.white100,
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),
@@ -398,7 +398,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundColor,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,7 +406,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                     Text(
                       'Aperçu des réponses',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -430,7 +430,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                                 child: Text(
                                   '${field.label}:',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                               ),
@@ -553,7 +553,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.description, color: Colors.white),
+                  const Icon(Icons.description, color: AppTheme.white100),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Column(
@@ -562,21 +562,21 @@ class _SubmissionDetailsDialog extends StatelessWidget {
                         Text(
                           'Détails de la soumission',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            color: AppTheme.white100,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         Text(
                           'Soumis par ${submission.fullName}',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white70,
+                            color: AppTheme.white100.withOpacity(0.70),
                           ),
                         ),
                       ],
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -669,7 +669,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
           title,
           style: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 12),
@@ -689,7 +689,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
             child: Text(
               '$label:',
               style: const TextStyle(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: AppTheme.textSecondaryColor,
               ),
             ),

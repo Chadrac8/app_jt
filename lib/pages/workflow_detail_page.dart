@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'workflow_edit_page.dart';
 
 class WorkflowDetailPage extends StatefulWidget {
@@ -80,7 +80,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
             children: [
               Icon(
                 isCompleted ? Icons.remove_circle : Icons.check_circle,
-                color: Colors.white,
+                color: AppTheme.white100,
                 size: 20,
               ),
               const SizedBox(width: 8),
@@ -97,7 +97,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
             ? Theme.of(context).colorScheme.error
             : Theme.of(context).colorScheme.secondary,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
         ),
       );
     } catch (e) {
@@ -118,7 +118,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         title: Row(
           children: [
             Icon(Icons.check_circle, color: Theme.of(context).colorScheme.secondary),
@@ -162,14 +162,14 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
             SnackBar(
               content: const Row(
                 children: [
-                  Icon(Icons.celebration, color: Colors.white),
+                  Icon(Icons.celebration, color: AppTheme.white100),
                   SizedBox(width: 8),
                   Expanded(child: Text('Workflow terminé avec succès !')),
                 ],
               ),
               backgroundColor: Theme.of(context).colorScheme.secondary,
               behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             ),
           );
         }
@@ -192,10 +192,10 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         title: Row(
           children: [
-            Icon(Icons.pause, color: Colors.orange),
+            Icon(Icons.pause, color: AppTheme.orangeStandard),
             const SizedBox(width: 8),
             const Text('Mettre en pause'),
           ],
@@ -211,7 +211,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
+              backgroundColor: AppTheme.orangeStandard,
             ),
             child: const Text('Mettre en pause'),
           ),
@@ -232,14 +232,14 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
             SnackBar(
               content: const Row(
                 children: [
-                  Icon(Icons.pause, color: Colors.white),
+                  Icon(Icons.pause, color: AppTheme.white100),
                   SizedBox(width: 8),
                   Expanded(child: Text('Workflow mis en pause')),
                 ],
               ),
-              backgroundColor: Colors.orange,
+              backgroundColor: AppTheme.orangeStandard,
               behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
             ),
           );
         }
@@ -310,18 +310,18 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
     switch (status.toLowerCase()) {
       case 'active':
       case 'actif':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'completed':
       case 'terminé':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'paused':
       case 'en pause':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'cancelled':
       case 'annulé':
-        return Colors.red;
+        return AppTheme.redStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -362,17 +362,17 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
               expandedHeight: 200,
               pinned: true,
               backgroundColor: Color(int.parse(widget.workflow.color.replaceFirst('#', '0xFF'))),
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   widget.workflow.name,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     shadows: [
                       Shadow(
                         offset: Offset(0, 1),
                         blurRadius: 3,
-                        color: Colors.black26,
+                        color: AppTheme.black100,
                       ),
                     ],
                   ),
@@ -392,7 +392,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                     child: Icon(
                       _getIconData(widget.workflow.icon),
                       size: 80,
-                      color: Colors.white.withOpacity(0.3),
+                      color: AppTheme.white100.withOpacity(0.3),
                     ),
                   ),
                 ),
@@ -417,7 +417,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                       value: 'edit',
                       child: Row(
                         children: [
-                          Icon(Icons.edit, color: Colors.blue),
+                          Icon(Icons.edit, color: AppTheme.blueStandard),
                           SizedBox(width: 8),
                           Text('Modifier le suivi'),
                         ],
@@ -427,7 +427,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                       value: 'complete',
                       child: Row(
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green),
+                          Icon(Icons.check_circle, color: AppTheme.greenStandard),
                           SizedBox(width: 8),
                           Text('Marquer comme terminé'),
                         ],
@@ -437,7 +437,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                       value: 'pause',
                       child: Row(
                         children: [
-                          Icon(Icons.pause, color: Colors.orange),
+                          Icon(Icons.pause, color: AppTheme.orangeStandard),
                           SizedBox(width: 8),
                           Text('Mettre en pause'),
                         ],
@@ -475,7 +475,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
   Widget _buildInfoCard() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -505,7 +505,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                       Text(
                         widget.person.fullName,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -513,13 +513,13 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: _getStatusColor(_currentWorkflow!.status).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           _getStatusText(_currentWorkflow!.status),
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: _getStatusColor(_currentWorkflow!.status),
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                       ),
@@ -535,7 +535,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -546,7 +546,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Color(int.parse(widget.workflow.color.replaceFirst('#', '0xFF'))).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Icon(
                           _getIconData(widget.workflow.icon),
@@ -562,7 +562,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                             Text(
                               widget.workflow.name,
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                             Container(
@@ -570,13 +570,13 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               ),
                               child: Text(
                                 widget.workflow.category,
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),
@@ -610,7 +610,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                             Text(
                               _formatDate(_currentWorkflow!.startDate),
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                           ],
@@ -630,7 +630,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                               Text(
                                 _formatDate(_currentWorkflow!.completedDate!),
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
                             ],
@@ -650,7 +650,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
   Widget _buildProgressCard() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -667,7 +667,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                 Text(
                   'Progression',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -704,7 +704,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                             Text(
                               '${(_progress * 100).round()}%',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                                 color: Color(int.parse(widget.workflow.color.replaceFirst('#', '0xFF'))),
                               ),
                             ),
@@ -725,14 +725,14 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                         'Étapes terminées',
                         '${_currentWorkflow!.completedSteps.length}',
                         Icons.check_circle,
-                        Colors.green,
+                        AppTheme.greenStandard,
                       ),
                       const SizedBox(height: 8),
                       _buildStatRow(
                         'Étapes restantes',
                         '${widget.workflow.steps.length - _currentWorkflow!.completedSteps.length}',
                         Icons.pending,
-                        Colors.orange,
+                        AppTheme.orangeStandard,
                       ),
                       const SizedBox(height: 8),
                       _buildStatRow(
@@ -758,13 +758,13 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                     Text(
                       'Progression globale',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                     Text(
                       '${_currentWorkflow!.completedSteps.length}/${widget.workflow.steps.length} étapes',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: Color(int.parse(widget.workflow.color.replaceFirst('#', '0xFF'))),
                       ),
                     ),
@@ -803,7 +803,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
         Text(
           value,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: color,
           ),
         ),
@@ -814,7 +814,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
   Widget _buildStepsCard() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -831,7 +831,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                 Text(
                   'Étapes du workflow',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -863,7 +863,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
         color: isCompleted 
           ? Theme.of(context).colorScheme.secondary.withOpacity(0.1)
           : Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: isCompleted 
             ? Theme.of(context).colorScheme.secondary.withOpacity(0.3)
@@ -888,15 +888,15 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
                   : Theme.of(context).colorScheme.outline.withOpacity(0.5),
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             ),
             child: isCompleted
-              ? const Icon(Icons.check, color: Colors.white, size: 18)
+              ? const Icon(Icons.check, color: AppTheme.white100, size: 18)
               : Center(
                   child: Text(
                     stepNumber.toString(),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
@@ -906,7 +906,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
         title: Text(
           step.name,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             decoration: isCompleted ? TextDecoration.lineThrough : null,
             color: isCompleted 
               ? Theme.of(context).colorScheme.onSurface.withOpacity(0.6)

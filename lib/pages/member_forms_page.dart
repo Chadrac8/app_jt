@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'form_public_page.dart';
 
 class MemberFormsPage extends StatefulWidget {
@@ -145,10 +145,10 @@ class _MemberFormsPageState extends State<MemberFormsPage>
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black100.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -186,22 +186,22 @@ class _MemberFormsPageState extends State<MemberFormsPage>
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.primaryColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : AppTheme.textSecondaryColor,
+              color: isSelected ? AppTheme.white100 : AppTheme.textSecondaryColor,
               size: 20,
             ),
             const SizedBox(width: 8),
             Text(
               title,
               style: TextStyle(
-                color: isSelected ? Colors.white : AppTheme.textSecondaryColor,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color: isSelected ? AppTheme.white100 : AppTheme.textSecondaryColor,
+                fontWeight: isSelected ? AppTheme.fontBold : FontWeight.normal,
               ),
             ),
             if (count > 0) ...[
@@ -209,15 +209,15 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.white.withOpacity(0.3) : AppTheme.primaryColor,
+                  color: isSelected ? AppTheme.white100.withOpacity(0.3) : AppTheme.primaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   '$count',
                   style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.white,
+                    color: isSelected ? AppTheme.white100 : AppTheme.white100,
                     fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
@@ -320,7 +320,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -333,7 +333,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                   height: 50,
                   decoration: BoxDecoration(
                     color: _getFormColor(form.accessibility).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Icon(
                     _getFormIcon(form.accessibility),
@@ -350,7 +350,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                         form.title,
                         style: const TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
@@ -358,7 +358,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                         form.accessibilityLabel,
                         style: TextStyle(
                           color: _getFormColor(form.accessibility),
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ],
@@ -369,14 +369,14 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppTheme.successColor,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: const Text(
                       'Rempli',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
@@ -487,7 +487,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -516,7 +516,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                         'Formulaire ID: ${submission.formId}', // TODO: Charger le titre du formulaire
                         style: const TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
@@ -533,14 +533,14 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: statusColor,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     _getSubmissionStatusLabel(submission.status),
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white100,
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -554,8 +554,8 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -563,7 +563,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                     const Text(
                       'Aperçu des réponses :',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -619,7 +619,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                       style: TextStyle(
                         fontSize: 12,
                         color: AppTheme.warningColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ],

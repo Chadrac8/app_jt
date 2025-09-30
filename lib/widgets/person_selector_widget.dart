@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 /// Widget réutilisable pour sélectionner des personnes
 class PersonSelectorWidget extends StatefulWidget {
@@ -100,7 +100,7 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
         Text(
           widget.label,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         const SizedBox(height: 8),
@@ -111,7 +111,7 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: _isLoading
                 ? const Row(
@@ -149,7 +149,7 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
                               '${_selectedPersons.length} personne(s) sélectionnée(s)',
                               style: TextStyle(
                                 color: AppTheme.textPrimaryColor,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -284,7 +284,7 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Vous ne pouvez sélectionner que ${widget.maxSelection} personne(s) maximum'),
-                backgroundColor: Colors.orange,
+                backgroundColor: AppTheme.orangeStandard,
               ),
             );
           }
@@ -312,10 +312,10 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                 labelText: 'Rechercher par nom, email ou téléphone...',
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 filled: true,
-                fillColor: Colors.grey[50],
+                fillColor: AppTheme.grey50,
               ),
               onChanged: _filterPersons,
             ),
@@ -329,14 +329,14 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Text(
                   '${_selectedPersons.length} personne(s) sélectionnée(s)' +
                       (widget.maxSelection != null ? ' / ${widget.maxSelection}' : ''),
                   style: TextStyle(
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -356,7 +356,7 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                               Icon(
                                 _searchTerm.isEmpty ? Icons.people_outline : Icons.search_off,
                                 size: 64,
-                                color: Colors.grey[400],
+                                color: AppTheme.grey400,
                               ),
                               const SizedBox(height: 16),
                               Text(
@@ -364,7 +364,7 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                                     ? 'Aucune personne trouvée'
                                     : 'Aucun résultat pour "$_searchTerm"',
                                 style: TextStyle(
-                                  color: Colors.grey[600],
+                                  color: AppTheme.grey600,
                                   fontSize: 16,
                                 ),
                               ),
@@ -382,7 +382,7 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                               onChanged: (_) => _toggleSelection(person),
                               title: Text(
                                 person.fullName,
-                                style: const TextStyle(fontWeight: FontWeight.w500),
+                                style: const TextStyle(fontWeight: AppTheme.fontMedium),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -420,7 +420,7 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
               : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppTheme.primaryColor,
-            foregroundColor: Colors.white,
+            foregroundColor: AppTheme.white100,
           ),
           child: Text(
             widget.multiSelect

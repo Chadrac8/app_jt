@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/custom_field_model.dart';
 import '../services/custom_fields_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'custom_field_form_page.dart';
 
 class CustomFieldsManagementPage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -60,7 +60,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -75,7 +75,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Champ "${field.label}" supprimé'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -84,7 +84,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -127,7 +127,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la réorganisation: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -183,7 +183,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                       Text(
                         'Comment accéder à cette page ?',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                       ),
@@ -225,13 +225,13 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
           const SizedBox(height: 16),
           const Text(
             'Aucun champ personnalisé',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
           ),
           const SizedBox(height: 8),
           const Text(
             'Créez des champs personnalisés pour enrichir\nles informations de vos membres',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: AppTheme.grey500),
           ),
           const SizedBox(height: 24),
           ElevatedButton.icon(
@@ -258,7 +258,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                       Text(
                         'Types de champs disponibles',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
@@ -288,17 +288,17 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: Colors.grey[600]),
+          Icon(icon, size: 16, color: AppTheme.grey600),
           const SizedBox(width: 8),
           Text(
             name,
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: AppTheme.fontMedium),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               '- $description',
-              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+              style: TextStyle(color: AppTheme.grey600, fontSize: 12),
             ),
           ),
         ],
@@ -355,12 +355,12 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: field.isRequired ? Colors.red.shade100 : Colors.blue.shade100,
-                borderRadius: BorderRadius.circular(20),
+                color: field.isRequired ? AppTheme.redStandard : AppTheme.blueStandard,
+                borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               ),
               child: Icon(
                 _getFieldTypeIcon(field.type),
-                color: field.isRequired ? Colors.red : Colors.blue,
+                color: field.isRequired ? AppTheme.redStandard : AppTheme.blueStandard,
               ),
             ),
             title: Text(field.label),
@@ -373,7 +373,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                     field.helpText!,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey.shade600,
+                      color: AppTheme.grey500,
                     ),
                   ),
               ],
@@ -385,13 +385,13 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: AppTheme.redStandard,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Text(
                       'Requis',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 10,
                       ),
                     ),
@@ -420,8 +420,8 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                     const PopupMenuItem(
                       value: 'delete',
                       child: ListTile(
-                        leading: Icon(Icons.delete, color: Colors.red),
-                        title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                        leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                        title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                         contentPadding: EdgeInsets.zero,
                       ),
                     ),

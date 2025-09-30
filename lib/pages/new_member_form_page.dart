@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class NewMemberFormPage extends StatefulWidget {
   const NewMemberFormPage({super.key});
@@ -48,12 +48,12 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
   Widget _buildHeader() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -72,7 +72,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
               'Rejoignez notre communauté',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 8),
             Text(
@@ -87,7 +87,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
   Widget _buildForm() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -99,7 +99,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                 'Informations personnelles',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor)),
               const SizedBox(height: 20),
               
@@ -110,7 +110,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   labelText: 'Prénom *',
                   hintText: 'Votre prénom',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.person)),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -127,7 +127,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   labelText: 'Nom *',
                   hintText: 'Votre nom de famille',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.person_outline)),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -145,7 +145,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   labelText: 'Email *',
                   hintText: 'votre.email@exemple.com',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.email)),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -166,7 +166,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   labelText: 'Téléphone',
                   hintText: '+33 6 12 34 56 78',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.phone))),
               const SizedBox(height: 16),
               
@@ -178,7 +178,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   labelText: 'Adresse',
                   hintText: 'Votre adresse complète',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.home))),
               
               const SizedBox(height: 24),
@@ -187,20 +187,20 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue.withOpacity(0.3))),
+                  color: AppTheme.blueStandard.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                  border: Border.all(color: AppTheme.blueStandard.withOpacity(0.3))),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.info, color: Colors.blue, size: 20),
+                    Icon(Icons.info, color: AppTheme.blueStandard, size: 20),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         'Un responsable vous contactera dans les prochains jours pour finaliser votre adhésion.',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.blue.shade700))),
+                          color: AppTheme.blueStandard))),
                   ])),
               
               const SizedBox(height: 24),
@@ -215,19 +215,19 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                     foregroundColor: AppTheme.surfaceColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12))),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                   child: _isSubmitting
                       ? const SizedBox(
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white)))
+                            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100)))
                       : const Text(
                           'Envoyer ma demande',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600)))),
+                            fontWeight: AppTheme.fontSemiBold)))),
             ])),
       ),
     );
@@ -250,7 +250,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Votre demande a été envoyée avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
             behavior: SnackBarBehavior.floating));
 
         // Réinitialiser le formulaire
@@ -266,7 +266,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             behavior: SnackBarBehavior.floating));
       }
     } finally {

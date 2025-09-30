@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../../../models/pepite_or_model.dart';
 import '../../../services/pepite_or_firebase_service.dart';
 import '../pages/pepite_detail_page.dart';
@@ -57,7 +57,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -99,7 +99,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFFFAFAFA),
+      color: AppTheme.backgroundColor,
       child: _isLoading
           ? _buildLoadingState()
           : CustomScrollView(
@@ -132,11 +132,11 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                      color: AppTheme.white100,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: AppTheme.black100.withOpacity(0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -147,19 +147,19 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                       decoration: InputDecoration(
                         hintText: 'Rechercher une pépite d\'or...',
                         hintStyle: GoogleFonts.inter(
-                          color: Colors.grey[500],
+                          color: AppTheme.grey500,
                           fontSize: 14,
                         ),
                         prefixIcon: Icon(
                           Icons.search,
-                          color: Colors.grey[400],
+                          color: AppTheme.grey400,
                           size: 20,
                         ),
                         suffixIcon: _searchQuery.isNotEmpty
                             ? IconButton(
                                 icon: Icon(
                                   Icons.clear,
-                                  color: Colors.grey[400],
+                                  color: AppTheme.grey400,
                                   size: 20,
                                 ),
                                 onPressed: () {
@@ -231,10 +231,10 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? color : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          color: isSelected ? color : AppTheme.white100,
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: Border.all(
-            color: isSelected ? color : Colors.grey.withOpacity(0.3),
+            color: isSelected ? color : AppTheme.grey500.withOpacity(0.3),
             width: 1,
           ),
           boxShadow: isSelected
@@ -247,7 +247,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                 ]
               : [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: AppTheme.black100.withOpacity(0.05),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -260,8 +260,8 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
               theme,
               style: GoogleFonts.inter(
                 fontSize: 13,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                color: isSelected ? Colors.white : Colors.grey[700],
+                fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
+                color: isSelected ? AppTheme.white100 : AppTheme.grey700,
               ),
             ),
             if (count > 0) ...[
@@ -270,7 +270,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: isSelected 
-                      ? Colors.white.withOpacity(0.2) 
+                      ? AppTheme.white100.withOpacity(0.2) 
                       : color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -278,8 +278,8 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                   '$count',
                   style: GoogleFonts.inter(
                     fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: isSelected ? Colors.white : color,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: isSelected ? AppTheme.white100 : color,
                   ),
                 ),
               ),
@@ -294,11 +294,11 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -307,7 +307,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           onTap: () => _openPepiteDetail(pepite),
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -321,13 +321,13 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: AppTheme.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         pepite.theme,
                         style: GoogleFonts.inter(
                           fontSize: 12,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: AppTheme.primaryColor,
                         ),
                       ),
@@ -337,7 +337,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                       onPressed: () => _sharePepite(pepite),
                       icon: Icon(
                         Icons.share,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                         size: 20,
                       ),
                     ),
@@ -352,8 +352,8 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                     pepite.description,
                     style: GoogleFonts.inter(
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[800],
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: AppTheme.grey800,
                       height: 1.4,
                     ),
                   ),
@@ -365,10 +365,10 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppTheme.grey50,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: Border.all(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: AppTheme.grey500.withOpacity(0.1),
                     ),
                   ),
                   child: Column(
@@ -379,7 +379,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                         style: GoogleFonts.crimsonText(
                           fontSize: 15,
                           fontStyle: FontStyle.italic,
-                          color: Colors.grey[700],
+                          color: AppTheme.grey700,
                           height: 1.5,
                         ),
                       ),
@@ -388,7 +388,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                         '— ${citation.auteur}',
                         style: GoogleFonts.inter(
                           fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                           color: AppTheme.primaryColor,
                         ),
                       ),
@@ -404,7 +404,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: AppTheme.primaryColor,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ],
@@ -418,15 +418,15 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                     children: pepite.tags.take(3).map((tag) => Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8),
+                        color: AppTheme.grey100,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: Text(
                         tag,
                         style: GoogleFonts.inter(
                           fontSize: 11,
-                          color: Colors.grey[600],
-                          fontWeight: FontWeight.w500,
+                          color: AppTheme.grey600,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     )).toList(),
@@ -453,7 +453,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
             'Chargement des pépites d\'or...',
             style: GoogleFonts.inter(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -469,7 +469,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
           Icon(
             Icons.search_off,
             size: 64,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
@@ -478,8 +478,8 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                 : 'Aucune pépite d\'or disponible',
             style: GoogleFonts.inter(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey[600],
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -489,7 +489,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                 : 'Les citations apparaîtront ici',
             style: GoogleFonts.inter(
               fontSize: 14,
-              color: Colors.grey[500],
+              color: AppTheme.grey500,
             ),
           ),
         ],
@@ -517,7 +517,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Pépite copiée dans le presse-papier'),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
         behavior: SnackBarBehavior.floating,
       ),
     );

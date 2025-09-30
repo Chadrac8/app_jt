@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../models/pepite_or_model.dart';
-import '../../../shared/theme/app_theme.dart';
+import '../../../../theme.dart';
 import '../../../services/pepite_or_firebase_service.dart';
 import 'pepite_form_dialog.dart';
 
@@ -43,7 +43,7 @@ class _AdminTabState extends State<AdminTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -53,7 +53,7 @@ class _AdminTabState extends State<AdminTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppTheme.backgroundColor,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -61,7 +61,7 @@ class _AdminTabState extends State<AdminTab> {
             end: Alignment.bottomCenter,
             colors: [
               AppTheme.primaryColor.withOpacity(0.05),
-              Colors.grey.shade50,
+              AppTheme.grey500,
             ],
           ),
         ),
@@ -71,10 +71,10 @@ class _AdminTabState extends State<AdminTab> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppTheme.white100,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: AppTheme.black100.withOpacity(0.05),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -86,7 +86,7 @@ class _AdminTabState extends State<AdminTab> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Icon(
                       Icons.auto_awesome,
@@ -103,7 +103,7 @@ class _AdminTabState extends State<AdminTab> {
                           'Pépites d\'Or',
                           style: GoogleFonts.inter(
                             fontSize: 24,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: AppTheme.fontBold,
                             color: AppTheme.primaryColor,
                           ),
                         ),
@@ -111,7 +111,7 @@ class _AdminTabState extends State<AdminTab> {
                           'Gérez vos pépites spirituelles',
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                         ),
                       ],
@@ -122,7 +122,7 @@ class _AdminTabState extends State<AdminTab> {
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: AppTheme.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: Icon(
                         Icons.refresh,
@@ -155,7 +155,7 @@ class _AdminTabState extends State<AdminTab> {
         // Barre de recherche et statistiques
         Container(
           padding: const EdgeInsets.all(16),
-          color: Colors.white,
+          color: AppTheme.white100,
           child: Column(
             children: [
               // Barre de recherche
@@ -164,15 +164,15 @@ class _AdminTabState extends State<AdminTab> {
                   hintText: 'Rechercher une pépite d\'or...',
                   prefixIcon: Icon(Icons.search, color: AppTheme.primaryColor),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    borderSide: BorderSide(color: AppTheme.grey500),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     borderSide: BorderSide(color: AppTheme.primaryColor),
                   ),
                   filled: true,
-                  fillColor: Colors.grey.shade50,
+                  fillColor: AppTheme.grey500,
                 ),
                 onChanged: (value) {
                   setState(() => _searchQuery = value);
@@ -197,7 +197,7 @@ class _AdminTabState extends State<AdminTab> {
                       'Publiées',
                       '${_pepites.where((p) => p.estPubliee).length}',
                       Icons.visibility,
-                      Colors.green,
+                      AppTheme.greenStandard,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -206,7 +206,7 @@ class _AdminTabState extends State<AdminTab> {
                       'En attente',
                       '${_pepites.where((p) => !p.estPubliee).length}',
                       Icons.edit,
-                      Colors.orange,
+                      AppTheme.orangeStandard,
                     ),
                   ),
                 ],
@@ -225,10 +225,10 @@ class _AdminTabState extends State<AdminTab> {
             label: const Text('Nouvelle Pépite d\'Or'),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
             ),
           ),
@@ -249,7 +249,7 @@ class _AdminTabState extends State<AdminTab> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
@@ -260,7 +260,7 @@ class _AdminTabState extends State<AdminTab> {
             value,
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -268,7 +268,7 @@ class _AdminTabState extends State<AdminTab> {
             title,
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -285,7 +285,7 @@ class _AdminTabState extends State<AdminTab> {
             Icon(
               Icons.auto_awesome_outlined,
               size: 64,
-              color: Colors.grey[400],
+              color: AppTheme.grey400,
             ),
             const SizedBox(height: 16),
             Text(
@@ -294,7 +294,7 @@ class _AdminTabState extends State<AdminTab> {
                   : 'Aucun résultat pour "$_searchQuery"',
               style: GoogleFonts.inter(
                 fontSize: 18,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
             const SizedBox(height: 8),
@@ -302,7 +302,7 @@ class _AdminTabState extends State<AdminTab> {
               'Commencez par créer votre première pépite spirituelle',
               style: GoogleFonts.inter(
                 fontSize: 14,
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
               textAlign: TextAlign.center,
             ),
@@ -325,10 +325,10 @@ class _AdminTabState extends State<AdminTab> {
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         onTap: () => _showPepiteDialog(pepite),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -342,7 +342,7 @@ class _AdminTabState extends State<AdminTab> {
                       pepite.theme,
                       style: GoogleFonts.inter(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.primaryColor,
                       ),
                     ),
@@ -350,15 +350,15 @@ class _AdminTabState extends State<AdminTab> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: pepite.estPubliee ? Colors.green : Colors.orange,
-                      borderRadius: BorderRadius.circular(12),
+                      color: pepite.estPubliee ? AppTheme.greenStandard : AppTheme.orangeStandard,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       pepite.estPubliee ? 'Publiée' : 'Brouillon',
                       style: GoogleFonts.inter(
                         fontSize: 10,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.white100,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -405,9 +405,9 @@ class _AdminTabState extends State<AdminTab> {
                         value: 'delete',
                         child: Row(
                           children: [
-                            Icon(Icons.delete, size: 18, color: Colors.red),
+                            Icon(Icons.delete, size: 18, color: AppTheme.redStandard),
                             SizedBox(width: 8),
-                            Text('Supprimer', style: TextStyle(color: Colors.red)),
+                            Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                           ],
                         ),
                       ),
@@ -420,7 +420,7 @@ class _AdminTabState extends State<AdminTab> {
                 pepite.description,
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  color: Colors.grey[700],
+                  color: AppTheme.grey700,
                   height: 1.4,
                 ),
                 maxLines: 3,
@@ -429,19 +429,19 @@ class _AdminTabState extends State<AdminTab> {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(Icons.person, size: 14, color: Colors.grey[500]),
+                  Icon(Icons.person, size: 14, color: AppTheme.grey500),
                   const SizedBox(width: 4),
                   Text(
                     pepite.nomAuteur,
-                    style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                    style: GoogleFonts.inter(fontSize: 12, color: AppTheme.grey600),
                   ),
                   if (pepite.tags.isNotEmpty) ...[
                     const SizedBox(width: 16),
-                    Icon(Icons.label, size: 14, color: Colors.grey[500]),
+                    Icon(Icons.label, size: 14, color: AppTheme.grey500),
                     const SizedBox(width: 4),
                     Text(
                       pepite.tags.take(2).join(', '),
-                      style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                      style: GoogleFonts.inter(fontSize: 12, color: AppTheme.grey600),
                     ),
                   ],
                 ],
@@ -486,7 +486,7 @@ class _AdminTabState extends State<AdminTab> {
                   ? 'Pépite dépubliée avec succès' 
                   : 'Pépite publiée avec succès'
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -497,7 +497,7 @@ class _AdminTabState extends State<AdminTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la publication: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -520,7 +520,7 @@ class _AdminTabState extends State<AdminTab> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -535,7 +535,7 @@ class _AdminTabState extends State<AdminTab> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Pépite supprimée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -546,7 +546,7 @@ class _AdminTabState extends State<AdminTab> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }

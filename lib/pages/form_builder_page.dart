@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../widgets/form_field_editor.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormBuilderPage extends StatefulWidget {
   final FormModel? form;
@@ -300,7 +300,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
         appBar: AppBar(
           title: Text(widget.form != null ? 'Modifier le formulaire' : 'Nouveau formulaire'),
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           elevation: 0,
           actions: [
             IconButton(
@@ -331,14 +331,14 @@ class _FormBuilderPageState extends State<FormBuilderPage>
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _isLoading ? null : _saveForm,
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           icon: _isLoading 
               ? const SizedBox(
                   width: 20,
                   height: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                   ),
                 )
               : const Icon(Icons.save),
@@ -361,8 +361,8 @@ class _FormBuilderPageState extends State<FormBuilderPage>
         Container(
           width: 300,
           decoration: const BoxDecoration(
-            color: Colors.white,
-            border: Border(left: BorderSide(color: Colors.grey, width: 0.5)),
+            color: AppTheme.white100,
+            border: Border(left: BorderSide(color: AppTheme.grey500, width: 0.5)),
           ),
           child: _buildFieldTypesPanel(),
         ),
@@ -399,7 +399,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
             Text(
               'Paramètres du formulaire',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 24),
@@ -535,7 +535,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                 Text(
                   'Champs du formulaire',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const Spacer(),
@@ -554,7 +554,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundColor,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   border: Border.all(
                     color: AppTheme.textTertiaryColor.withOpacity(0.3),
                     style: BorderStyle.solid,
@@ -651,13 +651,13 @@ class _FormBuilderPageState extends State<FormBuilderPage>
           ),
           child: Row(
             children: [
-              const Icon(Icons.widgets, color: Colors.white),
+              const Icon(Icons.widgets, color: AppTheme.white100),
               const SizedBox(width: 8),
               Text(
                 'Types de champs',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  color: AppTheme.white100,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ],
@@ -675,7 +675,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                     child: Text(
                       entry.key,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -695,16 +695,16 @@ class _FormBuilderPageState extends State<FormBuilderPage>
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: InkWell(
           onTap: () => _addField(fieldType),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppTheme.grey500),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Row(
               children: [

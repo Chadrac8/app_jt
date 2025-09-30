@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../shared/theme/app_theme.dart';
+import '../../theme.dart';
 
 class SimpleDonationWebViewPage extends StatefulWidget {
   final String donationType;
@@ -34,7 +34,7 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
   void _initializeWebView() {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.white)
+      ..setBackgroundColor(AppTheme.white100)
       ..enableZoom(true)
       ..setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1')
       ..setNavigationDelegate(
@@ -65,16 +65,16 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white100,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         elevation: 0,
         leading: IconButton(
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: widget.color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: Icon(
               Icons.arrow_back_ios,
@@ -89,7 +89,7 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
           style: GoogleFonts.poppins(
             color: AppTheme.textPrimaryColor,
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         centerTitle: true,
@@ -98,12 +98,12 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
             icon: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                color: AppTheme.blueStandard.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: const Icon(
                 Icons.refresh,
-                color: Colors.blue,
+                color: AppTheme.blueStandard,
                 size: 18,
               ),
             ),
@@ -117,7 +117,7 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
           WebViewWidget(controller: _controller),
           if (_isLoading)
             Container(
-              color: Colors.white,
+              color: AppTheme.white100,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -161,11 +161,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppTheme.white100,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: AppTheme.black100.withOpacity(0.1),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -185,16 +185,16 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       Text(
                         'Jubilé Tabernacle',
                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: AppTheme.white100,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       
                       Text(
-                        'Jésus-Christ ne change pas',
+                        'Jésus-Christ est le même hier, aujourd\'hui, et éternellement.',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withOpacity(0.9),
+                          color: AppTheme.white100.withOpacity(0.9),
                         ),
                       ),
                       const SizedBox(height: 48),
@@ -205,11 +205,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         constraints: const BoxConstraints(maxWidth: 400),
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
+                          color: AppTheme.white100,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: AppTheme.black100.withOpacity(0.1),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -223,7 +223,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               Text(
                                 _isLoginMode ? 'Connexion' : 'Créer un compte',
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -236,10 +236,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 label: const Text('Accès rapide (anonyme)'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppTheme.secondaryColor,
-                                  foregroundColor: Colors.white,
+                                  foregroundColor: AppTheme.white100,
                                   padding: const EdgeInsets.symmetric(vertical: 16),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                 ),
                               ),
@@ -255,7 +255,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   labelText: 'Email',
                                   prefixIcon: const Icon(Icons.email),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                 ),
                                 validator: (value) {
@@ -286,7 +286,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                     },
                                   ),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                 ),
                                 validator: (value) {
@@ -306,10 +306,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 onPressed: _isLoading ? null : _signInWithEmailPassword,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppTheme.primaryColor,
-                                  foregroundColor: Colors.white,
+                                  foregroundColor: AppTheme.white100,
                                   padding: const EdgeInsets.symmetric(vertical: 16),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                 ),
                                 child: _isLoading
@@ -318,7 +318,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         width: 20,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                                         ),
                                       )
                                     : Text(_isLoginMode ? 'Se connecter' : 'Créer le compte'),
@@ -341,18 +341,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: Colors.red[50],
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: Colors.red[200]!),
+                                    color: AppTheme.grey50,
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                                    border: Border.all(color: AppTheme.grey200),
                                   ),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.error, color: Colors.red[700], size: 20),
+                                      Icon(Icons.error, color: AppTheme.grey700, size: 20),
                                       const SizedBox(width: 8),
                                       Expanded(
                                         child: Text(
                                           _errorMessage!,
-                                          style: TextStyle(color: Colors.red[700]),
+                                          style: TextStyle(color: AppTheme.grey700),
                                         ),
                                       ),
                                     ],
@@ -369,7 +369,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       Text(
                         'Version 1.0.0',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white.withOpacity(0.7),
+                          color: AppTheme.white100.withOpacity(0.7),
                         ),
                       ),
                     ],

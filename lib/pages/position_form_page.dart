@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/service_model.dart';
 import '../services/services_firebase_service.dart';
+import '../../theme.dart';
 
 
 class PositionFormPage extends StatefulWidget {
@@ -130,7 +131,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
             Text(
               'Compétences suggérées',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -224,7 +225,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: AppTheme.black100.withOpacity(0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -258,9 +259,9 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.3),
+                          AppTheme.black100.withOpacity(0.3),
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          AppTheme.black100.withOpacity(0.7),
                         ],
                       ),
                     ),
@@ -270,9 +271,9 @@ class _PositionFormPageState extends State<PositionFormPage> {
                     left: 16,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: AppTheme.white100),
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.black.withOpacity(0.3),
+                        backgroundColor: AppTheme.black100.withOpacity(0.3),
                       ),
                     ),
                   ),
@@ -289,13 +290,13 @@ class _PositionFormPageState extends State<PositionFormPage> {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: teamColor.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               ),
                               child: Icon(
                                 _isLeaderPosition 
                                     ? Icons.supervisor_account
                                     : Icons.assignment_ind,
-                                color: Colors.white,
+                                color: AppTheme.white100,
                                 size: 24,
                               ),
                             ),
@@ -308,16 +309,16 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                     isEditing ? 'Modifier la position' : 'Nouvelle position',
                                     style: const TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                                      fontWeight: AppTheme.fontBold,
+                                      color: AppTheme.white100,
                                     ),
                                   ),
                                   if (_team != null)
                                     Text(
                                       'Équipe ${_team!.name}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
-                                        color: Colors.white70,
+                                        color: AppTheme.white100.withOpacity(0.70),
                                       ),
                                     ),
                                 ],
@@ -330,9 +331,9 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           isEditing 
                               ? 'Modifiez les informations de cette position'
                               : 'Définissez les responsabilités et compétences requises',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: Colors.white70,
+                            color: AppTheme.white100.withOpacity(0.70),
                           ),
                         ),
                       ],
@@ -359,7 +360,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           hintText: 'Ex: Chanteur principal, Technicien son...',
                           prefixIcon: const Icon(Icons.assignment_ind),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                         ),
                         validator: (value) {
@@ -381,7 +382,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           hintText: 'Décrivez les responsabilités et tâches de cette position...',
                           prefixIcon: const Icon(Icons.description),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           alignLabelWithHint: true,
                         ),
@@ -398,7 +399,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Row(
                           children: [
@@ -418,7 +419,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                   Text(
                                     'Position de leadership',
                                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: AppTheme.fontSemiBold,
                                     ),
                                   ),
                                   Text(
@@ -447,7 +448,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                       Text(
                         'Nombre maximum de personnes',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -457,7 +458,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Column(
                           children: [
@@ -469,7 +470,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                   child: Text(
                                     'Nombre maximum: $_maxAssignments',
                                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: AppTheme.fontMedium,
                                     ),
                                   ),
                                 ),
@@ -497,7 +498,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                       Text(
                         'Compétences requises',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -507,7 +508,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -564,7 +565,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Row(
                           children: [
@@ -582,7 +583,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                   Text(
                                     'Statut de la position',
                                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: AppTheme.fontSemiBold,
                                     ),
                                   ),
                                   Text(
@@ -637,7 +638,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   child: const Text('Annuler'),
@@ -652,7 +653,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                     backgroundColor: teamColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   child: _isLoading
@@ -661,14 +662,14 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                           ),
                         )
                       : Text(
                           isEditing ? 'Modifier' : 'Créer la position',
                           style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                            fontWeight: AppTheme.fontSemiBold,
+                            color: AppTheme.white100,
                           ),
                         ),
                 ),

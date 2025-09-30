@@ -3,6 +3,7 @@ import '../../models/page_model.dart';
 import '../../models/image_action_model.dart';
 import '../../services/pages_firebase_service.dart';
 import '../../widgets/page_components/component_editor.dart';
+import '../../../theme.dart';
 
 class ImageActionsAdminPage extends StatefulWidget {
   const ImageActionsAdminPage({super.key});
@@ -48,7 +49,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -60,8 +61,8 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gestion des Actions d\'Image'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.blueStandard,
+        foregroundColor: AppTheme.white100,
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline),
@@ -114,7 +115,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
               title: 'Pages Totales',
               value: totalPages.toString(),
               icon: Icons.pages,
-              color: Colors.blue,
+              color: AppTheme.blueStandard,
             ),
           ),
           const SizedBox(width: 16),
@@ -123,7 +124,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
               title: 'Pages avec Actions',
               value: pagesWithImageActions.toString(),
               icon: Icons.touch_app,
-              color: Colors.green,
+              color: AppTheme.greenStandard,
             ),
           ),
           const SizedBox(width: 16),
@@ -132,7 +133,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
               title: 'Actions Totales',
               value: totalImageActions.toString(),
               icon: Icons.link,
-              color: Colors.orange,
+              color: AppTheme.orangeStandard,
             ),
           ),
         ],
@@ -157,14 +158,14 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
               value,
               style: const TextStyle(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             Text(
               title,
               style: const TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: AppTheme.grey500,
               ),
               textAlign: TextAlign.center,
             ),
@@ -182,14 +183,14 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
           Icon(
             Icons.image_not_supported,
             size: 64,
-            color: Colors.grey[400],
+            color: AppTheme.grey400,
           ),
           const SizedBox(height: 16),
           Text(
             'Aucune action d\'image configurée',
             style: TextStyle(
               fontSize: 18,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
@@ -197,7 +198,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
             'Ajoutez des actions à vos images via le Constructeur de Pages',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey[500],
+              color: AppTheme.grey500,
             ),
             textAlign: TextAlign.center,
           ),
@@ -245,11 +246,11 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
       child: ExpansionTile(
         leading: Icon(
           Icons.pages,
-          color: page.isPublished ? Colors.green : Colors.orange,
+          color: page.isPublished ? AppTheme.greenStandard : AppTheme.orangeStandard,
         ),
         title: Text(
           page.title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: AppTheme.fontBold),
         ),
         subtitle: Text(
           '${components.length} action(s) d\'image • ${page.statusLabel}',
@@ -267,7 +268,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
         backgroundColor: _getActionColor(action.type),
         child: Icon(
           _getActionIcon(action.type),
-          color: Colors.white,
+          color: AppTheme.white100,
           size: 16,
         ),
       ),
@@ -279,7 +280,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
           if (action.parameters != null && action.parameters!.isNotEmpty)
             Text(
               'Paramètres: ${action.parameters!.entries.map((e) => '${e.key}: ${e.value}').join(', ')}',
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
             ),
         ],
       ),
@@ -305,7 +306,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
           const PopupMenuItem(
             value: 'delete',
             child: ListTile(
-              leading: Icon(Icons.delete, color: Colors.red),
+              leading: Icon(Icons.delete, color: AppTheme.redStandard),
               title: Text('Supprimer'),
               contentPadding: EdgeInsets.zero,
             ),
@@ -318,11 +319,11 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
   Color _getActionColor(String type) {
     switch (type) {
       case 'url':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'member_page':
-        return Colors.green;
+        return AppTheme.greenStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -416,7 +417,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
               Navigator.of(context).pop();
               _loadPages();
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -444,7 +445,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
             children: [
               Text(
                 'Les actions d\'image permettent d\'ajouter de l\'interactivité à vos pages personnalisées.',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
               SizedBox(height: 16),
               Text('Types d\'actions disponibles:'),

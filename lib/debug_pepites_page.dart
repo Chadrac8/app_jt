@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth/auth_service.dart';
+import '../theme.dart';
 
 /// Page de débogage pour tester les pépites d'or
 class DebugPepitesPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _DebugPepitesPageState extends State<DebugPepitesPage> {
       appBar: AppBar(
         title: const Text('Debug Pépites d\'Or'),
         backgroundColor: const Color(0xFF8B4513),
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -42,7 +43,7 @@ class _DebugPepitesPageState extends State<DebugPepitesPage> {
                   'Status: $_status',
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
@@ -77,15 +78,15 @@ class _DebugPepitesPageState extends State<DebugPepitesPage> {
             // Logs
             const Text(
               'Logs:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 8),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppTheme.grey500),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: ListView.builder(
                   itemCount: _logs.length,

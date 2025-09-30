@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../shared/theme/app_theme.dart';
+import '../../theme.dart';
 import 'donation_webview_page.dart';
 
 class QuickRentPage extends StatelessWidget {
@@ -9,20 +9,20 @@ class QuickRentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white100,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         elevation: 0,
         leading: IconButton(
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppTheme.blueStandard.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: Icon(
               Icons.arrow_back_ios,
-              color: Colors.blue,
+              color: AppTheme.blueStandard,
               size: 18,
             ),
           ),
@@ -33,7 +33,7 @@ class QuickRentPage extends StatelessWidget {
           style: GoogleFonts.poppins(
             color: AppTheme.textPrimaryColor,
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         centerTitle: true,
@@ -62,19 +62,19 @@ class QuickRentPage extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.blue.withOpacity(0.1),
+            AppTheme.blueStandard.withOpacity(0.1),
             Colors.lightBlue.withOpacity(0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
       ),
       child: Column(
         children: [
           Icon(
             Icons.home_filled,
-            color: Colors.blue,
+            color: AppTheme.blueStandard,
             size: 48,
           ),
           const SizedBox(height: 16),
@@ -83,7 +83,7 @@ class QuickRentPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
@@ -111,7 +111,7 @@ class QuickRentPage extends StatelessWidget {
           'Participation suggérée',
           style: GoogleFonts.poppins(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
@@ -129,18 +129,18 @@ class QuickRentPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
+        color: AppTheme.blueStandard.withOpacity(0.1),
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: Colors.blue.withOpacity(0.2),
+          color: AppTheme.blueStandard.withOpacity(0.2),
         ),
       ),
       child: Text(
         '${amount}€',
         style: GoogleFonts.poppins(
           fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: Colors.blue,
+          fontWeight: AppTheme.fontSemiBold,
+          color: AppTheme.blueStandard,
         ),
       ),
     );
@@ -151,9 +151,9 @@ class QuickRentPage extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.grey.withOpacity(0.2),
+          color: AppTheme.grey500.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -163,12 +163,12 @@ class QuickRentPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppTheme.blueStandard.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: const Icon(
                   Icons.web,
-                  color: Colors.blue,
+                  color: AppTheme.blueStandard,
                   size: 24,
                 ),
               ),
@@ -181,7 +181,7 @@ class QuickRentPage extends StatelessWidget {
                       'Plateforme HelloAsso',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -210,7 +210,7 @@ class QuickRentPage extends StatelessWidget {
                       donationType: 'Loyer de l\'église',
                       url: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/6',
                       icon: Icons.home_filled,
-                      color: Colors.blue,
+                      color: AppTheme.blueStandard,
                     ),
                   ),
                 );
@@ -218,11 +218,11 @@ class QuickRentPage extends StatelessWidget {
               icon: const Icon(Icons.open_in_new),
               label: const Text('Accéder à HelloAsso'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.blueStandard,
+                foregroundColor: AppTheme.white100,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
             ),
@@ -236,10 +236,10 @@ class QuickRentPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.blueStandard.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.blue.withOpacity(0.2),
+          color: AppTheme.blueStandard.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -249,7 +249,7 @@ class QuickRentPage extends StatelessWidget {
             children: [
               const Icon(
                 Icons.info_outline,
-                color: Colors.blue,
+                color: AppTheme.blueStandard,
                 size: 24,
               ),
               const SizedBox(width: 12),
@@ -257,8 +257,8 @@ class QuickRentPage extends StatelessWidget {
                 'À propos du loyer',
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.blue,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.blueStandard,
                 ),
               ),
             ],
@@ -272,17 +272,17 @@ class QuickRentPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppTheme.greenStandard.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(
-                color: Colors.green.withOpacity(0.2),
+                color: AppTheme.greenStandard.withOpacity(0.2),
               ),
             ),
             child: Row(
               children: [
                 const Icon(
                   Icons.security,
-                  color: Colors.green,
+                  color: AppTheme.greenStandard,
                   size: 20,
                 ),
                 const SizedBox(width: 12),
@@ -291,8 +291,8 @@ class QuickRentPage extends StatelessWidget {
                     'Paiement 100% sécurisé avec déduction fiscale de 66%',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: Colors.green,
-                      fontWeight: FontWeight.w500,
+                      color: AppTheme.greenStandard,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),

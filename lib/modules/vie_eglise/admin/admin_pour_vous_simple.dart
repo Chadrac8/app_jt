@@ -3,6 +3,7 @@ import '../models/pour_vous_action.dart';
 import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
 import '../services/action_group_service.dart';
+import '../../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -74,7 +75,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Action supprimée'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         _loadData();
@@ -83,7 +84,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -96,7 +97,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Action dupliquée'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         _loadData();
@@ -105,7 +106,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -150,17 +151,17 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         if (group.color!.startsWith('#')) {
           return Color(int.parse('0xff${group.color!.substring(1)}'));
         } else if (group.color == 'grey') {
-          return Colors.grey;
+          return AppTheme.grey500;
         } else if (group.color == 'blue') {
-          return Colors.blue;
+          return AppTheme.blueStandard;
         } else if (group.color == 'green') {
-          return Colors.green;
+          return AppTheme.greenStandard;
         } else if (group.color == 'orange') {
-          return Colors.orange;
+          return AppTheme.orangeStandard;
         } else if (group.color == 'purple') {
           return Colors.purple;
         } else if (group.color == 'red') {
-          return Colors.red;
+          return AppTheme.redStandard;
         } else {
           return Color(int.parse('0xff${group.color!}'));
         }
@@ -168,7 +169,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
     } catch (e) {
       // Ignore parsing errors
     }
-    return Colors.grey;
+    return AppTheme.grey500;
   }
 
   String _getImageUrl(PourVousAction action) {
@@ -260,7 +261,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                   '${_actions.length}',
                                   style: const TextStyle(
                                     fontSize: 24,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: AppTheme.fontBold,
                                   ),
                                 ),
                                 const Text('Actions totales'),
@@ -276,14 +277,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                             padding: const EdgeInsets.all(16),
                             child: Column(
                               children: [
-                                const Icon(Icons.visibility, size: 32, color: Colors.green),
+                                const Icon(Icons.visibility, size: 32, color: AppTheme.greenStandard),
                                 const SizedBox(height: 8),
                                 Text(
                                   '${_actions.where((a) => a.isActive).length}',
                                   style: const TextStyle(
                                     fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
+                                    fontWeight: AppTheme.fontBold,
+                                    color: AppTheme.greenStandard,
                                   ),
                                 ),
                                 const Text('Actions actives'),
@@ -299,14 +300,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                             padding: const EdgeInsets.all(16),
                             child: Column(
                               children: [
-                                const Icon(Icons.group_work, size: 32, color: Colors.blue),
+                                const Icon(Icons.group_work, size: 32, color: AppTheme.blueStandard),
                                 const SizedBox(height: 8),
                                 Text(
                                   '${_groups.length}',
                                   style: const TextStyle(
                                     fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
+                                    fontWeight: AppTheme.fontBold,
+                                    color: AppTheme.blueStandard,
                                   ),
                                 ),
                                 const Text('Groupes'),
@@ -326,7 +327,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.touch_app, size: 64, color: Colors.grey),
+                              Icon(Icons.touch_app, size: 64, color: AppTheme.grey500),
                               SizedBox(height: 16),
                               Text('Aucune action trouvée'),
                               SizedBox(height: 8),
@@ -362,7 +363,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                   action.title,
                                   style: TextStyle(
                                     decoration: action.isActive ? null : TextDecoration.lineThrough,
-                                    color: action.isActive ? null : Colors.grey,
+                                    color: action.isActive ? null : AppTheme.grey500,
                                   ),
                                 ),
                                 subtitle: Column(
@@ -376,14 +377,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
                                             color: groupColor.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(12),
+                                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                           ),
                                           child: Text(
                                             group.name,
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: groupColor,
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: AppTheme.fontBold,
                                             ),
                                           ),
                                         ),
@@ -392,7 +393,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).primaryColor.withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(12),
+                                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                           ),
                                           child: Text(
                                             action.actionType,
@@ -407,16 +408,16 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
                                             color: action.isActive
-                                                ? Colors.green.withOpacity(0.1)
-                                                : Colors.grey.withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(12),
+                                                ? AppTheme.greenStandard.withOpacity(0.1)
+                                                : AppTheme.grey500.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                           ),
                                           child: Text(
                                             action.isActive ? 'Actif' : 'Inactif',
                                             style: TextStyle(
                                               fontSize: 12,
-                                              color: action.isActive ? Colors.green : Colors.grey,
-                                              fontWeight: FontWeight.bold,
+                                              color: action.isActive ? AppTheme.greenStandard : AppTheme.grey500,
+                                              fontWeight: AppTheme.fontBold,
                                             ),
                                           ),
                                         ),
@@ -455,9 +456,9 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           value: 'delete',
                                           child: Row(
                                             children: [
-                                              Icon(Icons.delete, color: Colors.red),
+                                              Icon(Icons.delete, color: AppTheme.redStandard),
                                               SizedBox(width: 8),
-                                              Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                              Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                             ],
                                           ),
                                         ),
@@ -786,7 +787,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     } finally {
@@ -881,7 +882,7 @@ class _GroupManagementDialogState extends State<_GroupManagementDialog> {
     } catch (e) {
       // Ignore
     }
-    return Colors.blue;
+    return AppTheme.blueStandard;
   }
 
   void _addGroup() {
@@ -1027,14 +1028,14 @@ class _ActionTemplatesDialog extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Template "${template['title']}" ajouté avec succès'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }

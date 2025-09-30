@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class GroupSearchFilterBar extends StatefulWidget {
   final TextEditingController searchController;
@@ -140,10 +140,10 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
         Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: AppTheme.black100.withOpacity(0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -194,7 +194,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                   color: _totalActiveFilters > 0
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   border: Border.all(
                     color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
                   ),
@@ -228,7 +228,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.onSecondary,
                                 fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                             ),
                           ),
@@ -255,10 +255,10 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: AppTheme.black100.withOpacity(0.05),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -279,7 +279,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                         Text(
                           'Filtres',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
@@ -291,7 +291,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                               'Effacer tout',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                           ),
@@ -305,7 +305,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Row(
                         children: [
@@ -319,7 +319,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                             child: Text(
                               'Groupes actifs uniquement',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                           ),
@@ -338,7 +338,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                     Text(
                       'Type de groupe',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
@@ -358,7 +358,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                             color: isSelected
                                 ? Theme.of(context).colorScheme.primary
                                 : Theme.of(context).colorScheme.onSurface,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                            fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal,
                           ),
                         );
                       }).toList(),
@@ -370,7 +370,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                     Text(
                       'Jour de la semaine',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
@@ -390,7 +390,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                             color: isSelected
                                 ? Theme.of(context).colorScheme.secondary
                                 : Theme.of(context).colorScheme.onSurface,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                            fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal,
                           ),
                         );
                       }).toList(),

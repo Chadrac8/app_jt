@@ -4,6 +4,7 @@ import '../modules/songs/models/song_model.dart';
 import '../modules/songs/models/song.dart';
 import '../modules/songs/services/songs_service.dart';
 import '../pages/song_projection_page.dart';
+import '../../theme.dart';
 
 /// Mode musicien optimisé pour jouer une setlist de chants
 /// Interface spécialisée avec transposition et contrôles musicaux - Version professionnelle
@@ -171,7 +172,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: AppTheme.black100,
         body: Center(
           child: CircularProgressIndicator(
             color: Theme.of(context).colorScheme.surface)));
@@ -179,7 +180,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
 
     if (_songs.isEmpty) {
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: AppTheme.black100,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +201,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     }
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppTheme.black100,
       body: Stack(
         children: [
           // Arrière-plan simplifié pour maximiser la lisibilité
@@ -210,8 +211,8 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.grey.shade900,
-                  Colors.black,
+                  AppTheme.grey500,
+                  AppTheme.black100,
                 ]))),
           
           // Interface principale optimisée pour les musiciens
@@ -235,7 +236,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           end: Alignment.bottomRight,
           colors: [
             Colors.amber.withOpacity(0.6), // Couleur musicale
-            Colors.orange.withOpacity(0.4),
+            AppTheme.orangeStandard.withOpacity(0.4),
           ]),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(16),
@@ -247,7 +248,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(8)),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
             child: IconButton(
               icon: Icon(Icons.close, 
                 color: Theme.of(context).colorScheme.surface, size: 20),
@@ -270,7 +271,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.surface,
                           fontSize: 16,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: AppTheme.fontSemiBold),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis)),
                     Text(
@@ -303,7 +304,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface,
                     fontSize: 12,
-                    fontWeight: FontWeight.bold))),
+                    fontWeight: AppTheme.fontBold))),
               const SizedBox(width: 6),
               // Projection
               Container(
@@ -332,10 +333,10 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black100.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2)),
         ]),
@@ -364,7 +365,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           fontSize: 18, // Taille optimisée pour les musiciens
           height: 1.7, // Espacement pour faciliter la lecture
           color: Theme.of(context).colorScheme.onSurface,
-          fontWeight: FontWeight.w400,
+          fontWeight: AppTheme.fontRegular,
           letterSpacing: 0.2)));
   }
 
@@ -390,7 +391,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
             'Accords utilisés:',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
           const SizedBox(height: 16),
           
@@ -409,12 +410,12 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                 decoration: BoxDecoration(
                   color: Colors.amber.withOpacity(0.2),
                   border: Border.all(color: Colors.amber, width: 2),
-                  borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                 child: Text(
                   _transposeChord(chord),
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: Theme.of(context).colorScheme.onSurface)))).toList()),
           
           const SizedBox(height: 24),
@@ -423,7 +424,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
             'Paroles avec accords:',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
           const SizedBox(height: 16),
           
@@ -455,7 +456,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
             'Structure du chant:',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
           const SizedBox(height: 16),
           
@@ -471,12 +472,12 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.amber.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
               child: Text(
                 section,
                 style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: Theme.of(context).colorScheme.onSurface)))),
           
           const SizedBox(height: 24),
@@ -485,7 +486,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
             'Paroles complètes:',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
           const SizedBox(height: 16),
           
@@ -508,7 +509,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           end: Alignment.bottomCenter,
           colors: [
             Colors.transparent,
-            Colors.black.withOpacity(0.7),
+            AppTheme.black100.withOpacity(0.7),
           ])),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -553,7 +554,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -573,7 +574,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                             _transposeSteps == 0 ? 'Original' : '${_transposeSteps > 0 ? '+' : ''}$_transposeSteps',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.surface, 
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                               fontSize: 11)),
                         ]),
                       GestureDetector(
@@ -590,7 +591,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -610,7 +611,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                             '$_bpm',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.surface, 
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                               fontSize: 11)),
                         ]),
                       GestureDetector(
@@ -653,7 +654,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
             color: isActive 
                 ? Colors.amber
                 : Theme.of(context).colorScheme.surface,
-            fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+            fontWeight: isActive ? AppTheme.fontBold : AppTheme.fontMedium,
             fontSize: 11))));
   }
 
@@ -761,13 +762,13 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                         '${index + 1}',
                         style: TextStyle(
                           color: isCurrentSong 
-                              ? Colors.black
+                              ? AppTheme.black100
                               : Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.bold))),
+                          fontWeight: AppTheme.fontBold))),
                     title: Text(
                       song.title,
                       style: TextStyle(
-                        fontWeight: isCurrentSong ? FontWeight.bold : FontWeight.normal)),
+                        fontWeight: isCurrentSong ? AppTheme.fontBold : FontWeight.normal)),
                     subtitle: Text('${song.author ?? 'Auteur inconnu'} • ${song.tonality ?? 'C'}'),
                     trailing: isCurrentSong 
                         ? Icon(Icons.music_note, color: Colors.amber)

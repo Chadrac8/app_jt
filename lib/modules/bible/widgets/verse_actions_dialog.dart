@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/bible_verse.dart';
 
 class VerseActionsDialog extends StatefulWidget {
@@ -37,7 +37,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -49,7 +49,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
             height: 4,
             width: 40,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: AppTheme.grey300,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -63,7 +63,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                   widget.verse.reference,
                   style: GoogleFonts.inter(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -71,14 +71,14 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(8),
+                    color: AppTheme.grey50,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Text(
                     widget.verse.text,
                     style: GoogleFonts.crimsonText(
                       fontSize: 16,
-                      color: Colors.black87,
+                      color: AppTheme.black100.withOpacity(0.87),
                       height: 1.4,
                     ),
                     textAlign: TextAlign.center,
@@ -110,7 +110,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                         child: _buildActionButton(
                           'Favori',
                           Icons.favorite_border,
-                          Colors.red,
+                          AppTheme.redStandard,
                           widget.onFavorite,
                         ),
                       ),
@@ -119,7 +119,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                         child: _buildActionButton(
                           'Note',
                           Icons.note_add,
-                          Colors.orange,
+                          AppTheme.orangeStandard,
                           () {
                             setState(() {
                               _showNoteInput = true;
@@ -132,7 +132,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                         child: _buildActionButton(
                           'Partager',
                           Icons.share,
-                          Colors.blue,
+                          AppTheme.blueStandard,
                           () {
                             widget.onShare();
                             Navigator.pop(context);
@@ -167,8 +167,8 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
               title,
               style: GoogleFonts.inter(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.black100.withOpacity(0.87),
               ),
             ),
           ],
@@ -182,10 +182,10 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
   Widget _buildHighlightColors() {
     final colors = [
       Colors.yellow,
-      Colors.green,
-      Colors.blue,
-      Colors.orange,
-      Colors.pink,
+      AppTheme.greenStandard,
+      AppTheme.blueStandard,
+      AppTheme.orangeStandard,
+      AppTheme.pinkStandard,
       Colors.purple,
     ];
 
@@ -202,7 +202,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
               height: 40,
               decoration: BoxDecoration(
                 color: color.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 border: Border.all(
                   color: color,
                   width: 2,
@@ -232,7 +232,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: color.withOpacity(0.3),
           ),
@@ -245,7 +245,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
               label,
               style: GoogleFonts.inter(
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: color,
               ),
             ),
@@ -276,7 +276,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                 'Ajouter une note',
                 style: GoogleFonts.inter(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.primaryColor,
                 ),
               ),
@@ -291,10 +291,10 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
             decoration: InputDecoration(
               hintText: 'Écrivez votre note ici...',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: AppTheme.primaryColor),
               ),
             ),
@@ -327,7 +327,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                   child: const Text('Enregistrer'),
                 ),

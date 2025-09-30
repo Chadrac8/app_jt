@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../auth/auth_service.dart';
 import 'bottom_navigation_wrapper.dart';
+import '../../theme.dart';
 
 class MemberViewToggleButton extends StatefulWidget {
   final VoidCallback? onToggle;
@@ -80,7 +81,7 @@ class _MemberViewToggleButtonState extends State<MemberViewToggleButton>
                       'Vue Membre',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         fontSize: 14,
                       ),
                     ),
@@ -142,7 +143,7 @@ class _MemberViewToggleButtonState extends State<MemberViewToggleButton>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du basculement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -201,7 +202,7 @@ class SimpleMemberViewToggleButton extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors du basculement: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -226,31 +227,31 @@ class AppBarMemberViewToggle extends StatelessWidget {
           height: 32,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16),
+            color: AppTheme.white100.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             border: Border.all(
-              color: Colors.white.withOpacity(0.3),
+              color: AppTheme.white100.withOpacity(0.3),
               width: 1,
             ),
           ),
           child: InkWell(
             onTap: () => _handleToggle(context),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.person,
-                  color: Colors.white,
+                  color: AppTheme.white100,
                   size: 16,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   'Vue Membre',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ],
@@ -279,7 +280,7 @@ class AppBarMemberViewToggle extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors du basculement: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }

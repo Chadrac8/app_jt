@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/contact_message_model.dart';
 import '../services/contact_service.dart';
-import '../theme.dart';
+import '../../../theme.dart';
 
 /// Page d'administration pour gérer les messages de contact
 class ContactMessagesAdminPage extends StatefulWidget {
@@ -34,12 +34,12 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
       appBar: AppBar(
         title: const Text('Messages de contact'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          indicatorColor: AppTheme.white100,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
           tabs: [
             Tab(
               icon: StreamBuilder<int>(
@@ -85,7 +85,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
+                const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
                 const SizedBox(height: 16),
                 Text('Erreur: ${snapshot.error}'),
                 const SizedBox(height: 16),
@@ -105,11 +105,11 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.mark_email_read, size: 64, color: Colors.grey),
+                Icon(Icons.mark_email_read, size: 64, color: AppTheme.grey500),
                 SizedBox(height: 16),
                 Text(
                   'Aucun message non lu',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -140,7 +140,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error, size: 64, color: Colors.red),
+                const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
                 const SizedBox(height: 16),
                 Text('Erreur: ${snapshot.error}'),
                 const SizedBox(height: 16),
@@ -160,11 +160,11 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.inbox, size: 64, color: Colors.grey),
+                Icon(Icons.inbox, size: 64, color: AppTheme.grey500),
                 SizedBox(height: 16),
                 Text(
                   'Aucun message reçu',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -188,17 +188,17 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
       elevation: message.isRead ? 1 : 3,
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: message.isRead ? Colors.grey : AppTheme.primaryColor,
+          backgroundColor: message.isRead ? AppTheme.grey500 : AppTheme.primaryColor,
           child: Icon(
             message.isRead ? Icons.mark_email_read : Icons.mark_email_unread,
-            color: Colors.white,
+            color: AppTheme.white100,
             size: 20,
           ),
         ),
         title: Text(
           message.subject,
           style: TextStyle(
-            fontWeight: message.isRead ? FontWeight.normal : FontWeight.bold,
+            fontWeight: message.isRead ? FontWeight.normal : AppTheme.fontBold,
           ),
         ),
         subtitle: Column(
@@ -208,7 +208,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
             const SizedBox(height: 4),
             Text(
               DateFormat('dd/MM/yyyy à HH:mm').format(message.createdAt),
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
             ),
           ],
         ),
@@ -236,8 +236,8 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
             const PopupMenuItem(
               value: 'delete',
               child: ListTile(
-                leading: Icon(Icons.delete, color: Colors.red),
-                title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 contentPadding: EdgeInsets.zero,
               ),
             ),
@@ -257,7 +257,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         child: Container(
           constraints: const BoxConstraints(maxWidth: 600),
           padding: const EdgeInsets.all(24),
@@ -276,7 +276,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                           message.subject,
                           style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -286,11 +286,11 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                         ),
                         Text(
                           'Email: ${message.email}',
-                          style: const TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: AppTheme.grey500),
                         ),
                         Text(
                           'Reçu le: ${DateFormat('dd/MM/yyyy à HH:mm').format(message.createdAt)}',
-                          style: const TextStyle(color: Colors.grey, fontSize: 12),
+                          style: const TextStyle(color: AppTheme.grey500, fontSize: 12),
                         ),
                       ],
                     ),
@@ -309,9 +309,9 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[300]!),
+                  color: AppTheme.grey50,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey300!),
                 ),
                 child: Text(
                   message.message,
@@ -330,8 +330,8 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                         Navigator.pop(context);
                         _deleteMessage(message);
                       },
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      label: const Text('Supprimer', style: TextStyle(color: Colors.red)),
+                      icon: const Icon(Icons.delete, color: AppTheme.redStandard),
+                      label: const Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -342,7 +342,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                       label: const Text('Fermer'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.primaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppTheme.white100,
                       ),
                     ),
                   ),
@@ -362,7 +362,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Message marqué comme lu'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -371,7 +371,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -391,8 +391,8 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Supprimer', style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
+            child: const Text('Supprimer', style: TextStyle(color: AppTheme.white100)),
           ),
         ],
       ),
@@ -405,7 +405,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Message supprimé'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -414,7 +414,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }

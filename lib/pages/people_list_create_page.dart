@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/people_lists_firebase_service.dart';
 import 'fields_suggestion_helper.dart';
+import '../../theme.dart';
 
 
 class PeopleListCreatePage extends StatefulWidget {
@@ -59,7 +60,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
-          children: const [Icon(Icons.add, color: Colors.green), SizedBox(width: 8), Text('Filtre ajouté')],
+          children: const [Icon(Icons.add, color: AppTheme.greenStandard), SizedBox(width: 8), Text('Filtre ajouté')],
         ),
         duration: const Duration(seconds: 1),
         behavior: SnackBarBehavior.floating,
@@ -74,7 +75,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
-          children: const [Icon(Icons.remove, color: Colors.red), SizedBox(width: 8), Text('Filtre supprimé')],
+          children: const [Icon(Icons.remove, color: AppTheme.redStandard), SizedBox(width: 8), Text('Filtre supprimé')],
         ),
         duration: const Duration(seconds: 1),
         behavior: SnackBarBehavior.floating,
@@ -98,7 +99,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
         SnackBar(
           content: Row(
             children: [
-              Icon(isEdit ? Icons.check_circle : Icons.add, color: isEdit ? Colors.green : Colors.blue),
+              Icon(isEdit ? Icons.check_circle : Icons.add, color: isEdit ? AppTheme.greenStandard : AppTheme.blueStandard),
               const SizedBox(width: 8),
               Text(isEdit ? 'Liste modifiée' : 'Liste créée'),
             ],
@@ -150,7 +151,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
               children: [
                 Card(
                   elevation: 2,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
@@ -183,7 +184,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 6),
                     color: Theme.of(context).colorScheme.primary.withOpacity(0.04),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                       child: Row(
@@ -304,12 +305,12 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
+                      textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold),
                     ),
                     onPressed: _isSaving ? null : _saveList,
                     child: _isSaving
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const CircularProgressIndicator(color: AppTheme.white100)
                         : Text(widget.listId != null ? 'Enregistrer les modifications' : 'Créer la liste'),
                   ),
                 ),

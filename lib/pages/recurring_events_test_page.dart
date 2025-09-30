@@ -4,6 +4,7 @@ import '../models/event_model.dart';
 import '../services/recurring_calendar_service.dart';
 import '../widgets/recurring_event_form_widget.dart';
 import '../widgets/recurring_event_card.dart';
+import '../../theme.dart';
 
 /// Page de démonstration et test des événements récurrents
 class RecurringEventsTestPage extends StatefulWidget {
@@ -44,12 +45,12 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
       appBar: AppBar(
         title: const Text('Test - Événements Récurrents'),
         backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          indicatorColor: AppTheme.white100,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
           tabs: const [
             Tab(text: 'Créer', icon: Icon(Icons.add)),
             Tab(text: 'Liste', icon: Icon(Icons.list)),
@@ -89,7 +90,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
                   Text(
                     'Test de création d\'événements récurrents',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -117,7 +118,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Événement récurrent créé avec succès !'),
-                    backgroundColor: Colors.green,
+                    backgroundColor: AppTheme.greenStandard,
                   ),
                 );
               },
@@ -133,7 +134,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          color: Colors.grey[100],
+          color: AppTheme.grey100,
           child: Row(
             children: [
               Expanded(
@@ -169,7 +170,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          color: Colors.grey[100],
+          color: AppTheme.grey100,
           child: Column(
             children: [
               Row(
@@ -210,7 +211,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
           Text(
             'Statistiques des événements récurrents',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -236,7 +237,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error, size: 64, color: Colors.red[400]),
+                Icon(Icons.error, size: 64, color: AppTheme.grey400),
                 const SizedBox(height: 16),
                 Text(
                   'Erreur: ${snapshot.error}',
@@ -273,7 +274,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
             Text(
               'Résultats des tests',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -297,7 +298,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
         children: [
           Icon(
             passed ? Icons.check_circle : Icons.cancel,
-            color: passed ? Colors.green : Colors.red,
+            color: passed ? AppTheme.greenStandard : AppTheme.redStandard,
             size: 20,
           ),
           const SizedBox(width: 8),
@@ -307,8 +308,8 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
           Text(
             passed ? 'PASS' : 'FAIL',
             style: TextStyle(
-              color: passed ? Colors.green : Colors.red,
-              fontWeight: FontWeight.w500,
+              color: passed ? AppTheme.greenStandard : AppTheme.redStandard,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -480,7 +481,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -530,7 +531,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
               ],
               if (data != null) ...[
                 const SizedBox(height: 8),
-                const Text('Données d\'instance:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Données d\'instance:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                 ...data.entries.map((entry) => Text('${entry.key}: ${entry.value}')),
               ],
             ],

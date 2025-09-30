@@ -5,7 +5,7 @@ import '../services/pages_firebase_service.dart';
 import '../widgets/page_components/component_renderer.dart';
 import '../widgets/custom_page_app_bar.dart';
 import 'page_builder_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class PagePreviewPage extends StatefulWidget {
   final CustomPageModel page;
@@ -71,7 +71,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du rafraîchissement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -100,10 +100,10 @@ class _PagePreviewPageState extends State<PagePreviewPage>
 
     try {
       await PagesFirebaseService.publishPage(_currentPage!.id);
-      _showSnackBar('Page publiée avec succès', Colors.green);
+      _showSnackBar('Page publiée avec succès', AppTheme.greenStandard);
       _refreshPageData();
     } catch (e) {
-      _showSnackBar('Erreur lors de la publication: $e', Colors.red);
+      _showSnackBar('Erreur lors de la publication: $e', AppTheme.redStandard);
     }
   }
 
@@ -118,7 +118,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
         newSlug,
       );
       
-      _showSnackBar('Page dupliquée avec succès', Colors.green);
+      _showSnackBar('Page dupliquée avec succès', AppTheme.greenStandard);
       
       // Navigation vers l'éditeur de la nouvelle page
       final newPage = await PagesFirebaseService.getPage(newPageId);
@@ -131,7 +131,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
         );
       }
     } catch (e) {
-      _showSnackBar('Erreur lors de la duplication: $e', Colors.red);
+      _showSnackBar('Erreur lors de la duplication: $e', AppTheme.redStandard);
     }
   }
 
@@ -154,13 +154,13 @@ class _PagePreviewPageState extends State<PagePreviewPage>
   Color get _statusColor {
     switch (_currentPage?.status) {
       case 'published':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'draft':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'archived':
-        return Colors.grey;
+        return AppTheme.grey500;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -242,7 +242,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
                 const PopupMenuItem(
                   value: 'publish',
                   child: ListTile(
-                    leading: Icon(Icons.publish, color: Colors.green),
+                    leading: Icon(Icons.publish, color: AppTheme.greenStandard),
                     title: Text('Publier'),
                     contentPadding: EdgeInsets.zero,
                   ),
@@ -270,7 +270,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
         child: FloatingActionButton(
           onPressed: _editPage,
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           child: const Icon(Icons.edit),
         ),
       ),
@@ -306,7 +306,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.3),
+                      AppTheme.black100.withOpacity(0.3),
                     ],
                   ),
                 ),
@@ -383,25 +383,25 @@ class _PagePreviewPageState extends State<PagePreviewPage>
       width: double.infinity,
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        color: AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: AppTheme.grey200!),
       ),
       child: Column(
         children: [
-          Icon(Icons.web, size: 64, color: Colors.grey[400]),
+          Icon(Icons.web, size: 64, color: AppTheme.grey400),
           const SizedBox(height: 16),
           Text(
             'Page vide',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Cette page ne contient encore aucun contenu.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[500],
+              color: AppTheme.grey500,
             ),
             textAlign: TextAlign.center,
           ),
@@ -412,7 +412,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
             label: const Text('Ajouter du contenu'),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
           ),
         ],

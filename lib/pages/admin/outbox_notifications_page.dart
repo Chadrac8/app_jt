@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 
 class OutboxNotificationsPage extends StatefulWidget {
   const OutboxNotificationsPage({super.key});
@@ -162,7 +163,7 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
             const SizedBox(height:24),
             const Divider(),
             const SizedBox(height:12),
-            const Text('Pending Outbox', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Pending Outbox', style: TextStyle(fontWeight: AppTheme.fontBold)),
             const SizedBox(height:8),
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection('outbox_notifications').orderBy('createdAt', descending: true).limit(50).snapshots(),
@@ -178,8 +179,8 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
                     title: Text(data['title'] ?? 'No title'),
                     subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text('Status: ${data['status'] ?? 'unknown'} • Target: ${data['targetType'] ?? '-'}'),
-                      if (createdCount > 0) Text('Created: $createdCount • Sample: $sample', style: const TextStyle(fontSize: 12, color: Colors.black54)),
-                      if (sendResult != null) Text('SendResult: ${sendResult.totalSuccess ?? sendResult.successCount ?? '-'} success', style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                      if (createdCount > 0) Text('Created: $createdCount • Sample: $sample', style: const TextStyle(fontSize: 12, color: AppTheme.black100)),
+                      if (sendResult != null) Text('SendResult: ${sendResult.totalSuccess ?? sendResult.successCount ?? '-'} success', style: const TextStyle(fontSize: 12, color: AppTheme.black100)),
                     ]),
                     trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                       TextButton(onPressed: () async {

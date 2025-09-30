@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'image_gallery_widget.dart';
 
 class ImagePickerWidget extends StatefulWidget {
@@ -77,7 +77,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Image uploadée avec succès !'),
-                backgroundColor: Colors.green,
+                backgroundColor: AppTheme.greenStandard,
               ),
             );
           }
@@ -90,7 +90,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -124,7 +124,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Photo capturée et uploadée avec succès !'),
-                backgroundColor: Colors.green,
+                backgroundColor: AppTheme.greenStandard,
               ),
             );
           }
@@ -137,7 +137,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -166,13 +166,13 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
             Text(
               widget.label!,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             if (widget.isRequired)
               const Text(
                 ' *',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: AppTheme.redStandard),
               ),
             const Spacer(),
             SegmentedButton<String>(
@@ -261,8 +261,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   child: Text(
                     'Image sélectionnée',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.green[600],
-                      fontWeight: FontWeight.w500,
+                      color: AppTheme.grey600,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),
@@ -271,7 +271,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   icon: const Icon(Icons.delete, size: 16),
                   label: const Text('Supprimer'),
                   style: TextButton.styleFrom(
-                    foregroundColor: Colors.red,
+                    foregroundColor: AppTheme.redStandard,
                   ),
                 ),
               ],
@@ -298,7 +298,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               border: Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
             ),
             child: Row(
@@ -325,31 +325,31 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
             height: widget.height,
             width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey[300]!),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(color: AppTheme.grey300!),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               child: CachedNetworkImage(
                 imageUrl: _currentImageUrl!,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Container(
-                  color: Colors.grey[200],
+                  color: AppTheme.grey200,
                   child: const Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
                 errorWidget: (context, url, error) => Container(
-                  color: Colors.grey[200],
+                  color: AppTheme.grey200,
                   child: const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error, size: 48, color: Colors.grey),
+                        Icon(Icons.error, size: 48, color: AppTheme.grey500),
                         SizedBox(height: 8),
                         Text(
                           'Erreur de chargement',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: AppTheme.grey500),
                         ),
                       ],
                     ),

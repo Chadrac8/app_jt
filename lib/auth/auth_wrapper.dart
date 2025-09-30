@@ -3,12 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'auth_service.dart';
 import 'login_page.dart';
-import '../widgets/admin_navigation_wrapper.dart';
 import '../widgets/bottom_navigation_wrapper.dart';
 import '../models/person_model.dart';
-import '../services/dashboard_initialization_service.dart';
 import '../pages/initial_profile_setup_page.dart';
-import '../modules/roles/services/permission_provider.dart';
+import '../modules/roles/providers/permission_provider.dart';
+import '../../theme.dart';
 
 /// Enhanced AuthWrapper with comprehensive error handling and fallback mechanisms
 class AuthWrapper extends StatefulWidget {
@@ -116,36 +115,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
         permissionProvider.initialize(profile.id);
       });
       
-      // Check for admin/leader roles
-      final hasAdminAccess = _checkAdminAccess(profile);
-      
-      if (hasAdminAccess) {
-        // Initialize admin dashboard in background (non-blocking)
-        _initializeAdminDashboardAsync();
-        return const AdminNavigationWrapper();
-      } else {
-        return const BottomNavigationWrapper();
-      }
+      // Force l'affichage de la vue Membre au lancement
+      return const BottomNavigationWrapper();
     } catch (e) {
       print('❌ Error building user interface: $e');
       // Fallback to basic member interface
       return const BottomNavigationWrapper();
-    }
-  }
-
-  /// Check if user has admin access
-  bool _checkAdminAccess(PersonModel profile) {
-    try {
-      return profile.roles.any((role) => 
-        role.toLowerCase().contains('admin') || 
-        role.toLowerCase().contains('leader') ||
-        role.toLowerCase().contains('pasteur') ||
-        role.toLowerCase().contains('responsable') ||
-        role.toLowerCase().contains('dirigeant')
-      );
-    } catch (e) {
-      print('❌ Error checking admin access: $e');
-      return false; // Default to member access
     }
   }
 
@@ -190,17 +165,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
   }
 
-  /// Initialize admin dashboard asynchronously
-  void _initializeAdminDashboardAsync() async {
-    try {
-      await DashboardInitializationService.initializeCompleteDashboard();
-      print('✅ Admin dashboard initialized');
-    } catch (e) {
-      print('⚠️ Warning: Could not initialize admin dashboard: $e');
-      // Continue anyway - admin interface will work with basic features
-    }
-  }
-
   /// Build widget for unauthenticated users
   Widget _buildUnauthenticatedWidget() {
     try {
@@ -215,7 +179,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   Widget _buildLoadingScreen(String message) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white100,
         body: SafeArea(
           child: Center(
             child: Column(
@@ -225,13 +189,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(16),
+                    color: AppTheme.blueStandard,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: Icon(
                     Icons.church,
                     size: 48,
-                    color: Colors.blue.shade600,
+                    color: AppTheme.blueStandard,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -241,7 +205,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   message,
                   style: const TextStyle(
                     fontSize: 16,
-                    color: Colors.grey,
+                    color: AppTheme.grey500,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -257,7 +221,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   Widget _buildAuthErrorScreen(String error) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: AppTheme.grey500,
         body: SafeArea(
           child: Center(
             child: Padding(
@@ -268,13 +232,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.orange.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.orange.shade200),
+                      color: AppTheme.orangeStandard,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      border: Border.all(color: AppTheme.orangeStandard),
                     ),
                     child: Icon(
                       Icons.wifi_off,
-                      color: Colors.orange.shade600,
+                      color: AppTheme.orangeStandard,
                       size: 48,
                     ),
                   ),
@@ -283,8 +247,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     'Problème d\'Authentification',
                     style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange.shade700,
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.orangeStandard,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -293,7 +257,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.grey.shade700,
+                      color: AppTheme.grey500,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -305,8 +269,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                         icon: const Icon(Icons.refresh),
                         label: const Text('Réessayer'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppTheme.orangeStandard,
+                          foregroundColor: AppTheme.white100,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -330,7 +294,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   Widget _buildProfileErrorScreen(String error, User user) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: AppTheme.grey500,
         body: SafeArea(
           child: Center(
             child: Padding(
@@ -341,13 +305,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.red.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.red.shade200),
+                      color: AppTheme.redStandard,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      border: Border.all(color: AppTheme.redStandard),
                     ),
                     child: Icon(
                       Icons.person_off,
-                      color: Colors.red.shade600,
+                      color: AppTheme.redStandard,
                       size: 48,
                     ),
                   ),
@@ -356,8 +320,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     'Erreur de Profil',
                     style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red.shade700,
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.redStandard,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -366,7 +330,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.grey.shade700,
+                      color: AppTheme.grey500,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -375,7 +339,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey.shade600,
+                      color: AppTheme.grey500,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -388,8 +352,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                         icon: const Icon(Icons.refresh),
                         label: const Text('Réessayer'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppTheme.blueStandard,
+                          foregroundColor: AppTheme.white100,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -422,7 +386,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   Widget _buildErrorScreen() {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: AppTheme.grey500,
         body: SafeArea(
           child: Center(
             child: Padding(
@@ -433,13 +397,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.red.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.red.shade200),
+                      color: AppTheme.redStandard,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      border: Border.all(color: AppTheme.redStandard),
                     ),
                     child: Icon(
                       Icons.error_outline,
-                      color: Colors.red.shade600,
+                      color: AppTheme.redStandard,
                       size: 48,
                     ),
                   ),
@@ -448,8 +412,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     'Erreur d\'Authentification',
                     style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red.shade700,
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.redStandard,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -460,7 +424,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.grey.shade700,
+                      color: AppTheme.grey500,
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -469,8 +433,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     icon: const Icon(Icons.refresh),
                     label: const Text('Redémarrer'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.redStandard,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
                 ],
@@ -493,12 +457,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
               Icon(
                 Icons.login,
                 size: 64,
-                color: Colors.blue.shade600,
+                color: AppTheme.blueStandard,
               ),
               const SizedBox(height: 20),
               const Text(
                 'Connexion Required',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
               ),
               const SizedBox(height: 12),
               const Text('Veuillez vous connecter pour continuer.'),

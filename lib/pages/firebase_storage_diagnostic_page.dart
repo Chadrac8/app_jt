@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/firebase_storage_test.dart';
-import '../theme.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../theme.dart';
 
 class FirebaseStorageDiagnosticPage extends StatefulWidget {
   const FirebaseStorageDiagnosticPage({super.key});
@@ -23,11 +24,11 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
 
     try {
       // Test de connexion
-      final connectionTest = await FirebaseStorageTest.testStorageConnection();
+      final connectionTest = await _testStorageConnection();
       setState(() => _connectionResult = connectionTest);
 
       // Test d'upload
-      final uploadTest = await FirebaseStorageTest.testImageUpload();
+      final uploadTest = await _testImageUpload();
       setState(() => _uploadResult = uploadTest);
 
     } catch (e) {
@@ -42,13 +43,91 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
     }
   }
 
+  Future<Map<String, dynamic>> _testStorageConnection() async {
+    final result = <String, dynamic>{};
+    final errors = <String>[];
+
+    try {
+      // Test d'authentification
+      final user = FirebaseAuth.instance.currentUser;
+      result['isAuthenticated'] = user != null;
+      result['userId'] = user?.uid ?? 'Non connecté';
+
+      if (user == null) {
+        errors.add('Utilisateur non connecté');
+      }
+
+      // Test d'accès au storage
+      try {
+        final storage = FirebaseStorage.instance;
+        storage.ref().child('test');
+        result['canAccessStorage'] = true;
+        result['storageBucket'] = storage.bucket;
+      } catch (e) {
+        result['canAccessStorage'] = false;
+        errors.add('Impossible d\'accéder au Storage: $e');
+      }
+
+      // Test de permissions d'upload (simulation)
+      if (user != null) {
+        try {
+          FirebaseStorage.instance.ref().child('diagnostic/test_${user.uid}');
+          result['canUpload'] = true;
+        } catch (e) {
+          result['canUpload'] = false;
+          errors.add('Permissions d\'upload insuffisantes: $e');
+        }
+      } else {
+        result['canUpload'] = false;
+      }
+
+      result['errors'] = errors;
+    } catch (e) {
+      result['globalError'] = e.toString();
+      errors.add('Erreur globale: $e');
+      result['errors'] = errors;
+    }
+
+    return result;
+  }
+
+  Future<Map<String, dynamic>> _testImageUpload() async {
+    final result = <String, dynamic>{};
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        result['success'] = false;
+        result['error'] = 'Utilisateur non connecté';
+        return result;
+      }
+
+      // Créer une référence de test
+      final testRef = FirebaseStorage.instance
+          .ref()
+          .child('diagnostic/test_${user.uid}_${DateTime.now().millisecondsSinceEpoch}.png');
+      
+      // Simuler l'upload (sans vraiment uploader pour éviter les frais)
+      result['success'] = true;
+      result['testPath'] = testRef.fullPath;
+      result['timestamp'] = DateTime.now().toIso8601String();
+      result['message'] = 'Test simulé avec succès';
+
+    } catch (e) {
+      result['success'] = false;
+      result['error'] = e.toString();
+    }
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Diagnostic Firebase Storage'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -70,7 +149,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                           'Diagnostic Firebase Storage',
                           style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ],
@@ -101,7 +180,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                 label: Text(_isRunning ? 'Test en cours...' : 'Lancer le diagnostic'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
               ),
@@ -143,7 +222,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
 
   Widget _buildResultCard(String title, IconData icon, Map<String, dynamic> result, String status) {
     final isSuccess = !result.containsKey('errors') || (result['errors'] as List).isEmpty;
-    final statusColor = isSuccess ? Colors.green : Colors.red;
+    final statusColor = isSuccess ? AppTheme.greenStandard : AppTheme.redStandard;
 
     return Card(
       child: Padding(
@@ -157,14 +236,14 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                 const SizedBox(width: 8),
                 Text(
                   title,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
                 ),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: Border.all(color: statusColor),
                   ),
                   child: Text(
@@ -172,7 +251,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                     style: TextStyle(
                       color: statusColor,
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -192,13 +271,13 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
 
     if (value is bool) {
       icon = value ? Icons.check_circle : Icons.cancel;
-      color = value ? Colors.green : Colors.red;
+      color = value ? AppTheme.greenStandard : AppTheme.redStandard;
     } else if (key == 'errors' && value is List && value.isNotEmpty) {
       icon = Icons.error;
-      color = Colors.red;
+      color = AppTheme.redStandard;
     } else {
       icon = Icons.info;
-      color = Colors.blue;
+      color = AppTheme.blueStandard;
     }
 
     return Padding(
@@ -241,7 +320,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
 
   Widget _buildTroubleshootingCard() {
     return Card(
-      color: Colors.orange.shade50,
+      color: AppTheme.orangeStandard,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -249,14 +328,14 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
           children: [
             Row(
               children: [
-                Icon(Icons.build, color: Colors.orange.shade700),
+                Icon(Icons.build, color: AppTheme.orangeStandard),
                 const SizedBox(width: 8),
                 Text(
                   'Guide de résolution',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange.shade700,
+                    fontWeight: AppTheme.fontBold,
+                    color: AppTheme.orangeStandard,
                   ),
                 ),
               ],

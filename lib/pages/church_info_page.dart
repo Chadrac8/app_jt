@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class ChurchInfoPage extends StatefulWidget {
   const ChurchInfoPage({super.key});
@@ -39,12 +39,12 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
   Widget _buildHeader() {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -70,7 +70,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
               'Jubilé Tabernacle France',
               style: TextStyle(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.surfaceColor)),
             const SizedBox(height: 8),
             Text(
@@ -84,7 +84,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
   Widget _buildContactInfo() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -94,7 +94,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
               'Informations de contact',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 16),
             _buildContactItem(
@@ -141,7 +141,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
                     title,
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textSecondaryColor)),
                   Text(
                     value,
@@ -160,7 +160,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
   Widget _buildServiceHours() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -170,7 +170,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
               'Horaires des services',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 16),
             _buildServiceHour('Dimanche', 'Culte principal', '10h00 - 12h00'),
@@ -199,7 +199,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
                   '$day - $service',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor)),
                 Text(
                   time,
@@ -213,7 +213,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
   Widget _buildDescription() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -223,7 +223,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
               'À propos de nous',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
             const SizedBox(height: 16),
             Text(

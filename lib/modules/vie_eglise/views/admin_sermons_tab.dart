@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/sermon.dart';
 import '../services/sermon_service.dart';
 
@@ -37,12 +37,12 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showSermonForm(context),
         backgroundColor: AppTheme.primaryColor,
-        icon: const Icon(Icons.add, color: Colors.white),
+        icon: const Icon(Icons.add, color: AppTheme.white100),
         label: Text(
           'Ajouter un sermon',
           style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
+            color: AppTheme.white100,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
       ),
@@ -53,10 +53,10 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.grey500.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 1),
@@ -75,7 +75,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                       'Gestion des Sermons',
                       style: GoogleFonts.poppins(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
@@ -123,15 +123,15 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                     )
                   : null,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide(color: AppTheme.grey500),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide(color: AppTheme.primaryColor),
               ),
               filled: true,
-              fillColor: Colors.grey.shade50,
+              fillColor: AppTheme.grey500,
             ),
           ),
         ],
@@ -148,7 +148,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Column(
             children: [
@@ -156,7 +156,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                 '${sermons.length}',
                 style: GoogleFonts.poppins(
                   fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.primaryColor,
                 ),
               ),
@@ -165,7 +165,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: AppTheme.primaryColor,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             ],
@@ -195,14 +195,14 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                 Icon(
                   Icons.error_outline,
                   size: 64,
-                  color: Colors.red.shade300,
+                  color: AppTheme.redStandard,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'Erreur lors du chargement',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -221,14 +221,14 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                 Icon(
                   Icons.play_circle_outline,
                   size: 64,
-                  color: Colors.grey.shade400,
+                  color: AppTheme.grey500,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'Aucun sermon',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -260,11 +260,11 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.grey500.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 6,
             offset: const Offset(0, 2),
@@ -287,7 +287,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                         sermon.titre,
                         style: GoogleFonts.poppins(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
@@ -348,11 +348,11 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                       value: 'delete',
                       child: Row(
                         children: [
-                          const Icon(Icons.delete, size: 18, color: Colors.red),
+                          const Icon(Icons.delete, size: 18, color: AppTheme.redStandard),
                           const SizedBox(width: 8),
                           Text(
                             'Supprimer',
-                            style: GoogleFonts.poppins(color: Colors.red),
+                            style: GoogleFonts.poppins(color: AppTheme.redStandard),
                           ),
                         ],
                       ),
@@ -397,8 +397,8 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(12),
+                      color: AppTheme.grey500,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       '${sermon.duree} min',
@@ -421,14 +421,14 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     tag,
                     style: GoogleFonts.poppins(
                       fontSize: 11,
                       color: AppTheme.primaryColor,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 )).toList(),
@@ -445,9 +445,9 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: isComplete
-            ? Colors.green.withOpacity(0.1)
-            : Colors.orange.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+            ? AppTheme.greenStandard.withOpacity(0.1)
+            : AppTheme.orangeStandard.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -455,15 +455,15 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
           Icon(
             isComplete ? Icons.check_circle : Icons.warning,
             size: 14,
-            color: isComplete ? Colors.green : Colors.orange,
+            color: isComplete ? AppTheme.greenStandard : AppTheme.orangeStandard,
           ),
           const SizedBox(width: 4),
           Text(
             label,
             style: GoogleFonts.poppins(
               fontSize: 12,
-              color: isComplete ? Colors.green : Colors.orange,
-              fontWeight: FontWeight.w500,
+              color: isComplete ? AppTheme.greenStandard : AppTheme.orangeStandard,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -495,7 +495,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
       builder: (context) => AlertDialog(
         title: Text(
           'Supprimer le sermon',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
         ),
         content: Text(
           'Êtes-vous sûr de vouloir supprimer le sermon "${sermon.titre}" ?',
@@ -522,14 +522,14 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                           : 'Erreur lors de la suppression',
                       style: GoogleFonts.poppins(),
                     ),
-                    backgroundColor: success ? Colors.green : Colors.red,
+                    backgroundColor: success ? AppTheme.greenStandard : AppTheme.redStandard,
                   ),
                 );
               }
             },
             child: Text(
               'Supprimer',
-              style: GoogleFonts.poppins(color: Colors.red),
+              style: GoogleFonts.poppins(color: AppTheme.redStandard),
             ),
           ),
         ],
@@ -592,7 +592,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
     return AlertDialog(
       title: Text(
         widget.sermon == null ? 'Ajouter un sermon' : 'Modifier le sermon',
-        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
       ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
@@ -609,7 +609,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     labelText: 'Titre du sermon *',
                     labelStyle: GoogleFonts.poppins(),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   validator: (value) {
@@ -628,7 +628,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     labelText: 'Orateur *',
                     labelStyle: GoogleFonts.poppins(),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   validator: (value) {
@@ -660,7 +660,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                       labelText: 'Date du sermon *',
                       labelStyle: GoogleFonts.poppins(),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     child: Text(
@@ -678,7 +678,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     labelText: 'Description',
                     labelStyle: GoogleFonts.poppins(),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   maxLines: 2,
@@ -692,7 +692,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     labelText: 'Durée (minutes)',
                     labelStyle: GoogleFonts.poppins(),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                   keyboardType: TextInputType.number,
@@ -706,7 +706,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     labelText: 'Lien YouTube',
                     labelStyle: GoogleFonts.poppins(),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                 ),
@@ -719,7 +719,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     labelText: 'Tags (séparés par des virgules)',
                     labelStyle: GoogleFonts.poppins(),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     hintText: 'ex: foi, espoir, amour',
                   ),
@@ -733,7 +733,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     labelText: 'Notes du sermon',
                     labelStyle: GoogleFonts.poppins(),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     hintText: 'Utilisez # pour les titres, - pour les listes',
                   ),
@@ -756,7 +756,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
           onPressed: _isLoading ? null : _saveSermon,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppTheme.primaryColor,
-            foregroundColor: Colors.white,
+            foregroundColor: AppTheme.white100,
           ),
           child: _isLoading
               ? const SizedBox(
@@ -764,12 +764,12 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                   height: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.white,
+                    color: AppTheme.white100,
                   ),
                 )
               : Text(
                   widget.sermon == null ? 'Ajouter' : 'Modifier',
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                  style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
                 ),
         ),
       ],
@@ -829,7 +829,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                   : 'Erreur lors de la sauvegarde',
               style: GoogleFonts.poppins(),
             ),
-            backgroundColor: success ? Colors.green : Colors.red,
+            backgroundColor: success ? AppTheme.greenStandard : AppTheme.redStandard,
           ),
         );
       }
@@ -841,7 +841,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
               'Erreur lors de la sauvegarde: $e',
               style: GoogleFonts.poppins(),
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

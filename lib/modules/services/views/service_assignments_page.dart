@@ -5,6 +5,7 @@ import '../../../models/person_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../services/firebase_service.dart';
 import '../../../auth/auth_service.dart';
+import '../../../../theme.dart';
 
 
 class ServiceAssignmentsPage extends StatefulWidget {
@@ -350,15 +351,15 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   Text(
                     'Gestion des assignations',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      color: AppTheme.white100,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   Text(
                     DateFormat('EEEE d MMMM yyyy à HH:mm', 'fr_FR')
                         .format(widget.service.dateTime),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.white70,
+                      color: AppTheme.white100.withOpacity(0.70),
                     ),
                   ),
                 ],
@@ -525,8 +526,8 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     ? person.fullName.substring(0, 1).toUpperCase()
                     : '?',
                 style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  color: AppTheme.white100,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ),
@@ -543,14 +544,14 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: _getStatusColor(assignment.status).withAlpha(25), // 10% opacity
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     assignment.statusLabel,
                     style: TextStyle(
                       color: _getStatusColor(assignment.status),
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),
@@ -564,7 +565,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     value: 'accept',
                     child: Row(
                       children: [
-                        Icon(Icons.check, color: Colors.green),
+                        Icon(Icons.check, color: AppTheme.greenStandard),
                         SizedBox(width: 8),
                         Text('Accepter'),
                       ],
@@ -574,7 +575,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     value: 'decline',
                     child: Row(
                       children: [
-                        Icon(Icons.close, color: Colors.red),
+                        Icon(Icons.close, color: AppTheme.redStandard),
                         SizedBox(width: 8),
                         Text('Refuser'),
                       ],
@@ -586,7 +587,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     value: 'confirm',
                     child: Row(
                       children: [
-                        Icon(Icons.verified, color: Colors.blue),
+                        Icon(Icons.verified, color: AppTheme.blueStandard),
                         SizedBox(width: 8),
                         Text('Confirmer'),
                       ],
@@ -607,7 +608,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   value: 'remove',
                   child: Row(
                     children: [
-                      Icon(Icons.delete, color: Colors.red),
+                      Icon(Icons.delete, color: AppTheme.redStandard),
                       SizedBox(width: 8),
                       Text('Supprimer'),
                     ],
@@ -634,7 +635,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                 'Nouvelle assignation',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 8),
@@ -711,7 +712,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                 Expanded(
                   child: Text(
                     team.name,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
                   ),
                 ),
               ],
@@ -747,9 +748,9 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                           '$existingAssignments/${position.maxAssignments} assigné(s)',
                           style: TextStyle(
                             color: remainingSlots > 0 
-                                ? Colors.green 
-                                : Colors.orange,
-                            fontWeight: FontWeight.w500,
+                                ? AppTheme.greenStandard 
+                                : AppTheme.orangeStandard,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ],
@@ -763,7 +764,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                       )
                     : const Icon(
                         Icons.people,
-                        color: Colors.grey,
+                        color: AppTheme.grey500,
                       ),
               );
             }).toList(),
@@ -925,17 +926,17 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
   Color _getStatusColor(String status) {
     switch (status) {
       case 'invited':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'accepted':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'declined':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'tentative':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'confirmed':
         return Colors.purple;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 }

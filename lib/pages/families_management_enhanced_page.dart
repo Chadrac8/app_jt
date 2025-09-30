@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import '../services/family_service.dart';
+import '../../theme.dart';
 
 class FamiliesManagementEnhancedPage extends StatefulWidget {
   const FamiliesManagementEnhancedPage({Key? key}) : super(key: key);
@@ -378,15 +379,15 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
               _buildStatCard('Taille moyenne', _statistics['averageFamilySize']?.toStringAsFixed(1) ?? '0'),
               
               const SizedBox(height: 16),
-              const Text('Distribution par type:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Distribution par type:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ..._buildDistributionList(_statistics['familyTypeDistribution']),
               
               const SizedBox(height: 16),
-              const Text('Distribution par taille:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Distribution par taille:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ..._buildDistributionList(_statistics['sizeDistribution']),
               
               const SizedBox(height: 16),
-              const Text('Top 5 villes:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Top 5 villes:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ..._buildTopCities(_statistics['locationDistribution']),
             ],
           ),
@@ -408,7 +409,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(value, style: const TextStyle(fontWeight: AppTheme.fontBold)),
         ],
       ),
     );
@@ -460,7 +461,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
           ),
           ElevatedButton(
             style: isDestructive 
-                ? ElevatedButton.styleFrom(backgroundColor: Colors.red)
+                ? ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard)
                 : null,
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Confirmer'),
@@ -474,7 +475,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppTheme.redStandard,
       ),
     );
   }
@@ -483,7 +484,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
       ),
     );
   }
@@ -597,7 +598,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                       )
                     : null,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
             ),
@@ -654,7 +655,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                 if (_showArchived)
                   const Chip(
                     label: Text('Mode archivé'),
-                    backgroundColor: Colors.orange,
+                    backgroundColor: AppTheme.orangeStandard,
                   ),
               ],
             ),
@@ -672,7 +673,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                             Icon(
                               Icons.family_restroom,
                               size: 64,
-                              color: Colors.grey[400],
+                              color: AppTheme.grey400,
                             ),
                             const SizedBox(height: 16),
                             Text(
@@ -733,7 +734,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
       elevation: isSelected ? 8 : 2,
       color: isSelected ? Theme.of(context).colorScheme.primaryContainer : null,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         onTap: _isSelectionMode
             ? () => _toggleFamilySelection(familyId)
             : () {
@@ -776,7 +777,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                     Text(
                       family['familyName'] as String,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     
@@ -794,7 +795,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                         padding: const EdgeInsets.only(top: 4),
                         child: Row(
                           children: [
-                            Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
+                            Icon(Icons.location_on, size: 16, color: AppTheme.grey600),
                             const SizedBox(width: 4),
                             Text(
                               '${address['city']}${address['region'] != null ? ', ${address['region']}' : ''}',
@@ -809,7 +810,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                         padding: const EdgeInsets.only(top: 4),
                         child: Row(
                           children: [
-                            Icon(Icons.phone, size: 16, color: Colors.grey[600]),
+                            Icon(Icons.phone, size: 16, color: AppTheme.grey600),
                             const SizedBox(width: 4),
                             Text(
                               family['phone'] as String,
@@ -823,7 +824,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                       padding: const EdgeInsets.only(top: 4),
                       child: Row(
                         children: [
-                          Icon(Icons.people, size: 16, color: Colors.grey[600]),
+                          Icon(Icons.people, size: 16, color: AppTheme.grey600),
                           const SizedBox(width: 4),
                           Text(
                             '$memberCount membre(s)',
@@ -882,7 +883,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                     const PopupMenuItem(
                       value: 'delete',
                       child: ListTile(
-                        leading: Icon(Icons.delete, color: Colors.red),
+                        leading: Icon(Icons.delete, color: AppTheme.redStandard),
                         title: Text('Supprimer'),
                       ),
                     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/custom_field_model.dart';
 import '../services/custom_fields_firebase_service.dart';
+import '../../theme.dart';
 
 class CustomFieldsWidget extends StatefulWidget {
   final Map<String, dynamic> initialValues;
@@ -104,7 +105,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary.withAlpha(25),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(
                 color: Theme.of(context).colorScheme.secondary.withAlpha(77),
               ),
@@ -120,7 +121,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
                 Text(
                   'Aucun champ personnalisé configuré',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                   textAlign: TextAlign.center,
@@ -157,7 +158,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withAlpha(51),
         ),
@@ -189,7 +190,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
@@ -221,7 +222,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
                 field.helpText!,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.shade600,
+                  color: AppTheme.grey500,
                 ),
               ),
             ),
@@ -243,26 +244,26 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
             hintText: field.placeholder,
             prefixIcon: Icon(_getIconForFieldType(field.type), color: Theme.of(context).colorScheme.primary),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.primary,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.error,
               ),
@@ -288,26 +289,26 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
             hintText: field.placeholder,
             prefixIcon: Icon(Icons.numbers, color: Theme.of(context).colorScheme.primary),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.primary,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.error,
               ),
@@ -331,14 +332,14 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
       case CustomFieldType.date:
         return InkWell(
           onTap: widget.isReadOnly ? null : () => _selectDate(field),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: Row(
               children: [
@@ -391,19 +392,19 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
             labelText: field.label + (field.isRequired ? ' *' : ''),
             prefixIcon: Icon(Icons.list, color: Theme.of(context).colorScheme.primary),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.primary,
                 width: 2,
@@ -446,7 +447,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: AppTheme.grey500),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Column(
@@ -595,8 +596,8 @@ class CustomFieldsDisplayWidget extends StatelessWidget {
             child: Text(
               field.label,
               style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.grey500,
               ),
             ),
           ),

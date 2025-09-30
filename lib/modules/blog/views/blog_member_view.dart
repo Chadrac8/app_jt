@@ -5,6 +5,7 @@ import '../services/blog_service.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
+import '../../../../theme.dart';
 
 /// Vue membre du module Blog
 class BlogMemberView extends StatefulWidget {
@@ -124,7 +125,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
           TabBar(
             controller: _tabController,
             labelColor: Theme.of(context).primaryColor,
-            unselectedLabelColor: Colors.grey,
+            unselectedLabelColor: AppTheme.grey500,
             tabs: const [
               Tab(text: 'Récents', icon: Icon(Icons.schedule)),
               Tab(text: 'À la une', icon: Icon(Icons.star)),
@@ -161,7 +162,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
               hintText: 'Rechercher des articles...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
@@ -206,9 +207,9 @@ class _BlogMemberViewState extends State<BlogMemberView>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.article_outlined, size: 64, color: Colors.grey),
+            Icon(Icons.article_outlined, size: 64, color: AppTheme.grey500),
             SizedBox(height: 16),
-            Text('Aucun article trouvé', style: TextStyle(color: Colors.grey)),
+            Text('Aucun article trouvé', style: TextStyle(color: AppTheme.grey500)),
           ],
         ),
       );
@@ -247,7 +248,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                   errorBuilder: (context, error, stackTrace) => Container(
                     height: 200,
                     width: double.infinity,
-                    color: Colors.grey[300],
+                    color: AppTheme.grey300,
                     child: Image.network(
                       "https://images.unsplash.com/photo-1579215176023-00341ea5ea67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NTA0MTk0Mzl8&ixlib=rb-4.1.0&q=80&w=1080",
                       fit: BoxFit.cover,
@@ -274,8 +275,8 @@ class _BlogMemberViewState extends State<BlogMemberView>
                         'À LA UNE',
                         style: TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.white100,
                         ),
                       ),
                     ),
@@ -287,7 +288,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                     post.title,
                     style: const TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -299,7 +300,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                   Text(
                     post.excerpt,
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                       height: 1.4,
                     ),
                     maxLines: 3,
@@ -329,36 +330,36 @@ class _BlogMemberViewState extends State<BlogMemberView>
                               post.authorName,
                               style: const TextStyle(
                                 fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                             Text(
                               _formatDate(post.publishedAt ?? post.createdAt),
                               style: TextStyle(
                                 fontSize: 11,
-                                color: Colors.grey[600],
+                                color: AppTheme.grey600,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Icon(Icons.visibility, size: 14, color: Colors.grey[600]),
+                      Icon(Icons.visibility, size: 14, color: AppTheme.grey600),
                       const SizedBox(width: 4),
                       Text(
                         post.views.toString(),
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Icon(Icons.schedule, size: 14, color: Colors.grey[600]),
+                      Icon(Icons.schedule, size: 14, color: AppTheme.grey600),
                       const SizedBox(width: 4),
                       Text(
                         '\${post.estimatedReadingTime} min',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],

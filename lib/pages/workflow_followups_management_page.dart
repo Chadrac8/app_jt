@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/firebase_service.dart';
 import '../models/person_model.dart';
 import 'workflow_detail_page.dart';
+import '../../theme.dart';
 
 class WorkflowFollowupsManagementPage extends StatelessWidget {
   const WorkflowFollowupsManagementPage({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _WorkflowCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -58,9 +59,9 @@ class _WorkflowCard extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Color(int.parse(workflow.color.replaceFirst('#', '0xFF'))),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
-                  child: Icon(_getIconData(workflow.icon), color: Colors.white, size: 24),
+                  child: Icon(_getIconData(workflow.icon), color: AppTheme.white100, size: 24),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -69,7 +70,7 @@ class _WorkflowCard extends StatelessWidget {
                     children: [
                       Text(
                         workflow.name,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold),
                       ),
                       Text(
                         workflow.description,
@@ -84,13 +85,13 @@ class _WorkflowCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: const Color(0x1A388E3C),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     workflow.category,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),
@@ -149,7 +150,7 @@ class _WorkflowPersonsList extends StatelessWidget {
         }
         final personWorkflows = snapshot.data ?? [];
         if (personWorkflows.isEmpty) {
-          return const Text('Aucune personne en suivi.', style: TextStyle(color: Colors.grey));
+          return const Text('Aucune personne en suivi.', style: TextStyle(color: AppTheme.grey500));
         }
         return Column(
           children: personWorkflows.map((pw) => _WorkflowPersonTile(personWorkflow: pw, steps: steps)).toList(),

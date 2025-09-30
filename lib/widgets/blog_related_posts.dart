@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/blog_model.dart';
 import '../services/blog_firebase_service.dart';
+import '../../theme.dart';
 
 class BlogRelatedPosts extends StatelessWidget {
   final BlogPost currentPost;
@@ -71,10 +72,10 @@ class BlogRelatedPosts extends StatelessWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: Colors.grey[300],
+                        color: AppTheme.grey300,
                         child: Icon(
                           Icons.image_not_supported,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       );
                     },
@@ -83,11 +84,11 @@ class BlogRelatedPosts extends StatelessWidget {
               else
                 Container(
                   height: 100,
-                  color: Colors.grey[300],
+                  color: AppTheme.grey300,
                   child: Icon(
                     Icons.article,
                     size: 48,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
               
@@ -102,7 +103,7 @@ class BlogRelatedPosts extends StatelessWidget {
                       Text(
                         post.title,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           height: 1.2,
                         ),
                         maxLines: 2,
@@ -117,26 +118,26 @@ class BlogRelatedPosts extends StatelessWidget {
                           Icon(
                             Icons.access_time,
                             size: 14,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             '${post.readingTimeMinutes} min',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
+                              color: AppTheme.grey600,
                             ),
                           ),
                           const Spacer(),
                           Icon(
                             Icons.favorite,
                             size: 14,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             post.likes.toString(),
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
+                              color: AppTheme.grey600,
                             ),
                           ),
                         ],

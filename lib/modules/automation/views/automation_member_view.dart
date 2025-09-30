@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/automation.dart';
 import '../models/automation_execution.dart';
 import '../services/automation_service.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
 
 /// Vue membre pour les automatisations
@@ -42,7 +42,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -90,10 +90,10 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
           hintText: 'Rechercher une automatisation...',
           prefixIcon: const Icon(Icons.search),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           filled: true,
-          fillColor: Colors.grey[50],
+          fillColor: AppTheme.grey50,
         ),
         onChanged: (value) {
           setState(() => _searchQuery = value);
@@ -120,7 +120,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               'Automatisations\nActives',
               '${_automations.length}',
               Icons.auto_awesome,
-              Colors.blue,
+              AppTheme.blueStandard,
             ),
           ),
           const SizedBox(width: 12),
@@ -129,7 +129,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               'Exécutions\nRéussies',
               '$successfulExecutions',
               Icons.check_circle,
-              Colors.green,
+              AppTheme.greenStandard,
             ),
           ),
           const SizedBox(width: 12),
@@ -138,7 +138,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               'Échecs\nRécents',
               '$failedExecutions',
               Icons.error,
-              Colors.red,
+              AppTheme.redStandard,
             ),
           ),
         ],
@@ -158,7 +158,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               value,
               style: const TextStyle(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 4),
@@ -166,7 +166,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
                 fontSize: 12,
               ),
             ),
@@ -190,12 +190,12 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                   'Automatisations Actives',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 Text(
                   '${_filteredAutomations.length} automatisation(s)',
-                  style: TextStyle(color: Colors.grey[600]),
+                  style: TextStyle(color: AppTheme.grey600),
                 ),
               ],
             ),
@@ -210,7 +210,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                         Icon(
                           Icons.auto_awesome,
                           size: 64,
-                          color: Colors.grey[400],
+                          color: AppTheme.grey400,
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -218,7 +218,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                               ? 'Aucune automatisation active'
                               : 'Aucun résultat pour "$_searchQuery"',
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                             fontSize: 16,
                           ),
                         ),
@@ -244,7 +244,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: () => _showAutomationDetails(automation),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -256,7 +256,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: _getTriggerColor(automation.trigger).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       _getTriggerIcon(automation.trigger),
@@ -272,7 +272,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                         Text(
                           automation.name,
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                             fontSize: 16,
                           ),
                         ),
@@ -280,7 +280,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                         Text(
                           automation.description,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                             fontSize: 14,
                           ),
                           maxLines: 2,
@@ -292,15 +292,15 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: automation.isActive ? Colors.green : Colors.grey,
-                      borderRadius: BorderRadius.circular(12),
+                      color: automation.isActive ? AppTheme.greenStandard : AppTheme.grey500,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       automation.status.label,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -315,8 +315,8 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppTheme.grey200,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         tag,
@@ -329,24 +329,24 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(Icons.play_arrow, size: 16, color: Colors.grey[600]),
+                  Icon(Icons.play_arrow, size: 16, color: AppTheme.grey600),
                   const SizedBox(width: 4),
                   Text(
                     '${automation.executionCount} exécutions',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: 12),
                   ),
                   const SizedBox(width: 16),
-                  Icon(Icons.check_circle, size: 16, color: Colors.green),
+                  Icon(Icons.check_circle, size: 16, color: AppTheme.greenStandard),
                   const SizedBox(width: 4),
                   Text(
                     '${automation.successRate.toStringAsFixed(1)}% succès',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: 12),
                   ),
                   const Spacer(),
                   if (automation.lastExecutedAt != null)
                     Text(
                       _formatLastExecution(automation.lastExecutedAt!),
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                      style: TextStyle(color: AppTheme.grey600, fontSize: 12),
                     ),
                 ],
               ),
@@ -367,7 +367,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
             'Activité Récente',
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ),
@@ -378,7 +378,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               ? Center(
                   child: Text(
                     'Aucune activité récente',
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(color: AppTheme.grey600),
                   ),
                 )
               : ListView.builder(
@@ -402,7 +402,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
       margin: const EdgeInsets.only(right: 12),
       child: InkWell(
         onTap: () => _showExecutionDetails(execution),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
           width: 200,
           padding: const EdgeInsets.all(12),
@@ -424,7 +424,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                     child: Text(
                       execution.automationName,
                       style: const TextStyle(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         fontSize: 14,
                       ),
                       maxLines: 1,
@@ -437,7 +437,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               Text(
                 execution.statusMessage,
                 style: TextStyle(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                   fontSize: 12,
                 ),
                 maxLines: 2,
@@ -447,7 +447,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               Text(
                 _formatDateTime(execution.triggeredAt),
                 style: TextStyle(
-                  color: Colors.grey[500],
+                  color: AppTheme.grey500,
                   fontSize: 11,
                 ),
               ),
@@ -479,7 +479,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                 _buildDetailRow('Dernière exécution', _formatDateTime(automation.lastExecutedAt!)),
               if (automation.tags.isNotEmpty) ...[
                 const SizedBox(height: 8),
-                const Text('Tags:', style: TextStyle(fontWeight: FontWeight.w500)),
+                const Text('Tags:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
                 const SizedBox(height: 4),
                 Wrap(
                   spacing: 6,
@@ -528,7 +528,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                 _buildDetailRow('Actions échouées', '${execution.failedActionsCount}'),
               if (execution.error != null) ...[
                 const SizedBox(height: 8),
-                const Text('Erreur:', style: TextStyle(fontWeight: FontWeight.w500, color: Colors.red)),
+                const Text('Erreur:', style: TextStyle(fontWeight: AppTheme.fontMedium, color: AppTheme.redStandard)),
                 const SizedBox(height: 4),
                 Text(execution.error!, style: const TextStyle(fontSize: 12)),
               ],
@@ -555,7 +555,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
             width: 100,
             child: Text(
               '$label:',
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: AppTheme.fontMedium),
             ),
           ),
           Expanded(child: Text(value)),
@@ -567,19 +567,19 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
   Color _getTriggerColor(AutomationTrigger trigger) {
     switch (trigger) {
       case AutomationTrigger.personAdded:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case AutomationTrigger.groupJoined:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case AutomationTrigger.eventRegistered:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case AutomationTrigger.serviceAssigned:
         return Colors.purple;
       case AutomationTrigger.dateScheduled:
         return Colors.teal;
       case AutomationTrigger.prayerRequest:
-        return Colors.pink;
+        return AppTheme.pinkStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -605,15 +605,15 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
   Color _getExecutionStatusColor(ExecutionStatus status) {
     switch (status) {
       case ExecutionStatus.completed:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case ExecutionStatus.failed:
-        return Colors.red;
+        return AppTheme.redStandard;
       case ExecutionStatus.running:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case ExecutionStatus.pending:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case ExecutionStatus.cancelled:
-        return Colors.grey;
+        return AppTheme.grey500;
       case ExecutionStatus.skipped:
         return Colors.yellow[700]!;
     }

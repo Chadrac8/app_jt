@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/prayer_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class PrayerSearchFilterBar extends StatefulWidget {
   final TextEditingController searchController;
@@ -77,9 +77,9 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
   Color _getTypeColor(PrayerType type) {
     switch (type) {
       case PrayerType.request:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case PrayerType.testimony:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
         return Colors.purple;
     }
@@ -109,7 +109,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
     return Card(
       margin: const EdgeInsets.all(16),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Column(
         children: [
           // Barre de recherche principale
@@ -137,7 +137,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Colors.grey.withOpacity(0.1),
+                      fillColor: AppTheme.grey500.withOpacity(0.1),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                     ),
                     onChanged: widget.onSearchChanged,
@@ -149,7 +149,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                   decoration: BoxDecoration(
                     color: _hasActiveFilters 
                         ? AppTheme.primaryColor.withOpacity(0.1)
-                        : Colors.grey.withOpacity(0.1),
+                        : AppTheme.grey500.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(25),
                     border: _hasActiveFilters 
                         ? Border.all(color: AppTheme.primaryColor, width: 1)
@@ -158,7 +158,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                   child: IconButton(
                     icon: Icon(
                       Icons.tune,
-                      color: _hasActiveFilters ? AppTheme.primaryColor : Colors.grey,
+                      color: _hasActiveFilters ? AppTheme.primaryColor : AppTheme.grey500,
                     ),
                     onPressed: _toggleFilters,
                     tooltip: 'Filtres',
@@ -168,11 +168,11 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                   const SizedBox(width: 8),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
+                      color: AppTheme.redStandard.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.clear_all, color: Colors.red),
+                      icon: const Icon(Icons.clear_all, color: AppTheme.redStandard),
                       onPressed: widget.onClearFilters,
                       tooltip: 'Effacer les filtres',
                     ),
@@ -188,7 +188,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
             child: Container(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.05),
+                color: AppTheme.grey500.withOpacity(0.05),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(12),
                   bottomRight: Radius.circular(12),
@@ -204,7 +204,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                     'Type de prière',
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -222,7 +222,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                           }
                         },
                         selectedColor: AppTheme.primaryColor.withOpacity(0.2),
-                        backgroundColor: Colors.grey.withOpacity(0.1),
+                        backgroundColor: AppTheme.grey500.withOpacity(0.1),
                       ),
                       // Options par type
                       ...PrayerType.values.map((type) => ChoiceChip(
@@ -234,7 +234,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                               size: 16,
                               color: widget.selectedType == type 
                                   ? _getTypeColor(type)
-                                  : Colors.grey,
+                                  : AppTheme.grey500,
                             ),
                             const SizedBox(width: 4),
                             Text(type.label),
@@ -245,7 +245,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                           widget.onTypeChanged(selected ? type : null);
                         },
                         selectedColor: _getTypeColor(type).withOpacity(0.2),
-                        backgroundColor: Colors.grey.withOpacity(0.1),
+                        backgroundColor: AppTheme.grey500.withOpacity(0.1),
                       )),
                     ],
                   ),
@@ -257,7 +257,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                       'Catégorie',
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -266,7 +266,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                       decoration: InputDecoration(
                         hintText: 'Sélectionner une catégorie',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12,
@@ -295,7 +295,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                     'Options d\'affichage',
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -345,9 +345,9 @@ class ActiveFiltersBar extends StatelessWidget {
   Color _getTypeColor(PrayerType type) {
     switch (type) {
       case PrayerType.request:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case PrayerType.testimony:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
         return Colors.purple;
     }
@@ -378,7 +378,7 @@ class ActiveFiltersBar extends StatelessWidget {
                 if (selectedCategory != null)
                   Chip(
                     label: Text(selectedCategory!),
-                    backgroundColor: Colors.grey.withOpacity(0.1),
+                    backgroundColor: AppTheme.grey500.withOpacity(0.1),
                     deleteIcon: const Icon(Icons.close, size: 16),
                     onDeleted: () => onCategoryChanged(null),
                   ),
@@ -391,7 +391,7 @@ class ActiveFiltersBar extends StatelessWidget {
               icon: const Icon(Icons.clear_all, size: 16),
               label: const Text('Tout effacer'),
               style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
+                foregroundColor: AppTheme.redStandard,
               ),
             ),
         ],

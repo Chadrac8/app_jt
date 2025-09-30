@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../theme.dart';
+import '../../../theme.dart';
 import 'widgets/pepites_or_tab.dart';
 import 'widgets/audio_player_tab_perfect13.dart';
 import 'widgets/read_message_tab.dart';
@@ -33,43 +33,46 @@ class _MessageModuleState extends State<MessageModule>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // TabBar moderne - Style identique au module Vie de l'église
+        // TabBar moderne - Material Design 3 conforme
         Container(
-          height: 42, // Hauteur réduite de la TabBar
+          height: 50, // Hauteur Material Design standard
           decoration: BoxDecoration(
-            color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
+            color: AppTheme.backgroundColor, // Harmonisé avec AppBar transparente membre
             boxShadow: [
               BoxShadow(
-                color: AppTheme.textTertiaryColor.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: const Offset(0, 1),
+                color: AppTheme.black100.withOpacity(0.08),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
           child: TabBar(
             controller: _tabController,
-            labelColor: Colors.white, // Texte blanc pour onglet sélectionné
-            unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
-            indicatorColor: Colors.white, // Indicateur blanc
-            indicatorWeight: 3,
-            labelStyle: GoogleFonts.poppins(
-              fontSize: 13, // Taille de police légèrement réduite
-              fontWeight: FontWeight.w600,
+            labelColor: AppTheme.primaryColor,
+            unselectedLabelColor: AppTheme.textSecondaryColor,
+            indicatorColor: AppTheme.primaryColor,
+            indicatorWeight: 3.0, // Poids standard Material Design
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            labelStyle: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: AppTheme.fontSemiBold,
             ),
-            unselectedLabelStyle: GoogleFonts.poppins(
-              fontSize: 13, // Taille de police légèrement réduite
-              fontWeight: FontWeight.w500,
+            unselectedLabelStyle: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: AppTheme.fontMedium,
             ),
             tabs: const [
               Tab(
                 text: 'Écouter',
+                iconMargin: EdgeInsets.only(bottom: 4),
               ),
               Tab(
                 text: 'Lire',
+                iconMargin: EdgeInsets.only(bottom: 4),
               ),
               Tab(
                 text: 'Pépites d\'Or',
+                iconMargin: EdgeInsets.only(bottom: 4),
               ),
             ],
           ),

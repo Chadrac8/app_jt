@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormPublicPage extends StatefulWidget {
   final String formId;
@@ -222,7 +222,7 @@ class _FormPublicPageState extends State<FormPublicPage>
       appBar: AppBar(
         title: Text(_form?.title ?? 'Formulaire'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
       ),
       body: _buildBody(),
@@ -253,7 +253,7 @@ class _FormPublicPageState extends State<FormPublicPage>
               'Erreur',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.errorColor,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 8),
@@ -298,7 +298,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                 'Formulaire soumis !',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: AppTheme.successColor,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 16),
@@ -320,7 +320,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                   child: const Text('Continuer'),
                 ),
@@ -364,7 +364,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                       Text(
                         _form!.title,
                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
@@ -395,10 +395,10 @@ class _FormPublicPageState extends State<FormPublicPage>
                           onPressed: _isSubmitting ? null : _submitForm,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.primaryColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             ),
                           ),
                           child: _isSubmitting
@@ -410,7 +410,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                                       height: 20,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                                       ),
                                     ),
                                     SizedBox(width: 12),
@@ -421,7 +421,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                                   'Soumettre le formulaire',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: AppTheme.fontBold,
                                   ),
                                 ),
                         ),
@@ -435,7 +435,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: AppTheme.warningColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Row(
                             children: [
@@ -498,7 +498,7 @@ class _FormPublicPageState extends State<FormPublicPage>
               Text(
                 field.label,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: AppTheme.primaryColor,
                 ),
               ),
@@ -518,7 +518,7 @@ class _FormPublicPageState extends State<FormPublicPage>
         return Text(
           field.label,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         );
       case 'instructions':
@@ -526,7 +526,7 @@ class _FormPublicPageState extends State<FormPublicPage>
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             border: Border.all(
               color: AppTheme.primaryColor.withOpacity(0.3),
             ),
@@ -567,7 +567,7 @@ class _FormPublicPageState extends State<FormPublicPage>
               child: Text(
                 field.label,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -578,7 +578,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                 style: TextStyle(
                   color: AppTheme.errorColor,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
           ],
@@ -637,10 +637,10 @@ class _FormPublicPageState extends State<FormPublicPage>
       decoration: InputDecoration(
         hintText: field.placeholder,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppTheme.white100,
       ),
       keyboardType: _getKeyboardType(field.type),
       validator: (value) => _validateField(field, value),
@@ -655,10 +655,10 @@ class _FormPublicPageState extends State<FormPublicPage>
       decoration: InputDecoration(
         hintText: field.placeholder,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppTheme.white100,
       ),
       maxLines: 4,
       validator: (value) => _validateField(field, value),
@@ -670,10 +670,10 @@ class _FormPublicPageState extends State<FormPublicPage>
       value: _responses[field.id],
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppTheme.white100,
       ),
       hint: Text(field.placeholder ?? 'Sélectionnez une option'),
       items: field.options.map((option) {
@@ -739,10 +739,10 @@ class _FormPublicPageState extends State<FormPublicPage>
       decoration: InputDecoration(
         hintText: 'JJ/MM/AAAA',
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppTheme.white100,
         suffixIcon: const Icon(Icons.calendar_today),
       ),
       readOnly: true,
@@ -767,10 +767,10 @@ class _FormPublicPageState extends State<FormPublicPage>
       decoration: InputDecoration(
         hintText: 'HH:MM',
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppTheme.white100,
         suffixIcon: const Icon(Icons.access_time),
       ),
       readOnly: true,
@@ -792,11 +792,11 @@ class _FormPublicPageState extends State<FormPublicPage>
       height: 120,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.grey.shade300,
+          color: AppTheme.grey500,
           style: BorderStyle.solid,
         ),
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        color: AppTheme.white100,
       ),
       child: InkWell(
         onTap: () {
@@ -807,7 +807,7 @@ class _FormPublicPageState extends State<FormPublicPage>
             ),
           );
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -834,11 +834,11 @@ class _FormPublicPageState extends State<FormPublicPage>
       height: 200,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.grey.shade300,
+          color: AppTheme.grey500,
           style: BorderStyle.solid,
         ),
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        color: AppTheme.white100,
       ),
       child: Center(
         child: Column(

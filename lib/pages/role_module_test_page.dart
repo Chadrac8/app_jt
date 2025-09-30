@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../modules/roles/roles_module.dart';
+import '../../theme.dart';
 
 /// Page de test pour vérifier l'intégration du module de rôles
 class RoleModuleTestPage extends StatelessWidget {
@@ -13,8 +14,8 @@ class RoleModuleTestPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Test - Module Rôles'),
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
+          backgroundColor: AppTheme.blueStandard,
+          foregroundColor: AppTheme.white100,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -30,14 +31,14 @@ class RoleModuleTestPage extends StatelessWidget {
                       Text(
                         'Module d\'Assignation des Rôles',
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'Interface complète pour gérer l\'assignation des rôles aux utilisateurs de l\'application.',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -50,8 +51,8 @@ class RoleModuleTestPage extends StatelessWidget {
                 icon: const Icon(Icons.people),
                 label: const Text('Assignation par Utilisateur'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppTheme.blueStandard,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
@@ -61,8 +62,8 @@ class RoleModuleTestPage extends StatelessWidget {
                 icon: const Icon(Icons.admin_panel_settings),
                 label: const Text('Gestion des Rôles'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppTheme.greenStandard,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
@@ -72,14 +73,14 @@ class RoleModuleTestPage extends StatelessWidget {
                 icon: const Icon(Icons.dashboard),
                 label: const Text('Menu Complet du Module'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppTheme.orangeStandard,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
               const SizedBox(height: 24),
               Card(
-                color: Colors.green[50],
+                color: AppTheme.grey50,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -87,13 +88,13 @@ class RoleModuleTestPage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green[600]),
+                          Icon(Icons.check_circle, color: AppTheme.grey600),
                           const SizedBox(width: 8),
                           Text(
                             'Intégration Réussie',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Colors.green[700],
-                              fontWeight: FontWeight.bold,
+                              color: AppTheme.grey700,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                         ],

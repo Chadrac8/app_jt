@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../shared/theme/app_theme.dart';
+import '../../theme.dart';
 
 class OfferWebViewPage extends StatefulWidget {
   const OfferWebViewPage({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
   void _initializeWebView() {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.white)
+      ..setBackgroundColor(AppTheme.white100)
       ..enableZoom(true)
       ..setUserAgent('Mozilla/5.0 (Mobile; rv:100.0) Gecko/100.0 Firefox/100.0')
       ..setNavigationDelegate(
@@ -127,7 +127,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white100,
       appBar: _buildAppBar(),
       body: _buildBody(),
     );
@@ -135,14 +135,14 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white100,
       elevation: 0,
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Icon(
             Icons.arrow_back_ios,
@@ -159,7 +159,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
             style: GoogleFonts.poppins(
               color: AppTheme.textPrimaryColor,
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           Text(
@@ -167,7 +167,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
             style: GoogleFonts.inter(
               color: AppTheme.textSecondaryColor,
               fontSize: 12,
-              fontWeight: FontWeight.w400,
+              fontWeight: AppTheme.fontRegular,
             ),
           ),
         ],
@@ -178,12 +178,12 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppTheme.greenStandard.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: const Icon(
               Icons.security,
-              color: Colors.green,
+              color: AppTheme.greenStandard,
               size: 18,
             ),
           ),
@@ -198,7 +198,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                 height: 4,
                 child: LinearProgressIndicator(
                   value: _loadingProgress / 100,
-                  backgroundColor: Colors.grey.withOpacity(0.2),
+                  backgroundColor: AppTheme.grey500.withOpacity(0.2),
                   valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
                 ),
               ),
@@ -217,7 +217,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
         if (_webViewReady) 
           WebViewWidget(controller: _controller)
         else
-          Container(color: Colors.white),
+          Container(color: AppTheme.white100),
         if (_isLoading) _buildLoadingOverlay(),
         if (_isLoading && _loadingProgress > 30) _buildQuickAccessButton(),
       ],
@@ -232,11 +232,11 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppTheme.black100.withOpacity(0.1),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -249,7 +249,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
               'Chargement en cours...',
               style: GoogleFonts.poppins(
                 fontSize: 14,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -272,7 +272,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                     label: const Text('Retour'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppTheme.textSecondaryColor,
-                      side: BorderSide(color: Colors.grey.withOpacity(0.3)),
+                      side: BorderSide(color: AppTheme.grey500.withOpacity(0.3)),
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       minimumSize: const Size(0, 36),
                     ),
@@ -286,7 +286,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                     label: const Text('Continuer'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       minimumSize: const Size(0, 36),
                     ),
@@ -316,7 +316,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
     ];
     
     return Container(
-      color: Colors.white,
+      color: AppTheme.white100,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -325,7 +325,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               ),
               child: Icon(
                 Icons.favorite,
@@ -338,7 +338,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
               'Offrande en ligne',
               style: GoogleFonts.poppins(
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -364,7 +364,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                   child: CircularProgressIndicator(
                     value: _webViewReady ? 1.0 : _loadingProgress / 100,
                     strokeWidth: 4,
-                    backgroundColor: Colors.grey.withOpacity(0.2),
+                    backgroundColor: AppTheme.grey500.withOpacity(0.2),
                     valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
                   ),
                 ),
@@ -372,7 +372,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                   '${_loadingProgress}%',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -383,15 +383,15 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  color: AppTheme.greenStandard.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.security,
-                      color: Colors.green,
+                      color: AppTheme.greenStandard,
                       size: 16,
                     ),
                     const SizedBox(width: 6),
@@ -399,8 +399,8 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                       'Connexion sécurisée',
                       style: GoogleFonts.inter(
                         fontSize: 12,
-                        color: Colors.green,
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.greenStandard,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ],
@@ -415,7 +415,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
 
   Widget _buildErrorView() {
     return Container(
-      color: Colors.white,
+      color: AppTheme.white100,
       padding: const EdgeInsets.all(24),
       child: Center(
         child: Column(
@@ -424,12 +424,12 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
+                color: AppTheme.redStandard.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               ),
               child: const Icon(
                 Icons.error_outline,
-                color: Colors.red,
+                color: AppTheme.redStandard,
                 size: 48,
               ),
             ),
@@ -438,7 +438,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
               'Erreur de connexion',
               style: GoogleFonts.poppins(
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -457,8 +457,8 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey500.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Text(
                   'Détails: $_errorMessage',
@@ -480,10 +480,10 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                     label: const Text('Retour'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppTheme.textSecondaryColor,
-                      side: BorderSide(color: Colors.grey.withOpacity(0.3)),
+                      side: BorderSide(color: AppTheme.grey500.withOpacity(0.3)),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                   ),
@@ -496,10 +496,10 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                     label: const Text('Réessayer'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                   ),
@@ -527,7 +527,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
       builder: (context) => Container(
         padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.white100,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -539,12 +539,12 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppTheme.greenStandard.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: const Icon(
                     Icons.security,
-                    color: Colors.green,
+                    color: AppTheme.greenStandard,
                     size: 24,
                   ),
                 ),
@@ -554,7 +554,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                     'Sécurité & Confidentialité',
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -589,17 +589,17 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
                 child: Text(
                   'Compris',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ),
@@ -618,7 +618,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
         children: [
           Icon(
             icon,
-            color: Colors.green,
+            color: AppTheme.greenStandard,
             size: 20,
           ),
           const SizedBox(width: 12),
@@ -630,7 +630,7 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
                   title,
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),

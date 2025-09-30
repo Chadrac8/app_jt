@@ -3,7 +3,7 @@ import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/firebase_service.dart';
 import '../services/roles_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class SearchFilterBar extends StatefulWidget {
   final TextEditingController searchController;
@@ -128,7 +128,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                     color: _isSearchFocused
                         ? Theme.of(context).colorScheme.primary.withOpacity(0.05)
                         : Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     border: Border.all(
                       color: _isSearchFocused
                           ? Theme.of(context).colorScheme.primary
@@ -191,7 +191,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                   color: _isFilterExpanded || _totalActiveFilters > 0
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
                     color: _isFilterExpanded || _totalActiveFilters > 0
                         ? Theme.of(context).colorScheme.primary
@@ -210,7 +210,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     onTap: _toggleFilters,
                     child: Container(
                       padding: const EdgeInsets.all(16),
@@ -235,7 +235,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                 _totalActiveFilters.toString(),
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                   fontSize: 10,
                                 ),
                               ),
@@ -266,7 +266,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         border: Border.all(
                           color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                         ),
@@ -286,7 +286,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                               Text(
                                 'Filtres',
                                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                               ),
@@ -318,7 +318,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                               Text(
                                 'Statut:',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
@@ -353,7 +353,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                               Text(
                                 'Rôles:',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
@@ -399,7 +399,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                                 ? Color(int.parse(role.color.replaceFirst('#', '0xFF')))
                                                 : Theme.of(context).colorScheme.onSurface,
                                             fontSize: 12,
-                                            fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+                                            fontWeight: isSelected ? AppTheme.fontMedium : FontWeight.normal,
                                           ),
                                         );
                                       }).toList(),

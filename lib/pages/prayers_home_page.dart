@@ -3,7 +3,7 @@ import '../models/prayer_model.dart';
 import '../services/prayers_firebase_service.dart';
 import '../widgets/prayer_card.dart';
 import '../widgets/prayer_search_filter_bar.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import 'prayer_form_page.dart';
 import 'prayer_detail_page.dart';
 
@@ -113,7 +113,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Prières approuvées avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -122,7 +122,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -142,7 +142,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Prières rejetées'),
-            backgroundColor: Colors.orange,
+            backgroundColor: AppTheme.orangeStandard,
           ),
         );
       }
@@ -151,7 +151,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -171,7 +171,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -191,7 +191,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Prières supprimées avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -200,7 +200,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -241,7 +241,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
               'Statistiques du Mur de Prière',
               style: TextStyle(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 12),
@@ -260,7 +260,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                     'Aujourd\'hui',
                     '${_stats!.todayPrayers}',
                     Icons.today,
-                    Colors.blue,
+                    AppTheme.blueStandard,
                   ),
                 ),
                 Expanded(
@@ -268,7 +268,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                     'Cette semaine',
                     '${_stats!.weekPrayers}',
                     Icons.date_range,
-                    Colors.green,
+                    AppTheme.greenStandard,
                   ),
                 ),
                 Expanded(
@@ -276,7 +276,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                     'En attente',
                     '${_stats!.pendingApproval}',
                     Icons.pending,
-                    Colors.orange,
+                    AppTheme.orangeStandard,
                   ),
                 ),
               ],
@@ -296,7 +296,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
           value,
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: color,
           ),
         ),
@@ -304,7 +304,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
           label,
           style: const TextStyle(
             fontSize: 12,
-            color: Colors.grey,
+            color: AppTheme.grey500,
           ),
           textAlign: TextAlign.center,
         ),
@@ -402,12 +402,12 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                         const Icon(
                           Icons.error_outline,
                           size: 64,
-                          color: Colors.red,
+                          color: AppTheme.redStandard,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'Erreur: ${snapshot.error}',
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: AppTheme.redStandard),
                         ),
                       ],
                     ),
@@ -424,7 +424,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                         Icon(
                           Icons.pan_tool,
                           size: 64,
-                          color: Colors.grey[400],
+                          color: AppTheme.grey400,
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -433,13 +433,13 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                               : 'Aucune prière pour le moment',
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                         ),
                         const SizedBox(height: 8),
                         const Text(
                           'Les nouvelles prières apparaîtront ici',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: AppTheme.grey500),
                         ),
                       ],
                     ),
@@ -483,7 +483,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                                 ),
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(true),
-                                  style: TextButton.styleFrom(foregroundColor: Colors.red),
+                                  style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
                                   child: const Text('Supprimer'),
                                 ),
                               ],
@@ -497,7 +497,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Prière supprimée avec succès'),
-                                    backgroundColor: Colors.green,
+                                    backgroundColor: AppTheme.greenStandard,
                                   ),
                                 );
                               }
@@ -506,7 +506,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('Erreur: $e'),
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: AppTheme.redStandard,
                                   ),
                                 );
                               }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 
 /// Modèle pour un widget d'accueil personnalisable
 class HomeWidgetModel {
@@ -291,7 +292,7 @@ class ExtendedHomeConfigModel {
             'buttonText': 'Découvrir',
             'link': '/member/welcome',
             'icon': Icons.group.codePoint,
-            'color': Colors.blue.value,
+            'color': AppTheme.blueStandard.value,
           },
           isVisible: true,
           order: 0,

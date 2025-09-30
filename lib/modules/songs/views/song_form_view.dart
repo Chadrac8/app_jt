@@ -5,6 +5,7 @@ import '../../../auth/auth_service.dart';
 import '../models/song.dart';
 import '../models/song_category.dart';
 import '../services/songs_service.dart';
+import '../../../../theme.dart';
 
 /// Vue de formulaire pour créer/modifier un chant
 class SongFormView extends StatefulWidget {
@@ -24,6 +25,7 @@ class _SongFormViewState extends State<SongFormView> {
   final _formKey = GlobalKey<FormState>();
   
   // Contrôleurs de texte
+  final _numberController = TextEditingController();
   final _titleController = TextEditingController();
   final _subtitleController = TextEditingController();
   final _authorController = TextEditingController();
@@ -55,6 +57,7 @@ class _SongFormViewState extends State<SongFormView> {
 
   @override
   void dispose() {
+    _numberController.dispose();
     _titleController.dispose();
     _subtitleController.dispose();
     _authorController.dispose();
@@ -78,6 +81,7 @@ class _SongFormViewState extends State<SongFormView> {
 
       if (_isEditMode && widget.song != null) {
         final song = widget.song!;
+        _numberController.text = song.number?.toString() ?? '';
         _titleController.text = song.title;
         _subtitleController.text = song.subtitle ?? '';
         _authorController.text = song.author ?? '';
@@ -116,6 +120,9 @@ class _SongFormViewState extends State<SongFormView> {
       final now = DateTime.now();
       final song = Song(
         id: _isEditMode ? widget.song!.id : null,
+        number: _numberController.text.trim().isNotEmpty 
+            ? int.tryParse(_numberController.text.trim())
+            : null,
         title: _titleController.text.trim(),
         subtitle: _subtitleController.text.trim().isEmpty 
             ? null 
@@ -270,8 +277,41 @@ class _SongFormViewState extends State<SongFormView> {
             Text(
               'Informations de base',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
+            ),
+            const SizedBox(height: 16),
+
+            // Champ numéro
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: TextFormField(
+                    controller: _numberController,
+                    decoration: const InputDecoration(
+                      labelText: 'Numéro',
+                      border: OutlineInputBorder(),
+                      helperText: 'Numéro du chant dans le recueil',
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value != null && value.trim().isNotEmpty) {
+                        final number = int.tryParse(value.trim());
+                        if (number == null || number <= 0) {
+                          return 'Numéro invalide';
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 2,
+                  child: Container(), // Espace pour garder l'alignement
+                ),
+              ],
             ),
             const SizedBox(height: 16),
 
@@ -338,7 +378,7 @@ class _SongFormViewState extends State<SongFormView> {
             Text(
               'Paroles',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -374,7 +414,7 @@ class _SongFormViewState extends State<SongFormView> {
             Text(
               'Informations techniques',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -436,7 +476,7 @@ class _SongFormViewState extends State<SongFormView> {
             Text(
               'Catégories',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -474,7 +514,7 @@ class _SongFormViewState extends State<SongFormView> {
             Text(
               'Mots-clés',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -526,7 +566,7 @@ class _SongFormViewState extends State<SongFormView> {
             Text(
               'Médias',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -602,7 +642,7 @@ class _SongFormViewState extends State<SongFormView> {
             Text(
               'Paramètres',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 16),

@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
-import '../widgets/setlists_tab_perfect13.dart';
 import '../../../widgets/song_card_perfect13.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
-import '../../../theme.dart';
+import '../../../widgets/setlist_card_perfect13.dart';
+import '../../../pages/setlist_detail_page.dart';
+import '../../../../theme.dart';
 
-/// Page des chants pour les membres
+/// Page des chants pour les membres - Material Design 3
 class MemberSongsPage extends StatefulWidget {
-  const MemberSongsPage({super.key});
+  final Function(VoidCallback)? onToggleSearchChanged;
+
+  const MemberSongsPage({super.key, this.onToggleSearchChanged});
 
   @override
   State<MemberSongsPage> createState() => _MemberSongsPageState();
@@ -20,13 +23,20 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _searchQuery = '';
-  bool _searchInLyrics = false; // false = titre, true = paroles
+  bool _searchInLyrics = false;
+  bool _isSearchVisible = false;
   final TextEditingController _searchController = TextEditingController();
+  
+  // Variables pour les setlists
+  String _setlistSearchQuery = '';
+  String? _selectedSetlistFilter;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this); // 3 onglets maintenant
+    _tabController = TabController(length: 3, vsync: this);
+    // Enregistrer le callback pour le bouton de recherche de l'AppBar
+    widget.onToggleSearchChanged?.call(toggleSearch);
   }
 
   @override
@@ -36,69 +46,100 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     super.dispose();
   }
 
+  // Méthodes publiques pour contrôler la recherche depuis l'AppBar
+  void toggleSearch() {
+    setState(() {
+      _isSearchVisible = !_isSearchVisible;
+      if (!_isSearchVisible) {
+        _searchQuery = '';
+        _searchController.clear();
+      }
+    });
+  }
+
+  void toggleSearchMode() {
+    setState(() {
+      _searchInLyrics = !_searchInLyrics;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: AppTheme.surfaceColor,
+      backgroundColor: colorScheme.surface,
       body: Column(
         children: [
-          // TabBar en haut
-          Container(
-            height: 42, // Hauteur réduite de la TabBar
-            decoration: BoxDecoration(
-              color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.textTertiaryColor.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, 1),
+          // Barre de recherche locale (conditionnelle) - MD3
+          if (_isSearchVisible) _buildSearchBar(),
+          
+          // TabBar - Style MD3
+          Material(
+            color: colorScheme.surface,
+            elevation: 0,
+            child: TabBar(
+              controller: _tabController,
+              labelColor: colorScheme.primary,
+              unselectedLabelColor: colorScheme.onSurfaceVariant,
+              indicatorColor: colorScheme.primary,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorWeight: 3.0,
+              labelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontSemiBold,
+                letterSpacing: 0.1,
+              ),
+              unselectedLabelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontMedium,
+                letterSpacing: 0.1,
+              ),
+              splashFactory: InkRipple.splashFactory,
+              overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.pressed)) {
+                    return colorScheme.primary.withOpacity(0.12);
+                  }
+                  if (states.contains(WidgetState.hovered)) {
+                    return colorScheme.primary.withOpacity(0.08);
+                  }
+                  return null;
+                },
+              ),
+              tabs: const [
+                Tab(
+                  icon: Icon(Icons.library_music_rounded),
+                  text: 'Cantiques',
+                ),
+                Tab(
+                  icon: Icon(Icons.favorite_rounded),
+                  text: 'Favoris',
+                ),
+                Tab(
+                  icon: Icon(Icons.playlist_play_rounded),
+                  text: 'Setlists',
                 ),
               ],
             ),
-            child: SafeArea(
-              bottom: false,
-              child: TabBar(
-                controller: _tabController,
-                labelColor: Colors.white, // Texte blanc pour onglet sélectionné
-                unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
-                indicatorColor: Colors.white, // Indicateur blanc
-                indicatorWeight: 3,
-                labelStyle: GoogleFonts.poppins(
-                  fontSize: 13, // Taille de police légèrement réduite
-                  fontWeight: FontWeight.w600,
-                ),
-                unselectedLabelStyle: GoogleFonts.poppins(
-                  fontSize: 13, // Taille de police légèrement réduite
-                  fontWeight: FontWeight.w500,
-                ),
-                tabs: const [
-                  Tab(
-                    text: 'Chants',
-                  ),
-                  Tab(
-                    text: 'Favoris',
-                  ),
-                  Tab(
-                    text: 'Setlists',
-                  ),
-                ],
-              ),
-            ),
+          ),
+          
+          // Divider subtil MD3
+          Divider(
+            height: 1,
+            thickness: 1,
+            color: colorScheme.outlineVariant,
           ),
           
           // Contenu des onglets
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildSongsTabWithSearch(), // Onglet Chants avec recherche
-                  _buildFavoriteSongsTabWithSearch(), // Onglet Favoris avec recherche
-                  const SetlistsTabPerfect13(), // Reproduction exacte de Perfect 13
-                ],
-              ),
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildSongsTab(),
+                _buildFavoritesTab(),
+                _buildSetlistsTab(),
+              ],
             ),
           ),
         ],
@@ -107,38 +148,82 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   }
 
   Widget _buildSearchBar() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
-      padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+      padding: const EdgeInsets.fromLTRB(
+        AppTheme.spaceMedium, 
+        AppTheme.spaceSmall, 
+        AppTheme.spaceMedium, 
+        AppTheme.spaceSmall
+      ),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: colorScheme.outlineVariant,
+            width: 1,
+          ),
+        ),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Champ de recherche MD3
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: _searchInLyrics ? 'Rechercher dans les paroles...' : 'Rechercher dans les titres...',
-              prefixIcon: const Icon(Icons.search),
+              hintText: 'Rechercher des cantiques...',
+              hintStyle: GoogleFonts.inter(
+                color: colorScheme.onSurfaceVariant,
+                fontSize: 16,
+                letterSpacing: 0.15,
+              ),
+              prefixIcon: Icon(
+                Icons.search_rounded,
+                color: colorScheme.onSurfaceVariant,
+                size: 24,
+              ),
               suffixIcon: _searchQuery.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.clear),
+                      icon: Icon(
+                        Icons.clear_rounded,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                       onPressed: () {
                         setState(() {
-                          _searchController.clear();
                           _searchQuery = '';
+                          _searchController.clear();
                         });
                       },
                     )
                   : null,
+              filled: true,
+              fillColor: colorScheme.surfaceContainerHighest,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
+                borderSide: BorderSide.none,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
+                borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: AppTheme.primaryColor),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
+                borderSide: BorderSide(
+                  color: colorScheme.primary,
+                  width: 2,
+                ),
               ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.spaceMedium,
+                vertical: AppTheme.spaceMedium,
+              ),
+            ),
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              color: colorScheme.onSurface,
+              letterSpacing: 0.15,
             ),
             onChanged: (value) {
               setState(() {
@@ -146,37 +231,76 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               });
             },
           ),
-          const SizedBox(height: 12),
+          
+          const SizedBox(height: AppTheme.spaceSmall),
+          
+          // Chips de mode de recherche MD3
           Row(
             children: [
-              const Text('Rechercher dans: '),
-              const SizedBox(width: 12),
-              ChoiceChip(
-                label: const Text('Titre'),
-                selected: !_searchInLyrics,
-                onSelected: (selected) {
-                  setState(() {
-                    _searchInLyrics = false;
-                  });
-                },
-                selectedColor: AppTheme.primaryColor.withOpacity(0.2),
-                labelStyle: TextStyle(
-                  color: !_searchInLyrics ? AppTheme.primaryColor : null,
+              Text(
+                'Rechercher dans :',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: AppTheme.fontMedium,
+                  letterSpacing: 0.4,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.spaceSmall),
               ChoiceChip(
-                label: const Text('Paroles'),
+                label: Text(
+                  'Titres',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: AppTheme.fontMedium,
+                    letterSpacing: 0.1,
+                  ),
+                ),
+                selected: !_searchInLyrics,
+                onSelected: (selected) {
+                  if (selected) {
+                    setState(() {
+                      _searchInLyrics = false;
+                    });
+                  }
+                },
+                backgroundColor: colorScheme.surfaceContainerHigh,
+                selectedColor: colorScheme.secondaryContainer,
+                labelStyle: TextStyle(
+                  color: !_searchInLyrics 
+                      ? colorScheme.onSecondaryContainer 
+                      : colorScheme.onSurfaceVariant,
+                ),
+                side: BorderSide.none,
+                padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceSmall),
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              ChoiceChip(
+                label: Text(
+                  'Paroles',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: AppTheme.fontMedium,
+                    letterSpacing: 0.1,
+                  ),
+                ),
                 selected: _searchInLyrics,
                 onSelected: (selected) {
-                  setState(() {
-                    _searchInLyrics = true;
-                  });
+                  if (selected) {
+                    setState(() {
+                      _searchInLyrics = true;
+                    });
+                  }
                 },
-                selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+                backgroundColor: colorScheme.surfaceContainerHigh,
+                selectedColor: colorScheme.secondaryContainer,
                 labelStyle: TextStyle(
-                  color: _searchInLyrics ? AppTheme.primaryColor : null,
+                  color: _searchInLyrics 
+                      ? colorScheme.onSecondaryContainer 
+                      : colorScheme.onSurfaceVariant,
                 ),
+                side: BorderSide.none,
+                padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceSmall),
               ),
             ],
           ),
@@ -185,62 +309,278 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     );
   }
 
-  Widget _buildSongsTabWithSearch() {
+  Widget _buildSongsTab() {
+    return FutureBuilder<List<SongModel>>(
+      future: SongsFirebaseService.getAllSongs(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return _buildErrorState('Erreur de chargement des cantiques', 
+              'Impossible de charger les cantiques');
+        }
+
+        final allSongs = snapshot.data ?? [];
+        final filteredSongs = _filterSongs(allSongs);
+
+        if (filteredSongs.isEmpty) {
+          return _buildEmptyState(
+            Icons.library_music_outlined,
+            allSongs.isEmpty ? 'Aucun cantique disponible' : 'Aucun résultat',
+            allSongs.isEmpty 
+                ? 'Les cantiques apparaîtront ici une fois ajoutés'
+                : 'Essayez de modifier votre recherche'
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            setState(() {});
+          },
+          color: Theme.of(context).colorScheme.primary,
+          child: ListView.builder(
+            padding: const EdgeInsets.only(
+              left: AppTheme.spaceMedium,
+              right: AppTheme.spaceMedium,
+              top: AppTheme.spaceSmall,
+              bottom: AppTheme.spaceXXLarge,
+            ),
+            itemCount: filteredSongs.length,
+            itemBuilder: (context, index) {
+              final song = filteredSongs[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+                child: SongCardPerfect13(
+                  song: song,
+                  songNumber: _searchQuery.isEmpty 
+                      ? _getSongNumber(song, allSongs)
+                      : index + 1, // Pour les résultats de recherche, numéroter à partir de 1
+                  onTap: () => _showSongDetails(song, allSongs),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFavoritesTab() {
+    return StreamBuilder<List<SongModel>>(
+      stream: SongsFirebaseService.getFavoriteSongs(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return _buildErrorState('Erreur de chargement des favoris',
+              'Impossible de charger vos cantiques favoris');
+        }
+
+        final favoriteSongs = snapshot.data ?? [];
+        final filteredSongs = _filterSongs(favoriteSongs);
+
+        if (filteredSongs.isEmpty) {
+          return _buildEmptyState(
+            Icons.favorite_outline_rounded,
+            favoriteSongs.isEmpty ? 'Aucun favori' : 'Aucun résultat',
+            favoriteSongs.isEmpty
+                ? 'Ajoutez des cantiques à vos favoris en appuyant sur ♥'
+                : 'Essayez de modifier votre recherche'
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            setState(() {});
+          },
+          color: Theme.of(context).colorScheme.primary,
+          child: ListView.builder(
+            padding: const EdgeInsets.only(
+              left: AppTheme.spaceMedium,
+              right: AppTheme.spaceMedium,
+              top: AppTheme.spaceSmall,
+              bottom: AppTheme.spaceXXLarge,
+            ),
+            itemCount: filteredSongs.length,
+            itemBuilder: (context, index) {
+              final song = filteredSongs[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+                child: SongCardPerfect13(
+                  song: song,
+                  songNumber: index + 1,
+                  onTap: () => _showSongDetails(song, []),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSetlistsTab() {
     return Column(
       children: [
-        _buildSearchBar(),
+        // Barre de recherche et filtres pour setlists - MD3
+        Container(
+          padding: const EdgeInsets.fromLTRB(
+            AppTheme.spaceMedium, 
+            AppTheme.spaceSmall, 
+            AppTheme.spaceMedium, 
+            AppTheme.spaceSmall
+          ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).colorScheme.outlineVariant,
+                width: 1,
+              ),
+            ),
+          ),
+          child: Column(
+            children: [
+              // Recherche de setlists MD3
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Rechercher une setlist...',
+                  hintStyle: GoogleFonts.inter(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 16,
+                    letterSpacing: 0.15,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    size: 24,
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2,
+                    ),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.spaceMedium,
+                    vertical: AppTheme.spaceMedium,
+                  ),
+                ),
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  letterSpacing: 0.15,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _setlistSearchQuery = value;
+                  });
+                },
+              ),
+              
+              const SizedBox(height: AppTheme.spaceSmall),
+              
+              // Filtres rapides MD3
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildSetlistFilterChip('Tous', null),
+                    const SizedBox(width: AppTheme.spaceSmall),
+                    _buildSetlistFilterChip('Cette semaine', 'week'),
+                    const SizedBox(width: AppTheme.spaceSmall),
+                    _buildSetlistFilterChip('Ce mois', 'month'),
+                    const SizedBox(width: AppTheme.spaceSmall),
+                    _buildSetlistFilterChip('Favoris', 'favorites'),
+                    const SizedBox(width: AppTheme.spaceSmall),
+                    _buildSetlistFilterChip('Récents', 'recent'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // Liste des setlists
         Expanded(
-          child: FutureBuilder<List<SongModel>>(
-            future: SongsFirebaseService.getAllSongs(),
+          child: StreamBuilder<List<dynamic>>(
+            stream: SongsFirebaseService.getSetlists().map((list) => list.cast<dynamic>()),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                );
               }
 
               if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.error, size: 64, color: Colors.red),
-                      const SizedBox(height: 16),
-                      Text('Erreur: ${snapshot.error}'),
-                    ],
-                  ),
+                return _buildErrorState('Erreur de chargement des setlists',
+                    'Impossible de charger les setlists');
+              }
+
+              final allSetlists = snapshot.data ?? [];
+              final filteredSetlists = _filterSetlists(allSetlists);
+
+              if (filteredSetlists.isEmpty) {
+                return _buildEmptyState(
+                  Icons.playlist_play_outlined,
+                  allSetlists.isEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
+                  allSetlists.isEmpty 
+                      ? 'Les setlists créées apparaîtront ici'
+                      : 'Essayez de modifier votre recherche'
                 );
               }
 
-              final songs = _filterSongs(snapshot.data ?? []);
-              // Trier par titre pour maintenir la numérotation alphabétique
-              songs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
-
-              if (songs.isEmpty) {
-                return const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.music_note, size: 64, color: Colors.grey),
-                      SizedBox(height: 16),
-                      Text(
-                        'Aucun chant trouvé',
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                itemCount: songs.length,
-                itemBuilder: (context, index) {
-                  final song = songs[index];
-                  return SongCardPerfect13(
-                    song: song,
-                    songNumber: _getSongNumber(song, songs),
-                    onTap: () => _showSongDetails(song),
-                  );
+              return RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {});
                 },
+                color: Theme.of(context).colorScheme.primary,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(
+                    left: AppTheme.spaceMedium,
+                    right: AppTheme.spaceMedium,
+                    top: AppTheme.spaceSmall,
+                    bottom: AppTheme.spaceXXLarge,
+                  ),
+                  itemCount: filteredSetlists.length,
+                  itemBuilder: (context, index) {
+                    final setlist = filteredSetlists[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+                      child: SetlistCardPerfect13(
+                        setlist: setlist,
+                        onTap: () => _showSetlistDetails(setlist),
+                        onMusicianMode: () => _startMusicianMode(setlist),
+                        onConductorMode: () => _startConductorMode(setlist),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           ),
@@ -249,169 +589,166 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     );
   }
 
-  Widget _buildFavoriteSongsTabWithSearch() {
-    return Column(
-      children: [
-        _buildSearchBar(),
-        Expanded(
-          child: StreamBuilder<List<SongModel>>(
-            stream: SongsFirebaseService.getFavoriteSongs(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.error, size: 64, color: Colors.red),
-                      const SizedBox(height: 16),
-                      Text('Erreur: ${snapshot.error}'),
-                    ],
-                  ),
-                );
-              }
-
-              final songs = _filterSongs(snapshot.data ?? []);
-              // Trier par titre pour maintenir la numérotation alphabétique
-              songs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
-
-              if (songs.isEmpty) {
-                return const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.favorite_border, size: 64, color: Colors.grey),
-                      SizedBox(height: 16),
-                      Text(
-                        'Aucun chant favori trouvé',
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Ajoutez des chants à vos favoris en touchant le cœur',
-                        style: TextStyle(color: Colors.grey),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                itemCount: songs.length,
-                itemBuilder: (context, index) {
-                  final song = songs[index];
-                  return SongCardPerfect13(
-                    song: song,
-                    songNumber: _getSongNumber(song, songs),
-                    onTap: () => _showSongDetails(song),
-                  );
-                },
-              );
-            },
-          ),
+  Widget _buildErrorState(String title, String message) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline_rounded,
+              size: 64,
+              color: colorScheme.error,
+            ),
+            const SizedBox(height: AppTheme.spaceMedium),
+            Text(
+              title,
+              style: GoogleFonts.inter(
+                fontSize: 18,
+                fontWeight: AppTheme.fontSemiBold,
+                color: colorScheme.onSurface,
+                letterSpacing: 0.15,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spaceSmall),
+            Text(
+              message,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: colorScheme.onSurfaceVariant,
+                letterSpacing: 0.25,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppTheme.spaceMedium),
+            FilledButton.icon(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh_rounded),
+              label: const Text('Réessayer'),
+              style: FilledButton.styleFrom(
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
-  List<SongModel> _filterSongs(List<SongModel> songs) {
-    if (_searchQuery.isEmpty) {
-      return songs;
-    }
-
-    return songs.where((song) {
-      final query = _searchQuery.toLowerCase();
-      if (_searchInLyrics) {
-        // Rechercher dans les paroles
-        return song.lyrics.toLowerCase().contains(query);
-      } else {
-        // Rechercher dans le titre
-        return song.title.toLowerCase().contains(query);
-      }
-    }).toList();
+  Widget _buildEmptyState(IconData icon, String title, String message) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 64,
+              color: colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(height: AppTheme.spaceMedium),
+            Text(
+              title,
+              style: GoogleFonts.inter(
+                fontSize: 18,
+                fontWeight: AppTheme.fontSemiBold,
+                color: colorScheme.onSurface,
+                letterSpacing: 0.15,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spaceSmall),
+            Text(
+              message,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: colorScheme.onSurfaceVariant,
+                letterSpacing: 0.25,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  void _showSongDetails(SongModel song) {
-    // Incrémenter le compteur d'utilisation
-    SongsFirebaseService.incrementSongUsage(song.id);
-
+  void _showSongDetails(SongModel song, List<SongModel> allSongs) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       useSafeArea: true,
       builder: (context) => StatefulBuilder(
         builder: (context, setModalState) => DraggableScrollableSheet(
           initialChildSize: 1.0,
           minChildSize: 1.0,
           maxChildSize: 1.0,
-          expand: false,
           builder: (context, scrollController) => Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppTheme.radiusLarge),
+              ),
             ),
             child: Column(
               children: [
-                // Poignée de déplacement
+                // En-tête avec titre et actions MD3
                 Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).dividerColor,
-                    borderRadius: BorderRadius.circular(2),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppTheme.spaceSmall,
+                    AppTheme.spaceSmall,
+                    AppTheme.spaceSmall,
+                    0,
                   ),
-                ),
-                
-                // Barre d'actions
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: [
-                      // Titre avec gestion du débordement
-                      Expanded(
-                        child: Text(
-                          song.title,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
+                      IconButton(
+                        icon: const Icon(Icons.close_rounded),
+                        onPressed: () => Navigator.pop(context),
+                        style: IconButton.styleFrom(
+                          foregroundColor: colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      
-                      // Bouton favoris
-                      StreamBuilder<List<String>>(
-                        stream: SongsFirebaseService.getUserFavorites(),
-                        builder: (context, snapshot) {
-                          final favoriteSongIds = snapshot.data ?? [];
-                          final isFavorite = favoriteSongIds.contains(song.id);
-                          
-                          return IconButton(
-                            icon: Icon(
-                              isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: isFavorite ? Colors.red : null,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              song.title,
+                              style: GoogleFonts.inter(
+                                fontSize: 20,
+                                fontWeight: AppTheme.fontSemiBold,
+                                color: colorScheme.onSurface,
+                                letterSpacing: 0.15,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            onPressed: () async {
-                              if (isFavorite) {
-                                await SongsFirebaseService.removeFromFavorites(song.id);
-                              } else {
-                                await SongsFirebaseService.addToFavorites(song.id);
-                              }
-                            },
-                            tooltip: isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris',
-                          );
-                        },
+                            if (allSongs.isNotEmpty)
+                              Text(
+                                'Cantique n°${_getSongNumber(song, allSongs)}',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  color: colorScheme.onSurfaceVariant,
+                                  letterSpacing: 0.4,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                      
-                      // Bouton projection
                       IconButton(
-                        icon: const Icon(Icons.present_to_all),
+                        icon: const Icon(Icons.fullscreen_rounded),
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -422,53 +759,189 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                           );
                         },
                         tooltip: 'Mode projection',
-                      ),
-                      
-                      // Bouton fermer
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
+                        style: IconButton.styleFrom(
+                          foregroundColor: colorScheme.primary,
+                        ),
                       ),
                     ],
                   ),
                 ),
-              
-              const Divider(),
-              
-              // Contenu des paroles
-              Expanded(
-                child: SongLyricsViewer(
-                  song: song,
-                  onToggleProjection: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SongProjectionPage(song: song),
-                      ),
-                    );
-                  },
+                
+                Divider(
+                  height: 1,
+                  color: colorScheme.outlineVariant,
                 ),
-              ),
-            ],
+                
+                // Visualiseur de paroles
+                Expanded(
+                  child: SongLyricsViewer(
+                    song: song,
+                    onToggleProjection: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SongProjectionPage(song: song),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );
   }
 
-  /// Calcule le numéro d'un chant basé sur l'ordre alphabétique
   int _getSongNumber(SongModel song, List<SongModel> allSongs) {
-    // Trier par titre pour la numérotation alphabétique
+    // Utiliser le numéro du chant s'il existe, sinon calculer basé sur la position
+    if (song.number != null && song.number! > 0) {
+      return song.number!;
+    }
+    
     final sortedSongs = List<SongModel>.from(allSongs);
-    sortedSongs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    sortedSongs.sort((a, b) {
+      // Tri par numéro d'abord, puis par titre
+      if (a.number != null && b.number != null) {
+        return a.number!.compareTo(b.number!);
+      } else if (a.number != null) {
+        return -1; // a avec numéro avant b sans numéro
+      } else if (b.number != null) {
+        return 1; // b avec numéro avant a sans numéro
+      } else {
+        return a.title.toLowerCase().compareTo(b.title.toLowerCase());
+      }
+    });
     
     for (int i = 0; i < sortedSongs.length; i++) {
       if (sortedSongs[i].id == song.id) {
-        return i + 1;
+        return sortedSongs[i].number ?? (i + 1);
       }
     }
-    return 0;
+    return song.number ?? 0;
+  }
+
+  // Méthodes pour les setlists
+  Widget _buildSetlistFilterChip(String label, String? filterType) {
+    final isSelected = _selectedSetlistFilter == filterType;
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return FilterChip(
+      label: Text(
+        label,
+        style: GoogleFonts.inter(
+          fontSize: 12,
+          fontWeight: AppTheme.fontMedium,
+          letterSpacing: 0.1,
+        ),
+      ),
+      selected: isSelected,
+      onSelected: (selected) {
+        setState(() {
+          _selectedSetlistFilter = selected ? filterType : null;
+        });
+      },
+      backgroundColor: colorScheme.surfaceContainerHigh,
+      selectedColor: colorScheme.secondaryContainer,
+      labelStyle: TextStyle(
+        color: isSelected 
+            ? colorScheme.onSecondaryContainer 
+            : colorScheme.onSurfaceVariant,
+      ),
+      side: BorderSide.none,
+      padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceSmall),
+    );
+  }
+
+  List<SongModel> _filterSongs(List<SongModel> songs) {
+    if (_searchQuery.isEmpty) {
+      return songs;
+    }
+
+    final query = _searchQuery.toLowerCase();
+    return songs.where((song) {
+      if (_searchInLyrics) {
+        return song.lyrics.toLowerCase().contains(query) ||
+               song.title.toLowerCase().contains(query);
+      } else {
+        return song.title.toLowerCase().contains(query);
+      }
+    }).toList();
+  }
+
+  List<dynamic> _filterSetlists(List<dynamic> setlists) {
+    var filtered = setlists.where((setlist) {
+      if (_setlistSearchQuery.isNotEmpty) {
+        final name = setlist.name?.toString().toLowerCase() ?? '';
+        final description = setlist.description?.toString().toLowerCase() ?? '';
+        final query = _setlistSearchQuery.toLowerCase();
+        if (!name.contains(query) && !description.contains(query)) {
+          return false;
+        }
+      }
+
+      if (_selectedSetlistFilter != null) {
+        switch (_selectedSetlistFilter) {
+          case 'week':
+            final weekAgo = DateTime.now().subtract(const Duration(days: 7));
+            return setlist.createdAt?.isAfter(weekAgo) ?? false;
+          case 'month':
+            final monthAgo = DateTime.now().subtract(const Duration(days: 30));
+            return setlist.createdAt?.isAfter(monthAgo) ?? false;
+          case 'favorites':
+            return setlist.isFavorite ?? false;
+          case 'recent':
+            final recentLimit = DateTime.now().subtract(const Duration(days: 14));
+            return setlist.lastUsed?.isAfter(recentLimit) ?? false;
+        }
+      }
+
+      return true;
+    }).toList();
+
+    return filtered;
+  }
+
+  void _showSetlistDetails(dynamic setlist) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SetlistDetailPage(setlist: setlist),
+      ),
+    );
+  }
+
+  void _startMusicianMode(dynamic setlist) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Mode musicien - Fonctionnalité en cours de développement',
+          style: GoogleFonts.inter(letterSpacing: 0.25),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        ),
+      ),
+    );
+  }
+
+  void _startConductorMode(dynamic setlist) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Mode chef de chœur - Fonctionnalité en cours de développement',
+          style: GoogleFonts.inter(letterSpacing: 0.25),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        ),
+      ),
+    );
   }
 }

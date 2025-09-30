@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../shared/widgets/custom_card.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../services/songs_service.dart';
 import '../../../auth/auth_service.dart';
 import '../models/song.dart';
@@ -173,59 +173,64 @@ class _SongsMemberViewState extends State<SongsMemberView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.surfaceColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
+        toolbarHeight: 56.0, // Hauteur standard Material Design
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
           'Cantiques',
           style: GoogleFonts.inter(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: AppTheme.primaryColor,
           ),
         ),
         centerTitle: true,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48.0),
+          preferredSize: const Size.fromHeight(50.0), // Hauteur Material Design
           child: Container(
-            height: 42, // Hauteur réduite de la TabBar
+            height: 50, // Hauteur Material Design standard
             decoration: BoxDecoration(
-              color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
+              color: AppTheme.backgroundColor, // Harmonisé avec AppBar transparente membre
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.textTertiaryColor.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, 1),
+                  color: AppTheme.black100.withOpacity(0.08),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
             child: TabBar(
               controller: _tabController,
-              labelColor: Colors.white, // Texte blanc pour onglet sélectionné
-              unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
-              indicatorColor: Colors.white, // Indicateur blanc
-              indicatorWeight: 3,
-              labelStyle: GoogleFonts.poppins(
-                fontSize: 13, // Taille de police légèrement réduite
-                fontWeight: FontWeight.w600,
+              labelColor: AppTheme.primaryColor,
+              unselectedLabelColor: AppTheme.textSecondaryColor,
+              indicatorColor: AppTheme.primaryColor,
+              indicatorWeight: 3.0, // Poids standard Material Design
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              labelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontSemiBold,
               ),
-              unselectedLabelStyle: GoogleFonts.poppins(
-                fontSize: 13, // Taille de police légèrement réduite
-                fontWeight: FontWeight.w500,
+              unselectedLabelStyle: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: AppTheme.fontMedium,
               ),
               tabs: const [
                 Tab(
                   text: 'Tous',
+                  iconMargin: EdgeInsets.only(bottom: 4),
                 ),
                 Tab(
                   text: 'Favoris',
+                  iconMargin: EdgeInsets.only(bottom: 4),
                 ),
                 Tab(
                   text: 'Récents',
+                  iconMargin: EdgeInsets.only(bottom: 4),
                 ),
                 Tab(
                   text: 'Populaires',
+                  iconMargin: EdgeInsets.only(bottom: 4),
                 ),
               ],
             ),
@@ -253,7 +258,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
                       )
                     : null,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
               onChanged: (value) {
@@ -290,7 +295,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
                                   _getIconData(category.icon!),
                                   size: 16,
                                   color: _selectedCategory == category.name
-                                      ? Colors.white
+                                      ? AppTheme.white100
                                       : category.color,
                                 )
                               : null,
@@ -332,20 +337,20 @@ class _SongsMemberViewState extends State<SongsMemberView>
             Icon(
               Icons.music_note,
               size: 64,
-              color: Colors.grey[400],
+              color: AppTheme.grey400,
             ),
             const SizedBox(height: 16),
             Text(
               'Aucun chant trouvé',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
               'Essayez de modifier vos critères de recherche',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                   ),
             ),
           ],
@@ -379,7 +384,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
           height: 48,
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Icon(
             Icons.music_note,
@@ -389,7 +394,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
         title: Text(
           song.title,
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         subtitle: Column(
@@ -420,7 +425,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                   fontSize: 12,
                 ),
               ),
@@ -434,7 +439,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
               Text(
                 '${song.views} vues',
                 style: TextStyle(
-                  color: Colors.grey[500],
+                  color: AppTheme.grey500,
                   fontSize: 12,
                 ),
               ),
@@ -442,7 +447,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
             IconButton(
               icon: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite ? Colors.red : null,
+                color: isFavorite ? AppTheme.redStandard : null,
               ),
               onPressed: () => _toggleFavorite(song),
             ),

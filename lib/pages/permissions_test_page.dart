@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../modules/roles/roles_module.dart';
+import '../../theme.dart';
 
 /// Page de démonstration pour tester le système de permissions
 class PermissionsTestPage extends StatelessWidget {
@@ -63,7 +64,7 @@ class PermissionsTestPage extends StatelessWidget {
           children: [
             const Text(
               'Informations utilisateur',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 12),
             Text('ID Utilisateur: ${provider.currentUserId ?? "Non défini"}'),
@@ -71,7 +72,7 @@ class PermissionsTestPage extends StatelessWidget {
             Text('Permissions: ${provider.userPermissions.length}'),
             const SizedBox(height: 12),
             if (provider.userRoles.isNotEmpty) ...[
-              const Text('Rôles attribués:', style: TextStyle(fontWeight: FontWeight.w500)),
+              const Text('Rôles attribués:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
               ...provider.userRoles.map((role) => 
                 Padding(
                   padding: const EdgeInsets.only(left: 16, top: 4),
@@ -101,7 +102,7 @@ class PermissionsTestPage extends StatelessWidget {
           children: [
             const Text(
               'Test des permissions',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 12),
             ...testPermissions.map((permission) => 
@@ -114,8 +115,8 @@ class PermissionsTestPage extends StatelessWidget {
                         ? Icons.check_circle 
                         : Icons.cancel,
                       color: provider.hasPermission(permission) 
-                        ? Colors.green 
-                        : Colors.red,
+                        ? AppTheme.greenStandard 
+                        : AppTheme.redStandard,
                       size: 20,
                     ),
                     const SizedBox(width: 8),
@@ -139,7 +140,7 @@ class PermissionsTestPage extends StatelessWidget {
           children: [
             const Text(
               'Widgets protégés',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 12),
             
@@ -150,12 +151,12 @@ class PermissionsTestPage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.dashboard, color: Colors.green),
+                    Icon(Icons.dashboard, color: AppTheme.greenStandard),
                     SizedBox(width: 8),
                     Text('Dashboard accessible'),
                   ],
@@ -164,12 +165,12 @@ class PermissionsTestPage extends StatelessWidget {
               fallback: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.red[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.block, color: Colors.red),
+                    Icon(Icons.block, color: AppTheme.redStandard),
                     SizedBox(width: 8),
                     Text('Dashboard non accessible'),
                   ],
@@ -186,12 +187,12 @@ class PermissionsTestPage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.people, color: Colors.blue),
+                    Icon(Icons.people, color: AppTheme.blueStandard),
                     SizedBox(width: 8),
                     Text('Module Personnes accessible'),
                   ],
@@ -200,12 +201,12 @@ class PermissionsTestPage extends StatelessWidget {
               fallback: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.warning, color: Colors.orange),
+                    Icon(Icons.warning, color: AppTheme.orangeStandard),
                     SizedBox(width: 8),
                     Text('Module Personnes non accessible'),
                   ],
@@ -243,7 +244,7 @@ class PermissionsTestPage extends StatelessWidget {
                     label: const Text('Gérer rôles'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.purple,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
                   fallback: const SizedBox.shrink(),

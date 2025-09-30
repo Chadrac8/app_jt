@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 
 class UrgentDiagnosticBanner extends StatelessWidget {
   const UrgentDiagnosticBanner({Key? key}) : super(key: key);
@@ -10,14 +11,14 @@ class UrgentDiagnosticBanner extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Colors.red, Colors.orange],
+          colors: [AppTheme.redStandard, AppTheme.orangeStandard],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         boxShadow: [
           BoxShadow(
-            color: Colors.red.withOpacity(0.3),
+            color: AppTheme.redStandard.withOpacity(0.3),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -30,7 +31,7 @@ class UrgentDiagnosticBanner extends StatelessWidget {
             children: [
               const Icon(
                 Icons.warning,
-                color: Colors.white,
+                color: AppTheme.white100,
                 size: 28,
               ),
               const SizedBox(width: 12),
@@ -38,9 +39,9 @@ class UrgentDiagnosticBanner extends StatelessWidget {
                 child: Text(
                   '🚨 PROBLÈME CRITIQUE - Personnes invisibles',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
@@ -51,7 +52,7 @@ class UrgentDiagnosticBanner extends StatelessWidget {
             'Vous ne voyez aucune personne dans les sélecteurs ? '
             'Lancez le diagnostic immédiat pour identifier le problème.',
             style: TextStyle(
-              color: Colors.white,
+              color: AppTheme.white100,
               fontSize: 14,
             ),
           ),
@@ -61,17 +62,17 @@ class UrgentDiagnosticBanner extends StatelessWidget {
               const Text(
                 'Module de diagnostic supprimé',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  color: AppTheme.white100,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Le module de gestion des projets a été supprimé.',
             style: TextStyle(
-              color: Colors.white70,
+              color: AppTheme.white100.withOpacity(0.70),
               fontSize: 12,
               fontStyle: FontStyle.italic,
             ),

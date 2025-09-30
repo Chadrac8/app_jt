@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 
 /// Widget de configuration pour les lecteurs de médias
 class MediaPlayerConfigWidget extends StatefulWidget {
@@ -78,7 +79,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
         title,
         style: const TextStyle(
           fontSize: 16,
-          fontWeight: FontWeight.w600,
+          fontWeight: AppTheme.fontSemiBold,
         ),
       ),
     );
@@ -87,8 +88,8 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
   Widget _buildPlaybackModeSelector() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.grey300!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Column(
         children: [
@@ -101,7 +102,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
                 : 'Lit l\'audio directement dans l\'application',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
             value: 'integrated',
@@ -113,7 +114,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
             ),
           ),
           
-          Divider(height: 1, color: Colors.grey[300]),
+          Divider(height: 1, color: AppTheme.grey300),
           
           // Mode externe
           RadioListTile<String>(
@@ -124,7 +125,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
                 : 'Ouvre l\'audio dans SoundCloud/navigateur',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
             value: 'external',
@@ -132,7 +133,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
             onChanged: (value) => _updateData('playbackMode', value),
             secondary: const Icon(
               Icons.open_in_new,
-              color: Colors.grey,
+              color: AppTheme.grey500,
             ),
           ),
         ],
@@ -144,9 +145,9 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.blue[200]!),
+        color: AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        border: Border.all(color: AppTheme.grey200),
       ),
       child: Column(
         children: [
@@ -209,10 +210,10 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isIntegrated ? Colors.green[50] : Colors.orange[50],
-        borderRadius: BorderRadius.circular(8),
+        color: isIntegrated ? AppTheme.grey50 : AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(
-          color: isIntegrated ? Colors.green[200]! : Colors.orange[200]!,
+          color: isIntegrated ? AppTheme.grey200 : AppTheme.grey200,
         ),
       ),
       child: Column(
@@ -222,15 +223,15 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
             children: [
               Icon(
                 isIntegrated ? Icons.check_circle : Icons.open_in_new,
-                color: isIntegrated ? Colors.green[600] : Colors.orange[600],
+                color: isIntegrated ? AppTheme.grey600 : AppTheme.grey600,
                 size: 20,
               ),
               const SizedBox(width: 8),
               Text(
                 isIntegrated ? 'Mode intégré sélectionné' : 'Mode externe sélectionné',
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: isIntegrated ? Colors.green[700] : Colors.orange[700],
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: isIntegrated ? AppTheme.grey700 : AppTheme.grey700,
                 ),
               ),
             ],
@@ -242,7 +243,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
               : _getExternalDescription(),
             style: TextStyle(
               fontSize: 12,
-              color: isIntegrated ? Colors.green[600] : Colors.orange[600],
+              color: isIntegrated ? AppTheme.grey600 : AppTheme.grey600,
             ),
           ),
           
@@ -293,15 +294,15 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
     return Column(
       children: [
         // Avantages
-        _buildProsConsSection('Avantages', pros, Colors.green, Icons.check),
+        _buildProsConsSection('Avantages', pros, AppTheme.greenStandard, Icons.check),
         const SizedBox(height: 8),
         // Inconvénients
-        _buildProsConsSection('Inconvénients', cons, Colors.red, Icons.close),
+        _buildProsConsSection('Inconvénients', cons, AppTheme.redStandard, Icons.close),
       ],
     );
   }
   
-  Widget _buildProsConsSection(String title, List<String> items, MaterialColor color, IconData icon) {
+  Widget _buildProsConsSection(String title, List<String> items, Color color, IconData icon) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -309,8 +310,8 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
           title,
           style: TextStyle(
             fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: color[700],
+            fontWeight: AppTheme.fontSemiBold,
+            color: color,
           ),
         ),
         const SizedBox(height: 4),
@@ -319,14 +320,14 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(icon, size: 12, color: color[600]),
+              Icon(icon, size: 12, color: color.withOpacity(0.8)),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   item,
                   style: TextStyle(
                     fontSize: 11,
-                    color: color[600],
+                    color: color.withOpacity(0.8),
                   ),
                 ),
               ),

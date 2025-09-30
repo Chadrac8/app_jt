@@ -13,6 +13,7 @@ import 'custom_fields_management_page.dart';
 import 'workflow_followups_management_page.dart';
 import 'families_management_page.dart';
 import 'people_lists_page.dart';
+import '../../theme.dart';
 
 
 class PeopleHomePage extends StatefulWidget {
@@ -110,14 +111,14 @@ class _PeopleHomePageState extends State<PeopleHomePage>
         SnackBar(
           content: const Row(
             children: [
-              Icon(Icons.check_circle, color: Colors.white),
+              Icon(Icons.check_circle, color: AppTheme.white100),
               SizedBox(width: 8),
               Text('Nouvelle personne ajoutée avec succès'),
             ],
           ),
           backgroundColor: Theme.of(context).colorScheme.primary,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
         ),
       );
     }
@@ -150,7 +151,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors du chargement des rôles: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
       return;
@@ -160,7 +161,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Aucun rôle disponible'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -186,7 +187,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                   height: 40,
                   decoration: BoxDecoration(
                     color: roleColor.withAlpha(25),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     border: Border.all(color: roleColor, width: 1),
                   ),
                   child: Icon(
@@ -226,14 +227,14 @@ class _PeopleHomePageState extends State<PeopleHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Rôle "${selectedRole.name}" attribué à ${personIds.length} personne(s)'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'attribution du rôle: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -301,7 +302,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
           title: const Text('Confirmer la suppression'),
           content: Text(
             'Êtes-vous sûr de vouloir supprimer ${_selectedPersons.length} personne(s) ?',
@@ -376,7 +377,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                   Text(
                     'Personnes',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
@@ -502,7 +503,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary.withAlpha(25),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               border: Border.all(
                 color: Theme.of(context).colorScheme.primary.withAlpha(51),
               ),
@@ -678,7 +679,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
         Text(
           value,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: color,
           ),
         ),

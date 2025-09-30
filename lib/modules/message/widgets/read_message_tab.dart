@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../../../theme.dart';
 import '../../../models/branham_message.dart';
-import '../../../shared/theme/app_theme.dart';
 import '../services/admin_branham_messages_service.dart';
 import 'admin_branham_messages_screen.dart';
 import 'pdf_viewer_screen.dart';
@@ -29,10 +29,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
   List<BranhamMessage> _filteredMessages = [];
 
   final List<Map<String, dynamic>> _filters = [
-    {'key': 'Tous', 'icon': Icons.all_inclusive, 'color': Colors.grey},
-    {'key': '1950s', 'icon': Icons.calendar_month, 'color': Colors.green},
-    {'key': '1960s', 'icon': Icons.calendar_month, 'color': Colors.orange},
-    {'key': 'Favoris', 'icon': Icons.favorite, 'color': Colors.red},
+    {'key': 'Tous', 'icon': Icons.all_inclusive, 'color': AppTheme.grey500},
+    {'key': '1950s', 'icon': Icons.calendar_month, 'color': AppTheme.greenStandard},
+    {'key': '1960s', 'icon': Icons.calendar_month, 'color': AppTheme.orangeStandard},
+    {'key': 'Favoris', 'icon': Icons.favorite, 'color': AppTheme.redStandard},
   ];
 
   @override
@@ -89,7 +89,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -128,7 +128,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la mise à jour: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -184,7 +184,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppTheme.backgroundColor,
       body: Column(
         children: [
           _buildHeader(),
@@ -204,14 +204,14 @@ class _ReadMessageTabState extends State<ReadMessageTab>
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(24),
           bottomRight: Radius.circular(24),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -226,7 +226,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Icon(
                   Icons.library_books,
@@ -243,15 +243,15 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                       'Lire le Message',
                       style: GoogleFonts.poppins(
                         fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.grey[800],
+                        fontWeight: AppTheme.fontBold,
+                        color: AppTheme.grey800,
                       ),
                     ),
                     Text(
                       'Prédications de William Branham',
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -263,7 +263,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Icon(
                       Icons.more_vert,
@@ -364,10 +364,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
             const SizedBox(height: 16),
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(16),
+                color: AppTheme.grey100,
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 border: Border.all(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: AppTheme.grey500.withOpacity(0.2),
                 ),
               ),
               child: TextField(
@@ -377,12 +377,12 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                 decoration: InputDecoration(
                   hintText: 'Rechercher une prédication...',
                   hintStyle: GoogleFonts.inter(
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                     fontSize: 14,
                   ),
                   prefixIcon: Icon(
                     Icons.search,
-                    color: Colors.grey[500],
+                    color: AppTheme.grey500,
                     size: 20,
                   ),
                   suffixIcon: _searchQuery.isNotEmpty
@@ -390,7 +390,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                           onPressed: _clearSearch,
                           icon: Icon(
                             Icons.clear,
-                            color: Colors.grey[500],
+                            color: AppTheme.grey500,
                             size: 20,
                           ),
                         )
@@ -400,7 +400,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                           },
                           icon: Icon(
                             Icons.close,
-                            color: Colors.grey[500],
+                            color: AppTheme.grey500,
                             size: 20,
                           ),
                         ),
@@ -419,7 +419,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -434,7 +434,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                     _selectedFilter,
                     style: GoogleFonts.inter(
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
                   ),
@@ -472,7 +472,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
             'Chargement des prédications...',
             style: GoogleFonts.inter(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -490,13 +490,13 @@ class _ReadMessageTabState extends State<ReadMessageTab>
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: AppTheme.grey100,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Icon(
                 Icons.book_outlined,
                 size: 48,
-                color: Colors.grey[400],
+                color: AppTheme.grey400,
               ),
             ),
             const SizedBox(height: 24),
@@ -506,8 +506,8 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                   : 'Aucune prédication disponible',
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.grey700,
               ),
               textAlign: TextAlign.center,
             ),
@@ -518,7 +518,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                   : 'Les prédications seront chargées automatiquement',
               style: GoogleFonts.inter(
                 fontSize: 14,
-                color: Colors.grey[500],
+                color: AppTheme.grey500,
               ),
               textAlign: TextAlign.center,
             ),
@@ -540,10 +540,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                 label: const Text('Effacer les filtres'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
               ),
@@ -577,23 +577,23 @@ class _ReadMessageTabState extends State<ReadMessageTab>
       child: Card(
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           side: BorderSide(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppTheme.grey500.withOpacity(0.1),
             width: 1,
           ),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           onTap: () => _openPdfViewer(message),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.white,
+                  AppTheme.white100,
                   AppTheme.primaryColor.withOpacity(0.02),
                 ],
               ),
@@ -613,13 +613,13 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                         ),
                         decoration: BoxDecoration(
                           color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           message.id,
                           style: GoogleFonts.inter(
                             fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.primaryColor,
                           ),
                         ),
@@ -631,8 +631,8 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          color: AppTheme.orangeStandard.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -640,15 +640,15 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                             Icon(
                               Icons.access_time,
                               size: 12,
-                              color: Colors.orange[700],
+                              color: AppTheme.grey700,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               message.formattedDuration,
                               style: GoogleFonts.inter(
                                 fontSize: 11,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange[700],
+                                fontWeight: AppTheme.fontMedium,
+                                color: AppTheme.grey700,
                               ),
                             ),
                           ],
@@ -663,8 +663,8 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                     message.title,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.grey[800],
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.grey800,
                       height: 1.3,
                     ),
                     maxLines: 2,
@@ -678,7 +678,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                       Icon(
                         Icons.location_on_outlined,
                         size: 16,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                       const SizedBox(width: 6),
                       Expanded(
@@ -686,7 +686,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                           message.location,
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -696,14 +696,14 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                       Icon(
                         Icons.calendar_today_outlined,
                         size: 16,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                       const SizedBox(width: 6),
                       Text(
                         message.formattedDate,
                         style: GoogleFonts.inter(
                           fontSize: 14,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -723,11 +723,11 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                           label: const Text('Lire PDF'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.primaryColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                             elevation: 0,
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             ),
                           ),
                         ),
@@ -748,7 +748,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                             vertical: 12,
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                         ),
                       ),
@@ -790,7 +790,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
         title: Text(
           'Filtrer par',
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 18,
           ),
         ),

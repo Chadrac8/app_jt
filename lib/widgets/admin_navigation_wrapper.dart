@@ -7,6 +7,7 @@ import '../pages/events_home_page.dart';
 import '../modules/services/views/services_home_page.dart';
 import '../pages/forms_home_page.dart';
 import '../pages/tasks_home_page.dart';
+import '../pages/special_song_admin_page.dart';
 
 
 
@@ -17,8 +18,10 @@ import '../modules/bible/bible_admin_page.dart';
 import '../modules/vie_eglise/views/vie_eglise_admin_view.dart';
 import '../modules/message/views/message_admin_view.dart';
 
+import '../modules/offrandes/views/offrandes_admin_view.dart';
+
 import '../pages/appointments_admin_page.dart';
-import '../modules/roles/views/new_roles_management_screen.dart';
+import '../modules/roles/views/roles_management_screen.dart';
 import '../pages/blog_home_page.dart';
 import '../pages/prayers_home_page.dart';
 
@@ -29,6 +32,7 @@ import '../pages/initial_profile_setup_page.dart';
 
 import '../widgets/member_view_toggle_button.dart';
 import 'bottom_navigation_wrapper.dart';
+import '../../theme.dart';
 
 class AdminNavigationWrapper extends StatefulWidget {
   final String initialRoute;
@@ -128,6 +132,12 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       page: const FormsHomePage(),
     ),
     AdminMenuItem(
+      route: 'special-songs',
+      title: 'Chants Spéciaux',
+      icon: Icons.music_note,
+      page: const SpecialSongAdminPage(),
+    ),
+    AdminMenuItem(
       route: 'tasks',
       title: 'Tâches',
       icon: Icons.task,
@@ -145,6 +155,12 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       title: 'Mur de Prière',
       icon: Icons.pan_tool,
       page: const PrayersHomePage(),
+    ),
+    AdminMenuItem(
+      route: 'offrandes',
+      title: 'Offrandes',
+      icon: Icons.volunteer_activism,
+      page: const OffrandesAdminView(),
     ),
     AdminMenuItem(
       route: 'vie-eglise',
@@ -181,7 +197,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       route: 'roles',
       title: 'Rôles',
       icon: Icons.admin_panel_settings,
-      page: const NewRolesManagementScreen(),
+      page: const RolesManagementScreen(),
     ),
 
     AdminMenuItem(
@@ -295,7 +311,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
           : 0,
       onTap: _onNavItemTapped,
       selectedItemColor: Theme.of(context).primaryColor,
-      unselectedItemColor: Colors.grey[600],
+      unselectedItemColor: AppTheme.grey600,
       items: items,
     );
   }
@@ -320,7 +336,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       isScrollControlled: true,
       builder: (context) => Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.white100,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -332,7 +348,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
               height: 4,
               width: 40,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: AppTheme.grey300,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -347,7 +363,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
                   Text(
                     'Plus de modules',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
@@ -407,7 +423,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: Theme.of(context).primaryColor.withOpacity(0.3),
           ),
@@ -424,7 +440,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
             Text(
               page.title,
               style: TextStyle(
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
                 color: Theme.of(context).primaryColor,
                 fontSize: 12,
               ),

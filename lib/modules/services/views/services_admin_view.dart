@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../theme.dart';
 import '../models/service.dart';
 import '../models/service_template.dart';
 import '../services/services_service.dart';
@@ -111,13 +113,59 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           ),
         ],
       ),
-      bottomNavigationBar: TabBar(
-        controller: _tabController,
-        tabs: const [
-          Tab(text: 'Services', icon: Icon(Icons.event)),
-          Tab(text: 'Statistiques', icon: Icon(Icons.analytics)),
-          Tab(text: 'Modèles', icon: Icon(Icons.description)),
-        ],
+      bottomNavigationBar: Container(
+        height: 70, // Hauteur Material Design recommandée
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.black100.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: const Offset(0, -1),
+            ),
+          ],
+        ),
+        child: TabBar(
+          controller: _tabController,
+          // Conformité Material Design - Couleurs et indicateur
+          labelColor: AppTheme.primaryColor,
+          unselectedLabelColor: AppTheme.textSecondaryColor,
+          indicatorColor: AppTheme.primaryColor,
+          indicatorWeight: 3.0, // Épaisseur recommandée Material Design
+          indicatorSize: TabBarIndicatorSize.tab,
+          
+          // Conformité Material Design - Typography
+          labelStyle: GoogleFonts.inter(
+            fontSize: 12, // Taille adaptée pour bottom tabs
+            fontWeight: AppTheme.fontSemiBold,
+          ),
+          unselectedLabelStyle: GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: AppTheme.fontMedium,
+          ),
+          
+          // Conformité Material Design - Espacements
+          labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+          
+          tabs: const [
+            Tab(
+              text: 'Services', 
+              icon: Icon(Icons.event),
+              iconMargin: EdgeInsets.only(bottom: 4.0),
+            ),
+            Tab(
+              text: 'Statistiques', 
+              icon: Icon(Icons.analytics),
+              iconMargin: EdgeInsets.only(bottom: 4.0),
+            ),
+            Tab(
+              text: 'Modèles', 
+              icon: Icon(Icons.description),
+              iconMargin: EdgeInsets.only(bottom: 4.0),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -193,11 +241,11 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.event_busy, size: 64, color: Colors.grey),
+                        Icon(Icons.event_busy, size: 64, color: AppTheme.grey500),
                         SizedBox(height: 16),
                         Text(
                           'Aucun service trouvé',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          style: TextStyle(fontSize: 18, color: AppTheme.grey500),
                         ),
                       ],
                     ),
@@ -228,7 +276,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               'Total',
               _statistics['total']?.toString() ?? '0',
               Icons.event,
-              Colors.blue,
+              AppTheme.blueStandard,
             ),
           ),
           const SizedBox(width: 8),
@@ -237,7 +285,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               'À venir',
               _statistics['upcoming']?.toString() ?? '0',
               Icons.schedule,
-              Colors.green,
+              AppTheme.greenStandard,
             ),
           ),
           const SizedBox(width: 8),
@@ -246,7 +294,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               'Aujourd\'hui',
               _statistics['today']?.toString() ?? '0',
               Icons.today,
-              Colors.orange,
+              AppTheme.orangeStandard,
             ),
           ),
           const SizedBox(width: 8),
@@ -268,7 +316,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
@@ -279,7 +327,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
             value,
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -306,12 +354,12 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               : Theme.of(context).primaryColor,
           child: Text(
             service.type.displayName.substring(0, 1).toUpperCase(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: AppTheme.white100, fontWeight: AppTheme.fontBold),
           ),
         ),
         title: Text(
           service.name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: AppTheme.fontBold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,7 +367,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
             Text(service.type.displayName),
             Text(
               '${_formatDateTime(service.startDate)} • ${service.location}',
-              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+              style: TextStyle(color: AppTheme.grey600, fontSize: 12),
             ),
             Row(
               children: [
@@ -327,11 +375,11 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                     color: _getStatusColor(service.status),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Text(
                     service.statusDisplay,
-                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                    style: const TextStyle(color: AppTheme.white100, fontSize: 10),
                   ),
                 ),
               ],
@@ -366,7 +414,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               const PopupMenuItem(
                 value: 'cancel',
                 child: ListTile(
-                  leading: Icon(Icons.cancel, color: Colors.red),
+                  leading: Icon(Icons.cancel, color: AppTheme.redStandard),
                   title: Text('Annuler'),
                 ),
               ),
@@ -374,14 +422,14 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               const PopupMenuItem(
                 value: 'complete',
                 child: ListTile(
-                  leading: Icon(Icons.check, color: Colors.green),
+                  leading: Icon(Icons.check, color: AppTheme.greenStandard),
                   title: Text('Terminer'),
                 ),
               ),
             const PopupMenuItem(
               value: 'delete',
               child: ListTile(
-                leading: Icon(Icons.delete, color: Colors.red),
+                leading: Icon(Icons.delete, color: AppTheme.redStandard),
                 title: Text('Supprimer'),
               ),
             ),
@@ -429,7 +477,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           children: [
             const Text(
               'Statistiques Générales',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 16),
             Row(
@@ -439,7 +487,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                     'Total Services',
                     _statistics['total']?.toString() ?? '0',
                     Icons.event,
-                    Colors.blue,
+                    AppTheme.blueStandard,
                   ),
                 ),
                 Expanded(
@@ -447,7 +495,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                     'À venir',
                     _statistics['upcoming']?.toString() ?? '0',
                     Icons.schedule,
-                    Colors.green,
+                    AppTheme.greenStandard,
                   ),
                 ),
               ],
@@ -460,7 +508,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                     'Terminés',
                     _statistics['past']?.toString() ?? '0',
                     Icons.done,
-                    Colors.grey,
+                    AppTheme.grey500,
                   ),
                 ),
                 Expanded(
@@ -468,7 +516,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                     'Durée moyenne',
                     '${(_statistics['averageDuration'] ?? 0).toInt()} min',
                     Icons.timer,
-                    Colors.orange,
+                    AppTheme.orangeStandard,
                   ),
                 ),
               ],
@@ -485,7 +533,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
       margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Column(
         children: [
@@ -495,7 +543,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
             value,
             style: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -503,7 +551,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
             label,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
             textAlign: TextAlign.center,
           ),
@@ -525,7 +573,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           children: [
             const Text(
               'Répartition par Type',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 16),
             ...byType.entries.map((entry) {
@@ -544,7 +592,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                       flex: 3,
                       child: LinearProgressIndicator(
                         value: entry.value / total,
-                        backgroundColor: Colors.grey[300],
+                        backgroundColor: AppTheme.grey300,
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -572,7 +620,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           children: [
             const Text(
               'Lieux les plus utilisés',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
             ),
             const SizedBox(height: 16),
             ...byLocation.entries.take(5).map((entry) {
@@ -582,7 +630,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                 trailing: Chip(
                   label: Text(entry.value.toString()),
                   backgroundColor: Theme.of(context).primaryColor,
-                  labelStyle: const TextStyle(color: Colors.white),
+                  labelStyle: const TextStyle(color: AppTheme.white100),
                 ),
               );
             }),
@@ -608,7 +656,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                 const Expanded(
                   child: Text(
                     'Modèles de Services',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
                   ),
                 ),
                 ElevatedButton.icon(
@@ -627,17 +675,17 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.description, size: 64, color: Colors.grey),
+                        Icon(Icons.description, size: 64, color: AppTheme.grey500),
                         SizedBox(height: 16),
                         Text(
                           'Aucun modèle créé',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          style: TextStyle(fontSize: 18, color: AppTheme.grey500),
                         ),
                         SizedBox(height: 8),
                         Text(
                           'Créez des modèles pour faciliter la création de services récurrents.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: AppTheme.grey500),
                         ),
                       ],
                     ),
@@ -666,12 +714,12 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               : Theme.of(context).primaryColor,
           child: Text(
             template.type.displayName.substring(0, 1).toUpperCase(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: AppTheme.white100, fontWeight: AppTheme.fontBold),
           ),
         ),
         title: Text(
           template.name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: AppTheme.fontBold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -679,7 +727,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
             Text(template.type.displayName),
             Text(
               '${template.formattedDuration} • ${template.location}',
-              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+              style: TextStyle(color: AppTheme.grey600, fontSize: 12),
             ),
           ],
         ),
@@ -711,7 +759,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                 const PopupMenuItem(
                   value: 'delete',
                   child: ListTile(
-                    leading: Icon(Icons.delete, color: Colors.red),
+                    leading: Icon(Icons.delete, color: AppTheme.redStandard),
                     title: Text('Supprimer'),
                   ),
                 ),
@@ -849,7 +897,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -884,7 +932,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -948,13 +996,13 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
   Color _getStatusColor(ServiceStatus status) {
     switch (status) {
       case ServiceStatus.scheduled:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case ServiceStatus.inProgress:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case ServiceStatus.completed:
-        return Colors.grey;
+        return AppTheme.grey500;
       case ServiceStatus.cancelled:
-        return Colors.red;
+        return AppTheme.redStandard;
     }
   }
 }

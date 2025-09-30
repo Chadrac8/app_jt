@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'module_manager.dart';
 import '../shared/utils/navigation_service.dart';
+import '../../theme.dart';
 // import '../pages/diagnostic_page.dart';
 
 /// Page d'accueil temporaire qui affiche les modules disponibles
@@ -16,7 +17,7 @@ class _ModularHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('ChurchFlow - Architecture Modulaire'),
         backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -26,7 +27,7 @@ class _ModularHomePage extends StatelessWidget {
             Text(
               'Modules disponibles',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 8),
@@ -34,7 +35,7 @@ class _ModularHomePage extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.teal.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 border: Border.all(color: Colors.teal.withOpacity(0.3)),
               ),
               child: Row(
@@ -45,8 +46,8 @@ class _ModularHomePage extends StatelessWidget {
                     child: Text(
                       'Nouveau : Listes intelligentes dans le module Personnes !',
                       style: TextStyle(
-                        color: Colors.teal.shade700,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.teal,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -83,7 +84,7 @@ class _ModularHomePage extends StatelessWidget {
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.teal,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: AppTheme.fontMedium,
                                         ),
                                       ),
                                     ],
@@ -178,7 +179,7 @@ class _ModularHomePage extends StatelessWidget {
             Text(
               'Statistiques',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 8),
@@ -250,7 +251,7 @@ class AppRouter {
               const Icon(
                 Icons.error_outline,
                 size: 64,
-                color: Colors.red,
+                color: AppTheme.redStandard,
               ),
               const SizedBox(height: 16),
               Text(

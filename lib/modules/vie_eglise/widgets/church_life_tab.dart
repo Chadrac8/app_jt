@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/church_life_item.dart';
 import '../services/church_life_service.dart';
 
@@ -65,7 +65,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
             'Vie de l\'Église',
             style: GoogleFonts.poppins(
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: AppTheme.fontBold,
               color: AppTheme.primaryColor,
             ),
           ),
@@ -84,11 +84,11 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
               hintText: 'Rechercher...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppTheme.white100,
             ),
             onChanged: (value) {
               setState(() {});
@@ -118,10 +118,10 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.primaryColor : Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                  color: isSelected ? AppTheme.primaryColor : AppTheme.white100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   border: Border.all(
-                    color: isSelected ? AppTheme.primaryColor : Colors.grey.shade300,
+                    color: isSelected ? AppTheme.primaryColor : AppTheme.grey500,
                   ),
                 ),
                 child: Column(
@@ -129,7 +129,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                   children: [
                     Icon(
                       category['icon'],
-                      color: isSelected ? Colors.white : AppTheme.primaryColor,
+                      color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       size: 20,
                     ),
                     const SizedBox(height: 4),
@@ -137,8 +137,8 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                       category['label'],
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: isSelected ? Colors.white : AppTheme.primaryColor,
+                        fontWeight: AppTheme.fontMedium,
+                        color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       ),
                     ),
                   ],
@@ -164,13 +164,13 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
+                Icon(Icons.error_outline, size: 64, color: AppTheme.redStandard),
                 const SizedBox(height: 16),
                 Text(
                   'Erreur de chargement',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -218,7 +218,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
           Icon(
             Icons.church_outlined,
             size: 80,
-            color: Colors.grey.shade400,
+            color: AppTheme.grey500,
           ),
           const SizedBox(height: 16),
           Text(
@@ -227,7 +227,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                 : 'Aucun contenu dans cette catégorie',
             style: GoogleFonts.poppins(
               fontSize: 18,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: AppTheme.textSecondaryColor,
             ),
           ),
@@ -242,10 +242,10 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: InkWell(
         onTap: () => _showItemDetails(item),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -262,12 +262,12 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Container(
                     height: 200,
-                    color: Colors.grey.shade200,
+                    color: AppTheme.grey500,
                     child: const Center(child: CircularProgressIndicator()),
                   ),
                   errorWidget: (context, url, error) => Container(
                     height: 200,
-                    color: Colors.grey.shade200,
+                    color: AppTheme.grey500,
                     child: const Center(child: Icon(Icons.error)),
                   ),
                 ),
@@ -283,13 +283,13 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Text(
                           category.label,
                           style: GoogleFonts.poppins(
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                             color: AppTheme.primaryColor,
                           ),
                         ),
@@ -309,7 +309,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                     item.title,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -331,14 +331,14 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                         return Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
+                            color: AppTheme.grey500,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             '#$tag',
                             style: GoogleFonts.poppins(
                               fontSize: 10,
-                              color: Colors.grey.shade600,
+                              color: AppTheme.grey500,
                             ),
                           ),
                         );
@@ -366,7 +366,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
         builder: (context, scrollController) {
           return Container(
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppTheme.white100,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -383,7 +383,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                       width: 40,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: AppTheme.grey500,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -391,7 +391,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                   const SizedBox(height: 20),
                   if (item.imageUrl != null && item.imageUrl!.isNotEmpty) ...[
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       child: CachedNetworkImage(
                         imageUrl: item.imageUrl!,
                         width: double.infinity,
@@ -405,7 +405,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                     item.title,
                     style: GoogleFonts.poppins(
                       fontSize: 24,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),

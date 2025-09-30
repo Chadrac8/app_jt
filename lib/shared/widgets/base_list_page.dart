@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'base_page.dart';
+import '../../../theme.dart';
 
 /// Page de base pour les listes avec fonctionnalités communes
 class BaseListPage<T> extends StatefulWidget {
@@ -104,20 +105,20 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
             Icon(
               Icons.error_outline,
               size: 64,
-              color: Colors.red[400],
+              color: AppTheme.grey400,
             ),
             const SizedBox(height: 16),
             Text(
               'Erreur de chargement',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.red[600],
+                color: AppTheme.grey600,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               _error!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.red[600],
+                color: AppTheme.grey600,
               ),
               textAlign: TextAlign.center,
             ),
@@ -140,13 +141,13 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
             Icon(
               Icons.inbox,
               size: 64,
-              color: Colors.grey[400],
+              color: AppTheme.grey400,
             ),
             const SizedBox(height: 16),
             Text(
               widget.emptyMessage,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
           ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../modules/songs/models/song_model.dart';
 import '../services/chord_transposer.dart';
+import '../../theme.dart';
 
-/// Widget pour afficher les paroles d'un chant avec les accords
+/// Widget pour afficher les paroles d'un chant - Material Design 3
 class SongLyricsViewer extends StatefulWidget {
   final SongModel song;
   final bool showChords;
@@ -22,17 +24,62 @@ class SongLyricsViewer extends StatefulWidget {
   State<SongLyricsViewer> createState() => _SongLyricsViewerState();
 }
 
-class _SongLyricsViewerState extends State<SongLyricsViewer> {
+class _SongLyricsViewerState extends State<SongLyricsViewer>
+    with TickerProviderStateMixin {
   String _currentKey = '';
   bool _showChords = true;
   double _fontSize = 16.0;
   bool _isFullScreen = false;
+  late AnimationController _fadeAnimationController;
+  late Animation<double> _fadeAnimation;
+
+  // Contrôles d'accessibilité
+  final ScrollController _scrollController = ScrollController();
+  bool _showScrollToTop = false;
 
   @override
   void initState() {
     super.initState();
     _currentKey = widget.song.originalKey;
     _showChords = widget.showChords;
+    
+    // Animation pour les transitions
+    _fadeAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _fadeAnimationController,
+      curve: Curves.easeInOut,
+    ));
+    
+    // Démarre l'animation
+    _fadeAnimationController.forward();
+    
+    // Écouter le scroll pour le bouton "retour en haut"
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _fadeAnimationController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.offset > 500 && !_showScrollToTop) {
+      setState(() {
+        _showScrollToTop = true;
+      });
+    } else if (_scrollController.offset <= 500 && _showScrollToTop) {
+      setState(() {
+        _showScrollToTop = false;
+      });
+    }
   }
 
   String get _displayedLyrics {
@@ -50,128 +97,184 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
     setState(() {
       _isFullScreen = !_isFullScreen;
     });
-    
-    if (_isFullScreen) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    } else {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    if (widget.onToggleProjection != null) {
+      widget.onToggleProjection!();
     }
   }
 
-  @override
-  void dispose() {
-    // Restaurer l'interface système lors de la fermeture
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    super.dispose();
+  void _copyLyrics() {
+    Clipboard.setData(ClipboardData(text: _displayedLyrics));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Paroles copiées dans le presse-papiers',
+          style: GoogleFonts.inter(letterSpacing: 0.25),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        ),
+      ),
+    );
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isFullScreen) {
-      return _buildFullScreenView();
-    }
+    final colorScheme = Theme.of(context).colorScheme;
 
-    return Column(
+    return Stack(
       children: [
-        // Barre d'outils
-        if (!widget.isProjectionMode) _buildToolbar(),
-        
-        // Contenu des paroles
-        Expanded(
-          child: _buildLyricsContent(),
+        Column(
+          children: [
+            // Barre d'outils MD3
+            if (!widget.isProjectionMode) _buildToolbar(),
+            
+            // Contenu des paroles
+            Expanded(
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                  ),
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(AppTheme.spaceLarge),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // En-tête avec informations sur le cantique
+                        _buildSongHeader(),
+                        
+                        const SizedBox(height: AppTheme.spaceLarge),
+                        
+                        // Paroles avec accords
+                        _buildLyricsContent(),
+                        
+                        const SizedBox(height: AppTheme.spaceXXLarge),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
+        
+        // Bouton scroll to top
+        if (_showScrollToTop)
+          Positioned(
+            bottom: AppTheme.spaceMedium,
+            right: AppTheme.spaceMedium,
+            child: FloatingActionButton.small(
+              onPressed: _scrollToTop,
+              backgroundColor: colorScheme.primaryContainer,
+              foregroundColor: colorScheme.onPrimaryContainer,
+              child: const Icon(Icons.keyboard_arrow_up_rounded),
+            ),
+          ),
       ],
     );
   }
 
   Widget _buildToolbar() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceMedium,
+        vertical: AppTheme.spaceSmall,
+      ),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: colorScheme.surfaceContainerHighest,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).dividerColor,
+            color: colorScheme.outlineVariant,
             width: 1,
           ),
         ),
       ),
       child: Row(
         children: [
-          // Sélecteur de tonalité
-          DropdownButton<String>(
-            value: _currentKey,
-            onChanged: (newKey) {
-              if (newKey != null) {
+          // Taille de police
+          Icon(
+            Icons.text_fields_rounded,
+            size: 20,
+            color: colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: AppTheme.spaceSmall),
+          Expanded(
+            child: Slider(
+              value: _fontSize,
+              min: 12.0,
+              max: 24.0,
+              divisions: 12,
+              label: _fontSize.round().toString(),
+              onChanged: (value) {
                 setState(() {
-                  _currentKey = newKey;
+                  _fontSize = value;
                 });
-              }
-            },
-            items: SongModel.availableKeys.map((key) {
-              return DropdownMenuItem<String>(
-                value: key,
-                child: Text(key),
-              );
-            }).toList(),
+              },
+              activeColor: colorScheme.primary,
+              inactiveColor: colorScheme.surfaceContainerHighest,
+            ),
           ),
           
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceSmall),
           
-          // Bouton afficher/masquer les accords
+          // Toggle accords
           IconButton(
-            icon: Icon(
-              _showChords ? Icons.music_note : Icons.music_off,
-              color: _showChords ? Theme.of(context).primaryColor : null,
-            ),
             onPressed: () {
               setState(() {
                 _showChords = !_showChords;
               });
             },
+            icon: Icon(
+              _showChords ? Icons.music_note_rounded : Icons.music_off_rounded,
+            ),
+            style: IconButton.styleFrom(
+              backgroundColor: _showChords 
+                  ? colorScheme.primaryContainer 
+                  : Colors.transparent,
+              foregroundColor: _showChords 
+                  ? colorScheme.onPrimaryContainer 
+                  : colorScheme.onSurfaceVariant,
+            ),
             tooltip: _showChords ? 'Masquer les accords' : 'Afficher les accords',
           ),
           
-          // Contrôle de la taille de police
+          const SizedBox(width: AppTheme.spaceXSmall),
+          
+          // Copier les paroles
           IconButton(
-            icon: const Icon(Icons.text_decrease),
-            onPressed: _fontSize > 10 ? () {
-              setState(() {
-                _fontSize = (_fontSize - 2).clamp(10, 24);
-              });
-            } : null,
-            tooltip: 'Diminuer la taille',
+            onPressed: _copyLyrics,
+            icon: const Icon(Icons.copy_rounded),
+            style: IconButton.styleFrom(
+              foregroundColor: colorScheme.onSurfaceVariant,
+            ),
+            tooltip: 'Copier les paroles',
           ),
           
-          Text(
-            '${_fontSize.toInt()}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          const SizedBox(width: AppTheme.spaceXSmall),
           
-          IconButton(
-            icon: const Icon(Icons.text_increase),
-            onPressed: _fontSize < 24 ? () {
-              setState(() {
-                _fontSize = (_fontSize + 2).clamp(10, 24);
-              });
-            } : null,
-            tooltip: 'Augmenter la taille',
-          ),
-          
-          const Spacer(),
-          
-          // Bouton plein écran
-          IconButton(
-            icon: Icon(_isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen),
-            onPressed: _toggleFullScreen,
-            tooltip: _isFullScreen ? 'Quitter le plein écran' : 'Plein écran',
-          ),
-          
-          // Bouton projection (si disponible)
+          // Mode projection
           if (widget.onToggleProjection != null)
             IconButton(
-              icon: const Icon(Icons.present_to_all),
-              onPressed: widget.onToggleProjection,
+              onPressed: _toggleFullScreen,
+              icon: const Icon(Icons.fullscreen_rounded),
+              style: IconButton.styleFrom(
+                backgroundColor: colorScheme.tertiaryContainer,
+                foregroundColor: colorScheme.onTertiaryContainer,
+              ),
               tooltip: 'Mode projection',
             ),
         ],
@@ -179,246 +282,181 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
     );
   }
 
-  Widget _buildLyricsContent() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // En-tête avec titre et infos
-            if (!widget.isProjectionMode) ...[
-              Text(
-                widget.song.title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: _fontSize + 4,
-                ),
-              ),
-              
-              if (widget.song.authors.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                Text(
-                  'Par: ${widget.song.authors}',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    fontSize: _fontSize - 2,
-                  ),
-                ),
-              ],
-              
-              const SizedBox(height: 8),
-              
-              // Informations musicales
-              Row(
-                children: [
-                  Text(
-                    'Tonalité: $_currentKey',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: _fontSize - 2,
-                    ),
-                  ),
-                  if (widget.song.tempo != null) ...[
-                    const SizedBox(width: 16),
-                    Text(
-                      'Tempo: ${widget.song.tempo} BPM',
-                      style: TextStyle(fontSize: _fontSize - 2),
-                    ),
-                  ],
-                  const SizedBox(width: 16),
-                  Text(
-                    widget.song.style,
-                    style: TextStyle(fontSize: _fontSize - 2),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 24),
-            ],
-            
-            // Paroles
-            _buildFormattedLyrics(),
-            
-            // Références bibliques
-            if (widget.song.bibleReferences.isNotEmpty && !widget.isProjectionMode) ...[
-              const SizedBox(height: 24),
-              Text(
-                'Références bibliques:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: _fontSize - 2,
-                ),
-              ),
-              const SizedBox(height: 8),
-              ...widget.song.bibleReferences.map((ref) => Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  '• $ref',
-                  style: TextStyle(fontSize: _fontSize - 2),
-                ),
-              )),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFormattedLyrics() {
-    final lines = _displayedLyrics.split('\n');
-    final widgets = <Widget>[];
-    bool inChorusSection = false;
-
-    for (int i = 0; i < lines.length; i++) {
-      final line = lines[i];
-      
-      if (line.trim().isEmpty) {
-        widgets.add(SizedBox(height: _fontSize / 2));
-        // Une ligne vide peut marquer la fin d'une section chorus
-        if (inChorusSection) {
-          inChorusSection = false;
-        }
-      } else if (_isChordLine(line)) {
-        if (_showChords) {
-          widgets.add(_buildChordLine(line, inChorusSection));
-        }
-      } else {
-        // Détecter le début d'une section chorus
-        if (line.toLowerCase().contains('chorus') || line.toLowerCase().contains('refrain')) {
-          inChorusSection = true;
-        }
-        
-        widgets.add(_buildLyricLine(line, inChorusSection));
-      }
-    }
+  Widget _buildSongHeader() {
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: widgets,
-    );
-  }
-
-  bool _isChordLine(String line) {
-    // Une ligne d'accords contient principalement des accords séparés par des espaces
-    final trimmed = line.trim();
-    if (trimmed.isEmpty) return false;
-    
-    final parts = trimmed.split(RegExp(r'\s+'));
-    int chordCount = 0;
-    
-    for (final part in parts) {
-      if (_isChord(part)) {
-        chordCount++;
-      }
-    }
-    
-    // Si plus de 60% des éléments sont des accords, c'est une ligne d'accords
-    return chordCount / parts.length > 0.6;
-  }
-
-  bool _isChord(String text) {
-    // Expression régulière pour détecter un accord
-    final chordPattern = RegExp(r'^[A-G][#b]?(?:m|maj|min|dim|aug|sus[24]?|add[0-9]|[0-9])*(?:\/[A-G][#b]?)?$');
-    return chordPattern.hasMatch(text);
-  }
-
-  Widget _buildChordLine(String line, [bool inChorusSection = false]) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: 4,
-        left: inChorusSection ? 16.0 : 0.0, // Retrait réduit pour les accords dans chorus
-      ),
-      child: Text(
-        line,
-        style: TextStyle(
-          fontSize: _fontSize - 2,
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).primaryColor,
-          fontFamily: 'monospace',
-          fontStyle: inChorusSection ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLyricLine(String line, [bool inChorusSection = false]) {
-    // Détecter si la ligne contient "Chorus" ou si on est dans une section chorus
-    final isChorusLine = line.toLowerCase().contains('chorus') || 
-                        line.toLowerCase().contains('refrain') || 
-                        inChorusSection;
-    
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: 8,
-        left: isChorusLine ? 16.0 : 0.0, // Retrait réduit pour les lignes chorus
-      ),
-      child: Text(
-        line,
-        style: TextStyle(
-          fontSize: _fontSize,
-          height: 1.3,
-          fontStyle: isChorusLine ? FontStyle.italic : FontStyle.normal, // Italique pour chorus
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFullScreenView() {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: GestureDetector(
-        onTap: _toggleFullScreen,
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Titre en mode projection
-              Text(
-                widget.song.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              
-              const SizedBox(height: 32),
-              
-              // Paroles en grand format
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Text(
-                    _displayedLyrics,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              
-              // Indication pour quitter
-              const Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text(
-                  'Touchez l\'écran pour quitter le mode projection',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+      children: [
+        // Titre
+        Text(
+          widget.song.title,
+          style: GoogleFonts.inter(
+            fontSize: 24,
+            fontWeight: AppTheme.fontBold,
+            color: colorScheme.onSurface,
+            letterSpacing: 0.0,
+            height: 1.3,
           ),
         ),
+        
+        const SizedBox(height: AppTheme.spaceSmall),
+        
+        // Auteurs et métadonnées
+        Wrap(
+          spacing: AppTheme.spaceMedium,
+          runSpacing: AppTheme.spaceSmall,
+          children: [
+            if (widget.song.authors.isNotEmpty)
+              _buildInfoChip(
+                Icons.person_rounded,
+                'Auteur: ${widget.song.authors}',
+                colorScheme,
+              ),
+            if (widget.song.originalKey.isNotEmpty)
+              _buildInfoChip(
+                Icons.music_note_rounded,
+                'Tonalité: ${widget.song.originalKey}',
+                colorScheme,
+              ),
+            if (widget.song.style.isNotEmpty)
+              _buildInfoChip(
+                Icons.style_rounded,
+                'Style: ${widget.song.style}',
+                colorScheme,
+              ),
+          ],
+        ),
+        
+        // Transposition si nécessaire
+        if (_currentKey != widget.song.originalKey) ...[
+          const SizedBox(height: AppTheme.spaceSmall),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.spaceMedium,
+              vertical: AppTheme.spaceSmall,
+            ),
+            decoration: BoxDecoration(
+              color: colorScheme.tertiaryContainer,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.transform_rounded,
+                  size: 16,
+                  color: colorScheme.onTertiaryContainer,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Text(
+                  'Transposé de ${widget.song.originalKey} vers $_currentKey',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: colorScheme.onTertiaryContainer,
+                    fontWeight: AppTheme.fontMedium,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildInfoChip(IconData icon, String text, ColorScheme colorScheme) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceSmall,
+        vertical: AppTheme.spaceXSmall,
+      ),
+      decoration: BoxDecoration(
+        color: colorScheme.secondaryContainer,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 14,
+            color: colorScheme.onSecondaryContainer,
+          ),
+          const SizedBox(width: AppTheme.spaceXSmall),
+          Text(
+            text,
+            style: GoogleFonts.inter(
+              fontSize: 12,
+              color: colorScheme.onSecondaryContainer,
+              fontWeight: AppTheme.fontMedium,
+              letterSpacing: 0.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLyricsContent() {
+    final colorScheme = Theme.of(context).colorScheme;
+    final lines = _displayedLyrics.split('\n');
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: lines.map((line) {
+        if (line.trim().isEmpty) {
+          return const SizedBox(height: AppTheme.spaceMedium);
+        }
+        
+        // Détection des sections (Refrain, Couplet, etc.)
+        if (line.startsWith('[') && line.endsWith(']')) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              top: AppTheme.spaceLarge,
+              bottom: AppTheme.spaceSmall,
+            ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.spaceMedium,
+                vertical: AppTheme.spaceSmall,
+              ),
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              ),
+              child: Text(
+                line.replaceAll('[', '').replaceAll(']', ''),
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: colorScheme.onPrimaryContainer,
+                  letterSpacing: 0.1,
+                ),
+              ),
+            ),
+          );
+        }
+        
+        // Ligne normale avec paroles (et éventuellement accords)
+        return Padding(
+          padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+          child: _buildLyricsLine(line, colorScheme),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildLyricsLine(String line, ColorScheme colorScheme) {
+    // Simple affichage pour l'instant - peut être étendu pour parser les accords
+    return Text(
+      line,
+      style: GoogleFonts.inter(
+        fontSize: _fontSize,
+        color: colorScheme.onSurface,
+        height: 1.6,
+        letterSpacing: 0.15,
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/form_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormCard extends StatefulWidget {
   final FormModel form;
@@ -117,11 +117,11 @@ class _FormCardState extends State<FormCard>
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: AppTheme.black100.withOpacity(0.08),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -163,7 +163,7 @@ class _FormCardState extends State<FormCard>
                           ),
                           decoration: BoxDecoration(
                             color: _statusColor,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -171,15 +171,15 @@ class _FormCardState extends State<FormCard>
                               Icon(
                                 _statusIcon,
                                 size: 14,
-                                color: Colors.white,
+                                color: AppTheme.white100,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 widget.form.statusLabel,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: AppTheme.white100,
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -193,7 +193,7 @@ class _FormCardState extends State<FormCard>
                           ),
                           decoration: BoxDecoration(
                             color: AppTheme.primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -209,7 +209,7 @@ class _FormCardState extends State<FormCard>
                                 style: TextStyle(
                                   color: AppTheme.primaryColor,
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -285,7 +285,7 @@ class _FormCardState extends State<FormCard>
                   Text(
                     widget.form.title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                     maxLines: 2,
@@ -370,7 +370,7 @@ class _FormCardState extends State<FormCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -382,7 +382,7 @@ class _FormCardState extends State<FormCard>
             style: TextStyle(
               color: color,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -399,7 +399,7 @@ class _FormCardState extends State<FormCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -411,7 +411,7 @@ class _FormCardState extends State<FormCard>
             style: TextStyle(
               color: color,
               fontSize: 10,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],

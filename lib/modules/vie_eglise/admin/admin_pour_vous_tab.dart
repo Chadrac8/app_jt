@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
@@ -235,10 +237,10 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
           return Color(int.parse('0xff${group.color!}'));
         }
       } catch (e) {
-        return Colors.grey;
+        return AppTheme.grey500;
       }
     }
-    return Colors.grey;
+    return AppTheme.grey500;
   }
 
   ActionGroup _getDefaultGroup() {
@@ -248,7 +250,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
       description: '',
       icon: Icons.help,
       iconCodePoint: Icons.help.codePoint.toString(),
-      color: Colors.grey.value.toRadixString(16),
+      color: AppTheme.grey500.value.toRadixString(16),
       order: 0,
       isActive: true,
       createdAt: DateTime.now(),
@@ -294,13 +296,54 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
       title: const Text('Administration - Pour Vous'),
       bottom: _showFormVisible
           ? null
-          : TabBar(
-              controller: _tabController,
-              tabs: const [
-                Tab(text: 'Actions', icon: Icon(Icons.touch_app)),
-                Tab(text: 'Groupes', icon: Icon(Icons.group_work)),
-                Tab(text: 'Analytiques', icon: Icon(Icons.analytics)),
-              ],
+          : PreferredSize(
+              preferredSize: const Size.fromHeight(50),
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppTheme.white100,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.black100.withOpacity(0.1),
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: TabBar(
+                  controller: _tabController,
+                  labelColor: AppTheme.primaryColor,
+                  unselectedLabelColor: AppTheme.textTertiaryColor,
+                  indicatorColor: AppTheme.primaryColor,
+                  indicatorWeight: 3.0,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  labelStyle: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: AppTheme.fontSemiBold,
+                  ),
+                  unselectedLabelStyle: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: AppTheme.fontMedium,
+                  ),
+                  tabs: const [
+                    Tab(
+                      text: 'Actions',
+                      icon: Icon(Icons.touch_app),
+                      iconMargin: EdgeInsets.only(bottom: 4),
+                    ),
+                    Tab(
+                      text: 'Groupes',
+                      icon: Icon(Icons.group_work),
+                      iconMargin: EdgeInsets.only(bottom: 4),
+                    ),
+                    Tab(
+                      text: 'Analytiques',
+                      icon: Icon(Icons.analytics),
+                      iconMargin: EdgeInsets.only(bottom: 4),
+                    ),
+                  ],
+                ),
+              ),
             ),
       actions: _showFormVisible
           ? [
@@ -725,7 +768,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.greenStandard,
         duration: const Duration(seconds: 2),
       ),
     );
@@ -735,7 +778,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppTheme.redStandard,
         duration: const Duration(seconds: 3),
       ),
     );
@@ -779,13 +822,54 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
       title: const Text('Administration - Pour Vous'),
       bottom: _showForm
           ? null
-          : TabBar(
-              controller: _tabController,
-              tabs: const [
-                Tab(text: 'Actions', icon: Icon(Icons.touch_app)),
-                Tab(text: 'Groupes', icon: Icon(Icons.group_work)),
-                Tab(text: 'Analytiques', icon: Icon(Icons.analytics)),
-              ],
+          : PreferredSize(
+              preferredSize: const Size.fromHeight(50),
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppTheme.white100,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.black100.withOpacity(0.1),
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: TabBar(
+                  controller: _tabController,
+                  labelColor: AppTheme.primaryColor,
+                  unselectedLabelColor: AppTheme.textTertiaryColor,
+                  indicatorColor: AppTheme.primaryColor,
+                  indicatorWeight: 3.0,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  labelStyle: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: AppTheme.fontSemiBold,
+                  ),
+                  unselectedLabelStyle: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: AppTheme.fontMedium,
+                  ),
+                  tabs: const [
+                    Tab(
+                      text: 'Actions',
+                      icon: Icon(Icons.touch_app),
+                      iconMargin: EdgeInsets.only(bottom: 4),
+                    ),
+                    Tab(
+                      text: 'Groupes',
+                      icon: Icon(Icons.group_work),
+                      iconMargin: EdgeInsets.only(bottom: 4),
+                    ),
+                    Tab(
+                      text: 'Analytiques',
+                      icon: Icon(Icons.analytics),
+                      iconMargin: EdgeInsets.only(bottom: 4),
+                    ),
+                  ],
+                ),
+              ),
             ),
       actions: _showForm
           ? [
@@ -965,7 +1049,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.touch_app, size: 64, color: Colors.grey),
+            Icon(Icons.touch_app, size: 64, color: AppTheme.grey500),
             SizedBox(height: 16),
             Text('Aucune action trouvée'),
             SizedBox(height: 8),
@@ -1027,7 +1111,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
         id: '',
         name: 'Aucun groupe',
         description: '',
-        color: Colors.grey.value,
+        color: AppTheme.grey500.value,
         order: 0,
         isActive: true,
         createdAt: DateTime.now(),
@@ -1055,7 +1139,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
           action.title,
           style: TextStyle(
             decoration: action.isActive ? null : TextDecoration.lineThrough,
-            color: action.isActive ? null : Colors.grey,
+            color: action.isActive ? null : AppTheme.grey500,
           ),
         ),
         subtitle: Column(
@@ -1069,14 +1153,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: Color(group.color).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     group.name,
                     style: TextStyle(
                       fontSize: 12,
                       color: Color(group.color),
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -1085,7 +1169,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     _getActionTypeLabel(action.actionType),
@@ -1156,9 +1240,9 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete, color: Colors.red),
+                      Icon(Icons.delete, color: AppTheme.redStandard),
                       SizedBox(width: 8),
-                      Text('Supprimer', style: TextStyle(color: Colors.red)),
+                      Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                     ],
                   ),
                 ),
@@ -1177,7 +1261,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
         id: '',
         name: 'Aucun groupe',
         description: '',
-        color: Colors.grey.value,
+        color: AppTheme.grey500.value,
         order: 0,
         isActive: true,
         createdAt: DateTime.now(),
@@ -1222,7 +1306,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Colors.black.withOpacity(0.3),
+                              AppTheme.black100.withOpacity(0.3),
                               Colors.transparent,
                             ],
                             begin: Alignment.topCenter,
@@ -1236,13 +1320,13 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: action.isActive ? Colors.green : Colors.grey,
+                          color: action.isActive ? AppTheme.greenStandard : AppTheme.grey500,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           action.isActive ? Icons.check : Icons.close,
                           size: 16,
-                          color: Colors.white,
+                          color: AppTheme.white100,
                         ),
                       ),
                     ),
@@ -1252,7 +1336,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                         backgroundImage: action.imageUrl != null
                             ? NetworkImage(action.imageUrl!)
                             : null,
-                        backgroundColor: Colors.white.withOpacity(0.9),
+                        backgroundColor: AppTheme.white100.withOpacity(0.9),
                         child: action.imageUrl == null
                             ? Icon(
                                 _getActionTypeIcon(action.actionType),
@@ -1276,7 +1360,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                     Text(
                       action.title,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         decoration: action.isActive ? null : TextDecoration.lineThrough,
                       ),
                       maxLines: 1,
@@ -1296,14 +1380,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: Color(group.color).withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Text(
                             group.name,
                             style: TextStyle(
                               fontSize: 10,
                               color: Color(group.color),
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                         ),
@@ -1311,7 +1395,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                         Text(
                           '${action.order}',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
+                            color: AppTheme.grey500,
                           ),
                         ),
                       ],
@@ -1340,8 +1424,8 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
               child: Text(
                 group.name.isNotEmpty ? group.name[0].toUpperCase() : 'G',
                 style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  color: AppTheme.white100,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ),
@@ -1380,9 +1464,9 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                       value: 'delete',
                       child: Row(
                         children: [
-                          Icon(Icons.delete, color: Colors.red),
+                          Icon(Icons.delete, color: AppTheme.redStandard),
                           SizedBox(width: 8),
-                          Text('Supprimer', style: TextStyle(color: Colors.red)),
+                          Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                         ],
                       ),
                     ),
@@ -1401,7 +1485,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.analytics, size: 64, color: Colors.grey),
+          Icon(Icons.analytics, size: 64, color: AppTheme.grey500),
           SizedBox(height: 16),
           Text('Analytiques'),
           SizedBox(height: 8),
@@ -1593,12 +1677,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                         child: Container(
                           height: 100,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: AppTheme.grey500),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: _selectedImageUrl != null
                               ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                   child: Image.network(
                                     _selectedImageUrl!,
                                     fit: BoxFit.cover,
@@ -1631,12 +1715,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                         child: Container(
                           height: 100,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: AppTheme.grey500),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: _selectedBackgroundImageUrl != null
                               ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                   child: Image.network(
                                     _selectedBackgroundImageUrl!,
                                     fit: BoxFit.cover,

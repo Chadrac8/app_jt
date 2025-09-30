@@ -3,6 +3,7 @@ import '../shared/widgets/base_list_page.dart';
 import '../shared/widgets/custom_card.dart';
 import '../models/person_module_model.dart';
 import '../services/people_module_service.dart';
+import '../../theme.dart';
 
 /// Vue administrateur pour les personnes (Module)
 class PeopleAdminModuleView extends StatefulWidget {
@@ -98,17 +99,17 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
     return CustomCard(
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: person.isActive ? Colors.green : Colors.grey,
+          backgroundColor: person.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           child: Text(
             person.firstName.isNotEmpty ? person.firstName[0].toUpperCase() : '?',
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: AppTheme.white100, fontWeight: AppTheme.fontBold),
           ),
         ),
         title: Text(
           person.fullName,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: person.isActive ? null : Colors.grey,
+            fontWeight: AppTheme.fontBold,
+            color: person.isActive ? null : AppTheme.grey500,
           ),
         ),
         subtitle: Column(
@@ -171,8 +172,8 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
             const PopupMenuItem(
               value: 'delete',
               child: ListTile(
-                leading: Icon(Icons.delete, color: Colors.red),
-                title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 contentPadding: EdgeInsets.zero,
               ),
             ),
@@ -384,7 +385,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],

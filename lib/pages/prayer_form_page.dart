@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/prayer_model.dart';
 import '../services/prayers_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class PrayerFormPage extends StatefulWidget {
   final PrayerModel? prayer;
@@ -48,9 +48,9 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
   Color _getTypeColor(PrayerType type) {
     switch (type) {
       case PrayerType.request:
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case PrayerType.testimony:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
         return Colors.purple;
     }
@@ -75,7 +75,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Vous devez être connecté pour créer une prière'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
       return;
@@ -115,7 +115,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Prière créée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -126,7 +126,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Prière modifiée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -140,7 +140,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -178,7 +178,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                 'SAUVEGARDER',
                 style: TextStyle(
                   color: AppTheme.primaryColor,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ),
@@ -200,7 +200,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                       'Type de prière',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -220,7 +220,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? _getTypeColor(type).withOpacity(0.2)
-                                  : Colors.grey.withOpacity(0.1),
+                                  : AppTheme.grey500.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(25),
                               border: Border.all(
                                 color: isSelected
@@ -237,7 +237,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                   size: 16,
                                   color: isSelected
                                       ? _getTypeColor(type)
-                                      : Colors.grey,
+                                      : AppTheme.grey500,
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
@@ -245,9 +245,9 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                   style: TextStyle(
                                     color: isSelected
                                         ? _getTypeColor(type)
-                                        : Colors.grey,
+                                        : AppTheme.grey500,
                                     fontWeight: isSelected
-                                        ? FontWeight.w600
+                                        ? AppTheme.fontSemiBold
                                         : FontWeight.normal,
                                   ),
                                 ),
@@ -330,7 +330,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                       'Options',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -358,7 +358,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                       'Aperçu',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -366,9 +366,9 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                        color: AppTheme.grey500.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                        border: Border.all(color: AppTheme.grey500.withOpacity(0.2)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,7 +382,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: _getTypeColor(_selectedType).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   border: Border.all(
                                     color: _getTypeColor(_selectedType),
                                     width: 1,
@@ -402,7 +402,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                       style: TextStyle(
                                         color: _getTypeColor(_selectedType),
                                         fontSize: 10,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: AppTheme.fontSemiBold,
                                       ),
                                     ),
                                   ],
@@ -417,9 +417,9 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                 : _titleController.text.trim(),
                             style: TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: _titleController.text.trim().isEmpty
-                                  ? Colors.grey
+                                  ? AppTheme.grey500
                                   : null,
                             ),
                           ),
@@ -431,8 +431,8 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                             style: TextStyle(
                               fontSize: 12,
                               color: _contentController.text.trim().isEmpty
-                                  ? Colors.grey
-                                  : Colors.grey[700],
+                                  ? AppTheme.grey500
+                                  : AppTheme.grey700,
                             ),
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
@@ -445,7 +445,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                     ? Icons.person_outline 
                                     : Icons.person,
                                 size: 12,
-                                color: Colors.grey,
+                                color: AppTheme.grey500,
                               ),
                               const SizedBox(width: 4),
                               Text(
@@ -454,7 +454,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                     : (AuthService.currentUser?.displayName ?? 'Utilisateur'),
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: Colors.grey,
+                                  color: AppTheme.grey500,
                                   fontStyle: _isAnonymous 
                                       ? FontStyle.italic 
                                       : FontStyle.normal,

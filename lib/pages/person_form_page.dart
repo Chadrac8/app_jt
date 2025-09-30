@@ -12,6 +12,7 @@ import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
 import 'firebase_storage_diagnostic_page.dart';
 import '../utils/performance_utils.dart';
+import '../../theme.dart';
 
 class PersonFormPage extends StatefulWidget {
   final PersonModel? person;
@@ -400,7 +401,7 @@ class _PersonFormPageState extends State<PersonFormPage>
             duration: const Duration(seconds: 5),
             action: SnackBarAction(
               label: 'Diagnostic',
-              textColor: Colors.white,
+              textColor: AppTheme.white100,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -558,11 +559,11 @@ class _PersonFormPageState extends State<PersonFormPage>
                                   height: 40,
                                   decoration: BoxDecoration(
                                     color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                   ),
                                   child: Icon(
                                     _getIconData(role.icon),
-                                    color: Colors.white,
+                                    color: AppTheme.white100,
                                     size: 20,
                                   ),
                                 ),
@@ -632,15 +633,15 @@ class _PersonFormPageState extends State<PersonFormPage>
           filled: true,
           fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -653,7 +654,7 @@ class _PersonFormPageState extends State<PersonFormPage>
             labelText: 'Rechercher un indicatif...',
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
           ),
         ),
@@ -673,14 +674,14 @@ class _PersonFormPageState extends State<PersonFormPage>
               children: [
                 Text(
                   item,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: AppTheme.fontBold),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     country,
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                       fontSize: 13,
                     ),
                   ),
@@ -723,15 +724,15 @@ class _PersonFormPageState extends State<PersonFormPage>
           filled: true,
           fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderSide: BorderSide(color: AppTheme.grey500),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             borderSide: const BorderSide(color: Color(0xFF667EEA), width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -744,7 +745,7 @@ class _PersonFormPageState extends State<PersonFormPage>
             labelText: 'Rechercher un pays...',
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
           ),
         ),
@@ -780,11 +781,11 @@ class _PersonFormPageState extends State<PersonFormPage>
                 height: 24,
                 decoration: BoxDecoration(
                   color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Icon(
                   _getIconData(role.icon),
-                  color: Colors.white,
+                  color: AppTheme.white100,
                   size: 12,
                 ),
               ),
@@ -813,9 +814,9 @@ class _PersonFormPageState extends State<PersonFormPage>
                 _roles.removeAt(i);
               });
             },
-            backgroundColor: Colors.grey.withOpacity(0.1),
+            backgroundColor: AppTheme.grey500.withOpacity(0.1),
             side: BorderSide(
-              color: Colors.grey.withOpacity(0.3),
+              color: AppTheme.grey500.withOpacity(0.3),
             ),
           ),
         );
@@ -968,7 +969,7 @@ class _PersonFormPageState extends State<PersonFormPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Personne sauvegardée avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -1023,7 +1024,7 @@ class _PersonFormPageState extends State<PersonFormPage>
           title: Text(
             widget.person == null ? 'Nouvelle Personne' : 'Modifier Personne',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           actions: [
@@ -1043,7 +1044,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                   'Sauvegarder',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ),
@@ -1156,14 +1157,14 @@ class _PersonFormPageState extends State<PersonFormPage>
                           // Birth Date
                           InkWell(
                             onTap: _selectBirthDate,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             child: Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
                                 ),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                               ),
                               child: Row(
                                 children: [
@@ -1282,7 +1283,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 border: Border.all(
                                   color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                                 ),
@@ -1299,7 +1300,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                     child: Text(
                                       child,
                                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: AppTheme.fontMedium,
                                       ),
                                     ),
                                   ),
@@ -1552,7 +1553,7 @@ class _PersonFormPageState extends State<PersonFormPage>
               'Photo',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ],
@@ -1569,7 +1570,7 @@ class _PersonFormPageState extends State<PersonFormPage>
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
         ),
@@ -1601,7 +1602,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
@@ -1637,26 +1638,26 @@ class _PersonFormPageState extends State<PersonFormPage>
         labelText: label,
         prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
             width: 2,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.error,
           ),
@@ -1689,19 +1690,19 @@ class _PersonFormPageState extends State<PersonFormPage>
         labelText: label,
         prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
             width: 2,

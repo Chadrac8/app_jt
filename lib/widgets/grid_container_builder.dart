@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 import '../models/page_model.dart';
 import 'page_components/component_editor.dart';
 import 'page_components/component_renderer.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 /// Widget pour créer et éditer un composant Container Grid
 class GridContainerBuilder extends StatefulWidget {
@@ -168,21 +168,21 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.grid_view, color: Colors.white),
+                  const Icon(Icons.grid_view, color: AppTheme.white100),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Text(
                       'Éditeur de Container Grid',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.white100,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: AppTheme.white100),
                   ),
                 ],
               ),
@@ -190,11 +190,11 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
 
             // Onglets
             Container(
-              color: Colors.white,
+              color: AppTheme.white100,
               child: TabBar(
                 controller: _tabController,
                 labelColor: AppTheme.primaryColor,
-                unselectedLabelColor: Colors.grey[600],
+                unselectedLabelColor: AppTheme.grey600,
                 indicatorColor: AppTheme.primaryColor,
                 tabs: const [
                   Tab(
@@ -224,8 +224,8 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
-                border: Border(top: BorderSide(color: Colors.grey.shade300)),
+                color: AppTheme.grey500,
+                border: Border(top: BorderSide(color: AppTheme.grey500)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -239,7 +239,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                     onPressed: _saveChanges,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                     child: const Text('Sauvegarder'),
                   ),
@@ -593,9 +593,9 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey.shade300),
+                  color: AppTheme.grey500,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey500),
                 ),
                 child: Column(
                   children: [
@@ -637,8 +637,8 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.grey.shade50,
-            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+            color: AppTheme.grey500,
+            border: Border(bottom: BorderSide(color: AppTheme.grey500)),
           ),
           child: Row(
             children: [
@@ -651,13 +651,13 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                     Text(
                       'Composants dans la grille',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     Text(
                       '${_children.length} composant(s) • ${_containerData['columns']} colonnes',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.shade600,
+                        color: AppTheme.grey500,
                       ),
                     ),
                   ],
@@ -669,7 +669,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                 label: const Text('Ajouter'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                 ),
               ),
             ],
@@ -686,15 +686,15 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                       Icon(
                         Icons.dashboard_customize_outlined,
                         size: 64,
-                        color: Colors.grey.shade400,
+                        color: AppTheme.grey500,
                       ),
                       const SizedBox(height: 16),
                       Text(
                         'Aucun composant dans la grille',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.grey.shade600,
-                          fontWeight: FontWeight.w500,
+                          color: AppTheme.grey500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -702,7 +702,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                         'Ajoutez des composants pour les organiser en grille',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey.shade500,
+                          color: AppTheme.grey500,
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -712,7 +712,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                         label: const Text('Ajouter le premier composant'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.primaryColor,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppTheme.white100,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 24,
                             vertical: 12,
@@ -736,7 +736,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: _getComponentColor(component.type).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Icon(
                             _getComponentIcon(component.type),
@@ -746,12 +746,12 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                         ),
                         title: Text(
                           component.name,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontWeight: AppTheme.fontMedium),
                         ),
                         subtitle: Text(
                           _getComponentTypeName(component.type),
                           style: TextStyle(
-                            color: Colors.grey.shade600,
+                            color: AppTheme.grey500,
                             fontSize: 12,
                           ),
                         ),
@@ -767,7 +767,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                               onPressed: () => _removeComponent(index),
                               icon: const Icon(Icons.delete, size: 18),
                               tooltip: 'Supprimer',
-                              color: Colors.red.shade600,
+                              color: AppTheme.redStandard,
                             ),
                             const Icon(Icons.drag_handle),
                           ],
@@ -796,7 +796,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             Text(
               title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.primaryColor,
               ),
             ),
@@ -837,28 +837,28 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
 
   Color _getComponentColor(String type) {
     switch (type) {
-      case 'text': return Colors.blue;
-      case 'image': return Colors.green;
-      case 'button': return Colors.orange;
-      case 'video': return Colors.red;
-      case 'audio': return Colors.pink;
+      case 'text': return AppTheme.blueStandard;
+      case 'image': return AppTheme.greenStandard;
+      case 'button': return AppTheme.orangeStandard;
+      case 'video': return AppTheme.redStandard;
+      case 'audio': return AppTheme.pinkStandard;
       case 'list': return Colors.purple;
       case 'banner': return Colors.amber;
       case 'quote': return Colors.deepPurple;
       case 'scripture': return Colors.indigo;
       case 'html': return Colors.cyan;
-      case 'webview': return Colors.blue;
+      case 'webview': return AppTheme.blueStandard;
       case 'map': return Colors.brown;
-      case 'googlemap': return Colors.redAccent;
+      case 'googlemap': return AppTheme.redStandard;
       case 'groups': return Colors.deepOrange;
-      case 'events': return Colors.green;
-      case 'prayer_wall': return Colors.pink;
+      case 'events': return AppTheme.greenStandard;
+      case 'prayer_wall': return AppTheme.pinkStandard;
       case 'grid_card': return Colors.deepPurple;
       case 'grid_stat': return Colors.teal;
       case 'grid_icon_text': return Colors.indigo;
-      case 'grid_image_card': return Colors.orange;
-      case 'grid_progress': return Colors.green;
-      default: return Colors.grey;
+      case 'grid_image_card': return AppTheme.orangeStandard;
+      case 'grid_progress': return AppTheme.greenStandard;
+      default: return AppTheme.grey500;
     }
   }
 
@@ -1063,35 +1063,35 @@ class _ComponentTypeSelector extends StatelessWidget {
 
   final Map<String, List<Map<String, dynamic>>> _componentCategories = {
     'Contenu textuel': [
-      {'type': 'text', 'label': 'Texte', 'icon': Icons.text_fields, 'color': Colors.blue},
+      {'type': 'text', 'label': 'Texte', 'icon': Icons.text_fields, 'color': AppTheme.blueStandard},
       {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': Colors.indigo},
       {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': Colors.amber},
       {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': Colors.deepPurple},
     ],
     'Médias': [
-      {'type': 'image', 'label': 'Image', 'icon': Icons.image, 'color': Colors.green},
-      {'type': 'video', 'label': 'Vidéo', 'icon': Icons.video_library, 'color': Colors.red},
-      {'type': 'audio', 'label': 'Audio', 'icon': Icons.music_note, 'color': Colors.pink},
+      {'type': 'image', 'label': 'Image', 'icon': Icons.image, 'color': AppTheme.greenStandard},
+      {'type': 'video', 'label': 'Vidéo', 'icon': Icons.video_library, 'color': AppTheme.redStandard},
+      {'type': 'audio', 'label': 'Audio', 'icon': Icons.music_note, 'color': AppTheme.pinkStandard},
     ],
     'Interactif': [
-      {'type': 'button', 'label': 'Bouton', 'icon': Icons.smart_button, 'color': Colors.orange},
+      {'type': 'button', 'label': 'Bouton', 'icon': Icons.smart_button, 'color': AppTheme.orangeStandard},
       {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': Colors.cyan},
-      {'type': 'webview', 'label': 'WebView', 'icon': Icons.web, 'color': Colors.blue},
+      {'type': 'webview', 'label': 'WebView', 'icon': Icons.web, 'color': AppTheme.blueStandard},
     ],
     'Organisation': [
       {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': Colors.purple},
       {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': Colors.brown},
-      {'type': 'googlemap', 'label': 'Google Map', 'icon': Icons.location_on, 'color': Colors.redAccent},
+      {'type': 'googlemap', 'label': 'Google Map', 'icon': Icons.location_on, 'color': AppTheme.redStandard},
       {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': Colors.deepOrange},
-      {'type': 'events', 'label': 'Événements', 'icon': Icons.event, 'color': Colors.green},
-      {'type': 'prayer_wall', 'label': 'Prières & Témoignages', 'icon': Icons.pan_tool, 'color': Colors.pink},
+      {'type': 'events', 'label': 'Événements', 'icon': Icons.event, 'color': AppTheme.greenStandard},
+      {'type': 'prayer_wall', 'label': 'Prières & Témoignages', 'icon': Icons.pan_tool, 'color': AppTheme.pinkStandard},
     ],
     'Composants Grid': [
       {'type': 'grid_card', 'label': 'Carte Grid', 'icon': Icons.crop_landscape, 'color': Colors.deepPurple},
       {'type': 'grid_stat', 'label': 'Statistique Grid', 'icon': Icons.analytics, 'color': Colors.teal},
       {'type': 'grid_icon_text', 'label': 'Icône + Texte Grid', 'icon': Icons.text_rotate_vertical, 'color': Colors.indigo},
-      {'type': 'grid_image_card', 'label': 'Image Card Grid', 'icon': Icons.image_aspect_ratio, 'color': Colors.orange},
-      {'type': 'grid_progress', 'label': 'Progression Grid', 'icon': Icons.pie_chart, 'color': Colors.green},
+      {'type': 'grid_image_card', 'label': 'Image Card Grid', 'icon': Icons.image_aspect_ratio, 'color': AppTheme.orangeStandard},
+      {'type': 'grid_progress', 'label': 'Progression Grid', 'icon': Icons.pie_chart, 'color': AppTheme.greenStandard},
     ],
   };
 
@@ -1116,10 +1116,10 @@ class _ComponentTypeSelector extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
                       categoryName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        fontWeight: AppTheme.fontBold,
+                        color: AppTheme.black100.withOpacity(0.87),
                       ),
                     ),
                   ),
@@ -1139,7 +1139,7 @@ class _ComponentTypeSelector extends StatelessWidget {
                         elevation: 2,
                         child: InkWell(
                           onTap: () => onComponentTypeSelected(componentType['type']),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(

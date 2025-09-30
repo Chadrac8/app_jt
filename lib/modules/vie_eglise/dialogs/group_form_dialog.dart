@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/action_group.dart';
 import '../services/action_group_service.dart';
 
@@ -60,15 +60,15 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
     AppTheme.warningColor,
     AppTheme.errorColor,
     Colors.purple,
-    Colors.orange,
+    AppTheme.orangeStandard,
     Colors.teal,
     Colors.indigo,
-    Colors.pink,
+    AppTheme.pinkStandard,
     Colors.cyan,
     Colors.amber,
     Colors.lime,
     Colors.brown,
-    Colors.grey,
+    AppTheme.grey500,
   ];
 
   @override
@@ -112,7 +112,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
             : widget.group == null 
                 ? 'Créer un groupe'
                 : 'Modifier le groupe',
-        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
       ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
@@ -152,7 +152,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
                   height: 16,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.white,
+                    color: AppTheme.white100,
                   ),
                 )
               : Text(
@@ -172,7 +172,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
           'Informations de base',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -183,10 +183,10 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
             labelText: 'Nom du groupe *',
             labelStyle: GoogleFonts.poppins(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               borderSide: BorderSide(color: AppTheme.primaryColor),
             ),
           ),
@@ -205,10 +205,10 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
             labelText: 'Description *',
             labelStyle: GoogleFonts.poppins(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               borderSide: BorderSide(color: AppTheme.primaryColor),
             ),
           ),
@@ -233,7 +233,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
           'Apparence',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -242,7 +242,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
           'Icône',
           style: GoogleFonts.poppins(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -250,7 +250,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
           height: 100,
           decoration: BoxDecoration(
             border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
             padding: const EdgeInsets.all(8),
@@ -298,7 +298,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
           'Couleur',
           style: GoogleFonts.poppins(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -306,7 +306,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
           height: 60,
           decoration: BoxDecoration(
             border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
             padding: const EdgeInsets.all(8),
@@ -330,7 +330,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
                   decoration: BoxDecoration(
                     color: color,
                     border: Border.all(
-                      color: isSelected ? Colors.black : Colors.grey,
+                      color: isSelected ? AppTheme.black100 : AppTheme.grey500,
                       width: isSelected ? 3 : 1,
                     ),
                     borderRadius: BorderRadius.circular(6),
@@ -352,7 +352,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
           'Options avancées',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -366,10 +366,10 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
                   labelText: 'Ordre d\'affichage',
                   labelStyle: GoogleFonts.poppins(),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     borderSide: BorderSide(color: AppTheme.primaryColor),
                   ),
                 ),

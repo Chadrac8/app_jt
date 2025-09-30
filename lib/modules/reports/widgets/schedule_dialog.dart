@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/scheduler_service.dart';
+import '../../../../theme.dart';
 
 /// Dialog pour planifier un rapport
 class ScheduleDialog extends StatefulWidget {
@@ -54,7 +55,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
     return AlertDialog(
       title: Row(
         children: [
-          const Icon(Icons.schedule, color: Colors.blue),
+          const Icon(Icons.schedule, color: AppTheme.blueStandard),
           const SizedBox(width: 8),
           Text(widget.initialConfig == null ? 'Planifier le rapport' : 'Modifier la planification'),
         ],
@@ -111,12 +112,12 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(8),
+        color: AppTheme.blueStandard,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         children: [
-          const Icon(Icons.assessment, color: Colors.blue),
+          const Icon(Icons.assessment, color: AppTheme.blueStandard),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -125,7 +126,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                 Text(
                   widget.reportName,
                   style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     fontSize: 16,
                   ),
                 ),
@@ -134,7 +135,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                   'Génération automatique des données',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade600,
+                    color: AppTheme.grey500,
                   ),
                 ),
               ],
@@ -165,7 +166,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
         const Text(
           'Fréquence',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 16,
           ),
         ),
@@ -227,7 +228,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
           children: [
             const Text(
               'Configuration quotidienne',
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
             const SizedBox(height: 16),
             ListTile(
@@ -251,7 +252,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
           children: [
             const Text(
               'Configuration hebdomadaire',
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
             const SizedBox(height: 16),
             ListTile(
@@ -281,7 +282,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
           children: [
             const Text(
               'Configuration mensuelle',
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
             const SizedBox(height: 16),
             ListTile(
@@ -311,7 +312,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
           children: [
             const Text(
               'Configuration personnalisée',
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
             const SizedBox(height: 16),
             ListTile(
@@ -334,7 +335,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
     final nextExecution = _calculateNextExecution();
     
     return Card(
-      color: Colors.green.shade50,
+      color: AppTheme.greenStandard,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -342,13 +343,13 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
           children: [
             const Row(
               children: [
-                Icon(Icons.schedule, color: Colors.green),
+                Icon(Icons.schedule, color: AppTheme.greenStandard),
                 SizedBox(width: 8),
                 Text(
                   'Prochaine exécution',
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.green,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.greenStandard,
                   ),
                 ),
               ],
@@ -483,7 +484,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Veuillez sélectionner une date pour la planification personnalisée'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -516,7 +517,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Planification sauvegardée avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -529,7 +530,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la sauvegarde: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

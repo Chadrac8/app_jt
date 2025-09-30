@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// Removed unused import '../theme.dart';
+import '../theme.dart';
 
 class ServiceSearchFilterBar extends StatefulWidget {
   final TextEditingController searchController;
@@ -173,7 +173,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                       color: _isSearchFocused
                           ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3)
                           : Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
                         color: _isSearchFocused
                             ? Theme.of(context).colorScheme.primary
@@ -213,7 +213,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                     color: _isFilterExpanded || _totalActiveFilters > 0
                         ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Stack(
                     children: [
@@ -245,7 +245,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                 color: Theme.of(context).colorScheme.onError,
                                 fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -280,7 +280,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               Text(
                                 'Filtres',
                                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
                               const Spacer(),
@@ -297,7 +297,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                           Text(
                             'Type de service',
                             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                             ),
                           ),
@@ -318,7 +318,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                                   color: isSelected
                                       ? Theme.of(context).colorScheme.onPrimaryContainer
                                       : Theme.of(context).colorScheme.onSurface,
-                                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                                  fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal,
                                 ),
                               );
                             }).toList(),
@@ -329,7 +329,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                           Text(
                             'Statut',
                             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                             ),
                           ),
@@ -350,7 +350,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                                   color: isSelected
                                       ? Theme.of(context).colorScheme.onSecondaryContainer
                                       : Theme.of(context).colorScheme.onSurface,
-                                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                                  fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal,
                                 ),
                               );
                             }).toList(),
@@ -361,7 +361,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                           Text(
                             'Période',
                             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                             ),
                           ),

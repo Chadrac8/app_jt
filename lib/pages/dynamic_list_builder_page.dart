@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/dynamic_list_model.dart';
 import '../services/dynamic_lists_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../widgets/custom_card.dart';
 
 /// Page de construction/édition d'une liste dynamique
@@ -163,25 +163,25 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
+        backgroundColor: AppTheme.grey700,
         title: Text(
           widget.existingList != null ? 'Modifier la liste' : 'Nouvelle liste',
           style: GoogleFonts.poppins(
             fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+            fontWeight: AppTheme.fontSemiBold,
+            color: AppTheme.white100,
           ),
         ),
         actions: [
           if (_currentStep > 0)
             TextButton(
               onPressed: () => setState(() => _currentStep--),
-              child: const Text('Précédent', style: TextStyle(color: Colors.white)),
+              child: const Text('Précédent', style: TextStyle(color: AppTheme.white100)),
             ),
           if (_currentStep < 2)
             TextButton(
               onPressed: _canGoNext() ? () => setState(() => _currentStep++) : null,
-              child: const Text('Suivant', style: TextStyle(color: Colors.white)),
+              child: const Text('Suivant', style: TextStyle(color: AppTheme.white100)),
             ),
           if (_currentStep == 2)
             TextButton(
@@ -192,10 +192,10 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                     ),
                   )
-                : const Text('Enregistrer', style: TextStyle(color: Colors.white)),
+                : const Text('Enregistrer', style: TextStyle(color: AppTheme.white100)),
             ),
         ],
       ),
@@ -216,9 +216,9 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
       child: Row(
         children: [
           _buildStepIndicator(0, 'Configuration', _currentStep >= 0),
-          Expanded(child: Container(height: 2, color: _currentStep >= 1 ? Colors.blue : Colors.grey[300])),
+          Expanded(child: Container(height: 2, color: _currentStep >= 1 ? AppTheme.blueStandard : AppTheme.grey300)),
           _buildStepIndicator(1, 'Champs', _currentStep >= 1),
-          Expanded(child: Container(height: 2, color: _currentStep >= 2 ? Colors.blue : Colors.grey[300])),
+          Expanded(child: Container(height: 2, color: _currentStep >= 2 ? AppTheme.blueStandard : AppTheme.grey300)),
           _buildStepIndicator(2, 'Filtres & Tri', _currentStep >= 2),
         ],
       ),
@@ -230,12 +230,12 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
       children: [
         CircleAvatar(
           radius: 20,
-          backgroundColor: isActive ? Colors.blue : Colors.grey[300],
+          backgroundColor: isActive ? AppTheme.blueStandard : AppTheme.grey300,
           child: Text(
             '${step + 1}',
             style: TextStyle(
-              color: isActive ? Colors.white : Colors.grey[600],
-              fontWeight: FontWeight.bold,
+              color: isActive ? AppTheme.white100 : AppTheme.grey600,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
         ),
@@ -244,8 +244,8 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: isActive ? Colors.blue : Colors.grey[600],
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+            color: isActive ? AppTheme.blueStandard : AppTheme.grey600,
+            fontWeight: isActive ? AppTheme.fontSemiBold : FontWeight.normal,
           ),
         ),
       ],
@@ -277,7 +277,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
               'Configuration de base',
               style: GoogleFonts.poppins(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -390,7 +390,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                   'Sélectionner les champs à afficher',
                   style: GoogleFonts.poppins(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
@@ -473,7 +473,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
               onPressed: () => _editField(field),
             ),
             IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
+              icon: const Icon(Icons.delete, color: AppTheme.redStandard),
               onPressed: () => _removeField(field),
             ),
             const Icon(Icons.drag_handle),
@@ -493,7 +493,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
             'Filtres et tri',
             style: GoogleFonts.poppins(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 16),
@@ -572,7 +572,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
       child: ListTile(
         title: Text('${filter.fieldKey} ${filter.operator} ${filter.value}'),
         trailing: IconButton(
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: AppTheme.redStandard),
           onPressed: () => _removeFilter(filter),
         ),
       ),
@@ -585,7 +585,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
         title: Text('${sort.fieldKey} - ${sort.direction == 'asc' ? 'Croissant' : 'Décroissant'}'),
         subtitle: Text('Priorité: ${sort.priority}'),
         trailing: IconButton(
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: AppTheme.redStandard),
           onPressed: () => _removeSort(sort),
         ),
       ),
@@ -798,7 +798,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Liste mise à jour avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       } else {
@@ -806,7 +806,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Liste créée avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -816,7 +816,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     } finally {

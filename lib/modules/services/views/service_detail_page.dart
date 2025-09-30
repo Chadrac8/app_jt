@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../theme.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../widgets/service_sheet_editor.dart';
 import '../../../widgets/service_assignments_list.dart';
 import 'service_form_page.dart';
 import 'service_assignments_page.dart';
-// Removed unused import '../theme.dart';
 
 
 class ServiceDetailPage extends StatefulWidget {
@@ -162,11 +163,11 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
 
   Color get _statusColor {
     switch (_currentService!.status) {
-      case 'publie': return Colors.green;
-      case 'brouillon': return Colors.orange;
-      case 'archive': return Colors.grey;
-      case 'annule': return Colors.red;
-      default: return Colors.grey;
+      case 'publie': return AppTheme.greenStandard;
+      case 'brouillon': return AppTheme.orangeStandard;
+      case 'archive': return AppTheme.grey500;
+      case 'annule': return AppTheme.redStandard;
+      default: return AppTheme.grey500;
     }
   }
 
@@ -237,7 +238,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
         child: Icon(
           iconData,
           size: 64,
-          color: Colors.white,
+          color: AppTheme.white100,
         ),
       ),
     );
@@ -261,7 +262,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               floating: false,
               pinned: true,
               backgroundColor: _statusColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
               flexibleSpace: FlexibleSpaceBar(
                 background: Stack(
                   fit: StackFit.expand,
@@ -274,7 +275,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.7),
+                            AppTheme.black100.withOpacity(0.7),
                           ],
                         ),
                       ),
@@ -290,14 +291,14 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                               color: _statusColor,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             ),
                             child: Text(
                               _currentService!.statusLabel,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: AppTheme.white100,
                                 fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                           ),
@@ -305,15 +306,15 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           Text(
                             _currentService!.name,
                             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              color: AppTheme.white100,
+                              fontWeight: AppTheme.fontBold,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             '${_currentService!.typeLabel} • ${_formatDateTime(_currentService!.dateTime)}',
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Colors.white.withOpacity(0.9),
+                              color: AppTheme.white100.withOpacity(0.9),
                             ),
                           ),
                         ],
@@ -324,12 +325,12 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.assignment, color: Colors.white),
+                  icon: const Icon(Icons.assignment, color: AppTheme.white100),
                   onPressed: _navigateToAssignments,
                   tooltip: 'Gérer les assignations',
                 ),
                 PopupMenuButton<String>(
-                  icon: const Icon(Icons.more_vert, color: Colors.white),
+                  icon: const Icon(Icons.more_vert, color: AppTheme.white100),
                   onSelected: (value) => _handleAction(value),
                   itemBuilder: (context) => [
                     const PopupMenuItem(
@@ -378,9 +379,9 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                       value: 'delete',
                       child: Row(
                         children: [
-                          Icon(Icons.delete, color: Colors.red),
+                          Icon(Icons.delete, color: AppTheme.redStandard),
                           SizedBox(width: 8),
-                          Text('Supprimer', style: TextStyle(color: Colors.red)),
+                          Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                         ],
                       ),
                     ),
@@ -392,15 +393,48 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               delegate: _SliverAppBarDelegate(
                 TabBar(
                   controller: _tabController,
+                  // Conformité Material Design - Couleurs et indicateur
+                  labelColor: AppTheme.primaryColor,
+                  unselectedLabelColor: AppTheme.textSecondaryColor,
+                  indicatorColor: AppTheme.primaryColor,
+                  indicatorWeight: 3.0, // Épaisseur recommandée Material Design
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  
+                  // Conformité Material Design - Typography
+                  labelStyle: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: AppTheme.fontSemiBold,
+                  ),
+                  unselectedLabelStyle: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: AppTheme.fontMedium,
+                  ),
+                  
+                  // Conformité Material Design - Espacements
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  
                   tabs: const [
-                    Tab(text: 'Infos', icon: Icon(Icons.info_outline)),
-                    Tab(text: 'Feuille', icon: Icon(Icons.description)),
-                    Tab(text: 'Équipes', icon: Icon(Icons.groups)),
-                    Tab(text: 'Stats', icon: Icon(Icons.analytics)),
+                    Tab(
+                      text: 'Infos', 
+                      icon: Icon(Icons.info_outline),
+                      iconMargin: EdgeInsets.only(bottom: 4.0),
+                    ),
+                    Tab(
+                      text: 'Feuille', 
+                      icon: Icon(Icons.description),
+                      iconMargin: EdgeInsets.only(bottom: 4.0),
+                    ),
+                    Tab(
+                      text: 'Équipes', 
+                      icon: Icon(Icons.groups),
+                      iconMargin: EdgeInsets.only(bottom: 4.0),
+                    ),
+                    Tab(
+                      text: 'Stats', 
+                      icon: Icon(Icons.analytics),
+                      iconMargin: EdgeInsets.only(bottom: 4.0),
+                    ),
                   ],
-                  labelColor: Theme.of(context).colorScheme.primary,
-                  unselectedLabelColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  indicatorColor: Theme.of(context).colorScheme.primary,
                 ),
               ),
               pinned: true,
@@ -470,14 +504,14 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: _statusColor,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     _currentService!.statusLabel,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white100,
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                 ),
@@ -609,7 +643,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           'Acceptées',
                           stats.acceptedAssignments.toString(),
                           Icons.check_circle,
-                          Colors.green,
+                          AppTheme.greenStandard,
                         ),
                       ),
                     ],
@@ -622,7 +656,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           'En attente',
                           stats.pendingAssignments.toString(),
                           Icons.pending,
-                          Colors.orange,
+                          AppTheme.orangeStandard,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -631,7 +665,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           'Refusées',
                           stats.declinedAssignments.toString(),
                           Icons.cancel,
-                          Colors.red,
+                          AppTheme.redStandard,
                         ),
                       ),
                     ],
@@ -662,7 +696,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
         ),
@@ -683,7 +717,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   icon,
@@ -695,7 +729,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
@@ -733,7 +767,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                   label,
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -741,7 +775,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                   value,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ],
@@ -758,7 +792,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: color.withOpacity(0.2),
         ),
@@ -781,7 +815,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
           Text(
             value,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -790,7 +824,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
             textAlign: TextAlign.center,
           ),
@@ -852,7 +886,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.errorContainer,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Row(
                 children: [
@@ -883,12 +917,12 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceVariant,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Text(
                 '${_currentService!.name} - ${_formatDateTime(_currentService!.dateTime)}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             ),
@@ -947,12 +981,12 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
           SnackBar(
             content: const Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
+                Icon(Icons.check_circle, color: AppTheme.white100),
                 SizedBox(width: 12),
                 Text('Service supprimé avec succès'),
               ],
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -968,14 +1002,14 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.error, color: Colors.white),
+                const Icon(Icons.error, color: AppTheme.white100),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text('Erreur lors de la suppression: ${e.toString()}'),
                 ),
               ],
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 5),
           ),

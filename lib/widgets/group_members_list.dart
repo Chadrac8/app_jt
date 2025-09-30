@@ -3,7 +3,7 @@ import '../models/group_model.dart';
 import '../models/person_model.dart';
 import '../services/groups_firebase_service.dart';
 import '../services/firebase_service.dart';
-// Removed unused import '../theme.dart';
+import '../theme.dart';
 
 class GroupMembersList extends StatefulWidget {
   final GroupModel group;
@@ -54,7 +54,7 @@ class _GroupMembersListState extends State<GroupMembersList>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Aucune personne disponible à ajouter'),
-              backgroundColor: Colors.orange,
+              backgroundColor: AppTheme.orangeStandard,
             ),
           );
         }
@@ -79,7 +79,7 @@ class _GroupMembersListState extends State<GroupMembersList>
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Membre ajouté avec succès'),
-                backgroundColor: Colors.green,
+                backgroundColor: AppTheme.greenStandard,
               ),
             );
           }
@@ -88,7 +88,7 @@ class _GroupMembersListState extends State<GroupMembersList>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Erreur lors de l\'ajout: $e'),
-                backgroundColor: Colors.red,
+                backgroundColor: AppTheme.redStandard,
               ),
             );
           }
@@ -100,7 +100,7 @@ class _GroupMembersListState extends State<GroupMembersList>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -120,7 +120,7 @@ class _GroupMembersListState extends State<GroupMembersList>
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Retirer'),
           ),
         ],
@@ -134,7 +134,7 @@ class _GroupMembersListState extends State<GroupMembersList>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Membre retiré avec succès'),
-              backgroundColor: Colors.orange,
+              backgroundColor: AppTheme.orangeStandard,
             ),
           );
         }
@@ -143,7 +143,7 @@ class _GroupMembersListState extends State<GroupMembersList>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -188,7 +188,7 @@ class _GroupMembersListState extends State<GroupMembersList>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Rôle mis à jour avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -197,7 +197,7 @@ class _GroupMembersListState extends State<GroupMembersList>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -222,7 +222,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                   child: Text(
                     'Membres du groupe',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -232,7 +232,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                   label: const Text('Ajouter'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _groupColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ],
@@ -308,7 +308,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                         Text(
                           'Aucun membre',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -326,7 +326,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                           label: const Text('Ajouter un membre'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _groupColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppTheme.white100,
                           ),
                         ),
                       ],
@@ -391,10 +391,10 @@ class _GroupMembersListState extends State<GroupMembersList>
 
   Widget _buildMemberCard(GroupMemberModel member, PersonModel person) {
     final roleColors = {
-      'leader': Colors.red,
-      'co-leader': Colors.orange,
+      'leader': AppTheme.redStandard,
+      'co-leader': AppTheme.orangeStandard,
       'member': _groupColor,
-      'guest': Colors.grey,
+      'guest': AppTheme.grey500,
     };
 
     final roleLabels = {
@@ -407,10 +407,10 @@ class _GroupMembersListState extends State<GroupMembersList>
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
+            color: AppTheme.black100.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -441,7 +441,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                         person.displayInitials,
                         style: TextStyle(
                           color: _groupColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           fontSize: 18,
                         ),
                       ),
@@ -458,7 +458,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                   Text(
                     person.fullName,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -468,13 +468,13 @@ class _GroupMembersListState extends State<GroupMembersList>
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: roleColors[member.role]!.withAlpha(25),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           roleLabels[member.role]!,
                           style: TextStyle(
                             color: roleColors[member.role],
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                             fontSize: 12,
                           ),
                         ),
@@ -519,9 +519,9 @@ class _GroupMembersListState extends State<GroupMembersList>
                   value: 'remove',
                   child: Row(
                     children: [
-                      Icon(Icons.remove_circle, size: 20, color: Colors.red),
+                      Icon(Icons.remove_circle, size: 20, color: AppTheme.redStandard),
                       SizedBox(width: 12),
-                      Text('Retirer du groupe', style: TextStyle(color: Colors.red)),
+                      Text('Retirer du groupe', style: TextStyle(color: AppTheme.redStandard)),
                     ],
                   ),
                 ),
@@ -530,7 +530,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   Icons.more_vert,

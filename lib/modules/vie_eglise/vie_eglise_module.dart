@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../theme.dart';
+import '../../../theme.dart';
 import 'widgets/pour_vous_tab.dart' as pour_vous;
 import 'widgets/prayer_wall_tab.dart';
-import 'widgets/benevolat_tab.dart' as benevolat;
 import 'widgets/sermons_tab.dart';
+import 'widgets/offrandes_tab.dart';
 
 class VieEgliseModule extends StatefulWidget {
   final int initialTabIndex;
@@ -46,7 +46,7 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
               children: [
                 const pour_vous.PourVousTab(),
                 SermonsTab(),
-                const benevolat.BenevolatTab(),
+                const OffrandesTab(),
                 PrayerWallTab(),
               ])),
         ]));
@@ -54,44 +54,48 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
 
   Widget _buildTabBar() {
     return Container(
-      height: 42, // Hauteur réduite de la TabBar
+      height: 50, // Hauteur Material Design standard
       decoration: BoxDecoration(
-        color: const Color(0xFF860505), // Rouge bordeaux comme l'AppBar
+        color: AppTheme.backgroundColor, // Harmonisé avec AppBar transparente membre
         boxShadow: [
           BoxShadow(
-            color: AppTheme.textTertiaryColor.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: const Offset(0, 1),
+            color: AppTheme.black100.withOpacity(0.08),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: TabBar(
         controller: _tabController,
-        labelColor: Colors.white, // Texte blanc pour onglet sélectionné
-        unselectedLabelColor: Colors.white.withOpacity(0.7), // Texte blanc semi-transparent pour onglets non sélectionnés
-        indicatorColor: Colors.white, // Indicateur blanc
-        indicatorWeight: 3,
-        labelStyle: GoogleFonts.poppins(
-          fontSize: 13, // Taille de police légèrement réduite
-          fontWeight: FontWeight.w600,
+        labelColor: AppTheme.primaryColor,
+        unselectedLabelColor: AppTheme.textSecondaryColor,
+        indicatorColor: AppTheme.primaryColor,
+        indicatorWeight: 3.0, // Poids standard Material Design
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        labelStyle: GoogleFonts.inter(
+          fontSize: 14,
+          fontWeight: AppTheme.fontSemiBold,
         ),
-        unselectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 13, // Taille de police légèrement réduite
-          fontWeight: FontWeight.w500,
+        unselectedLabelStyle: GoogleFonts.inter(
+          fontSize: 14,
+          fontWeight: AppTheme.fontMedium,
         ),
         tabs: const [
           Tab(
             text: 'Pour vous',
+            iconMargin: EdgeInsets.only(bottom: 4),
           ),
           Tab(
             text: 'Sermons',
+            iconMargin: EdgeInsets.only(bottom: 4),
           ),
           Tab(
-            text: 'Bénévolat',
+            text: 'Offrandes',
+            iconMargin: EdgeInsets.only(bottom: 4),
           ),
           Tab(
             text: 'Prières & Témoignages',
+            iconMargin: EdgeInsets.only(bottom: 4),
           ),
         ],
       ),
@@ -106,7 +110,7 @@ class VieEgliseModulePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24), // 8px grid compliant
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -115,7 +119,7 @@ class VieEgliseModulePreview extends StatelessWidget {
             AppTheme.primaryColor.withOpacity(0.1),
             AppTheme.primaryColor.withOpacity(0.05),
           ]),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: AppTheme.primaryColor.withOpacity(0.2),
           width: 1)),
@@ -126,21 +130,22 @@ class VieEgliseModulePreview extends StatelessWidget {
             Icons.church,
             size: 48,
             color: AppTheme.primaryColor),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16), // 8px grid
           Text(
             'Vie de l\'Église',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+            style: GoogleFonts.inter( // Material Design 3 typography
+              fontSize: 16, // titleMedium
+              fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8),
+          const SizedBox(height: 8), // 8px grid
           Text(
             'Actions personnalisées, sermons, bénévolat et prières',
             textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 14,
+            style: GoogleFonts.inter( // Material Design 3 typography
+              fontSize: 14, // bodyMedium
+              fontWeight: AppTheme.fontRegular,
               color: AppTheme.textSecondaryColor)),
-          const SizedBox(height: 16),
+          const SizedBox(height: 16), // 8px grid
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -162,16 +167,17 @@ class VieEgliseModulePreview extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8)),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
           child: Icon(
             icon,
             size: 20,
             color: AppTheme.primaryColor)),
-        const SizedBox(height: 4),
+        const SizedBox(height: 8), // 8px grid compliant
         Text(
           label,
-          style: GoogleFonts.poppins(
-            fontSize: 10,
+          style: GoogleFonts.inter( // Material Design 3 typography
+            fontSize: 12, // labelSmall
+            fontWeight: AppTheme.fontMedium,
             color: AppTheme.textSecondaryColor)),
       ]);
   }

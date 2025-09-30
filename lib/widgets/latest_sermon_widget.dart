@@ -3,7 +3,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/home_config_service.dart';
 import '../models/home_config_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class LatestSermonWidget extends StatefulWidget {
   const LatestSermonWidget({super.key});
@@ -76,7 +76,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
             Text(
               'Dernière prédication',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold)),
+                fontWeight: AppTheme.fontBold)),
             TextButton(
               onPressed: () async {
                 // Navigation vers la chaîne YouTube
@@ -90,7 +90,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                 'Voir tout',
                 style: TextStyle(
                   color: AppTheme.primaryColor,
-                  fontWeight: FontWeight.w600))),
+                  fontWeight: AppTheme.fontSemiBold))),
           ]),
         const SizedBox(height: 16),
         if (_isLoading)
@@ -108,7 +108,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
   Widget _buildNoSermonWidget() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -129,7 +129,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
   Widget _buildSermonWidget() {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -177,7 +177,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                     _homeConfig!.sermonTitle,
                     style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor)),
                   const SizedBox(height: 12),
                   Row(
@@ -198,7 +198,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                             vertical: 6),
                           decoration: BoxDecoration(
                             color: AppTheme.primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(16)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -212,7 +212,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppTheme.primaryColor,
-                                  fontWeight: FontWeight.w600)),
+                                  fontWeight: AppTheme.fontSemiBold)),
                             ])),
                       ),
                       const Spacer(),

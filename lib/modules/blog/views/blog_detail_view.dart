@@ -6,6 +6,7 @@ import '../../../shared/widgets/custom_card.dart';
 import '../models/blog_post.dart';
 import '../models/blog_comment.dart';
 import '../services/blog_service.dart';
+import '../../../../theme.dart';
 
 /// Vue détaillée d'un article de blog
 class BlogDetailView extends StatefulWidget {
@@ -136,7 +137,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
           TabBar(
             controller: _tabController,
             labelColor: Theme.of(context).primaryColor,
-            unselectedLabelColor: Colors.grey,
+            unselectedLabelColor: AppTheme.grey500,
             tabs: [
               Tab(text: 'Article', icon: Icon(Icons.article)),
               Tab(
@@ -178,7 +179,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
           // Image en vedette
           if (_post!.featuredImageUrl != null)
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               child: Image.network(
                 _post!.featuredImageUrl!,
                 width: double.infinity,
@@ -188,8 +189,8 @@ class _BlogDetailViewState extends State<BlogDetailView>
                   width: double.infinity,
                   height: 250,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppTheme.grey300,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Image.network(
                     "https://pixabay.com/get/g26526e9480fb2b4cadf1c97139d50203bb3bb94c9e11926789a5a21af1c717b2eeebc03f03e5f3dd2b05a900e18ca87e_1280.jpg",
@@ -212,7 +213,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
             _post!.title,
             style: const TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               height: 1.2,
             ),
           ),
@@ -225,7 +226,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
               _post!.excerpt,
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
                 height: 1.4,
                 fontStyle: FontStyle.italic,
               ),
@@ -286,14 +287,14 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       Text(
                         _post!.authorName,
                         style: const TextStyle(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                           fontSize: 16,
                         ),
                       ),
                       Text(
                         _formatDate(_post!.publishedAt ?? _post!.createdAt),
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                           fontSize: 14,
                         ),
                       ),
@@ -321,12 +322,12 @@ class _BlogDetailViewState extends State<BlogDetailView>
   Widget _buildMetricItem(IconData icon, String value, String label) {
     return Column(
       children: [
-        Icon(icon, size: 20, color: Colors.grey[600]),
+        Icon(icon, size: 20, color: AppTheme.grey600),
         const SizedBox(height: 4),
         Text(
           value,
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             fontSize: 16,
           ),
         ),
@@ -334,7 +335,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
           label,
           style: TextStyle(
             fontSize: 12,
-            color: Colors.grey[600],
+            color: AppTheme.grey600,
           ),
         ),
       ],
@@ -349,7 +350,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
           'Tags',
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 8),
@@ -360,7 +361,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               border: Border.all(
                 color: Theme.of(context).primaryColor.withOpacity(0.3),
               ),
@@ -369,7 +370,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
               '#\$tag',
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           )).toList(),
@@ -387,8 +388,8 @@ class _BlogDetailViewState extends State<BlogDetailView>
           icon: Icon(_isLiked ? Icons.favorite : Icons.favorite_border),
           label: Text(_isLiked ? 'Aimé' : 'Aimer'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: _isLiked ? Colors.red : null,
-            foregroundColor: _isLiked ? Colors.white : null,
+            backgroundColor: _isLiked ? AppTheme.redStandard : null,
+            foregroundColor: _isLiked ? AppTheme.white100 : null,
           ),
         ),
         OutlinedButton.icon(
@@ -416,7 +417,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
               'À propos de l\'auteur',
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             const SizedBox(height: 12),
@@ -440,14 +441,14 @@ class _BlogDetailViewState extends State<BlogDetailView>
                         _post!.authorName,
                         style: const TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Membre de l\'équipe de rédaction',
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -484,16 +485,16 @@ class _BlogDetailViewState extends State<BlogDetailView>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.comment_outlined, size: 64, color: Colors.grey),
+                      Icon(Icons.comment_outlined, size: 64, color: AppTheme.grey500),
                       SizedBox(height: 16),
                       Text(
                         'Aucun commentaire pour le moment',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: AppTheme.grey500),
                       ),
                       SizedBox(height: 8),
                       Text(
                         'Soyez le premier à commenter !',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: AppTheme.grey500),
                       ),
                     ],
                   ),
@@ -538,14 +539,14 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       Text(
                         comment.authorName,
                         style: const TextStyle(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                       Text(
                         _formatDate(comment.createdAt),
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -555,13 +556,13 @@ class _BlogDetailViewState extends State<BlogDetailView>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      color: AppTheme.redStandard.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.favorite, size: 12, color: Colors.red),
+                        const Icon(Icons.favorite, size: 12, color: AppTheme.redStandard),
                         const SizedBox(width: 4),
                         Text(
                           comment.likes.toString(),
@@ -612,7 +613,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.article_outlined, size: 64, color: Colors.grey),
+                Icon(Icons.article_outlined, size: 64, color: AppTheme.grey500),
                 SizedBox(height: 16),
                 Text('Aucun article similaire trouvé'),
               ],
@@ -636,12 +637,12 @@ class _BlogDetailViewState extends State<BlogDetailView>
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            color: AppTheme.grey300,
           ),
           child: post.featuredImageUrl != null
               ? ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   child: Image.network(
                     post.featuredImageUrl!,
                     fit: BoxFit.cover,
@@ -653,7 +654,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
           post.title,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: AppTheme.fontMedium),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -668,7 +669,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
               'Par ${post.authorName} • ${post.views} vues',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
           ],

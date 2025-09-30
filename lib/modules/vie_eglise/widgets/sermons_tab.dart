@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../theme.dart';
 import '../models/sermon.dart';
 import '../services/sermon_service.dart';
 import '../views/sermon_notes_view.dart';
@@ -17,6 +16,7 @@ class SermonsTab extends StatefulWidget {
 class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   late AnimationController _animationController;
+  late AnimationController _listAnimationController;
   late Animation<double> _fadeAnimation;
 
   String _searchQuery = '';
@@ -27,10 +27,10 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
   List<Sermon> _filteredSermons = [];
 
   final List<Map<String, dynamic>> _filters = [
-    {'key': 'Tous', 'icon': Icons.all_inclusive, 'color': Colors.grey},
-    {'key': 'Récents', 'icon': Icons.schedule, 'color': Colors.green},
-    {'key': 'Avec Écritures & Notes', 'icon': Icons.notes, 'color': Colors.blue},
-    {'key': 'Avec Vidéo', 'icon': Icons.play_circle, 'color': Colors.red},
+    {'key': 'Tous', 'icon': Icons.all_inclusive_rounded},
+    {'key': 'Récents', 'icon': Icons.schedule_rounded},
+    {'key': 'Avec Écritures & Notes', 'icon': Icons.notes_rounded},
+    {'key': 'Avec Vidéo', 'icon': Icons.play_circle_rounded},
   ];
 
   @override
@@ -43,7 +43,12 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
 
   void _setupAnimations() {
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    _listAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
@@ -52,7 +57,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: Curves.easeOut,
+      curve: Curves.easeOutCubic,
     ));
 
     _animationController.forward();
@@ -61,10 +66,756 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    _listAnimationController.dispose();
     _searchController.dispose();
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Column(
+          children: [
+            _buildHeader(colorScheme),
+            Expanded(
+              child: _isLoading 
+                  ? _buildLoadingState(colorScheme)
+                  : _filteredSermons.isEmpty
+                      ? _buildEmptyState(colorScheme)
+                      : _buildSermonsList(colorScheme),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(ColorScheme colorScheme) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colorScheme.primaryContainer,
+            colorScheme.primaryContainer.withValues(alpha: 0.85),
+          ],
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  Icons.play_circle_rounded,
+                  color: colorScheme.primary,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sermons',
+                      style: GoogleFonts.inter(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: colorScheme.onPrimaryContainer,
+                        height: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Écoutez et relisez les messages inspirants',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (!_isLoading && _sermons.isNotEmpty)
+                PopupMenuButton<String>(
+                  icon: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: colorScheme.surface.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: colorScheme.outline.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.more_vert_rounded,
+                      color: colorScheme.onSurfaceVariant,
+                      size: 20,
+                    ),
+                  ),
+                  onSelected: (value) {
+                    switch (value) {
+                      case 'refresh':
+                        _refreshSermons();
+                        break;
+                      case 'search':
+                        if (mounted) setState(() => _isSearching = true);
+                        break;
+                      case 'filter':
+                        _showFilterDialog();
+                        break;
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'refresh',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.refresh_rounded,
+                            size: 20,
+                            color: colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Actualiser',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'search',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.search_rounded,
+                            size: 20,
+                            color: colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Rechercher',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'filter',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.filter_list_rounded,
+                            size: 20,
+                            color: colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Filtrer',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          if (_isSearching) ...[
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                color: colorScheme.surface.withValues(alpha: 0.9),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: colorScheme.outline.withValues(alpha: 0.3),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.shadow.withValues(alpha: 0.04),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+                autofocus: true,
+                style: GoogleFonts.inter(
+                  fontSize: 15,
+                  color: colorScheme.onSurface,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Rechercher un sermon, orateur...',
+                  hintStyle: GoogleFonts.inter(
+                    color: colorScheme.onSurfaceVariant,
+                    fontSize: 15,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                    color: colorScheme.onSurfaceVariant,
+                    size: 22,
+                  ),
+                  suffixIcon: _searchQuery.isNotEmpty
+                      ? IconButton(
+                          onPressed: _clearSearch,
+                          icon: Icon(
+                            Icons.clear_rounded,
+                            color: colorScheme.onSurfaceVariant,
+                            size: 20,
+                          ),
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            if (mounted) setState(() => _isSearching = false);
+                          },
+                          icon: Icon(
+                            Icons.close_rounded,
+                            color: colorScheme.onSurfaceVariant,
+                            size: 20,
+                          ),
+                        ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (_selectedFilter != 'Tous') ...[
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: colorScheme.surface.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: colorScheme.outline.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _filters.firstWhere((f) => f['key'] == _selectedFilter)['icon'],
+                    size: 18,
+                    color: colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    _selectedFilter,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      if (mounted) setState(() => _selectedFilter = 'Tous');
+                      _applyFilters();
+                    },
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 16,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          if (!_isLoading && _sermons.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: colorScheme.surface.withValues(alpha: 0.6),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: colorScheme.outline.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    color: colorScheme.onSurfaceVariant,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      '${_filteredSermons.length} sermon${_filteredSermons.length > 1 ? 's' : ''} disponible${_filteredSermons.length > 1 ? 's' : ''}',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoadingState(ColorScheme colorScheme) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(32),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+              strokeWidth: 3,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Chargement des sermons...',
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Veuillez patienter',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(ColorScheme colorScheme) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.surfaceContainerHighest,
+                    colorScheme.surfaceContainerHigh,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(40),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.shadow.withValues(alpha: 0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.play_circle_outline_rounded,
+                size: 64,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 32),
+            Text(
+              'Aucun sermon trouvé',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _searchQuery.isNotEmpty 
+                  ? 'Aucun résultat pour "${_searchQuery}"'
+                  : _selectedFilter != 'Tous'
+                      ? 'Aucun sermon dans cette catégorie'
+                      : 'Les sermons apparaîtront ici bientôt',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (_searchQuery.isNotEmpty || _selectedFilter != 'Tous') ...[
+              const SizedBox(height: 24),
+              FilledButton.tonal(
+                onPressed: () {
+                  _clearSearch();
+                  setState(() => _selectedFilter = 'Tous');
+                  _applyFilters();
+                },
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: Text(
+                  'Voir tous les sermons',
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSermonsList(ColorScheme colorScheme) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: RefreshIndicator(
+        onRefresh: _refreshSermons,
+        color: colorScheme.primary,
+        backgroundColor: colorScheme.surfaceContainerHighest,
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          itemCount: _filteredSermons.length,
+          itemBuilder: (context, index) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.3),
+                end: Offset.zero,
+              ).animate(CurvedAnimation(
+                parent: _listAnimationController,
+                curve: Interval(
+                  (index * 0.1).clamp(0.0, 1.0),
+                  1.0,
+                  curve: Curves.easeOutQuart,
+                ),
+              )),
+              child: FadeTransition(
+                opacity: Tween<double>(
+                  begin: 0,
+                  end: 1,
+                ).animate(CurvedAnimation(
+                  parent: _listAnimationController,
+                  curve: Interval(
+                    (index * 0.1).clamp(0.0, 1.0),
+                    1.0,
+                    curve: Curves.easeOut,
+                  ),
+                )),
+                child: _buildSermonCard(_filteredSermons[index], index, colorScheme),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSermonCard(Sermon sermon, int index, ColorScheme colorScheme) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Material(
+        elevation: 0,
+        borderRadius: BorderRadius.circular(24),
+        color: colorScheme.surfaceContainerLow,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(24),
+          onTap: () => _showSermonDetails(sermon),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: colorScheme.shadow.withValues(alpha: 0.04),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // En-tête de la carte
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          DateFormat('dd/MM/yyyy').format(sermon.date),
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      if (sermon.duree > 0)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: colorScheme.secondaryContainer,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.access_time_rounded,
+                                size: 14,
+                                color: colorScheme.onSecondaryContainer,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${sermon.duree} min',
+                                style: GoogleFonts.inter(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: colorScheme.onSecondaryContainer,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Titre du sermon
+                  Text(
+                    sermon.titre,
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface,
+                      height: 1.3,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Informations d'orateur
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: colorScheme.tertiaryContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.person_rounded,
+                          size: 16,
+                          color: colorScheme.onTertiaryContainer,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          sermon.orateur,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Description si disponible
+                  if (sermon.description != null && sermon.description!.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: colorScheme.outline.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Text(
+                        sermon.description!,
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          color: colorScheme.onSurfaceVariant,
+                          height: 1.4,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+
+                  // Tags si disponibles
+                  if (sermon.tags.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: sermon.tags.take(3).map((tag) => Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: colorScheme.secondaryContainer.withValues(alpha: 0.7),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          tag,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: colorScheme.onSecondaryContainer,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )).toList(),
+                    ),
+                  ],
+
+                  const SizedBox(height: 24),
+
+                  // Actions
+                  Row(
+                    children: [
+                      Expanded(
+                        child: FilledButton.icon(
+                          onPressed: sermon.lienYoutube != null && sermon.lienYoutube!.isNotEmpty
+                              ? () => _launchYouTube(sermon.lienYoutube!)
+                              : null,
+                          icon: Icon(
+                            Icons.play_arrow_rounded,
+                            size: 20,
+                          ),
+                          label: Text(
+                            'Écouter',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: FilledButton.tonalIcon(
+                          onPressed: sermon.notes != null && sermon.notes!.isNotEmpty
+                              ? () => _showNotes(sermon)
+                              : null,
+                          icon: Icon(
+                            Icons.notes_rounded,
+                            size: 18,
+                          ),
+                          label: Text(
+                            'Notes',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Méthodes utilitaires et logique métier
   Future<void> _loadSermons() async {
     try {
       if (!mounted) return;
@@ -78,6 +829,10 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
           _isLoading = false;
         });
         await _applyFilters();
+        // Déclencher l'animation de la liste après le chargement
+        if (_filteredSermons.isNotEmpty) {
+          _listAnimationController.forward();
+        }
         break;
       }
     } catch (e) {
@@ -87,7 +842,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -152,687 +907,221 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
     _applyFilters();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      body: Column(
-        children: [
-          _buildHeader(),
-          Expanded(
-            child: _isLoading 
-                ? _buildLoadingState()
-                : _filteredSermons.isEmpty
-                    ? _buildEmptyState()
-                    : _buildSermonsList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(24),
-          bottomRight: Radius.circular(24),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Icon(
-                  Icons.play_circle,
-                  color: AppTheme.primaryColor,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sermons',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    Text(
-                      'Écoutez et relisez les messages',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (!_isLoading && _sermons.isNotEmpty)
-                PopupMenuButton<String>(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      Icons.more_vert,
-                      color: AppTheme.primaryColor,
-                      size: 20,
-                    ),
-                  ),
-                  onSelected: (value) {
-                    switch (value) {
-                      case 'refresh':
-                        _refreshSermons();
-                        break;
-                      case 'search':
-                        if (mounted) setState(() => _isSearching = true);
-                        break;
-                      case 'filter':
-                        _showFilterDialog();
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'refresh',
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.refresh,
-                            size: 20,
-                            color: AppTheme.primaryColor,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Actualiser',
-                            style: GoogleFonts.inter(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'search',
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.search,
-                            size: 20,
-                            color: AppTheme.primaryColor,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Rechercher',
-                            style: GoogleFonts.inter(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'filter',
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.filter_list,
-                            size: 20,
-                            color: AppTheme.primaryColor,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Filtrer',
-                            style: GoogleFonts.inter(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-          if (_isSearching) ...[
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.2),
-                ),
-              ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: _onSearchChanged,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Rechercher un sermon...',
-                  hintStyle: GoogleFonts.inter(
-                    color: Colors.grey[500],
-                    fontSize: 14,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.grey[500],
-                    size: 20,
-                  ),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          onPressed: _clearSearch,
-                          icon: Icon(
-                            Icons.clear,
-                            color: Colors.grey[500],
-                            size: 20,
-                          ),
-                        )
-                      : IconButton(
-                          onPressed: () {
-                            if (mounted) setState(() => _isSearching = false);
-                          },
-                          icon: Icon(
-                            Icons.close,
-                            color: Colors.grey[500],
-                            size: 20,
-                          ),
-                        ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                ),
-              ),
-            ),
-          ],
-          if (_selectedFilter != 'Tous') ...[
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    _filters.firstWhere((f) => f['key'] == _selectedFilter)['icon'],
-                    size: 16,
-                    color: AppTheme.primaryColor,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    _selectedFilter,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  GestureDetector(
-                    onTap: () {
-                      if (mounted) setState(() => _selectedFilter = 'Tous');
-                      _applyFilters();
-                    },
-                    child: Icon(
-                      Icons.close,
-                      size: 16,
-                      color: AppTheme.primaryColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Chargement des sermons...',
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Icon(
-                Icons.play_circle_outline,
-                size: 48,
-                color: Colors.grey[400],
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Aucun sermon trouvé',
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Les sermons apparaîtront ici bientôt',
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: Colors.grey[500],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSermonsList() {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: RefreshIndicator(
-        onRefresh: _refreshSermons,
-        child: ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: _filteredSermons.length,
-          itemBuilder: (context, index) {
-            final sermon = _filteredSermons[index];
-            return _buildSermonCard(sermon, index);
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSermonCard(Sermon sermon, int index) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            color: Colors.grey.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: () => _showSermonDetails(sermon),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.white,
-                  AppTheme.primaryColor.withOpacity(0.02),
-                ],
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // En-tête de la carte
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          DateFormat('dd/MM/yyyy').format(sermon.date),
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      if (sermon.duree > 0)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.access_time,
-                                size: 12,
-                                color: Colors.orange[700],
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${sermon.duree} min',
-                                style: GoogleFonts.inter(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.orange[700],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Titre du sermon
-                  Text(
-                    sermon.titre,
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.grey[800],
-                      height: 1.3,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Informations d'orateur
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.person_outlined,
-                        size: 16,
-                        color: Colors.grey[600],
-                      ),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          sermon.orateur,
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // Description si disponible
-                  if (sermon.description != null && sermon.description!.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      sermon.description!,
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        color: Colors.grey[600],
-                        height: 1.4,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-
-                  // Tags si disponibles
-                  if (sermon.tags.isNotEmpty) ...[
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 4,
-                      children: sermon.tags.take(3).map((tag) => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          tag,
-                          style: GoogleFonts.inter(
-                            fontSize: 11,
-                            color: AppTheme.primaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      )).toList(),
-                    ),
-                  ],
-
-                  const SizedBox(height: 16),
-
-                  // Actions
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: sermon.lienYoutube != null && sermon.lienYoutube!.isNotEmpty
-                              ? () => _launchYouTube(sermon.lienYoutube!)
-                              : null,
-                          icon: const Icon(
-                            Icons.play_arrow,
-                            size: 18,
-                          ),
-                          label: const Text('Écouter'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: sermon.lienYoutube != null && sermon.lienYoutube!.isNotEmpty
-                                ? AppTheme.primaryColor
-                                : Colors.grey[300],
-                            foregroundColor: sermon.lienYoutube != null && sermon.lienYoutube!.isNotEmpty
-                                ? Colors.white
-                                : Colors.grey[600],
-                            elevation: 0,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      OutlinedButton.icon(
-                        onPressed: sermon.notes != null && sermon.notes!.isNotEmpty
-                            ? () => _showNotes(sermon)
-                            : null,
-                        icon: const Icon(
-                          Icons.notes,
-                          size: 18,
-                        ),
-                        label: const Text('Écritures & Notes'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: sermon.notes != null && sermon.notes!.isNotEmpty
-                              ? AppTheme.primaryColor
-                              : Colors.grey[600],
-                          side: BorderSide(
-                            color: sermon.notes != null && sermon.notes!.isNotEmpty
-                                ? AppTheme.primaryColor
-                                : Colors.grey[300]!,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showSermonDetails(Sermon sermon) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.8,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
+        height: MediaQuery.of(context).size.height * 0.85,
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHigh,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32),
+            topRight: Radius.circular(32),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.shadow.withValues(alpha: 0.15),
+              blurRadius: 24,
+              offset: const Offset(0, -8),
+            ),
+          ],
         ),
         child: Column(
           children: [
             // Handle
             Container(
-              margin: const EdgeInsets.only(top: 12, bottom: 20),
+              margin: const EdgeInsets.only(top: 16, bottom: 24),
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // En-tête du sermon
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        DateFormat('dd MMMM yyyy', 'fr_FR').format(sermon.date),
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.primaryColor,
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            DateFormat('dd MMMM yyyy', 'fr_FR').format(sermon.date),
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: colorScheme.onPrimaryContainer,
+                            ),
+                          ),
                         ),
+                        const Spacer(),
+                        if (sermon.duree > 0)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: colorScheme.secondaryContainer,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.access_time_rounded,
+                                  size: 16,
+                                  color: colorScheme.onSecondaryContainer,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  '${sermon.duree} min',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: colorScheme.onSecondaryContainer,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Titre du sermon
+                    Text(
+                      sermon.titre,
+                      style: GoogleFonts.inter(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: colorScheme.onSurface,
+                        height: 1.2,
                       ),
                     ),
                     const SizedBox(height: 16),
 
-                    // Titre
-                    Text(
-                      sermon.titre,
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[800],
+                    // Orateur
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: colorScheme.tertiaryContainer.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: colorScheme.outline.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: colorScheme.tertiaryContainer,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              Icons.person_rounded,
+                              size: 20,
+                              color: colorScheme.onTertiaryContainer,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Orateur',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  sermon.orateur,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 12),
 
-                    // Orateur
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.person,
-                          size: 18,
-                          color: Colors.grey[600],
+                    // Description si disponible
+                    if (sermon.description != null && sermon.description!.isNotEmpty) ...[
+                      const SizedBox(height: 24),
+                      Text(
+                        'Description',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurface,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          sermon.orateur,
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey[600],
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: colorScheme.outline.withValues(alpha: 0.2),
                           ),
                         ),
-                      ],
-                    ),
-
-                    if (sermon.description != null && sermon.description!.isNotEmpty) ...[
-                      const SizedBox(height: 16),
-                      Text(
-                        sermon.description!,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                          height: 1.5,
+                        child: Text(
+                          sermon.description!,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            color: colorScheme.onSurfaceVariant,
+                            height: 1.5,
+                          ),
                         ),
                       ),
                     ],
 
+                    // Tags si disponibles
                     if (sermon.tags.isNotEmpty) ...[
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Thèmes',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
                       Wrap(
-                        spacing: 8,
-                        runSpacing: 6,
+                        spacing: 12,
+                        runSpacing: 8,
                         children: sermon.tags.map((tag) => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(15),
+                            color: colorScheme.secondaryContainer,
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             tag,
                             style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: AppTheme.primaryColor,
+                              fontSize: 13,
+                              color: colorScheme.onSecondaryContainer,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -840,49 +1129,56 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                       ),
                     ],
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
 
-                    // Boutons d'action
-                    Row(
+                    // Actions
+                    Column(
                       children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
+                        SizedBox(
+                          width: double.infinity,
+                          child: FilledButton.icon(
                             onPressed: sermon.lienYoutube != null && sermon.lienYoutube!.isNotEmpty
                                 ? () => _launchYouTube(sermon.lienYoutube!)
                                 : null,
-                            icon: const Icon(Icons.play_arrow),
-                            label: const Text('Écouter'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.primaryColor,
-                              foregroundColor: Colors.white,
+                            icon: const Icon(Icons.play_arrow_rounded, size: 22),
+                            label: Text(
+                              'Écouter le sermon',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: sermon.notes != null && sermon.notes!.isNotEmpty
-                                ? () {
-                                    Navigator.pop(context);
-                                    _showNotes(sermon);
-                                  }
-                                : null,
-                            icon: const Icon(Icons.notes),
-                            label: const Text('Écritures & Notes'),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppTheme.primaryColor,
-                              side: const BorderSide(color: AppTheme.primaryColor),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                        if (sermon.notes != null && sermon.notes!.isNotEmpty) ...[
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: FilledButton.tonalIcon(
+                              onPressed: () => _showNotes(sermon),
+                              icon: const Icon(Icons.notes_rounded, size: 20),
+                              label: Text(
+                                'Voir les Écritures & Notes',
+                                style: GoogleFonts.inter(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              style: FilledButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ],
                     ),
                   ],
@@ -895,51 +1191,56 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
     );
   }
 
-  Future<void> _showFilterDialog() async {
+  void _showFilterDialog() async {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     final result = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: colorScheme.surfaceContainerHigh,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(28),
+        ),
         title: Text(
-          'Filtrer par',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+          'Filtrer les sermons',
+          style: GoogleFonts.inter(
             fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: colorScheme.onSurface,
           ),
         ),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _filters.length,
-            itemBuilder: (context, index) {
-              final filter = _filters[index];
-              return RadioListTile<String>(
-                value: filter['key'],
-                groupValue: _selectedFilter,
-                onChanged: (value) => Navigator.pop(context, value),
-                title: Row(
-                  children: [
-                    Icon(
-                      filter['icon'],
-                      color: filter['color'],
-                      size: 20,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      filter['key'],
-                      style: GoogleFonts.inter(fontSize: 14),
-                    ),
-                  ],
-                ),
-                activeColor: AppTheme.primaryColor,
-              );
-            },
-          ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _filters.map((filter) => RadioListTile<String>(
+            value: filter['key'],
+            groupValue: _selectedFilter,
+            onChanged: (value) => Navigator.pop(context, value),
+            title: Text(
+              filter['key'],
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            secondary: Icon(
+              filter['icon'],
+              color: _selectedFilter == filter['key'] 
+                  ? colorScheme.primary 
+                  : colorScheme.onSurfaceVariant,
+            ),
+            activeColor: colorScheme.primary,
+          )).toList(),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(
+              'Annuler',
+              style: GoogleFonts.inter(
+                color: colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ],
       ),
@@ -952,6 +1253,8 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
   }
 
   Future<void> _launchYouTube(String url) async {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     try {
       final uri = Uri.parse(url);
       if (await canLaunchUrl(uri)) {
@@ -962,9 +1265,10 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
             SnackBar(
               content: Text(
                 'Impossible d\'ouvrir le lien YouTube',
-                style: GoogleFonts.poppins(),
+                style: GoogleFonts.inter(),
               ),
-              backgroundColor: Colors.red,
+              backgroundColor: colorScheme.error,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }
@@ -975,9 +1279,10 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
           SnackBar(
             content: Text(
               'Erreur lors de l\'ouverture du lien',
-              style: GoogleFonts.poppins(),
+              style: GoogleFonts.inter(),
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: colorScheme.error,
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }

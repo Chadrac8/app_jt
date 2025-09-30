@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../services/youtube_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class YouTubePickerWidget extends StatefulWidget {
   final String initialUrl;
@@ -68,7 +68,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
           Text(
             widget.label!,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
             ),
           ),
           const SizedBox(height: 8),
@@ -92,9 +92,9 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   ),
                 )
               : _urlInfo != null && _urlInfo!.isValid
-                ? Icon(Icons.check_circle, color: Colors.green[600])
+                ? Icon(Icons.check_circle, color: AppTheme.grey600)
                 : _urlController.text.isNotEmpty
-                  ? Icon(Icons.error, color: Colors.red[600])
+                  ? Icon(Icons.error, color: AppTheme.grey600)
                   : null,
           ),
           onChanged: _validateUrl,
@@ -130,8 +130,8 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.grey300!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +158,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   _urlInfo!.displayType,
                   style: TextStyle(
                     color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
                 const Spacer(),
@@ -188,7 +188,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                     width: 120,
                     height: 68,
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: AppTheme.grey200,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: _urlInfo!.thumbnailUrl.isNotEmpty
@@ -198,22 +198,22 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                           height: 68,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
-                            color: Colors.grey[200],
+                            color: AppTheme.grey200,
                             child: const Center(
                               child: CircularProgressIndicator(),
                             ),
                           ),
                           errorWidget: (context, url, error) => Container(
-                            color: Colors.grey[300],
+                            color: AppTheme.grey300,
                             child: Icon(
                               _getContentTypeIcon(),
-                              color: Colors.grey[600],
+                              color: AppTheme.grey600,
                             ),
                           ),
                         )
                       : Icon(
                           _getContentTypeIcon(),
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                           size: 32,
                         ),
                   ),
@@ -249,8 +249,8 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                       Text(
                         'URL valide ✓',
                         style: TextStyle(
-                          color: Colors.green[600],
-                          fontWeight: FontWeight.w500,
+                          color: AppTheme.grey600,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ],
@@ -268,18 +268,18 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.red[50],
-        border: Border.all(color: Colors.red[200]!),
-        borderRadius: BorderRadius.circular(8),
+        color: AppTheme.grey50,
+        border: Border.all(color: AppTheme.grey200),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Row(
         children: [
-          Icon(Icons.error_outline, color: Colors.red[600]),
+          Icon(Icons.error_outline, color: AppTheme.grey600),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               'URL YouTube invalide. Vérifiez le format.',
-              style: TextStyle(color: Colors.red[700]),
+              style: TextStyle(color: AppTheme.grey700),
             ),
           ),
         ],
@@ -291,21 +291,21 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(8),
+        color: AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.info_outline, size: 16, color: Colors.blue[600]),
+              Icon(Icons.info_outline, size: 16, color: AppTheme.grey600),
               const SizedBox(width: 8),
               Text(
                 'Formats supportés:',
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.blue[700],
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.grey700,
                 ),
               ),
             ],
@@ -317,7 +317,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
             '• Vidéo dans playlist: youtube.com/watch?v=ID&list=PLAYLIST_ID',
             style: TextStyle(
               fontSize: 12,
-              color: Colors.blue[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -359,7 +359,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (_urlInfo!.videoId.isNotEmpty) ...[
-                const Text('ID Vidéo:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('ID Vidéo:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                 SelectableText(
                   _urlInfo!.videoId,
                   style: const TextStyle(fontFamily: 'monospace'),
@@ -368,7 +368,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
               ],
               
               if (_urlInfo!.playlistId.isNotEmpty) ...[
-                const Text('ID Playlist:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('ID Playlist:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                 SelectableText(
                   _urlInfo!.playlistId,
                   style: const TextStyle(fontFamily: 'monospace'),
@@ -376,14 +376,14 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                 const SizedBox(height: 12),
               ],
               
-              const Text('URL Originale:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('URL Originale:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               SelectableText(
                 _urlInfo!.originalUrl,
                 style: const TextStyle(fontSize: 12),
               ),
               const SizedBox(height: 12),
               
-              const Text('URL de visionnage:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('URL de visionnage:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               SelectableText(
                 _urlInfo!.watchUrl,
                 style: const TextStyle(fontSize: 12),
@@ -391,7 +391,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
               
               if (_urlInfo!.embedUrl.isNotEmpty) ...[
                 const SizedBox(height: 12),
-                const Text('URL d\'intégration:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('URL d\'intégration:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                 SelectableText(
                   _urlInfo!.embedUrl,
                   style: const TextStyle(fontSize: 12),

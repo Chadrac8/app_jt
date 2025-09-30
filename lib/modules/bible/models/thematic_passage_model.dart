@@ -135,10 +135,7 @@ class BiblicalTheme {
       name: json['name'] as String,
       description: json['description'] as String,
       color: Color(json['color'] as int),
-      icon: IconData(
-        json['iconCodePoint'] as int,
-        fontFamily: json['iconFontFamily'] as String?,
-      ),
+      icon: _iconFromJson(json),
       passages: passages,
       createdAt: (json['createdAt'] as Timestamp).toDate(),
       createdBy: json['createdBy'] as String,
@@ -156,6 +153,13 @@ class BiblicalTheme {
 
   @override
   int get hashCode => id.hashCode;
+
+  static IconData _iconFromJson(Map<String, dynamic> json) {
+    return IconData(
+      json['iconCodePoint'] as int,
+      fontFamily: json['iconFontFamily'] as String?,
+    );
+  }
 }
 
 

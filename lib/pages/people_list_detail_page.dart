@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:share_plus/share_plus.dart';
 import '../services/bulk_actions_service.dart';
+import '../../theme.dart';
 
 class PeopleListDetailPage extends StatefulWidget {
   final String listId;
@@ -457,10 +458,10 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                   gradient: LinearGradient(
                     colors: [
                       isBirthdayList
-                          ? Colors.pinkAccent.withOpacity(0.18)
+                          ? AppTheme.primaryColor.withOpacity(0.18)
                           : Theme.of(context).colorScheme.primary.withOpacity(0.18),
                       isBirthdayList
-                          ? Colors.orangeAccent.withOpacity(0.32)
+                          ? AppTheme.warningColor.withOpacity(0.32)
                           : Theme.of(context).colorScheme.primary.withOpacity(0.32),
                     ],
                     begin: Alignment.topLeft,
@@ -469,7 +470,7 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                 ),
                 child: Icon(
                   isBirthdayList ? Icons.cake : Icons.list,
-                  color: isBirthdayList ? Colors.pink : Colors.blueAccent,
+                  color: isBirthdayList ? AppTheme.pinkStandard : AppTheme.blueStandard,
                   size: 22,
                 ),
               ),
@@ -479,15 +480,15 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
               child: Text(
                 widget.listName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: isBirthdayList ? Colors.pink : null,
+                  fontWeight: AppTheme.fontBold,
+                  color: isBirthdayList ? AppTheme.pinkStandard : null,
                 ),
               ),
             ),
             if (isBirthdayList)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Icon(Icons.cake, color: Colors.pink, size: 28),
+                child: Icon(Icons.cake, color: AppTheme.pinkStandard, size: 28),
               ),
           ],
         ),
@@ -509,7 +510,7 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                     SnackBar(
                       content: Row(
                         children: [
-                          const Icon(Icons.check_circle, color: Colors.green),
+                          const Icon(Icons.check_circle, color: AppTheme.greenStandard),
                           const SizedBox(width: 8),
                           Text(
                             action == 'tag'
@@ -549,18 +550,18 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                   if (isBirthdayList)
                     Card(
                       elevation: 3,
-                      color: Colors.pink.withOpacity(0.08),
+                      color: AppTheme.pinkStandard.withOpacity(0.08),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                       child: Padding(
                         padding: const EdgeInsets.all(18.0),
                         child: Row(
                           children: [
-                            Icon(Icons.cake, color: Colors.pink, size: 32),
+                            Icon(Icons.cake, color: AppTheme.pinkStandard, size: 32),
                             const SizedBox(width: 16),
                             Expanded(
                               child: Text(
                                 "🎉 Voici toutes les personnes dont c'est l'anniversaire aujourd'hui !",
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.pink, fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppTheme.pinkStandard, fontWeight: AppTheme.fontBold),
                               ),
                             ),
                           ],
@@ -572,7 +573,7 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                     curve: Curves.easeInOut,
                     child: Card(
                       elevation: 2,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -598,8 +599,8 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                 background: Container(
                                   alignment: Alignment.centerRight,
                                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  color: Colors.red.withOpacity(0.15),
-                                  child: const Icon(Icons.delete, color: Colors.red),
+                                  color: AppTheme.redStandard.withOpacity(0.15),
+                                  child: const Icon(Icons.delete, color: AppTheme.redStandard),
                                 ),
                                 child: Card(
                                   color: Theme.of(context).colorScheme.primary.withOpacity(0.06),
@@ -624,13 +625,13 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                   const SizedBox(height: 18),
                   Row(
                     children: [
-                      Icon(Icons.people, color: isBirthdayList ? Colors.pink : Theme.of(context).colorScheme.primary),
+                      Icon(Icons.people, color: isBirthdayList ? AppTheme.pinkStandard : Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 8),
                       Text(
                         isBirthdayList ? 'Anniversaires du jour' : 'Résultats',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: isBirthdayList ? Colors.pink : null,
-                          fontWeight: isBirthdayList ? FontWeight.bold : null,
+                          color: isBirthdayList ? AppTheme.pinkStandard : null,
+                          fontWeight: isBirthdayList ? AppTheme.fontBold : null,
                         ),
                       ),
                     ],
@@ -638,8 +639,8 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                   const SizedBox(height: 8),
                   if (filteredPersons.isEmpty)
                     Card(
-                      color: isBirthdayList ? Colors.pink.withOpacity(0.08) : Theme.of(context).colorScheme.surfaceVariant,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      color: isBirthdayList ? AppTheme.pinkStandard.withOpacity(0.08) : Theme.of(context).colorScheme.surfaceVariant,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                       child: Padding(
                         padding: const EdgeInsets.all(24.0),
                         child: Center(
@@ -647,7 +648,7 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                             isBirthdayList
                                 ? "Aucun anniversaire aujourd'hui."
                                 : 'Aucun résultat pour ces filtres.',
-                            style: TextStyle(color: isBirthdayList ? Colors.pink : null),
+                            style: TextStyle(color: isBirthdayList ? AppTheme.pinkStandard : null),
                           ),
                         ),
                       ),
@@ -665,7 +666,7 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                           child: Card(
                             elevation: selected ? 6 : 1,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                            color: isBirthdayList ? Colors.pink.withOpacity(0.06) : null,
+                            color: isBirthdayList ? AppTheme.pinkStandard.withOpacity(0.06) : null,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(14),
                               onTap: () {
@@ -689,14 +690,14 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                         color: selected
-                                            ? (isBirthdayList ? Colors.pink : Theme.of(context).colorScheme.primary)
+                                            ? (isBirthdayList ? AppTheme.pinkStandard : Theme.of(context).colorScheme.primary)
                                             : Colors.transparent,
                                         width: selected ? 3 : 0,
                                       ),
                                       boxShadow: selected
                                           ? [
                                               BoxShadow(
-                                                color: (isBirthdayList ? Colors.pink : Theme.of(context).colorScheme.primary).withOpacity(0.18),
+                                                color: (isBirthdayList ? AppTheme.pinkStandard : Theme.of(context).colorScheme.primary).withOpacity(0.18),
                                                 blurRadius: 12,
                                                 offset: const Offset(0, 2),
                                               ),
@@ -718,8 +719,8 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                                 child: Text(
                                                   person.displayInitials,
                                                   style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: isBirthdayList ? Colors.pink : Colors.blueAccent,
+                                                    fontWeight: AppTheme.fontBold,
+                                                    color: isBirthdayList ? AppTheme.pinkStandard : AppTheme.blueStandard,
                                                     fontSize: 20,
                                                   ),
                                                 ),
@@ -731,10 +732,10 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                                   child: Container(
                                                     padding: const EdgeInsets.all(2),
                                                     decoration: BoxDecoration(
-                                                      color: isBirthdayList ? Colors.pink : Theme.of(context).colorScheme.secondary,
+                                                      color: isBirthdayList ? AppTheme.pinkStandard : Theme.of(context).colorScheme.secondary,
                                                       shape: BoxShape.circle,
                                                     ),
-                                                    child: Icon(Icons.star, size: 12, color: Colors.white),
+                                                    child: Icon(Icons.star, size: 12, color: AppTheme.white100),
                                                   ),
                                                 ),
                                               if (person.tags.isNotEmpty)
@@ -744,10 +745,10 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                                   child: Container(
                                                     padding: const EdgeInsets.all(2),
                                                     decoration: BoxDecoration(
-                                                      color: isBirthdayList ? Colors.pink : Colors.green,
+                                                      color: isBirthdayList ? AppTheme.pinkStandard : AppTheme.greenStandard,
                                                       shape: BoxShape.circle,
                                                     ),
-                                                    child: Icon(Icons.label, size: 12, color: Colors.white),
+                                                    child: Icon(Icons.label, size: 12, color: AppTheme.white100),
                                                   ),
                                                 ),
                                               if (isBirthdayList && person.birthDate != null)
@@ -757,10 +758,10 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                                   child: Container(
                                                     padding: const EdgeInsets.all(2),
                                                     decoration: BoxDecoration(
-                                                      color: Colors.orange,
+                                                      color: AppTheme.orangeStandard,
                                                       shape: BoxShape.circle,
                                                     ),
-                                                    child: Icon(Icons.cake, size: 12, color: Colors.white),
+                                                    child: Icon(Icons.cake, size: 12, color: AppTheme.white100),
                                                   ),
                                                 ),
                                             ],
@@ -772,19 +773,19 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                     Text(
                                       person.fullName,
                                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                        color: isBirthdayList ? Colors.pink : null,
-                                        fontWeight: isBirthdayList ? FontWeight.bold : null,
+                                        color: isBirthdayList ? AppTheme.pinkStandard : null,
+                                        fontWeight: isBirthdayList ? AppTheme.fontBold : null,
                                       ),
                                     ),
                                     if (isBirthdayList && person.age != null)
                                       Padding(
                                         padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text('(${person.age} ans)', style: TextStyle(color: Colors.pink)),
+                                        child: Text('(${person.age} ans)', style: TextStyle(color: AppTheme.pinkStandard)),
                                       ),
                                   ],
                                 ),
                                 subtitle: isBirthdayList && person.birthDate != null
-                                    ? Text('Né(e) le ${person.formattedBirthDate}', style: TextStyle(color: Colors.pink))
+                                    ? Text('Né(e) le ${person.formattedBirthDate}', style: TextStyle(color: AppTheme.pinkStandard))
                                     : Text(person.email),
                                 trailing: selected
                                     ? const SizedBox(

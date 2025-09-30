@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../shared/theme/app_theme.dart';
+import '../../../../theme.dart';
 import '../models/branham_sermon_model.dart';
 import '../services/admin_branham_sermon_service.dart';
 import '../services/branham_audio_player_service.dart';
@@ -112,10 +112,10 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur de chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
             action: SnackBarAction(
               label: 'Réessayer',
-              textColor: Colors.white,
+              textColor: AppTheme.white100,
               onPressed: () => _loadSermons(forceRefresh: true),
             ),
           ),
@@ -250,7 +250,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
           end: Alignment.bottomRight,
           colors: [
             AppTheme.primaryColor.withOpacity(0.1),
-            Colors.white,
+            AppTheme.white100,
           ],
         ),
         borderRadius: const BorderRadius.only(
@@ -259,7 +259,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: AppTheme.black100.withOpacity(0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -273,7 +273,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
               gradient: LinearGradient(
                 colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.8)],
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               boxShadow: [
                 BoxShadow(
                   color: AppTheme.primaryColor.withOpacity(0.3),
@@ -284,7 +284,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
             ),
             child: const Icon(
               Icons.headphones_rounded,
-              color: Colors.white,
+              color: AppTheme.white100,
               size: 32,
             ),
           ),
@@ -297,8 +297,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                   'Écouter le Message',
                   style: GoogleFonts.poppins(
                     fontSize: 26,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.grey[800],
+                    fontWeight: AppTheme.fontExtraBold,
+                    color: AppTheme.grey800,
                     letterSpacing: -0.5,
                   ),
                 ),
@@ -307,8 +307,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                   'Prédications audio de William Branham',
                   style: GoogleFonts.inter(
                     fontSize: 15,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
+                    color: AppTheme.grey600,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ],
@@ -331,10 +331,10 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
             const Color(0xFF232526),
           ],
         ),
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(AppTheme.radiusRound),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.18),
+            color: AppTheme.black100.withOpacity(0.18),
             blurRadius: 32,
             offset: const Offset(0, 12),
           ),
@@ -353,11 +353,11 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
             margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.04),
-              borderRadius: BorderRadius.circular(16),
+              color: AppTheme.white100.withOpacity(0.04),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.10),
+                  color: AppTheme.black100.withOpacity(0.10),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -396,7 +396,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                 maxHeight: 180,
               ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(32),
+                borderRadius: BorderRadius.circular(AppTheme.radiusRound),
                 boxShadow: [
                   BoxShadow(
                     color: AppTheme.primaryColor.withOpacity(0.3),
@@ -404,14 +404,14 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                     offset: const Offset(0, 8),
                   ),
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.6),
+                    color: AppTheme.black100.withOpacity(0.6),
                     blurRadius: 60,
                     offset: const Offset(0, 20),
                   ),
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(32),
+                borderRadius: BorderRadius.circular(AppTheme.radiusRound),
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -435,15 +435,15 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                               angle: _isPlaying ? _waveController.value * 6.28 : 0,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(32),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusRound),
                                   border: Border.all(
-                                    color: Colors.white.withOpacity(0.1),
+                                    color: AppTheme.white100.withOpacity(0.1),
                                     width: 2,
                                   ),
                                 ),
                                 child: Icon(
                                   Icons.album_rounded,
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: AppTheme.white100.withOpacity(0.8),
                                   size: 120,
                                 ),
                               ),
@@ -456,12 +456,12 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                         child: Container(
                           padding: const EdgeInsets.all(24),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.3),
+                            color: AppTheme.black100.withOpacity(0.3),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             Icons.music_note_rounded,
-                            color: Colors.white,
+                            color: AppTheme.white100,
                             size: 48,
                           ),
                         ),
@@ -491,8 +491,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
           _currentSermon?.title ?? 'Aucune prédication sélectionnée',
           style: GoogleFonts.poppins(
             fontSize: 22,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.white100,
             height: 1.2,
           ),
           textAlign: TextAlign.center,
@@ -505,8 +505,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
             '${_currentSermon!.date}${_currentSermon!.location.isNotEmpty ? ' - ' + _currentSermon!.location : ''}',
             style: GoogleFonts.inter(
               fontSize: 13,
-              color: Colors.white.withOpacity(0.7),
-              fontWeight: FontWeight.w500,
+              color: AppTheme.white100.withOpacity(0.7),
+              fontWeight: AppTheme.fontMedium,
             ),
             textAlign: TextAlign.center,
             maxLines: 1,
@@ -519,21 +519,21 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
   Widget _buildPlaylistButton() {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         gradient: LinearGradient(
           colors: [
-            Colors.white.withOpacity(0.1),
-            Colors.white.withOpacity(0.05),
+            AppTheme.white100.withOpacity(0.1),
+            AppTheme.white100.withOpacity(0.05),
           ],
         ),
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
+          color: AppTheme.white100.withOpacity(0.2),
         ),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           onTap: _showPlaylistBottomSheet,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -542,7 +542,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
               children: [
                 Icon(
                   Icons.queue_music_rounded,
-                  color: Colors.white.withOpacity(0.9),
+                  color: AppTheme.white100.withOpacity(0.9),
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -550,8 +550,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                   'Choisir une prédication',
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: Colors.white.withOpacity(0.9),
-                    fontWeight: FontWeight.w600,
+                    color: AppTheme.white100.withOpacity(0.9),
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
@@ -592,7 +592,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                 colors: [
                   AppTheme.primaryColor,
                   AppTheme.primaryColor.withOpacity(0.85),
-                  Colors.white.withOpacity(0.18),
+                  AppTheme.white100.withOpacity(0.18),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -612,7 +612,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                 onTap: _togglePlayPause,
                 child: Icon(
                   _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                  color: Colors.white,
+                  color: AppTheme.white100,
                   size: 44,
                 ),
               ),
@@ -649,7 +649,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
         shape: BoxShape.circle,
         gradient: LinearGradient(
           colors: [
-            Colors.white.withOpacity(0.08),
+            AppTheme.white100.withOpacity(0.08),
             AppTheme.primaryColor.withOpacity(0.12),
           ],
           begin: Alignment.topLeft,
@@ -657,13 +657,13 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.10),
+            color: AppTheme.black100.withOpacity(0.10),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
         border: Border.all(
-          color: Colors.white.withOpacity(0.13),
+          color: AppTheme.white100.withOpacity(0.13),
           width: 1.2,
         ),
       ),
@@ -674,7 +674,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
           onTap: onTap,
           child: Icon(
             icon,
-            color: Colors.white,
+            color: AppTheme.white100,
             size: size,
           ),
         ),
@@ -691,7 +691,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: AppTheme.primaryColor,
-              inactiveTrackColor: Colors.white.withOpacity(0.2),
+              inactiveTrackColor: AppTheme.white100.withOpacity(0.2),
               thumbColor: AppTheme.primaryColor,
               overlayColor: AppTheme.primaryColor.withOpacity(0.3),
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
@@ -721,16 +721,16 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                   _formatDuration(_currentPosition),
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.7),
-                    fontWeight: FontWeight.w500,
+                    color: AppTheme.white100.withOpacity(0.7),
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 Text(
                   _formatDuration(_totalDuration),
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.7),
-                    fontWeight: FontWeight.w500,
+                    color: AppTheme.white100.withOpacity(0.7),
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ],
@@ -818,7 +818,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
+              color: AppTheme.white100.withOpacity(0.3),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -838,8 +838,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                   'Prédications disponibles',
                   style: GoogleFonts.poppins(
                     fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    fontWeight: AppTheme.fontBold,
+                    color: AppTheme.white100,
                   ),
                 ),
                 const Spacer(),
@@ -847,7 +847,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(
                     Icons.close_rounded,
-                    color: Colors.white,
+                    color: AppTheme.white100,
                   ),
                 ),
               ],
@@ -884,16 +884,16 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(16),
+          color: AppTheme.white100.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: Border.all(
-            color: Colors.white.withOpacity(0.2),
+            color: AppTheme.white100.withOpacity(0.2),
           ),
         ),
         child: TextField(
           controller: _searchController,
           style: GoogleFonts.inter(
-            color: Colors.white,
+            color: AppTheme.white100,
             fontSize: 16,
           ),
           onChanged: (value) {
@@ -904,11 +904,11 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
           decoration: InputDecoration(
             hintText: 'Rechercher une prédication...',
             hintStyle: GoogleFonts.inter(
-              color: Colors.white.withOpacity(0.5),
+              color: AppTheme.white100.withOpacity(0.5),
             ),
             prefixIcon: Icon(
               Icons.search_rounded,
-              color: Colors.white.withOpacity(0.7),
+              color: AppTheme.white100.withOpacity(0.7),
             ),
             suffixIcon: _searchQuery.isNotEmpty
                 ? IconButton(
@@ -920,7 +920,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                     },
                     icon: Icon(
                       Icons.clear_rounded,
-                      color: Colors.white.withOpacity(0.7),
+                      color: AppTheme.white100.withOpacity(0.7),
                     ),
                   )
                 : null,
@@ -943,8 +943,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
       decoration: BoxDecoration(
         color: isCurrentSermon 
             ? AppTheme.primaryColor.withOpacity(0.2)
-            : Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
+            : AppTheme.white100.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
           color: isCurrentSermon 
               ? AppTheme.primaryColor.withOpacity(0.5)
@@ -954,7 +954,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           onTap: () {
             _selectSermon(sermon);
             Navigator.pop(context);
@@ -973,14 +973,14 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                   decoration: BoxDecoration(
                     color: isCurrentSermon 
                         ? AppTheme.primaryColor 
-                        : Colors.white.withOpacity(0.1),
+                        : AppTheme.white100.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     isCurrentSermon && _isPlaying
                         ? Icons.pause_rounded
                         : Icons.play_arrow_rounded,
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     size: 24,
                   ),
                 ),
@@ -996,8 +996,8 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                         sermon.title,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          fontWeight: AppTheme.fontSemiBold,
+                          color: AppTheme.white100,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -1007,7 +1007,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                         sermon.date,
                         style: GoogleFonts.inter(
                           fontSize: 14,
-                          color: Colors.white.withOpacity(0.7),
+                          color: AppTheme.white100.withOpacity(0.7),
                         ),
                       ),
                       if (sermon.location.isNotEmpty) ...[
@@ -1016,7 +1016,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                           sermon.location,
                           style: GoogleFonts.inter(
                             fontSize: 12,
-                            color: Colors.white.withOpacity(0.5),
+                            color: AppTheme.white100.withOpacity(0.5),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -1034,15 +1034,15 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppTheme.white100.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Text(
                       _formatDuration(sermon.duration!),
                       style: GoogleFonts.inter(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.7),
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.white100.withOpacity(0.7),
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -1074,7 +1074,7 @@ class _AudioPlayerTabModernState extends State<AudioPlayerTabModern>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.red,
+        backgroundColor: AppTheme.redStandard,
       ),
     );
   }

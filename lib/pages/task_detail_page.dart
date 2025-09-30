@@ -3,7 +3,7 @@ import '../models/task_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../widgets/task_comments_widget.dart';
 import 'task_form_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class TaskDetailPage extends StatefulWidget {
   final TaskModel task;
@@ -157,7 +157,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
       case 'in_progress':
         return AppTheme.warningColor;
       case 'cancelled':
-        return Colors.grey;
+        return AppTheme.grey500;
       default:
         return AppTheme.primaryColor;
     }
@@ -199,8 +199,8 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                 title: Text(
                   _currentTask!.title,
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    color: AppTheme.white100,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 background: Container(
@@ -249,14 +249,14 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                                 _currentTask!.isOverdue 
                                     ? Icons.warning 
                                     : Icons.schedule,
-                                color: Colors.white,
+                                color: AppTheme.white100,
                                 size: 16,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 _formatDateTime(_currentTask!.dueDate!),
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: AppTheme.white100,
                                   fontSize: 14,
                                 ),
                               ),
@@ -289,8 +289,8 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                     const PopupMenuItem<String>(
                       value: 'delete',
                       child: ListTile(
-                        leading: Icon(Icons.delete, color: Colors.red),
-                        title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                        leading: Icon(Icons.delete, color: AppTheme.redStandard),
+                        title: Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                       ),
                     ),
                   ],
@@ -350,21 +350,21 @@ class _TaskDetailPageState extends State<TaskDetailPage>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        color: AppTheme.white100.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+        border: Border.all(color: AppTheme.white100.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: Colors.white),
+          Icon(icon, size: 14, color: AppTheme.white100),
           const SizedBox(width: 4),
           Text(
             label,
             style: const TextStyle(
-              color: Colors.white,
+              color: AppTheme.white100,
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -516,7 +516,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -539,13 +539,13 @@ class _TaskDetailPageState extends State<TaskDetailPage>
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: Colors.grey[600]),
+          Icon(icon, size: 16, color: AppTheme.grey600),
           const SizedBox(width: 8),
           Text(
             '$label:',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
+              fontWeight: AppTheme.fontMedium,
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(width: 8),

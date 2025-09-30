@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/report.dart';
 import '../services/export_service.dart';
+import '../../../../theme.dart';
 
 /// Dialog pour l'export de rapports
 class ExportDialog extends StatefulWidget {
@@ -36,7 +37,7 @@ class _ExportDialogState extends State<ExportDialog> {
     return AlertDialog(
       title: const Row(
         children: [
-          Icon(Icons.file_download, color: Colors.blue),
+          Icon(Icons.file_download, color: AppTheme.blueStandard),
           SizedBox(width: 8),
           Text('Exporter le rapport'),
         ],
@@ -91,8 +92,8 @@ class _ExportDialogState extends State<ExportDialog> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(8),
+        color: AppTheme.blueStandard,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,20 +101,20 @@ class _ExportDialogState extends State<ExportDialog> {
           Text(
             widget.reportName,
             style: const TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               fontSize: 16,
             ),
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              Icon(Icons.calendar_today, size: 16, color: Colors.grey.shade600),
+              Icon(Icons.calendar_today, size: 16, color: AppTheme.grey500),
               const SizedBox(width: 4),
               Text(
                 'Généré le ${_formatDate(widget.reportData.generatedAt)}',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.shade600,
+                  color: AppTheme.grey500,
                 ),
               ),
             ],
@@ -121,13 +122,13 @@ class _ExportDialogState extends State<ExportDialog> {
           const SizedBox(height: 4),
           Row(
             children: [
-              Icon(Icons.data_usage, size: 16, color: Colors.grey.shade600),
+              Icon(Icons.data_usage, size: 16, color: AppTheme.grey500),
               const SizedBox(width: 4),
               Text(
                 '${widget.reportData.totalRows} lignes de données',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.shade600,
+                  color: AppTheme.grey500,
                 ),
               ),
             ],
@@ -146,7 +147,7 @@ class _ExportDialogState extends State<ExportDialog> {
         const Text(
           'Format d\'export',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 14,
           ),
         ),
@@ -177,7 +178,7 @@ class _ExportDialogState extends State<ExportDialog> {
         const Text(
           'Nom du fichier',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 14,
           ),
         ),
@@ -204,7 +205,7 @@ class _ExportDialogState extends State<ExportDialog> {
         const Text(
           'Options',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 14,
           ),
         ),
@@ -231,7 +232,7 @@ class _ExportDialogState extends State<ExportDialog> {
         const Text(
           'Aperçu des données',
           style: TextStyle(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             fontSize: 14,
           ),
         ),
@@ -239,8 +240,8 @@ class _ExportDialogState extends State<ExportDialog> {
         Container(
           height: 120,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppTheme.grey500),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: _buildPreviewContent(),
         ),
@@ -267,7 +268,7 @@ class _ExportDialogState extends State<ExportDialog> {
           Text(
             headers.join(' | '),
             style: const TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               fontSize: 12,
             ),
           ),
@@ -294,7 +295,7 @@ class _ExportDialogState extends State<ExportDialog> {
                 '... et ${widget.reportData.rows.length - 3} autres lignes',
                 style: TextStyle(
                   fontSize: 10,
-                  color: Colors.grey.shade600,
+                  color: AppTheme.grey500,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -309,7 +310,7 @@ class _ExportDialogState extends State<ExportDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Veuillez saisir un nom de fichier'),
-          backgroundColor: Colors.orange,
+          backgroundColor: AppTheme.orangeStandard,
         ),
       );
       return;
@@ -336,7 +337,7 @@ class _ExportDialogState extends State<ExportDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Rapport exporté avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
             action: SnackBarAction(
               label: 'Voir',
               onPressed: () {
@@ -361,7 +362,7 @@ class _ExportDialogState extends State<ExportDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'export: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

@@ -4,7 +4,7 @@ import '../models/event_model.dart';
 import '../models/event_recurrence_model.dart';
 import '../services/events_firebase_service.dart';
 import '../services/event_recurrence_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
 import '../widgets/event_recurrence_widget.dart';
@@ -236,7 +236,7 @@ class _EventFormPageState extends State<EventFormPage>
             duration: const Duration(seconds: 5),
             action: SnackBarAction(
               label: 'Diagnostic',
-              textColor: Colors.white,
+              textColor: AppTheme.white100,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -324,7 +324,7 @@ class _EventFormPageState extends State<EventFormPage>
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Événement créé mais erreur dans la récurrence: $e'),
-                  backgroundColor: Colors.orange,
+                  backgroundColor: AppTheme.orangeStandard,
                 ),
               );
             }
@@ -407,7 +407,7 @@ class _EventFormPageState extends State<EventFormPage>
       appBar: AppBar(
         title: Text(widget.event == null ? 'Nouvel événement' : 'Modifier l\'événement'),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           if (_isLoading)
@@ -418,7 +418,7 @@ class _EventFormPageState extends State<EventFormPage>
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                 ),
               ),
             )
@@ -428,8 +428,8 @@ class _EventFormPageState extends State<EventFormPage>
               child: const Text(
                 'Sauvegarder',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                  color: AppTheme.white100,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ),
@@ -607,15 +607,15 @@ class _EventFormPageState extends State<EventFormPage>
       width: double.infinity,
       height: 200,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(color: AppTheme.backgroundColor),
       ),
       child: _imageUrl != null
           ? Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   child: Image.network(
                     _imageUrl!,
                     width: double.infinity,
@@ -631,8 +631,8 @@ class _EventFormPageState extends State<EventFormPage>
                     onPressed: () => setState(() => _imageUrl = null),
                     icon: const Icon(Icons.close),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.black54,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppTheme.black100,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
                 ),
@@ -644,7 +644,7 @@ class _EventFormPageState extends State<EventFormPage>
                     icon: const Icon(Icons.edit),
                     style: IconButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppTheme.white100,
                     ),
                   ),
                 ),
@@ -657,13 +657,13 @@ class _EventFormPageState extends State<EventFormPage>
   Widget _buildImagePlaceholder() {
     return InkWell(
       onTap: _pickEventImage,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       child: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           color: AppTheme.backgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: Border.all(
             color: AppTheme.textTertiaryColor.withOpacity(0.3),
             style: BorderStyle.solid,
@@ -698,11 +698,11 @@ class _EventFormPageState extends State<EventFormPage>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -719,7 +719,7 @@ class _EventFormPageState extends State<EventFormPage>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     icon,
@@ -731,7 +731,7 @@ class _EventFormPageState extends State<EventFormPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
@@ -758,7 +758,7 @@ class _EventFormPageState extends State<EventFormPage>
         labelText: label,
         prefixIcon: Icon(icon),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         filled: true,
         fillColor: AppTheme.backgroundColor,
@@ -783,7 +783,7 @@ class _EventFormPageState extends State<EventFormPage>
         labelText: label,
         prefixIcon: Icon(icon),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         filled: true,
         fillColor: AppTheme.backgroundColor,
@@ -807,7 +807,7 @@ class _EventFormPageState extends State<EventFormPage>
           labelText: label,
           prefixIcon: const Icon(Icons.calendar_today),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           filled: true,
           fillColor: AppTheme.backgroundColor,
@@ -830,7 +830,7 @@ class _EventFormPageState extends State<EventFormPage>
           labelText: label,
           prefixIcon: const Icon(Icons.access_time),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           filled: true,
           fillColor: AppTheme.backgroundColor,
@@ -852,7 +852,7 @@ class _EventFormPageState extends State<EventFormPage>
         Text(
           'Visibilité',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         const SizedBox(height: 8),
@@ -901,7 +901,7 @@ class _EventFormPageState extends State<EventFormPage>
               labelText: 'Nombre maximum de participants',
               prefixIcon: const Icon(Icons.people),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               filled: true,
               fillColor: AppTheme.backgroundColor,
@@ -961,7 +961,7 @@ class _EventFormPageState extends State<EventFormPage>
               labelText: 'Statut initial',
               prefixIcon: const Icon(Icons.flag),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               filled: true,
               fillColor: AppTheme.backgroundColor,

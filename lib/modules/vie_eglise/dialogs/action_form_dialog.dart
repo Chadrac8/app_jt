@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
@@ -94,10 +94,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
     AppTheme.warningColor,
     AppTheme.errorColor,
     Colors.purple,
-    Colors.orange,
+    AppTheme.orangeStandard,
     Colors.teal,
     Colors.indigo,
-    Colors.pink,
+    AppTheme.pinkStandard,
   ];
 
   @override
@@ -153,7 +153,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             : widget.action == null 
                 ? 'Créer une action'
                 : 'Modifier l\'action',
-        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
       ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
@@ -195,7 +195,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
                   height: 16,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.white,
+                    color: AppTheme.white100,
                   ),
                 )
               : Text(
@@ -215,7 +215,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           'Informations de base',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -226,10 +226,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             labelText: 'Titre *',
             labelStyle: GoogleFonts.poppins(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               borderSide: BorderSide(color: AppTheme.primaryColor),
             ),
           ),
@@ -248,10 +248,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             labelText: 'Description *',
             labelStyle: GoogleFonts.poppins(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               borderSide: BorderSide(color: AppTheme.primaryColor),
             ),
           ),
@@ -271,10 +271,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             labelText: 'Groupe',
             labelStyle: GoogleFonts.poppins(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               borderSide: BorderSide(color: AppTheme.primaryColor),
             ),
           ),
@@ -307,7 +307,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           'Apparence',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -316,7 +316,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           'Icône',
           style: GoogleFonts.poppins(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -324,7 +324,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           height: 120,
           decoration: BoxDecoration(
             border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
             padding: const EdgeInsets.all(8),
@@ -371,7 +371,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           'Couleur',
           style: GoogleFonts.poppins(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -379,7 +379,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           height: 60,
           decoration: BoxDecoration(
             border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
             padding: const EdgeInsets.all(8),
@@ -403,7 +403,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
                   decoration: BoxDecoration(
                     color: color,
                     border: Border.all(
-                      color: isSelected ? Colors.black : Colors.grey,
+                      color: isSelected ? AppTheme.black100 : AppTheme.grey500,
                       width: isSelected ? 3 : 1,
                     ),
                     borderRadius: BorderRadius.circular(6),
@@ -425,7 +425,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           'Configuration de l\'action',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -436,10 +436,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             labelText: 'Type d\'action *',
             labelStyle: GoogleFonts.poppins(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               borderSide: BorderSide(color: AppTheme.primaryColor),
             ),
           ),
@@ -464,10 +464,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
               labelText: 'Module cible',
               labelStyle: GoogleFonts.poppins(),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 borderSide: BorderSide(color: AppTheme.primaryColor),
               ),
             ),
@@ -491,10 +491,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
                 labelText: 'Route cible',
                 labelStyle: GoogleFonts.poppins(),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   borderSide: BorderSide(color: AppTheme.primaryColor),
                 ),
               ),
@@ -524,7 +524,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           'Options avancées',
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -538,10 +538,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
                   labelText: 'Ordre d\'affichage',
                   labelStyle: GoogleFonts.poppins(),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     borderSide: BorderSide(color: AppTheme.primaryColor),
                   ),
                 ),

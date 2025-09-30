@@ -7,6 +7,7 @@ import 'views/automation_detail_view.dart';
 import 'views/automation_form_view.dart';
 import 'views/automation_execution_detail_view.dart';
 import 'services/automation_service.dart';
+import '../../../theme.dart';
 
 /// Module d'automatisation inspiré de Planning Center Online
 class AutomationModule extends BaseModule {
@@ -95,7 +96,7 @@ class AutomationModule extends BaseModule {
                       'Automatisations',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ],
@@ -111,8 +112,8 @@ class AutomationModule extends BaseModule {
                           '${stats['active'] ?? 0}',
                           style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.greenStandard,
                           ),
                         ),
                         const Text(
@@ -128,8 +129,8 @@ class AutomationModule extends BaseModule {
                           '${stats['totalExecutions'] ?? 0}',
                           style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.blueStandard,
                           ),
                         ),
                         const Text(
@@ -145,8 +146,8 @@ class AutomationModule extends BaseModule {
                           '${(stats['averageSuccessRate'] ?? 0.0).toStringAsFixed(0)}%',
                           style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange,
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.orangeStandard,
                           ),
                         ),
                         const Text(
@@ -210,7 +211,7 @@ class AutomationExecutionDetailView extends StatelessWidget {
                       'Automatisation: ${execution?.automationName ?? "Inconnu"}',
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -228,14 +229,14 @@ class AutomationExecutionDetailView extends StatelessWidget {
                       const Text(
                         'Erreur:',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.redStandard,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         execution.error,
-                        style: const TextStyle(color: Colors.red),
+                        style: const TextStyle(color: AppTheme.redStandard),
                       ),
                     ],
                   ],
@@ -248,7 +249,7 @@ class AutomationExecutionDetailView extends StatelessWidget {
                 'Actions Exécutées',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               const SizedBox(height: 8),
@@ -260,7 +261,7 @@ class AutomationExecutionDetailView extends StatelessWidget {
                       width: 12,
                       height: 12,
                       decoration: BoxDecoration(
-                        color: actionExecution.isSuccessful ? Colors.green : Colors.red,
+                        color: actionExecution.isSuccessful ? AppTheme.greenStandard : AppTheme.redStandard,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -292,7 +293,7 @@ class AutomationExecutionDetailView extends StatelessWidget {
             width: 100,
             child: Text(
               '$label:',
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: AppTheme.fontMedium),
             ),
           ),
           Expanded(child: Text(value)),

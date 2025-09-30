@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import './bible_reading_view.dart';
 
 class BibleAdminView extends StatefulWidget {
@@ -36,7 +36,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
         title: Text(
           'Bible - Administration',
           style: GoogleFonts.inter(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: AppTheme.primaryColor,
           ),
         ),
@@ -89,7 +89,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
           controller: _tabController,
           indicatorColor: AppTheme.primaryColor,
           labelColor: AppTheme.primaryColor,
-          unselectedLabelColor: Colors.grey[600],
+          unselectedLabelColor: AppTheme.grey600,
           tabs: const [
             Tab(
               icon: Icon(Icons.menu_book),
@@ -139,7 +139,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                       'Plans de Lecture',
                       style: GoogleFonts.inter(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
                     ),
@@ -147,7 +147,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                       'Gérez les plans de lecture disponibles',
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -159,7 +159,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                 label: const Text('Nouveau Plan'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                 ),
               ),
             ],
@@ -196,7 +196,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                       'Études Bibliques',
                       style: GoogleFonts.inter(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
                     ),
@@ -204,7 +204,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                       'Gérez les études bibliques disponibles',
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -216,7 +216,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                 label: const Text('Nouvelle Étude'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                 ),
               ),
             ],
@@ -244,7 +244,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             'Plans Actifs',
             '12',
             Icons.playlist_play,
-            Colors.green,
+            AppTheme.greenStandard,
           ),
         ),
         const SizedBox(width: 12),
@@ -253,7 +253,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             'Utilisateurs',
             '247',
             Icons.people,
-            Colors.blue,
+            AppTheme.blueStandard,
           ),
         ),
         const SizedBox(width: 12),
@@ -262,7 +262,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             'Completions',
             '89%',
             Icons.check_circle,
-            Colors.orange,
+            AppTheme.orangeStandard,
           ),
         ),
       ],
@@ -306,11 +306,11 @@ class _BibleAdminViewState extends State<BibleAdminView>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppTheme.black100.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -322,7 +322,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(icon, color: color, size: 24),
           ),
@@ -331,7 +331,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             value,
             style: GoogleFonts.inter(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -339,7 +339,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             title,
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
             textAlign: TextAlign.center,
           ),
@@ -426,14 +426,14 @@ class _BibleAdminViewState extends State<BibleAdminView>
                         plan['title'],
                         style: GoogleFonts.inter(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       Text(
                         plan['description'],
                         style: GoogleFonts.inter(
                           fontSize: 14,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -496,14 +496,14 @@ class _BibleAdminViewState extends State<BibleAdminView>
                         study['title'],
                         style: GoogleFonts.inter(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       Text(
                         study['description'],
                         style: GoogleFonts.inter(
                           fontSize: 14,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -556,19 +556,19 @@ class _BibleAdminViewState extends State<BibleAdminView>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
+        color: AppTheme.grey100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: Colors.grey[600]),
+          Icon(icon, size: 14, color: AppTheme.grey600),
           const SizedBox(width: 4),
           Text(
             text,
             style: GoogleFonts.inter(
               fontSize: 12,
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
         ],
@@ -577,18 +577,18 @@ class _BibleAdminViewState extends State<BibleAdminView>
   }
 
   Widget _buildStatusChip(String status) {
-    final color = status == 'Actif' ? Colors.green : Colors.orange;
+    final color = status == 'Actif' ? AppTheme.greenStandard : AppTheme.orangeStandard;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Text(
         status,
         style: GoogleFonts.inter(
           fontSize: 12,
-          fontWeight: FontWeight.w500,
+          fontWeight: AppTheme.fontMedium,
           color: color,
         ),
       ),

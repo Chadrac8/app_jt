@@ -4,6 +4,7 @@ import '../models/service_model.dart';
 import '../models/person_model.dart';
 import '../services/services_firebase_service.dart';
 import '../services/firebase_service.dart';
+import '../../theme.dart';
 
 class TeamAssignmentsPage extends StatefulWidget {
   final TeamModel team;
@@ -131,7 +132,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
           ],
         ),
         backgroundColor: teamColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           IconButton(
@@ -226,7 +227,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceVariant,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Row(
             children: [
@@ -237,7 +238,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                       '${_assignments.length}',
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: _parseColor(widget.team.color),
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const Text('Total'),
@@ -255,8 +256,8 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                     Text(
                       '${_assignments.where((a) => a.isConfirmed || a.isAccepted).length}',
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
+                        color: AppTheme.greenStandard,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const Text('Confirmées'),
@@ -274,8 +275,8 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                     Text(
                       '${_assignments.where((a) => a.isPending).length}',
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.bold,
+                        color: AppTheme.orangeStandard,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const Text('En attente'),
@@ -339,7 +340,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                   ),
                   title: Text(
                     person.fullName,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,7 +363,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _getStatusColor(assignment.status).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
                         color: _getStatusColor(assignment.status).withOpacity(0.3),
                       ),
@@ -372,7 +373,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                       style: TextStyle(
                         color: _getStatusColor(assignment.status),
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
@@ -390,14 +391,14 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
     switch (status) {
       case 'confirmed':
       case 'accepted':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'declined':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'invited':
       case 'pending':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 

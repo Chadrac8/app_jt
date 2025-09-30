@@ -6,6 +6,7 @@ import '../../models/pepite_or_model.dart';
 import '../../services/pepite_or_firebase_service.dart';
 import '../../shared/widgets/custom_card.dart';
 import 'pepite_or_form_page.dart';
+import '../../../theme.dart';
 
 class PepiteOrDetailPage extends StatefulWidget {
   final PepiteOrModel pepite;
@@ -47,12 +48,12 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
           'Pépite d\'Or',
           style: GoogleFonts.poppins(
             fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+            fontWeight: AppTheme.fontSemiBold,
+            color: AppTheme.white100,
           ),
         ),
         backgroundColor: const Color(0xFF8B4513),
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         actions: [
           IconButton(
@@ -90,9 +91,9 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 value: 'supprimer',
                 child: Row(
                   children: [
-                    Icon(Icons.delete, size: 18, color: Colors.red),
+                    Icon(Icons.delete, size: 18, color: AppTheme.redStandard),
                     SizedBox(width: 8),
-                    Text('Supprimer', style: TextStyle(color: Colors.red)),
+                    Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                   ],
                 ),
               ),
@@ -130,15 +131,15 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: _pepite.estPubliee ? Colors.green : Colors.orange,
-                    borderRadius: BorderRadius.circular(20),
+                    color: _pepite.estPubliee ? AppTheme.greenStandard : AppTheme.orangeStandard,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   ),
                   child: Text(
                     _pepite.estPubliee ? 'Publiée' : 'Brouillon',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: AppTheme.white100,
                     ),
                   ),
                 ),
@@ -151,14 +152,14 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: const Color(0xFF8B4513).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           tag,
                           style: GoogleFonts.poppins(
                             fontSize: 11,
                             color: const Color(0xFF8B4513),
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       );
@@ -172,7 +173,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
               _pepite.theme,
               style: GoogleFonts.poppins(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
@@ -181,30 +182,30 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
               _pepite.description,
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                color: Colors.grey[700],
+                color: AppTheme.grey700,
                 height: 1.5,
               ),
             ),
             const SizedBox(height: 20),
             Row(
               children: [
-                Icon(Icons.person, size: 16, color: Colors.grey[600]),
+                Icon(Icons.person, size: 16, color: AppTheme.grey600),
                 const SizedBox(width: 6),
                 Text(
                   _pepite.nomAuteur,
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
                 const SizedBox(width: 20),
-                Icon(Icons.schedule, size: 16, color: Colors.grey[600]),
+                Icon(Icons.schedule, size: 16, color: AppTheme.grey600),
                 const SizedBox(width: 6),
                 Text(
                   '${_pepite.dureeDeeLectureMinutes} min de lecture',
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
               ],
@@ -213,23 +214,23 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(Icons.visibility, size: 16, color: Colors.grey[600]),
+                  Icon(Icons.visibility, size: 16, color: AppTheme.grey600),
                   const SizedBox(width: 6),
                   Text(
                     '${_pepite.nbVues} vue${_pepite.nbVues > 1 ? 's' : ''}',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                   const SizedBox(width: 20),
-                  Icon(Icons.share, size: 16, color: Colors.grey[600]),
+                  Icon(Icons.share, size: 16, color: AppTheme.grey600),
                   const SizedBox(width: 6),
                   Text(
                     '${_pepite.nbPartages} partage${_pepite.nbPartages > 1 ? 's' : ''}',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                     ),
                   ),
                 ],
@@ -249,7 +250,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
           'Citations (${_pepite.citations.length})',
           style: GoogleFonts.poppins(
             fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: const Color(0xFF8B4513),
           ),
         ),
@@ -270,7 +271,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -283,15 +284,15 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                   height: 32,
                   decoration: BoxDecoration(
                     color: const Color(0xFF8B4513),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: Center(
                     child: Text(
                       '$numero',
                       style: GoogleFonts.poppins(
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        fontWeight: AppTheme.fontBold,
+                        color: AppTheme.white100,
                       ),
                     ),
                   ),
@@ -309,8 +310,8 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.circular(8),
+                color: AppTheme.grey50,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 border: const Border(
                   left: BorderSide(
                     width: 4,
@@ -323,7 +324,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   height: 1.6,
-                  color: Colors.grey[800],
+                  color: AppTheme.grey800,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -335,7 +336,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                   '— ${citation.auteur}',
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: const Color(0xFF8B4513),
                   ),
                 ),
@@ -345,7 +346,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                     '(${citation.reference})',
                     style: GoogleFonts.poppins(
                       fontSize: 13,
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -369,7 +370,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
               'Informations',
               style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
@@ -408,7 +409,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icone, size: 18, color: Colors.grey[600]),
+          Icon(icone, size: 18, color: AppTheme.grey600),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -418,8 +419,8 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                   label,
                   style: GoogleFonts.poppins(
                     fontSize: 13,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
+                    color: AppTheme.grey600,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -427,7 +428,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                   valeur,
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Colors.grey[800],
+                    color: AppTheme.grey800,
                   ),
                 ),
               ],
@@ -475,7 +476,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors du partage: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -563,7 +564,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
             content: Text(
               publier ? 'Pépite publiée avec succès' : 'Pépite dépubliée',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -572,7 +573,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -599,7 +600,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.redStandard),
             child: const Text('Supprimer'),
           ),
         ],
@@ -618,7 +619,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Pépite supprimée avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -627,7 +628,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
           setState(() {

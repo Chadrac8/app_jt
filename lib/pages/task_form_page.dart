@@ -5,7 +5,7 @@ import '../models/person_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../services/firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../image_upload.dart';
 
 class TaskFormPage extends StatefulWidget {
@@ -554,7 +554,7 @@ class _TaskFormPageState extends State<TaskFormPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
@@ -651,7 +651,7 @@ class _TaskFormPageState extends State<TaskFormPage>
         child: Text(
           date != null ? DateFormat('dd/MM/yyyy').format(date) : 'Sélectionner',
           style: TextStyle(
-            color: date != null ? null : Colors.grey[600],
+            color: date != null ? null : AppTheme.grey600,
           ),
         ),
       ),
@@ -670,7 +670,7 @@ class _TaskFormPageState extends State<TaskFormPage>
         child: Text(
           time != null ? time.format(context) : 'Sélectionner',
           style: TextStyle(
-            color: time != null ? null : Colors.grey[600],
+            color: time != null ? null : AppTheme.grey600,
           ),
         ),
       ),
@@ -721,7 +721,7 @@ class _TaskFormPageState extends State<TaskFormPage>
         child: Text(
           _taskListId != null ? 'Liste sélectionnée' : 'Aucune liste',
           style: TextStyle(
-            color: _taskListId != null ? null : Colors.grey[600],
+            color: _taskListId != null ? null : AppTheme.grey600,
           ),
         ),
       ),

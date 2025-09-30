@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class EventStatisticsView extends StatefulWidget {
   final EventModel event;
@@ -150,11 +150,11 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -171,7 +171,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     Icons.analytics,
@@ -183,7 +183,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 Text(
                   'Vue d\'ensemble',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
@@ -247,7 +247,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.2)),
       ),
       child: Column(
@@ -261,7 +261,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
           Text(
             value,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -293,11 +293,11 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -314,7 +314,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.secondaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     Icons.trending_up,
@@ -326,7 +326,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 Text(
                   'Évolution des inscriptions',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
@@ -399,7 +399,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                             radius: 4,
                             color: AppTheme.secondaryColor,
                             strokeWidth: 2,
-                            strokeColor: Colors.white,
+                            strokeColor: AppTheme.white100,
                           );
                         },
                       ),
@@ -430,8 +430,8 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         radius: 60,
         titleStyle: const TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
+          fontWeight: AppTheme.fontBold,
+          color: AppTheme.white100,
         ),
       ),
       if (_statistics!.waitingRegistrations > 0)
@@ -442,8 +442,8 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
           radius: 60,
           titleStyle: const TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.white100,
           ),
         ),
       if (_statistics!.cancelledRegistrations > 0)
@@ -454,8 +454,8 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
           radius: 60,
           titleStyle: const TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+            fontWeight: AppTheme.fontBold,
+            color: AppTheme.white100,
           ),
         ),
     ];
@@ -463,11 +463,11 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -484,7 +484,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.tertiaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     Icons.pie_chart,
@@ -496,7 +496,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 Text(
                   'Répartition par statut',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
@@ -565,7 +565,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
           Text(
             '$value',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
         ],
@@ -577,11 +577,11 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -598,7 +598,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.warningColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     Icons.speed,
@@ -610,7 +610,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 Text(
                   'Taux et performances',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
@@ -651,13 +651,13 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
             Text(
               label,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             Text(
               '${(value * 100).round()}%',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: color,
               ),
             ),
@@ -685,11 +685,11 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -706,7 +706,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     Icons.quiz,
@@ -718,7 +718,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 Text(
                   'Analyse des réponses',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Modèle représentant un chant dans le recueil
 class Song {
   final String? id;
+  final int? number;
   final String title;
   final String? subtitle;
   final String? author;
@@ -28,6 +29,7 @@ class Song {
 
   const Song({
     this.id,
+    this.number,
     required this.title,
     this.subtitle,
     this.author,
@@ -56,6 +58,7 @@ class Song {
   factory Song.fromMap(Map<String, dynamic> map, String id) {
     return Song(
       id: id,
+      number: map['number'],
       title: map['title'] ?? '',
       subtitle: map['subtitle'],
       author: map['author'],
@@ -84,6 +87,7 @@ class Song {
   /// Convertir le Song en Map pour Firestore
   Map<String, dynamic> toMap() {
     return {
+      'number': number,
       'title': title,
       'subtitle': subtitle,
       'author': author,
@@ -112,6 +116,7 @@ class Song {
   /// Créer une copie du Song avec des modifications
   Song copyWith({
     String? id,
+    int? number,
     String? title,
     String? subtitle,
     String? author,
@@ -137,6 +142,7 @@ class Song {
   }) {
     return Song(
       id: id ?? this.id,
+      number: number ?? this.number,
       title: title ?? this.title,
       subtitle: subtitle ?? this.subtitle,
       author: author ?? this.author,

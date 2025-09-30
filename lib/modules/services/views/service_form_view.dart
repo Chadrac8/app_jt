@@ -5,6 +5,7 @@ import '../services/services_service.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
+import '../../../../theme.dart';
 
 
 
@@ -156,7 +157,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                 children: [
                   const Text(
                     'Informations de base',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
                   ),
                   const SizedBox(height: 16),
                   
@@ -246,7 +247,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                 children: [
                   const Text(
                     'Équipements nécessaires',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
                   ),
                   const SizedBox(height: 12),
                   
@@ -300,7 +301,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                 children: [
                   const Text(
                     'Planification',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
                   ),
                   const SizedBox(height: 16),
                   
@@ -344,19 +345,19 @@ class _ServiceFormViewState extends State<ServiceFormView>
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.blue[200]!),
+                      color: AppTheme.grey50,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                      border: Border.all(color: AppTheme.grey200),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.timer, color: Colors.blue),
+                        const Icon(Icons.timer, color: AppTheme.blueStandard),
                         const SizedBox(width: 8),
                         Text(
                           'Durée: ${_calculateDuration()}',
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.blueStandard,
                           ),
                         ),
                       ],
@@ -377,7 +378,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                 children: [
                   const Text(
                     'Récurrence',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
                   ),
                   
                   SwitchListTile(
@@ -395,17 +396,17 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.orange[50],
-                        borderRadius: BorderRadius.circular(8),
+                        color: AppTheme.grey50,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.info, color: Colors.orange),
+                          Icon(Icons.info, color: AppTheme.orangeStandard),
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               'Les paramètres de récurrence pourront être configurés après la création.',
-                              style: TextStyle(color: Colors.orange),
+                              style: TextStyle(color: AppTheme.orangeStandard),
                             ),
                           ),
                         ],
@@ -434,7 +435,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                 children: [
                   const Text(
                     'Couleur du service',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
                   ),
                   const SizedBox(height: 16),
                   
@@ -454,12 +455,12 @@ class _ServiceFormViewState extends State<ServiceFormView>
                             color: Color(int.parse(color.replaceFirst('#', '0xff'))),
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: isSelected ? Colors.black : Colors.transparent,
+                              color: isSelected ? AppTheme.black100 : Colors.transparent,
                               width: 3,
                             ),
                           ),
                           child: isSelected
-                              ? const Icon(Icons.check, color: Colors.white)
+                              ? const Icon(Icons.check, color: AppTheme.white100)
                               : null,
                         ),
                       );
@@ -483,7 +484,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                       const Expanded(
                         child: Text(
                           'Image du service',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
                         ),
                       ),
                       ElevatedButton.icon(
@@ -506,12 +507,12 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     height: 120,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey[300]!),
-                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppTheme.grey300!),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: widget.service?.imageUrl != null
                         ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                             child: Image.network(
                               widget.service!.imageUrl!,
                               fit: BoxFit.cover,
@@ -520,7 +521,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.image, size: 40, color: Colors.grey),
+                                      Icon(Icons.image, size: 40, color: AppTheme.grey500),
                                       Text('Image non disponible'),
                                     ],
                                   ),
@@ -532,7 +533,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.image, size: 40, color: Colors.grey),
+                                Icon(Icons.image, size: 40, color: AppTheme.grey500),
                                 Text('Une image sera générée automatiquement'),
                               ],
                             ),
@@ -560,7 +561,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                 children: [
                   const Text(
                     'Diffusion en ligne',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
                   ),
                   
                   SwitchListTile(
@@ -601,7 +602,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                 children: [
                   const Text(
                     'Notes additionnelles',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
                   ),
                   const SizedBox(height: 12),
                   

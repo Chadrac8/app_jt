@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/permission_model.dart';
-import '../services/permission_provider.dart';
+import '../providers/permission_provider.dart';
+import '../services/roles_permissions_service.dart';
+import '../../../theme.dart';
 
+/// Dialogue de création/édition de rôles avec Material Design 3
 class CreateRoleDialog extends StatefulWidget {
-  final Role? role;
+  final Role? roleToEdit;
+  final Function(Role)? onRoleCreated;
 
-  const CreateRoleDialog({super.key, this.role});
+  const CreateRoleDialog({
+    super.key,
+    this.roleToEdit,
+    this.onRoleCreated,
+  });
 
   @override
   State<CreateRoleDialog> createState() => _CreateRoleDialogState();
@@ -41,13 +49,13 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
   }
 
   void _initializeForm() {
-    if (widget.role != null) {
-      _nameController.text = widget.role!.name;
-      _descriptionController.text = widget.role!.description;
-      _selectedColor = widget.role!.color;
-      _selectedIcon = widget.role!.icon;
-      _isActive = widget.role!.isActive;
-      _selectedPermissions = Map.from(widget.role!.modulePermissions);
+    if (widget.roleToEdit != null) {
+      _nameController.text = widget.roleToEdit!.name;
+      _descriptionController.text = widget.roleToEdit!.description;
+      _selectedColor = widget.roleToEdit!.color;
+      _selectedIcon = widget.roleToEdit!.icon;
+      _isActive = widget.roleToEdit!.isActive;
+      _selectedPermissions = Map.from(widget.roleToEdit!.modulePermissions);
     }
   }
 
@@ -72,7 +80,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
               children: [
                 Expanded(
                   child: Text(
-                    widget.role == null ? 'Créer un rôle' : 'Modifier le rôle',
+                    widget.roleToEdit == null ? 'Créer un rôle' : 'Modifier le rôle',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
@@ -115,7 +123,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
         Text(
           'Informations de base',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -165,7 +173,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
         Text(
           'Apparence',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
         const SizedBox(height: 16),
@@ -175,7 +183,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: Border.all(color: Theme.of(context).dividerColor),
           ),
           child: Row(
@@ -184,7 +192,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: _parseColor(_selectedColor).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Icon(
                   _parseIcon(_selectedIcon),
@@ -200,7 +208,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                     Text(
                       _nameController.text.isEmpty ? 'Nom du rôle' : _nameController.text,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     Text(
@@ -208,7 +216,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                           ? 'Description du rôle' 
                           : _descriptionController.text,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
+                        color: AppTheme.grey600,
                       ),
                     ),
                   ],
@@ -224,7 +232,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
         Text(
           'Couleur',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -244,14 +252,14 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                 height: 40,
                 decoration: BoxDecoration(
                   color: _parseColor(color),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   border: Border.all(
-                    color: isSelected ? Colors.black : Colors.transparent,
+                    color: isSelected ? AppTheme.black100 : Colors.transparent,
                     width: 2,
                   ),
                 ),
                 child: isSelected 
-                    ? const Icon(Icons.check, color: Colors.white)
+                    ? const Icon(Icons.check, color: AppTheme.white100)
                     : null,
               ),
             );
@@ -264,7 +272,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
         Text(
           'Icône',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         const SizedBox(height: 8),
@@ -285,8 +293,8 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                 decoration: BoxDecoration(
                   color: isSelected 
                       ? _parseColor(_selectedColor).withOpacity(0.2)
-                      : Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+                      : AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   border: Border.all(
                     color: isSelected 
                         ? _parseColor(_selectedColor)
@@ -298,7 +306,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                   _parseIcon(iconName),
                   color: isSelected 
                       ? _parseColor(_selectedColor)
-                      : Colors.grey[600],
+                      : AppTheme.grey600,
                   size: 24,
                 ),
               ),
@@ -321,7 +329,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                   child: Text(
                     'Permissions',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -341,7 +349,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             
             // Modules avec permissions
             ...AppModule.allModules.map((module) {
-              final modulePermissions = provider.getPermissionsForModule(module.id);
+              final modulePermissions = provider.getModulePermissions(module.id);
               if (modulePermissions.isEmpty) return const SizedBox.shrink();
               
               return _buildModulePermissionCard(module, modulePermissions);
@@ -367,11 +375,11 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Text(
                   '$selectedCount',
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                  style: const TextStyle(color: AppTheme.white100, fontSize: 12),
                 ),
               )
             : null,
@@ -446,7 +454,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : Text(widget.role == null ? 'Créer' : 'Modifier'),
+                : Text(widget.roleToEdit == null ? 'Créer' : 'Modifier'),
           ),
         ),
       ],
@@ -477,7 +485,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
     setState(() {
       _selectedPermissions.clear();
       for (final module in AppModule.allModules) {
-        final permissions = provider.getPermissionsForModule(module.id);
+        final permissions = provider.getModulePermissions(module.id);
         if (permissions.isNotEmpty) {
           _selectedPermissions[module.id] = permissions.map((p) => p.id).toList();
         }
@@ -526,32 +534,43 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
       final provider = Provider.of<PermissionProvider>(context, listen: false);
       
       final role = Role(
-        id: widget.role?.id ?? '',
+        id: widget.roleToEdit?.id ?? '',
         name: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
         color: _selectedColor,
         icon: _selectedIcon,
         modulePermissions: _selectedPermissions,
         isActive: _isActive,
-        createdAt: widget.role?.createdAt ?? DateTime.now(),
+        createdAt: widget.roleToEdit?.createdAt ?? DateTime.now(),
         updatedAt: DateTime.now(),
-        createdBy: widget.role?.createdBy,
+        createdBy: widget.roleToEdit?.createdBy,
         lastModifiedBy: provider.currentUserId,
       );
 
-      bool success;
-      if (widget.role == null) {
-        success = await provider.createRole(role);
+      bool success = false;
+      if (widget.roleToEdit == null) {
+        // Créer un nouveau rôle
+        final roleId = await RolesPermissionsService.createRole(
+          role, 
+          createdBy: provider.currentUserId ?? 'system'
+        );
+        success = roleId.isNotEmpty;
       } else {
-        success = await provider.updateRole(widget.role!.id, role);
+        // Mettre à jour un rôle existant
+        await RolesPermissionsService.updateRole(
+          widget.roleToEdit!.id, 
+          role, 
+          updatedBy: provider.currentUserId ?? 'system'
+        );
+        success = true;
       }
 
       if (success && mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(widget.role == null ? 'Rôle créé avec succès' : 'Rôle modifié avec succès'),
-            backgroundColor: Colors.green,
+            content: Text(widget.roleToEdit == null ? 'Rôle créé avec succès' : 'Rôle modifié avec succès'),
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -560,7 +579,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -578,7 +597,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
       final hexColor = colorString.replaceAll('#', '');
       return Color(int.parse('FF$hexColor', radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 
@@ -629,10 +648,10 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
 
   Color _getPermissionLevelColor(PermissionLevel level) {
     switch (level) {
-      case PermissionLevel.read: return Colors.blue;
-      case PermissionLevel.write: return Colors.green;
-      case PermissionLevel.create: return Colors.orange;
-      case PermissionLevel.delete: return Colors.red;
+      case PermissionLevel.read: return AppTheme.blueStandard;
+      case PermissionLevel.write: return AppTheme.greenStandard;
+      case PermissionLevel.create: return AppTheme.orangeStandard;
+      case PermissionLevel.delete: return AppTheme.redStandard;
       case PermissionLevel.admin: return Colors.purple;
     }
   }

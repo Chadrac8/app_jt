@@ -5,7 +5,7 @@ import '../services/forms_firebase_service.dart';
 import '../widgets/form_responses_list.dart';
 import '../widgets/form_statistics_view.dart';
 import 'form_builder_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class FormDetailPage extends StatefulWidget {
   final FormModel form;
@@ -185,7 +185,7 @@ class _FormDetailPageState extends State<FormDetailPage>
         appBar: AppBar(
           title: const Text('Formulaire'),
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
         ),
         body: const Center(
           child: Text('Formulaire introuvable'),
@@ -202,7 +202,7 @@ class _FormDetailPageState extends State<FormDetailPage>
               expandedHeight: 200,
               pinned: true,
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
               actions: [
                 IconButton(
                   icon: const Icon(Icons.refresh),
@@ -261,8 +261,8 @@ class _FormDetailPageState extends State<FormDetailPage>
                 title: Text(
                   _currentForm!.title,
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    color: AppTheme.white100,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 background: Container(
@@ -292,14 +292,14 @@ class _FormDetailPageState extends State<FormDetailPage>
                               ),
                               decoration: BoxDecoration(
                                 color: _statusColor,
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                               ),
                               child: Text(
                                 _currentForm!.statusLabel,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: AppTheme.white100,
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),
@@ -310,15 +310,15 @@ class _FormDetailPageState extends State<FormDetailPage>
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(16),
+                                color: AppTheme.white100.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                               ),
                               child: Text(
                                 _currentForm!.accessibilityLabel,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: AppTheme.white100,
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),
@@ -327,8 +327,8 @@ class _FormDetailPageState extends State<FormDetailPage>
                         const SizedBox(height: 8),
                         Text(
                           _currentForm!.description,
-                          style: const TextStyle(
-                            color: Colors.white70,
+                          style: TextStyle(
+                            color: AppTheme.white100.withOpacity(0.70),
                             fontSize: 14,
                           ),
                           maxLines: 2,
@@ -374,7 +374,7 @@ class _FormDetailPageState extends State<FormDetailPage>
         child: FloatingActionButton.extended(
           onPressed: _currentForm!.isPublished ? _copyFormUrl : _publishForm,
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white100,
           icon: Icon(_currentForm!.isPublished ? Icons.link : Icons.publish),
           label: Text(_currentForm!.isPublished ? 'Copier le lien' : 'Publier'),
         ),
@@ -430,7 +430,7 @@ class _FormDetailPageState extends State<FormDetailPage>
               Text(
                 '${_currentForm!.fields.where((f) => f.isInputField).length} champs de saisie',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
               const SizedBox(height: 16),
@@ -539,7 +539,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                 Text(
                   'Emails de notification:',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -568,7 +568,7 @@ class _FormDetailPageState extends State<FormDetailPage>
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -581,7 +581,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(
                     icon,
@@ -593,7 +593,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -628,7 +628,7 @@ class _FormDetailPageState extends State<FormDetailPage>
               label,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppTheme.textSecondaryColor,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),
@@ -650,7 +650,7 @@ class _FormDetailPageState extends State<FormDetailPage>
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(
           color: AppTheme.textTertiaryColor.withOpacity(0.3),
         ),
@@ -670,7 +670,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                 Text(
                   field.label.isNotEmpty ? field.label : field.typeLabel,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 if (field.helpText != null)
@@ -695,7 +695,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                 style: TextStyle(
                   color: AppTheme.errorColor,
                   fontSize: 10,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             ),
@@ -764,7 +764,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.white,
+      color: AppTheme.white100,
       child: _tabBar,
     );
   }

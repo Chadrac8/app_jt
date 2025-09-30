@@ -323,6 +323,46 @@ class AppModulesConfig {
         ],
       },
     ),
+
+    // Module Offrandes
+    ModuleConfig(
+      id: 'offrandes',
+      name: 'Offrandes',
+      description: 'Gestion des offrandes, dîmes et dons de l\'église',
+      icon: 'volunteer_activism',
+      isEnabled: true,
+      permissions: [ModulePermission.admin],
+      adminRoute: '/admin/offrandes',
+      customConfig: {
+        'features': [
+          'Enregistrement des dons',
+          'Suivi des offrandes',
+          'Statistiques mensuelles',
+          'Types de dons multiples',
+          'Méthodes de paiement',
+          'Rapports financiers',
+          'Gestion des donateurs',
+          'Interface sécurisée',
+        ],
+        'don_types': [
+          'offrande',
+          'dime', 
+          'mission',
+          'construction',
+          'special',
+        ],
+        'payment_methods': [
+          'especes',
+          'cheque',
+          'virement',
+          'carte',
+          'mobile',
+        ],
+        'permissions': {
+          'admin': ['create', 'edit', 'delete', 'view_all', 'export', 'statistics'],
+        },
+      },
+    ),
   ];
 
   /// Obtenir un module par son ID

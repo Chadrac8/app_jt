@@ -2,7 +2,6 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
-import 'firebase_storage_test.dart';
 
 class ImageStorageService {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -65,10 +64,6 @@ class ImageStorageService {
     } catch (e) {
       print('❌ Erreur détaillée lors de l\'upload de l\'image: $e');
       print('📋 Stack trace: ${StackTrace.current}');
-      
-      // Lancer un diagnostic automatique en cas d'erreur
-      print('\n🔍 Lancement du diagnostic Firebase Storage...');
-      FirebaseStorageTest.printStorageDebugInfo();
       
       return null;
     }

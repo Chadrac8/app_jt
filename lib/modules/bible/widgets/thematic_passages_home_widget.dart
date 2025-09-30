@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
@@ -15,10 +15,10 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 8,
             offset: const Offset(0, 2)),
         ]),
@@ -34,7 +34,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.purple.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   child: Icon(
                     Icons.collections_bookmark,
                     color: Colors.purple[700],
@@ -48,7 +48,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                         'Passages thématiques',
                         style: GoogleFonts.inter(
                           fontSize: 18,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: AppTheme.fontBold,
                           color: theme.colorScheme.onSurface)),
                       const SizedBox(height: 4),
                       Text(
@@ -67,7 +67,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                   child: Text(
                     'Voir tout',
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: theme.colorScheme.primary))),
               ])),
           
@@ -95,7 +95,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                         style: GoogleFonts.inter(
                           color: theme.colorScheme.error,
                           fontSize: 16,
-                          fontWeight: FontWeight.w600)),
+                          fontWeight: AppTheme.fontSemiBold)),
                       const SizedBox(height: 8),
                       Text(
                         'Impossible de charger les thèmes bibliques',
@@ -132,7 +132,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                         icon: const Icon(Icons.refresh),
                         label: Text(
                           'Initialiser les thèmes',
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600))),
+                          style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold))),
                     ]));
               }
               
@@ -162,7 +162,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                           'Initialiser les thèmes par défaut',
                           style: GoogleFonts.inter(
                             color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.w600))),
+                            fontWeight: AppTheme.fontSemiBold))),
                     ]));
               }
               
@@ -188,7 +188,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: theme.colorScheme.primary.withOpacity(0.3)),
-                            borderRadius: BorderRadius.circular(8)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -196,7 +196,7 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                                 'Voir ${themes.length - 3} autres thèmes',
                                 style: GoogleFonts.inter(
                                   color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w600)),
+                                  fontWeight: AppTheme.fontSemiBold)),
                               const SizedBox(width: 8),
                               Icon(
                                 Icons.arrow_forward,
@@ -228,12 +228,12 @@ class _ThemeCard extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => ThematicPassagesView(selectedThemeId: theme.id)));
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: theme.color.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: Border.all(
               color: theme.color.withOpacity(0.2),
               width: 1)),
@@ -243,7 +243,7 @@ class _ThemeCard extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: theme.color.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                 child: Icon(
                   theme.icon,
                   color: theme.color,
@@ -257,7 +257,7 @@ class _ThemeCard extends StatelessWidget {
                       theme.name,
                       style: GoogleFonts.inter(
                         fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: themeData.colorScheme.onSurface)),
                     const SizedBox(height: 2),
                     Text(
@@ -273,12 +273,12 @@ class _ThemeCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: theme.color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                 child: Text(
                   '${theme.passages.length}',
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: theme.color))),
               const SizedBox(width: 8),
               Icon(
@@ -303,6 +303,6 @@ class _LoadingShimmer extends StatelessWidget {
             height: 60,
             decoration: BoxDecoration(
               color: AppTheme.textTertiaryColor,
-              borderRadius: BorderRadius.circular(12))))));
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium))))));
   }
 }

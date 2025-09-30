@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/dashboard_widget_model.dart';
 import '../../services/dashboard_firebase_service.dart';
 import '../../services/app_config_firebase_service.dart';
+import '../../../theme.dart';
 
 class DashboardConfigurationPage extends StatefulWidget {
   const DashboardConfigurationPage({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors du chargement: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -64,7 +65,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
       appBar: AppBar(
         title: const Text('Configuration Dashboard'),
         backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.white100,
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
@@ -73,9 +74,9 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             Tab(icon: Icon(Icons.settings), text: 'Préférences'),
             Tab(icon: Icon(Icons.build), text: 'Maintenance'),
           ],
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          indicatorColor: AppTheme.white100,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
         ),
         actions: [
           IconButton(
@@ -114,7 +115,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                 Text(
                   'Gestion des Widgets',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -122,7 +123,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                   'Sélectionnez les widgets à afficher sur votre dashboard. '
                   'Vous pouvez réorganiser l\'ordre en glissant-déposant.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -161,7 +162,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
       child: ExpansionTile(
         title: Text(
           _getCategoryDisplayName(category),
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: AppTheme.fontBold),
         ),
         subtitle: Text('${widgets.length} widgets'),
         leading: Icon(_getCategoryIcon(category)),
@@ -216,7 +217,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                 Text(
                   'Préférences d\'Affichage',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -259,7 +260,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                 Text(
                   'Paramètres Avancés',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -379,7 +380,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
   }
 
   Color _parseColor(String? colorString) {
-    if (colorString == null) return Colors.blue;
+    if (colorString == null) return AppTheme.blueStandard;
     try {
       if (colorString.startsWith('#')) {
         colorString = colorString.substring(1);
@@ -389,7 +390,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
       }
       return Color(int.parse(colorString, radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 
@@ -411,7 +412,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -475,7 +476,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Préférences sauvegardées'),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
         ),
       );
     } catch (e) {
@@ -483,7 +484,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors de la sauvegarde: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -505,7 +506,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Réinitialiser'),
           ),
         ],
@@ -520,14 +521,14 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Dashboard réinitialisé'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la réinitialisation: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -549,7 +550,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             Text('Ordre: ${widget.order}'),
             if (widget.config.isNotEmpty) ...[
               const SizedBox(height: 8),
-              const Text('Configuration:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Configuration:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ...widget.config.entries.map((entry) => 
                 Text('${entry.key}: ${entry.value}'),
               ),
@@ -633,7 +634,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     Text(
                       'Nettoyage des Modules',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ],
@@ -650,8 +651,8 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                   icon: const Icon(Icons.delete_sweep),
                   label: const Text('Nettoyer les modules orphelins'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.orangeStandard,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -659,7 +660,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                   '⚠️ Cette action supprimera définitivement les modules '
                   '"Pour vous", "Ressources" et "Dons" du menu "Plus".',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.orange.shade700,
+                    color: AppTheme.orangeStandard,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -687,7 +688,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     Text(
                       'Informations Système',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ],
@@ -700,7 +701,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                 Text(
                   'Pour plus d\'informations de maintenance, consultez la console Firebase.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey.shade600,
+                    color: AppTheme.grey500,
                   ),
                 ),
               ],
@@ -724,7 +725,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
           Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
         ],
@@ -753,8 +754,8 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.orangeStandard,
+                foregroundColor: AppTheme.white100,
               ),
               child: const Text('Nettoyer'),
             ),
@@ -796,7 +797,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             '✅ Nettoyage terminé avec succès! '
             'Les modules orphelins ont été supprimés.',
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.greenStandard,
           duration: Duration(seconds: 4),
         ),
       );
@@ -812,7 +813,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             '❌ Erreur lors du nettoyage: $e\n'
             'Veuillez essayer via Firebase Console.',
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
           duration: const Duration(seconds: 6),
         ),
       );

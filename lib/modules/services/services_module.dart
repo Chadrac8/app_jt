@@ -8,6 +8,7 @@ import 'views/services_admin_view.dart';
 import 'views/service_detail_view.dart';
 import 'views/service_form_view.dart';
 import 'services/services_service.dart';
+import '../../../theme.dart';
 
 /// Module de gestion des services religieux
 class ServicesModule extends BaseModule {
@@ -80,7 +81,7 @@ class ServicesModule extends BaseModule {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       Icons.church,
@@ -97,13 +98,13 @@ class ServicesModule extends BaseModule {
                           config.name,
                           style: const TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                         Text(
                           config.description,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: AppTheme.grey600,
                             fontSize: 14,
                           ),
                         ),
@@ -139,7 +140,7 @@ class ServicesModule extends BaseModule {
           'Total',
           stats['total']?.toString() ?? '0',
           Icons.event,
-          Colors.blue,
+          AppTheme.blueStandard,
         ),
         const SizedBox(width: 8),
         _buildStatChip(
@@ -147,7 +148,7 @@ class ServicesModule extends BaseModule {
           'À venir',
           stats['upcoming']?.toString() ?? '0',
           Icons.schedule,
-          Colors.green,
+          AppTheme.greenStandard,
         ),
         const SizedBox(width: 8),
         _buildStatChip(
@@ -155,7 +156,7 @@ class ServicesModule extends BaseModule {
           'Aujourd\'hui',
           stats['today']?.toString() ?? '0',
           Icons.today,
-          Colors.orange,
+          AppTheme.orangeStandard,
         ),
       ],
     );
@@ -167,7 +168,7 @@ class ServicesModule extends BaseModule {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(color: color.withOpacity(0.3)),
         ),
         child: Row(
@@ -183,7 +184,7 @@ class ServicesModule extends BaseModule {
                     value,
                     style: TextStyle(
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: color,
                     ),
                   ),

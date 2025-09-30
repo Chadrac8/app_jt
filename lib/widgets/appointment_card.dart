@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../models/appointment_model.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class AppointmentCard extends StatefulWidget {
   final AppointmentModel appointment;
@@ -92,9 +92,9 @@ class _AppointmentCardState extends State<AppointmentCard>
       case 'refuse':
         return AppTheme.errorColor;
       case 'termine':
-        return Colors.grey;
+        return AppTheme.grey500;
       case 'annule':
-        return Colors.grey;
+        return AppTheme.grey500;
       default:
         return AppTheme.primaryColor;
     }
@@ -153,8 +153,8 @@ class _AppointmentCardState extends State<AppointmentCard>
     return Container(
       margin: EdgeInsets.only(bottom: widget.isCompact ? 8 : 16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
             color: Color(0x0D000000), // 5% opacity black
@@ -198,7 +198,7 @@ class _AppointmentCardState extends State<AppointmentCard>
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: _statusColor.withAlpha(25), // 10% opacity
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Icon(
             _statusIcon,
@@ -216,8 +216,8 @@ class _AppointmentCardState extends State<AppointmentCard>
                   height: 16,
                   width: 120,
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(8),
+                    color: AppTheme.grey500,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                 )
               else
@@ -225,7 +225,7 @@ class _AppointmentCardState extends State<AppointmentCard>
                   _responsable?.fullName ?? 'Responsable inconnu',
                   style: TextStyle(
                     fontSize: widget.isCompact ? 14 : 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -254,14 +254,14 @@ class _AppointmentCardState extends State<AppointmentCard>
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             color: _statusColor,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Text(
             widget.appointment.statutLabel,
             style: TextStyle(
               fontSize: widget.isCompact ? 10 : 12,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
+              fontWeight: AppTheme.fontMedium,
+              color: AppTheme.white100,
             ),
           ),
         ),
@@ -304,7 +304,7 @@ class _AppointmentCardState extends State<AppointmentCard>
           '$label: ',
           style: const TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontWeight: AppTheme.fontMedium,
             color: AppTheme.textSecondaryColor,
           ),
         ),
@@ -325,9 +325,9 @@ class _AppointmentCardState extends State<AppointmentCard>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade200),
+        color: AppTheme.grey500,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        border: Border.all(color: AppTheme.grey500),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,7 +376,7 @@ class _AppointmentCardState extends State<AppointmentCard>
             label: const Text('Détails'),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
           ),
         ),

@@ -6,7 +6,7 @@ import '../widgets/group_card.dart';
 import '../widgets/group_search_filter_bar.dart';
 import 'group_detail_page.dart';
 import 'group_form_page.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 
 class GroupsHomePage extends StatefulWidget {
@@ -108,7 +108,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Groupe créé avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -138,7 +138,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${_selectedGroups.length} groupe(s) archivé(s)'),
-            backgroundColor: Colors.orange,
+            backgroundColor: AppTheme.orangeStandard,
           ),
         );
         _toggleSelectionMode();
@@ -148,7 +148,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'archivage: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -162,7 +162,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Export de ${_selectedGroups.length} groupe(s) en cours...'),
-            backgroundColor: Colors.blue,
+            backgroundColor: AppTheme.blueStandard,
           ),
         );
         _toggleSelectionMode();
@@ -172,7 +172,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de l\'export: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -196,7 +196,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
             child: const Text('Supprimer'),
           ),
@@ -213,7 +213,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${_selectedGroups.length} groupe(s) supprimé(s)'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
           _toggleSelectionMode();
@@ -223,7 +223,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erreur lors de la suppression: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppTheme.redStandard,
             ),
           );
         }
@@ -261,7 +261,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                           ),
                           child: Icon(
                             Icons.groups,
@@ -277,7 +277,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                               Text(
                                 'Groupes',
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: AppTheme.fontBold,
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
@@ -323,9 +323,9 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                                 value: 'delete',
                                 child: Row(
                                   children: [
-                                    Icon(Icons.delete, size: 20, color: Colors.red),
+                                    Icon(Icons.delete, size: 20, color: AppTheme.redStandard),
                                     SizedBox(width: 12),
-                                    Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                    Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                   ],
                                 ),
                               ),
@@ -334,7 +334,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               ),
                               child: Icon(
                                 Icons.more_vert,
@@ -375,7 +375,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: Row(
                           children: [
@@ -389,7 +389,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                               '${_selectedGroups.length} groupe(s) sélectionné(s)',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                           ],
@@ -466,7 +466,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                             Text(
                               'Aucun groupe trouvé',
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                             const SizedBox(height: 8),

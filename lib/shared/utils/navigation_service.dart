@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme.dart';
 
 /// Service de navigation global
 /// Permet la navigation depuis n'importe où dans l'application
@@ -85,7 +86,7 @@ class NavigationService {
           backgroundColor: backgroundColor,
           duration: duration ?? const Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
         ),
       );
     }
@@ -93,22 +94,22 @@ class NavigationService {
 
   /// Afficher un snackbar de succès
   static void showSuccessSnackBar(String message) {
-    showSnackBar(message, backgroundColor: Colors.green);
+    showSnackBar(message, backgroundColor: AppTheme.greenStandard);
   }
 
   /// Afficher un snackbar d'erreur
   static void showErrorSnackBar(String message) {
-    showSnackBar(message, backgroundColor: Colors.red);
+    showSnackBar(message, backgroundColor: AppTheme.redStandard);
   }
 
   /// Afficher un snackbar d'information
   static void showInfoSnackBar(String message) {
-    showSnackBar(message, backgroundColor: Colors.blue);
+    showSnackBar(message, backgroundColor: AppTheme.blueStandard);
   }
 
   /// Afficher un snackbar d'avertissement
   static void showWarningSnackBar(String message) {
-    showSnackBar(message, backgroundColor: Colors.orange);
+    showSnackBar(message, backgroundColor: AppTheme.orangeStandard);
   }
 
   /// Fermer tous les dialogs et bottom sheets ouverts
@@ -143,7 +144,7 @@ extension NavigationExtension on BuildContext {
         content: Text(message),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
       ),
     );
   }

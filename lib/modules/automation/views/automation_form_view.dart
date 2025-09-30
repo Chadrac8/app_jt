@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/automation.dart';
 import '../models/automation_template.dart';
 import '../services/automation_service.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
 
 /// Vue de formulaire pour créer/modifier une automatisation
@@ -463,7 +463,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }

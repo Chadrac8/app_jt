@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../roles_module.dart';
+import '../../../../theme.dart';
 
 /// Exemple d'utilisation du module Rôles et Permissions
 class RolesModuleExample extends StatefulWidget {
@@ -72,12 +73,12 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
           children: [
             Row(
               children: [
-                Icon(Icons.info_outline, color: Colors.blue[600]),
+                Icon(Icons.info_outline, color: AppTheme.grey600),
                 const SizedBox(width: 8),
                 Text(
                   'Informations du module',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -90,7 +91,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
             const Text(
               'Ce module fournit un système complet de gestion des rôles et permissions '
               'pour contrôler l\'accès aux différentes fonctionnalités de l\'application.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             ),
           ],
         ),
@@ -107,12 +108,12 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
           children: [
             Row(
               children: [
-                Icon(Icons.security, color: Colors.green[600]),
+                Icon(Icons.security, color: AppTheme.grey600),
                 const SizedBox(width: 8),
                 Text(
                   'Exemples de vérifications de permissions',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -126,12 +127,12 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green),
+                    Icon(Icons.check_circle, color: AppTheme.greenStandard),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text('Accès autorisé au dashboard (lecture)'),
@@ -142,12 +143,12 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
               fallback: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.red[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.block, color: Colors.red),
+                    Icon(Icons.block, color: AppTheme.redStandard),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text('Accès refusé au dashboard'),
@@ -166,12 +167,12 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.people, color: Colors.blue),
+                    Icon(Icons.people, color: AppTheme.blueStandard),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text('Accès au module Personnes'),
@@ -182,12 +183,12 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
               fallback: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.warning, color: Colors.orange),
+                    Icon(Icons.warning, color: AppTheme.orangeStandard),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text('Pas d\'accès au module Personnes'),
@@ -211,12 +212,12 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
           children: [
             Row(
               children: [
-                Icon(Icons.flash_on, color: Colors.orange[600]),
+                Icon(Icons.flash_on, color: AppTheme.grey600),
                 const SizedBox(width: 8),
                 Text(
                   'Actions rapides',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
@@ -413,7 +414,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
               return ListTile(
                 leading: Icon(
                   result['result'] ? Icons.check_circle : Icons.cancel,
-                  color: result['result'] ? Colors.green : Colors.red,
+                  color: result['result'] ? AppTheme.greenStandard : AppTheme.redStandard,
                 ),
                 title: Text(result['description']),
                 subtitle: Text(result['permission']),

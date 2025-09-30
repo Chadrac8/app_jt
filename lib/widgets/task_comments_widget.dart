@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/task_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class TaskCommentsWidget extends StatefulWidget {
   final TaskModel task;
@@ -100,19 +100,19 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey[400]),
+                      Icon(Icons.chat_bubble_outline, size: 64, color: AppTheme.grey400),
                       const SizedBox(height: 16),
                       Text(
                         'Aucun commentaire',
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'Ajoutez le premier commentaire pour démarrer la discussion',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[500],
+                          color: AppTheme.grey500,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -155,13 +155,13 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
         child: Card(
           color: isCurrentUser 
               ? AppTheme.primaryColor.withOpacity(0.1)
-              : Colors.white,
+              : AppTheme.white100,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             side: BorderSide(
               color: isCurrentUser 
                   ? AppTheme.primaryColor.withOpacity(0.3)
-                  : Colors.grey[300]!,
+                  : AppTheme.grey300!,
             ),
           ),
           child: Padding(
@@ -180,8 +180,8 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                       child: Text(
                         comment.authorId.substring(0, 1).toUpperCase(),
                         style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: AppTheme.white100,
+                          fontWeight: AppTheme.fontBold,
                           fontSize: 14,
                         ),
                       ),
@@ -194,7 +194,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                           Text(
                             isCurrentUser ? 'Vous' : 'Utilisateur ${comment.authorId.substring(0, 8)}',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: isCurrentUser 
                                   ? AppTheme.primaryColor
                                   : AppTheme.textPrimaryColor,
@@ -203,7 +203,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                           Text(
                             _formatCommentDate(comment.createdAt),
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
+                              color: AppTheme.grey600,
                             ),
                           ),
                         ],
@@ -231,9 +231,9 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white100,
         border: Border(
-          top: BorderSide(color: Colors.grey[300]!),
+          top: BorderSide(color: AppTheme.grey300!),
         ),
       ),
       child: SafeArea(
@@ -246,7 +246,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                   hintText: 'Ajouter un commentaire...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
-                    borderSide: BorderSide(color: Colors.grey[300]!),
+                    borderSide: BorderSide(color: AppTheme.grey300!),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
@@ -275,7 +275,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                     : const Icon(Icons.send),
                 style: IconButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.all(12),
                 ),
               ),

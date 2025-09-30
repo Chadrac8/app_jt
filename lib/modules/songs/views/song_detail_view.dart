@@ -7,6 +7,7 @@ import '../../../shared/widgets/custom_card.dart';
 import '../models/song.dart';
 import '../services/songs_service.dart';
 import '../../../auth/auth_service.dart';
+import '../../../../theme.dart';
 
 /// Vue de détail d'un chant
 class SongDetailView extends StatefulWidget {
@@ -184,7 +185,7 @@ ${_song.lyrics}
         IconButton(
           icon: Icon(
             _isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: _isFavorite ? Colors.red : null,
+            color: _isFavorite ? AppTheme.redStandard : null,
           ),
           onPressed: _toggleFavorite,
           tooltip: _isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris',
@@ -273,7 +274,7 @@ ${_song.lyrics}
             Text(
               _song.title,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
             if (_song.subtitle != null) ...[
@@ -281,7 +282,7 @@ ${_song.lyrics}
               Text(
                 _song.subtitle!,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
             ],
@@ -292,7 +293,7 @@ ${_song.lyrics}
             if (_song.author != null || _song.composer != null) ...[
               Row(
                 children: [
-                  Icon(Icons.person, size: 16, color: Colors.grey[600]),
+                  Icon(Icons.person, size: 16, color: AppTheme.grey600),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -300,7 +301,7 @@ ${_song.lyrics}
                         if (_song.author != null) 'Auteur: ${_song.author}',
                         if (_song.composer != null) 'Compositeur: ${_song.composer}',
                       ].join(' • '),
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: TextStyle(color: AppTheme.grey600),
                     ),
                   ),
                 ],
@@ -314,15 +315,15 @@ ${_song.lyrics}
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _song.isApproved ? Colors.green : Colors.orange,
-                    borderRadius: BorderRadius.circular(12),
+                    color: _song.isApproved ? AppTheme.greenStandard : AppTheme.orangeStandard,
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     _song.isApproved ? 'Approuvé' : 'En attente',
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white100,
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -330,7 +331,7 @@ ${_song.lyrics}
                 Text(
                   'Créé le ${_song.createdAt.day}/${_song.createdAt.month}/${_song.createdAt.year}',
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                     fontSize: 12,
                   ),
                 ),
@@ -354,7 +355,7 @@ ${_song.lyrics}
                 Text(
                   'Informations techniques',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -386,7 +387,7 @@ ${_song.lyrics}
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -397,7 +398,7 @@ ${_song.lyrics}
             '$label: $value',
             style: TextStyle(
               color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               fontSize: 12,
             ),
           ),
@@ -418,13 +419,13 @@ ${_song.lyrics}
                 Text(
                   'Classification',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 12),
                 
                 if (_song.categories.isNotEmpty) ...[
-                  const Text('Catégories:', style: TextStyle(fontWeight: FontWeight.w500)),
+                  const Text('Catégories:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -440,14 +441,14 @@ ${_song.lyrics}
                   const SizedBox(height: 16),
 
                 if (_song.tags.isNotEmpty) ...[
-                  const Text('Mots-clés:', style: TextStyle(fontWeight: FontWeight.w500)),
+                  const Text('Mots-clés:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
                     runSpacing: 4,
                     children: _song.tags.map((tag) => Chip(
                       label: Text('#$tag'),
-                      backgroundColor: Colors.grey[200],
+                      backgroundColor: AppTheme.grey200,
                     )).toList(),
                   ),
                 ],
@@ -472,7 +473,7 @@ ${_song.lyrics}
                 Text(
                   'Paroles',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const Spacer(),
@@ -504,7 +505,7 @@ ${_song.lyrics}
                 Text(
                   'Médias',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -564,19 +565,19 @@ ${_song.lyrics}
                 Expanded(
                   child: Column(
                     children: [
-                      Icon(Icons.visibility, color: Colors.grey[600]),
+                      Icon(Icons.visibility, color: AppTheme.grey600),
                       const SizedBox(height: 4),
                       Text(
                         _song.views.toString(),
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           fontSize: 18,
                         ),
                       ),
                       Text(
                         'Vues',
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                           fontSize: 12,
                         ),
                       ),
@@ -586,24 +587,24 @@ ${_song.lyrics}
                 Container(
                   width: 1,
                   height: 40,
-                  color: Colors.grey[300],
+                  color: AppTheme.grey300,
                 ),
                 Expanded(
                   child: Column(
                     children: [
-                      Icon(Icons.favorite, color: Colors.grey[600]),
+                      Icon(Icons.favorite, color: AppTheme.grey600),
                       const SizedBox(height: 4),
                       Text(
                         _song.favorites.length.toString(),
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           fontSize: 18,
                         ),
                       ),
                       Text(
                         'Favoris',
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                           fontSize: 12,
                         ),
                       ),

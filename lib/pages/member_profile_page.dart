@@ -11,7 +11,7 @@ import '../services/firebase_service.dart';
 import '../services/user_profile_service.dart';
 import '../services/roles_firebase_service.dart';
 import '../auth/auth_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../widgets/custom_page_app_bar.dart';
 import '../widgets/admin_navigation_wrapper.dart';
 import '../widgets/user_avatar.dart';
@@ -1051,7 +1051,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
           title: Row(
             children: [
               Icon(
@@ -1079,10 +1079,10 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                       label: const Text('Créer\nune famille'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.primaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppTheme.white100,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                       ),
                     ),
@@ -1098,7 +1098,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                         side: BorderSide(color: AppTheme.primaryColor),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                       ),
                     ),
@@ -1134,7 +1134,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
           title: Row(
             children: [
               Icon(
@@ -1158,7 +1158,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                       hintText: 'ex: Famille Martin',
                       prefixIcon: const Icon(Icons.home),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     validator: (value) {
@@ -1176,7 +1176,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                       labelText: 'Adresse familiale (optionnel)',
                       prefixIcon: const Icon(Icons.location_on),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     maxLines: 2,
@@ -1188,7 +1188,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                       labelText: 'Téléphone familial (optionnel)',
                       prefixIcon: const Icon(Icons.phone),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                     ),
                     keyboardType: TextInputType.phone,
@@ -1210,7 +1210,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
               ),
               child: const Text('Créer'),
             ),
@@ -1276,7 +1276,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         context: context,
         builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
             title: Row(
               children: [
                 Icon(
@@ -1293,14 +1293,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   ? const Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.family_restroom, size: 64, color: Colors.grey),
+                        Icon(Icons.family_restroom, size: 64, color: AppTheme.grey500),
                         SizedBox(height: 16),
                         Text('Aucune famille disponible'),
                         SizedBox(height: 8),
                         Text(
                           'Demandez à un membre de votre famille de créer une famille d\'abord.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: AppTheme.grey500),
                         ),
                       ],
                     )
@@ -1321,7 +1321,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                             ),
                             title: Text(
                               family.name,
-                              style: const TextStyle(fontWeight: FontWeight.w600),
+                              style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1330,7 +1330,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                                 if (family.address != null)
                                   Text(
                                     family.address!,
-                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                    style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
                                   ),
                               ],
                             ),
@@ -1479,14 +1479,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             Icon(
               Icons.error_outline,
               size: 64,
-              color: Colors.grey.shade400,
+              color: AppTheme.grey500,
             ),
             const SizedBox(height: 16),
             Text(
               'Impossible de charger votre profil',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Colors.grey.shade600,
-                fontWeight: FontWeight.w600,
+                color: AppTheme.grey500,
+                fontWeight: AppTheme.fontSemiBold,
               ),
               textAlign: TextAlign.center,
             ),
@@ -1494,7 +1494,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             Text(
               'Vérifiez votre connexion internet et réessayez',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey.shade500,
+                color: AppTheme.grey500,
               ),
               textAlign: TextAlign.center,
             ),
@@ -1510,10 +1510,10 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               label: const Text('Réessayer'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
               ),
             ),
@@ -1542,8 +1542,8 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         title: const Text(
           'Mon Profil',
           style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+            color: AppTheme.white100,
+            fontWeight: AppTheme.fontBold,
             fontSize: 18,
           ),
         ),
@@ -1572,8 +1572,8 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     _currentPerson!.fullName,
                     style: const TextStyle(
                       fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontWeight: AppTheme.fontBold,
+                      color: AppTheme.white100,
                       letterSpacing: 0.5,
                     ),
                     textAlign: TextAlign.center,
@@ -1584,15 +1584,15 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
+                    color: AppTheme.white100.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   ),
                   child: Text(
                     _currentPerson!.email,
                     style: const TextStyle(
                       fontSize: 14,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                      color: AppTheme.white100,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -1609,19 +1609,19 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                         return Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
+                            color: AppTheme.white100.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.3),
+                              color: AppTheme.white100.withOpacity(0.3),
                               width: 1,
                             ),
                           ),
                           child: Text(
                             role,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: AppTheme.white100,
                               fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
                         );
@@ -1638,14 +1638,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
       actions: [
         // Bouton de bascule vers la vue Admin (visible uniquement pour les admins)
         const AdminViewToggleButton(
-          iconColor: Colors.white,
+          iconColor: AppTheme.white100,
           backgroundColor: Colors.transparent,
         ),
         // Bouton d'édition/sauvegarde
         IconButton(
           icon: Icon(_isEditing ? Icons.save : Icons.edit),
           onPressed: _isEditing ? _saveProfile : () => setState(() => _isEditing = true),
-          color: Colors.white,
+          color: AppTheme.white100,
           tooltip: _isEditing ? 'Sauvegarder' : 'Modifier le profil',
         ),
       ],
@@ -1805,10 +1805,10 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   label: const Text('Créer ou rejoindre une famille'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppTheme.white100,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                   ),
                 ),
@@ -1899,7 +1899,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   }) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -1917,7 +1917,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   title,
                   style: const TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -1949,7 +1949,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         prefixIcon: Icon(icon),
         border: const OutlineInputBorder(),
         filled: !enabled,
-        fillColor: enabled ? null : Colors.grey[100],
+        fillColor: enabled ? null : AppTheme.grey100,
       ),
     );
   }
@@ -1976,7 +1976,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         prefixIcon: Icon(icon),
         border: const OutlineInputBorder(),
         filled: onChanged == null,
-        fillColor: onChanged == null ? Colors.grey[100] : null,
+        fillColor: onChanged == null ? AppTheme.grey100 : null,
       ),
       items: items.map((item) {
         return DropdownMenuItem(
@@ -1999,7 +1999,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
           prefixIcon: const Icon(Icons.flag_outlined),
           border: const OutlineInputBorder(),
           filled: !_isEditing,
-          fillColor: _isEditing ? null : Colors.grey[100],
+          fillColor: _isEditing ? null : AppTheme.grey100,
         ),
       ),
       popupProps: PopupProps.menu(
@@ -2018,14 +2018,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               children: [
                 Text(
                   item,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: AppTheme.fontBold),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     _countryCodes[item] ?? '',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                       fontSize: 13,
                     ),
                   ),
@@ -2060,7 +2060,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
           prefixIcon: const Icon(Icons.public_outlined),
           border: const OutlineInputBorder(),
           filled: !_isEditing,
-          fillColor: _isEditing ? null : Colors.grey[100],
+          fillColor: _isEditing ? null : AppTheme.grey100,
         ),
       ),
       popupProps: PopupProps.menu(
@@ -2098,7 +2098,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
           prefixIcon: const Icon(Icons.calendar_today),
           border: const OutlineInputBorder(),
           filled: !_isEditing,
-          fillColor: _isEditing ? null : Colors.grey[100],
+          fillColor: _isEditing ? null : AppTheme.grey100,
         ),
         child: Text(
           _birthDate != null
@@ -2144,7 +2144,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   value,
                   style: const TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -2178,7 +2178,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 Text(
                   member.fullName,
                   style: const TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -2188,7 +2188,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     style: TextStyle(
                       fontSize: 12,
                       color: AppTheme.primaryColor,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
               ],
@@ -2207,7 +2207,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         decoration: BoxDecoration(
           color: Color(int.parse(role.color.replaceFirst('#', '0xFF')))
               .withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           border: Border.all(
             color: Color(int.parse(role.color.replaceFirst('#', '0xFF')))
                 .withOpacity(0.3),
@@ -2224,7 +2224,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               child: Icon(
                 _getIconFromString(role.icon),
                 size: 16,
-                color: Colors.white,
+                color: AppTheme.white100,
               ),
             ),
             const SizedBox(width: 12),
@@ -2235,7 +2235,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   Text(
                     role.name,
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -2281,7 +2281,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 Text(
                   title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
@@ -2378,7 +2378,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.white,
+      color: AppTheme.white100,
       child: _tabBar,
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
@@ -55,7 +55,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                 child: Icon(
                   Icons.school_outlined,
                   color: theme.colorScheme.primary,
@@ -69,7 +69,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                       'Études bibliques',
                       style: GoogleFonts.inter(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: theme.colorScheme.onSurface)),
                     Text(
                       'Approfondissez votre foi',
@@ -83,7 +83,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                   'Voir tout',
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: theme.colorScheme.primary))),
             ]),
           
@@ -116,10 +116,10 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 8,
             offset: const Offset(0, 2)),
         ]),
@@ -133,7 +133,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                 height: 40,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.onSurface.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8))),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall))),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -144,7 +144,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                       height: 16,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.onSurface.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8))),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall))),
                     const SizedBox(height: 4),
                     Container(
                       width: 100,
@@ -179,7 +179,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
           'Études en cours',
           style: GoogleFonts.inter(
             fontSize: 14,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
         const SizedBox(height: 8),
         SizedBox(
@@ -196,7 +196,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
             'Études populaires',
             style: GoogleFonts.inter(
               fontSize: 14,
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
           const SizedBox(height: 8),
           SizedBox(
@@ -219,7 +219,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
           'Études populaires',
           style: GoogleFonts.inter(
             fontSize: 14,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
         const SizedBox(height: 8),
         SizedBox(
@@ -248,12 +248,12 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
             color: Colors.transparent,
             child: InkWell(
               onTap: () => _openStudyDetail(study),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
                     color: theme.colorScheme.primary.withOpacity(0.2),
                     width: 1)),
@@ -267,7 +267,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                           height: 40,
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                           child: Icon(
                             Icons.school_outlined,
                             color: theme.colorScheme.primary,
@@ -281,7 +281,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                                 study.title,
                                 style: GoogleFonts.inter(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: theme.colorScheme.onSurface),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis),
@@ -295,12 +295,12 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary,
-                            borderRadius: BorderRadius.circular(12)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                           child: Text(
                             'EN COURS',
                             style: GoogleFonts.inter(
                               fontSize: 10,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: AppTheme.surfaceColor))),
                       ]),
                     const SizedBox(height: 12),
@@ -327,7 +327,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                             '${progress.progressPercentage.round()}%',
                             style: GoogleFonts.inter(
                               fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: theme.colorScheme.primary)),
                         ]),
                     ],
@@ -345,15 +345,15 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () => _openStudyDetail(study),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: AppTheme.black100.withOpacity(0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 2)),
               ]),
@@ -367,7 +367,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                       height: 40,
                       decoration: BoxDecoration(
                         color: _getCategoryColor(study.category).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                       child: Icon(
                         _getCategoryIcon(study.category),
                         color: _getCategoryColor(study.category),
@@ -381,7 +381,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                             study.title,
                             style: GoogleFonts.inter(
                               fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: theme.colorScheme.onSurface),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis),
@@ -396,12 +396,12 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: AppTheme.warningColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8)),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                         child: Text(
                           'POPULAIRE',
                           style: GoogleFonts.inter(
                             fontSize: 10,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.warningColor))),
                   ]),
                 const SizedBox(height: 12),
@@ -444,7 +444,7 @@ class _BibleStudyHomeWidgetState extends State<BibleStudyHomeWidget> {
   Color _getCategoryColor(String category) {
     switch (category) {
       case 'Nouveau Testament':
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case 'Ancien Testament':
         return AppTheme.successColor;
       case 'Spiritualité':

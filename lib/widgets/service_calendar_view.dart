@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/service_model.dart';
-// Removed unused import '../theme.dart';
+import '../theme.dart';
 
 class ServiceCalendarView extends StatefulWidget {
   final List<ServiceModel> services;
@@ -68,11 +68,11 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
 
   Color _getServiceColor(ServiceModel service) {
     switch (service.status) {
-      case 'publie': return Colors.green;
-      case 'brouillon': return Colors.orange;
-      case 'archive': return Colors.grey;
-      case 'annule': return Colors.red;
-      default: return Colors.blue;
+      case 'publie': return AppTheme.greenStandard;
+      case 'brouillon': return AppTheme.orangeStandard;
+      case 'archive': return AppTheme.grey500;
+      case 'annule': return AppTheme.redStandard;
+      default: return AppTheme.blueStandard;
     }
   }
 
@@ -102,7 +102,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                   child: Text(
                     _getMonthYear(_currentMonth),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -133,7 +133,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                   child: Text(
                     day,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: Theme.of(context).colorScheme.onSurface.withAlpha(179), // 0.7 opacity
                     ),
                   ),
@@ -190,10 +190,10 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
         border: Border.all(
                 color: Theme.of(context).colorScheme.outline.withAlpha(51), // 0.2 opacity
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         onTap: services.isNotEmpty ? () => _showDayServices(date, services) : null,
         child: Padding(
           padding: const EdgeInsets.all(4),
@@ -203,7 +203,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
               Text(
                 date.day.toString(),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                  fontWeight: isToday ? AppTheme.fontBold : FontWeight.normal,
                   color: isCurrentMonth
                       ? (isToday 
                           ? Theme.of(context).colorScheme.primary
@@ -284,7 +284,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                   Text(
                     'Services du ${_formatDate(date)}',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const Spacer(),
@@ -315,7 +315,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                       ),
                       title: Text(
                         service.name,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,14 +329,14 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: _getServiceColor(service),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Text(
                           service.statusLabel,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppTheme.white100,
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),

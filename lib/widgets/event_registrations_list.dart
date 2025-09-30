@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class EventRegistrationsList extends StatefulWidget {
   final EventModel event;
@@ -103,7 +103,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.errorColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Oui, annuler'),
           ),
@@ -218,7 +218,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
         children: [
           // Barre de recherche et filtres
           Container(
-            color: Colors.white,
+            color: AppTheme.white100,
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
@@ -238,7 +238,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                           )
                         : null,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     filled: true,
                     fillColor: AppTheme.backgroundColor,
@@ -258,7 +258,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                         decoration: InputDecoration(
                           labelText: 'Statut',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           ),
                           filled: true,
                           fillColor: AppTheme.backgroundColor,
@@ -281,7 +281,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                       icon: const Icon(Icons.person_add),
                       style: IconButton.styleFrom(
                         backgroundColor: AppTheme.primaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppTheme.white100,
                       ),
                       tooltip: 'Ajouter manuellement',
                     ),
@@ -292,7 +292,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                       icon: const Icon(Icons.download),
                       style: IconButton.styleFrom(
                         backgroundColor: AppTheme.secondaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppTheme.white100,
                       ),
                       tooltip: 'Exporter',
                     ),
@@ -403,11 +403,11 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
   Widget _buildRegistrationCard(EventRegistrationModel registration) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.white100,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black100.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -430,7 +430,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                         : 'U',
                     style: TextStyle(
                       color: AppTheme.primaryColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -445,7 +445,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                       Text(
                         registration.fullName,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       Text(
@@ -463,14 +463,14 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: _getStatusColor(registration.status).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Text(
                     _getStatusLabel(registration.status),
                     style: TextStyle(
                       color: _getStatusColor(registration.status),
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),
@@ -552,7 +552,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                           child: Text(
                             entry.key,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ),

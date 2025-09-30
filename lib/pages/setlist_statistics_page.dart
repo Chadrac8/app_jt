@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../../theme.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
 import '../widgets/setlist_stats_charts.dart';
 
@@ -71,14 +71,14 @@ class SetlistStatisticsPage extends StatelessWidget {
                           },
                           title: 'Top playlists par nombre de chants',
                           colors: [
-                            Colors.blue,
+                            AppTheme.blueStandard,
                             AppTheme.successColor,
                             AppTheme.warningColor,
                             Colors.purple,
                             AppTheme.errorColor,
                             Colors.teal,
                             Colors.brown,
-                            Colors.pink,
+                            AppTheme.pinkStandard,
                           ]),
                     ]))),
             ]);

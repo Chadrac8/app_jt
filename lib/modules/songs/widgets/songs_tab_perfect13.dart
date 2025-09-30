@@ -3,6 +3,7 @@ import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
+import '../../../../theme.dart';
 
 /// Onglet Chants - Reproduction exacte de Perfect 13
 class SongsTabPerfect13 extends StatefulWidget {
@@ -121,7 +122,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
             Theme.of(context).colorScheme.surface.withOpacity(0.8),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
@@ -137,7 +138,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () => _showSongDetails(song),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -169,7 +170,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                       songNumber.toString(),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
@@ -184,7 +185,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                       Text(
                         song.title,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                         maxLines: 2,
@@ -270,7 +271,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
       isScrollControlled: true,
       useSafeArea: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withOpacity(0.5),
+      barrierColor: AppTheme.black100.withOpacity(0.5),
       builder: (context) => StatefulBuilder(
         builder: (context, setStateBottomSheet) => DraggableScrollableSheet(
         initialChildSize: 1.0, // Prend tout l'écran
@@ -285,7 +286,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
               topRight: Radius.circular(28)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.25),
+                color: AppTheme.black100.withOpacity(0.25),
                 blurRadius: 20,
                 offset: const Offset(0, -5)),
             ]),
@@ -336,7 +337,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                           Text(
                             song.title,
                             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppTheme.fontBold,
                               color: Theme.of(context).colorScheme.onSurface,
                               letterSpacing: 0.5),
                             maxLines: 2,
@@ -347,7 +348,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                               'Par: ${song.authors}',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: AppTheme.fontMedium),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis),
                           ],
@@ -361,7 +362,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(8)),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -374,7 +375,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                                       song.originalKey,
                                       style: TextStyle(
                                         fontSize: 10,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: AppTheme.fontSemiBold,
                                         color: Theme.of(context).colorScheme.onSecondaryContainer)),
                                   ])),
                               // Tags masqués pour le module Cantiques
@@ -383,13 +384,13 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                               //     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               //     decoration: BoxDecoration(
                               //       color: Theme.of(context).colorScheme.tertiaryContainer,
-                              //       borderRadius: BorderRadius.circular(8),
+                              //       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               //     ),
                               //     child: Text(
                               //       song.tags.first,
                               //       style: TextStyle(
                               //         fontSize: 10,
-                              //         fontWeight: FontWeight.w600,
+                              //         fontWeight: AppTheme.fontSemiBold,
                               //         color: Theme.of(context).colorScheme.onTertiaryContainer,
                               //       ),
                               //     ),
@@ -408,7 +409,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                               color: showAudioPlayer 
                                 ? Theme.of(context).colorScheme.secondary
                                 : Theme.of(context).colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                               boxShadow: showAudioPlayer ? [
                                 BoxShadow(
                                   color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
@@ -433,7 +434,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                         Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                             boxShadow: [
                               BoxShadow(
                                 color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
@@ -457,7 +458,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                         Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(16)),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                           child: IconButton(
                             icon: Icon(
                               Icons.close_rounded,
@@ -476,11 +477,11 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                 child: Container(
                   margin: const EdgeInsets.fromLTRB(20, 8, 20, 20),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(16)),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
                       child: song.lyrics.isNotEmpty
                           ? SongLyricsViewer(
                               song: song,
@@ -516,7 +517,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Row(
         children: [
@@ -530,7 +531,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
               'Lecteur audio - ${song.title}',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSecondaryContainer,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),

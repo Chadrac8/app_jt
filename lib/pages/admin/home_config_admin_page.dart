@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../../services/image_storage_service.dart';
 import 'package:file_picker/file_picker.dart';
+import '../../../theme.dart';
 
 /// Page d'administration pour configurer la dashboard membre
 class HomeConfigAdminPage extends StatefulWidget {
@@ -168,11 +169,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       appBar: AppBar(
         title: const Text(
           'Configuration Dashboard',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: AppTheme.white100),
         ),
         backgroundColor: const Color(0xFF1A1D29),
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: AppTheme.white100),
         actions: [
           if (_isSaving)
             const Padding(
@@ -182,7 +183,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                 ),
               ),
             )
@@ -196,9 +197,9 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          indicatorColor: Colors.blue,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey,
+          indicatorColor: AppTheme.blueStandard,
+          labelColor: AppTheme.white100,
+          unselectedLabelColor: AppTheme.grey500,
           tabs: const [
             Tab(text: 'Couverture'),
             Tab(text: 'Live'),
@@ -213,7 +214,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
               ),
             )
           : TabBarView(
@@ -257,11 +258,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           SwitchListTile(
             title: const Text(
               'Utiliser une vidéo de couverture',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: AppTheme.white100),
             ),
             value: _useVideo,
             onChanged: (value) => setState(() => _useVideo = value),
-            activeColor: Colors.blue,
+            activeColor: AppTheme.blueStandard,
           ),
           const SizedBox(height: 16),
           
@@ -284,7 +285,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   Expanded(
                     child: Text(
                       'Vidéo sélectionnée',
-                      style: const TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: AppTheme.grey500),
                     ),
                   ),
               ],
@@ -308,7 +309,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   onPressed: _clearCoverImages,
                   icon: const Icon(Icons.delete_forever),
                   label: const Text('Effacer toutes'),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
                 ),
               ],
             ),
@@ -335,11 +336,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           SwitchListTile(
             title: const Text(
               'Activer la section live',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: AppTheme.white100),
             ),
             value: _isLiveActive,
             onChanged: (value) => setState(() => _isLiveActive = value),
-            activeColor: Colors.blue,
+            activeColor: AppTheme.blueStandard,
           ),
           
           if (_isLiveActive) ...[
@@ -364,13 +365,13 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               child: ListTile(
                 title: const Text(
                   'Date et heure du prochain live',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: AppTheme.white100),
                 ),
                 subtitle: Text(
                   _liveDateTime?.toString() ?? 'Aucune date sélectionnée',
-                  style: const TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: AppTheme.grey500),
                 ),
-                trailing: const Icon(Icons.calendar_today, color: Colors.white),
+                trailing: const Icon(Icons.calendar_today, color: AppTheme.white100),
                 onTap: _selectLiveDateTime,
               ),
             ),
@@ -392,11 +393,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           SwitchListTile(
             title: const Text(
               'Activer le pain quotidien',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: AppTheme.white100),
             ),
             value: _isDailyBreadActive,
             onChanged: (value) => setState(() => _isDailyBreadActive = value),
-            activeColor: Colors.blue,
+            activeColor: AppTheme.blueStandard,
           ),
           
           if (_isDailyBreadActive) ...[
@@ -440,11 +441,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           SwitchListTile(
             title: const Text(
               'Afficher la dernière prédication',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: AppTheme.white100),
             ),
             value: _isLastSermonActive,
             onChanged: (value) => setState(() => _isLastSermonActive = value),
-            activeColor: Colors.blue,
+            activeColor: AppTheme.blueStandard,
           ),
           
           if (_isLastSermonActive) ...[
@@ -501,11 +502,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           SwitchListTile(
             title: const Text(
               'Afficher les événements',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: AppTheme.white100),
             ),
             value: _areEventsActive,
             onChanged: (value) => setState(() => _areEventsActive = value),
-            activeColor: Colors.blue,
+            activeColor: AppTheme.blueStandard,
           ),
           
           if (_areEventsActive) ...[
@@ -517,9 +518,9 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 const Text(
                   'Événements à venir',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 ElevatedButton.icon(
@@ -527,8 +528,8 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   icon: const Icon(Icons.add),
                   label: const Text('Ajouter'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.blueStandard,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ],
@@ -543,7 +544,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   child: Center(
                     child: Text(
                       'Aucun événement configuré',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: AppTheme.grey500),
                     ),
                   ),
                 ),
@@ -568,11 +569,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           SwitchListTile(
             title: const Text(
               'Afficher les actions rapides',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: AppTheme.white100),
             ),
             value: _areQuickActionsActive,
             onChanged: (value) => setState(() => _areQuickActionsActive = value),
-            activeColor: Colors.blue,
+            activeColor: AppTheme.blueStandard,
           ),
           
           if (_areQuickActionsActive) ...[
@@ -584,9 +585,9 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 const Text(
                   'Actions disponibles',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.white100,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 ElevatedButton.icon(
@@ -594,8 +595,8 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   icon: const Icon(Icons.add),
                   label: const Text('Ajouter'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.blueStandard,
+                    foregroundColor: AppTheme.white100,
                   ),
                 ),
               ],
@@ -610,7 +611,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   child: Center(
                     child: Text(
                       'Aucune action configurée',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: AppTheme.grey500),
                     ),
                   ),
                 ),
@@ -635,11 +636,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           SwitchListTile(
             title: const Text(
               'Afficher la section contact',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: AppTheme.white100),
             ),
             value: _isContactActive,
             onChanged: (value) => setState(() => _isContactActive = value),
-            activeColor: Colors.blue,
+            activeColor: AppTheme.blueStandard,
           ),
           
           if (_isContactActive) ...[
@@ -682,9 +683,9 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
     return Text(
       title,
       style: const TextStyle(
-        color: Colors.white,
+        color: AppTheme.white100,
         fontSize: 20,
-        fontWeight: FontWeight.bold,
+        fontWeight: AppTheme.fontBold,
       ),
     );
   }
@@ -698,23 +699,23 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
     return TextFormField(
       controller: controller,
       maxLines: maxLines,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: AppTheme.white100),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        labelStyle: const TextStyle(color: Colors.grey),
-        hintStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: AppTheme.grey500),
+        hintStyle: const TextStyle(color: AppTheme.grey500),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderSide: const BorderSide(color: AppTheme.grey500),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderSide: const BorderSide(color: AppTheme.grey500),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderSide: const BorderSide(color: AppTheme.blueStandard),
         ),
         filled: true,
         fillColor: const Color(0xFF2A2D3A),
@@ -730,11 +731,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         icon: const Icon(Icons.preview),
         label: Text(text),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey[700],
-          foregroundColor: Colors.white,
+          backgroundColor: AppTheme.grey700,
+          foregroundColor: AppTheme.white100,
           padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
         ),
       ),
@@ -748,15 +749,15 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       child: ListTile(
         title: Text(
           event['title'] ?? 'Événement',
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: AppTheme.white100),
         ),
         subtitle: Text(
           '${event['day']} ${event['month']} - ${event['time']} - ${event['description']}',
-          style: const TextStyle(color: Colors.grey),
+          style: const TextStyle(color: AppTheme.grey500),
         ),
         trailing: IconButton(
           onPressed: () => _removeEvent(index),
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: AppTheme.redStandard),
         ),
         onTap: () => _editEvent(index, event),
       ),
@@ -773,25 +774,25 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           height: 40,
           decoration: BoxDecoration(
             color: Color(action['color'] ?? 0xFF2196F3),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           ),
           child: Icon(
             _getIconData(action['icon'] ?? 'help_outline'),
-            color: Colors.white,
+            color: AppTheme.white100,
             size: 20,
           ),
         ),
         title: Text(
           action['title'] ?? 'Action',
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: AppTheme.white100),
         ),
         subtitle: Text(
           action['description'] ?? '',
-          style: const TextStyle(color: Colors.grey),
+          style: const TextStyle(color: AppTheme.grey500),
         ),
         trailing: IconButton(
           onPressed: () => _removeQuickAction(index),
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: AppTheme.redStandard),
         ),
         onTap: () => _editQuickAction(index, action),
       ),
@@ -808,7 +809,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.dark(
-              primary: Colors.blue,
+              primary: AppTheme.blueStandard,
               surface: Color(0xFF2A2D3A),
             ),
           ),
@@ -825,7 +826,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: const ColorScheme.dark(
-                primary: Colors.blue,
+                primary: AppTheme.blueStandard,
                 surface: Color(0xFF2A2D3A),
               ),
             ),
@@ -912,7 +913,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         backgroundColor: const Color(0xFF2A2D3A),
         title: Text(
           index != null ? 'Modifier l\'événement' : 'Ajouter un événement',
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: AppTheme.white100),
         ),
         content: SingleChildScrollView(
           child: Column(
@@ -923,12 +924,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   Expanded(
                     child: TextField(
                       controller: dayController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppTheme.white100),
                       decoration: const InputDecoration(
                         labelText: 'Jour',
-                        labelStyle: TextStyle(color: Colors.grey),
+                        labelStyle: TextStyle(color: AppTheme.grey500),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(color: AppTheme.grey500),
                         ),
                       ),
                     ),
@@ -937,12 +938,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   Expanded(
                     child: TextField(
                       controller: monthController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppTheme.white100),
                       decoration: const InputDecoration(
                         labelText: 'Mois',
-                        labelStyle: TextStyle(color: Colors.grey),
+                        labelStyle: TextStyle(color: AppTheme.grey500),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(color: AppTheme.grey500),
                         ),
                       ),
                     ),
@@ -952,36 +953,36 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               const SizedBox(height: 16),
               TextField(
                 controller: titleController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppTheme.white100),
                 decoration: const InputDecoration(
                   labelText: 'Titre',
-                  labelStyle: TextStyle(color: Colors.grey),
+                  labelStyle: TextStyle(color: AppTheme.grey500),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: AppTheme.grey500),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: descriptionController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppTheme.white100),
                 decoration: const InputDecoration(
                   labelText: 'Description',
-                  labelStyle: TextStyle(color: Colors.grey),
+                  labelStyle: TextStyle(color: AppTheme.grey500),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: AppTheme.grey500),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: timeController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppTheme.white100),
                 decoration: const InputDecoration(
                   labelText: 'Heure',
-                  labelStyle: TextStyle(color: Colors.grey),
+                  labelStyle: TextStyle(color: AppTheme.grey500),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: AppTheme.grey500),
                   ),
                 ),
               ),
@@ -991,7 +992,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler', style: TextStyle(color: Colors.grey)),
+            child: const Text('Annuler', style: TextStyle(color: AppTheme.grey500)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -1014,8 +1015,8 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
+              backgroundColor: AppTheme.blueStandard,
+              foregroundColor: AppTheme.white100,
             ),
             child: const Text('Sauvegarder'),
           ),
@@ -1058,7 +1059,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           backgroundColor: const Color(0xFF2A2D3A),
           title: Text(
             index != null ? 'Modifier l\'action' : 'Ajouter une action',
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: AppTheme.white100),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -1066,24 +1067,24 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               children: [
                 TextField(
                   controller: titleController,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppTheme.white100),
                   decoration: const InputDecoration(
                     labelText: 'Titre',
-                    labelStyle: TextStyle(color: Colors.grey),
+                    labelStyle: TextStyle(color: AppTheme.grey500),
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: BorderSide(color: AppTheme.grey500),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: descriptionController,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppTheme.white100),
                   decoration: const InputDecoration(
                     labelText: 'Description',
-                    labelStyle: TextStyle(color: Colors.grey),
+                    labelStyle: TextStyle(color: AppTheme.grey500),
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: BorderSide(color: AppTheme.grey500),
                     ),
                   ),
                 ),
@@ -1092,7 +1093,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 // Sélection d'icône
                 const Text(
                   'Icône',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: AppTheme.white100, fontSize: 16),
                 ),
                 const SizedBox(height: 12),
                 Wrap(
@@ -1106,13 +1107,13 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.blue : Colors.grey[700],
+                          color: isSelected ? AppTheme.blueStandard : AppTheme.grey700,
                           borderRadius: BorderRadius.circular(25),
-                          border: isSelected ? Border.all(color: Colors.blue, width: 2) : null,
+                          border: isSelected ? Border.all(color: AppTheme.blueStandard, width: 2) : null,
                         ),
                         child: Icon(
                           iconData['icon'] as IconData,
-                          color: Colors.white,
+                          color: AppTheme.white100,
                           size: 24,
                         ),
                       ),
@@ -1124,7 +1125,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 // Sélection de couleur
                 const Text(
                   'Couleur',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: AppTheme.white100, fontSize: 16),
                 ),
                 const SizedBox(height: 12),
                 Wrap(
@@ -1139,8 +1140,8 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                         height: 40,
                         decoration: BoxDecoration(
                           color: Color(colorData['color'] as int),
-                          borderRadius: BorderRadius.circular(20),
-                          border: isSelected ? Border.all(color: Colors.white, width: 3) : null,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+                          border: isSelected ? Border.all(color: AppTheme.white100, width: 3) : null,
                         ),
                       ),
                     );
@@ -1152,7 +1153,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Annuler', style: TextStyle(color: Colors.grey)),
+              child: const Text('Annuler', style: TextStyle(color: AppTheme.grey500)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -1174,8 +1175,8 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.blueStandard,
+                foregroundColor: AppTheme.white100,
               ),
               child: const Text('Sauvegarder'),
             ),
@@ -1251,7 +1252,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Configuration sauvegardée avec succès !'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
       }
@@ -1267,7 +1268,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
     }
@@ -1341,7 +1342,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         child: Padding(
           padding: EdgeInsets.all(12),
           child: Center(
-            child: Text('Aucune image sélectionnée', style: TextStyle(color: Colors.grey)),
+            child: Text('Aucune image sélectionnée', style: TextStyle(color: AppTheme.grey500)),
           ),
         ),
       );
@@ -1358,7 +1359,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           return Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 child: Image.network(url, width: 140, height: 100, fit: BoxFit.cover),
               ),
               Positioned(
@@ -1376,11 +1377,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black45,
-                      borderRadius: BorderRadius.circular(12),
+                      color: AppTheme.black100,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     padding: const EdgeInsets.all(4),
-                    child: const Icon(Icons.delete, color: Colors.white, size: 18),
+                    child: const Icon(Icons.delete, color: AppTheme.white100, size: 18),
                   ),
                 ),
               ),

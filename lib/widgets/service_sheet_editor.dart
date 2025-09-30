@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/service_model.dart';
 import '../services/services_firebase_service.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class ServiceSheetEditor extends StatefulWidget {
   final ServiceModel service;
@@ -20,13 +20,13 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
   final List<Map<String, dynamic>> _itemTypes = [
     {'value': 'section', 'label': 'Section', 'icon': Icons.view_headline, 'color': Colors.teal},
     {'value': 'louange', 'label': 'Louange', 'icon': Icons.music_note, 'color': Colors.purple},
-    {'value': 'predication', 'label': 'Prédication', 'icon': Icons.record_voice_over, 'color': Colors.blue},
-    {'value': 'annonce', 'label': 'Annonces', 'icon': Icons.campaign, 'color': Colors.orange},
-    {'value': 'priere', 'label': 'Prière', 'icon': Icons.favorite, 'color': Colors.red},
-    {'value': 'chant', 'label': 'Chant', 'icon': Icons.library_music, 'color': Colors.green},
+    {'value': 'predication', 'label': 'Prédication', 'icon': Icons.record_voice_over, 'color': AppTheme.blueStandard},
+    {'value': 'annonce', 'label': 'Annonces', 'icon': Icons.campaign, 'color': AppTheme.orangeStandard},
+    {'value': 'priere', 'label': 'Prière', 'icon': Icons.favorite, 'color': AppTheme.redStandard},
+    {'value': 'chant', 'label': 'Chant', 'icon': Icons.library_music, 'color': AppTheme.greenStandard},
     {'value': 'lecture', 'label': 'Lecture', 'icon': Icons.menu_book, 'color': Colors.indigo},
     {'value': 'offrande', 'label': 'Offrande', 'icon': Icons.volunteer_activism, 'color': Colors.amber},
-    {'value': 'autre', 'label': 'Autre', 'icon': Icons.more_horiz, 'color': Colors.grey},
+    {'value': 'autre', 'label': 'Autre', 'icon': Icons.more_horiz, 'color': AppTheme.grey500},
   ];
 
   @override
@@ -367,7 +367,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                     Text(
                       _serviceSheet!.title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     Text(
@@ -452,18 +452,18 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                   height: 40,
                   decoration: BoxDecoration(
                     color: color,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(icon, size: 18, color: Colors.white),
+                      Icon(icon, size: 18, color: AppTheme.white100),
                       Text(
                         '${item.order}',
                         style: const TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.white100,
                         ),
                       ),
                     ],
@@ -478,7 +478,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                         item.title,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: AppTheme.fontBold,
                           color: color,
                           letterSpacing: 1.2,
                         ),
@@ -549,7 +549,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
           height: 40,
           decoration: BoxDecoration(
             color: color.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -559,7 +559,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                 '${item.order}',
                 style: TextStyle(
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                   color: color,
                 ),
               ),
@@ -568,7 +568,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
         ),
         title: Text(
           item.title,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -591,13 +591,13 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Text(
                   '${item.durationMinutes}min',
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                     color: color,
                   ),
                 ),

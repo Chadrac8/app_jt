@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/dashboard_widget_model.dart';
+import '../../../theme.dart';
 
 class DashboardStatWidget extends StatelessWidget {
   final DashboardStatModel stat;
@@ -20,7 +21,7 @@ class DashboardStatWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(compactView ? 12 : 16),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           gradient: LinearGradient(
             colors: [
               color.withOpacity(0.1),
@@ -44,7 +45,7 @@ class DashboardStatWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: color.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       _getIconData(stat.icon!),
@@ -58,7 +59,7 @@ class DashboardStatWidget extends StatelessWidget {
                   child: Text(
                     stat.label,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
+                      color: AppTheme.grey600,
                       fontSize: compactView ? 12 : 14,
                     ),
                     maxLines: 2,
@@ -76,7 +77,7 @@ class DashboardStatWidget extends StatelessWidget {
                     stat.value,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: color,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       fontSize: compactView ? 20 : 28,
                     ),
                     maxLines: 1,
@@ -94,7 +95,7 @@ class DashboardStatWidget extends StatelessWidget {
               Text(
                 stat.subtitle!,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[500],
+                  color: AppTheme.grey500,
                   fontSize: compactView ? 10 : 12,
                 ),
                 maxLines: 1,
@@ -129,15 +130,15 @@ class DashboardStatWidget extends StatelessWidget {
     switch (stat.trend!) {
       case 'up':
         iconData = Icons.trending_up;
-        trendColor = Colors.green;
+        trendColor = AppTheme.greenStandard;
         break;
       case 'down':
         iconData = Icons.trending_down;
-        trendColor = Colors.red;
+        trendColor = AppTheme.redStandard;
         break;
       case 'stable':
         iconData = Icons.trending_flat;
-        trendColor = Colors.orange;
+        trendColor = AppTheme.orangeStandard;
         break;
       default:
         return const SizedBox.shrink();
@@ -147,7 +148,7 @@ class DashboardStatWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: trendColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Icon(
         iconData,
@@ -160,13 +161,13 @@ class DashboardStatWidget extends StatelessWidget {
   Color _getTrendColor(String? trend) {
     switch (trend) {
       case 'up':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'down':
-        return Colors.red;
+        return AppTheme.redStandard;
       case 'stable':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -180,7 +181,7 @@ class DashboardStatWidget extends StatelessWidget {
       }
       return Color(int.parse(colorString, radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.blueStandard;
     }
   }
 

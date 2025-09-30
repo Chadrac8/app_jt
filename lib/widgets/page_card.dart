@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/page_model.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class PageCard extends StatefulWidget {
   final CustomPageModel page;
@@ -68,13 +68,13 @@ class _PageCardState extends State<PageCard>
   Color get _statusColor {
     switch (widget.page.status) {
       case 'published':
-        return Colors.green;
+        return AppTheme.greenStandard;
       case 'draft':
-        return Colors.orange;
+        return AppTheme.orangeStandard;
       case 'archived':
-        return Colors.grey;
+        return AppTheme.grey500;
       default:
-        return Colors.grey;
+        return AppTheme.grey500;
     }
   }
 
@@ -126,14 +126,14 @@ class _PageCardState extends State<PageCard>
       onLongPress: widget.onLongPress,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: widget.isSelected
               ? Border.all(color: AppTheme.primaryColor, width: 2)
               : null,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: AppTheme.black100.withOpacity(0.08),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -160,7 +160,7 @@ class _PageCardState extends State<PageCard>
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.3),
+                        AppTheme.black100.withOpacity(0.3),
                       ],
                     ),
                   ),
@@ -199,7 +199,7 @@ class _PageCardState extends State<PageCard>
                             Text(
                               widget.page.title,
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: AppTheme.fontBold,
                                 color: AppTheme.textPrimaryColor,
                               ),
                               maxLines: 2,
@@ -265,7 +265,7 @@ class _PageCardState extends State<PageCard>
                               const PopupMenuItem(
                                 value: 'publish',
                                 child: ListTile(
-                                  leading: Icon(Icons.publish, color: Colors.green),
+                                  leading: Icon(Icons.publish, color: AppTheme.greenStandard),
                                   title: Text('Publier'),
                                   contentPadding: EdgeInsets.zero,
                                 ),
@@ -274,7 +274,7 @@ class _PageCardState extends State<PageCard>
                               const PopupMenuItem(
                                 value: 'archive',
                                 child: ListTile(
-                                  leading: Icon(Icons.archive, color: Colors.orange),
+                                  leading: Icon(Icons.archive, color: AppTheme.orangeStandard),
                                   title: Text('Archiver'),
                                   contentPadding: EdgeInsets.zero,
                                 ),
@@ -282,7 +282,7 @@ class _PageCardState extends State<PageCard>
                             const PopupMenuItem(
                               value: 'delete',
                               child: ListTile(
-                                leading: Icon(Icons.delete, color: Colors.red),
+                                leading: Icon(Icons.delete, color: AppTheme.redStandard),
                                 title: Text('Supprimer'),
                                 contentPadding: EdgeInsets.zero,
                               ),
@@ -301,19 +301,19 @@ class _PageCardState extends State<PageCard>
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius: BorderRadius.circular(8),
+                            color: AppTheme.grey100,
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Row(
                             children: [
-                              Icon(Icons.link, size: 16, color: Colors.grey[600]),
+                              Icon(Icons.link, size: 16, color: AppTheme.grey600),
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
                                   '/${widget.page.slug}',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.grey[600],
+                                    color: AppTheme.grey600,
                                     fontFamily: 'monospace',
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -328,7 +328,7 @@ class _PageCardState extends State<PageCard>
                         '${widget.page.components.length} composant${widget.page.components.length > 1 ? 's' : ''}',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: AppTheme.grey600,
                         ),
                       ),
                     ],
@@ -355,7 +355,7 @@ class _PageCardState extends State<PageCard>
                         _buildDateChip(
                           icon: Icons.schedule,
                           label: _formatDate(widget.page.publishDate!),
-                          color: Colors.blue,
+                          color: AppTheme.blueStandard,
                         ),
                     ],
                   ),
@@ -378,8 +378,8 @@ class _PageCardState extends State<PageCard>
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(8),
+                color: AppTheme.white100.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Icon(
                 Icons.web, // Vous pouvez mapper iconName vers une vraie icône
@@ -392,14 +392,14 @@ class _PageCardState extends State<PageCard>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+                color: AppTheme.white100.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: Text(
                 '#${widget.page.displayOrder}',
                 style: const TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -418,7 +418,7 @@ class _PageCardState extends State<PageCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -429,7 +429,7 @@ class _PageCardState extends State<PageCard>
             label,
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: color,
             ),
           ),
@@ -447,7 +447,7 @@ class _PageCardState extends State<PageCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -458,7 +458,7 @@ class _PageCardState extends State<PageCard>
             label,
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontWeight: AppTheme.fontMedium,
               color: color,
             ),
           ),

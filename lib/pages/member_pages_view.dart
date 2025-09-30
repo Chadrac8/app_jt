@@ -3,7 +3,7 @@ import '../models/page_model.dart';
 import '../services/pages_firebase_service.dart';
 import '../widgets/page_components/component_renderer.dart';
 import '../widgets/custom_page_app_bar.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 class MemberPagesView extends StatefulWidget {
   final String? pageId; // Pour afficher une page spécifique par ID
@@ -184,7 +184,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
               label: Text('Réessayer'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.white100,
               ),
             ),
           ],
@@ -238,11 +238,11 @@ class _MemberPagesViewState extends State<MemberPagesView>
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: InkWell(
         onTap: () => _navigateToPage(page),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Column(
           children: [
             // Image de couverture
@@ -264,7 +264,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.3),
+                        AppTheme.black100.withOpacity(0.3),
                       ],
                     ),
                   ),
@@ -301,7 +301,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
                   Text(
                     page.title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                     maxLines: 2,
@@ -330,7 +330,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
                       Icon(
                         Icons.arrow_forward_ios,
                         size: 16,
-                        color: Colors.grey[400],
+                        color: AppTheme.grey400,
                       ),
                     ],
                   ),
@@ -502,7 +502,7 @@ class _MemberPageDetailViewState extends State<MemberPageDetailView> {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.3),
+                      AppTheme.black100.withOpacity(0.3),
                     ],
                   ),
                 ),
@@ -557,25 +557,25 @@ class _MemberPageDetailViewState extends State<MemberPageDetailView> {
       width: double.infinity,
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        color: AppTheme.grey50,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: AppTheme.grey200!),
       ),
       child: Column(
         children: [
-          Icon(Icons.web, size: 64, color: Colors.grey[400]),
+          Icon(Icons.web, size: 64, color: AppTheme.grey400),
           const SizedBox(height: 16),
           Text(
             'Contenu à venir',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Cette page sera bientôt mise à jour avec du contenu.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[500],
+              color: AppTheme.grey500,
             ),
             textAlign: TextAlign.center,
           ),

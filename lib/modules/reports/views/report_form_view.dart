@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../services/reports_service.dart';
 import '../models/report.dart';
+import '../../../../theme.dart';
 
 class ReportFormView extends StatefulWidget {
   final Report? report;
@@ -186,7 +187,7 @@ class _ReportFormViewState extends State<ReportFormView> {
             Text(
               'Informations générales',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -265,7 +266,7 @@ class _ReportFormViewState extends State<ReportFormView> {
             Text(
               'Configuration',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 16),
@@ -348,14 +349,14 @@ class _ReportFormViewState extends State<ReportFormView> {
             Text(
               'Colonnes de données',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Sélectionnez les données à inclure dans le rapport',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
             const SizedBox(height: 16),
@@ -385,18 +386,18 @@ class _ReportFormViewState extends State<ReportFormView> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey100,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.info_outline, color: Colors.grey),
+                    Icon(Icons.info_outline, color: AppTheme.grey500),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Aucune colonne prédéfinie pour ce type de rapport. '
                         'Vous pourrez configurer les colonnes après la création.',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: AppTheme.grey500),
                       ),
                     ),
                   ],
@@ -446,7 +447,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                   child: Text(
                     'Filtres de données',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                 ),
@@ -461,7 +462,7 @@ class _ReportFormViewState extends State<ReportFormView> {
             Text(
               'Définissez des critères pour filtrer les données du rapport',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
             ),
             const SizedBox(height: 16),
@@ -470,17 +471,17 @@ class _ReportFormViewState extends State<ReportFormView> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[300]!),
+                  color: AppTheme.grey50,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey300!),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.filter_list_off, color: Colors.grey),
+                    Icon(Icons.filter_list_off, color: AppTheme.grey500),
                     SizedBox(width: 8),
                     Text(
                       'Aucun filtre défini - toutes les données seront incluses',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: AppTheme.grey500),
                     ),
                   ],
                 ),
@@ -659,7 +660,7 @@ class _ReportFormViewState extends State<ReportFormView> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Rapport créé avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -672,7 +673,7 @@ class _ReportFormViewState extends State<ReportFormView> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Rapport modifié avec succès'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppTheme.greenStandard,
             ),
           );
         }
@@ -682,7 +683,7 @@ class _ReportFormViewState extends State<ReportFormView> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }
@@ -731,7 +732,7 @@ class _ReportFormViewState extends State<ReportFormView> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Rapport créé et généré avec succès'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.greenStandard,
           ),
         );
         
@@ -743,7 +744,7 @@ class _ReportFormViewState extends State<ReportFormView> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.redStandard,
           ),
         );
       }

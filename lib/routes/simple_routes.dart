@@ -34,6 +34,7 @@ import '../pages/tasks_home_page.dart';
 import '../pages/appointments_admin_page.dart';
 import '../pages/prayers_home_page.dart';
 import '../pages/pages_home_page.dart';
+import '../modules/offrandes/views/offrandes_admin_view.dart';
 
 
 import '../pages/admin/admin_dashboard_page.dart';
@@ -45,6 +46,7 @@ import '../modules/reports/views/report_form_view.dart';
 // Auth
 import '../auth/login_page.dart';
 import '../pages/initial_profile_setup_page.dart';
+import '../../theme.dart';
 
 // Utils et diagnostic
 // import '../utils/index_checker.dart';
@@ -112,6 +114,7 @@ class SimpleRoutes {
 
     '/admin/appointments': (context) => const AppointmentsAdminPage(),
     '/admin/prayers': (context) => const PrayersHomePage(),
+    '/admin/offrandes': (context) => const OffrandesAdminView(),
     '/admin/pages': (context) => const PagesHomePage(),
     '/admin/message': (context) => const MessagePage(),
     // '/admin/automation': (context) => const AutomationHomePage(),
@@ -185,7 +188,7 @@ class SimpleRoutes {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Page non disponible: $routeName'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
       return null;
@@ -207,7 +210,7 @@ class SimpleRoutes {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Page non disponible: $routeName'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
       return null;
@@ -230,7 +233,7 @@ class SimpleRoutes {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Page non disponible: $routeName'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppTheme.redStandard,
         ),
       );
       return null;

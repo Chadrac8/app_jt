@@ -5,6 +5,7 @@ import '../services/services_service.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
+import '../../../../theme.dart';
 
 /// Vue de détail d'un service
 class ServiceDetailView extends StatefulWidget {
@@ -96,7 +97,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
               const PopupMenuItem(
                 value: 'cancel',
                 child: ListTile(
-                  leading: Icon(Icons.cancel, color: Colors.red),
+                  leading: Icon(Icons.cancel, color: AppTheme.redStandard),
                   title: Text('Annuler'),
                 ),
               ),
@@ -104,7 +105,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
               const PopupMenuItem(
                 value: 'complete',
                 child: ListTile(
-                  leading: Icon(Icons.check, color: Colors.green),
+                  leading: Icon(Icons.check, color: AppTheme.greenStandard),
                   title: Text('Terminer'),
                 ),
               ),
@@ -146,7 +147,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
           if (_service!.imageUrl != null)
             CustomCard(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 child: Image.network(
                   _service!.imageUrl!,
                   height: 200,
@@ -155,7 +156,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
                       height: 200,
-                      color: Colors.grey[300],
+                      color: AppTheme.grey300,
                       child: const Icon(Icons.image_not_supported, size: 50),
                     );
                   },
@@ -179,7 +180,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                           _service!.name,
                           style: const TextStyle(
                             fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ),
@@ -187,13 +188,13 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: _getStatusColor(_service!.status),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         ),
                         child: Text(
                           _service!.statusDisplay,
                           style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            color: AppTheme.white100,
+                            fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ),
@@ -207,7 +208,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     backgroundColor: _service!.colorCode != null
                         ? Color(int.parse(_service!.colorCode!.replaceFirst('#', '0xff')))
                         : Theme.of(context).primaryColor,
-                    labelStyle: const TextStyle(color: Colors.white),
+                    labelStyle: const TextStyle(color: AppTheme.white100),
                   ),
                   
                   const SizedBox(height: 16),
@@ -217,7 +218,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                       'Description',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -278,7 +279,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                       'Notes',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -311,7 +312,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     'Équipe assignée (${_assignments.length})',
                     style: const TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -331,17 +332,17 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.people_outline, size: 64, color: Colors.grey),
+                        Icon(Icons.people_outline, size: 64, color: AppTheme.grey500),
                         SizedBox(height: 16),
                         Text(
                           'Aucune assignation',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          style: TextStyle(fontSize: 18, color: AppTheme.grey500),
                         ),
                         SizedBox(height: 8),
                         Text(
                           'Commencez par assigner des membres à ce service.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: AppTheme.grey500),
                         ),
                       ],
                     ),
@@ -378,7 +379,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                       'Équipements nécessaires',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -388,7 +389,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                       children: _service!.equipmentNeeded.map((equipment) {
                         return Chip(
                           label: Text(equipment),
-                          backgroundColor: Colors.blue[100],
+                          backgroundColor: AppTheme.grey100,
                         );
                       }).toList(),
                     ),
@@ -410,14 +411,14 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     'Configuration technique',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const SizedBox(height: 12),
                   
                   if (_service!.isStreamingEnabled) ...[
                     ListTile(
-                      leading: const Icon(Icons.live_tv, color: Colors.red),
+                      leading: const Icon(Icons.live_tv, color: AppTheme.redStandard),
                       title: const Text('Diffusion en ligne'),
                       subtitle: Text(_service!.streamingUrl ?? 'URL non spécifiée'),
                       contentPadding: EdgeInsets.zero,
@@ -427,7 +428,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                   ListTile(
                     leading: Icon(
                       _service!.isRecurring ? Icons.repeat : Icons.event,
-                      color: Colors.blue,
+                      color: AppTheme.blueStandard,
                     ),
                     title: Text(_service!.isRecurring ? 'Service récurrent' : 'Service unique'),
                     subtitle: _service!.isRecurring && _service!.recurrencePattern != null
@@ -453,45 +454,45 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     'Participation',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   const SizedBox(height: 12),
                   
                   ListTile(
-                    leading: const Icon(Icons.people, color: Colors.green),
+                    leading: const Icon(Icons.people, color: AppTheme.greenStandard),
                     title: const Text('Membres assignés'),
                     trailing: Text(
                       _assignments.length.toString(),
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     contentPadding: EdgeInsets.zero,
                   ),
                   
                   ListTile(
-                    leading: const Icon(Icons.check_circle, color: Colors.blue),
+                    leading: const Icon(Icons.check_circle, color: AppTheme.blueStandard),
                     title: const Text('Confirmations'),
                     trailing: Text(
                       _assignments.where((a) => a.status == AssignmentStatus.confirmed).length.toString(),
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     contentPadding: EdgeInsets.zero,
                   ),
                   
                   ListTile(
-                    leading: const Icon(Icons.pending, color: Colors.orange),
+                    leading: const Icon(Icons.pending, color: AppTheme.orangeStandard),
                     title: const Text('En attente'),
                     trailing: Text(
                       _assignments.where((a) => a.status == AssignmentStatus.pending).length.toString(),
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     contentPadding: EdgeInsets.zero,
@@ -511,7 +512,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: Colors.grey[600]),
+          Icon(icon, size: 20, color: AppTheme.grey600),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -520,9 +521,9 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                 Text(
                   label,
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: AppTheme.grey600,
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -530,7 +531,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                   value,
                   style: const TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ],
@@ -549,14 +550,14 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
           backgroundColor: Color(int.parse(assignment.statusColor.replaceFirst('#', '0xff'))),
           child: Icon(
             _getAssignmentStatusIcon(assignment.status),
-            color: Colors.white,
+            color: AppTheme.white100,
           ),
         ),
         title: Row(
           children: [
             Text(
               assignment.memberName,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: AppTheme.fontBold),
             ),
             if (assignment.isTeamLead) ...[
               const SizedBox(width: 8),
@@ -571,12 +572,12 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
             if (assignment.responsibilities.isNotEmpty)
               Text(
                 assignment.responsibilities.join(', '),
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                style: TextStyle(color: AppTheme.grey600, fontSize: 12),
               ),
             if (assignment.notes != null && assignment.notes!.isNotEmpty)
               Text(
                 assignment.notes!,
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                style: TextStyle(color: AppTheme.grey600, fontSize: 12),
               ),
           ],
         ),
@@ -587,7 +588,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
               const PopupMenuItem(
                 value: 'confirm',
                 child: ListTile(
-                  leading: Icon(Icons.check, color: Colors.green),
+                  leading: Icon(Icons.check, color: AppTheme.greenStandard),
                   title: Text('Confirmer'),
                 ),
               ),
@@ -601,7 +602,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
             const PopupMenuItem(
               value: 'remove',
               child: ListTile(
-                leading: Icon(Icons.remove_circle, color: Colors.red),
+                leading: Icon(Icons.remove_circle, color: AppTheme.redStandard),
                 title: Text('Retirer'),
               ),
             ),
@@ -746,7 +747,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
             child: const Text('Retirer'),
           ),
         ],
@@ -799,13 +800,13 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
   Color _getStatusColor(ServiceStatus status) {
     switch (status) {
       case ServiceStatus.scheduled:
-        return Colors.blue;
+        return AppTheme.blueStandard;
       case ServiceStatus.inProgress:
-        return Colors.green;
+        return AppTheme.greenStandard;
       case ServiceStatus.completed:
-        return Colors.grey;
+        return AppTheme.grey500;
       case ServiceStatus.cancelled:
-        return Colors.red;
+        return AppTheme.redStandard;
     }
   }
 
