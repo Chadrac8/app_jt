@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>jubile_tabernacle_france2</string>
+	<string>Jubile Tabernacle</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -51,6 +51,60 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	
+	<!-- Descriptions des permissions requises pour l'App Store -->
+	<key>NSCameraUsageDescription</key>
+	<string>Cette application utilise l'appareil photo pour vous permettre de prendre des photos de profil et de partager des moments de votre vie spirituelle avec votre communauté.</string>
+	
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cette application utilise vos photos pour vous permettre de sélectionner des images de profil et de partager des souvenirs avec votre communauté religieuse.</string>
+	
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Cette application utilise le microphone pour les fonctionnalités audio telles que l'écoute de sermons et de messages spirituels.</string>
+	
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Cette application utilise votre position pour vous proposer des églises et événements spirituels à proximité de votre localisation.</string>
+	
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>Cette application envoie des notifications pour vous tenir informé des événements de votre église, des prières communautaires et du pain quotidien spirituel.</string>
+	
+	<key>NSNetworkUsageDescription</key>
+	<string>Cette application utilise la connexion internet pour synchroniser vos données spirituelles, charger les sermons et connecter avec votre communauté.</string>
+	
+	<!-- Support pour les liens universels et partage -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>org.jubiletabernacle.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>jubiletabernacle</string>
+			</array>
+		</dict>
+	</array>
+	
+	<!-- Politique de transport de sécurité -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>firebase.googleapis.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	
+	<!-- Support des langues -->
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>fr</string>
+		<string>en</string>
 	</array>
 </dict>
 </plist>

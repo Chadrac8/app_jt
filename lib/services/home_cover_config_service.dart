@@ -236,8 +236,7 @@ class HomeCoverConfigService {
               lowerUrl.contains('instagram.com') ||
               lowerUrl.contains('twitch.tv') ||
               lowerUrl.contains('vimeo.com') ||
-              url.startsWith('https://') || // Accepter toutes les URLs HTTPS
-              url.startsWith('http://')); // Accepter toutes les URLs HTTP
+              url.startsWith('https://')); // Accepter uniquement les URLs HTTPS pour la sécurité
     } catch (e) {
       return false;
     }

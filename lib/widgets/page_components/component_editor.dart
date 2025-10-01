@@ -496,8 +496,8 @@ class _ComponentEditorState extends State<ComponentEditor> {
         if (value == null || value.trim().isEmpty) {
           return 'L\'URL est requise';
         }
-        if (!value.startsWith('http://') && !value.startsWith('https://')) {
-          return 'L\'URL doit commencer par http:// ou https://';
+        if (!value.startsWith('https://')) {
+          return 'L\'URL doit commencer par https:// pour des raisons de sécurité';
         }
         return null;
       },

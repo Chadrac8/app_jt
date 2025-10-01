@@ -4928,7 +4928,7 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
     try {
       // Nettoyage et validation de l'URL
       String cleanUrl = url.trim();
-      if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+      if (!cleanUrl.startsWith('https://')) {
         cleanUrl = 'https://$cleanUrl';
       }
       
@@ -5051,8 +5051,8 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
               return NavigationDecision.prevent;
             }
             
-            // Permettre la navigation vers les URL HTTPS sécurisées
-            if (request.url.startsWith('https://') || request.url.startsWith('http://')) {
+            // Permettre uniquement la navigation vers les URL HTTPS sécurisées
+            if (request.url.startsWith('https://')) {
               return NavigationDecision.navigate;
             }
             

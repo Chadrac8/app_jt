@@ -221,7 +221,7 @@ class SoundCloudService {
     String normalized = url.trim();
     
     // Ajoute le protocole si manquant
-    if (!normalized.startsWith('http://') && !normalized.startsWith('https://')) {
+    if (!normalized.startsWith('https://')) {
       normalized = 'https://$normalized';
     }
     
