@@ -67,6 +67,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
   /// Build widget for authenticated users with profile loading (using Stream for real-time updates)
   Widget _buildAuthenticatedUserWidget(User user) {
+    // Skip profile configuration for anonymous users
+    if (user.isAnonymous) {
+      print('👤 AuthWrapper: Utilisateur anonyme détecté, accès direct sans configuration de profil');
+      return _buildAnonymousUserInterface();
+    }
+
     return StreamBuilder<PersonModel?>(
       stream: AuthService.getCurrentUserProfileStream(),
       builder: (context, profileSnapshot) {
@@ -120,6 +126,20 @@ class _AuthWrapperState extends State<AuthWrapper> {
     } catch (e) {
       print('❌ Error building user interface: $e');
       // Fallback to basic member interface
+      return const BottomNavigationWrapper();
+    }
+  }
+
+  /// Build interface for anonymous users (skip profile configuration)
+  Widget _buildAnonymousUserInterface() {
+    try {
+      print('👤 AuthWrapper: Interface pour utilisateur anonyme - accès direct');
+      // Anonymous users don't need profile configuration or permission initialization
+      // Direct access to the app interface
+      return const BottomNavigationWrapper();
+    } catch (e) {
+      print('❌ Error building anonymous user interface: $e');
+      // Fallback to basic interface
       return const BottomNavigationWrapper();
     }
   }

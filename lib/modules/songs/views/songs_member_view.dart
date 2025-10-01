@@ -175,15 +175,10 @@ class _SongsMemberViewState extends State<SongsMemberView>
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        toolbarHeight: 56.0, // Hauteur standard Material Design
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
+        // Utilise le thème appBarTheme pour toutes les propriétés
+        title: const Text(
           'Cantiques',
-          style: GoogleFonts.inter(
-            fontWeight: AppTheme.fontBold,
-            color: AppTheme.primaryColor,
-          ),
+          // Style vient du thème titleTextStyle
         ),
         centerTitle: true,
         bottom: PreferredSize(
@@ -191,7 +186,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
           child: Container(
             height: 50, // Hauteur Material Design standard
             decoration: BoxDecoration(
-              color: AppTheme.backgroundColor, // Harmonisé avec AppBar transparente membre
+              color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
               boxShadow: [
                 BoxShadow(
                   color: AppTheme.black100.withOpacity(0.08),
@@ -202,9 +197,9 @@ class _SongsMemberViewState extends State<SongsMemberView>
             ),
             child: TabBar(
               controller: _tabController,
-              labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: AppTheme.textSecondaryColor,
-              indicatorColor: AppTheme.primaryColor,
+              labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
+              unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
+              indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
               indicatorWeight: 3.0, // Poids standard Material Design
               padding: const EdgeInsets.symmetric(horizontal: 16),
               labelStyle: GoogleFonts.inter(

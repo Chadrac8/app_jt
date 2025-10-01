@@ -17,8 +17,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nous visiter'),
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: AppTheme.surfaceColor),
+      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(

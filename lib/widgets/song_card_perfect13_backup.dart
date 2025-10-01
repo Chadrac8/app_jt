@@ -127,7 +127,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13> {
                           fontWeight: AppTheme.fontSemiBold,
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       if (widget.song.authors.isNotEmpty) ...[

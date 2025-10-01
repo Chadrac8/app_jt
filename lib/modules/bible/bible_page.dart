@@ -64,9 +64,483 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       setState(() {
         _currentTabIndex = _tabController.index;
       });
+      
+      // Forcer le rechargement des préférences quand on change d'onglet
+      if (_tabController.index == 3) { // Onglet Notes (index 3)
+        print('DEBUG: Changement vers onglet Notes, rechargement des préférences...');
+        _forceReloadPrefs();
+      } else if (_tabController.index == 0) { // Onglet Lecture (index 0)
+        print('DEBUG: Changement vers onglet Lecture, rechargement des préférences...');
+        _forceReloadPrefs();
+      }
     });
     _loadBible();
     _loadPrefs();
+  }
+  
+  // Méthodes utilitaires pour l'historique et les marque-pages
+  Future<List<Map<String, dynamic>>> _getReadingHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final historyString = prefs.getString('bible_reading_history') ?? '[]';
+    List<dynamic> history = jsonDecode(historyString);
+    
+    // Trier par timestamp décroissant (plus récent en premier)
+    history.sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
+    
+    // Limiter à 50 entrées
+    if (history.length > 50) {
+      history = history.take(50).toList();
+      await prefs.setString('bible_reading_history', jsonEncode(history));
+    }
+    
+    return history.cast<Map<String, dynamic>>();
+  }
+  
+  String _getTimeAgo(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+    
+    if (difference.inDays > 0) {
+      return '${difference.inDays} jour${difference.inDays > 1 ? 's' : ''} ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} heure${difference.inHours > 1 ? 's' : ''} ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+    } else {
+      return 'À l\'instant';
+    }
+  }
+  
+  Future<void> _clearReadingHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('bible_reading_history');
+  }
+  
+  void _showBookmarks() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.bookmarks_rounded,
+              color: colorScheme.primary,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Mes marque-pages',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: AppTheme.fontSemiBold,
+                color: colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 400,
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: _getBookmarks(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: colorScheme.primary,
+                  ),
+                );
+              }
+              
+              final bookmarks = snapshot.data ?? [];
+              
+              if (bookmarks.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.bookmarks_rounded,
+                        size: 64,
+                        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Aucun marque-page',
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          fontWeight: AppTheme.fontSemiBold,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Vos chapitres favoris apparaîtront ici',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              
+              return ListView.builder(
+                itemCount: bookmarks.length,
+                itemBuilder: (context, index) {
+                  final bookmark = bookmarks[index];
+                  
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    elevation: 1,
+                    color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                    child: ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: colorScheme.tertiaryContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.bookmark_rounded,
+                          color: colorScheme.onTertiaryContainer,
+                          size: 20,
+                        ),
+                      ),
+                      title: Text(
+                        '${bookmark['book']} ${bookmark['chapter']}',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: AppTheme.fontSemiBold,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete_outline_rounded,
+                          color: colorScheme.error,
+                          size: 20,
+                        ),
+                        onPressed: () async {
+                          await _removeBookmark(bookmark['key']);
+                          Navigator.of(context).pop();
+                          _showBookmarks(); // Rafraîchir
+                        },
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _selectedBook = bookmark['book'];
+                          _selectedChapter = bookmark['chapter'];
+                          _tabController.index = 0; // Aller à l'onglet lecture
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Fermer',
+              style: GoogleFonts.inter(
+                fontWeight: AppTheme.fontMedium,
+                color: colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Future<List<Map<String, dynamic>>> _getBookmarks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final bookmarksString = prefs.getString('bible_bookmarks') ?? '[]';
+    return List<Map<String, dynamic>>.from(jsonDecode(bookmarksString));
+  }
+  
+  Future<void> _removeBookmark(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    final bookmarksString = prefs.getString('bible_bookmarks') ?? '[]';
+    List<dynamic> bookmarks = jsonDecode(bookmarksString);
+    
+    bookmarks.removeWhere((b) => b['key'] == key);
+    await prefs.setString('bible_bookmarks', jsonEncode(bookmarks));
+  }
+  
+  // Méthode pour montrer un hint la première fois
+  void _showFirstTimeHint() {
+    const String hintKey = 'first_time_verse_hint_shown';
+    SharedPreferences.getInstance().then((prefs) {
+      if (!(prefs.getBool(hintKey) ?? false)) {
+        prefs.setBool(hintKey, true);
+        
+        // Petite animation pour attirer l'attention
+        Future.delayed(const Duration(milliseconds: 800), () {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Row(
+                  children: [
+                    Icon(
+                      Icons.lightbulb_outline,
+                      color: Colors.amber[300],
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Tapez sur un verset pour accéder aux notes, favoris et surlignements !',
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                backgroundColor: AppTheme.primaryColor,
+                duration: const Duration(seconds: 4),
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                ),
+                margin: const EdgeInsets.all(16),
+              ),
+            );
+          }
+        });
+      }
+    });
+  }
+  
+  void _performAdvancedSearch(String query, String selectedBook, bool exactMatch, bool caseSensitive) async {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    // Afficher un indicateur de chargement
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: colorScheme.surface,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(color: colorScheme.primary),
+            const SizedBox(height: 16),
+            Text(
+              'Recherche en cours...',
+              style: GoogleFonts.inter(
+                color: colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    
+    try {
+      // Pour l'instant, utilisation de la recherche basique jusqu'à ce que advancedSearch soit implémentée
+      final results = _bibleService.search(query);
+      
+      Navigator.of(context).pop(); // Fermer le loading
+      
+      // Afficher les résultats
+      _showSearchResults(query, results);
+      
+    } catch (e) {
+      Navigator.of(context).pop(); // Fermer le loading
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Erreur de recherche: $e',
+            style: GoogleFonts.inter(
+              fontWeight: AppTheme.fontMedium,
+              color: colorScheme.onError,
+            ),
+          ),
+          backgroundColor: colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          ),
+        ),
+      );
+    }
+  }
+  
+  void _showSearchResults(String query, List<BibleVerse> results) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.search_rounded,
+              color: colorScheme.primary,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Résultats pour "$query"',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: colorScheme.onSurface,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 500,
+          child: results.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.search_off_rounded,
+                        size: 64,
+                        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Aucun résultat',
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          fontWeight: AppTheme.fontSemiBold,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Essayez avec d\'autres termes',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(
+                        '${results.length} résultat${results.length > 1 ? 's' : ''} trouvé${results.length > 1 ? 's' : ''}',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: AppTheme.fontMedium,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: results.length,
+                        itemBuilder: (context, index) {
+                          final verse = results[index];
+                          
+                          return Card(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            elevation: 1,
+                            color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: colorScheme.primaryContainer,
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Text(
+                                          '${verse.book} ${verse.chapter}:${verse.verse}',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 12,
+                                            fontWeight: AppTheme.fontMedium,
+                                            color: colorScheme.onPrimaryContainer,
+                                          ),
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.share_rounded,
+                                          color: colorScheme.primary,
+                                          size: 18,
+                                        ),
+                                        onPressed: () => _shareVerse(verse),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    verse.text,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 14,
+                                      height: 1.4,
+                                      color: colorScheme.onSurface,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Fermer',
+              style: GoogleFonts.inter(
+                fontWeight: AppTheme.fontMedium,
+                color: colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _loadBible() async {
@@ -77,7 +551,32 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     });
   }
 
+  // Enregistrer dans l'historique de lecture
+  Future<void> _addToReadingHistory(String book, int chapter) async {
+    final prefs = await SharedPreferences.getInstance();
+    final historyString = prefs.getString('bible_reading_history') ?? '[]';
+    List<dynamic> history = jsonDecode(historyString);
+    
+    // Supprimer les entrées existantes pour ce chapitre
+    history.removeWhere((item) => item['book'] == book && item['chapter'] == chapter);
+    
+    // Ajouter la nouvelle entrée au début
+    history.insert(0, {
+      'book': book,
+      'chapter': chapter,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    });
+    
+    // Limiter à 50 entrées
+    if (history.length > 50) {
+      history = history.take(50).toList();
+    }
+    
+    await prefs.setString('bible_reading_history', jsonEncode(history));
+  }
+
   Future<void> _loadPrefs() async {
+    print('DEBUG: Chargement des préférences...');
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _favorites = prefs.getStringList('bible_favorites')?.toSet() ?? {};
@@ -91,9 +590,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       final colorValue = prefs.getInt('bible_custom_bg_color');
       _customBgColor = colorValue != null ? Color(colorValue) : null;
     });
+    print('DEBUG: Préférences chargées - Favoris: ${_favorites.length}, Surlignements: ${_highlights.length}, Notes: ${_notes.length}');
   }
 
   Future<void> _savePrefs() async {
+    print('DEBUG: Sauvegarde des préférences...');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('bible_favorites', _favorites.toList());
     await prefs.setStringList('bible_highlights', _highlights.toList());
@@ -105,6 +606,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     if (_customBgColor != null) {
       await prefs.setInt('bible_custom_bg_color', _customBgColor!.value);
     }
+    print('DEBUG: Préférences sauvegardées - Favoris: ${_favorites.length}, Surlignements: ${_highlights.length}, Notes: ${_notes.length}');
   }
 
   Future<void> _saveFavorites() async {
@@ -186,28 +688,56 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     });
   }
 
-  void _toggleFavorite(BibleVerse v) {
+  void _toggleFavorite(BibleVerse v) async {
     final key = _verseKey(v);
+    print('DEBUG _toggleFavorite: $key');
+    print('DEBUG: Favorites avant toggle: ${_favorites.toList()}');
+    
     setState(() {
       if (_favorites.contains(key)) {
         _favorites.remove(key);
+        print('DEBUG: Favori retiré: $key');
       } else {
         _favorites.add(key);
+        print('DEBUG: Favori ajouté: $key');
       }
     });
-    _savePrefs();
+    print('DEBUG: Total favoris après toggle: ${_favorites.length}');
+    print('DEBUG: Favorites après toggle: ${_favorites.toList()}');
+    
+    // Forcer la sauvegarde immédiate
+    await _savePrefs();
+    
+    // Vérifier que la sauvegarde a bien fonctionné
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList('bible_favorites') ?? [];
+    print('DEBUG: Favorites sauvegardés dans SharedPreferences: $saved');
   }
 
-  void _toggleHighlight(BibleVerse v) {
+  void _toggleHighlight(BibleVerse v) async {
     final key = _verseKey(v);
+    print('DEBUG _toggleHighlight: $key');
+    print('DEBUG: Highlights avant toggle: ${_highlights.toList()}');
+    
     setState(() {
       if (_highlights.contains(key)) {
         _highlights.remove(key);
+        print('DEBUG: Surlignement retiré: $key');
       } else {
         _highlights.add(key);
+        print('DEBUG: Surlignement ajouté: $key');
       }
     });
-    _savePrefs();
+    print('DEBUG: Total surlignements après toggle: ${_highlights.length}');
+    print('DEBUG: Highlights après toggle: ${_highlights.toList()}');
+    
+    // Forcer la sauvegarde immédiate
+    await _savePrefs();
+    
+    // Vérifier que la sauvegarde a bien fonctionné
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList('bible_highlights') ?? [];
+    print('DEBUG: Highlights sauvegardés dans SharedPreferences: $saved');
   }
 
   void _pickVerseOfTheDay() {
@@ -228,6 +758,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
 
   String _verseKey(BibleVerse v) => '${v.book}_${v.chapter}_${v.verse}';
 
+  // Méthode pour forcer le rechargement des données depuis SharedPreferences
+  Future<void> _forceReloadPrefs() async {
+    print('DEBUG: Force reload des préférences...');
+    await _loadPrefs();
+    print('DEBUG: Après force reload - Favoris: ${_favorites.length}, Surlignements: ${_highlights.length}, Notes: ${_notes.length}');
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = _isDarkMode ? ThemeData.dark().copyWith(
@@ -237,11 +774,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     if (_isLoading) {
       // Shimmer premium sur l’accueil Bible
       return Scaffold(
-        backgroundColor: AppTheme.backgroundColor,
+        backgroundColor: theme.colorScheme.surface,
         body: Center(
           child: Shimmer.fromColors(
-            baseColor: theme.colorScheme.surface,
-            highlightColor: theme.colorScheme.primary.withOpacity(0.13),
+            baseColor: theme.colorScheme.surfaceVariant,
+            highlightColor: theme.colorScheme.primary.withValues(alpha: 0.12),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -249,7 +786,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   width: 220,
                   height: 32,
                   decoration: BoxDecoration(
-                    color: AppTheme.white100,
+                    color: theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
@@ -258,7 +795,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   width: 320,
                   height: 120,
                   decoration: BoxDecoration(
-                    color: AppTheme.white100,
+                    color: theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(24),
                   ),
                 ),
@@ -267,7 +804,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   width: 180,
                   height: 18,
                   decoration: BoxDecoration(
-                    color: AppTheme.white100,
+                    color: theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                 ),
@@ -278,83 +815,79 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       );
     }
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: theme.colorScheme.surface,
       body: Theme(
         data: theme,
         child: Column(
         children: [
-          // TabBar moderne - Style conforme Material Design
-          Container(
-            height: 50, // Hauteur Material Design recommandée (48dp + padding)
-            decoration: BoxDecoration(
-              color: AppTheme.backgroundColor, // Harmonisé avec AppBar transparente membre
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.black100.withOpacity(0.08), // MD3 standard shadow
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+          // TabBar - Style MD3 moderne avec couleur surface
+          Material(
+            color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
+            elevation: 0,
             child: TabBar(
               controller: _tabController,
-              // Conformité Material Design - Couleurs et indicateur
-              labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: AppTheme.textSecondaryColor,
-              indicatorColor: AppTheme.primaryColor,
-              indicatorWeight: 3.0, // Épaisseur recommandée Material Design
-              indicatorSize: TabBarIndicatorSize.tab, // Indicateur sur toute la largeur
-              
-              // Conformité Material Design - Typography
+              labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
+              unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
+              indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorWeight: 3.0,
               labelStyle: GoogleFonts.inter(
-                fontSize: 14, // Taille Material Design
-                fontWeight: AppTheme.fontSemiBold, // Poids pour onglet actif
+                fontSize: 14,
+                fontWeight: AppTheme.fontSemiBold,
+                letterSpacing: 0.1,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
                 fontSize: 14,
-                fontWeight: AppTheme.fontMedium, // Poids pour onglets inactifs
+                fontWeight: AppTheme.fontMedium,
+                letterSpacing: 0.1,
               ),
-              
-              // Conformité Material Design - Espacements
-              labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-              
-              // Indicateur personnalisé Material Design
-              indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  width: 3.0,
-                  color: AppTheme.primaryColor,
-                ),
-                insets: const EdgeInsets.symmetric(horizontal: 16.0),
+              splashFactory: InkRipple.splashFactory,
+              overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.pressed)) {
+                    return AppTheme.primaryColor.withValues(alpha: 0.12); // Overlay rouge sur fond clair
+                  }
+                  if (states.contains(WidgetState.hovered)) {
+                    return AppTheme.primaryColor.withValues(alpha: 0.08); // Hover rouge sur fond clair
+                  }
+                  return null;
+                },
               ),
-              
               tabs: const [
                 Tab(
-                  text: 'Accueil',
-                  height: 48, // Hauteur Material Design pour les tabs
+                  icon: Icon(Icons.menu_book_rounded),
+                  text: 'La Bible',
                 ),
                 Tab(
-                  text: 'Lecture',
-                  height: 48,
+                  icon: Icon(Icons.play_circle_rounded),
+                  text: 'Le Message',
                 ),
                 Tab(
-                  text: 'Écouter',
-                  height: 48,
+                  icon: Icon(Icons.library_books_rounded),
+                  text: 'Ressources',
                 ),
                 Tab(
+                  icon: Icon(Icons.sticky_note_2_rounded),
                   text: 'Notes',
-                  height: 48,
                 ),
               ],
             ),
+          ),
+          
+          // Divider subtil MD3
+          Divider(
+            height: 1,
+            thickness: 1,
+            color: Theme.of(context).colorScheme.outlineVariant,
           ),
           // TabBarView - Style identique au module Vie de l'église
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildHomeTab(),
                 const BibleReadingView(isAdminMode: false),
                 const AudioPlayerTabPerfect13(),
+                _buildHomeTab(),
                 _buildNotesAndHighlightsTab(),
               ],
             ),
@@ -376,7 +909,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppTheme.grey50!,
+            AppTheme.grey50,
             AppTheme.white100,
           ],
         ),
@@ -1496,7 +2029,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           )
                         : [],
                     onChanged: _selectedBook != null 
-                        ? (v) => setState(() => _selectedChapter = v)
+                        ? (v) {
+                            setState(() => _selectedChapter = v);
+                            if (_selectedBook != null && v != null) {
+                              _addToReadingHistory(_selectedBook!, v);
+                            }
+                          }
                         : null,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -1678,7 +2216,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     children: [
                       if (chapter > 1)
                         IconButton(
-                          onPressed: () => setState(() => _selectedChapter = chapter - 1),
+                          onPressed: () {
+                            setState(() => _selectedChapter = chapter - 1);
+                            if (_selectedBook != null) {
+                              _addToReadingHistory(_selectedBook!, chapter - 1);
+                            }
+                          },
                           icon: const Icon(Icons.navigate_before),
                           style: IconButton.styleFrom(
                             backgroundColor: AppTheme.white100,
@@ -1691,7 +2234,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       const SizedBox(width: 6),
                       if (chapter < book.chapters.length)
                         IconButton(
-                          onPressed: () => setState(() => _selectedChapter = chapter + 1),
+                          onPressed: () {
+                            setState(() => _selectedChapter = chapter + 1);
+                            if (_selectedBook != null) {
+                              _addToReadingHistory(_selectedBook!, chapter + 1);
+                            }
+                          },
                           icon: const Icon(Icons.navigate_next),
                           style: IconButton.styleFrom(
                             backgroundColor: AppTheme.white100,
@@ -1757,6 +2305,9 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       setState(() {
                         _selectedVerseKey = (_selectedVerseKey == key) ? null : key;
                       });
+                      
+                      // Afficher un hint la première fois
+                      _showFirstTimeHint();
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(14),
@@ -1767,28 +2318,72 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Numéro du verset compact
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      AppTheme.primaryColor.withOpacity(0.1),
-                                      AppTheme.primaryColor.withOpacity(0.05),
+                              // Numéro du verset avec indicateurs
+                              Column(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          AppTheme.primaryColor.withOpacity(0.1),
+                                          AppTheme.primaryColor.withOpacity(0.05),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                                    ),
+                                    child: Text(
+                                      '${v.verse}',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12,
+                                        fontWeight: AppTheme.fontBold,
+                                        color: AppTheme.primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  // Indicateurs visuels compacts
+                                  const SizedBox(height: 2),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // Indicateur favori
+                                      if (isFav)
+                                        Container(
+                                          width: 6,
+                                          height: 6,
+                                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                                          decoration: BoxDecoration(
+                                            color: Colors.amber[700],
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      // Indicateur note
+                                      if (note != null && note.isNotEmpty)
+                                        Container(
+                                          width: 6,
+                                          height: 6,
+                                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                                          decoration: const BoxDecoration(
+                                            color: AppTheme.grey700,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      // Indicateur surlignement
+                                      if (isHighlight)
+                                        Container(
+                                          width: 6,
+                                          height: 6,
+                                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                                          decoration: const BoxDecoration(
+                                            color: AppTheme.primaryColor,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                                ),
-                                child: Text(
-                                  '${v.verse}',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: AppTheme.fontBold,
-                                    color: AppTheme.primaryColor,
-                                  ),
-                                ),
+                                ],
                               ),
                               
                               const SizedBox(width: 12),
@@ -1907,42 +2502,80 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           // Actions compactes (quand le verset est sélectionné)
                           if (_selectedVerseKey == key) ...[
                             const SizedBox(height: 12),
-                            Container(
-                              padding: const EdgeInsets.all(10),
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOutCubic,
+                              padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: AppTheme.grey500.withOpacity(0.05),
+                                color: AppTheme.primaryColor.withOpacity(0.08),
                                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                                border: Border.all(
+                                  color: AppTheme.primaryColor.withOpacity(0.2),
+                                  width: 1,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppTheme.primaryColor.withOpacity(0.1),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              child: Column(
                                 children: [
-                                  _buildVerseAction(
-                                    icon: isFav ? Icons.star : Icons.star_border,
-                                    label: isFav ? 'Favori' : 'Favoris',
-                                    color: Colors.amber[700]!,
-                                    isActive: isFav,
-                                    onTap: () => _toggleFavorite(v),
+                                  // Texte explicatif
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.touch_app_rounded,
+                                        size: 14,
+                                        color: AppTheme.primaryColor,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        'Choisissez une action pour ce verset',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 11,
+                                          fontWeight: AppTheme.fontMedium,
+                                          color: AppTheme.primaryColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  _buildVerseAction(
-                                    icon: isHighlight ? Icons.highlight_off : Icons.highlight,
-                                    label: isHighlight ? 'Surligné' : 'Surligner',
-                                    color: AppTheme.primaryColor,
-                                    isActive: isHighlight,
-                                    onTap: () => _toggleHighlight(v),
-                                  ),
-                                  _buildVerseAction(
-                                    icon: Icons.sticky_note_2,
-                                    label: note != null && note.isNotEmpty ? 'Éditer' : 'Note',
-                                    color: AppTheme.grey700,
-                                    isActive: note != null && note.isNotEmpty,
-                                    onTap: () => _editNoteDialog(v),
-                                  ),
-                                  _buildVerseAction(
-                                    icon: Icons.share,
-                                    label: 'Partager',
-                                    color: AppTheme.grey700,
-                                    isActive: false,
-                                    onTap: () => _shareVerse(v),
+                                  const SizedBox(height: 10),
+                                  // Actions
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildVerseAction(
+                                        icon: isFav ? Icons.star : Icons.star_border,
+                                        label: isFav ? 'Favori' : 'Favoris',
+                                        color: Colors.amber[700]!,
+                                        isActive: isFav,
+                                        onTap: () => _toggleFavorite(v),
+                                      ),
+                                      _buildVerseAction(
+                                        icon: isHighlight ? Icons.highlight_off : Icons.highlight,
+                                        label: isHighlight ? 'Surligné' : 'Surligner',
+                                        color: AppTheme.primaryColor,
+                                        isActive: isHighlight,
+                                        onTap: () => _toggleHighlight(v),
+                                      ),
+                                      _buildVerseAction(
+                                        icon: Icons.sticky_note_2,
+                                        label: note != null && note.isNotEmpty ? 'Éditer' : 'Note',
+                                        color: AppTheme.grey700,
+                                        isActive: note != null && note.isNotEmpty,
+                                        onTap: () => _editNoteDialog(v),
+                                      ),
+                                      _buildVerseAction(
+                                        icon: Icons.share,
+                                        label: 'Partager',
+                                        color: AppTheme.grey700,
+                                        isActive: false,
+                                        onTap: () => _shareVerse(v),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -2005,58 +2638,482 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
 
   // Méthodes d'actions supplémentaires
   void _showReadingSettings() {
-    // TODO: Implémenter les paramètres de lecture
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Paramètres de lecture'),
-        backgroundColor: AppTheme.primaryColor,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.settings_rounded,
+              color: colorScheme.primary,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Paramètres de lecture',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: AppTheme.fontSemiBold,
+                color: colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Taille de police
+              Text(
+                'Taille de police',
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(
+                    'A',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  Expanded(
+                    child: Slider(
+                      value: _fontSize,
+                      min: 12.0,
+                      max: 24.0,
+                      divisions: 12,
+                      activeColor: colorScheme.primary,
+                      onChanged: (value) {
+                        setState(() {
+                          _fontSize = value;
+                        });
+                        _savePrefs();
+                      },
+                    ),
+                  ),
+                  Text(
+                    'A',
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              
+              // Interligne
+              Text(
+                'Interligne',
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Slider(
+                value: _lineHeight,
+                min: 1.0,
+                max: 2.5,
+                divisions: 15,
+                activeColor: colorScheme.primary,
+                label: _lineHeight.toStringAsFixed(1),
+                onChanged: (value) {
+                  setState(() {
+                    _lineHeight = value;
+                  });
+                  _savePrefs();
+                },
+              ),
+              const SizedBox(height: 16),
+              
+              // Mode sombre
+              SwitchListTile(
+                title: Text(
+                  'Mode sombre',
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    fontWeight: AppTheme.fontMedium,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+                subtitle: Text(
+                  'Interface sombre pour la lecture',
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                value: _isDarkMode,
+                activeColor: colorScheme.primary,
+                onChanged: (value) {
+                  setState(() {
+                    _isDarkMode = value;
+                  });
+                  _savePrefs();
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Fermer',
+              style: GoogleFonts.inter(
+                fontWeight: AppTheme.fontMedium,
+                color: colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   void _showReadingHistory() {
-    // TODO: Implémenter l'historique de lecture
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Historique de lecture'),
-        backgroundColor: AppTheme.primaryColor,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.history_rounded,
+              color: colorScheme.primary,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Historique de lecture',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: AppTheme.fontSemiBold,
+                color: colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 400,
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: _getReadingHistory(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: colorScheme.primary,
+                  ),
+                );
+              }
+              
+              final history = snapshot.data ?? [];
+              
+              if (history.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.history_rounded,
+                        size: 64,
+                        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Aucun historique',
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          fontWeight: AppTheme.fontSemiBold,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Vos lectures récentes apparaîtront ici',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              
+              return ListView.builder(
+                itemCount: history.length,
+                itemBuilder: (context, index) {
+                  final item = history[index];
+                  final timestamp = DateTime.fromMillisecondsSinceEpoch(item['timestamp']);
+                  final timeAgo = _getTimeAgo(timestamp);
+                  
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    elevation: 1,
+                    color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                    child: ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.menu_book_rounded,
+                          color: colorScheme.onPrimaryContainer,
+                          size: 20,
+                        ),
+                      ),
+                      title: Text(
+                        '${item['book']} ${item['chapter']}',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: AppTheme.fontSemiBold,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      subtitle: Text(
+                        timeAgo,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: colorScheme.onSurfaceVariant,
+                        size: 16,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _selectedBook = item['book'];
+                          _selectedChapter = item['chapter'];
+                          _tabController.index = 0; // Aller à l'onglet lecture
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await _clearReadingHistory();
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              'Effacer tout',
+              style: GoogleFonts.inter(
+                fontWeight: AppTheme.fontMedium,
+                color: colorScheme.error,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Fermer',
+              style: GoogleFonts.inter(
+                fontWeight: AppTheme.fontMedium,
+                color: colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  void _bookmarkCurrentChapter() {
+  void _bookmarkCurrentChapter() async {
     if (_selectedBook != null && _selectedChapter != null) {
-      // TODO: Implémenter le marque-page de chapitre
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Chapitre $_selectedBook $_selectedChapter marqué'),
-          backgroundColor: AppTheme.greenStandard,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
-        ),
-      );
+      final colorScheme = Theme.of(context).colorScheme;
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Récupérer les marque-pages existants
+      final bookmarksString = prefs.getString('bible_bookmarks') ?? '[]';
+      List<dynamic> bookmarks = jsonDecode(bookmarksString);
+      
+      final bookmarkKey = '${_selectedBook}_$_selectedChapter';
+      final bookmarkExists = bookmarks.any((b) => b['key'] == bookmarkKey);
+      
+      if (bookmarkExists) {
+        // Supprimer le marque-page
+        bookmarks.removeWhere((b) => b['key'] == bookmarkKey);
+        await prefs.setString('bible_bookmarks', jsonEncode(bookmarks));
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  Icons.bookmark_remove_rounded,
+                  color: colorScheme.onInverseSurface,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Marque-page supprimé',
+                  style: GoogleFonts.inter(
+                    fontWeight: AppTheme.fontMedium,
+                    color: colorScheme.onInverseSurface,
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: colorScheme.inverseSurface,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            ),
+          ),
+        );
+      } else {
+        // Ajouter le marque-page
+        final newBookmark = {
+          'key': bookmarkKey,
+          'book': _selectedBook,
+          'chapter': _selectedChapter,
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+        };
+        
+        bookmarks.add(newBookmark);
+        await prefs.setString('bible_bookmarks', jsonEncode(bookmarks));
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  Icons.bookmark_add_rounded,
+                  color: colorScheme.onInverseSurface,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Chapitre $_selectedBook $_selectedChapter marqué',
+                  style: GoogleFonts.inter(
+                    fontWeight: AppTheme.fontMedium,
+                    color: colorScheme.onInverseSurface,
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: colorScheme.inverseSurface,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            ),
+            action: SnackBarAction(
+              label: 'Voir tous',
+              textColor: colorScheme.primary,
+              onPressed: _showBookmarks,
+            ),
+          ),
+        );
+      }
     }
   }
 
-  void _shareVerse(BibleVerse verse) {
-    // TODO: Implémenter le partage de verset
-    
-    // Pour l'instant, on affiche un message de confirmation
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Verset partagé: ${verse.book} ${verse.chapter}:${verse.verse}'),
-        backgroundColor: AppTheme.blueStandard,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
-      ),
-    );
-    
-    // TODO: Utiliser le package share_plus pour partager le texte
-    // await Share.share(text);
+  void _shareVerse(BibleVerse verse) async {
+    try {
+      final colorScheme = Theme.of(context).colorScheme;
+      
+      // Formatage du texte à partager
+      final shareText = '''"${verse.text}"
+
+${verse.book} ${verse.chapter}:${verse.verse}
+
+Partagé depuis l'app Jubilé Tabernacle''';
+      
+      // Utilisation du Clipboard pour copier (alternative au share_plus)
+      await Clipboard.setData(ClipboardData(text: shareText));
+      
+      // Affichage d'une confirmation
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.content_copy_rounded,
+                color: colorScheme.onInverseSurface,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Verset copié dans le presse-papiers',
+                  style: GoogleFonts.inter(
+                    fontWeight: AppTheme.fontMedium,
+                    color: colorScheme.onInverseSurface,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: colorScheme.inverseSurface,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          ),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      
+      // Alternative: utiliser le partage natif si share_plus est disponible
+      /*
+      import 'package:share_plus/share_plus.dart';
+      
+      await Share.share(
+        shareText,
+        subject: '${verse.book} ${verse.chapter}:${verse.verse}',
+      );
+      */
+      
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Erreur lors du partage: $e',
+            style: GoogleFonts.inter(
+              fontWeight: AppTheme.fontMedium,
+              color: Theme.of(context).colorScheme.onError,
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildSearchTab() {
@@ -2066,7 +3123,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppTheme.grey50!,
+            AppTheme.grey50,
             AppTheme.white100,
           ],
         ),
@@ -2985,13 +4042,195 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   }
 
   void _showAdvancedSearchDialog() {
-    // TODO: Implémenter la recherche avancée
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Recherche avancée (bientôt disponible)'),
-        backgroundColor: AppTheme.blueStandard,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
+    final colorScheme = Theme.of(context).colorScheme;
+    String searchQuery = '';
+    String selectedBook = 'Tous les livres';
+    bool exactMatch = false;
+    bool caseSensitive = false;
+    
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: colorScheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.search_rounded,
+                color: colorScheme.primary,
+                size: 24,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Recherche avancée',
+                style: GoogleFonts.inter(
+                  fontSize: 20,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Champ de recherche
+                TextField(
+                  onChanged: (value) => searchQuery = value,
+                  style: GoogleFonts.inter(
+                    color: colorScheme.onSurface,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Terme à rechercher',
+                    labelStyle: GoogleFonts.inter(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    hintText: 'Ex: amour, foi, espérance...',
+                    hintStyle: GoogleFonts.inter(
+                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    ),
+                    prefixIcon: Icon(
+                      Icons.search_rounded,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Sélection du livre
+                Text(
+                  'Livre',
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  value: selectedBook,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    ),
+                  ),
+                  items: [
+                    const DropdownMenuItem(
+                      value: 'Tous les livres',
+                      child: Text('Tous les livres'),
+                    ),
+                    ...(_bibleService.books.map((book) => DropdownMenuItem(
+                      value: book.name,
+                      child: Text(book.name),
+                    )).toList()),
+                  ],
+                  onChanged: (value) {
+                    setDialogState(() {
+                      selectedBook = value ?? 'Tous les livres';
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
+                
+                // Options de recherche
+                Text(
+                  'Options',
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                
+                CheckboxListTile(
+                  title: Text(
+                    'Correspondance exacte',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Rechercher le terme exact uniquement',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  value: exactMatch,
+                  activeColor: colorScheme.primary,
+                  onChanged: (value) {
+                    setDialogState(() {
+                      exactMatch = value ?? false;
+                    });
+                  },
+                ),
+                
+                CheckboxListTile(
+                  title: Text(
+                    'Respecter la casse',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Différencier majuscules et minuscules',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  value: caseSensitive,
+                  activeColor: colorScheme.primary,
+                  onChanged: (value) {
+                    setDialogState(() {
+                      caseSensitive = value ?? false;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Annuler',
+                style: GoogleFonts.inter(
+                  fontWeight: AppTheme.fontMedium,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+            FilledButton(
+              onPressed: searchQuery.trim().isEmpty ? null : () {
+                Navigator.of(context).pop();
+                _performAdvancedSearch(
+                  searchQuery.trim(),
+                  selectedBook,
+                  exactMatch,
+                  caseSensitive,
+                );
+              },
+              child: Text(
+                'Rechercher',
+                style: GoogleFonts.inter(
+                  fontWeight: AppTheme.fontMedium,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -3817,6 +5056,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     final totalNotes = _notes.values.where((note) => note.isNotEmpty).length;
     final totalHighlights = _highlights.length;
     final totalFavorites = _favorites.length;
+    
+    // Debug: imprimer les données pour diagnostic
+    print('DEBUG - Notes count: $totalNotes, Highlights: $totalHighlights, Favorites: $totalFavorites');
+    print('DEBUG - Notes keys: ${_notes.keys.toList()}');
+    print('DEBUG - Highlights: ${_highlights.toList()}');
+    print('DEBUG - Favorites: ${_favorites.toList()}');
 
     // Filtrer les versets en fonction du filtre et de la recherche actuels
     List<String> filteredVerseKeys = [];
@@ -3849,8 +5094,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           .toList();
     }
 
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
-      color: const Color(0xFFFAFAFA),
+      color: colorScheme.surface,
       child: CustomScrollView(
         slivers: [
           // Filtres compacts
@@ -3898,40 +5145,37 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           SliverToBoxAdapter(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: AppTheme.white100,
-                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppTheme.black100.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: TextField(
+              child: SearchBar(
                 controller: _notesSearchController,
                 onChanged: (value) {
                   setState(() {
                     _notesSearchQuery = value;
                   });
                 },
-                decoration: InputDecoration(
-                  hintText: 'Rechercher dans vos notes...',
-                  hintStyle: GoogleFonts.inter(
-                    color: AppTheme.grey500,
+                hintText: 'Rechercher dans vos notes...',
+                hintStyle: WidgetStateProperty.all(
+                  GoogleFonts.inter(
+                    color: colorScheme.onSurfaceVariant,
                     fontSize: 14,
                   ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: AppTheme.grey400,
-                    size: 20,
+                ),
+                textStyle: WidgetStateProperty.all(
+                  GoogleFonts.inter(
+                    color: colorScheme.onSurface,
+                    fontSize: 14,
                   ),
-                  suffixIcon: _notesSearchQuery.isNotEmpty
-                      ? IconButton(
+                ),
+                leading: Icon(
+                  Icons.search_rounded,
+                  color: colorScheme.onSurfaceVariant,
+                  size: 20,
+                ),
+                trailing: _notesSearchQuery.isNotEmpty
+                    ? [
+                        IconButton(
                           icon: Icon(
-                            Icons.clear,
-                            color: AppTheme.grey400,
+                            Icons.clear_rounded,
+                            color: colorScheme.onSurfaceVariant,
                             size: 20,
                           ),
                           onPressed: () {
@@ -3941,11 +5185,14 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                             });
                           },
                         )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                      ]
+                    : null,
+                backgroundColor: WidgetStateProperty.all(colorScheme.surfaceVariant.withValues(alpha: 0.3)),
+                shadowColor: WidgetStateProperty.all(Colors.transparent),
+                elevation: WidgetStateProperty.all(0),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
               ),
@@ -3989,77 +5236,84 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   Widget _buildCompactFilterChip(String filterKey, String label, IconData icon, int count) {
     final isSelected = _currentFilter == filterKey;
     
-    Color getFilterColor() {
+    Color getFilterColor(ColorScheme colorScheme) {
       switch (filterKey) {
         case 'notes':
-          return const Color(0xFF10B981);
+          return colorScheme.tertiary;
         case 'highlights':
-          return const Color(0xFFF59E0B);
+          return colorScheme.secondary;
         case 'favorites':
-          return const Color(0xFFEF4444);
+          return colorScheme.error;
         default:
-          return const Color(0xFF6366F1);
+          return colorScheme.primary;
       }
     }
 
-    return GestureDetector(
-      onTap: () {
+    final colorScheme = Theme.of(context).colorScheme;
+    final filterColor = getFilterColor(colorScheme);
+    
+    return FilterChip(
+      selected: isSelected,
+      onSelected: (selected) {
         setState(() {
           _currentFilter = filterKey;
         });
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: isSelected ? getFilterColor() : const Color(0xFFF1F5F9),
-          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-          border: Border.all(
-            color: isSelected ? getFilterColor() : const Color(0xFFE2E8F0),
-            width: 1,
+      avatar: Icon(
+        icon,
+        size: 16,
+        color: isSelected ? colorScheme.onSecondaryContainer : colorScheme.onSurfaceVariant,
+      ),
+      label: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              fontWeight: AppTheme.fontSemiBold,
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 16,
-              color: isSelected ? AppTheme.white100 : const Color(0xFF64748B),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 13,
-                fontWeight: AppTheme.fontSemiBold,
-                color: isSelected ? AppTheme.white100 : const Color(0xFF64748B),
+          if (count > 0) ...[
+            const SizedBox(width: 4),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: isSelected 
+                    ? colorScheme.onSecondaryContainer.withValues(alpha: 0.2)
+                    : filterColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
               ),
-            ),
-            if (count > 0) ...[
-              const SizedBox(width: 4),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.white100.withOpacity(0.2) : getFilterColor().withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  count.toString(),
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: AppTheme.fontSemiBold,
-                    color: isSelected ? AppTheme.white100 : getFilterColor(),
-                  ),
+              child: Text(
+                count.toString(),
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: isSelected 
+                      ? colorScheme.onSecondaryContainer
+                      : filterColor,
                 ),
               ),
-            ],
+            ),
           ],
+        ],
+      ),
+      backgroundColor: colorScheme.surface,
+      selectedColor: colorScheme.secondaryContainer,
+      checkmarkColor: colorScheme.onSecondaryContainer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        side: BorderSide(
+          color: isSelected ? filterColor : colorScheme.outline,
+          width: 1,
         ),
       ),
     );
   }
 
   Widget _buildEmptyNotesState() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -4067,7 +5321,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           Icon(
             _notesSearchQuery.isNotEmpty ? Icons.search_off_rounded : Icons.sticky_note_2_outlined,
             size: 64,
-            color: AppTheme.grey400,
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
           ),
           const SizedBox(height: 16),
           Text(
@@ -4077,20 +5331,63 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: AppTheme.fontSemiBold,
-              color: AppTheme.grey600,
+              color: colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             _notesSearchQuery.isNotEmpty
                 ? 'Essayez avec d\'autres mots-clés ou vérifiez l\'orthographe'
-                : 'Commencez à prendre des notes\nou surligner des versets',
+                : 'Commencez à prendre des notes ou surligner des versets',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
               fontSize: 14,
-              color: AppTheme.grey500,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
+          const SizedBox(height: 24),
+          // Guide étape par étape
+          if (_notesSearchQuery.isEmpty) ...[
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+                border: Border.all(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.touch_app_rounded,
+                    color: colorScheme.primary,
+                    size: 32,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Comment créer des notes :',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    '1. Allez dans l\'onglet Lecture\n2. Tapez sur un verset\n3. Choisissez "Note", "Favoris" ou "Surligner"\n4. Vos éléments apparaîtront ici !',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      height: 1.4,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -4101,37 +5398,28 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     final hasHighlight = _highlights.contains(verseKey);
     final isFavorite = _favorites.contains(verseKey);
     
-    // Couleur principale selon le type
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    // Couleur principale selon le type - Material Design 3
     Color getCardAccentColor() {
-      if (hasNote) return const Color(0xFF10B981);
-      if (hasHighlight) return const Color(0xFFF59E0B);
-      if (isFavorite) return const Color(0xFFEF4444);
-      return const Color(0xFF6366F1);
+      if (hasNote) return colorScheme.tertiary;
+      if (hasHighlight) return colorScheme.secondary;
+      if (isFavorite) return colorScheme.error;
+      return colorScheme.primary;
     }
 
     return GestureDetector(
       onTap: () => _goToVerseFromNotes(verseKey),
-      child: Container(
+      child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppTheme.white100,
+        elevation: 1,
+        color: colorScheme.surface,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-          border: Border.all(
-            color: getCardAccentColor().withOpacity(0.15),
-            width: 1.5,
+          side: BorderSide(
+            color: getCardAccentColor().withValues(alpha: 0.2),
+            width: 1,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: getCardAccentColor().withOpacity(0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-            BoxShadow(
-              color: const Color(0xFF000000).withOpacity(0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -4140,14 +5428,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    getCardAccentColor().withOpacity(0.05),
-                    getCardAccentColor().withOpacity(0.02),
-                  ],
-                ),
+                color: getCardAccentColor().withValues(alpha: 0.05),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -4171,13 +5452,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF10B981).withOpacity(0.1),
+                            color: colorScheme.tertiaryContainer,
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
-                          child: const Icon(
-                            Icons.sticky_note_2,
+                          child: Icon(
+                            Icons.sticky_note_2_rounded,
                             size: 16,
-                            color: Color(0xFF10B981),
+                            color: colorScheme.onTertiaryContainer,
                           ),
                         ),
                       if (hasHighlight) ...[
@@ -4185,13 +5466,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF59E0B).withOpacity(0.1),
+                            color: colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
-                          child: const Icon(
-                            Icons.highlight,
+                          child: Icon(
+                            Icons.highlight_rounded,
                             size: 16,
-                            color: Color(0xFFF59E0B),
+                            color: colorScheme.onSecondaryContainer,
                           ),
                         ),
                       ],
@@ -4200,13 +5481,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFEF4444).withOpacity(0.1),
+                            color: colorScheme.errorContainer,
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
-                          child: const Icon(
-                            Icons.favorite,
+                          child: Icon(
+                            Icons.favorite_rounded,
                             size: 16,
-                            color: Color(0xFFEF4444),
+                            color: colorScheme.onErrorContainer,
                           ),
                         ),
                       ],
@@ -4223,7 +5504,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 _getVerseText(verseKey),
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  color: const Color(0xFF374151),
+                  color: colorScheme.onSurface,
                   height: 1.5,
                 ),
               ),
@@ -4235,10 +5516,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF10B981).withOpacity(0.05),
+                  color: colorScheme.tertiaryContainer.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   border: Border.all(
-                    color: const Color(0xFF10B981).withOpacity(0.2),
+                    color: colorScheme.tertiary.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Column(
@@ -4246,10 +5527,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   children: [
                     Row(
                       children: [
-                        const Icon(
-                          Icons.sticky_note_2,
+                        Icon(
+                          Icons.sticky_note_2_rounded,
                           size: 16,
-                          color: Color(0xFF10B981),
+                          color: colorScheme.tertiary,
                         ),
                         const SizedBox(width: 8),
                         Text(
@@ -4257,7 +5538,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: AppTheme.fontSemiBold,
-                            color: const Color(0xFF10B981),
+                            color: colorScheme.tertiary,
                           ),
                         ),
                       ],
@@ -4267,7 +5548,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       _notes[verseKey]!,
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: const Color(0xFF374151),
+                        color: colorScheme.onSurface,
                         height: 1.4,
                       ),
                     ),
@@ -4320,9 +5601,19 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Navigation vers $bookName $chapterNum:$verseNum'),
+          content: Text(
+            'Navigation vers $bookName $chapterNum:$verseNum',
+            style: GoogleFonts.inter(
+              color: Theme.of(context).colorScheme.onInverseSurface,
+              fontWeight: AppTheme.fontMedium,
+            ),
+          ),
           duration: const Duration(seconds: 2),
-          backgroundColor: const Color(0xFF6366F1),
+          backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          ),
         ),
       );
     }

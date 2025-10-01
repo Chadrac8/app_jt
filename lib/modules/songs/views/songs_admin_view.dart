@@ -393,7 +393,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
           Container(
             height: 50,
             decoration: BoxDecoration(
-              color: AppTheme.white100,
+              color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
               boxShadow: [
                 BoxShadow(
                   color: AppTheme.black100.withOpacity(0.1),
@@ -404,9 +404,9 @@ class _SongsAdminViewState extends State<SongsAdminView>
             ),
             child: TabBar(
               controller: _tabController,
-              labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: AppTheme.textTertiaryColor,
-              indicatorColor: AppTheme.primaryColor,
+              labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
+              unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
+              indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
               indicatorWeight: 3.0,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               labelStyle: GoogleFonts.inter(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
@@ -273,16 +274,41 @@ class AppTheme {
         ),
       ),
       
-      // AppBar Theme
+      // AppBar Theme - Material Design 3 Compliant
       appBarTheme: AppBarTheme(
-        backgroundColor: primaryColor, // #860505 - Rouge croix du logo
-        foregroundColor: onPrimaryColor, // Blanc sur rouge
-        elevation: elevation0,
+        backgroundColor: surface, // Couleur blanche/crème comme bottomNavigationBar
+        foregroundColor: onSurface, // Texte foncé sur fond clair
+        surfaceTintColor: surface, // MD3 Surface Tint
+        elevation: elevation0, // MD3 standard: pas d'élévation
+        scrolledUnderElevation: elevation2, // MD3: élévation au scroll (3.0)
+        shadowColor: Colors.transparent, // MD3: pas d'ombre
         centerTitle: true,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark, // Icônes foncées sur fond clair
+          statusBarBrightness: Brightness.light, // Fond clair
+          systemNavigationBarColor: surface, // MD3 consistent
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
         titleTextStyle: GoogleFonts.inter(
-          fontSize: 22,
+          fontSize: 22, // MD3 headlineSmall
           fontWeight: fontMedium,
-          color: onPrimaryColor, // Blanc sur rouge
+          color: onSurface, // Texte foncé sur fond clair
+          height: 1.2, // MD3 line height
+          letterSpacing: 0, // MD3 letter spacing
+        ),
+        toolbarTextStyle: GoogleFonts.inter(
+          fontSize: 14, // MD3 bodyMedium
+          fontWeight: fontRegular,
+          color: onSurface, // Texte foncé sur fond clair
+        ),
+        iconTheme: const IconThemeData(
+          color: onSurface, // Icônes foncées sur fond clair
+          size: 24, // MD3 standard icon size
+        ),
+        actionsIconTheme: const IconThemeData(
+          color: onSurface, // Icônes foncées sur fond clair
+          size: 24, // MD3 standard icon size
         ),
       ),
       

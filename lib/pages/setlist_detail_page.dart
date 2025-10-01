@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../modules/songs/models/song_model.dart';
 import '../modules/songs/services/songs_firebase_service.dart';
+import '../widgets/song_card_perfect13.dart';
 import 'setlist_form_page.dart';
 import 'song_detail_page.dart';
 import 'setlist_conductor_mode.dart';
@@ -338,54 +339,20 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.only(
+        left: AppTheme.spaceMedium,
+        right: AppTheme.spaceMedium,
+        top: AppTheme.spaceSmall,
+        bottom: AppTheme.spaceXXLarge,
+      ),
       itemCount: _songs.length,
       itemBuilder: (context, index) {
         final song = _songs[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-              child: Text(
-                '${index + 1}',
-                style: TextStyle(
-                  fontWeight: AppTheme.fontBold,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
-            title: Text(
-              song.title,
-              style: const TextStyle(fontWeight: AppTheme.fontSemiBold),
-            ),
-            subtitle: Text('${song.authors} • ${song.originalKey}'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Indicateur de tempo
-                if (song.tempo != null) ...[
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: AppTheme.greenStandard.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                    ),
-                    child: Text(
-                      '${song.tempo} BPM',
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: AppTheme.fontBold,
-                        color: AppTheme.greenStandard,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                ],
-                
-                const Icon(Icons.chevron_right),
-              ],
-            ),
+        return Padding(
+          padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+          child: SongCardPerfect13(
+            song: song,
+            songNumber: index + 1,
             onTap: () {
               // Incrémenter le compteur d'utilisation
               SongsFirebaseService.incrementSongUsage(song.id);

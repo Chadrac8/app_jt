@@ -33,50 +33,63 @@ class _MessageModuleState extends State<MessageModule>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // TabBar moderne - Material Design 3 conforme
-        Container(
-          height: 50, // Hauteur Material Design standard
-          decoration: BoxDecoration(
-            color: AppTheme.backgroundColor, // Harmonisé avec AppBar transparente membre
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.black100.withOpacity(0.08),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
+        // TabBar - Style MD3 moderne avec couleur surface
+        Material(
+          color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
+          elevation: 0,
           child: TabBar(
             controller: _tabController,
-            labelColor: AppTheme.primaryColor,
-            unselectedLabelColor: AppTheme.textSecondaryColor,
-            indicatorColor: AppTheme.primaryColor,
-            indicatorWeight: 3.0, // Poids standard Material Design
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
+            unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
+            indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorWeight: 3.0,
             labelStyle: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: AppTheme.fontSemiBold,
+              letterSpacing: 0.1,
             ),
             unselectedLabelStyle: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: AppTheme.fontMedium,
+              letterSpacing: 0.1,
+            ),
+            splashFactory: InkRipple.splashFactory,
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return AppTheme.primaryColor.withValues(alpha: 0.12); // Overlay rouge sur fond clair
+                }
+                if (states.contains(WidgetState.hovered)) {
+                  return AppTheme.primaryColor.withValues(alpha: 0.08); // Hover rouge sur fond clair
+                }
+                return null;
+              },
             ),
             tabs: const [
               Tab(
+                icon: Icon(Icons.headphones_rounded),
                 text: 'Écouter',
-                iconMargin: EdgeInsets.only(bottom: 4),
               ),
               Tab(
+                icon: Icon(Icons.menu_book_rounded),
                 text: 'Lire',
-                iconMargin: EdgeInsets.only(bottom: 4),
               ),
               Tab(
+                icon: Icon(Icons.star_rounded),
                 text: 'Pépites d\'Or',
-                iconMargin: EdgeInsets.only(bottom: 4),
               ),
             ],
           ),
         ),
+        
+        // Divider subtil MD3
+        Divider(
+          height: 1,
+          thickness: 1,
+          color: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5),
+        ),
+        
         // TabBarView
         Expanded(
           child: Container(

@@ -1,6 +1,31 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+/// Constantes pour améliorer les performances
+class PerformanceConstants {
+  // Durées d'animation optimisées
+  static const Duration fastAnimation = Duration(milliseconds: 150);
+  static const Duration normalAnimation = Duration(milliseconds: 300);
+  static const Duration slowAnimation = Duration(milliseconds: 500);
+  
+  // Débounce pour les actions utilisateur
+  static const Duration searchDebounce = Duration(milliseconds: 300);
+  static const Duration inputDebounce = Duration(milliseconds: 500);
+  
+  // Tailles d'images optimisées
+  static const double thumbnailSize = 60.0;
+  static const double avatarSize = 40.0;
+  static const double iconSize = 24.0;
+  
+  // Espacement constant
+  static const EdgeInsets defaultPadding = EdgeInsets.all(16.0);
+  static const EdgeInsets smallPadding = EdgeInsets.all(8.0);
+  static const EdgeInsets largePadding = EdgeInsets.all(24.0);
+  
+  // Rayon de bordure constant
+  static const BorderRadius defaultRadius = BorderRadius.all(Radius.circular(8.0));
+}
+
 /// Contrôleur d'état optimisé pour PersonFormPage
 class PersonFormController extends ChangeNotifier {
   bool _isLoading = false;
@@ -94,6 +119,51 @@ class PersonFormController extends ChangeNotifier {
   }
 }
 
+/// Widget de liste optimisée pour de grosses listes
+class OptimizedListView<T> extends StatefulWidget {
+  final List<T> items;
+  final Widget Function(BuildContext context, T item, int index) itemBuilder;
+  final double itemHeight;
+  final ScrollController? controller;
+  final EdgeInsets? padding;
+  final bool shrinkWrap;
+  final ScrollPhysics? physics;
+  
+  const OptimizedListView({
+    super.key,
+    required this.items,
+    required this.itemBuilder,
+    required this.itemHeight,
+    this.controller,
+    this.padding,
+    this.shrinkWrap = false,
+    this.physics,
+  });
+
+  @override
+  State<OptimizedListView<T>> createState() => _OptimizedListViewState<T>();
+}
+
+class _OptimizedListViewState<T> extends State<OptimizedListView<T>> {
+  @override
+  Widget build(BuildContext context) {
+    // Utiliser RepaintBoundary pour chaque élément
+    return ListView.builder(
+      controller: widget.controller,
+      padding: widget.padding,
+      shrinkWrap: widget.shrinkWrap,
+      physics: widget.physics,
+      itemCount: widget.items.length,
+      itemExtent: widget.itemHeight, // Améliore les performances
+      itemBuilder: (context, index) {
+        return RepaintBoundary(
+          child: widget.itemBuilder(context, widget.items[index], index),
+        );
+      },
+    );
+  }
+}
+
 /// Widget de notification de performance pour identifier les rebuilds excessifs
 class PerformanceMonitor extends StatelessWidget {
   final Widget child;
@@ -167,6 +237,64 @@ mixin FormPerformanceOptimization<T extends StatefulWidget> on State<T> {
         setState(updates);
       }
     });
+  }
+}
+
+/// Widget de cache intelligent pour les images
+class SmartImageCache extends StatefulWidget {
+  final String imageUrl;
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final Widget? placeholder;
+  final Widget? errorWidget;
+  final Duration cacheDuration;
+  
+  const SmartImageCache({
+    super.key,
+    required this.imageUrl,
+    this.width,
+    this.height,
+    this.fit = BoxFit.cover,
+    this.placeholder,
+    this.errorWidget,
+    this.cacheDuration = const Duration(hours: 24),
+  });
+
+  @override
+  State<SmartImageCache> createState() => _SmartImageCacheState();
+}
+
+class _SmartImageCacheState extends State<SmartImageCache> {
+  static final Map<String, ImageProvider> _imageCache = {};
+  
+  @override
+  Widget build(BuildContext context) {
+    // Utiliser le cache d'images pour éviter les rechargements
+    ImageProvider? cachedImage = _imageCache[widget.imageUrl];
+    
+    if (cachedImage == null) {
+      cachedImage = NetworkImage(widget.imageUrl);
+      _imageCache[widget.imageUrl] = cachedImage;
+    }
+    
+    return Image(
+      image: cachedImage,
+      width: widget.width,
+      height: widget.height,
+      fit: widget.fit,
+      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+        if (wasSynchronouslyLoaded || frame != null) {
+          return child;
+        }
+        return widget.placeholder ?? 
+               const Center(child: CircularProgressIndicator());
+      },
+      errorBuilder: (context, error, stackTrace) {
+        return widget.errorWidget ?? 
+               const Icon(Icons.error, color: Colors.red);
+      },
+    );
   }
 }
 

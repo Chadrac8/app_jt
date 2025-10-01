@@ -67,7 +67,6 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
     return Scaffold(
       backgroundColor: AppTheme.white100,
       appBar: AppBar(
-        backgroundColor: AppTheme.white100,
         elevation: 0,
         leading: IconButton(
           icon: Container(

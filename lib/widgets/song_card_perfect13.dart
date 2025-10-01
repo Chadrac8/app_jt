@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../modules/songs/models/song_model.dart';
-import '../modules/songs/services/songs_firebase_service.dart';
 import '../../theme.dart';
 
 /// Carte de cantique - Material Design 3
-class SongCardPerfect13 extends StatefulWidget {
+class SongCardPerfect13 extends StatelessWidget {
   final SongModel song;
   final int songNumber;
   final VoidCallback? onTap;
@@ -16,62 +15,6 @@ class SongCardPerfect13 extends StatefulWidget {
     required this.songNumber,
     this.onTap,
   });
-
-  @override
-  State<SongCardPerfect13> createState() => _SongCardPerfect13State();
-}
-
-class _SongCardPerfect13State extends State<SongCardPerfect13>
-    with SingleTickerProviderStateMixin {
-  bool _isFavorite = false;
-  late AnimationController _favoriteAnimationController;
-  late Animation<double> _favoriteAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _favoriteAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _favoriteAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.2,
-    ).animate(CurvedAnimation(
-      parent: _favoriteAnimationController,
-      curve: Curves.elasticOut,
-    ));
-    _checkFavoriteStatus();
-  }
-
-  @override
-  void dispose() {
-    _favoriteAnimationController.dispose();
-    super.dispose();
-  }
-
-  void _checkFavoriteStatus() async {
-    SongsFirebaseService.getUserFavorites().listen((favorites) {
-      if (mounted) {
-        setState(() {
-          _isFavorite = favorites.contains(widget.song.id);
-        });
-      }
-    });
-  }
-
-  void _toggleFavorite() async {
-    // Animation de pulsation
-    _favoriteAnimationController.forward().then((_) {
-      _favoriteAnimationController.reverse();
-    });
-
-    if (_isFavorite) {
-      await SongsFirebaseService.removeFromFavorites(widget.song.id);
-    } else {
-      await SongsFirebaseService.addToFavorites(widget.song.id);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +28,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: InkWell(
-        onTap: widget.onTap,
+        onTap: onTap,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         splashFactory: InkRipple.splashFactory,
         overlayColor: WidgetStateProperty.resolveWith<Color?>(
@@ -114,7 +57,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
                 ),
                 child: Center(
                   child: Text(
-                    widget.songNumber.toString(),
+                    songNumber.toString(),
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: AppTheme.fontSemiBold,
@@ -134,7 +77,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
                   children: [
                     // Titre du cantique
                     Text(
-                      widget.song.title,
+                      song.title,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: AppTheme.fontSemiBold,
@@ -142,111 +85,54 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
                         letterSpacing: 0.15,
                         height: 1.5,
                       ),
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     
                     const SizedBox(height: AppTheme.spaceXSmall),
                     
                     // Extrait des paroles
-                    if (widget.song.lyrics.isNotEmpty) ...[
+                    if (song.lyrics.isNotEmpty) ...[
                       Text(
-                        _getFirstLyricsLine(widget.song.lyrics),
+                        _getFirstLyricsLine(song.lyrics),
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           color: colorScheme.onSurfaceVariant,
                           letterSpacing: 0.25,
                           height: 1.4,
                         ),
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: AppTheme.spaceSmall),
                     ],
                     
-                    // Métadonnées
-                    Row(
-                      children: [
-                        // Tags/Style
-                        if (widget.song.style.isNotEmpty) ...[
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppTheme.spaceSmall,
-                              vertical: AppTheme.spaceXSmall,
-                            ),
-                            decoration: BoxDecoration(
-                              color: colorScheme.secondaryContainer,
-                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                            ),
-                            child: Text(
-                              widget.song.style,
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                fontWeight: AppTheme.fontMedium,
-                                color: colorScheme.onSecondaryContainer,
-                                letterSpacing: 0.4,
-                              ),
-                            ),
-                          ),
-                        ],
-                        const Spacer(),
-                        
-                        // Compteur d'utilisation
-                        if (widget.song.usageCount > 0) ...[
-                          Icon(
-                            Icons.play_circle_outline_rounded,
-                            size: 16,
-                            color: colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(width: AppTheme.spaceXSmall),
-                          Text(
-                            '${widget.song.usageCount}',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: colorScheme.onSurfaceVariant,
-                              letterSpacing: 0.4,
-                            ),
-                          ),
-                          const SizedBox(width: AppTheme.spaceSmall),
-                        ],
-                      ],
-                    ),
+
                   ],
                 ),
               ),
               
-              const SizedBox(width: AppTheme.spaceSmall),
+              const SizedBox(width: AppTheme.spaceMedium),
               
-              // Bouton favori avec animation
-              AnimatedBuilder(
-                animation: _favoriteAnimation,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _favoriteAnimation.value,
-                    child: IconButton(
-                      onPressed: _toggleFavorite,
-                      icon: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: Icon(
-                          _isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                          key: ValueKey(_isFavorite),
-                          color: _isFavorite ? colorScheme.error : colorScheme.onSurfaceVariant,
-                          size: 24,
-                        ),
-                      ),
-                      style: IconButton.styleFrom(
-                        foregroundColor: _isFavorite ? colorScheme.error : colorScheme.onSurfaceVariant,
-                        backgroundColor: Colors.transparent,
-                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                        minimumSize: const Size(40, 40),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                        ),
-                      ),
-                      tooltip: _isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris',
-                    ),
-                  );
-                },
+              // Indicateur de navigation - Design Material 3 optimisé
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerHighest.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                  border: Border.all(
+                    color: colorScheme.outlineVariant.withOpacity(0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    color: colorScheme.onSurfaceVariant.withOpacity(0.9),
+                    size: 18,
+                  ),
+                ),
               ),
             ],
           ),

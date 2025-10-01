@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../modules/songs/models/song_model.dart';
+import '../modules/songs/services/songs_firebase_service.dart';
 import '../services/chord_transposer.dart';
 import '../../theme.dart';
 
@@ -29,7 +30,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
   String _currentKey = '';
   bool _showChords = true;
   double _fontSize = 16.0;
-  bool _isFullScreen = false;
+  bool _isFavorite = false;
   late AnimationController _fadeAnimationController;
   late Animation<double> _fadeAnimation;
 
@@ -61,6 +62,27 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
     
     // Écouter le scroll pour le bouton "retour en haut"
     _scrollController.addListener(_onScroll);
+    
+    // Vérifier le statut des favoris
+    _checkFavoriteStatus();
+  }
+
+  void _checkFavoriteStatus() async {
+    SongsFirebaseService.getUserFavorites().listen((favorites) {
+      if (mounted) {
+        setState(() {
+          _isFavorite = favorites.contains(widget.song.id);
+        });
+      }
+    });
+  }
+
+  void _toggleFavorite() async {
+    if (_isFavorite) {
+      await SongsFirebaseService.removeFromFavorites(widget.song.id);
+    } else {
+      await SongsFirebaseService.addToFavorites(widget.song.id);
+    }
   }
 
   @override
@@ -93,14 +115,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
     );
   }
 
-  void _toggleFullScreen() {
-    setState(() {
-      _isFullScreen = !_isFullScreen;
-    });
-    if (widget.onToggleProjection != null) {
-      widget.onToggleProjection!();
-    }
-  }
+
 
   void _copyLyrics() {
     Clipboard.setData(ClipboardData(text: _displayedLyrics));
@@ -266,17 +281,22 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
           
           const SizedBox(width: AppTheme.spaceXSmall),
           
-          // Mode projection
-          if (widget.onToggleProjection != null)
-            IconButton(
-              onPressed: _toggleFullScreen,
-              icon: const Icon(Icons.fullscreen_rounded),
-              style: IconButton.styleFrom(
-                backgroundColor: colorScheme.tertiaryContainer,
-                foregroundColor: colorScheme.onTertiaryContainer,
-              ),
-              tooltip: 'Mode projection',
+          // Bouton favori
+          IconButton(
+            onPressed: _toggleFavorite,
+            icon: Icon(
+              _isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
             ),
+            style: IconButton.styleFrom(
+              backgroundColor: _isFavorite 
+                  ? colorScheme.errorContainer 
+                  : colorScheme.tertiaryContainer,
+              foregroundColor: _isFavorite 
+                  ? colorScheme.onErrorContainer 
+                  : colorScheme.onTertiaryContainer,
+            ),
+            tooltip: _isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris',
+          ),
         ],
       ),
     );

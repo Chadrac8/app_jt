@@ -6,6 +6,7 @@ import '../models/app_config_model.dart';
 import '../widgets/user_avatar.dart';
 import '../pages/initial_profile_setup_page.dart';
 
+
 import '../models/person_model.dart';
 import '../services/app_config_firebase_service.dart';
 
@@ -33,6 +34,9 @@ import '../modules/songs/widgets/songs_search_delegate.dart';
 import '../pages/blog_home_page.dart';
 
 import '../pages/member_notifications_page.dart';
+import '../widgets/admin_view_toggle_button.dart';
+import '../modules/roles/providers/permission_provider.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -109,8 +113,12 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   void initState() {
     super.initState();
     _currentRoute = widget.initialRoute;
-    _loadConfiguration();
-    _subscribeToUnreadNotificationsCount();
+    
+    // Optimisation : Reporter les tâches lourdes après le premier rendu
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadConfiguration();
+      _subscribeToUnreadNotificationsCount();
+    });
   }
 
   Future<void> _loadConfiguration() async {
@@ -142,6 +150,13 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         final person = await AuthService.getCurrentUserProfile();
         if (person != null) {
           _currentUser = person;
+          
+          // Initialiser le PermissionProvider avec l'utilisateur courant
+          if (mounted) {
+            final permissionProvider = Provider.of<PermissionProvider>(context, listen: false);
+            await permissionProvider.initialize(user.uid);
+            print('✅ PermissionProvider initialisé pour ${user.uid}');
+          }
           
           // TODO: Charger les groupes de l'utilisateur
           // Implémenter la logique pour récupérer les groupes
@@ -848,8 +863,12 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    // Check if profile is complete before showing main interface
-    if (!_isLoading && !_isProfileComplete(_currentUser)) {
+    // Skip profile completion check for anonymous users
+    final currentFirebaseUser = AuthService.currentUser;
+    final isAnonymousUser = currentFirebaseUser?.isAnonymous ?? false;
+    
+    // Check if profile is complete before showing main interface (skip for anonymous users)
+    if (!_isLoading && !isAnonymousUser && !_isProfileComplete(_currentUser)) {
       print('🔄 BottomNavigationWrapper: Profil incomplet, redirection vers configuration');
       return const InitialProfileSetupPage();
     }
@@ -872,51 +891,37 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
     final primaryModules = _appConfig!.primaryBottomNavModules;
 
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _getPageForRoute(_currentRoute),
-      bottomNavigationBar: _buildBottomNavigationBar(primaryModules),
+    return RepaintBoundary(
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: RepaintBoundary(
+          child: _getPageForRoute(_currentRoute),
+        ),
+        bottomNavigationBar: RepaintBoundary(
+          child: _buildBottomNavigationBar(primaryModules),
+        ),
+      ),
     );
   }
 
   AppBar _buildAppBar() {
     return AppBar(
-      toolbarHeight: 56.0, // Hauteur standard Material Design (était 44 - trop petit)
-      backgroundColor: const Color(0xFF860505), // Rouge bordeaux #860505
-      elevation: 0,
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light, // Icônes claires pour fond rouge
-        statusBarBrightness: Brightness.dark, // Pour iOS
-      ),
+      // Toutes les propriétés viennent du thème appBarTheme
       leading: Padding(
         padding: const EdgeInsets.only(left: 12, right: 4),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: AppTheme.white100,
-            shape: BoxShape.circle,
-          ),
-          padding: const EdgeInsets.all(1.5), // Padding encore plus réduit
-          child: Image.asset(
-            'assets/logo_jt.png',
-            height: 20, // Logo plus petit pour un cercle réduit
-            width: 20,
-            fit: BoxFit.contain,
-          ),
+        child: Image.asset(
+          'assets/logo_jt.png',
+          height: 24, // Taille légèrement plus grande sans cercle
+          width: 24,
+          fit: BoxFit.contain,
         ),
       ),
-      centerTitle: true,
-      title: Text(
-        _getPageTitle(),
-        style: GoogleFonts.poppins(
-          fontSize: 20,
-          fontWeight: AppTheme.fontSemiBold,
-          color: AppTheme.white100, // Texte blanc sur fond rouge
-        ),
-      ),
+      title: Text(_getPageTitle()), // Style vient du thème titleTextStyle
       actions: [
         // Bouton de recherche pour les cantiques (visible uniquement sur la page cantiques)
         if (_currentRoute == 'songs') _buildSongsSearchButton(),
+        // Bouton de bascule vers la vue admin (visible uniquement sur la page d'accueil)
+        if (_currentRoute == 'dashboard') const AdminViewToggleButton(),
         // Notifications avec badge
         _buildNotificationButton(),
         // Icône Mon profil
@@ -1024,7 +1029,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return Stack(
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications, color: AppTheme.white100),
+          icon: const Icon(Icons.notifications, color: AppTheme.onSurface),
           tooltip: 'Notifications',
           onPressed: () {
             setState(() {
@@ -1069,7 +1074,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return IconButton(
       icon: const Icon(
         Icons.search,
-        color: AppTheme.white100,
+        color: AppTheme.onSurface,
       ),
       tooltip: 'Rechercher des cantiques',
       onPressed: () {

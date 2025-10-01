@@ -29,7 +29,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   
   // Variables pour les setlists
   String _setlistSearchQuery = '';
-  String? _selectedSetlistFilter;
+  bool _isSetlistSearchMode = false;
 
   @override
   void initState() {
@@ -50,8 +50,11 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   void toggleSearch() {
     setState(() {
       _isSearchVisible = !_isSearchVisible;
+      _isSetlistSearchMode = _tabController.index == 2; // Index 2 = onglet Setlists
+      
       if (!_isSearchVisible) {
         _searchQuery = '';
+        _setlistSearchQuery = '';
         _searchController.clear();
       }
     });
@@ -71,18 +74,15 @@ class _MemberSongsPageState extends State<MemberSongsPage>
       backgroundColor: colorScheme.surface,
       body: Column(
         children: [
-          // Barre de recherche locale (conditionnelle) - MD3
-          if (_isSearchVisible) _buildSearchBar(),
-          
-          // TabBar - Style MD3
+          // TabBar - Style MD3 moderne avec couleur surface
           Material(
-            color: colorScheme.surface,
+            color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
             elevation: 0,
             child: TabBar(
               controller: _tabController,
-              labelColor: colorScheme.primary,
-              unselectedLabelColor: colorScheme.onSurfaceVariant,
-              indicatorColor: colorScheme.primary,
+              labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
+              unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
+              indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 3.0,
               labelStyle: GoogleFonts.inter(
@@ -99,10 +99,10 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               overlayColor: WidgetStateProperty.resolveWith<Color?>(
                 (Set<WidgetState> states) {
                   if (states.contains(WidgetState.pressed)) {
-                    return colorScheme.primary.withOpacity(0.12);
+                    return AppTheme.primaryColor.withOpacity(0.12); // Effet rouge sur fond clair
                   }
                   if (states.contains(WidgetState.hovered)) {
-                    return colorScheme.primary.withOpacity(0.08);
+                    return AppTheme.primaryColor.withOpacity(0.08); // Effet rouge sur fond clair
                   }
                   return null;
                 },
@@ -130,6 +130,9 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             thickness: 1,
             color: colorScheme.outlineVariant,
           ),
+          
+          // Barre de recherche locale (conditionnelle) - MD3
+          if (_isSearchVisible) _buildSearchBar(),
           
           // Contenu des onglets
           Expanded(
@@ -173,7 +176,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Rechercher des cantiques...',
+              hintText: _isSetlistSearchMode ? 'Rechercher une setlist...' : 'Rechercher des cantiques...',
               hintStyle: GoogleFonts.inter(
                 color: colorScheme.onSurfaceVariant,
                 fontSize: 16,
@@ -184,7 +187,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 color: colorScheme.onSurfaceVariant,
                 size: 24,
               ),
-              suffixIcon: _searchQuery.isNotEmpty
+              suffixIcon: (_isSetlistSearchMode ? _setlistSearchQuery.isNotEmpty : _searchQuery.isNotEmpty)
                   ? IconButton(
                       icon: Icon(
                         Icons.clear_rounded,
@@ -192,7 +195,11 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                       ),
                       onPressed: () {
                         setState(() {
-                          _searchQuery = '';
+                          if (_isSetlistSearchMode) {
+                            _setlistSearchQuery = '';
+                          } else {
+                            _searchQuery = '';
+                          }
                           _searchController.clear();
                         });
                       },
@@ -227,15 +234,19 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             ),
             onChanged: (value) {
               setState(() {
-                _searchQuery = value;
+                if (_isSetlistSearchMode) {
+                  _setlistSearchQuery = value;
+                } else {
+                  _searchQuery = value;
+                }
               });
             },
           ),
           
           const SizedBox(height: AppTheme.spaceSmall),
           
-          // Chips de mode de recherche MD3
-          Row(
+          // Chips de mode de recherche MD3 (seulement pour les cantiques et favoris)
+          if (!_isSetlistSearchMode) Row(
             children: [
               Text(
                 'Rechercher dans :',
@@ -358,9 +369,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
                 child: SongCardPerfect13(
                   song: song,
-                  songNumber: _searchQuery.isEmpty 
-                      ? _getSongNumber(song, allSongs)
-                      : index + 1, // Pour les résultats de recherche, numéroter à partir de 1
+                  songNumber: _getSongNumber(song, allSongs),
                   onTap: () => _showSongDetails(song, allSongs),
                 ),
               );
@@ -372,8 +381,83 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   }
 
   Widget _buildFavoritesTab() {
-    return StreamBuilder<List<SongModel>>(
-      stream: SongsFirebaseService.getFavoriteSongs(),
+    return FutureBuilder<List<SongModel>>(
+      future: SongsFirebaseService.getAllSongs(),
+      builder: (context, allSongsSnapshot) {
+        if (allSongsSnapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          );
+        }
+
+        final allSongs = allSongsSnapshot.data ?? [];
+
+        return StreamBuilder<List<SongModel>>(
+          stream: SongsFirebaseService.getFavoriteSongs(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              );
+            }
+
+            if (snapshot.hasError) {
+              return _buildErrorState('Erreur de chargement des favoris',
+                  'Impossible de charger vos cantiques favoris');
+            }
+
+            final favoriteSongs = snapshot.data ?? [];
+            final filteredSongs = _filterSongs(favoriteSongs);
+
+            if (filteredSongs.isEmpty) {
+              return _buildEmptyState(
+                Icons.favorite_outline_rounded,
+                favoriteSongs.isEmpty ? 'Aucun favori' : 'Aucun résultat',
+                favoriteSongs.isEmpty
+                    ? 'Ajoutez des cantiques à vos favoris en appuyant sur ♥'
+                    : 'Essayez de modifier votre recherche'
+              );
+            }
+
+            return RefreshIndicator(
+              onRefresh: () async {
+                setState(() {});
+              },
+              color: Theme.of(context).colorScheme.primary,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(
+                  left: AppTheme.spaceMedium,
+                  right: AppTheme.spaceMedium,
+                  top: AppTheme.spaceSmall,
+                  bottom: AppTheme.spaceXXLarge,
+                ),
+                itemCount: filteredSongs.length,
+                itemBuilder: (context, index) {
+                  final song = filteredSongs[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+                    child: SongCardPerfect13(
+                      song: song,
+                      songNumber: _getSongNumber(song, allSongs),
+                      onTap: () => _showSongDetails(song, allSongs),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSetlistsTab() {
+    return StreamBuilder<List<dynamic>>(
+      stream: SongsFirebaseService.getSetlists().map((list) => list.cast<dynamic>()),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -384,19 +468,19 @@ class _MemberSongsPageState extends State<MemberSongsPage>
         }
 
         if (snapshot.hasError) {
-          return _buildErrorState('Erreur de chargement des favoris',
-              'Impossible de charger vos cantiques favoris');
+          return _buildErrorState('Erreur de chargement des setlists',
+              'Impossible de charger les setlists');
         }
 
-        final favoriteSongs = snapshot.data ?? [];
-        final filteredSongs = _filterSongs(favoriteSongs);
+        final allSetlists = snapshot.data ?? [];
+        final filteredSetlists = _filterSetlists(allSetlists);
 
-        if (filteredSongs.isEmpty) {
+        if (filteredSetlists.isEmpty) {
           return _buildEmptyState(
-            Icons.favorite_outline_rounded,
-            favoriteSongs.isEmpty ? 'Aucun favori' : 'Aucun résultat',
-            favoriteSongs.isEmpty
-                ? 'Ajoutez des cantiques à vos favoris en appuyant sur ♥'
+            Icons.playlist_play_outlined,
+            allSetlists.isEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
+            allSetlists.isEmpty 
+                ? 'Les setlists créées apparaîtront ici'
                 : 'Essayez de modifier votre recherche'
           );
         }
@@ -413,179 +497,19 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               top: AppTheme.spaceSmall,
               bottom: AppTheme.spaceXXLarge,
             ),
-            itemCount: filteredSongs.length,
+            itemCount: filteredSetlists.length,
             itemBuilder: (context, index) {
-              final song = filteredSongs[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
-                child: SongCardPerfect13(
-                  song: song,
-                  songNumber: index + 1,
-                  onTap: () => _showSongDetails(song, []),
-                ),
-              );
+              final setlist = filteredSetlists[index];
+              return SetlistCardPerfect13(
+                  setlist: setlist,
+                  onTap: () => _showSetlistDetails(setlist),
+                  onMusicianMode: () => _startMusicianMode(setlist),
+                  onConductorMode: () => _startConductorMode(setlist),
+                );
             },
           ),
         );
       },
-    );
-  }
-
-  Widget _buildSetlistsTab() {
-    return Column(
-      children: [
-        // Barre de recherche et filtres pour setlists - MD3
-        Container(
-          padding: const EdgeInsets.fromLTRB(
-            AppTheme.spaceMedium, 
-            AppTheme.spaceSmall, 
-            AppTheme.spaceMedium, 
-            AppTheme.spaceSmall
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.outlineVariant,
-                width: 1,
-              ),
-            ),
-          ),
-          child: Column(
-            children: [
-              // Recherche de setlists MD3
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Rechercher une setlist...',
-                  hintStyle: GoogleFonts.inter(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 16,
-                    letterSpacing: 0.15,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search_rounded,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    size: 24,
-                  ),
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: AppTheme.spaceMedium,
-                    vertical: AppTheme.spaceMedium,
-                  ),
-                ),
-                style: GoogleFonts.inter(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  letterSpacing: 0.15,
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _setlistSearchQuery = value;
-                  });
-                },
-              ),
-              
-              const SizedBox(height: AppTheme.spaceSmall),
-              
-              // Filtres rapides MD3
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildSetlistFilterChip('Tous', null),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    _buildSetlistFilterChip('Cette semaine', 'week'),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    _buildSetlistFilterChip('Ce mois', 'month'),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    _buildSetlistFilterChip('Favoris', 'favorites'),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    _buildSetlistFilterChip('Récents', 'recent'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        // Liste des setlists
-        Expanded(
-          child: StreamBuilder<List<dynamic>>(
-            stream: SongsFirebaseService.getSetlists().map((list) => list.cast<dynamic>()),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                );
-              }
-
-              if (snapshot.hasError) {
-                return _buildErrorState('Erreur de chargement des setlists',
-                    'Impossible de charger les setlists');
-              }
-
-              final allSetlists = snapshot.data ?? [];
-              final filteredSetlists = _filterSetlists(allSetlists);
-
-              if (filteredSetlists.isEmpty) {
-                return _buildEmptyState(
-                  Icons.playlist_play_outlined,
-                  allSetlists.isEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
-                  allSetlists.isEmpty 
-                      ? 'Les setlists créées apparaîtront ici'
-                      : 'Essayez de modifier votre recherche'
-                );
-              }
-
-              return RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {});
-                },
-                color: Theme.of(context).colorScheme.primary,
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(
-                    left: AppTheme.spaceMedium,
-                    right: AppTheme.spaceMedium,
-                    top: AppTheme.spaceSmall,
-                    bottom: AppTheme.spaceXXLarge,
-                  ),
-                  itemCount: filteredSetlists.length,
-                  itemBuilder: (context, index) {
-                    final setlist = filteredSetlists[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
-                      child: SetlistCardPerfect13(
-                        setlist: setlist,
-                        onTap: () => _showSetlistDetails(setlist),
-                        onMusicianMode: () => _startMusicianMode(setlist),
-                        onConductorMode: () => _startConductorMode(setlist),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 
@@ -824,51 +748,39 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   }
 
   // Méthodes pour les setlists
-  Widget _buildSetlistFilterChip(String label, String? filterType) {
-    final isSelected = _selectedSetlistFilter == filterType;
-    final colorScheme = Theme.of(context).colorScheme;
-    
-    return FilterChip(
-      label: Text(
-        label,
-        style: GoogleFonts.inter(
-          fontSize: 12,
-          fontWeight: AppTheme.fontMedium,
-          letterSpacing: 0.1,
-        ),
-      ),
-      selected: isSelected,
-      onSelected: (selected) {
-        setState(() {
-          _selectedSetlistFilter = selected ? filterType : null;
-        });
-      },
-      backgroundColor: colorScheme.surfaceContainerHigh,
-      selectedColor: colorScheme.secondaryContainer,
-      labelStyle: TextStyle(
-        color: isSelected 
-            ? colorScheme.onSecondaryContainer 
-            : colorScheme.onSurfaceVariant,
-      ),
-      side: BorderSide.none,
-      padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceSmall),
-    );
-  }
 
   List<SongModel> _filterSongs(List<SongModel> songs) {
+    List<SongModel> filteredSongs;
+    
     if (_searchQuery.isEmpty) {
-      return songs;
+      filteredSongs = songs;
+    } else {
+      final query = _searchQuery.toLowerCase().trim();
+      // Diviser la requête en mots individuels
+      final searchWords = query.split(RegExp(r'\s+'));
+      
+      filteredSongs = songs.where((song) {
+        if (_searchInLyrics) {
+          final titleLower = song.title.toLowerCase();
+          final lyricsLower = song.lyrics.toLowerCase();
+          
+          // Tous les mots doivent être trouvés soit dans le titre soit dans les paroles
+          return searchWords.every((word) => 
+            titleLower.contains(word) || lyricsLower.contains(word)
+          );
+        } else {
+          final titleLower = song.title.toLowerCase();
+          
+          // Tous les mots doivent être trouvés dans le titre
+          return searchWords.every((word) => titleLower.contains(word));
+        }
+      }).toList();
     }
 
-    final query = _searchQuery.toLowerCase();
-    return songs.where((song) {
-      if (_searchInLyrics) {
-        return song.lyrics.toLowerCase().contains(query) ||
-               song.title.toLowerCase().contains(query);
-      } else {
-        return song.title.toLowerCase().contains(query);
-      }
-    }).toList();
+    // Tri alphabétique par titre
+    filteredSongs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    
+    return filteredSongs;
   }
 
   List<dynamic> _filterSetlists(List<dynamic> setlists) {
@@ -882,21 +794,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
         }
       }
 
-      if (_selectedSetlistFilter != null) {
-        switch (_selectedSetlistFilter) {
-          case 'week':
-            final weekAgo = DateTime.now().subtract(const Duration(days: 7));
-            return setlist.createdAt?.isAfter(weekAgo) ?? false;
-          case 'month':
-            final monthAgo = DateTime.now().subtract(const Duration(days: 30));
-            return setlist.createdAt?.isAfter(monthAgo) ?? false;
-          case 'favorites':
-            return setlist.isFavorite ?? false;
-          case 'recent':
-            final recentLimit = DateTime.now().subtract(const Duration(days: 14));
-            return setlist.lastUsed?.isAfter(recentLimit) ?? false;
-        }
-      }
+
 
       return true;
     }).toList();

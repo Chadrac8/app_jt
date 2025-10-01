@@ -190,7 +190,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
 
             // Onglets
             Container(
-              color: AppTheme.white100,
+              color: AppTheme.surface,
               child: TabBar(
                 controller: _tabController,
                 labelColor: AppTheme.primaryColor,

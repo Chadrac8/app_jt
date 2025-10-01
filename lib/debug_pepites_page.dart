@@ -27,8 +27,6 @@ class _DebugPepitesPageState extends State<DebugPepitesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Debug Pépites d\'Or'),
-        backgroundColor: const Color(0xFF8B4513),
-        foregroundColor: AppTheme.white100,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../models/permission_model.dart';
 import '../services/roles_permissions_service.dart';
+import '../config/admin_permissions_config.dart';
 
 /// Provider pour la gestion d'état des rôles et permissions avec fonctionnalités avancées
 class PermissionProvider with ChangeNotifier {
@@ -386,6 +387,67 @@ class PermissionProvider with ChangeNotifier {
     _userPermissions.clear();
     _permissionCache.clear();
     super.dispose();
+  }
+
+  /// Vérifie si l'utilisateur courant a un rôle administrateur
+  Future<bool> hasAdminRole() async {
+    if (_currentUserId == null) return false;
+
+    final cacheKey = '${_currentUserId}_hasAdminRole';
+    if (_permissionCache.containsKey(cacheKey) && _isCacheValid()) {
+      return _permissionCache[cacheKey]!;
+    }
+
+    try {
+      // Vérifier toutes les permissions administrateur définies dans la config
+      final adminPermissions = AdminPermissionsConfig.getAllAdminPermissions();
+      final adminModules = AdminPermissionsConfig.adminModules;
+      
+      // Créer une liste de futures pour toutes les vérifications
+      final List<Future<bool>> permissionChecks = [
+        // Vérifier les permissions spécifiques
+        ...adminPermissions.map((permission) => hasPermission(permission)),
+        // Vérifier l'accès aux modules admin avec niveau admin
+        ...adminModules.map((module) => 
+          hasModuleAccess(module, minimumLevel: PermissionLevel.admin)),
+      ];
+      
+      // Si au moins une vérification retourne true, l'utilisateur a accès
+      final results = await Future.wait(permissionChecks);
+      final hasAdminAccess = results.any((result) => result);
+      
+      // Mettre en cache le résultat
+      _permissionCache[cacheKey] = hasAdminAccess;
+      
+      debugPrint('🔐 Vérification rôle admin pour $_currentUserId: $hasAdminAccess');
+      
+      return hasAdminAccess;
+    } catch (e) {
+      debugPrint('❌ Erreur lors de la vérification du rôle admin: $e');
+      // En cas d'erreur, on cache un résultat négatif pour éviter les accès non autorisés
+      _permissionCache[cacheKey] = false;
+      return false;
+    }
+  }
+
+  /// Vérifie si l'utilisateur a accès à des fonctionnalités d'administration spécifiques
+  Future<bool> canAccessAdminFeature(String feature) async {
+    if (_currentUserId == null) return false;
+
+    switch (feature) {
+      case 'user_management':
+        return await hasPermission('manage_users');
+      case 'role_management':
+        return await hasPermission('manage_roles');
+      case 'system_settings':
+        return await hasPermission('system_admin');
+      case 'module_management':
+        return await hasPermission('manage_modules');
+      case 'audit_logs':
+        return await hasPermission('view_audit_logs');
+      default:
+        return await hasAdminRole();
+    }
   }
 
   /// Réinitialise complètement le provider

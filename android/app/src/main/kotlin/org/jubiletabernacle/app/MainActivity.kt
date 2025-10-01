@@ -1,4 +1,4 @@
-package com.mycompany.Personnes
+package org.jubiletabernacle.app
 
 import io.flutter.embedding.android.FlutterActivity
 

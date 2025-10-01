@@ -132,7 +132,7 @@ class _SongCardState extends State<SongCard> {
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: AppTheme.fontBold,
                       ),
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

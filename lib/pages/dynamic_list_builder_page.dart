@@ -163,7 +163,6 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppTheme.grey700,
         title: Text(
           widget.existingList != null ? 'Modifier la liste' : 'Nouvelle liste',
           style: GoogleFonts.poppins(

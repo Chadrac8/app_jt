@@ -1462,7 +1462,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           // Onglets pour choisir le type d'audio
           Container(
             decoration: BoxDecoration(
-              color: AppTheme.grey100,
+              color: AppTheme.surface,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: const TabBar(

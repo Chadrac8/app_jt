@@ -59,21 +59,23 @@ class _UserAvatarState extends State<UserAvatar> {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: widget.radius,
-      backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: widget.showBorder
-              ? Border.all(
-                  color: widget.borderColor ?? AppTheme.white100,
-                  width: widget.borderWidth,
-                )
-              : null,
-        ),
-        child: ClipOval(
-          child: _buildAvatarContent(),
+    return RepaintBoundary(
+      child: CircleAvatar(
+        radius: widget.radius,
+        backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: widget.showBorder
+                ? Border.all(
+                    color: widget.borderColor ?? AppTheme.white100,
+                    width: widget.borderWidth,
+                  )
+                : null,
+          ),
+          child: ClipOval(
+            child: _buildAvatarContent(),
+          ),
         ),
       ),
     );

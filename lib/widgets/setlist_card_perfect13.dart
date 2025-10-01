@@ -134,9 +134,8 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
         return Transform.scale(
           scale: _scaleAnimation.value,
           child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: AppTheme.spaceMedium,
-              vertical: AppTheme.spaceSmall,
+            margin: const EdgeInsets.only(
+              bottom: AppTheme.spaceSmall,
             ),
             child: Card(
               elevation: _elevationAnimation.value,
@@ -212,23 +211,23 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
                         ],
                       ),
                       
-                      const SizedBox(height: AppTheme.spaceMedium),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       
-                      // Description si présente
+                      // Description si présente (réduite)
                       if (widget.setlist.description.isNotEmpty) ...[
                         Text(
                           widget.setlist.description,
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: AppTheme.fontRegular,
                             color: colorScheme.onSurfaceVariant,
-                            height: 1.4,
+                            height: 1.3,
                             letterSpacing: 0.1,
                           ),
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: AppTheme.spaceMedium),
+                        const SizedBox(height: AppTheme.spaceSmall),
                       ],
                       
                       // Informations détaillées avec badges Material Design 3
@@ -345,7 +344,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppTheme.spaceSmall,
-        vertical: 4,
+        vertical: 2,
       ),
       decoration: BoxDecoration(
         color: color,

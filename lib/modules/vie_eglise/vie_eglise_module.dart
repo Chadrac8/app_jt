@@ -48,57 +48,78 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
                 SermonsTab(),
                 const OffrandesTab(),
                 PrayerWallTab(),
-              ])),
-        ]));
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildTabBar() {
-    return Container(
-      height: 50, // Hauteur Material Design standard
-      decoration: BoxDecoration(
-        color: AppTheme.backgroundColor, // Harmonisé avec AppBar transparente membre
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.black100.withOpacity(0.08),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+    return Column(
+      children: [
+        // TabBar - Style MD3 moderne avec couleur bottomNavigationBar
+        Material(
+          color: AppTheme.surface, // Même couleur que la bottomNavigationBar
+          elevation: 0,
+          child: TabBar(
+            controller: _tabController,
+            labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
+            unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
+            indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorWeight: 3.0,
+            labelStyle: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: AppTheme.fontSemiBold,
+              letterSpacing: 0.1,
+            ),
+            unselectedLabelStyle: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: AppTheme.fontMedium,
+              letterSpacing: 0.1,
+            ),
+            splashFactory: InkRipple.splashFactory,
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return AppTheme.primaryColor.withValues(alpha: 0.12); // Overlay rouge sur fond clair
+                }
+                if (states.contains(WidgetState.hovered)) {
+                  return AppTheme.primaryColor.withValues(alpha: 0.08); // Hover rouge sur fond clair
+                }
+                return null;
+              },
+            ),
+            tabs: const [
+              Tab(
+                icon: Icon(Icons.auto_awesome_rounded),
+                text: 'Pour vous',
+              ),
+              Tab(
+                icon: Icon(Icons.video_library_rounded),
+                text: 'Sermons',
+              ),
+              Tab(
+                icon: Icon(Icons.volunteer_activism_rounded),
+                text: 'Offrandes',
+              ),
+              Tab(
+                icon: Icon(Icons.favorite_rounded),
+                text: 'Prières',
+              ),
+            ],
           ),
-        ],
-      ),
-      child: TabBar(
-        controller: _tabController,
-        labelColor: AppTheme.primaryColor,
-        unselectedLabelColor: AppTheme.textSecondaryColor,
-        indicatorColor: AppTheme.primaryColor,
-        indicatorWeight: 3.0, // Poids standard Material Design
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        labelStyle: GoogleFonts.inter(
-          fontSize: 14,
-          fontWeight: AppTheme.fontSemiBold,
         ),
-        unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: 14,
-          fontWeight: AppTheme.fontMedium,
+        
+        // Divider subtil MD3
+        Divider(
+          height: 1,
+          thickness: 1,
+          color: Theme.of(context).colorScheme.outlineVariant,
         ),
-        tabs: const [
-          Tab(
-            text: 'Pour vous',
-            iconMargin: EdgeInsets.only(bottom: 4),
-          ),
-          Tab(
-            text: 'Sermons',
-            iconMargin: EdgeInsets.only(bottom: 4),
-          ),
-          Tab(
-            text: 'Offrandes',
-            iconMargin: EdgeInsets.only(bottom: 4),
-          ),
-          Tab(
-            text: 'Prières & Témoignages',
-            iconMargin: EdgeInsets.only(bottom: 4),
-          ),
-        ],
-      ),
+      ],
     );
   }
 }
@@ -116,12 +137,12 @@ class VieEgliseModulePreview extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppTheme.primaryColor.withOpacity(0.1),
-            AppTheme.primaryColor.withOpacity(0.05),
+            AppTheme.primaryColor.withValues(alpha: 0.1),
+            AppTheme.primaryColor.withValues(alpha: 0.05),
           ]),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.2),
+          color: AppTheme.primaryColor.withValues(alpha: 0.2),
           width: 1)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -166,7 +187,7 @@ class VieEgliseModulePreview extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withOpacity(0.1),
+            color: AppTheme.primaryColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
           child: Icon(
             icon,
