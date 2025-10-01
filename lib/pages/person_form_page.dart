@@ -7,7 +7,7 @@ import '../models/role_model.dart';
 import '../services/firebase_service.dart';
 import '../services/roles_firebase_service.dart';
 import '../widgets/custom_fields_widget.dart';
-import '../widgets/family_info_widget.dart';
+
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
 import 'firebase_storage_diagnostic_page.dart';
@@ -61,16 +61,13 @@ class _PersonFormPageState extends State<PersonFormPage>
   
   // Performance controller
   late PersonFormController _formController;
-  
-  void _markAsChanged() {
-    _formController.markAsChanged();
-  }
 
-  final List<String> _genderOptions = ['Homme', 'Femme'];
+  final List<String> _genderOptions = ['Masculin', 'Féminin'];
   final List<String> _maritalStatusOptions = [
     'Célibataire',
     'Marié(e)',
-    'Veuf/Veuve'
+    'Divorcé(e)',
+    'Veuf(ve)'
   ];
 
   // Indicatifs de pays (version courte pour person_form_page)
@@ -204,11 +201,17 @@ class _PersonFormPageState extends State<PersonFormPage>
       _lastNameController.text = person.lastName;
       _emailController.text = person.email;
       _parseExistingPhone(person.phone);
-      _parseExistingAddress(person.address);
+      
+      // Initialiser les champs d'adresse séparément
+      _addressController.text = person.address ?? '';
+      _addressComplementController.text = person.additionalAddress ?? '';
+      _postalCodeController.text = person.zipCode ?? '';
+      _cityController.text = person.city ?? '';
+      
       _privateNotesController.text = person.privateNotes ?? '';
       _birthDate = person.birthDate;
-      _gender = person.gender;
-      _maritalStatus = person.maritalStatus;
+      _gender = _normalizeGender(person.gender);
+      _maritalStatus = _normalizeMaritalStatus(person.maritalStatus);
       _children = List.from(person.children);
       _tags = List.from(person.tags);
       _roles = List.from(person.roles);
@@ -243,31 +246,7 @@ class _PersonFormPageState extends State<PersonFormPage>
     }
   }
 
-  String? _buildFullAddress() {
-    final parts = <String>[];
-    
-    if (_addressController.text.trim().isNotEmpty) {
-      parts.add(_addressController.text.trim());
-    }
-    
-    if (_addressComplementController.text.trim().isNotEmpty) {
-      parts.add(_addressComplementController.text.trim());
-    }
-    
-    final cityParts = <String>[];
-    if (_postalCodeController.text.trim().isNotEmpty) {
-      cityParts.add(_postalCodeController.text.trim());
-    }
-    if (_cityController.text.trim().isNotEmpty) {
-      cityParts.add(_cityController.text.trim());
-    }
-    
-    if (cityParts.isNotEmpty) {
-      parts.add(cityParts.join(' '));
-    }
-    
-    return parts.isEmpty ? null : parts.join(', ');
-  }
+
 
   String? _buildFullPhone() {
     if (_phoneController.text.trim().isNotEmpty && _countryCode != null) {
@@ -301,57 +280,7 @@ class _PersonFormPageState extends State<PersonFormPage>
     _country = 'France';
   }
 
-  void _parseExistingAddress(String? address) {
-    if (address == null || address.isEmpty) {
-      _addressController.clear();
-      _addressComplementController.clear();
-      _postalCodeController.clear();
-      _cityController.clear();
-      return;
-    }
 
-    // Tentative de parsing intelligent de l'adresse
-    final parts = address.split(', ');
-    
-    if (parts.length >= 3) {
-      // Format attendu: "Adresse, Complément, Code Ville"
-      _addressController.text = parts[0].trim();
-      _addressComplementController.text = parts[1].trim();
-      
-      // Essayer de séparer code postal et ville du dernier élément
-      final lastPart = parts.last.trim();
-      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
-      
-      if (codeVilleMatch != null) {
-        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
-        _cityController.text = codeVilleMatch.group(2) ?? '';
-      } else {
-        _postalCodeController.clear();
-        _cityController.text = lastPart;
-      }
-    } else if (parts.length == 2) {
-      // Format: "Adresse, Code Ville"
-      _addressController.text = parts[0].trim();
-      _addressComplementController.clear();
-      
-      final lastPart = parts[1].trim();
-      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
-      
-      if (codeVilleMatch != null) {
-        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
-        _cityController.text = codeVilleMatch.group(2) ?? '';
-      } else {
-        _postalCodeController.clear();
-        _cityController.text = lastPart;
-      }
-    } else {
-      // Fallback: tout dans l'adresse principale
-      _addressController.text = address;
-      _addressComplementController.clear();
-      _postalCodeController.clear();
-      _cityController.clear();
-    }
-  }
 
   Future<void> _pickProfileImage() async {
     try {
@@ -893,7 +822,10 @@ class _PersonFormPageState extends State<PersonFormPage>
           email: _emailController.text.trim(),
           phone: _buildFullPhone(),
           birthDate: _birthDate,
-          address: _buildFullAddress(),
+          address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
+          additionalAddress: _addressComplementController.text.trim().isEmpty ? null : _addressComplementController.text.trim(),
+          zipCode: _postalCodeController.text.trim().isEmpty ? null : _postalCodeController.text.trim(),
+          city: _cityController.text.trim().isEmpty ? null : _cityController.text.trim(),
           gender: _gender,
           maritalStatus: _maritalStatus,
           children: _children,
@@ -930,7 +862,10 @@ class _PersonFormPageState extends State<PersonFormPage>
           email: _emailController.text.trim(),
           phone: _buildFullPhone(),
           birthDate: _birthDate,
-          address: _buildFullAddress(),
+          address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
+          additionalAddress: _addressComplementController.text.trim().isEmpty ? null : _addressComplementController.text.trim(),
+          zipCode: _postalCodeController.text.trim().isEmpty ? null : _postalCodeController.text.trim(),
+          city: _cityController.text.trim().isEmpty ? null : _cityController.text.trim(),
           gender: _gender,
           maritalStatus: _maritalStatus,
           children: _children,
@@ -1714,5 +1649,60 @@ class _PersonFormPageState extends State<PersonFormPage>
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
     );
+  }
+
+  /// Normaliser les valeurs de genre anciennes vers les nouvelles
+  String? _normalizeGender(String? gender) {
+    if (gender == null) return null;
+    
+    final genderMappings = {
+      'Homme': 'Masculin',
+      'homme': 'Masculin',
+      'Femme': 'Féminin',
+      'femme': 'Féminin',
+      'Male': 'Masculin',
+      'male': 'Masculin',
+      'Female': 'Féminin',
+      'female': 'Féminin',
+      'M': 'Masculin',
+      'm': 'Masculin',
+      'F': 'Féminin',
+      'f': 'Féminin',
+    };
+    
+    return genderMappings[gender] ?? gender;
+  }
+
+  /// Normaliser les valeurs de statut marital anciennes vers les nouvelles  
+  String? _normalizeMaritalStatus(String? status) {
+    if (status == null) return null;
+    
+    final statusMappings = {
+      'Marié': 'Marié(e)',
+      'marie': 'Marié(e)',
+      'Mariée': 'Marié(e)',
+      'mariee': 'Marié(e)',
+      'Married': 'Marié(e)',
+      'married': 'Marié(e)',
+      'Célibataire': 'Célibataire',
+      'celibataire': 'Célibataire',
+      'Single': 'Célibataire',
+      'single': 'Célibataire',
+      'Divorcé': 'Divorcé(e)',
+      'divorce': 'Divorcé(e)',
+      'Divorcée': 'Divorcé(e)',
+      'divorcee': 'Divorcé(e)',
+      'Divorced': 'Divorcé(e)',
+      'divorced': 'Divorcé(e)',
+      'Veuf': 'Veuf(ve)',
+      'veuf': 'Veuf(ve)',
+      'Veuve': 'Veuf(ve)',
+      'veuve': 'Veuf(ve)',
+      'Widow': 'Veuf(ve)',
+      'widow': 'Veuf(ve)',
+      'Veuf/Veuve': 'Veuf(ve)',
+    };
+    
+    return statusMappings[status] ?? status;
   }
 }

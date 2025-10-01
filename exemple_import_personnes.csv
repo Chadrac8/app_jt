@@ -1,0 +1,6 @@
+firstName,lastName,email,phone,country,birthDate,gender,maritalStatus,address,additionalAddress,zipCode,city
+Jean,Dupont,jean.dupont@email.com,0123456789,france,15/03/1980,M,marie,123 rue de la Paix,Apt 4B,75001,paris
+Marie,Martin,marie.martin@test.fr,0678901234,France,22/07/1975,female,single,456 Avenue des Champs,,75008,Paris
+Pierre,Bernard,p.bernard@mail.com,+33145678901,USA,10-12-1985,homme,celibataire,789 Boulevard Saint-Germain,Étage 2,75006,PARIS
+Sophie,Durand,sophie.durand@example.com,06.12.34.56.78,allemagne,05-08-1990,F,mariee,12 Place de la République,Bâtiment C,69001,lyon
+Antoine,Moreau,antoine@test.com,0987654321,canada,25/11/1978,Male,divorced,67 Rue Victor Hugo,,13001,marseille

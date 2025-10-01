@@ -3,6 +3,8 @@ import '../shared/widgets/base_list_page.dart';
 import '../shared/widgets/custom_card.dart';
 import '../models/person_module_model.dart';
 import '../services/people_module_service.dart';
+import '../modules/personnes/pages/person_import_export_page.dart';
+import '../modules/personnes/widgets/person_import_export_actions.dart';
 import '../../theme.dart';
 
 /// Vue administrateur pour les personnes (Module)
@@ -293,26 +295,22 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
   }
 
   void _importPeople() {
-    // Implémentation de l'import
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalite d importation en developpement')),
-    );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const PersonImportExportPage(),
+      ),
+    ).then((_) {
+      // Recharger la liste après import
+      setState(() {});
+    });
   }
 
-  void _exportPeople() async {
-    try {
-      final data = await _peopleService.exportPeople();
-      if (!mounted) return;
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Export reussi: ${data.length} personnes')),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erreur lors de l export')),
-      );
-    }
+  void _exportPeople() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const PersonImportExportPage(),
+      ),
+    );
   }
 
   void _handleMenuAction(String action) {

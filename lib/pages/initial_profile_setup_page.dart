@@ -40,7 +40,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
   String? _country;
   bool _isLoading = false;
 
-  final List<String> _genderOptions = ['Homme', 'Femme'];
+  final List<String> _genderOptions = ['Masculin', 'Féminin'];
   final List<String> _maritalStatusOptions = [
     'Célibataire',
     'Marié(e)', 

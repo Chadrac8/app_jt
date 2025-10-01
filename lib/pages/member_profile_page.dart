@@ -62,7 +62,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   String? _country;
   bool _hasImageChanged = false;
 
-  final List<String> _genderOptions = ['Homme', 'Femme'];
+  final List<String> _genderOptions = ['Masculin', 'Féminin'];
   final List<String> _maritalStatusOptions = [
     'Célibataire',
     'Marié(e)',

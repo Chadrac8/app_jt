@@ -239,6 +239,8 @@ class PourVousAction {
 
   static IconData _iconFromData(Map<String, dynamic> data) {
     final codePoint = data['iconCodePoint'] ?? Icons.help_outline.codePoint;
+    // Use Icons.help_outline as default to avoid tree-shaking issues
+    if (codePoint == Icons.help_outline.codePoint) return Icons.help_outline;
     return IconData(codePoint, fontFamily: 'MaterialIcons');
   }
 }

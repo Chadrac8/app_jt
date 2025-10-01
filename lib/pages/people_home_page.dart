@@ -13,6 +13,7 @@ import 'custom_fields_management_page.dart';
 import 'workflow_followups_management_page.dart';
 import 'families_management_page.dart';
 import 'people_lists_page.dart';
+import '../modules/personnes/pages/person_import_export_page.dart';
 import '../../theme.dart';
 
 
@@ -410,6 +411,14 @@ class _PeopleHomePageState extends State<PeopleHomePage>
               tooltip: 'Plus d\'options',
               onSelected: (value) {
                 switch (value) {
+                  case 'import_export':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PersonImportExportPage(),
+                      ),
+                    );
+                    break;
                   case 'custom_fields':
                     Navigator.push(
                       context,
@@ -445,6 +454,15 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                 }
               },
               itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'import_export',
+                  child: ListTile(
+                    leading: Icon(Icons.import_export),
+                    title: Text('Import/Export'),
+                    subtitle: Text('Importer et exporter des personnes'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
                 const PopupMenuItem(
                   value: 'people_lists',
                   child: ListTile(

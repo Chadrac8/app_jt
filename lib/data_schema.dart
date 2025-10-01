@@ -14,7 +14,7 @@
 /// - phone: String? (optional) - Primary phone number
 /// - birthDate: Timestamp? (optional) - Date of birth
 /// - address: String? (optional) - Physical address
-/// - gender: String? (optional) - Gender identity ('Homme', 'Femme')
+/// - gender: String? (optional) - Gender identity ('Masculin', 'Féminin')
 /// - maritalStatus: String? (optional) - Marital status ('Célibataire', 'Marié(e)', 'Veuf/Veuve')
 /// - children: Array<String> (default: []) - Names of children
 /// - profileImageUrl: String? (optional) - Base64 encoded profile image

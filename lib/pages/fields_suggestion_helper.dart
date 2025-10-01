@@ -32,7 +32,7 @@ class FieldsSuggestionHelper {
     {'name': 'lastName', 'label': 'Nom', 'type': 'text'},
     {'name': 'email', 'label': 'Email', 'type': 'email'},
     {'name': 'phone', 'label': 'Téléphone', 'type': 'phone'},
-    {'name': 'gender', 'label': 'Genre', 'type': 'select', 'options': ['Homme', 'Femme', 'Autre']},
+    {'name': 'gender', 'label': 'Genre', 'type': 'select', 'options': ['Masculin', 'Féminin', 'Autre']},
     {'name': 'roles', 'label': 'Rôles', 'type': 'multiselect'},
     {'name': 'tags', 'label': 'Tags', 'type': 'multiselect'},
     {'name': 'isActive', 'label': 'Actif', 'type': 'boolean'},

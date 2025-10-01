@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Include user preferences and app settings -->
+    <include domain="sharedpref" path="FlutterSharedPreferences.xml"/>
+    <include domain="sharedpref" path="firebase_prefs.xml"/>
+    
+    <!-- Include cache that should be backed up -->
+    <include domain="file" path="app_data/"/>
+    
+    <!-- Exclude sensitive authentication data -->
+    <exclude domain="sharedpref" path="auth_tokens.xml"/>
+    <exclude domain="database" path="sensitive.db"/>
+    
+    <!-- Exclude temporary files -->
+    <exclude domain="file" path="temp/"/>
+    <exclude domain="cache" path="."/>
+</full-backup-content>

@@ -96,6 +96,8 @@ class ActionGroup {
 
   static IconData _iconFromData(Map<String, dynamic> data) {
     final codePoint = data['iconCodePoint'] ?? Icons.folder.codePoint;
+    // Use Icons.folder as default to avoid tree-shaking issues
+    if (codePoint == Icons.folder.codePoint) return Icons.folder;
     return IconData(codePoint, fontFamily: 'MaterialIcons');
   }
 

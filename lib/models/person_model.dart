@@ -182,8 +182,12 @@ class PersonModel {
   final String lastName;
   final String email;
   final String? phone;
+  final String? country;
   final DateTime? birthDate;
   final String? address;
+  final String? additionalAddress;
+  final String? zipCode;
+  final String? city;
   final String? gender;
   final String? maritalStatus;
   final List<String> children;
@@ -206,8 +210,12 @@ class PersonModel {
     required this.lastName,
     required this.email,
     this.phone,
+    this.country,
     this.birthDate,
     this.address,
+    this.additionalAddress,
+    this.zipCode,
+    this.city,
     this.gender,
     this.maritalStatus,
     this.children = const [],
@@ -289,8 +297,12 @@ class PersonModel {
       lastName: data['lastName'] ?? '',
       email: data['email'] ?? '',
       phone: data['phone'],
+      country: data['country'],
       birthDate: _parseDateTime(data['birthDate']),
       address: data['address'],
+      additionalAddress: data['additionalAddress'],
+      zipCode: data['zipCode'],
+      city: data['city'],
       gender: data['gender'],
       maritalStatus: data['maritalStatus'],
       children: List<String>.from(data['children'] ?? []),
@@ -318,8 +330,12 @@ class PersonModel {
       'lastName': lastName,
       'email': email,
       'phone': phone,
+      'country': country,
       'birthDate': birthDate != null ? Timestamp.fromDate(birthDate!) : null,
       'address': address,
+      'additionalAddress': additionalAddress,
+      'zipCode': zipCode,
+      'city': city,
       'gender': gender,
       'maritalStatus': maritalStatus,
       'children': children,
@@ -344,8 +360,12 @@ class PersonModel {
     String? lastName,
     String? email,
     String? phone,
+    String? country,
     DateTime? birthDate,
     String? address,
+    String? additionalAddress,
+    String? zipCode,
+    String? city,
     String? gender,
     String? maritalStatus,
     List<String>? children,
@@ -368,8 +388,12 @@ class PersonModel {
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       phone: phone ?? this.phone,
+      country: country ?? this.country,
       birthDate: birthDate ?? this.birthDate,
       address: address ?? this.address,
+      additionalAddress: additionalAddress ?? this.additionalAddress,
+      zipCode: zipCode ?? this.zipCode,
+      city: city ?? this.city,
       gender: gender ?? this.gender,
       maritalStatus: maritalStatus ?? this.maritalStatus,
       children: children ?? this.children,
