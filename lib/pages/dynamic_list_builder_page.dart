@@ -166,7 +166,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
         title: Text(
           widget.existingList != null ? 'Modifier la liste' : 'Nouvelle liste',
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.white100,
           ),
@@ -211,7 +211,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
 
   Widget _buildProgressIndicator() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         children: [
           _buildStepIndicator(0, 'Configuration', _currentStep >= 0),
@@ -238,11 +238,11 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
             ),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: isActive ? AppTheme.blueStandard : AppTheme.grey600,
             fontWeight: isActive ? AppTheme.fontSemiBold : FontWeight.normal,
           ),
@@ -266,7 +266,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
 
   Widget _buildConfigurationStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Form(
         key: _formKey,
         child: Column(
@@ -275,16 +275,16 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
             Text(
               'Configuration de base',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             CustomCard(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   children: [
                     TextFormField(
@@ -300,7 +300,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     TextFormField(
                       controller: _descriptionController,
@@ -316,7 +316,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     DropdownButtonFormField<String>(
                       value: _selectedSourceModule,
@@ -337,7 +337,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                         });
                       },
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     DropdownButtonFormField<String>(
                       value: _selectedCategory,
@@ -355,7 +355,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                         setState(() => _selectedCategory = value!);
                       },
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     SwitchListTile(
                       title: const Text('Liste publique'),
@@ -381,14 +381,14 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             children: [
               Expanded(
                 child: Text(
                   'Sélectionner les champs à afficher',
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -484,30 +484,30 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
 
   Widget _buildFiltersStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Filtres et tri',
             style: GoogleFonts.poppins(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Section Filtres
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       const Icon(Icons.filter_list),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       const Text('Filtres'),
                       const Spacer(),
                       ElevatedButton.icon(
@@ -519,7 +519,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                   ),
                   if (_filters.isEmpty)
                     const Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: EdgeInsets.all(AppTheme.spaceMedium),
                       child: Text('Aucun filtre défini'),
                     )
                   else
@@ -528,19 +528,19 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Section Tri
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       const Icon(Icons.sort),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       const Text('Tri'),
                       const Spacer(),
                       ElevatedButton.icon(
@@ -552,7 +552,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                   ),
                   if (_sorting.isEmpty)
                     const Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: EdgeInsets.all(AppTheme.spaceMedium),
                       child: Text('Aucun tri défini'),
                     )
                   else
@@ -692,7 +692,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             StatefulBuilder(
               builder: (context, setDialogState) {
                 return CheckboxListTile(

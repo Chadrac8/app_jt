@@ -4,6 +4,7 @@ import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import 'daily_reading_view.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ActiveReadingPlanView extends StatefulWidget {
   final ReadingPlan plan;
@@ -61,29 +62,29 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // En-tête avec progrès
             _buildProgressHeader(theme, progressPercentage),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Lecture du jour
             _buildTodayReading(theme, todayTask),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Actions rapides
             _buildQuickActions(theme),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Historique récent
             _buildRecentHistory(theme),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Statistiques
             _buildStatistics(theme),
@@ -95,7 +96,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
 
   Widget _buildProgressHeader(ThemeData theme, double progressPercentage) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -117,7 +118,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                 color: theme.colorScheme.primary,
                 size: 32,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,14 +126,14 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                     Text(
                       widget.plan.name,
                       style: GoogleFonts.inter(
-                        fontSize: 20,
+                        fontSize: AppTheme.fontSize20,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     Text(
                       'Jour ${_progress!.currentDay} sur ${widget.plan.totalDays}',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: theme.colorScheme.onSurface.withOpacity(0.7),
                       ),
                     ),
@@ -146,27 +147,27 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           LinearProgressIndicator(
             value: progressPercentage,
             backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
             valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 '${_progress!.completedDays.length} jours terminés',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: theme.colorScheme.onSurface.withOpacity(0.7),
                 ),
               ),
               Text(
                 '${(progressPercentage * 100).toInt()}%',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.primary,
                 ),
@@ -182,7 +183,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
     final isCompleted = _progress!.completedDays.contains(todayTask.day);
     
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -200,7 +201,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: isCompleted 
                       ? AppTheme.greenStandard.withOpacity(0.2)
@@ -213,7 +214,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +222,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                     Text(
                       isCompleted ? 'Lecture terminée !' : 'Lecture du jour',
                       style: GoogleFonts.inter(
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                         color: isCompleted ? AppTheme.greenStandard : null,
                       ),
@@ -229,7 +230,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                     Text(
                       todayTask.title,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: theme.colorScheme.onSurface.withOpacity(0.7),
                       ),
                     ),
@@ -238,11 +239,11 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Lectures du jour
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: theme.colorScheme.background,
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -253,15 +254,15 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                 Text(
                   'Lectures',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   todayTask.readings.map((r) => r.displayText).join(' • '),
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     color: theme.colorScheme.primary,
                     fontWeight: AppTheme.fontMedium,
                   ),
@@ -271,26 +272,26 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
           ),
           
           if (todayTask.reflection != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Réflexion',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               todayTask.reflection!,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: theme.colorScheme.onSurface.withOpacity(0.8),
                 height: 1.4,
               ),
             ),
           ],
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Bouton d'action
           SizedBox(
@@ -325,11 +326,11 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
         Text(
           'Actions rapides',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             Expanded(
@@ -341,7 +342,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                 onTap: () => _showHistoryDialog(),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: _buildActionCard(
                 theme: theme,
@@ -368,7 +369,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -379,20 +380,20 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
         child: Column(
           children: [
             Icon(icon, color: theme.colorScheme.primary, size: 32),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               title,
               style: GoogleFonts.inter(
                 fontWeight: AppTheme.fontSemiBold,
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               subtitle,
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
               textAlign: TextAlign.center,
@@ -418,11 +419,11 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
         Text(
           'Lectures récentes',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         ...displayDays.map((dayNumber) {
           final day = widget.plan.days.firstWhere(
             (d) => d.day == dayNumber,
@@ -437,7 +438,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
   Widget _buildHistoryItem(ThemeData theme, ReadingPlanDay day, bool isCompleted) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -462,12 +463,12 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                 style: GoogleFonts.inter(
                   fontWeight: AppTheme.fontBold,
                   color: isCompleted ? AppTheme.greenStandard : theme.colorScheme.primary,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -476,13 +477,13 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
                   day.title,
                   style: GoogleFonts.inter(
                     fontWeight: AppTheme.fontMedium,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                 ),
                 Text(
                   day.readings.map((r) => r.displayText).join(', '),
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: theme.colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
@@ -507,7 +508,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
     final streak = _calculateStreak();
     
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -518,11 +519,11 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
           Text(
             'Statistiques',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               Expanded(
@@ -567,7 +568,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
         Text(
           value,
           style: GoogleFonts.inter(
-            fontSize: 24,
+            fontSize: AppTheme.fontSize24,
             fontWeight: AppTheme.fontBold,
             color: color,
           ),
@@ -575,7 +576,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
         Text(
           label,
           style: GoogleFonts.inter(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: theme.colorScheme.onSurface.withOpacity(0.6),
           ),
           textAlign: TextAlign.center,

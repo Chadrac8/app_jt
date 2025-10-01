@@ -215,7 +215,7 @@ class _GroupMembersListState extends State<GroupMembersList>
         children: [
           // Header with Add Button
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             child: Row(
               children: [
                 Expanded(
@@ -259,12 +259,12 @@ class _GroupMembersListState extends State<GroupMembersList>
                           size: 64,
                           color: Theme.of(context).colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Erreur lors du chargement',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'Problème de connexion ou de permissions',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -272,7 +272,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         ElevatedButton(
                           onPressed: () {
                             setState(() {}); // Refresh
@@ -304,14 +304,14 @@ class _GroupMembersListState extends State<GroupMembersList>
                             color: _groupColor,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Aucun membre',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'Commencez par ajouter des membres au groupe',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -319,7 +319,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         ElevatedButton.icon(
                           onPressed: _addMember,
                           icon: const Icon(Icons.person_add),
@@ -341,7 +341,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                       return ListView.separated(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         itemCount: members.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 12),
+                        separatorBuilder: (context, index) => const SizedBox(height: AppTheme.space12),
                         itemBuilder: (context, index) {
                           final person = members[index];
                           // Créer un member model temporaire
@@ -370,7 +370,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                     return ListView.separated(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemCount: validMembers.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 12),
+                      separatorBuilder: (context, index) => const SizedBox(height: AppTheme.space12),
                       itemBuilder: (context, index) {
                         final person = validMembers[index];
                         final member = memberMap[person.id]!;
@@ -417,7 +417,7 @@ class _GroupMembersListState extends State<GroupMembersList>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Row(
           children: [
             // Profile Image/Avatar
@@ -442,13 +442,13 @@ class _GroupMembersListState extends State<GroupMembersList>
                         style: TextStyle(
                           color: _groupColor,
                           fontWeight: AppTheme.fontBold,
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                         ),
                       ),
                     ),
             ),
             
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             
             // Member Info
             Expanded(
@@ -461,7 +461,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Row(
                     children: [
                       Container(
@@ -475,11 +475,11 @@ class _GroupMembersListState extends State<GroupMembersList>
                           style: TextStyle(
                             color: roleColors[member.role],
                             fontWeight: AppTheme.fontMedium,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Rejoint le ${_formatDate(member.joinedAt)}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -510,7 +510,7 @@ class _GroupMembersListState extends State<GroupMembersList>
                   child: Row(
                     children: [
                       Icon(Icons.admin_panel_settings, size: 20),
-                      SizedBox(width: 12),
+                      SizedBox(width: AppTheme.space12),
                       Text('Changer le rôle'),
                     ],
                   ),
@@ -520,14 +520,14 @@ class _GroupMembersListState extends State<GroupMembersList>
                   child: Row(
                     children: [
                       Icon(Icons.remove_circle, size: 20, color: AppTheme.redStandard),
-                      SizedBox(width: 12),
+                      SizedBox(width: AppTheme.space12),
                       Text('Retirer du groupe', style: TextStyle(color: AppTheme.redStandard)),
                     ],
                   ),
                 ),
               ],
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -594,7 +594,7 @@ class _AddMemberDialogState extends State<_AddMemberDialog> {
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Person List
             SizedBox(
@@ -614,7 +614,7 @@ class _AddMemberDialogState extends State<_AddMemberDialog> {
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Role Selection
             DropdownButtonFormField<String>(

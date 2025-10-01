@@ -64,7 +64,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         boxShadow: [
@@ -89,7 +89,7 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: AppTheme.fontBold)),
                     if (widget.song.authors.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         'Par: ${widget.song.authors}',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -111,17 +111,17 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       _getStatusIcon(),
                       size: 16,
                       color: _getStatusColor()),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       _getStatusText(),
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: _getStatusColor(),
                         fontWeight: AppTheme.fontBold)),
                   ])),
             ]),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Informations musicales et tags
           Wrap(
@@ -150,20 +150,20 @@ class _SongDetailPageState extends State<SongDetailPage> {
           
           // Tags
           if (widget.song.tags.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Wrap(
               spacing: 6,
               runSpacing: 6,
               children: widget.song.tags.map((tag) => Chip(
                 label: Text(
                   tag,
-                  style: const TextStyle(fontSize: 12)),
+                  style: const TextStyle(fontSize: AppTheme.fontSize12)),
                 backgroundColor: AppTheme.textTertiaryColor.withOpacity(0.2))).toList()),
           ],
           
           // Statistiques
           if (widget.song.usageCount > 0 || widget.song.lastUsedAt != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 if (widget.song.usageCount > 0) ...[
@@ -171,25 +171,25 @@ class _SongDetailPageState extends State<SongDetailPage> {
                     Icons.play_arrow,
                     size: 16,
                     color: AppTheme.textTertiaryColor),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${widget.song.usageCount} utilisations',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.textTertiaryColor)),
                 ],
                 
                 if (widget.song.lastUsedAt != null) ...[
-                  if (widget.song.usageCount > 0) const SizedBox(width: 16),
+                  if (widget.song.usageCount > 0) const SizedBox(width: AppTheme.spaceMedium),
                   Icon(
                     Icons.access_time,
                     size: 16,
                     color: AppTheme.textTertiaryColor),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'Utilisé le ${_formatDate(widget.song.lastUsedAt!)}',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.textTertiaryColor)),
                 ],
               ]),
@@ -197,10 +197,10 @@ class _SongDetailPageState extends State<SongDetailPage> {
           
           // Références bibliques
           if (widget.song.bibleReferences.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: AppTheme.blueStandard.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -213,31 +213,31 @@ class _SongDetailPageState extends State<SongDetailPage> {
                         Icons.menu_book,
                         size: 16,
                         color: AppTheme.blueStandard),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         'Références bibliques:',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.grey700)),
                     ]),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     widget.song.bibleReferences.join(', '),
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey700)),
                 ])),
           ],
           
           // Notes privées (pour les administrateurs)
           if (widget.song.privateNotes != null && widget.song.privateNotes!.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: AppTheme.warningColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,47 +247,47 @@ class _SongDetailPageState extends State<SongDetailPage> {
                       const Icon(
                         Icons.lock,
                         size: 16,
-                        color: Colors.amber),
-                      const SizedBox(width: 4),
+                        color: AppTheme.warningColor),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         'Notes privées:',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontBold,
-                          color: Colors.amber[700])),
+                          color: AppTheme.warning)),
                     ]),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     widget.song.privateNotes!,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.amber[700])),
+                      fontSize: AppTheme.fontSize12,
+                      color: AppTheme.warning)),
                 ])),
           ],
           
           // Audio/Vidéo
           if (widget.song.audioUrl != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
-                color: Colors.purple.withOpacity(0.1),
+                color: AppTheme.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
               child: Row(
                 children: [
                   Icon(
                     Icons.audiotrack,
                     size: 16,
-                    color: Colors.purple[700]),
-                  const SizedBox(width: 8),
+                    color: AppTheme.primaryColor),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Média disponible',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontBold,
-                        color: Colors.purple[700]))),
+                        color: AppTheme.primaryColor))),
                   TextButton(
                     onPressed: () {
                       // TODO: Ouvrir le lien audio/vidéo
@@ -308,11 +308,11 @@ class _SongDetailPageState extends State<SongDetailPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontBold,
               color: color)),
         ]));

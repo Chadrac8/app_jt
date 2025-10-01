@@ -14,7 +14,7 @@ class QuickRentPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: AppTheme.blueStandard.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -31,23 +31,23 @@ class QuickRentPage extends StatelessWidget {
           'Loyer de l\'église',
           style: GoogleFonts.poppins(
             color: AppTheme.textPrimaryColor,
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildQuickAmounts(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildWebViewOption(context),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildRentInfo(),
           ],
         ),
@@ -57,12 +57,12 @@ class QuickRentPage extends StatelessWidget {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
             AppTheme.blueStandard.withOpacity(0.1),
-            Colors.lightBlue.withOpacity(0.05),
+            AppTheme.blueStandard.withOpacity(0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -76,22 +76,22 @@ class QuickRentPage extends StatelessWidget {
             color: AppTheme.blueStandard,
             size: 48,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Loyer de l\'église',
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Soutenez notre lieu de culte',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.textSecondaryColor,
             ),
           ),
@@ -109,12 +109,12 @@ class QuickRentPage extends StatelessWidget {
         Text(
           'Participation suggérée',
           style: GoogleFonts.poppins(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Wrap(
           spacing: 12,
           runSpacing: 12,
@@ -137,7 +137,7 @@ class QuickRentPage extends StatelessWidget {
       child: Text(
         '${amount}€',
         style: GoogleFonts.poppins(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           fontWeight: AppTheme.fontSemiBold,
           color: AppTheme.blueStandard,
         ),
@@ -147,7 +147,7 @@ class QuickRentPage extends StatelessWidget {
 
   Widget _buildWebViewOption(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -160,7 +160,7 @@ class QuickRentPage extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.blueStandard.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -171,7 +171,7 @@ class QuickRentPage extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,16 +179,16 @@ class QuickRentPage extends StatelessWidget {
                     Text(
                       'Plateforme HelloAsso',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Interface complète pour la participation au loyer',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -197,7 +197,7 @@ class QuickRentPage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
@@ -233,7 +233,7 @@ class QuickRentPage extends StatelessWidget {
 
   Widget _buildRentInfo() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.blueStandard.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -251,25 +251,25 @@ class QuickRentPage extends StatelessWidget {
                 color: AppTheme.blueStandard,
                 size: 24,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 'À propos du loyer',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.blueStandard,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildInfoItem('🏛️', 'Lieu de culte partagé'),
           _buildInfoItem('📅', 'Frais mensuels de location'),
           _buildInfoItem('👥', 'Soutien communautaire'),
           _buildInfoItem('🧾', 'Reçu fiscal automatique'),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.greenStandard.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -284,12 +284,12 @@ class QuickRentPage extends StatelessWidget {
                   color: AppTheme.greenStandard,
                   size: 20,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Paiement 100% sécurisé avec déduction fiscale de 66%',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.greenStandard,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -308,13 +308,13 @@ class QuickRentPage extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
-          const SizedBox(width: 12),
+          Text(emoji, style: const TextStyle(fontSize: AppTheme.fontSize16)),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Text(
               text,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textSecondaryColor,
               ),
             ),

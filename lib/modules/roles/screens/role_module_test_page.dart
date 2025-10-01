@@ -12,6 +12,7 @@ import '../widgets/bulk_permission_management_widget.dart';
 import '../widgets/role_template_selector_widget.dart';
 import '../widgets/role_template_form_dialog.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Page de test complète pour le module rôles
 class RoleModuleTestPage extends StatefulWidget {
@@ -137,7 +138,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                   Text('Initialisation du module rôles...'),
                 ],
               ),
@@ -160,7 +161,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
     return Consumer<RoleProvider>(
       builder: (context, provider, child) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -170,21 +171,21 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 Icons.admin_panel_settings,
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.assignment_ind, size: 48, color: AppTheme.primaryColor),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.roles.length}',
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Rôles totaux'),
                           ],
@@ -192,18 +193,18 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.check_circle, size: 48, color: AppTheme.success),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.roles.where((r) => r.isActive).length}',
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Rôles actifs'),
                           ],
@@ -211,18 +212,18 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.lock, size: 48, color: AppTheme.warning),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.roles.where((r) => r.color == '#FF9800').length}', // Approximation pour rôles système
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Rôles spéciaux'),
                           ],
@@ -233,7 +234,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
@@ -242,7 +243,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                     icon: const Icon(Icons.add),
                     label: const Text('Créer rôle de test'),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   OutlinedButton.icon(
                     onPressed: () => _showAdvancedSettings(context),
                     icon: const Icon(Icons.settings),
@@ -251,7 +252,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Liste des rôles
               ...provider.roles.map((role) => _buildRoleCard(role)).toList(),
@@ -266,7 +267,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
     return Consumer<PermissionProvider>(
       builder: (context, provider, child) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -276,21 +277,21 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 Icons.security,
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.security, size: 48, color: AppTheme.info),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.permissions.length}',
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Permissions totales'),
                           ],
@@ -298,18 +299,18 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.apps, size: 48, color: AppTheme.success),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.permissionsByModule.keys.length}',
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Modules'),
                           ],
@@ -320,7 +321,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
@@ -329,7 +330,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                     icon: const Icon(Icons.add),
                     label: const Text('Créer permissions de test'),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   OutlinedButton.icon(
                     onPressed: () => _showPermissionMatrix(context),
                     icon: const Icon(Icons.view_module),
@@ -338,7 +339,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Permissions par module
               Card(
@@ -370,7 +371,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
     return Consumer<RoleTemplateProvider>(
       builder: (context, provider, child) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -380,21 +381,21 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 Icons.view_module,
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.list_alt, size: 48, color: AppTheme.primaryColor),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.templates.length}',
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Templates totaux'),
                           ],
@@ -402,18 +403,18 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.lock, size: 48, color: AppTheme.info),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.systemTemplates.length}',
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Templates système'),
                           ],
@@ -421,18 +422,18 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: [
                             Icon(Icons.edit, size: 48, color: AppTheme.success),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               '${provider.customTemplates.length}',
-                              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: AppTheme.fontSize32, fontWeight: AppTheme.fontBold),
                             ),
                             const Text('Templates personnalisés'),
                           ],
@@ -443,7 +444,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
@@ -452,13 +453,13 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                     icon: const Icon(Icons.manage_accounts),
                     label: const Text('Gestion complète'),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   OutlinedButton.icon(
                     onPressed: _showTemplateSelector,
                     icon: const Icon(Icons.select_all),
                     label: const Text('Sélecteur'),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   OutlinedButton.icon(
                     onPressed: _showTemplateForm,
                     icon: const Icon(Icons.add),
@@ -467,7 +468,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Templates par catégorie
               ...TemplateCategory.values.map((category) {
@@ -490,8 +491,8 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                           children: [
                             if (template.isSystemTemplate)
                               const Chip(
-                                label: Text('SYS', style: TextStyle(fontSize: 10)),
-                                backgroundColor: Colors.blue,
+                                label: Text('SYS', style: TextStyle(fontSize: AppTheme.fontSize10)),
+                                backgroundColor: AppTheme.infoColor,
                               ),
                             IconButton(
                               onPressed: () => _createRoleFromTemplate(template),
@@ -514,7 +515,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
 
   Widget _buildMatrixTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -524,7 +525,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             Icons.view_module,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Row(
             children: [
@@ -533,7 +534,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 icon: const Icon(Icons.table_chart),
                 label: const Text('Ouvrir matrice complète'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               OutlinedButton.icon(
                 onPressed: _exportMatrix,
                 icon: const Icon(Icons.download),
@@ -542,29 +543,29 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Aperçu rapide',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   const Text(
                     'La matrice complète des permissions est disponible via le bouton ci-dessus. '
                     'Elle permet de visualiser toutes les permissions assignées à chaque rôle, '
                     'd\'exporter les données en CSV et d\'imprimer un rapport détaillé.',
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Row(
                     children: [
                       Icon(Icons.info, color: AppTheme.info),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       const Expanded(
                         child: Text(
                           'Utilisez la matrice pour identifier les conflits de permissions '
@@ -585,7 +586,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
 
   Widget _buildBulkOpsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -595,7 +596,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             Icons.batch_prediction,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Row(
             children: [
@@ -607,19 +608,19 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Fonctionnalités disponibles',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   ListTile(
                     leading: Icon(Icons.group_add, color: AppTheme.success),
@@ -649,7 +650,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
 
   Widget _buildTestsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -659,7 +660,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             Icons.bug_report,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Row(
             children: [
@@ -668,7 +669,7 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
                 icon: const Icon(Icons.play_arrow),
                 label: const Text('Exécuter tous les tests'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               OutlinedButton.icon(
                 onPressed: _validateIntegrity,
                 icon: const Icon(Icons.verified),
@@ -677,19 +678,19 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Tests disponibles',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   _buildTestItem('Création de rôle', _testRoleCreation),
                   _buildTestItem('Assignation de permissions', _testPermissionAssignment),
@@ -709,14 +710,14 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Icon(icon, color: AppTheme.primaryColor),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -724,13 +725,13 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
               Text(
                 title,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
               Text(
                 subtitle,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
             ],
@@ -745,10 +746,10 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: _parseColor(role.color).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Icon(_parseIcon(role.icon), color: _parseColor(role.color)),
         ),
@@ -757,13 +758,13 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             Expanded(child: Text(role.name)),
             if (role.color == '#FF9800') // Approximation pour rôles spéciaux
               const Chip(
-                label: Text('SPECIAL', style: TextStyle(fontSize: 10)),
-                backgroundColor: Colors.orange,
+                label: Text('SPECIAL', style: TextStyle(fontSize: AppTheme.fontSize10)),
+                backgroundColor: AppTheme.warning,
               ),
             if (!role.isActive)
               const Chip(
-                label: Text('INACTIF', style: TextStyle(fontSize: 10)),
-                backgroundColor: Colors.red,
+                label: Text('INACTIF', style: TextStyle(fontSize: AppTheme.fontSize10)),
+                backgroundColor: AppTheme.errorColor,
               ),
           ],
         ),
@@ -789,8 +790,8 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
               const PopupMenuItem(
                 value: 'delete',
                 child: ListTile(
-                  leading: Icon(Icons.delete, color: Colors.red),
-                  title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                  leading: Icon(Icons.delete, color: AppTheme.errorColor),
+                  title: Text('Supprimer', style: TextStyle(color: AppTheme.errorColor)),
                 ),
               ),
           ],
@@ -878,16 +879,16 @@ class _RoleModuleTestPageState extends State<RoleModuleTestPage>
             children: [
               Text(
                 'Ce module fournit un système complet de gestion des rôles et permissions :',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('• Gestion des rôles avec permissions granulaires'),
               Text('• Templates de rôles prédéfinis'),
               Text('• Matrice de permissions exportable'),
               Text('• Opérations en masse sur les assignations'),
               Text('• Service avancé avec audit et validation'),
               Text('• Interface complète de configuration'),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Toutes les fonctionnalités sont testables depuis cette interface.',
                 style: TextStyle(fontStyle: FontStyle.italic),

@@ -273,7 +273,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
 
   Widget _buildTabSelector() {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -327,7 +327,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
               color: isSelected ? AppTheme.white100 : AppTheme.textSecondaryColor,
               size: 20,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               title,
               style: TextStyle(
@@ -336,7 +336,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
               ),
             ),
             if (count > 0) ...[
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
@@ -347,7 +347,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                   '$count',
                   style: TextStyle(
                     color: isSelected ? AppTheme.white100 : AppTheme.white100,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -370,15 +370,15 @@ class _MemberEventsPageState extends State<MemberEventsPage>
               size: 64,
               color: AppTheme.textSecondaryColor.withOpacity(0.5),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             const Text(
               'Aucun événement inscrit',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             const Text(
               'Explorez les événements disponibles pour participer aux activités de l\'église',
               style: TextStyle(
@@ -386,7 +386,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             ElevatedButton.icon(
               onPressed: () => setState(() => _selectedTab = 'available'),
               icon: const Icon(Icons.explore),
@@ -398,7 +398,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _myEvents.length,
       itemBuilder: (context, index) {
         final event = _myEvents[index];
@@ -426,11 +426,11 @@ class _MemberEventsPageState extends State<MemberEventsPage>
               size: 64,
               color: AppTheme.successColor,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Vous êtes inscrit à tous les événements !',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
@@ -440,7 +440,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _availableEvents.length,
       itemBuilder: (context, index) {
         final event = _availableEvents[index];
@@ -512,7 +512,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                       registration.isConfirmed ? 'Confirmé' : 'En attente',
                       style: const TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -529,7 +529,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                       Text(
                         event.title,
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: AppTheme.fontSize20,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.white100,
                         ),
@@ -537,7 +537,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                       Text(
                         event.typeLabel,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.white100.withOpacity(0.70),
                         ),
                       ),
@@ -548,7 +548,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -560,7 +560,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                       size: 16,
                       color: AppTheme.textSecondaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       _formatEventDateTime(event),
                       style: const TextStyle(
@@ -570,7 +570,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Row(
                   children: [
                     Icon(
@@ -578,7 +578,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                       size: 16,
                       color: AppTheme.textSecondaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text(
                         event.location,
@@ -591,7 +591,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                 ),
                 
                 if (event.description.isNotEmpty) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     event.description,
                     style: const TextStyle(
@@ -603,7 +603,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                   ),
                 ],
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Actions
                 Row(
@@ -620,7 +620,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: isUpcoming
@@ -653,7 +653,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -672,7 +672,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                     size: 28,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -680,7 +680,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                       Text(
                         event.title,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
@@ -699,7 +699,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
             ),
             
             if (event.description.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 event.description,
                 style: const TextStyle(
@@ -711,7 +711,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
               ),
             ],
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Date et lieu
             Row(
@@ -721,7 +721,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                   size: 16,
                   color: AppTheme.textSecondaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   _formatEventDateTime(event),
                   style: const TextStyle(
@@ -730,7 +730,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(
               children: [
                 Icon(
@@ -738,7 +738,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                   size: 16,
                   color: AppTheme.textSecondaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     event.location,
@@ -750,7 +750,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
               ],
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             SizedBox(
               width: double.infinity,
@@ -799,7 +799,7 @@ class _MemberEventsPageState extends State<MemberEventsPage>
   Color _getEventColor(String type) {
     switch (type) {
       case 'celebration':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'bapteme':
         return AppTheme.blueStandard;
       case 'formation':
@@ -807,9 +807,9 @@ class _MemberEventsPageState extends State<MemberEventsPage>
       case 'sortie':
         return AppTheme.orangeStandard;
       case 'conference':
-        return Colors.indigo;
+        return AppTheme.secondaryColor;
       case 'reunion':
-        return Colors.teal;
+        return AppTheme.secondaryColor;
       default:
         return AppTheme.primaryColor;
     }

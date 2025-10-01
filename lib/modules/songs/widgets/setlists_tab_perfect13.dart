@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
 import '../../../pages/setlist_detail_page.dart';
+import '../../../theme.dart';
 
 /// Onglet Setlists - Material Design 3
 class SetlistsTabMD3 extends StatefulWidget {
@@ -97,7 +98,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
               height: 48,
               decoration: BoxDecoration(
                 color: colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                 border: Border.all(
                   color: _isSearchExpanded 
                       ? colorScheme.primary 
@@ -121,13 +122,13 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                   });
                 },
                 style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontSize: AppTheme.fontSize14,
+                  fontWeight: AppTheme.fontMedium,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Rechercher une setlist...',
                   hintStyle: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   prefixIcon: Icon(
@@ -173,13 +174,13 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
         child: Row(
           children: [
             _buildFilterChip('Tous', null),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildFilterChip('Cette semaine', 'week'),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildFilterChip('Ce mois', 'month'),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildFilterChip('Récents', 'recent'),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildFilterChip('Favoris', 'favorites'),
           ],
         ),
@@ -202,7 +203,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
       backgroundColor: colorScheme.surfaceContainer,
       selectedColor: colorScheme.primaryContainer,
       labelStyle: GoogleFonts.inter(
-        fontSize: 13,
+        fontSize: AppTheme.fontSize13,
         fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
         color: isSelected 
             ? colorScheme.onPrimaryContainer
@@ -228,12 +229,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
           CircularProgressIndicator(
             color: colorScheme.primary,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Chargement des setlists...',
             style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontSize: AppTheme.fontSize16,
+              fontWeight: AppTheme.fontMedium,
               color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
@@ -247,7 +248,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -256,25 +257,25 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
               size: 64,
               color: colorScheme.error,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur de chargement',
               style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTheme.fontSize20,
+                fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Impossible de charger les setlists',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             FilledButton.icon(
               onPressed: () {
                 setState(() {});
@@ -283,8 +284,8 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
               label: Text(
                 'Réessayer',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontSize: AppTheme.fontSize14,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
             ),
@@ -299,7 +300,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -308,22 +309,22 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
               size: 64,
               color: colorScheme.onSurface.withValues(alpha: 0.4),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               isCompletelyEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
               style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTheme.fontSize20,
+                fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               isCompletelyEmpty 
                   ? 'Les setlists créées apparaîtront ici'
                   : 'Essayez de modifier votre recherche',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               textAlign: TextAlign.center,
@@ -383,15 +384,15 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
       margin: const EdgeInsets.only(bottom: 16),
       child: Material(
         color: colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
         elevation: 0,
         child: InkWell(
           onTap: () => _showSetlistDetails(setlist),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
               border: Border.all(
                 color: colorScheme.outline.withValues(alpha: 0.2),
                 width: 1,
@@ -432,7 +433,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                       ),
                     ),
                     
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     
                     // Titre et type de service
                     Expanded(
@@ -442,8 +443,8 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                           Text(
                             setlist.name,
                             style: GoogleFonts.inter(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
+                              fontSize: AppTheme.fontSize18,
+                              fontWeight: AppTheme.fontBold,
                               color: colorScheme.onSurface,
                               height: 1.2,
                             ),
@@ -452,18 +453,18 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                           ),
                           
                           if (setlist.serviceType != null) ...[
-                            const SizedBox(height: 4),
+                            const SizedBox(height: AppTheme.spaceXSmall),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
                                 color: colorScheme.primaryContainer,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                               ),
                               child: Text(
                                 setlist.serviceType!,
                                 style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: AppTheme.fontSize12,
+                                  fontWeight: AppTheme.fontSemiBold,
                                   color: colorScheme.onPrimaryContainer,
                                 ),
                               ),
@@ -481,7 +482,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                       ),
                       onSelected: (value) => _handleSetlistAction(value, setlist),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                       ),
                       itemBuilder: (context) => [
                         PopupMenuItem(
@@ -493,12 +494,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                                 size: 20,
                                 color: colorScheme.onSurface,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppTheme.space12),
                               Text(
                                 'Voir les détails',
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: AppTheme.fontSize14,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -513,12 +514,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                                 size: 20,
                                 color: colorScheme.onSurface,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppTheme.space12),
                               Text(
                                 'Jouer la setlist',
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: AppTheme.fontSize14,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -533,12 +534,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                                 size: 20,
                                 color: colorScheme.onSurface,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppTheme.space12),
                               Text(
                                 'Partager',
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: AppTheme.fontSize14,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -553,12 +554,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                                 size: 20,
                                 color: colorScheme.onSurface,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppTheme.space12),
                               Text(
                                 'Dupliquer',
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: AppTheme.fontSize14,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
@@ -571,11 +572,11 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                 
                 // Description si présente
                 if (setlist.description.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     setlist.description,
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: colorScheme.onSurface.withValues(alpha: 0.7),
                       height: 1.4,
                     ),
@@ -584,7 +585,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                   ),
                 ],
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Informations et badges
                 Row(
@@ -594,7 +595,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -604,12 +605,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                             size: 14,
                             color: colorScheme.onSecondaryContainer,
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: AppTheme.space6),
                           Text(
                             _formatDate(setlist.serviceDate),
                             style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                              fontSize: AppTheme.fontSize12,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: colorScheme.onSecondaryContainer,
                             ),
                           ),
@@ -617,14 +618,14 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                       ),
                     ),
                     
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     
                     // Badge nombre de chants
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: colorScheme.tertiaryContainer,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -634,12 +635,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
                             size: 14,
                             color: colorScheme.onTertiaryContainer,
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: AppTheme.space6),
                           Text(
                             '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
                             style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                              fontSize: AppTheme.fontSize12,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: colorScheme.onTertiaryContainer,
                             ),
                           ),
@@ -694,7 +695,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -704,12 +705,12 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
             size: 12,
             color: textColor,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
+              fontSize: AppTheme.fontSize11,
+              fontWeight: AppTheme.fontSemiBold,
               color: textColor,
             ),
           ),
@@ -801,14 +802,14 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
           content: Text(
             'Cette setlist ne contient aucun chant',
             style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontSize: AppTheme.fontSize14,
+              fontWeight: AppTheme.fontMedium,
             ),
           ),
           backgroundColor: colorScheme.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           ),
         ),
       );
@@ -833,14 +834,14 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
             content: Text(
               'Erreur lors du chargement: $e',
               style: GoogleFonts.inter(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontSize: AppTheme.fontSize14,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
             backgroundColor: colorScheme.error,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             ),
           ),
         );
@@ -856,14 +857,14 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
         content: Text(
           'Fonctionnalité de partage bientôt disponible',
           style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         backgroundColor: colorScheme.surfaceVariant,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         ),
       ),
     );
@@ -877,14 +878,14 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
         content: Text(
           'Fonctionnalité de duplication bientôt disponible',
           style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontMedium,
           ),
         ),
         backgroundColor: colorScheme.surfaceVariant,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         ),
       ),
     );

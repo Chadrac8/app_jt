@@ -140,18 +140,18 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
             size: 48,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Erreur de chargement',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _errorMessage!,
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ElevatedButton.icon(
             onPressed: _loadData,
             icon: const Icon(Icons.refresh),
@@ -172,14 +172,14 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
     );
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // En-tête du mois
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.8)],
@@ -195,23 +195,23 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
                   monthName,
                   style: const TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 24,
+                    fontSize: AppTheme.fontSize24,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   '${_currentMonthStats!.reservations.length} réservation(s) ce mois',
                   style: TextStyle(
                     color: AppTheme.white100.withOpacity(0.9),
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                   ),
                 ),
               ],
             ),
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Calendrier visuel
           if (_currentMonthStats!.reservations.isNotEmpty) ...[
@@ -221,7 +221,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildReservationsList(_currentMonthStats!.reservations),
           ] else ...[
             _buildEmptyState(),
@@ -248,7 +248,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
     
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -283,7 +283,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
                   style: TextStyle(
                     color: isPast ? AppTheme.grey600 : AppTheme.primaryColor,
                     fontWeight: AppTheme.fontSemiBold,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
               ),
@@ -295,29 +295,29 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
             ],
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Nom de la personne
           Text(
             reservation.fullName,
             style: const TextStyle(
               fontWeight: AppTheme.fontBold,
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
             ),
           ),
           
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           
           // Titre du chant
           Row(
             children: [
               Icon(Icons.music_note, color: AppTheme.grey600, size: 16),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppTheme.space6),
               Expanded(
                 child: Text(
                   reservation.songTitle,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
@@ -325,18 +325,18 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
             ],
           ),
           
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           
           // Contact
           Row(
             children: [
               Icon(Icons.email, color: AppTheme.grey600, size: 16),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppTheme.space6),
               Expanded(
                 child: Text(
                   reservation.email,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.grey600,
                   ),
                 ),
@@ -345,15 +345,15 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
           ),
           
           if (reservation.phone.isNotEmpty) ...[
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Icon(Icons.phone, color: AppTheme.grey600, size: 16),
-                const SizedBox(width: 6),
+                const SizedBox(width: AppTheme.space6),
                 Text(
                   reservation.phone,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.grey600,
                   ),
                 ),
@@ -363,16 +363,16 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
           
           // Lien musiciens
           if (reservation.musicianLink != null && reservation.musicianLink!.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(
               children: [
                 Icon(Icons.link, color: AppTheme.grey600, size: 16),
-                const SizedBox(width: 6),
+                const SizedBox(width: AppTheme.space6),
                 Expanded(
                   child: Text(
                     'Lien pour musiciens',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey600,
                       decoration: TextDecoration.underline,
                     ),
@@ -382,7 +382,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
             ),
           ],
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Actions
           Row(
@@ -390,7 +390,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
               Text(
                 'Réservé le ${DateFormat('d/MM/yyyy à HH:mm', 'fr_FR').format(reservation.createdAt)}',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.grey500,
                 ),
               ),
@@ -422,14 +422,14 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune réservation ce mois',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Les réservations de chants spéciaux apparaîtront ici',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -444,7 +444,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
 
   Widget _buildAllReservationsView() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -454,7 +454,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_allReservations.isNotEmpty)
             _buildReservationsList(_allReservations)
           else
@@ -466,7 +466,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
 
   Widget _buildStatisticsView() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -476,7 +476,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Cartes de statistiques
           _buildStatCard(
@@ -485,14 +485,14 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
             Icons.calendar_today,
             AppTheme.primaryColor,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildStatCard(
             'Dimanches disponibles',
             '${_currentMonthStats?.availableSundays.length ?? 0}',
             Icons.event_available,
             AppTheme.greenStandard,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildStatCard(
             'Dimanches réservés',
             '${_currentMonthStats?.reservedSundays.length ?? 0}',
@@ -500,7 +500,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
             AppTheme.orangeStandard,
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           if (_currentMonthStats != null && _currentMonthStats!.reservations.isNotEmpty) ...[
             Text(
@@ -509,7 +509,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ..._currentMonthStats!.reservations
                 .where((r) => r.reservedDate.isAfter(DateTime.now()))
                 .map((r) => _buildUpcomingReservationTile(r))
@@ -522,7 +522,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -539,14 +539,14 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -554,14 +554,14 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: AppTheme.fontSize24,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.grey600,
                   ),
                 ),
@@ -587,7 +587,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
         DateFormat('d/MM', 'fr_FR').format(reservation.reservedDate),
         style: TextStyle(
           color: AppTheme.grey600,
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
         ),
       ),
     );

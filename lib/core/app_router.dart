@@ -20,7 +20,7 @@ class _ModularHomePage extends StatelessWidget {
         foregroundColor: AppTheme.white100,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,23 +30,23 @@ class _ModularHomePage extends StatelessWidget {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
-                color: Colors.teal.withOpacity(0.1),
+                color: AppTheme.secondaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                border: Border.all(color: Colors.teal.withOpacity(0.3)),
+                border: Border.all(color: AppTheme.secondaryColor.withOpacity(0.3)),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.list_alt, color: Colors.teal, size: 20),
-                  const SizedBox(width: 8),
+                  Icon(Icons.list_alt, color: AppTheme.secondaryColor, size: 20),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Nouveau : Listes intelligentes dans le module Personnes !',
                       style: TextStyle(
-                        color: Colors.teal,
+                        color: AppTheme.secondaryColor,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -54,7 +54,7 @@ class _ModularHomePage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: modules.isEmpty
                   ? const Center(
@@ -74,16 +74,16 @@ class _ModularHomePage extends StatelessWidget {
                               children: [
                                 Text(module.config.description),
                                 if (module.config.id == 'people') ...[
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: AppTheme.spaceXSmall),
                                   Row(
                                     children: [
-                                      Icon(Icons.list_alt, size: 14, color: Colors.teal),
-                                      const SizedBox(width: 4),
+                                      Icon(Icons.list_alt, size: 14, color: AppTheme.secondaryColor),
+                                      const SizedBox(width: AppTheme.spaceXSmall),
                                       Text(
                                         'Listes intelligentes disponibles',
                                         style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.teal,
+                                          fontSize: AppTheme.fontSize12,
+                                          color: AppTheme.secondaryColor,
                                           fontWeight: AppTheme.fontMedium,
                                         ),
                                       ),
@@ -99,9 +99,9 @@ class _ModularHomePage extends StatelessWidget {
                       },
                     ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildModuleStats(context, moduleManager),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context).pushNamed('/diagnostic');
@@ -172,7 +172,7 @@ class _ModularHomePage extends StatelessWidget {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -182,7 +182,7 @@ class _ModularHomePage extends StatelessWidget {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text('Modules totaux: ${stats['totalModules']}'),
             Text('Modules membre: ${stats['memberModules']}'),
             Text('Modules admin: ${stats['adminModules']}'),
@@ -253,13 +253,13 @@ class AppRouter {
                 size: 64,
                 color: AppTheme.redStandard,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 message,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: AppTheme.fontSize18),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               ElevatedButton(
                 onPressed: () {
                   NavigationService.navigateToAndClearStack('/');

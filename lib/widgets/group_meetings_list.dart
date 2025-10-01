@@ -91,7 +91,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                           size: 64,
                           color: Theme.of(context).colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Erreur lors du chargement',
                           style: Theme.of(context).textTheme.titleMedium,
@@ -125,14 +125,14 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                             color: _groupColor,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Aucune réunion',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'Commencez par planifier votre première réunion',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -140,7 +140,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         ElevatedButton.icon(
                           onPressed: _createMeeting,
                           icon: const Icon(Icons.event_note),
@@ -159,7 +159,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                 final groupedMeetings = _groupMeetingsByMonth(meetings);
 
                 return ListView.builder(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   itemCount: groupedMeetings.length,
                   itemBuilder: (context, index) {
                     final entry = groupedMeetings.entries.elementAt(index);
@@ -244,7 +244,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
             : null,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -264,7 +264,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                   ),
                 ),
                 
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 
                 // Meeting Title
                 Expanded(
@@ -297,7 +297,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                       child: Row(
                         children: [
                           Icon(Icons.edit, size: 20),
-                          SizedBox(width: 12),
+                          SizedBox(width: AppTheme.space12),
                           Text('Modifier'),
                         ],
                       ),
@@ -308,7 +308,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                         child: Row(
                           children: [
                             Icon(Icons.how_to_reg, size: 20),
-                            SizedBox(width: 12),
+                            SizedBox(width: AppTheme.space12),
                             Text('Prendre les présences'),
                           ],
                         ),
@@ -318,14 +318,14 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                       child: Row(
                         children: [
                           Icon(Icons.note_add, size: 20),
-                          SizedBox(width: 12),
+                          SizedBox(width: AppTheme.space12),
                           Text('Ajouter un rapport'),
                         ],
                       ),
                     ),
                   ],
                   child: Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -340,7 +340,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
               ],
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Date and Time
             Row(
@@ -350,7 +350,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                   size: 16,
                   color: Theme.of(context).colorScheme.onSurface.withAlpha(153), // 0.6 * 255 ≈ 153
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   _formatDateTime(meeting.date),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -360,7 +360,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
               ],
             ),
             
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             
             // Location
             Row(
@@ -370,7 +370,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                   size: 16,
                   color: Theme.of(context).colorScheme.onSurface.withAlpha(153),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     meeting.location,
@@ -384,7 +384,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
             
             // Description
             if (meeting.description != null && meeting.description!.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 meeting.description!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -395,9 +395,9 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
             
             // Attendance Info
             if (meeting.isCompleted) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.greenStandard.withAlpha(25),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -409,7 +409,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                       size: 20,
                       color: AppTheme.greenStandard,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Présents: ${meeting.presentMemberIds.length} / ${meeting.totalMembers}',
                       style: TextStyle(
@@ -417,7 +417,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Text(
                       'Taux: ${(meeting.attendanceRate * 100).round()}%',
                       style: TextStyle(
@@ -429,9 +429,9 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                 ),
               ),
             ] else if (isPast) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.orangeStandard.withAlpha(25),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -443,7 +443,7 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                       size: 20,
                       color: AppTheme.orangeStandard,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'En attente de prise de présence',
                       style: TextStyle(
@@ -458,9 +458,9 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
             
             // Report Notes
             if (meeting.reportNotes != null && meeting.reportNotes!.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: _groupColor.withAlpha(25),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -475,18 +475,18 @@ class _GroupMeetingsListState extends State<GroupMeetingsList>
                           size: 16,
                           color: _groupColor,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Text(
                           'Rapport de réunion',
                           style: TextStyle(
                             color: _groupColor,
                             fontWeight: AppTheme.fontMedium,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       meeting.reportNotes!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -718,7 +718,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                 },
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               TextFormField(
                 controller: _descriptionController,
@@ -729,7 +729,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                 maxLines: 2,
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
@@ -747,7 +747,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: InkWell(
                       onTap: _selectTime,
@@ -765,7 +765,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               TextFormField(
                 controller: _locationController,
@@ -915,7 +915,7 @@ class _EditMeetingDialogState extends State<_EditMeetingDialog> {
                 },
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               TextFormField(
                 controller: _descriptionController,
@@ -926,7 +926,7 @@ class _EditMeetingDialogState extends State<_EditMeetingDialog> {
                 maxLines: 2,
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
@@ -944,7 +944,7 @@ class _EditMeetingDialogState extends State<_EditMeetingDialog> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: InkWell(
                       onTap: _selectTime,
@@ -962,7 +962,7 @@ class _EditMeetingDialogState extends State<_EditMeetingDialog> {
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               TextFormField(
                 controller: _locationController,
@@ -1035,7 +1035,7 @@ class _AddReportDialogState extends State<_AddReportDialog> {
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _reportController,
               decoration: const InputDecoration(

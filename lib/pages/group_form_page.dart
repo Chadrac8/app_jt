@@ -362,7 +362,7 @@ class _GroupFormPageState extends State<GroupFormPage>
       key: _formKey,
       child: ListView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         children: [
           // Basic Information Section
           _buildSection(
@@ -380,14 +380,14 @@ class _GroupFormPageState extends State<GroupFormPage>
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
                 controller: _descriptionController,
                 label: 'Description',
                 icon: Icons.description,
                 maxLines: 3,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildDropdown(
                 value: _selectedType,
                 label: 'Type de groupe',
@@ -404,7 +404,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Group Image Section
           _buildSection(
@@ -415,7 +415,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Schedule Section
           _buildSection(
@@ -436,7 +436,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -452,7 +452,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                       },
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: _buildTextField(
                       controller: _timeController,
@@ -473,7 +473,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Location Section
           _buildSection(
@@ -491,7 +491,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
                 controller: _meetingLinkController,
                 label: 'Lien de réunion (optionnel)',
@@ -501,7 +501,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Settings Section
           _buildSection(
@@ -510,7 +510,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             children: [
               // Visibility Toggle
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -521,7 +521,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                       Icons.visibility,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -550,7 +550,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                 ),
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Color Selection
               Text(
@@ -559,7 +559,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 12,
                 runSpacing: 12,
@@ -601,7 +601,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Tags Section
           _buildSection(
@@ -626,7 +626,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                     deleteIconColor: Color(int.parse(_selectedColor.replaceFirst('#', '0xFF'))),
                   )).toList(),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
               ],
               OutlinedButton.icon(
                 onPressed: _addTag,
@@ -660,14 +660,14 @@ class _GroupFormPageState extends State<GroupFormPage>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -678,7 +678,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -687,7 +687,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             ...children,
           ],
         ),
@@ -833,7 +833,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                             foregroundColor: AppTheme.white100,
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         ElevatedButton.icon(
                           onPressed: () {
                             setState(() {
@@ -877,7 +877,7 @@ class _GroupFormPageState extends State<GroupFormPage>
               size: 48,
               color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Ajouter une photo',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -885,7 +885,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               'Cliquez pour sélectionner une image',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

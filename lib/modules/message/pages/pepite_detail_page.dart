@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../../../models/pepite_or_model.dart';
+import '../../../theme.dart';
 
 /// Page de détail d'une pépite d'or avec ses citations de William Branham
 class PepiteDetailPage extends StatelessWidget {
@@ -27,7 +28,7 @@ class PepiteDetailPage extends StatelessWidget {
           'Pépite d\'Or',
           style: GoogleFonts.poppins(
             color: AppTheme.white100,
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
@@ -57,7 +58,7 @@ class PepiteDetailPage extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(AppTheme.spaceLarge),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -66,24 +67,24 @@ class PepiteDetailPage extends StatelessWidget {
                           size: 48,
                           color: AppTheme.white100.withOpacity(0.9),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           pepite.theme,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
-                            fontSize: 28,
+                            fontSize: AppTheme.fontSize28,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.white100,
                             height: 1.2,
                           ),
                         ),
                         if (pepite.description.isNotEmpty) ...[
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           Text(
                             pepite.description,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.inter(
-                              fontSize: 16,
+                              fontSize: AppTheme.fontSize16,
                               color: AppTheme.white100.withOpacity(0.9),
                               height: 1.4,
                             ),
@@ -115,7 +116,7 @@ class PepiteDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Row(
                     children: [
                       Icon(
@@ -123,26 +124,26 @@ class PepiteDetailPage extends StatelessWidget {
                         color: AppTheme.primaryColor,
                         size: 24,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Citations de William Branham',
                         style: GoogleFonts.poppins(
-                          fontSize: 20,
+                          fontSize: AppTheme.fontSize20,
                           fontWeight: AppTheme.fontSemiBold,
                           color: AppTheme.primaryColor,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     '${pepite.citations.length} citation${pepite.citations.length > 1 ? 's' : ''}',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey600,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                 ],
               ),
             ),
@@ -174,7 +175,7 @@ class PepiteDetailPage extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(AppTheme.space20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -192,13 +193,13 @@ class PepiteDetailPage extends StatelessWidget {
                             child: Text(
                               citation.auteur,
                               style: GoogleFonts.inter(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 fontWeight: AppTheme.fontSemiBold,
                                 color: AppTheme.primaryColor,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                         ],
                         
                         // Contenu de la citation
@@ -217,7 +218,7 @@ class PepiteDetailPage extends StatelessWidget {
                               child: Text(
                                 citation.texte,
                                 style: GoogleFonts.crimsonText(
-                                  fontSize: 16,
+                                  fontSize: AppTheme.fontSize16,
                                   fontStyle: FontStyle.italic,
                                   color: AppTheme.grey800,
                                   height: 1.6,
@@ -227,7 +228,7 @@ class PepiteDetailPage extends StatelessWidget {
                           ],
                         ),
                         
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         
                         // Actions pour cette citation
                         Row(
@@ -256,7 +257,7 @@ class PepiteDetailPage extends StatelessWidget {
           
           // Espacement en bas
           const SliverToBoxAdapter(
-            child: SizedBox(height: 40),
+            child: SizedBox(height: AppTheme.space40),
           ),
         ],
       ),

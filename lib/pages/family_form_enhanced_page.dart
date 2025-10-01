@@ -479,7 +479,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
         actions: [
           if (_isLoading)
             const Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(AppTheme.spaceMedium),
               child: SizedBox(
                 width: 20,
                 height: 20,
@@ -494,7 +494,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
           children: [
             // Progress indicator
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: List.generate(5, (index) {
                   return Expanded(
@@ -505,7 +505,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                         color: index <= _currentStep
                             ? Theme.of(context).colorScheme.primary
                             : AppTheme.grey300,
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius: BorderRadius.circular(AppTheme.radius2),
                       ),
                     ),
                   );
@@ -545,7 +545,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             
             // Navigation buttons
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
                   if (_currentStep > 0)
@@ -555,7 +555,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                         child: const Text('Précédent'),
                       ),
                     ),
-                  if (_currentStep > 0) const SizedBox(width: 16),
+                  if (_currentStep > 0) const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _isLoading
@@ -582,7 +582,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
     return Text(
       label,
       style: TextStyle(
-        fontSize: 12,
+        fontSize: AppTheme.fontSize12,
         fontWeight: isActive ? AppTheme.fontBold : FontWeight.normal,
         color: isActive
             ? Theme.of(context).colorScheme.primary
@@ -595,7 +595,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
 
   Widget _buildBasicInfoStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -603,7 +603,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             'Informations de base',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           TextFormField(
             controller: _familyNameController,
@@ -619,7 +619,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               return null;
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           DropdownButtonFormField<String>(
             value: _selectedFamilyType,
@@ -634,7 +634,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             )).toList(),
             onChanged: (value) => setState(() => _selectedFamilyType = value!),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           DropdownButtonFormField<String>(
             value: _selectedLanguage,
@@ -649,14 +649,14 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             )).toList(),
             onChanged: (value) => setState(() => _selectedLanguage = value!),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Interests
           Text(
             'Centres d\'intérêt',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -677,7 +677,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Allergies
           Row(
@@ -693,7 +693,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -704,7 +704,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               },
             )).toList(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _notesController,
@@ -722,7 +722,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
 
   Widget _buildAddressStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -730,7 +730,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             'Adresse',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           TextFormField(
             controller: _streetController,
@@ -740,7 +740,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               border: OutlineInputBorder(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Row(
             children: [
@@ -754,7 +754,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: TextFormField(
                   controller: _postalCodeController,
@@ -768,7 +768,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _regionController,
@@ -778,7 +778,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               border: OutlineInputBorder(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _countryController,
@@ -795,7 +795,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
 
   Widget _buildContactStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -803,7 +803,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             'Informations de contact',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           TextFormField(
             controller: _phoneController,
@@ -814,7 +814,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             ),
             keyboardType: TextInputType.phone,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _emailController,
@@ -833,13 +833,13 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               return null;
             },
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           Text(
             'Préférences de communication',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           SwitchListTile(
             title: const Text('Emails'),
@@ -876,7 +876,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             onChanged: (value) => setState(() => _allowNewsletter = value),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           DropdownButtonFormField<String>(
             value: _preferredContactMethod,
@@ -890,13 +890,13 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             )).toList(),
             onChanged: (value) => setState(() => _preferredContactMethod = value!),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Text(
             'Créneaux de contact préférés',
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -917,13 +917,13 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           Text(
             'Réseaux sociaux',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _facebookController,
@@ -933,7 +933,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               border: OutlineInputBorder(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _instagramController,
@@ -943,7 +943,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               border: OutlineInputBorder(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _twitterController,
@@ -953,7 +953,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               border: OutlineInputBorder(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _linkedinController,
@@ -970,7 +970,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
 
   Widget _buildEmergencyStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -987,7 +987,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           if (_emergencyContacts.isEmpty)
             Center(
@@ -998,12 +998,12 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                     size: 64,
                     color: AppTheme.grey400,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Aucun contact d\'urgence',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   ElevatedButton(
                     onPressed: _addEmergencyContact,
                     child: const Text('Ajouter un contact'),
@@ -1016,12 +1016,12 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _emergencyContacts.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceMedium),
               itemBuilder: (context, index) {
                 final contact = _emergencyContacts[index];
                 return Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     child: Column(
                       children: [
                         Row(
@@ -1037,7 +1037,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         
                         TextFormField(
                           initialValue: contact.name,
@@ -1053,7 +1053,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         
                         TextFormField(
                           initialValue: contact.phone,
@@ -1070,7 +1070,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         
                         TextFormField(
                           initialValue: contact.relationship,
@@ -1087,7 +1087,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         
                         TextFormField(
                           initialValue: contact.email,
@@ -1119,7 +1119,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
 
   Widget _buildMembersStep() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1127,7 +1127,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
             'Membres de la famille',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           if (_availablePersons.isEmpty)
             Center(
@@ -1138,12 +1138,12 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                     size: 64,
                     color: AppTheme.grey400,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Aucune personne disponible',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Ajoutez d\'abord des personnes dans le système',
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -1157,7 +1157,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
               children: [
                 // Selected members count
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1165,7 +1165,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                   child: Row(
                     children: [
                       const Icon(Icons.people),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         '${_selectedMemberIds.length} membre(s) sélectionné(s)',
                         style: Theme.of(context).textTheme.titleMedium,
@@ -1173,7 +1173,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Family head selection
                 if (_selectedMemberIds.isNotEmpty) ...[
@@ -1198,7 +1198,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 ],
                 
                 // Available persons list
@@ -1206,7 +1206,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _availablePersons.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 8),
+                  separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceSmall),
                   itemBuilder: (context, index) {
                     final person = _availablePersons[index];
                     final personId = person['id'] as String;

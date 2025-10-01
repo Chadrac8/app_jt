@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../theme.dart';
 import '../models/church_life_item.dart';
 import '../services/church_life_service.dart';
+import '../../../theme.dart';
 
 class ChurchLifeTab extends StatefulWidget {
   const ChurchLifeTab({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -64,20 +65,20 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
           Text(
             'Vie de l\'Église',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.primaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Restez connecté avec la vie de notre communauté',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
@@ -132,11 +133,11 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                       color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       size: 20,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       category['label'],
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                         color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       ),
@@ -165,11 +166,11 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur de chargement',
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textSecondaryColor,
                   ),
@@ -200,7 +201,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: items.length,
           itemBuilder: (context, index) {
             return _buildItemCard(items[index]);
@@ -220,13 +221,13 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
             size: 80,
             color: AppTheme.grey500,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _selectedCategory == 'all' 
                 ? 'Aucun contenu disponible'
                 : 'Aucun contenu dans cette catégorie',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontMedium,
               color: AppTheme.textSecondaryColor,
             ),
@@ -273,7 +274,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                 ),
               ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -288,7 +289,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                         child: Text(
                           category.label,
                           style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                             color: AppTheme.primaryColor,
                           ),
@@ -298,33 +299,33 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                       Text(
                         _formatDate(item.publishDate ?? item.createdAt),
                         style: GoogleFonts.poppins(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.textSecondaryColor,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     item.title,
                     style: GoogleFonts.poppins(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     item.description,
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor,
                     ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (item.tags.isNotEmpty) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     Wrap(
                       spacing: 8,
                       children: item.tags.take(3).map((tag) {
@@ -337,7 +338,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                           child: Text(
                             '#$tag',
                             style: GoogleFonts.poppins(
-                              fontSize: 10,
+                              fontSize: AppTheme.fontSize10,
                               color: AppTheme.grey500,
                             ),
                           ),
@@ -374,7 +375,7 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
             ),
             child: SingleChildScrollView(
               controller: scrollController,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -384,11 +385,11 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                       height: 4,
                       decoration: BoxDecoration(
                         color: AppTheme.grey500,
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius: BorderRadius.circular(AppTheme.radius2),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   if (item.imageUrl != null && item.imageUrl!.isNotEmpty) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -399,29 +400,29 @@ class _ChurchLifeTabState extends State<ChurchLifeTab> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppTheme.space20),
                   ],
                   Text(
                     item.title,
                     style: GoogleFonts.poppins(
-                      fontSize: 24,
+                      fontSize: AppTheme.fontSize24,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     _formatDate(item.publishDate ?? item.createdAt),
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     item.content ?? item.description,
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       color: AppTheme.textPrimaryColor,
                       height: 1.6,
                     ),

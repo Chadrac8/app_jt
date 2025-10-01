@@ -3,6 +3,7 @@ import '../models/automation_execution.dart';
 import '../services/automation_service.dart';
 import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
+import '../../../theme.dart';
 
 /// Vue détaillée d'une exécution d'automatisation
 class AutomationExecutionDetailView extends StatefulWidget {
@@ -79,22 +80,22 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildStatusCard(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildGeneralInfoCard(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildTimingCard(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_execution!.triggerData.isNotEmpty) ...[
             _buildTriggerDataCard(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
           if (_execution!.executionData.isNotEmpty) ...[
             _buildExecutionDataCard(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
           if (_execution!.error != null) ...[
             _buildErrorCard(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
         ],
       ),
@@ -113,7 +114,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
                 color: _getStatusColor(_execution!.status),
                 size: 32,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,9 +136,9 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             ],
           ),
           if (_execution!.status == ExecutionStatus.failed && _execution!.error != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -147,7 +148,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
                 _execution!.error!,
                 style: TextStyle(
                   color: AppTheme.grey700,
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                 ),
               ),
             ),
@@ -166,7 +167,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             'Informations générales',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildInfoRow('ID', _execution!.id ?? 'N/A'),
           _buildInfoRow('Automatisation', _execution!.automationName),
           _buildInfoRow('ID Automatisation', _execution!.automationId),
@@ -187,7 +188,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             'Timing',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildInfoRow('Déclenchée le', _formatDateTime(_execution!.triggeredAt)),
           if (_execution!.startedAt != null)
             _buildInfoRow('Démarrée le', _formatDateTime(_execution!.startedAt!)),
@@ -209,7 +210,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             'Données de déclenchement',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ..._execution!.triggerData.entries.map(
             (entry) => _buildInfoRow(entry.key, entry.value?.toString() ?? 'N/A'),
           ),
@@ -227,7 +228,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
             'Données d\'exécution',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ..._execution!.executionData.entries.map(
             (entry) => _buildInfoRow(entry.key, entry.value?.toString() ?? 'N/A'),
           ),
@@ -245,7 +246,7 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
           Row(
             children: [
               Icon(Icons.error, color: AppTheme.grey700),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Erreur',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -254,10 +255,10 @@ class _AutomationExecutionDetailViewState extends State<AutomationExecutionDetai
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: AppTheme.white100,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),

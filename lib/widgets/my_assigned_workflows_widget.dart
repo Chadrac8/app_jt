@@ -84,18 +84,18 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                 size: 48,
                 color: Theme.of(context).colorScheme.error,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Erreur lors du chargement',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 _error!,
                 style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               ElevatedButton(
                 onPressed: _loadAssignedWorkflows,
                 child: const Text('Réessayer'),
@@ -118,14 +118,14 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                 size: 64,
                 color: Theme.of(context).colorScheme.outline,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Aucun suivi assigné',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: Theme.of(context).colorScheme.outline,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Cette personne n\'est responsable d\'aucune étape de suivi pour le moment.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -142,7 +142,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
     return RefreshIndicator(
       onRefresh: _loadAssignedWorkflows,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: _assignedWorkflows.length,
         itemBuilder: (context, index) {
           final workflowData = _assignedWorkflows[index];
@@ -178,7 +178,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         onTap: () => _openWorkflowDetails(personWorkflow, workflowTemplate, followedPerson),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -186,7 +186,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: Color(int.parse('0xFF${workflowTemplate.color.substring(1)}')).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -197,7 +197,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,11 +235,11 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Mes étapes assignées
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -254,7 +254,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                           size: 16,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: AppTheme.space6),
                         Text(
                           'Mes étapes assignées (${assignedSteps.length})',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -264,7 +264,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     ...assignedSteps.take(2).map((step) => Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Row(
@@ -279,7 +279,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: Text(
                               step.name,
@@ -311,7 +311,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                 ),
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Barre de progression et infos
               Row(
@@ -337,7 +337,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         LinearProgressIndicator(
                           value: progress,
                           backgroundColor: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -352,7 +352,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                 ],
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Dernière mise à jour
               Row(
@@ -362,7 +362,7 @@ class _MyAssignedWorkflowsWidgetState extends State<MyAssignedWorkflowsWidget> {
                     size: 14,
                     color: Theme.of(context).colorScheme.outline,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'Dernière mise à jour: ${_formatDate(personWorkflow.lastUpdated)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(

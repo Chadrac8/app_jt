@@ -120,7 +120,7 @@ class _PersonCardState extends State<PersonCard>
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
                   fontWeight: AppTheme.fontMedium,
-                  fontSize: 10,
+                  fontSize: AppTheme.fontSize10,
                 ),
               ),
             );
@@ -260,7 +260,7 @@ class _PersonCardState extends State<PersonCard>
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 // Selection Checkbox
@@ -275,12 +275,12 @@ class _PersonCardState extends State<PersonCard>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                 ],
                 
                 // Profile Image
                 _buildProfileImage(),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 
                 // Person Info
                 Expanded(
@@ -301,7 +301,7 @@ class _PersonCardState extends State<PersonCard>
                           ),
                           // Status Badge
                           if (_getStatusBadgeText().isNotEmpty) ...[
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
@@ -313,14 +313,14 @@ class _PersonCardState extends State<PersonCard>
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: AppTheme.white100,
                                   fontWeight: AppTheme.fontMedium,
-                                  fontSize: 10,
+                                  fontSize: AppTheme.fontSize10,
                                 ),
                               ),
                             ),
                           ],
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       
                       // Email and Phone
                       if (widget.person.email.isNotEmpty) ...[
@@ -331,7 +331,7 @@ class _PersonCardState extends State<PersonCard>
                               size: 14,
                               color: Theme.of(context).colorScheme.outline,
                             ),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: AppTheme.space6),
                             Expanded(
                               child: Text(
                                 widget.person.email,
@@ -354,7 +354,7 @@ class _PersonCardState extends State<PersonCard>
                               size: 14,
                               color: Theme.of(context).colorScheme.outline,
                             ),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: AppTheme.space6),
                             Text(
                               widget.person.phone!,
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -376,7 +376,7 @@ class _PersonCardState extends State<PersonCard>
                                 size: 14,
                                 color: Theme.of(context).colorScheme.outline,
                               ),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: AppTheme.space6),
                               Text(
                                 '${widget.person.age} ans',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -395,7 +395,7 @@ class _PersonCardState extends State<PersonCard>
                               ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                       ],
                       
                       // Role Badges
@@ -448,7 +448,7 @@ class _PersonCardState extends State<PersonCard>
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -465,12 +465,12 @@ class _PersonCardState extends State<PersonCard>
                   ),
                 ),
               ] else ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               
               // Profile Image
               _buildProfileImage(),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Name
               Text(
@@ -483,7 +483,7 @@ class _PersonCardState extends State<PersonCard>
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               // Email
               if (widget.person.email.isNotEmpty) ...[
@@ -495,7 +495,7 @@ class _PersonCardState extends State<PersonCard>
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
               ],
               
               // Age
@@ -506,7 +506,7 @@ class _PersonCardState extends State<PersonCard>
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               
               // Status Badge
@@ -522,7 +522,7 @@ class _PersonCardState extends State<PersonCard>
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppTheme.white100,
                       fontWeight: AppTheme.fontMedium,
-                      fontSize: 10,
+                      fontSize: AppTheme.fontSize10,
                     ),
                   ),
                 ),

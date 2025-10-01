@@ -91,7 +91,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         boxShadow: [
@@ -110,7 +110,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -122,7 +122,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                 ),
               ),
               
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               
               Expanded(
                 child: Column(
@@ -135,7 +135,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                       ),
                     ),
                     if (widget.setlist.description.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         widget.setlist.description,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -149,7 +149,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Informations sur le service
           Wrap(
@@ -174,7 +174,7 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
               // Nombre de chants
               _buildInfoChip(
                 '${widget.setlist.songIds.length} chant${widget.setlist.songIds.length > 1 ? 's' : ''}',
-                Colors.purple,
+                AppTheme.primaryColor,
                 Icons.music_note,
               ),
             ],
@@ -182,12 +182,12 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
           
           // Notes (si présentes)
           if (widget.setlist.notes != null && widget.setlist.notes!.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: AppTheme.warningColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Column(
@@ -198,25 +198,25 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                       const Icon(
                         Icons.note,
                         size: 16,
-                        color: Colors.amber,
+                        color: AppTheme.warningColor,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         'Notes:',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontBold,
-                          color: Colors.amber[700],
+                          color: AppTheme.warning,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     widget.setlist.notes!,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.amber[700],
+                      fontSize: AppTheme.fontSize12,
+                      color: AppTheme.warning,
                     ),
                   ),
                 ],
@@ -225,17 +225,17 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
           ],
           
           // Informations de création
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             'Créé le ${_formatDate(widget.setlist.createdAt)}',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey600,
             ),
           ),
           
           // Boutons des modes (reproduction exacte de Perfect 13)
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               Expanded(
@@ -253,14 +253,14 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: _songs.isNotEmpty ? _openMusicianMode : null,
                   icon: const Icon(Icons.music_note, size: 20),
                   label: const Text('Mode Musicien'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amber,
+                    backgroundColor: AppTheme.warningColor,
                     foregroundColor: AppTheme.black100,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -287,11 +287,11 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 6),
+          const SizedBox(width: AppTheme.space6),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
@@ -316,12 +316,12 @@ class _SetlistDetailPageState extends State<SetlistDetailPage> {
               size: 64,
               color: AppTheme.grey500,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             const Text(
               'Aucun chant dans cette setlist',
-              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(

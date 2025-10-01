@@ -144,27 +144,27 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                     Row(
                       children: [
                         Icon(Icons.info_outline, color: AppTheme.primaryColor),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         const Text(
                           'Diagnostic Firebase Storage',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     const Text(
                       'Ce diagnostic teste la connectivité et les permissions Firebase Storage pour identifier les problèmes d\'upload d\'images.',
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: AppTheme.fontSize14),
                     ),
                   ],
                 ),
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
 
             // Bouton de test
             Center(
@@ -186,7 +186,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Résultats de connexion
             if (_connectionResult != null) ...[
@@ -196,7 +196,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                 _connectionResult!,
                 _getConnectionStatus(_connectionResult!),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
             ],
 
             // Résultats d'upload
@@ -207,7 +207,7 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                 _uploadResult!,
                 _getUploadStatus(_uploadResult!),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
             ],
 
             // Guide de résolution
@@ -233,10 +233,10 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
             Row(
               children: [
                 Icon(icon, color: statusColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   title,
-                  style: const TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                  style: const TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                 ),
                 const Spacer(),
                 Container(
@@ -250,14 +250,14 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
                     status,
                     style: TextStyle(
                       color: statusColor,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...result.entries.map((entry) => _buildResultLine(entry.key, entry.value)),
           ],
         ),
@@ -286,11 +286,11 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               '$key: ${_formatValue(value)}',
-              style: TextStyle(fontSize: 13, color: color),
+              style: TextStyle(fontSize: AppTheme.fontSize13, color: color),
             ),
           ),
         ],
@@ -329,36 +329,36 @@ class _FirebaseStorageDiagnosticPageState extends State<FirebaseStorageDiagnosti
             Row(
               children: [
                 Icon(Icons.build, color: AppTheme.orangeStandard),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Guide de résolution',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.orangeStandard,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             const Text(
               '1. Vérifiez que Firebase Storage est activé dans la console Firebase',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: AppTheme.fontSize14),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             const Text(
               '2. Configurez les règles de sécurité (voir FIREBASE_STORAGE_SETUP.md)',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: AppTheme.fontSize14),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             const Text(
               '3. Vérifiez que l\'utilisateur est connecté',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: AppTheme.fontSize14),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             const Text(
               '4. Redémarrez l\'application après les changements',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: AppTheme.fontSize14),
             ),
           ],
         ),

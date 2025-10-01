@@ -32,7 +32,7 @@ class PositionCard extends StatelessWidget {
         onLongPress: onLongPress,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: isSelected
@@ -67,7 +67,7 @@ class PositionCard extends StatelessWidget {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   
                   // Position info
                   Expanded(
@@ -88,7 +88,7 @@ class PositionCard extends StatelessWidget {
                               ),
                             ),
                             if (position.isLeaderPosition) ...[
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8,
@@ -108,7 +108,7 @@ class PositionCard extends StatelessWidget {
                               ),
                             ],
                             if (!position.isActive) ...[
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8,
@@ -129,7 +129,7 @@ class PositionCard extends StatelessWidget {
                             ],
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           position.description.isNotEmpty 
                               ? position.description 
@@ -146,7 +146,7 @@ class PositionCard extends StatelessWidget {
                   
                   // Selection indicator or max assignments
                   if (isSelectionMode) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Checkbox(
                       value: isSelected,
                       onChanged: onSelectionChanged != null 
@@ -155,7 +155,7 @@ class PositionCard extends StatelessWidget {
                       activeColor: teamColor,
                     ),
                   ] else ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Column(
                       children: [
                         Icon(
@@ -179,7 +179,7 @@ class PositionCard extends StatelessWidget {
 
               // Required skills
               if (position.requiredSkills.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
@@ -225,7 +225,7 @@ class PositionCard extends StatelessWidget {
               ],
 
               // Bottom info
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -236,7 +236,7 @@ class PositionCard extends StatelessWidget {
                         size: 14,
                         color: Theme.of(context).colorScheme.outline,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         _formatDate(position.createdAt),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(

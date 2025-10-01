@@ -8,6 +8,7 @@ import '../../../pages/song_projection_page.dart';
 import '../../../widgets/setlist_card_perfect13.dart';
 import '../../../pages/setlist_detail_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Page des chants pour les membres - Material Design 3
 class MemberSongsPage extends StatefulWidget {
@@ -74,24 +75,24 @@ class _MemberSongsPageState extends State<MemberSongsPage>
       backgroundColor: colorScheme.surface,
       body: Column(
         children: [
-          // TabBar - Style MD3 moderne avec couleur surface
+          // TabBar - Style MD3 moderne avec couleur primaire cohérente
           Material(
-            color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
+            color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
             elevation: 0,
             child: TabBar(
               controller: _tabController,
-              labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
-              unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
-              indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+              labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 3.0,
               labelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
                 letterSpacing: 0.1,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
                 letterSpacing: 0.1,
               ),
@@ -99,25 +100,22 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               overlayColor: WidgetStateProperty.resolveWith<Color?>(
                 (Set<WidgetState> states) {
                   if (states.contains(WidgetState.pressed)) {
-                    return AppTheme.primaryColor.withOpacity(0.12); // Effet rouge sur fond clair
+                    return AppTheme.onPrimaryColor.withOpacity(0.12); // Effet blanc sur fond primaire
                   }
                   if (states.contains(WidgetState.hovered)) {
-                    return AppTheme.primaryColor.withOpacity(0.08); // Effet rouge sur fond clair
+                    return AppTheme.onPrimaryColor.withOpacity(0.08); // Effet blanc sur fond primaire
                   }
                   return null;
                 },
               ),
               tabs: const [
                 Tab(
-                  icon: Icon(Icons.library_music_rounded),
                   text: 'Cantiques',
                 ),
                 Tab(
-                  icon: Icon(Icons.favorite_rounded),
                   text: 'Favoris',
                 ),
                 Tab(
-                  icon: Icon(Icons.playlist_play_rounded),
                   text: 'Setlists',
                 ),
               ],
@@ -179,7 +177,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               hintText: _isSetlistSearchMode ? 'Rechercher une setlist...' : 'Rechercher des cantiques...',
               hintStyle: GoogleFonts.inter(
                 color: colorScheme.onSurfaceVariant,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 letterSpacing: 0.15,
               ),
               prefixIcon: Icon(
@@ -228,7 +226,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               ),
             ),
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: colorScheme.onSurface,
               letterSpacing: 0.15,
             ),
@@ -251,7 +249,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               Text(
                 'Rechercher dans :',
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: AppTheme.fontMedium,
                   letterSpacing: 0.4,
@@ -262,7 +260,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 label: Text(
                   'Titres',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium,
                     letterSpacing: 0.1,
                   ),
@@ -290,7 +288,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 label: Text(
                   'Paroles',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium,
                     letterSpacing: 0.1,
                   ),
@@ -531,7 +529,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
                 letterSpacing: 0.15,
@@ -541,7 +539,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             Text(
               message,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurfaceVariant,
                 letterSpacing: 0.25,
               ),
@@ -583,7 +581,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
                 letterSpacing: 0.15,
@@ -593,7 +591,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             Text(
               message,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurfaceVariant,
                 letterSpacing: 0.25,
               ),
@@ -651,7 +649,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                             Text(
                               song.title,
                               style: GoogleFonts.inter(
-                                fontSize: 20,
+                                fontSize: AppTheme.fontSize20,
                                 fontWeight: AppTheme.fontSemiBold,
                                 color: colorScheme.onSurface,
                                 letterSpacing: 0.15,
@@ -663,7 +661,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                               Text(
                                 'Cantique n°${_getSongNumber(song, allSongs)}',
                                 style: GoogleFonts.inter(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   color: colorScheme.onSurfaceVariant,
                                   letterSpacing: 0.4,
                                 ),

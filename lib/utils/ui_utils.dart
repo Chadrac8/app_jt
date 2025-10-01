@@ -65,7 +65,7 @@ class NotificationService {
                 valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(child: Text(message)),
           ],
         ),
@@ -91,7 +91,7 @@ class NotificationService {
         content: Row(
           children: [
             Icon(icon, color: AppTheme.white100, size: 20),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Text(
                 message,
@@ -107,7 +107,7 @@ class NotificationService {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         ),
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(AppTheme.spaceMedium),
       ),
     );
   }
@@ -214,13 +214,13 @@ class LoadingOverlay extends StatelessWidget {
             child: Center(
               child: Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(AppTheme.spaceLarge),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const CircularProgressIndicator(),
                       if (loadingText != null) ...[
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           loadingText!,
                           style: Theme.of(context).textTheme.bodyMedium,

@@ -453,12 +453,12 @@ class _EventFormPageState extends State<EventFormPage>
       key: _formKey,
       child: SingleChildScrollView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             // Image de l'événement
             _buildImageSection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Informations de base
             _buildSection(
@@ -476,14 +476,14 @@ class _EventFormPageState extends State<EventFormPage>
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildTextField(
                   controller: _descriptionController,
                   label: 'Description',
                   icon: Icons.description,
                   maxLines: 4,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildDropdown(
                   value: _selectedType,
                   label: 'Type d\'événement',
@@ -500,7 +500,7 @@ class _EventFormPageState extends State<EventFormPage>
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Date et heure
             _buildSection(
@@ -510,11 +510,11 @@ class _EventFormPageState extends State<EventFormPage>
                 Row(
                   children: [
                     Expanded(child: _buildDateField('Date de début', _startDate, _selectStartDate)),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(child: _buildTimeField('Heure de début', _startTime, _selectStartTime)),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Row(
                   children: [
                     Expanded(
@@ -525,7 +525,7 @@ class _EventFormPageState extends State<EventFormPage>
                         isOptional: true,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: _buildTimeField(
                         'Heure de fin (optionnel)', 
@@ -539,7 +539,7 @@ class _EventFormPageState extends State<EventFormPage>
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Lieu
             _buildSection(
@@ -560,7 +560,7 @@ class _EventFormPageState extends State<EventFormPage>
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Visibilité et responsables
             _buildSection(
@@ -568,12 +568,12 @@ class _EventFormPageState extends State<EventFormPage>
               icon: Icons.visibility,
               children: [
                 _buildVisibilitySelector(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildResponsibleSelector(),
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Inscriptions
             _buildSection(
@@ -584,7 +584,7 @@ class _EventFormPageState extends State<EventFormPage>
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Options avancées
             _buildSection(
@@ -595,7 +595,7 @@ class _EventFormPageState extends State<EventFormPage>
               ],
             ),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
           ],
         ),
       ),
@@ -677,7 +677,7 @@ class _EventFormPageState extends State<EventFormPage>
               size: 48,
               color: AppTheme.textTertiaryColor,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Ajouter une image',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -709,14 +709,14 @@ class _EventFormPageState extends State<EventFormPage>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -727,7 +727,7 @@ class _EventFormPageState extends State<EventFormPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -736,7 +736,7 @@ class _EventFormPageState extends State<EventFormPage>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...children,
           ],
         ),
@@ -855,7 +855,7 @@ class _EventFormPageState extends State<EventFormPage>
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         ..._visibilityOptions.map((option) {
           return RadioListTile<String>(
             value: option['value']!,
@@ -895,7 +895,7 @@ class _EventFormPageState extends State<EventFormPage>
           contentPadding: EdgeInsets.zero,
         ),
         if (_isRegistrationEnabled) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             decoration: InputDecoration(
               labelText: 'Nombre maximum de participants',
@@ -915,7 +915,7 @@ class _EventFormPageState extends State<EventFormPage>
             },
             initialValue: _maxParticipants?.toString(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           SwitchListTile(
             value: _hasWaitingList,
             onChanged: _maxParticipants != null 
@@ -943,7 +943,7 @@ class _EventFormPageState extends State<EventFormPage>
         
         // Widget de configuration de récurrence
         if (_isRecurring) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           EventRecurrenceWidget(
             initialRecurrence: _recurrenceModel,
             onRecurrenceChanged: (recurrence) {
@@ -954,7 +954,7 @@ class _EventFormPageState extends State<EventFormPage>
           ),
         ],
         if (widget.event == null) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<String>(
             value: _status,
             decoration: InputDecoration(

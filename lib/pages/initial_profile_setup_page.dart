@@ -1066,13 +1066,13 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     children: [
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                       _buildProgressIndicator(),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                       _buildProfileForm(),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: AppTheme.space40),
                       _buildModernActionButton(),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                     ],
                   ),
                 ),
@@ -1103,9 +1103,9 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
       ),
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          const SizedBox(height: AppTheme.space40),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.white100.withOpacity(0.2),
               borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -1116,25 +1116,25 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               color: AppTheme.white100,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           const Text(
             'Configuration du profil',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: AppTheme.fontSize28,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.white100,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Complétez votre profil pour accéder à l\'application',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.white100.withOpacity(0.9),
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: AppTheme.space40),
         ],
       ),
     );
@@ -1150,40 +1150,40 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                 height: 4,
                 decoration: BoxDecoration(
                   color: const Color(0xFF667EEA),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Expanded(
               child: Container(
                 height: 4,
                 decoration: BoxDecoration(
                   color: AppTheme.grey500,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Expanded(
               child: Container(
                 height: 4,
                 decoration: BoxDecoration(
                   color: AppTheme.grey500,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Informations',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF667EEA),
               ),
@@ -1191,14 +1191,14 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             Text(
               'Adresse',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey500,
               ),
             ),
             Text(
               'Validation',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey500,
               ),
             ),
@@ -1214,13 +1214,13 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
       child: Column(
         children: [
           _buildProfileImageSection(),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           _buildPersonalInfoSection(),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildAddressSection(),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildContactSection(),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildStatusSection(),
         ],
       ),
@@ -1334,7 +1334,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                 },
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: _buildModernTextField(
                 controller: _lastNameController,
@@ -1350,7 +1350,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         _buildModernTextField(
           controller: _emailController,
           label: 'Email *',
@@ -1366,13 +1366,13 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
               child: _buildDateField(),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: _buildGenderDropdown(),
             ),
@@ -1394,7 +1394,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
               width: 120,
               child: _buildCountryCodeDropdown(),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             // Champ téléphone
             Expanded(
               child: _buildModernTextField(
@@ -1432,13 +1432,13 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         _buildModernTextField(
           controller: _addressComplementController,
           label: 'Complément d\'adresse',
           icon: Icons.add_home_outlined,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -1456,7 +1456,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                 },
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               flex: 2,
               child: _buildModernTextField(
@@ -1473,7 +1473,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         _buildCountryDropdown(),
       ],
     );
@@ -1508,14 +1508,14 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: const Color(0xFF667EEA).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
@@ -1526,18 +1526,18 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontSemiBold,
                     color: Color(0xFF1F2937),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             ...children,
           ],
         ),
@@ -1557,7 +1557,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
       validator: validator,
       keyboardType: keyboardType,
       style: const TextStyle(
-        fontSize: 16,
+        fontSize: AppTheme.fontSize16,
         color: Color(0xFF1F2937),
       ),
       decoration: InputDecoration(
@@ -1565,7 +1565,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         prefixIcon: Icon(icon, color: const Color(0xFF667EEA)),
         labelStyle: TextStyle(
           color: AppTheme.grey500,
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
         ),
         filled: true,
         fillColor: const Color(0xFFF9FAFB),
@@ -1607,14 +1607,14 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         child: Row(
           children: [
             const Icon(Icons.calendar_today, color: Color(0xFF667EEA)),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Text(
                 _birthDate != null
                     ? DateFormat('dd/MM/yyyy').format(_birthDate!)
                     : 'Date de naissance *',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: _birthDate != null 
                       ? const Color(0xFF1F2937) 
                       : AppTheme.grey500,
@@ -1759,13 +1759,13 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                   item,
                   style: const TextStyle(fontWeight: AppTheme.fontBold),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     _countryCodes[item] ?? '',
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                     ),
                   ),
                 ),
@@ -1887,12 +1887,12 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                         color: AppTheme.white100,
                         size: 24,
                       ),
-                      SizedBox(width: 12),
+                      SizedBox(width: AppTheme.space12),
                       Text(
                         'Finaliser la configuration',
                         style: TextStyle(
                           color: AppTheme.white100,
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),

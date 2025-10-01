@@ -155,7 +155,7 @@ class _TaskCardState extends State<TaskCard>
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -197,7 +197,7 @@ class _TaskCardState extends State<TaskCard>
                   
                   // Description
                   if (widget.task.description.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       widget.task.description,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -208,7 +208,7 @@ class _TaskCardState extends State<TaskCard>
                     ),
                   ],
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   // Meta information row
                   Row(
@@ -216,12 +216,12 @@ class _TaskCardState extends State<TaskCard>
                       // Priority badge
                       _buildPriorityBadge(),
                       
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       
                       // Due date
                       if (widget.task.dueDate != null) ...[
                         _buildDueDateBadge(),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                       ],
                       
                       const Spacer(),
@@ -232,7 +232,7 @@ class _TaskCardState extends State<TaskCard>
                       
                       // Attachments count
                       if (widget.task.attachmentUrls.isNotEmpty) ...[
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         _buildAttachmentsBadge(),
                       ],
                     ],
@@ -240,13 +240,13 @@ class _TaskCardState extends State<TaskCard>
                   
                   // Tags
                   if (widget.task.tags.isNotEmpty) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     _buildTagsSection(),
                   ],
                   
                   // Overdue/Due soon warning
                   if (widget.task.isOverdue || widget.task.isDueSoon) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     _buildWarningBanner(),
                   ],
                 ],
@@ -267,7 +267,7 @@ class _TaskCardState extends State<TaskCard>
           child: Row(
             children: [
               Icon(Icons.radio_button_unchecked, color: AppTheme.primaryColor),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               const Text('À faire'),
             ],
           ),
@@ -277,7 +277,7 @@ class _TaskCardState extends State<TaskCard>
           child: Row(
             children: [
               Icon(Icons.play_circle, color: AppTheme.warningColor),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               const Text('En cours'),
             ],
           ),
@@ -287,7 +287,7 @@ class _TaskCardState extends State<TaskCard>
           child: Row(
             children: [
               Icon(Icons.check_circle, color: AppTheme.successColor),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               const Text('Terminé'),
             ],
           ),
@@ -311,12 +311,12 @@ class _TaskCardState extends State<TaskCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(_statusIcon, size: 16, color: _statusColor),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             widget.task.statusLabel,
             style: TextStyle(
               color: _statusColor,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -336,7 +336,7 @@ class _TaskCardState extends State<TaskCard>
         widget.task.priorityLabel,
         style: TextStyle(
           color: _priorityColor,
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontMedium,
         ),
       ),
@@ -368,12 +368,12 @@ class _TaskCardState extends State<TaskCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(badgeIcon, size: 14, color: badgeColor),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             _formatDueDate(),
             style: TextStyle(
               color: badgeColor,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -393,12 +393,12 @@ class _TaskCardState extends State<TaskCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.person, size: 14, color: AppTheme.secondaryColor),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             '${widget.task.assigneeIds.length}',
             style: TextStyle(
               color: AppTheme.secondaryColor,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -418,12 +418,12 @@ class _TaskCardState extends State<TaskCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.attach_file, size: 14, color: AppTheme.tertiaryColor),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             '${widget.task.attachmentUrls.length}',
             style: TextStyle(
               color: AppTheme.tertiaryColor,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -446,7 +446,7 @@ class _TaskCardState extends State<TaskCard>
           child: Text(
             tag,
             style: const TextStyle(
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               color: AppTheme.grey500,
             ),
           ),
@@ -471,12 +471,12 @@ class _TaskCardState extends State<TaskCard>
       child: Row(
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             message,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),

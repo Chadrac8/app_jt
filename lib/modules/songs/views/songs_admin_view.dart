@@ -8,6 +8,7 @@ import '../models/song.dart';
 import '../models/song_category.dart';
 import 'song_detail_view.dart';
 import 'song_form_view.dart';
+import '../../../theme.dart';
 
 /// Vue admin pour la gestion des chants
 class SongsAdminView extends StatefulWidget {
@@ -260,7 +261,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
         content: Row(
           children: [
             CircularProgressIndicator(),
-            SizedBox(width: 16),
+            SizedBox(width: AppTheme.spaceMedium),
             Text('Renumération en cours...'),
           ],
         ),
@@ -285,7 +286,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('✅ Cantiques renumérrotés avec succès !'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppTheme.successColor,
           ),
         );
       }
@@ -297,7 +298,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('❌ Erreur: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.errorColor,
           ),
         );
       }
@@ -325,7 +326,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
           // Statistiques
           if (_statistics.isNotEmpty) ...[
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
                   Expanded(
@@ -336,7 +337,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
                       AppTheme.blueStandard,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: _buildStatCard(
                       'Approuvés',
@@ -345,7 +346,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
                       AppTheme.greenStandard,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: _buildStatCard(
                       'En attente',
@@ -387,7 +388,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
               onSubmitted: (_) => _performSearch(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Onglets avec Material Design
           Container(
@@ -410,11 +411,11 @@ class _SongsAdminViewState extends State<SongsAdminView>
               indicatorWeight: 3.0,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               labelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
               ),
               tabs: [
@@ -456,15 +457,15 @@ class _SongsAdminViewState extends State<SongsAdminView>
   Widget _buildStatCard(String title, int value, IconData icon, Color color) {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         child: Column(
           children: [
             Icon(icon, color: color, size: 24),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value.toString(),
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
@@ -472,7 +473,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
               title,
               style: TextStyle(
                 color: AppTheme.grey600,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
             ),
           ],
@@ -495,7 +496,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: _songs.length,
         itemBuilder: (context, index) {
           final song = _songs[index];
@@ -516,7 +517,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.check_circle, size: 64, color: AppTheme.greenStandard),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text('Aucun chant en attente d\'approbation'),
           ],
         ),
@@ -526,7 +527,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: _pendingSongs.length,
         itemBuilder: (context, index) {
           final song = _pendingSongs[index];
@@ -544,7 +545,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: _categories.length,
         itemBuilder: (context, index) {
           final category = _categories[index];
@@ -558,7 +559,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
     return CustomCard(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(12),
+        contentPadding: const EdgeInsets.all(AppTheme.space12),
         leading: Container(
           width: 48,
           height: 48,
@@ -637,7 +638,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
       child: Column(
         children: [
           ListTile(
-            contentPadding: const EdgeInsets.all(12),
+            contentPadding: const EdgeInsets.all(AppTheme.space12),
             leading: Container(
               width: 48,
               height: 48,
@@ -691,7 +692,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
     return CustomCard(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(12),
+        contentPadding: const EdgeInsets.all(AppTheme.space12),
         leading: Container(
           width: 48,
           height: 48,

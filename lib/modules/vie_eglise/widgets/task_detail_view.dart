@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class TaskDetailView extends StatelessWidget {
   final TaskModel task;
@@ -17,16 +18,16 @@ class TaskDetailView extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildTaskHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildTaskInfo(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildDescription(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildAssignees(),
           ],
         ),
@@ -36,7 +37,7 @@ class TaskDetailView extends StatelessWidget {
 
   Widget _buildTaskHeader() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -54,16 +55,16 @@ class TaskDetailView extends StatelessWidget {
           Text(
             task.title,
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey800,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Row(
             children: [
               _buildPriorityBadge(),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               _buildStatusBadge(),
             ],
           ),
@@ -74,7 +75,7 @@ class TaskDetailView extends StatelessWidget {
 
   Widget _buildTaskInfo() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -92,30 +93,30 @@ class TaskDetailView extends StatelessWidget {
           Text(
             'Informations',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey800,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (task.dueDate != null) ...[
             _buildInfoRow(Icons.access_time, 'Échéance', _formatDate(task.dueDate!)),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
           ],
           if (task.category != null) ...[
             _buildInfoRow(Icons.category, 'Catégorie', task.category!),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
           ],
           if (task.estimatedHours != null) ...[
             _buildInfoRow(Icons.schedule, 'Durée estimée', '${task.estimatedHours}h'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
           ],
           if (task.location != null) ...[
             _buildInfoRow(Icons.location_on, 'Lieu', task.location!),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
           ],
           _buildInfoRow(Icons.person, 'Créé par', 'Utilisateur'), // TODO: Get user name
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildInfoRow(Icons.calendar_today, 'Créé le', _formatDate(task.createdAt)),
         ],
       ),
@@ -127,7 +128,7 @@ class TaskDetailView extends StatelessWidget {
     
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -145,16 +146,16 @@ class TaskDetailView extends StatelessWidget {
           Text(
             'Description',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey800,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             task.description,
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey600,
               height: 1.5,
             ),
@@ -167,7 +168,7 @@ class TaskDetailView extends StatelessWidget {
   Widget _buildAssignees() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -185,17 +186,17 @@ class TaskDetailView extends StatelessWidget {
           Text(
             'Assignés (${task.assigneeIds.length})',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey800,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           if (task.assigneeIds.isEmpty)
             Text(
               'Aucune personne assignée',
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.grey500,
               ),
             )
@@ -210,11 +211,11 @@ class TaskDetailView extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 20, color: AppTheme.grey500),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Text(
           '$label: ',
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.grey700,
           ),
@@ -223,7 +224,7 @@ class TaskDetailView extends StatelessWidget {
           child: Text(
             value,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey600,
             ),
           ),
@@ -243,17 +244,17 @@ class TaskDetailView extends StatelessWidget {
             child: Text(
               userId.substring(0, 1).toUpperCase(),
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.blueStandard,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Text(
             'Utilisateur $userId', // TODO: Get actual user name
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey700,
             ),
           ),
@@ -277,11 +278,11 @@ class TaskDetailView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(_getPriorityIcon(task.priority), size: 16, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: GoogleFonts.poppins(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontSemiBold,
               color: color,
             ),
@@ -305,7 +306,7 @@ class TaskDetailView extends StatelessWidget {
       child: Text(
         label,
         style: GoogleFonts.poppins(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontSemiBold,
           color: color,
         ),

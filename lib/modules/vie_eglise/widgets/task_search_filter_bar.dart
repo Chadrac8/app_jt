@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class TaskSearchFilterBar extends StatefulWidget {
   final TextEditingController searchController;
@@ -61,7 +62,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             IconButton(
               onPressed: () => setState(() => _showFilters = !_showFilters),
               icon: Icon(
@@ -78,7 +79,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
           ],
         ),
         if (_showFilters) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildFiltersSection(),
         ],
       ],
@@ -87,7 +88,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
 
   Widget _buildFiltersSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -99,16 +100,16 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
           Text(
             'Filtres',
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey800,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildStatusFilters(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildPriorityFilters(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               TextButton(
@@ -144,12 +145,12 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
         Text(
           'Statut',
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.grey700,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           children: _allStatuses.map((status) {
@@ -180,12 +181,12 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
         Text(
           'Priorité',
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.grey700,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           children: _allPriorities.map((priority) {

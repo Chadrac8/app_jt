@@ -103,12 +103,12 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         InkWell(
           onTap: _showPersonSelector,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               border: Border.all(color: AppTheme.textTertiaryColor.withOpacity(0.3)),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -121,7 +121,7 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
                         height: 16,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       ),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppTheme.spaceSmall),
                       Text('Chargement...'),
                     ],
                   )
@@ -132,7 +132,7 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
                             Icons.people_outline,
                             color: AppTheme.textTertiaryColor,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(
                             widget.hint,
                             style: TextStyle(
@@ -152,7 +152,7 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
                                 fontWeight: AppTheme.fontMedium,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                           ],
                           Wrap(
                             spacing: 8,
@@ -166,13 +166,13 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
                                   child: person.profileImageUrl == null
                                       ? Text(
                                           person.displayInitials,
-                                          style: const TextStyle(fontSize: 12),
+                                          style: const TextStyle(fontSize: AppTheme.fontSize12),
                                         )
                                       : null,
                                 ),
                                 label: Text(
                                   person.fullName,
-                                  style: const TextStyle(fontSize: 12),
+                                  style: const TextStyle(fontSize: AppTheme.fontSize12),
                                 ),
                                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               );
@@ -185,7 +185,7 @@ class _PersonSelectorWidgetState extends State<PersonSelectorWidget> {
                                 '... et ${_selectedPersons.length - 3} autre(s)',
                                 style: TextStyle(
                                   color: AppTheme.textSecondaryColor,
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                 ),
                               ),
                             ),
@@ -320,13 +320,13 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
               onChanged: _filterPersons,
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Compteur de sélection
             if (widget.multiSelect && _selectedPersons.isNotEmpty)
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -342,7 +342,7 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                 ),
               ),
             
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             
             // Liste des personnes
             Expanded(
@@ -358,14 +358,14 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                                 size: 64,
                                 color: AppTheme.grey400,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppTheme.spaceMedium),
                               Text(
                                 _searchTerm.isEmpty
                                     ? 'Aucune personne trouvée'
                                     : 'Aucun résultat pour "$_searchTerm"',
                                 style: TextStyle(
                                   color: AppTheme.grey600,
-                                  fontSize: 16,
+                                  fontSize: AppTheme.fontSize16,
                                 ),
                               ),
                             ],

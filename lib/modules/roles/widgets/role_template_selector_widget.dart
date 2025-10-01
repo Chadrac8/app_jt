@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/role_template_model.dart';
 import '../providers/role_template_provider.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget de sélection de template de rôle
 class RoleTemplateSelectorWidget extends StatefulWidget {
@@ -76,12 +77,12 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildSearchAndFilter(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildTemplatesList(filteredTemplates),
                 if (_selectedTemplates.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildSelectedTemplatesSection(),
                 ],
               ],
@@ -100,7 +101,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
           color: AppTheme.primaryColor,
           size: 24,
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         Text(
           'Sélection de Template',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -138,7 +139,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
                 },
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: _selectedCategory.isEmpty ? null : _selectedCategory,
@@ -157,7 +158,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
                       child: Row(
                         children: [
                           Icon(category.icon, size: 16),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(category.displayName),
                         ],
                       ),
@@ -173,7 +174,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             FilterChip(
@@ -181,7 +182,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
               selected: widget.showSystemTemplates,
               onSelected: null, // Désactivé car contrôlé par le widget parent
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             FilterChip(
               label: const Text('Personnalisés'),
               selected: widget.showCustomTemplates,
@@ -210,22 +211,22 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
       return Container(
         height: 200,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[300]!),
-          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppTheme.grey300!),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         child: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.search_off, size: 48, color: Colors.grey),
-              SizedBox(height: 8),
+              Icon(Icons.search_off, size: 48, color: AppTheme.grey500),
+              SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Aucun template trouvé',
-                style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
+                style: TextStyle(color: AppTheme.grey500, fontWeight: AppTheme.fontMedium),
               ),
               Text(
                 'Modifiez vos critères de recherche',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
+                style: TextStyle(color: AppTheme.grey500, fontSize: AppTheme.fontSize12),
               ),
             ],
           ),
@@ -236,8 +237,8 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
     return Container(
       height: 300,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.grey300!),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: ListView.builder(
         itemCount: templates.length,
@@ -256,21 +257,21 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
     return ListTile(
       enabled: !isExcluded,
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(AppTheme.spaceSmall),
         decoration: BoxDecoration(
           color: isExcluded 
-              ? Colors.grey.withOpacity(0.1)
+              ? AppTheme.grey500.withOpacity(0.1)
               : template.color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: isExcluded 
-                ? Colors.grey.withOpacity(0.3)
+                ? AppTheme.grey500.withOpacity(0.3)
                 : template.color.withOpacity(0.3),
           ),
         ),
         child: Icon(
           template.iconData, 
-          color: isExcluded ? Colors.grey : template.color,
+          color: isExcluded ? AppTheme.grey500 : template.color,
           size: 20,
         ),
       ),
@@ -281,7 +282,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
               template.name,
               style: TextStyle(
                 fontWeight: isSelected ? AppTheme.fontBold : AppTheme.fontMedium,
-                color: isExcluded ? Colors.grey : null,
+                color: isExcluded ? AppTheme.grey500 : null,
               ),
             ),
           ),
@@ -296,7 +297,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
               child: Text(
                 'SYS',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: AppTheme.fontSize10,
                   color: AppTheme.info,
                   fontWeight: AppTheme.fontBold,
                 ),
@@ -306,16 +307,16 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: AppTheme.grey500.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                border: Border.all(color: AppTheme.grey500.withOpacity(0.3)),
               ),
               child: const Text(
                 'EXCLU',
                 style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
+                  fontSize: AppTheme.fontSize10,
+                  color: AppTheme.grey500,
+                  fontWeight: AppTheme.fontBold,
                 ),
               ),
             ),
@@ -328,36 +329,36 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
             template.description,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: isExcluded ? Colors.grey : null),
+            style: TextStyle(color: isExcluded ? AppTheme.grey500 : null),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Row(
             children: [
               Icon(
                 TemplateCategory.fromId(template.category).icon,
                 size: 12,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Text(
                 TemplateCategory.fromId(template.category).displayName,
                 style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.grey[600],
+                  fontSize: AppTheme.fontSize10,
+                  color: AppTheme.grey600,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Icon(
                 Icons.security,
                 size: 12,
-                color: Colors.grey[600],
+                color: AppTheme.grey600,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Text(
                 '${template.permissionIds.length} perms',
                 style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.grey[600],
+                  fontSize: AppTheme.fontSize10,
+                  color: AppTheme.grey600,
                 ),
               ),
             ],
@@ -394,7 +395,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -519,7 +520,7 @@ class _RoleTemplateSelectionDialogState extends State<RoleTemplateSelectionDialo
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.8,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           children: [
             Row(
@@ -537,7 +538,7 @@ class _RoleTemplateSelectionDialogState extends State<RoleTemplateSelectionDialo
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: RoleTemplateSelectorWidget(
                 selectedTemplate: _selectedTemplate,
@@ -560,7 +561,7 @@ class _RoleTemplateSelectionDialogState extends State<RoleTemplateSelectionDialo
                 },
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -568,7 +569,7 @@ class _RoleTemplateSelectionDialogState extends State<RoleTemplateSelectionDialo
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Annuler'),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 ElevatedButton(
                   onPressed: _selectedTemplates.isNotEmpty ? () {
                     Navigator.of(context).pop(

@@ -40,14 +40,14 @@ class BlogPostCard extends StatelessWidget {
             
             // Contenu
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // En-tête avec statut et actions
                   _buildHeader(context),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Titre
                   Text(
@@ -62,7 +62,7 @@ class BlogPostCard extends StatelessWidget {
                   
                   // Excerpt
                   if (post.excerpt.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       post.excerpt,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -74,20 +74,20 @@ class BlogPostCard extends StatelessWidget {
                     ),
                   ],
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   // Métadonnées
                   _buildMetadata(context),
                   
                   // Catégories et tags
                   if (post.categories.isNotEmpty || post.tags.isNotEmpty) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     _buildCategoriesAndTags(context),
                   ],
                   
                   // Actions admin
                   if (isAdminView) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     const Divider(),
                     _buildAdminActions(context),
                   ],
@@ -133,19 +133,19 @@ class BlogPostCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.amber,
+                color: AppTheme.warningColor,
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.star, size: 16, color: AppTheme.white100),
-                  SizedBox(width: 4),
+                  SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'EN VEDETTE',
                     style: TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -262,12 +262,12 @@ class BlogPostCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
               color: color,
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontBold,
             ),
           ),
@@ -296,7 +296,7 @@ class BlogPostCard extends StatelessWidget {
             child: Icon(Icons.person, size: 16, color: AppTheme.grey600),
           ),
         
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         
         // Informations auteur et date
         Expanded(
@@ -323,7 +323,7 @@ class BlogPostCard extends StatelessWidget {
         
         // Statistiques
         if (isAdminView || post.status == BlogPostStatus.published) ...[
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           _buildStats(context),
         ],
       ],
@@ -335,7 +335,7 @@ class BlogPostCard extends StatelessWidget {
       children: [
         // Temps de lecture
         Icon(Icons.access_time, size: 14, color: AppTheme.grey600),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppTheme.spaceXSmall),
         Text(
           '${post.readingTimeMinutes} min',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -343,11 +343,11 @@ class BlogPostCard extends StatelessWidget {
           ),
         ),
         
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         
         // Vues
         Icon(Icons.visibility, size: 14, color: AppTheme.grey600),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppTheme.spaceXSmall),
         Text(
           post.views.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -355,11 +355,11 @@ class BlogPostCard extends StatelessWidget {
           ),
         ),
         
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         
         // Likes
         Icon(Icons.favorite, size: 14, color: AppTheme.grey600),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppTheme.spaceXSmall),
         Text(
           post.likes.toString(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -368,11 +368,11 @@ class BlogPostCard extends StatelessWidget {
         ),
         
         if (post.allowComments && post.commentsCount > 0) ...[
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           
           // Commentaires
           Icon(Icons.comment, size: 14, color: AppTheme.grey600),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             post.commentsCount.toString(),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -405,7 +405,7 @@ class BlogPostCard extends StatelessWidget {
               child: Text(
                 category,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: Theme.of(context).primaryColor,
                   fontWeight: AppTheme.fontMedium,
                 ),
@@ -416,7 +416,7 @@ class BlogPostCard extends StatelessWidget {
         
         // Tags
         if (post.tags.isNotEmpty) ...[
-          if (post.categories.isNotEmpty) const SizedBox(height: 6),
+          if (post.categories.isNotEmpty) const SizedBox(height: AppTheme.space6),
           Wrap(
             spacing: 6,
             runSpacing: 6,
@@ -429,7 +429,7 @@ class BlogPostCard extends StatelessWidget {
               child: Text(
                 '#$tag',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: AppTheme.fontSize11,
                   color: AppTheme.grey700,
                 ),
               ),
@@ -446,11 +446,11 @@ class BlogPostCard extends StatelessWidget {
         // Informations de programmation
         if (post.status == BlogPostStatus.scheduled && post.scheduledAt != null) ...[
           Icon(Icons.schedule, size: 16, color: AppTheme.grey600),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             'Programmé pour le ${_formatDate(post.scheduledAt!)}',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey600,
               fontStyle: FontStyle.italic,
             ),
@@ -467,7 +467,7 @@ class BlogPostCard extends StatelessWidget {
             label: const Text('Publier'),
             style: TextButton.styleFrom(
               foregroundColor: AppTheme.greenStandard,
-              textStyle: const TextStyle(fontSize: 12),
+              textStyle: const TextStyle(fontSize: AppTheme.fontSize12),
             ),
           ),
       ],

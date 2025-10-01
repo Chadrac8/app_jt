@@ -4,6 +4,7 @@ import '../models/reading_plan.dart';
 import '../bible_service.dart';
 import '../bible_model.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class DailyReadingView extends StatefulWidget {
   final ReadingPlan plan;
@@ -150,14 +151,14 @@ class _DailyReadingViewState extends State<DailyReadingView> {
             Text(
               'Jour ${widget.day.day}',
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
             Text(
               widget.day.title,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: theme.colorScheme.onSurface.withOpacity(0.7),
               ),
             ),
@@ -170,7 +171,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
               Icons.check_circle,
               color: AppTheme.greenStandard,
             ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
         ],
       ),
       body: _isLoading
@@ -194,7 +195,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                               color: isActive 
                                   ? theme.colorScheme.primary
                                   : theme.colorScheme.primary.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(2),
+                              borderRadius: BorderRadius.circular(AppTheme.radius2),
                             ),
                           ),
                         );
@@ -238,13 +239,13 @@ class _DailyReadingViewState extends State<DailyReadingView> {
     List<BibleVerse> verses,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // En-tête de la lecture
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -255,12 +256,12 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                   Icons.menu_book,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     reading.displayText,
                     style: GoogleFonts.inter(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontBold,
                       color: theme.colorScheme.primary,
                     ),
@@ -270,13 +271,13 @@ class _DailyReadingViewState extends State<DailyReadingView> {
             ),
           ),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Versets
           if (verses.isEmpty)
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(40),
+                padding: const EdgeInsets.all(AppTheme.space40),
                 child: Column(
                   children: [
                     Icon(
@@ -284,19 +285,19 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                       size: 48,
                       color: theme.colorScheme.onSurface.withOpacity(0.5),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Text(
                       'Lecture non disponible',
                       style: GoogleFonts.inter(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         color: theme.colorScheme.onSurface.withOpacity(0.7),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Cette lecture n\'est pas encore disponible dans l\'application. Vous pouvez la lire dans votre Bible personnelle.',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: theme.colorScheme.onSurface.withOpacity(0.5),
                       ),
                       textAlign: TextAlign.center,
@@ -321,7 +322,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
             TextSpan(
               text: '${verse.verse} ',
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontBold,
                 color: theme.colorScheme.primary,
               ),
@@ -329,7 +330,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
             TextSpan(
               text: verse.text,
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 height: 1.6,
                 color: theme.colorScheme.onSurface,
               ),
@@ -342,8 +343,8 @@ class _DailyReadingViewState extends State<DailyReadingView> {
 
   Widget _buildReflectionSection(ThemeData theme) {
     return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.space20),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -362,21 +363,21 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                   color: AppTheme.orangeStandard,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Réflexion',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               widget.day.reflection!,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 height: 1.5,
                 color: theme.colorScheme.onSurface.withOpacity(0.8),
               ),
@@ -384,7 +385,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
           ],
           
           if (widget.day.prayer != null) ...[
-            if (widget.day.reflection != null) const SizedBox(height: 16),
+            if (widget.day.reflection != null) const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Icon(
@@ -392,21 +393,21 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                   color: AppTheme.redStandard,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Prière',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               widget.day.prayer!,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 height: 1.5,
                 color: theme.colorScheme.onSurface.withOpacity(0.8),
                 fontStyle: FontStyle.italic,
@@ -420,8 +421,8 @@ class _DailyReadingViewState extends State<DailyReadingView> {
 
   Widget _buildNotesSection(ThemeData theme) {
     return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.space20),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -439,17 +440,17 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                 color: theme.colorScheme.primary,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Mes notes personnelles',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           TextField(
             controller: _noteController,
             maxLines: 4,
@@ -468,7 +469,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                 ),
               ),
             ),
-            style: GoogleFonts.inter(fontSize: 14),
+            style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
           ),
         ],
       ),
@@ -477,7 +478,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
 
   Widget _buildBottomBar(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         boxShadow: [
@@ -507,7 +508,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
               Text(
                 '${_currentReadingIndex + 1}/${_readingsVerses.length}',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: theme.colorScheme.onSurface.withOpacity(0.7),
                 ),
               ),
@@ -522,7 +523,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
                     : null,
                 icon: const Icon(Icons.chevron_right),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
             ],
             
             // Bouton terminer

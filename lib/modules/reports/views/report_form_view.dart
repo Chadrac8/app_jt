@@ -4,6 +4,7 @@ import '../../../shared/widgets/base_page.dart';
 import '../services/reports_service.dart';
 import '../models/report.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ReportFormView extends StatefulWidget {
   final Report? report;
@@ -144,29 +145,29 @@ class _ReportFormViewState extends State<ReportFormView> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Informations de base
               _buildBasicInfoSection(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Configuration du rapport
               _buildConfigurationSection(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Colonnes de données
               _buildDataColumnsSection(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Filtres (section avancée)
               _buildFiltersSection(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Paramètres avancés
               _buildAdvancedSection(),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
               
               // Boutons d'action
               _buildActionButtons(),
@@ -180,7 +181,7 @@ class _ReportFormViewState extends State<ReportFormView> {
   Widget _buildBasicInfoSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -190,7 +191,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Nom du rapport
             TextFormField(
@@ -208,7 +209,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Description
             TextFormField(
@@ -221,7 +222,7 @@ class _ReportFormViewState extends State<ReportFormView> {
               ),
               maxLines: 3,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Type de rapport
             DropdownButtonFormField<String>(
@@ -259,7 +260,7 @@ class _ReportFormViewState extends State<ReportFormView> {
   Widget _buildConfigurationSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -269,7 +270,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Fréquence de génération
             DropdownButtonFormField<String>(
@@ -291,7 +292,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 }
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Type de graphique
             DropdownButtonFormField<String>(
@@ -317,7 +318,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 });
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Visibilité publique
             SwitchListTile(
@@ -342,7 +343,7 @@ class _ReportFormViewState extends State<ReportFormView> {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -352,14 +353,14 @@ class _ReportFormViewState extends State<ReportFormView> {
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Sélectionnez les données à inclure dans le rapport',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppTheme.grey600,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             if (availableColumns.isNotEmpty) 
               Wrap(
@@ -384,7 +385,7 @@ class _ReportFormViewState extends State<ReportFormView> {
               )
             else 
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -392,7 +393,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 child: const Row(
                   children: [
                     Icon(Icons.info_outline, color: AppTheme.grey500),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text(
                         'Aucune colonne prédéfinie pour ce type de rapport. '
@@ -405,9 +406,9 @@ class _ReportFormViewState extends State<ReportFormView> {
               ),
             
             // Colonnes personnalisées
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             const Divider(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Row(
               children: [
@@ -420,7 +421,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 ElevatedButton.icon(
                   onPressed: _addCustomColumn,
                   icon: const Icon(Icons.add),
@@ -437,7 +438,7 @@ class _ReportFormViewState extends State<ReportFormView> {
   Widget _buildFiltersSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -458,18 +459,18 @@ class _ReportFormViewState extends State<ReportFormView> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Définissez des critères pour filtrer les données du rapport',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppTheme.grey600,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             if (_filters.isEmpty) ...[
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey50,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -478,7 +479,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 child: const Row(
                   children: [
                     Icon(Icons.filter_list_off, color: AppTheme.grey500),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Aucun filtre défini - toutes les données seront incluses',
                       style: TextStyle(color: AppTheme.grey500),
@@ -502,7 +503,7 @@ class _ReportFormViewState extends State<ReportFormView> {
         subtitle: const Text('Configuration optionnelle'),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: [
                 // Période de données par défaut
@@ -526,7 +527,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                     }
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Nombre maximum de résultats
                 TextFormField(
@@ -544,7 +545,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                     }
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Tri par défaut
                 DropdownButtonFormField<String>(
@@ -620,7 +621,7 @@ class _ReportFormViewState extends State<ReportFormView> {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         
         if (widget.report == null) ...[
           SizedBox(

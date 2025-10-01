@@ -79,16 +79,16 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.list_alt, size: 64, color: Theme.of(context).colorScheme.primary.withOpacity(0.2)),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text('Aucune liste pour le moment.', style: Theme.of(context).textTheme.titleMedium),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text('Créez votre première liste pour commencer.', style: Theme.of(context).textTheme.bodyMedium),
                     ],
                   )
                 : ListView.separated(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     itemCount: lists.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
+                    separatorBuilder: (_, __) => const SizedBox(height: AppTheme.space12),
                     itemBuilder: (context, index) {
                       final list = lists[index];
                       return Card(
@@ -153,7 +153,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                                   right: 2,
                                                   bottom: 2,
                                                   child: Container(
-                                                    padding: const EdgeInsets.all(2),
+                                                    padding: const EdgeInsets.all(AppTheme.space2),
                                                     decoration: BoxDecoration(
                                                       color: color,
                                                       shape: BoxShape.circle,
@@ -161,7 +161,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                                     ),
                                                     child: Text(
                                                       '${list.filters.length}',
-                                                      style: TextStyle(fontSize: 10, color: color.computeLuminance() < 0.5 ? AppTheme.white100 : AppTheme.black100, fontWeight: AppTheme.fontBold),
+                                                      style: TextStyle(fontSize: AppTheme.fontSize10, color: color.computeLuminance() < 0.5 ? AppTheme.white100 : AppTheme.black100, fontWeight: AppTheme.fontBold),
                                                       semanticsLabel: '${list.filters.length} filtre(s)',
                                                     ),
                                                   ),
@@ -173,13 +173,13 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                     },
                                   ),
                                 ),
-                                const SizedBox(width: 16),
+                                const SizedBox(width: AppTheme.spaceMedium),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(list.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
-                                      const SizedBox(height: 4),
+                                      const SizedBox(height: AppTheme.spaceXSmall),
                                       Text('${list.filters.length} critère(s)', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6))),
                                     ],
                                   ),
@@ -192,7 +192,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Row(
-                                              children: const [Icon(Icons.delete, color: AppTheme.redStandard), SizedBox(width: 8), Text('Liste supprimée')],
+                                              children: const [Icon(Icons.delete, color: AppTheme.redStandard), SizedBox(width: AppTheme.spaceSmall), Text('Liste supprimée')],
                                             ),
                                             duration: const Duration(seconds: 2),
                                             behavior: SnackBarBehavior.floating,
@@ -219,7 +219,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Row(
-                                              children: const [Icon(Icons.check_circle, color: AppTheme.greenStandard), SizedBox(width: 8), Text('Liste modifiée')],
+                                              children: const [Icon(Icons.check_circle, color: AppTheme.greenStandard), SizedBox(width: AppTheme.spaceSmall), Text('Liste modifiée')],
                                             ),
                                             duration: const Duration(seconds: 2),
                                             behavior: SnackBarBehavior.floating,
@@ -245,7 +245,7 @@ class _PeopleListsPageState extends State<PeopleListsPage> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Row(
-                                              children: const [Icon(Icons.copy, color: AppTheme.blueStandard), SizedBox(width: 8), Text('Liste dupliquée')],
+                                              children: const [Icon(Icons.copy, color: AppTheme.blueStandard), SizedBox(width: AppTheme.spaceSmall), Text('Liste dupliquée')],
                                             ),
                                             duration: const Duration(seconds: 2),
                                             behavior: SnackBarBehavior.floating,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/bible_book.dart';
+import '../../../theme.dart';
 
 class BookChapterSelector extends StatefulWidget {
   final List<BibleBook> books;
@@ -58,19 +59,19 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
             width: 40,
             decoration: BoxDecoration(
               color: AppTheme.grey300,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(AppTheme.radius2),
             ),
           ),
           
           // En-tête
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Text(
                   'Sélectionner un passage',
                   style: GoogleFonts.inter(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
@@ -88,7 +89,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
           if (_selectedBook != null)
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -103,7 +104,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
                     color: AppTheme.primaryColor,
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     '$_selectedBook${_selectedChapter != null ? ' $_selectedChapter' : ''}',
                     style: GoogleFonts.inter(
@@ -129,18 +130,21 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
               ),
             ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Onglets Testament
-          TabBar(
-            controller: _testamentTabController,
-            labelColor: AppTheme.primaryColor,
-            unselectedLabelColor: AppTheme.grey600,
-            indicatorColor: AppTheme.primaryColor,
+          Container(
+            color: AppTheme.primaryColor, // Couleur primaire cohérente
+            child: TabBar(
+              controller: _testamentTabController,
+              labelColor: AppTheme.onPrimaryColor, // Texte blanc
+              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc
             tabs: const [
               Tab(text: 'Ancien Testament'),
               Tab(text: 'Nouveau Testament'),
             ],
+          ),
           ),
           
           // Contenu des onglets
@@ -162,7 +166,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
     final books = widget.books.where((book) => book.testament == testament).toList();
     
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: books.length,
       itemBuilder: (context, index) {
         final book = books[index];
@@ -186,7 +190,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
                 child: Text(
                   book.abbreviation,
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontBold,
                     color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                   ),
@@ -203,7 +207,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
             subtitle: Text(
               '${book.totalChapters} chapitres',
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey600,
               ),
             ),
@@ -217,7 +221,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
             },
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -228,7 +232,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
                         color: AppTheme.grey700,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,

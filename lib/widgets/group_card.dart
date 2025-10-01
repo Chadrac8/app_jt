@@ -234,13 +234,13 @@ class _GroupCardState extends State<GroupCard>
             : null,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Row(
           children: [
             // Group Image
             _buildGroupImage(),
             
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             
             // Group Info
             Expanded(
@@ -268,7 +268,7 @@ class _GroupCardState extends State<GroupCard>
                     ],
                   ),
                   
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   
                   // Type and Frequency
                   Row(
@@ -287,7 +287,7 @@ class _GroupCardState extends State<GroupCard>
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         _getFrequencyText(),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -297,7 +297,7 @@ class _GroupCardState extends State<GroupCard>
                     ],
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Schedule and Location
                   Row(
@@ -307,20 +307,20 @@ class _GroupCardState extends State<GroupCard>
                         size: 16,
                         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         widget.group.scheduleText,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: AppTheme.spaceMedium),
                       Icon(
                         Icons.location_on,
                         size: 16,
                         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Expanded(
                         child: Text(
                           widget.group.location,
@@ -334,7 +334,7 @@ class _GroupCardState extends State<GroupCard>
                     ],
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Member count and next meeting
                   FutureBuilder<List<dynamic>>(
@@ -359,7 +359,7 @@ class _GroupCardState extends State<GroupCard>
                                     size: 16,
                                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                                   ),
-                                  const SizedBox(width: 4),
+                                  const SizedBox(width: AppTheme.spaceXSmall),
                                   Text(
                                     'Chargement...',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -377,7 +377,7 @@ class _GroupCardState extends State<GroupCard>
                                   size: 16,
                                   color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                                 ),
-                                const SizedBox(width: 4),
+                                const SizedBox(width: AppTheme.spaceXSmall),
                                 Text(
                                   '${members.length} membre${members.length > 1 ? 's' : ''}',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -398,7 +398,7 @@ class _GroupCardState extends State<GroupCard>
                               size: 16,
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               'Chargement...',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -419,7 +419,7 @@ class _GroupCardState extends State<GroupCard>
                             size: 16,
                             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             '${members.length} membre${members.length > 1 ? 's' : ''}',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -427,13 +427,13 @@ class _GroupCardState extends State<GroupCard>
                             ),
                           ),
                           if (nextMeeting != null) ...[
-                            const SizedBox(width: 16),
+                            const SizedBox(width: AppTheme.spaceMedium),
                             Icon(
                               Icons.event,
                               size: 16,
                               color: Theme.of(context).colorScheme.primary,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               'Prochaine: ${_formatDate(nextMeeting.date)}',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -513,7 +513,7 @@ class _GroupCardState extends State<GroupCard>
           // Group Info
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -527,7 +527,7 @@ class _GroupCardState extends State<GroupCard>
                     overflow: TextOverflow.ellipsis,
                   ),
                   
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   
                   // Type
                   Container(
@@ -545,7 +545,7 @@ class _GroupCardState extends State<GroupCard>
                     ),
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Schedule
                   Row(
@@ -555,7 +555,7 @@ class _GroupCardState extends State<GroupCard>
                         size: 14,
                         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Expanded(
                         child: Text(
                           widget.group.scheduleText,
@@ -569,7 +569,7 @@ class _GroupCardState extends State<GroupCard>
                     ],
                   ),
                   
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   
                   // Location
                   Row(
@@ -579,7 +579,7 @@ class _GroupCardState extends State<GroupCard>
                         size: 14,
                         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Expanded(
                         child: Text(
                           widget.group.location,
@@ -600,7 +600,7 @@ class _GroupCardState extends State<GroupCard>
                     future: GroupsFirebaseService.getGroupMembersWithPersonData(widget.group.id),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return const SizedBox(height: 16);
+                        return const SizedBox(height: AppTheme.spaceMedium);
                       }
                       
                       final members = snapshot.data! as List;
@@ -611,7 +611,7 @@ class _GroupCardState extends State<GroupCard>
                             size: 14,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             '${members.length} membre${members.length > 1 ? 's' : ''}',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
+import '../theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -140,7 +141,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       body: SafeArea(
         child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               child: FadeTransition(
                 opacity: _fadeAnimation,
                 child: SlideTransition(
@@ -164,7 +165,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           ],
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(AppTheme.spaceMedium),
                           child: ClipOval(
                             child: Image.asset(
                               'assets/logo_jt.png',
@@ -175,18 +176,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Titre principal MD3
                       Text(
                         'Bienvenue',
                         style: textTheme.headlineMedium?.copyWith(
                           color: colorScheme.onSurface,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: AppTheme.fontRegular,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       
                       // Verset biblique avec style MD3
                       Container(
@@ -199,22 +200,22 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         'Hébreux 13.8',
                         style: textTheme.labelMedium?.copyWith(
                           color: colorScheme.primary,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: AppTheme.space40),
                       
                       // Formulaire de connexion MD3
                       Container(
                         width: double.infinity,
                         constraints: const BoxConstraints(maxWidth: 400),
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(AppTheme.spaceLarge),
                         decoration: BoxDecoration(
                           color: colorScheme.surfaceContainerLow,
                           borderRadius: BorderRadius.circular(28),
@@ -232,11 +233,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 _isLoginMode ? 'Connexion' : 'Créer un compte',
                                 style: textTheme.headlineSmall?.copyWith(
                                   color: colorScheme.onSurface,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: AppTheme.fontRegular,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: AppTheme.spaceXLarge),
                               
                               // Champ Email MD3
                               TextFormField(
@@ -252,18 +253,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   filled: true,
                                   fillColor: colorScheme.surfaceContainerHighest,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     borderSide: BorderSide.none,
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     borderSide: BorderSide(
                                       color: colorScheme.primary,
                                       width: 2,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     borderSide: BorderSide(
                                       color: colorScheme.error,
                                       width: 1,
@@ -287,7 +288,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: AppTheme.space20),
                               
                               // Champ Mot de passe MD3
                               TextFormField(
@@ -316,18 +317,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   filled: true,
                                   fillColor: colorScheme.surfaceContainerHighest,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     borderSide: BorderSide.none,
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     borderSide: BorderSide(
                                       color: colorScheme.primary,
                                       width: 2,
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     borderSide: BorderSide(
                                       color: colorScheme.error,
                                       width: 1,
@@ -351,7 +352,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: AppTheme.spaceXLarge),
                               
                               // Bouton principal MD3
                               FilledButton(
@@ -361,7 +362,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   foregroundColor: colorScheme.onPrimary,
                                   padding: const EdgeInsets.symmetric(vertical: 16),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                                   ),
                                   minimumSize: const Size(double.infinity, 56),
                                 ),
@@ -379,11 +380,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                     : Text(
                                         _isLoginMode ? 'Se connecter' : 'Créer le compte',
                                         style: textTheme.labelLarge?.copyWith(
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: AppTheme.fontMedium,
                                         ),
                                       ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppTheme.spaceMedium),
                               
                               // Bouton de changement de mode MD3
                               TextButton(
@@ -398,12 +399,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                       : 'Déjà un compte ? Se connecter',
                                   style: textTheme.labelLarge?.copyWith(
                                     color: colorScheme.primary,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                               ),
                               
-                              const SizedBox(height: 12),
+                              const SizedBox(height: AppTheme.space12),
                               
                               // Divider MD3
                               Row(
@@ -432,7 +433,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 ],
                               ),
                               
-                              const SizedBox(height: 12),
+                              const SizedBox(height: AppTheme.space12),
                               
                               // Bouton accès anonyme MD3 (moins proéminent)
                               OutlinedButton.icon(
@@ -446,7 +447,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   'Accès anonyme',
                                   style: textTheme.labelLarge?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: AppTheme.fontMedium,
                                   ),
                                 ),
                                 style: OutlinedButton.styleFrom(
@@ -457,7 +458,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   ),
                                   padding: const EdgeInsets.symmetric(vertical: 12),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                                   ),
                                   minimumSize: const Size(double.infinity, 44),
                                 ),
@@ -465,13 +466,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               
                               // Message d'erreur MD3
                               if (_errorMessage != null) ...[
-                                const SizedBox(height: 16),
+                                const SizedBox(height: AppTheme.spaceMedium),
                                 Container(
                                   width: double.infinity,
-                                  padding: const EdgeInsets.all(16),
+                                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                                   decoration: BoxDecoration(
                                     color: colorScheme.errorContainer,
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                                     border: Border.all(
                                       color: colorScheme.error.withValues(alpha: 0.3),
                                       width: 1,
@@ -485,7 +486,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         color: colorScheme.onErrorContainer,
                                         size: 20,
                                       ),
-                                      const SizedBox(width: 12),
+                                      const SizedBox(width: AppTheme.space12),
                                       Expanded(
                                         child: Text(
                                           _errorMessage!,
@@ -502,7 +503,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                       
                       // Footer MD3
                       Text(

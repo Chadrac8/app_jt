@@ -34,7 +34,7 @@ class RoleModuleTestPage extends StatelessWidget {
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Interface complète pour gérer l\'assignation des rôles aux utilisateurs de l\'application.',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -45,7 +45,7 @@ class RoleModuleTestPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               ElevatedButton.icon(
                 onPressed: () => _navigateToAssignment(context),
                 icon: const Icon(Icons.people),
@@ -56,7 +56,7 @@ class RoleModuleTestPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               ElevatedButton.icon(
                 onPressed: () => _navigateToRoleManagement(context),
                 icon: const Icon(Icons.admin_panel_settings),
@@ -67,7 +67,7 @@ class RoleModuleTestPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               ElevatedButton.icon(
                 onPressed: () => _navigateToModuleMenu(context),
                 icon: const Icon(Icons.dashboard),
@@ -78,7 +78,7 @@ class RoleModuleTestPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               Card(
                 color: AppTheme.grey50,
                 child: Padding(
@@ -89,7 +89,7 @@ class RoleModuleTestPage extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.check_circle, color: AppTheme.grey600),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(
                             'Intégration Réussie',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -99,12 +99,12 @@ class RoleModuleTestPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Le module d\'assignation des rôles est maintenant intégré dans l\'application et accessible depuis :',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         '• Navigation Admin → Rôles → Onglet "Assignations"',
                         style: Theme.of(context).textTheme.bodySmall,

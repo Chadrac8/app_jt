@@ -7,6 +7,7 @@ import '../../../models/branham_message.dart';
 import '../services/admin_branham_messages_service.dart';
 import 'admin_branham_messages_screen.dart';
 import 'pdf_viewer_screen.dart';
+import '../../../theme.dart';
 
 class ReadMessageTab extends StatefulWidget {
   const ReadMessageTab({Key? key}) : super(key: key);
@@ -223,7 +224,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -234,7 +235,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                   size: 28,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,7 +243,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                     Text(
                       'Lire le Message',
                       style: GoogleFonts.poppins(
-                        fontSize: 24,
+                        fontSize: AppTheme.fontSize24,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.grey800,
                       ),
@@ -250,7 +251,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                     Text(
                       'Prédications de William Branham',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -260,7 +261,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
               if (!_isLoading && _messages.isNotEmpty)
                 PopupMenuButton<String>(
                   icon: Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -297,10 +298,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                             size: 20,
                             color: AppTheme.primaryColor,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Actualiser',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
                           ),
                         ],
                       ),
@@ -314,10 +315,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                             size: 20,
                             color: AppTheme.primaryColor,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Rechercher',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
                           ),
                         ],
                       ),
@@ -331,10 +332,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                             size: 20,
                             color: AppTheme.primaryColor,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Filtrer',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
                           ),
                         ],
                       ),
@@ -348,10 +349,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                             size: 20,
                             color: AppTheme.primaryColor,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Administration',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
                           ),
                         ],
                       ),
@@ -361,7 +362,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
             ],
           ),
           if (_isSearching) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
               decoration: BoxDecoration(
                 color: AppTheme.grey100,
@@ -378,7 +379,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                   hintText: 'Rechercher une prédication...',
                   hintStyle: GoogleFonts.inter(
                     color: AppTheme.grey500,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                   prefixIcon: Icon(
                     Icons.search,
@@ -414,7 +415,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
             ),
           ],
           if (_selectedFilter != 'Tous') ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
@@ -429,16 +430,16 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                     size: 16,
                     color: AppTheme.primaryColor,
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: AppTheme.space6),
                   Text(
                     _selectedFilter,
                     style: GoogleFonts.inter(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: AppTheme.space6),
                   GestureDetector(
                     onTap: () {
                       if (mounted) setState(() => _selectedFilter = 'Tous');
@@ -467,11 +468,11 @@ class _ReadMessageTabState extends State<ReadMessageTab>
           const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Text(
             'Chargement des prédications...',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey600,
             ),
           ),
@@ -483,12 +484,12 @@ class _ReadMessageTabState extends State<ReadMessageTab>
   Widget _buildEmptyState() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
                 color: AppTheme.grey100,
                 borderRadius: BorderRadius.circular(50),
@@ -499,31 +500,31 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                 color: AppTheme.grey400,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Text(
               _searchQuery.isNotEmpty || _selectedFilter != 'Tous'
                   ? 'Aucun résultat trouvé'
                   : 'Aucune prédication disponible',
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.grey700,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               _searchQuery.isNotEmpty || _selectedFilter != 'Tous'
                   ? 'Essayez de modifier vos critères de recherche'
                   : 'Les prédications seront chargées automatiquement',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.grey500,
               ),
               textAlign: TextAlign.center,
             ),
             if (_searchQuery.isNotEmpty || _selectedFilter != 'Tous') ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               ElevatedButton.icon(
                 onPressed: () {
                   if (mounted) {
@@ -560,7 +561,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
       child: RefreshIndicator(
         onRefresh: _refreshMessages,
         child: ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: _filteredMessages.length,
           itemBuilder: (context, index) {
             final message = _filteredMessages[index];
@@ -599,7 +600,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -618,7 +619,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                         child: Text(
                           message.id,
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.primaryColor,
                           ),
@@ -642,11 +643,11 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                               size: 12,
                               color: AppTheme.grey700,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               message.formattedDuration,
                               style: GoogleFonts.inter(
-                                fontSize: 11,
+                                fontSize: AppTheme.fontSize11,
                                 fontWeight: AppTheme.fontMedium,
                                 color: AppTheme.grey700,
                               ),
@@ -656,13 +657,13 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
 
                   // Titre de la prédication
                   Text(
                     message.title,
                     style: GoogleFonts.poppins(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.grey800,
                       height: 1.3,
@@ -670,7 +671,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
 
                   // Informations de lieu et date
                   Row(
@@ -680,35 +681,35 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                         size: 16,
                         color: AppTheme.grey600,
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: AppTheme.space6),
                       Expanded(
                         child: Text(
                           message.location,
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: AppTheme.grey600,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Icon(
                         Icons.calendar_today_outlined,
                         size: 16,
                         color: AppTheme.grey600,
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: AppTheme.space6),
                       Text(
                         message.formattedDate,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey600,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
 
                   // Actions
                   Row(
@@ -732,7 +733,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       OutlinedButton.icon(
                         onPressed: () => _shareMessage(message),
                         icon: const Icon(
@@ -791,7 +792,7 @@ class _ReadMessageTabState extends State<ReadMessageTab>
           'Filtrer par',
           style: GoogleFonts.poppins(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
           ),
         ),
         content: SizedBox(
@@ -812,10 +813,10 @@ class _ReadMessageTabState extends State<ReadMessageTab>
                       color: filter['color'],
                       size: 20,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Text(
                       filter['key'],
-                      style: GoogleFonts.inter(fontSize: 14),
+                      style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
                     ),
                   ],
                 ),

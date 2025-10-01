@@ -6,6 +6,7 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Vue de formulaire pour créer/modifier un article de blog
 class BlogFormView extends StatefulWidget {
@@ -160,7 +161,7 @@ class _BlogFormViewState extends State<BlogFormView>
 
   Widget _buildQuickActions() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border(
@@ -180,7 +181,7 @@ class _BlogFormViewState extends State<BlogFormView>
               _getStatusLabel(_status),
               style: const TextStyle(
                 color: AppTheme.white100,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
@@ -200,7 +201,7 @@ class _BlogFormViewState extends State<BlogFormView>
               ),
             ),
           
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           
           OutlinedButton.icon(
             onPressed: _isLoading ? null : _saveDraft,
@@ -214,7 +215,7 @@ class _BlogFormViewState extends State<BlogFormView>
 
   Widget _buildContentTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -226,7 +227,7 @@ class _BlogFormViewState extends State<BlogFormView>
               hintText: 'Saisissez un titre accrocheur...',
               border: OutlineInputBorder(),
             ),
-            style: const TextStyle(fontSize: 18, fontWeight: AppTheme.fontMedium),
+            style: const TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontMedium),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Le titre est obligatoire';
@@ -239,7 +240,7 @@ class _BlogFormViewState extends State<BlogFormView>
             onChanged: (_) => _generateSlugAndExcerpt(),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Extrait
           TextFormField(
@@ -259,7 +260,7 @@ class _BlogFormViewState extends State<BlogFormView>
             },
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Contenu principal
           TextFormField(
@@ -282,7 +283,7 @@ class _BlogFormViewState extends State<BlogFormView>
             },
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Tags
           TextFormField(
@@ -298,7 +299,7 @@ class _BlogFormViewState extends State<BlogFormView>
             },
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Informations sur l'article
           _buildArticleInfo(),
@@ -313,15 +314,15 @@ class _BlogFormViewState extends State<BlogFormView>
     
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Informations sur l\'article',
-              style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -343,7 +344,7 @@ class _BlogFormViewState extends State<BlogFormView>
         Text(
           value,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.blueStandard,
           ),
@@ -351,7 +352,7 @@ class _BlogFormViewState extends State<BlogFormView>
         Text(
           label,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: AppTheme.grey500,
           ),
         ),
@@ -361,7 +362,7 @@ class _BlogFormViewState extends State<BlogFormView>
 
   Widget _buildCategoriesTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -370,7 +371,7 @@ class _BlogFormViewState extends State<BlogFormView>
             children: [
               const Text(
                 'Catégories',
-                style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
               ),
               TextButton.icon(
                 onPressed: _addNewCategory,
@@ -380,7 +381,7 @@ class _BlogFormViewState extends State<BlogFormView>
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           if (_isLoadingCategories)
             const Center(child: CircularProgressIndicator())
@@ -389,7 +390,7 @@ class _BlogFormViewState extends State<BlogFormView>
               child: Column(
                 children: [
                   Icon(Icons.category_outlined, size: 64, color: AppTheme.grey500),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                   Text('Aucune catégorie disponible'),
                 ],
               ),
@@ -423,14 +424,14 @@ class _BlogFormViewState extends State<BlogFormView>
               )).toList(),
             ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           const Text(
             'Catégories sélectionnées',
-            style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontMedium),
+            style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontMedium),
           ),
           
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           
           if (_selectedCategories.isEmpty)
             const Text(
@@ -457,16 +458,16 @@ class _BlogFormViewState extends State<BlogFormView>
 
   Widget _buildAppearanceTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Image en vedette',
-            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+            style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Image en vedette
           CustomCard(
@@ -514,7 +515,7 @@ class _BlogFormViewState extends State<BlogFormView>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(Icons.image, size: 64, color: AppTheme.grey500),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         ElevatedButton.icon(
                           onPressed: _selectFeaturedImage,
                           icon: const Icon(Icons.add_photo_alternate),
@@ -524,14 +525,14 @@ class _BlogFormViewState extends State<BlogFormView>
                     ),
                   ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Options d'image
                 if (_featuredImageUrl == null)
                   Column(
                     children: [
                       const Text('ou'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       ElevatedButton.icon(
                         onPressed: _generateImageFromTitle,
                         icon: const Icon(Icons.auto_awesome),
@@ -543,15 +544,15 @@ class _BlogFormViewState extends State<BlogFormView>
             ),
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // SEO
           const Text(
             'Optimisation pour les moteurs de recherche',
-            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+            style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _metaTitleController,
@@ -568,7 +569,7 @@ class _BlogFormViewState extends State<BlogFormView>
             },
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextFormField(
             controller: _metaDescriptionController,
@@ -592,16 +593,16 @@ class _BlogFormViewState extends State<BlogFormView>
 
   Widget _buildSettingsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Publication',
-            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+            style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Statut
           DropdownButtonFormField<BlogPostStatus>(
@@ -623,7 +624,7 @@ class _BlogFormViewState extends State<BlogFormView>
             },
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Programmation
           if (_status == BlogPostStatus.scheduled) ...[
@@ -637,16 +638,16 @@ class _BlogFormViewState extends State<BlogFormView>
               onTap: _selectScheduledDate,
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
           
           // Options
           const Text(
             'Options',
-            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+            style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           SwitchListTile(
             title: const Text('Autoriser les commentaires'),
@@ -670,16 +671,16 @@ class _BlogFormViewState extends State<BlogFormView>
             },
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Actions avancées
           if (widget.isEdit) ...[
             const Text(
               'Actions avancées',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             ListTile(
               leading: const Icon(Icons.copy),

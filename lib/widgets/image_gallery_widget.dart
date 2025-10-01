@@ -125,7 +125,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           ],
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
 
         // Contenu principal
         SizedBox(
@@ -143,7 +143,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text('Chargement de vos images...'),
           ],
         ),
@@ -156,13 +156,13 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.error, size: 48, color: AppTheme.redStandard),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur: $_error',
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppTheme.redStandard),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: _loadUserImages,
               child: const Text('Réessayer'),
@@ -182,16 +182,16 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
               size: 64,
               color: AppTheme.grey400,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune image trouvée',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.grey600,
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Uploadez des images depuis l\'onglet précédent',
               style: TextStyle(
@@ -286,7 +286,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
                         color: AppTheme.white100,
                         size: 16,
                       ),
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                       constraints: const BoxConstraints(
                         minWidth: 24,
                         minHeight: 24,

@@ -86,9 +86,9 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => setState(() {}),
                   child: const Text('Réessayer'),
@@ -106,10 +106,10 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.mark_email_read, size: 64, color: AppTheme.grey500),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun message non lu',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -117,7 +117,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: messages.length,
           itemBuilder: (context, index) {
             return _buildMessageCard(messages[index]);
@@ -141,9 +141,9 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => setState(() {}),
                   child: const Text('Réessayer'),
@@ -161,10 +161,10 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.inbox, size: 64, color: AppTheme.grey500),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun message reçu',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -172,7 +172,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: messages.length,
           itemBuilder: (context, index) {
             return _buildMessageCard(messages[index]);
@@ -205,10 +205,10 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('De: ${message.name} (${message.email})'),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               DateFormat('dd/MM/yyyy à HH:mm').format(message.createdAt),
-              style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
+              style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
             ),
           ],
         ),
@@ -260,7 +260,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
         child: Container(
           constraints: const BoxConstraints(maxWidth: 600),
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,14 +275,14 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                         Text(
                           message.subject,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: AppTheme.fontSize20,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'De: ${message.name}',
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: AppTheme.fontSize16),
                         ),
                         Text(
                           'Email: ${message.email}',
@@ -290,7 +290,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                         ),
                         Text(
                           'Reçu le: ${DateFormat('dd/MM/yyyy à HH:mm').format(message.createdAt)}',
-                          style: const TextStyle(color: AppTheme.grey500, fontSize: 12),
+                          style: const TextStyle(color: AppTheme.grey500, fontSize: AppTheme.fontSize12),
                         ),
                       ],
                     ),
@@ -307,7 +307,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
               // Message
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey50,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -319,7 +319,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                 ),
               ),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Actions
               Row(
@@ -334,7 +334,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                       label: const Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () => Navigator.pop(context),

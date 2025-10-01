@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../roles_module.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Exemple d'utilisation du module Rôles et Permissions
 class RolesModuleExample extends StatefulWidget {
@@ -49,14 +50,14 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildModuleInfo(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildPermissionExamples(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildQuickActions(),
           ],
         ),
@@ -67,14 +68,14 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
   Widget _buildModuleInfo() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.info_outline, color: AppTheme.grey600),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Informations du module',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -83,11 +84,11 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text('Nom: ${RolesModule.moduleName}'),
             Text('ID: ${RolesModule.moduleId}'),
             Text('Version: ${RolesModule.moduleVersion}'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             const Text(
               'Ce module fournit un système complet de gestion des rôles et permissions '
               'pour contrôler l\'accès aux différentes fonctionnalités de l\'application.',
@@ -102,14 +103,14 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
   Widget _buildPermissionExamples() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.security, color: AppTheme.grey600),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Exemples de vérifications de permissions',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -118,14 +119,14 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Garde de permission
             PermissionGuard(
               permission: 'dashboard_visualisation_read',
               userId: currentUserId,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -133,7 +134,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 child: const Row(
                   children: [
                     Icon(Icons.check_circle, color: AppTheme.greenStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text('Accès autorisé au dashboard (lecture)'),
                     ),
@@ -141,7 +142,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 ),
               ),
               fallback: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -149,7 +150,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 child: const Row(
                   children: [
                     Icon(Icons.block, color: AppTheme.redStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text('Accès refusé au dashboard'),
                     ),
@@ -158,14 +159,14 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
               ),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Garde de module
             ModuleGuard(
               moduleId: 'personnes',
               userId: currentUserId,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -173,7 +174,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 child: const Row(
                   children: [
                     Icon(Icons.people, color: AppTheme.blueStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text('Accès au module Personnes'),
                     ),
@@ -181,7 +182,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 ),
               ),
               fallback: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -189,7 +190,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 child: const Row(
                   children: [
                     Icon(Icons.warning, color: AppTheme.orangeStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text('Pas d\'accès au module Personnes'),
                     ),
@@ -206,14 +207,14 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
   Widget _buildQuickActions() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.flash_on, color: AppTheme.grey600),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Actions rapides',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -222,7 +223,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -301,10 +302,10 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
               children: [
                 Text('Dashboard (lecture): ${hasReadDashboard ? "✓" : "✗"}'),
                 Text('Module Personnes: ${hasModuleAccess ? "✓" : "✗"}'),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Text('Total permissions: ${userPermissions.length}'),
                 if (userPermissions.isNotEmpty) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   const Text('Quelques permissions:'),
                   ...userPermissions.take(5).map((perm) => Text('• $perm')),
                   if (userPermissions.length > 5)
@@ -366,7 +367,7 @@ class _RolesModuleExampleState extends State<RolesModuleExample> {
           child: SingleChildScrollView(
             child: Text(
               config.toString(),
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: AppTheme.fontSize12),
             ),
           ),
         ),

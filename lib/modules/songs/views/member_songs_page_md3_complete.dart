@@ -8,6 +8,7 @@ import '../../../pages/song_projection_page.dart';
 import '../../../widgets/setlist_card_perfect13.dart';
 import '../../../pages/setlist_detail_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Page des chants pour les membres - Material Design 3
 class MemberSongsPageMD3 extends StatefulWidget {
@@ -74,24 +75,24 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
           // Barre de recherche locale (conditionnelle) - MD3
           if (_isSearchVisible) _buildSearchBar(),
           
-          // TabBar - Style MD3
+          // TabBar - Style MD3 avec couleur primaire cohérente
           Material(
-            color: colorScheme.surface,
+            color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
             elevation: 0,
             child: TabBar(
               controller: _tabController,
-              labelColor: colorScheme.primary,
-              unselectedLabelColor: colorScheme.onSurfaceVariant,
-              indicatorColor: colorScheme.primary,
+              labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 3.0,
               labelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
                 letterSpacing: 0.1,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
                 letterSpacing: 0.1,
               ),
@@ -99,10 +100,10 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
               overlayColor: WidgetStateProperty.resolveWith<Color?>(
                 (Set<WidgetState> states) {
                   if (states.contains(WidgetState.pressed)) {
-                    return colorScheme.primary.withOpacity(0.12);
+                    return AppTheme.onPrimaryColor.withOpacity(0.12); // Effet blanc sur fond primaire
                   }
                   if (states.contains(WidgetState.hovered)) {
-                    return colorScheme.primary.withOpacity(0.08);
+                    return AppTheme.onPrimaryColor.withOpacity(0.08); // Effet blanc sur fond primaire
                   }
                   return null;
                 },
@@ -176,7 +177,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
               hintText: 'Rechercher des cantiques...',
               hintStyle: GoogleFonts.inter(
                 color: colorScheme.onSurfaceVariant,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 letterSpacing: 0.15,
               ),
               prefixIcon: Icon(
@@ -221,7 +222,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
               ),
             ),
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: colorScheme.onSurface,
               letterSpacing: 0.15,
             ),
@@ -240,7 +241,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
               Text(
                 'Rechercher dans :',
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: AppTheme.fontMedium,
                   letterSpacing: 0.4,
@@ -251,7 +252,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
                 label: Text(
                   'Titres',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium,
                     letterSpacing: 0.1,
                   ),
@@ -279,7 +280,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
                 label: Text(
                   'Paroles',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium,
                     letterSpacing: 0.1,
                   ),
@@ -457,7 +458,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
                   hintText: 'Rechercher une setlist...',
                   hintStyle: GoogleFonts.inter(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     letterSpacing: 0.15,
                   ),
                   prefixIcon: Icon(
@@ -488,7 +489,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
                   ),
                 ),
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: Theme.of(context).colorScheme.onSurface,
                   letterSpacing: 0.15,
                 ),
@@ -605,7 +606,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
                 letterSpacing: 0.15,
@@ -615,7 +616,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
             Text(
               message,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurfaceVariant,
                 letterSpacing: 0.25,
               ),
@@ -657,7 +658,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
                 letterSpacing: 0.15,
@@ -667,7 +668,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
             Text(
               message,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurfaceVariant,
                 letterSpacing: 0.25,
               ),
@@ -725,7 +726,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
                             Text(
                               song.title,
                               style: GoogleFonts.inter(
-                                fontSize: 20,
+                                fontSize: AppTheme.fontSize20,
                                 fontWeight: AppTheme.fontSemiBold,
                                 color: colorScheme.onSurface,
                                 letterSpacing: 0.15,
@@ -737,7 +738,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
                               Text(
                                 'Cantique n°${_getSongNumber(song, allSongs)}',
                                 style: GoogleFonts.inter(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   color: colorScheme.onSurfaceVariant,
                                   letterSpacing: 0.4,
                                 ),
@@ -830,7 +831,7 @@ class _MemberSongsPageMD3State extends State<MemberSongsPageMD3>
       label: Text(
         label,
         style: GoogleFonts.inter(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontMedium,
           letterSpacing: 0.1,
         ),

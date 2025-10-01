@@ -142,7 +142,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   CircularProgressIndicator(
                     color: Theme.of(context).colorScheme.primary,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Chargement...',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -202,31 +202,31 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                               if (config.isLiveActive)
                                 _buildNextLiveSection(config),
                               if (config.isLiveActive)
-                                const SizedBox(height: 32),
+                                const SizedBox(height: AppTheme.spaceXLarge),
                               
                               // Actions rapides (si activées)
                               if (config.areQuickActionsActive)
                                 _buildQuickActionsSection(config),
                               if (config.areQuickActionsActive)
-                                const SizedBox(height: 32),
+                                const SizedBox(height: AppTheme.spaceXLarge),
                               
                               // Dernières prédications (si activées)
                               if (config.isLastSermonActive)
                                 const LatestSermonWidget(),
                               if (config.isLastSermonActive)
-                                const SizedBox(height: 32),
+                                const SizedBox(height: AppTheme.spaceXLarge),
                               
                               // Événements à venir (si activés)
                               if (config.areEventsActive)
                                 _buildUpcomingEventsSection(config),
                               if (config.areEventsActive)
-                                const SizedBox(height: 32),
+                                const SizedBox(height: AppTheme.spaceXLarge),
                               
                               // Nous contacter (si activé)
                               if (config.isContactActive)
                                 _buildContactUsSection(config),
                               if (config.isContactActive)
-                                const SizedBox(height: 32),
+                                const SizedBox(height: AppTheme.spaceXLarge),
                             ],
                           ),
                         ),
@@ -435,7 +435,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
         borderRadius: BorderRadius.zero,
         boxShadow: [
           BoxShadow(
-            color: (isLive ? Colors.deepOrange : isUpcoming ? AppTheme.blueStandard : AppTheme.grey500)
+            color: (isLive ? AppTheme.warningColor : isUpcoming ? AppTheme.blueStandard : AppTheme.grey500)
                 .withOpacity(0.2),
             blurRadius: 12,
             offset: const Offset(0, 4),
@@ -446,7 +446,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
       child: Column(
         children: [
           _buildLiveHeader(isLive, isUpcoming, duration, config),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildLiveActionButtons(isLive, isUpcoming, config),
         ],
       ),
@@ -499,14 +499,14 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   );
                 },
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
             ],
             Flexible(
               child: Text(
                 statusText,
                 style: const TextStyle(
                   color: AppTheme.white100,
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   letterSpacing: 0.5,
                 ),
@@ -517,7 +517,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
         ),
         
         if (isUpcoming) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildElegantCountdown(duration),
         ],
       ],
@@ -583,19 +583,19 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
             value,
             style: const TextStyle(
               color: AppTheme.white100,
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               fontFamily: 'monospace',
               letterSpacing: 1.0,
             ),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           unit,
           style: TextStyle(
             color: AppTheme.white100.withOpacity(0.9),
-            fontSize: 11,
+            fontSize: AppTheme.fontSize11,
             fontWeight: AppTheme.fontSemiBold,
             letterSpacing: 0.5,
           ),
@@ -611,7 +611,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
         ':',
         style: TextStyle(
           color: AppTheme.white100.withOpacity(0.7),
-          fontSize: 20,
+          fontSize: AppTheme.fontSize20,
           fontWeight: AppTheme.fontBold,
         ),
       ),
@@ -642,7 +642,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
           ),
         ),
         
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         
         Expanded(
           child: ElevatedButton.icon(
@@ -679,7 +679,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.secondaryContainer,
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -690,7 +690,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                 size: 20,
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -713,7 +713,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppTheme.space20),
         
         GridView.count(
           crossAxisCount: 2,
@@ -801,13 +801,13 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
               
               // Content
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppTheme.space20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Icon
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         color: AppTheme.white100.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -827,15 +827,15 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                       style: const TextStyle(
                         color: AppTheme.white100,
                         fontWeight: AppTheme.fontBold,
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       description,
                       style: TextStyle(
                         color: AppTheme.white100.withOpacity(0.9),
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -863,7 +863,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.tertiaryContainer,
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -874,7 +874,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -922,11 +922,11 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                             'Voir plus',
                             style: TextStyle(
                               color: AppTheme.orangeStandard,
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Icon(
                             Icons.arrow_forward_ios,
                             color: AppTheme.orangeStandard,
@@ -939,7 +939,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Contenu des événements
             if (snapshot.connectionState == ConnectionState.waiting)
@@ -948,7 +948,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
               )
             else if (snapshot.hasError)
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppTheme.space20),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -964,7 +964,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
               )
             else if (events.isEmpty)
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppTheme.space20),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -980,12 +980,12 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                       color: AppTheme.orangeStandard.withOpacity(0.6),
                       size: 24,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Text(
                       'Aucun événement à venir',
                       style: TextStyle(
                         color: AppTheme.white100.withOpacity(0.7),
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                       ),
                     ),
                   ],
@@ -1037,7 +1037,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
 
   Widget _buildEventCard(String day, String month, String title, String description, String time) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -1063,7 +1063,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFFFFB74D),
+                  AppTheme.passageColor4,
                   Color(0xFFFF9800),
                 ],
               ),
@@ -1084,14 +1084,14 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   style: const TextStyle(
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.white100,
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                   ),
                 ),
                 Text(
                   month,
                   style: TextStyle(
                     color: AppTheme.white100.withOpacity(0.9),
-                    fontSize: 11,
+                    fontSize: AppTheme.fontSize11,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
@@ -1099,7 +1099,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
             ),
           ),
           
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           
           Expanded(
             child: Column(
@@ -1110,36 +1110,36 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   style: const TextStyle(
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.white100,
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   description,
                   style: const TextStyle(
                     color: Color(0xFFB0BEC5),
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Row(
                   children: [
                     const Icon(
                       Icons.access_time_rounded,
                       size: 14,
-                      color: Color(0xFFFFB74D),
+                      color: AppTheme.passageColor4,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       time,
                       style: const TextStyle(
-                        color: Color(0xFFFFB74D),
+                        color: AppTheme.passageColor4,
                         fontWeight: AppTheme.fontMedium,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -1171,7 +1171,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
           ],
           stops: [0.0, 0.6, 1.0],
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF1976D2).withOpacity(0.4),
@@ -1193,7 +1193,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.white100.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -1215,7 +1215,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   size: 28,
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: AppTheme.space20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1235,12 +1235,12 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                         ],
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: AppTheme.space6),
                     Text(
                       'Une question ? Nous sommes là pour vous',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppTheme.white100.withOpacity(0.95),
-                        fontSize: 15,
+                        fontSize: AppTheme.fontSize15,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -1250,10 +1250,10 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
             ],
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               color: AppTheme.white100.withOpacity(0.15),
               borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -1273,7 +1273,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactEmail?.isNotEmpty == true)
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 
                 if (config.contactAddress?.isNotEmpty == true)
                   _buildContactMethod(
@@ -1284,7 +1284,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactAddress?.isNotEmpty == true)
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 
                 if (config.contactPhone?.isNotEmpty == true)
                   _buildContactMethod(
@@ -1295,7 +1295,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactPhone?.isNotEmpty == true)
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 
                 if (config.contactWhatsApp?.isNotEmpty == true)
                   _buildContactMethod(
@@ -1306,7 +1306,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactWhatsApp?.isNotEmpty == true)
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                 
                 SizedBox(
                   width: double.infinity,
@@ -1338,7 +1338,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.white100.withOpacity(0.1),
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1350,7 +1350,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: AppTheme.white100.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10),
@@ -1361,7 +1361,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                 size: 20,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1780,7 +1780,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
       ),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 500, maxHeight: 600),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1788,7 +1788,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
@@ -1801,7 +1801,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1828,7 +1828,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Formulaire
             Expanded(
@@ -1853,7 +1853,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                         },
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Email
                       TextFormField(
@@ -1875,7 +1875,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                         },
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Sujet
                       TextFormField(
@@ -1893,7 +1893,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                         },
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Message
                       TextFormField(
@@ -1920,7 +1920,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
               ),
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Boutons d'action
             Row(
@@ -1931,7 +1931,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                     child: const Text('Annuler'),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _isSubmitting ? null : _submitForm,

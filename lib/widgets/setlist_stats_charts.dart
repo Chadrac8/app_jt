@@ -26,18 +26,18 @@ class SetlistStatsPieChart extends StatelessWidget {
         value: value.toDouble(),
         title: '$label\n$percent%',
         radius: 60,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
+        titleStyle: const TextStyle(fontSize: AppTheme.fontSize12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ));
       i++;
     });
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(title, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             SizedBox(
               height: 200,
               child: PieChart(

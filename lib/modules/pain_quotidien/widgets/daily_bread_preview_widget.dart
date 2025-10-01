@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../theme.dart';
 import '../services/branham_scraping_service.dart';
 import '../views/daily_bread_page.dart';
+import '../../../theme.dart';
 
 /// Widget d'aperçu du pain quotidien pour la page d'accueil
 class DailyBreadPreviewWidget extends StatefulWidget {
@@ -75,7 +76,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
           ],
           stops: [0.0, 0.5, 1.0],
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         border: Border.all(
           color: const Color(0xFFE2E8F0), // Bordure slate subtile
           width: 1,
@@ -101,7 +102,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -135,7 +136,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,12 +147,12 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                             'Pain quotidien',
                             style: TextStyle(
                               color: Color(0xFF0F172A),
-                              fontSize: 20,
+                              fontSize: AppTheme.fontSize20,
                               fontWeight: AppTheme.fontExtraBold,
                               letterSpacing: -0.5,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
@@ -162,7 +163,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                               'NOUVEAU',
                               style: TextStyle(
                                 color: AppTheme.primaryColor,
-                                fontSize: 10,
+                                fontSize: AppTheme.fontSize10,
                                 fontWeight: AppTheme.fontBold,
                                 letterSpacing: 0.5,
                               ),
@@ -175,7 +176,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         'Verset et citation du jour',
                         style: TextStyle(
                           color: Color(0xFF64748B),
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontMedium,
                           letterSpacing: 0.1,
                         ),
@@ -186,7 +187,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
               ],
             ),
             
-            const SizedBox(height: 18),
+            const SizedBox(height: AppTheme.space18),
             
             // Contenu élégant ou état de chargement
             if (_isLoading)
@@ -219,12 +220,12 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                           valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Chargement...',
                         style: TextStyle(
                           color: Color(0xFF64748B),
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -257,13 +258,13 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Icône de citation élégante
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
                         decoration: BoxDecoration(
                           color: AppTheme.primaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -274,12 +275,12 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                           size: 16,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: AppTheme.space10),
                       Text(
                         _getPreviewText(),
                         style: const TextStyle(
                           color: Color(0xFF1E293B),
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontMedium,
                           height: 1.5,
                           letterSpacing: 0.1,
@@ -288,7 +289,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       if (_dailyQuote!.dailyBreadReference.isNotEmpty) ...[
-                        const SizedBox(height: 10),
+                        const SizedBox(height: AppTheme.space10),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
@@ -304,7 +305,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                             _dailyQuote!.dailyBreadReference,
                             style: const TextStyle(
                               color: AppTheme.surfaceColor,
-                              fontSize: 13,
+                              fontSize: AppTheme.fontSize13,
                               fontWeight: AppTheme.fontSemiBold,
                               letterSpacing: 0.3,
                             ),
@@ -317,7 +318,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
               )
             else
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppTheme.space20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -338,13 +339,13 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                       color: Color(0xFF64748B),
                       size: 20,
                     ),
-                    SizedBox(width: 12),
+                    SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Text(
                         'Aucun contenu disponible aujourd\'hui',
                         style: TextStyle(
                           color: Color(0xFF64748B),
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontMedium,
                           fontStyle: FontStyle.italic,
                         ),
@@ -354,7 +355,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                 ),
               ),
             
-            const SizedBox(height: 18),
+            const SizedBox(height: AppTheme.space18),
             
             // Bouton élégant pour accéder à la page complète
             Container(
@@ -398,17 +399,17 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
                           color: AppTheme.surfaceColor,
                           size: 18,
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: AppTheme.space10),
                         Text(
                           'Lire le pain quotidien complet',
                           style: TextStyle(
                             color: AppTheme.surfaceColor,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             fontWeight: AppTheme.fontSemiBold,
                             letterSpacing: 0.2,
                           ),
                         ),
-                        SizedBox(width: 6),
+                        SizedBox(width: AppTheme.space6),
                         Icon(
                           Icons.arrow_forward_ios,
                           color: AppTheme.surfaceColor,

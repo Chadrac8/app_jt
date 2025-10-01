@@ -434,7 +434,7 @@ class _TaskFormPageState extends State<TaskFormPage>
       key: _formKey,
       child: ListView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         children: [
           _buildSection(
             title: 'Informations générales',
@@ -451,7 +451,7 @@ class _TaskFormPageState extends State<TaskFormPage>
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
                 controller: _descriptionController,
                 label: 'Description',
@@ -460,17 +460,17 @@ class _TaskFormPageState extends State<TaskFormPage>
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Priorité et statut',
             icon: Icons.flag_outlined,
             children: [
               _buildPrioritySelector(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildStatusSelector(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Échéance',
             icon: Icons.schedule,
@@ -480,7 +480,7 @@ class _TaskFormPageState extends State<TaskFormPage>
                   Expanded(
                     child: _buildDateField('Date d\'échéance', _dueDate, _selectDueDate),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: _buildTimeField('Heure', _dueTime, _selectDueTime),
                   ),
@@ -488,7 +488,7 @@ class _TaskFormPageState extends State<TaskFormPage>
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Assignation',
             icon: Icons.people_outline,
@@ -496,17 +496,17 @@ class _TaskFormPageState extends State<TaskFormPage>
               _buildAssigneeSelector(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Organisation',
             icon: Icons.folder_outlined,
             children: [
               _buildTaskListSelector(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildTagsSection(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Pièces jointes',
             icon: Icons.attach_file,
@@ -514,7 +514,7 @@ class _TaskFormPageState extends State<TaskFormPage>
               _buildAttachmentsSection(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Liaison',
             icon: Icons.link,
@@ -522,7 +522,7 @@ class _TaskFormPageState extends State<TaskFormPage>
               _buildLinkSection(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Récurrence',
             icon: Icons.repeat,
@@ -530,7 +530,7 @@ class _TaskFormPageState extends State<TaskFormPage>
               _buildRecurrenceSection(),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
         ],
       ),
     );
@@ -543,14 +543,14 @@ class _TaskFormPageState extends State<TaskFormPage>
   }) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(icon, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -560,7 +560,7 @@ class _TaskFormPageState extends State<TaskFormPage>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...children,
           ],
         ),
@@ -594,7 +594,7 @@ class _TaskFormPageState extends State<TaskFormPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Priorité'),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           children: _priorityOptions.map((priority) {
@@ -692,7 +692,7 @@ class _TaskFormPageState extends State<TaskFormPage>
           ],
         ),
         if (_assigneeIds.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             children: _assigneeIds.map((id) {
@@ -743,7 +743,7 @@ class _TaskFormPageState extends State<TaskFormPage>
           ],
         ),
         if (_tags.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             children: _tags.map((tag) {
@@ -775,7 +775,7 @@ class _TaskFormPageState extends State<TaskFormPage>
           ],
         ),
         if (_attachmentUrls.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           ...(_attachmentUrls.map((url) {
             return ListTile(
               leading: const Icon(Icons.insert_drive_file),
@@ -821,7 +821,7 @@ class _TaskFormPageState extends State<TaskFormPage>
           },
         ),
         if (_linkedToType != null) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             decoration: InputDecoration(
               labelText: 'ID de l\'élément',
@@ -851,7 +851,7 @@ class _TaskFormPageState extends State<TaskFormPage>
           },
         ),
         if (_isRecurring) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // TODO: Add recurrence pattern configuration
           const Text('Configuration de la récurrence à implémenter'),
         ],
@@ -908,7 +908,7 @@ class _AssigneeSelectionDialogState extends State<_AssigneeSelectionDialog> {
                 setState(() => _searchQuery = value);
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredPersons.length,

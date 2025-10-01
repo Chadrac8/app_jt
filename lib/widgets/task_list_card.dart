@@ -133,7 +133,7 @@ class _TaskListCardState extends State<TaskListCard>
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -167,7 +167,7 @@ class _TaskListCardState extends State<TaskListCard>
                         size: 24,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,12 +199,12 @@ class _TaskListCardState extends State<TaskListCard>
                   ],
                 ),
                 
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 
                 // Progress bar
                 _buildProgressSection(),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Stats row
                 Row(
@@ -214,7 +214,7 @@ class _TaskListCardState extends State<TaskListCard>
                       label: '${widget.taskList.taskCount} tâches',
                       color: AppTheme.primaryColor,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     _buildStatChip(
                       icon: Icons.check_circle,
                       label: '${widget.taskList.completedTaskCount} terminées',
@@ -225,7 +225,7 @@ class _TaskListCardState extends State<TaskListCard>
                   ],
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Members section
                 if (widget.taskList.memberIds.isNotEmpty)
@@ -263,15 +263,15 @@ class _TaskListCardState extends State<TaskListCard>
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
           height: 8,
           decoration: BoxDecoration(
             color: AppTheme.grey200,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: Colors.transparent,
@@ -299,12 +299,12 @@ class _TaskListCardState extends State<TaskListCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 6),
+          const SizedBox(width: AppTheme.space6),
           Text(
             label,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -325,12 +325,12 @@ class _TaskListCardState extends State<TaskListCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(_visibilityIcon, size: 14, color: AppTheme.textTertiaryColor),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             widget.taskList.visibilityLabel,
             style: TextStyle(
               color: AppTheme.textTertiaryColor,
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -345,15 +345,15 @@ class _TaskListCardState extends State<TaskListCard>
     return Row(
       children: [
         Icon(Icons.people, size: 16, color: AppTheme.textTertiaryColor),
-        const SizedBox(width: 6),
+        const SizedBox(width: AppTheme.space6),
         Text(
           '$memberCount membre${memberCount > 1 ? 's' : ''}',
           style: TextStyle(
             color: AppTheme.textTertiaryColor,
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         // Member avatars (limited to first 3)
         Row(
           children: List.generate(
@@ -376,7 +376,7 @@ class _TaskListCardState extends State<TaskListCard>
           ),
         ),
         if (memberCount > 3) ...[
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Container(
             width: 20,
             height: 20,

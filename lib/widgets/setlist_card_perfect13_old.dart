@@ -35,7 +35,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
         child: Text(
           'Planifiée',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.blueStandard)));
     } else if (diff >= 0) {
@@ -47,7 +47,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
         child: Text(
           'Bientôt',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.orangeStandard)));
     } else if (diff >= -1) {
@@ -59,7 +59,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
         child: Text(
           'Actuelle',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.greenStandard)));
     }
@@ -94,7 +94,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -103,7 +103,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
                   children: [
                     // Icône moderne
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(AppTheme.space10),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -122,7 +122,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onPrimary,
                         size: 20)),
                     
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     
                     // Titre et infos
                     Expanded(
@@ -150,7 +150,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
                     if (onMusicianMode != null)
                       IconButton(
                         icon: Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(AppTheme.space6),
                           decoration: BoxDecoration(
                             color: AppTheme.orangeStandard.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -165,7 +165,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
                     if (onConductorMode != null)
                       IconButton(
                         icon: Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(AppTheme.space6),
                           decoration: BoxDecoration(
                             color: AppTheme.greenStandard.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -177,7 +177,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
                         onPressed: onConductorMode),
                   ]),
                 
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 // Description si présente
                 if (setlist.description.isNotEmpty) ...[
@@ -187,7 +187,7 @@ class SetlistCardPerfect13 extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onSurfaceVariant),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                 ],
                 
                 // Informations détaillées
@@ -206,16 +206,16 @@ class SetlistCardPerfect13 extends StatelessWidget {
                             Icons.calendar_today_outlined,
                             size: 12,
                             color: Theme.of(context).colorScheme.onSecondaryContainer),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             _formatDate(setlist.serviceDate),
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: AppTheme.fontSize11,
                               fontWeight: AppTheme.fontSemiBold,
                               color: Theme.of(context).colorScheme.onSecondaryContainer)),
                         ])),
                     
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     
                     // Badge nombre de chants
                     Container(
@@ -230,11 +230,11 @@ class SetlistCardPerfect13 extends StatelessWidget {
                             Icons.music_note_rounded,
                             size: 12,
                             color: Theme.of(context).colorScheme.onTertiaryContainer),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: AppTheme.fontSize11,
                               fontWeight: AppTheme.fontSemiBold,
                               color: Theme.of(context).colorScheme.onTertiaryContainer)),
                         ])),

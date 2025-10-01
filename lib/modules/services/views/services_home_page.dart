@@ -10,6 +10,7 @@ import 'service_form_page.dart';
 import '../../../pages/teams_management_page.dart';
 import '../../../pages/assignments_overview_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 
 class ServicesHomePage extends StatefulWidget {
@@ -331,7 +332,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
           children: [
             // Header with title and view toggle
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 border: Border(
@@ -347,7 +348,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                       onPressed: _toggleSelectionMode,
                       icon: const Icon(Icons.close),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       '${_selectedServices.length} sélectionné(s)',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -379,7 +380,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                     ],
                   ] else ...[
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -390,7 +391,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -501,12 +502,12 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                             size: 64,
                             color: Theme.of(context).colorScheme.error,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           Text(
                             'Erreur lors du chargement',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Text(
                             snapshot.error.toString(),
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -531,7 +532,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(32),
+                            padding: const EdgeInsets.all(AppTheme.spaceXLarge),
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                               shape: BoxShape.circle,
@@ -542,21 +543,21 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppTheme.spaceLarge),
                           Text(
                             'Aucun service trouvé',
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Text(
                             'Commencez par créer votre premier service',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppTheme.spaceLarge),
                           FilledButton.icon(
                             onPressed: _addNewService,
                             icon: const Icon(Icons.add),
@@ -603,7 +604,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
   Widget _buildListView(List<ServiceModel> services) {
     return ListView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: services.length,
       itemBuilder: (context, index) {
         final service = services[index];

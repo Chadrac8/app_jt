@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Classe contenant les thèmes prédéfinis avec leurs passages bibliques
 class PredefinedThemes {
@@ -218,7 +219,7 @@ class PredefinedThemes {
       {
         'name': 'Force',
         'description': 'Sources de force et de courage dans l\'adversité',
-        'color': Colors.purple.value,
+        'color': AppTheme.primaryColor.value,
         'iconCodePoint': Icons.security.codePoint,
         'iconFontFamily': Icons.security.fontFamily,
         'passages': [
@@ -269,7 +270,7 @@ class PredefinedThemes {
       {
         'name': 'Pardon',
         'description': 'Versets sur le pardon divin et la miséricorde',
-        'color': Colors.teal.value,
+        'color': AppTheme.secondaryColor.value,
         'iconCodePoint': Icons.handshake.codePoint,
         'iconFontFamily': Icons.handshake.fontFamily,
         'passages': [
@@ -321,7 +322,7 @@ class PredefinedThemes {
       {
         'name': 'Foi',
         'description': 'Versets sur la foi et la confiance en Dieu',
-        'color': Colors.indigo.value,
+        'color': AppTheme.secondaryColor.value,
         'iconCodePoint': Icons.star.codePoint,
         'iconFontFamily': Icons.star.fontFamily,
         'passages': [
@@ -372,7 +373,7 @@ class PredefinedThemes {
       {
         'name': 'Gratitude',
         'description': 'Versets sur la reconnaissance et les actions de grâces',
-        'color': Colors.amber.value,
+        'color': AppTheme.warningColor.value,
         'iconCodePoint': Icons.celebration.codePoint,
         'iconFontFamily': Icons.celebration.fontFamily,
         'passages': [
@@ -423,7 +424,7 @@ class PredefinedThemes {
       {
         'name': 'Protection',
         'description': 'Versets sur la protection divine et la sécurité en Dieu',
-        'color': Colors.deepPurple.value,
+        'color': AppTheme.primaryDark.value,
         'iconCodePoint': Icons.shield.codePoint,
         'iconFontFamily': Icons.shield.fontFamily,
         'passages': [
@@ -469,7 +470,7 @@ class PredefinedThemes {
       {
         'name': 'Guidance',
         'description': 'Versets sur la direction divine et la volonté de Dieu',
-        'color': Colors.cyan.value,
+        'color': AppTheme.infoColor.value,
         'iconCodePoint': Icons.explore.codePoint,
         'iconFontFamily': Icons.explore.fontFamily,
         'passages': [

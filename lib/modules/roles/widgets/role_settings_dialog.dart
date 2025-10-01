@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class RoleSettingsDialog extends StatefulWidget {
   const RoleSettingsDialog({super.key});
@@ -26,7 +27,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         constraints: const BoxConstraints(maxHeight: 600),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -39,7 +40,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                   color: Theme.of(context).primaryColor,
                   size: 28,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Paramètres des rôles',
@@ -54,7 +55,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             Expanded(
               child: SingleChildScrollView(
@@ -75,7 +76,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Section Automatisation
                     _buildSection(
@@ -91,7 +92,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Section Sécurité
                     _buildSection(
@@ -104,7 +105,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                           value: _strictPermissionCheck,
                           onChanged: (value) => setState(() => _strictPermissionCheck = value),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Durée d\'expiration par défaut (jours)',
                           style: Theme.of(context).textTheme.titleSmall,
@@ -120,7 +121,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Section Apparence
                     _buildSection(
@@ -131,7 +132,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                           'Couleur par défaut des nouveaux rôles',
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Wrap(
                           spacing: 8,
                           children: _availableColors.map((color) {
@@ -163,7 +164,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
             ),
             
             // Actions
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -171,7 +172,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Annuler'),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 ElevatedButton(
                   onPressed: () {
                     // Sauvegarder les paramètres
@@ -197,14 +198,14 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
   Widget _buildSection(String title, IconData icon, List<Widget> children) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(icon, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -213,7 +214,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...children,
           ],
         ),

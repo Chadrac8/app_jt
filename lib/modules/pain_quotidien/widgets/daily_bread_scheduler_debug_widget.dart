@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/daily_bread_scheduler.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget de debug pour surveiller et tester le scheduler du pain quotidien
 class DailyBreadSchedulerDebugWidget extends StatefulWidget {
@@ -90,25 +91,25 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Statut du scheduler
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             '📊 Statut du Scheduler',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppTheme.fontSize18,
                               fontWeight: AppTheme.fontBold,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           if (_schedulerStatus != null) ...[
                             _buildStatusRow('Actif', _schedulerStatus!['isActive'] ? '✅ Oui' : '❌ Non'),
                             _buildStatusRow('Initialisé', _schedulerStatus!['isInitialized'] ? '✅ Oui' : '❌ Non'),
@@ -123,23 +124,23 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                     ),
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Actions de test
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             '🔧 Actions de Test',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppTheme.fontSize18,
                               fontWeight: AppTheme.fontBold,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           SizedBox(
                             width: double.infinity,
@@ -154,7 +155,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                             ),
                           ),
                           
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           
                           SizedBox(
                             width: double.infinity,
@@ -169,7 +170,7 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                             ),
                           ),
                           
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           
                           SizedBox(
                             width: double.infinity,
@@ -188,23 +189,23 @@ class _DailyBreadSchedulerDebugWidgetState extends State<DailyBreadSchedulerDebu
                     ),
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Informations
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'ℹ️ Informations',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppTheme.fontSize18,
                               fontWeight: AppTheme.fontBold,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           const Text(
                             '• Le scheduler se déclenche automatiquement chaque jour à 6h00\n'
                             '• Une vérification minutielle assure qu\'aucune mise à jour n\'est ratée\n'

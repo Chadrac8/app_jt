@@ -60,18 +60,18 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               size: 64,
               color: AppTheme.redStandard,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur lors du chargement des statistiques',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _error!,
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: _loadStatistics,
               child: const Text('Réessayer'),
@@ -88,14 +88,14 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
     return RefreshIndicator(
       onRefresh: _loadStatistics,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildOverviewSection(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildContactSection(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildRolesSection(),
           ],
         ),
@@ -111,7 +111,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
           'Vue d ensemble',
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             _buildStatCard(
@@ -120,7 +120,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               Icons.people,
               AppTheme.blueStandard,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildStatCard(
               'Actives',
               _statistics!['actives']?.toString() ?? '0',
@@ -129,7 +129,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             _buildStatCard(
@@ -138,12 +138,12 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               Icons.person_outline,
               AppTheme.orangeStandard,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildStatCard(
               'Taux d activite',
               _calculateActivityRate(),
               Icons.trending_up,
-              Colors.purple,
+              AppTheme.primaryColor,
             ),
           ],
         ),
@@ -159,25 +159,25 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
           'Informations de contact',
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             _buildStatCard(
               'Avec email',
               _statistics!['withEmail']?.toString() ?? '0',
               Icons.email,
-              Colors.indigo,
+              AppTheme.secondaryColor,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildStatCard(
               'Avec telephone',
               _statistics!['withPhone']?.toString() ?? '0',
               Icons.phone,
-              Colors.teal,
+              AppTheme.secondaryColor,
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             _buildStatCard(
@@ -186,12 +186,12 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               Icons.cake,
               AppTheme.pinkStandard,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             _buildStatCard(
               'Completude profil',
               _calculateProfileCompleteness(),
               Icons.account_circle,
-              Colors.amber,
+              AppTheme.warningColor,
             ),
           ],
         ),
@@ -207,7 +207,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
           'Actions rapides',
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -241,7 +241,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return CustomCard(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -250,7 +250,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
               size: 32,
               color: color,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -258,7 +258,7 @@ class _StatisticsDashboardModuleState extends State<StatisticsDashboardModule> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               title,
               style: Theme.of(context).textTheme.bodySmall,

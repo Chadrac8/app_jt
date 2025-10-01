@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
 import '../../../widgets/admin_view_toggle_button.dart';
+import '../../../theme.dart';
 
 class MemberDashboardPage extends StatefulWidget {
   const MemberDashboardPage({super.key});
@@ -31,7 +32,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
         child: Text(
           'Dashboard membre (module personnes) en construction',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             color: AppTheme.grey500,
           ),
         ),

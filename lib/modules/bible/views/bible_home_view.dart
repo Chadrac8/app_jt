@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class BibleHomeView extends StatefulWidget {
   const BibleHomeView({super.key});
@@ -84,7 +85,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
           _navigateToReadingPlans();
         },
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           child: Row(
             children: [
               Container(
@@ -100,7 +101,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                   size: 28,
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: AppTheme.space20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,11 +114,11 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                         color: colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: AppTheme.space6),
                     Text(
                       'Programmes guidés pour explorer la Bible',
                       style: GoogleFonts.inter(
-                        fontSize: 15,
+                        fontSize: AppTheme.fontSize15,
                         color: colorScheme.onSurfaceVariant,
                         height: 1.4,
                       ),
@@ -126,7 +127,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: colorScheme.primaryContainer.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -167,7 +168,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           child: Row(
             children: [
               Container(
@@ -183,7 +184,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                   size: 28,
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: AppTheme.space20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,11 +197,11 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                         color: colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: AppTheme.space6),
                     Text(
                       subtitle,
                       style: GoogleFonts.inter(
-                        fontSize: 15,
+                        fontSize: AppTheme.fontSize15,
                         color: colorScheme.onSurfaceVariant,
                         height: 1.4,
                       ),
@@ -209,7 +210,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: containerColor.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -285,11 +286,11 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Plans de lecture',
               style: GoogleFonts.inter(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
@@ -303,12 +304,12 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               Text(
                 'Choisissez un plan de lecture pour structurer votre étude biblique',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               _buildReadingPlanOption(
                 'Plan chronologique',
@@ -317,7 +318,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 colorScheme.primaryContainer,
                 colorScheme.onPrimaryContainer,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildReadingPlanOption(
                 'Plan en 1 an',
@@ -326,7 +327,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 colorScheme.secondaryContainer,
                 colorScheme.onSecondaryContainer,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildReadingPlanOption(
                 'Nouveau Testament',
@@ -335,7 +336,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 colorScheme.tertiaryContainer,
                 colorScheme.onTertiaryContainer,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildReadingPlanOption(
                 'Psaumes & Proverbes',
@@ -380,11 +381,11 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Passages thématiques',
               style: GoogleFonts.inter(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
@@ -398,54 +399,54 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               Text(
                 'Explorer la Bible par thèmes spirituels',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               _buildThematicOption(
                 'Amour et Compassion',
                 'Versets sur l\'amour divin et la compassion',
                 Icons.favorite_rounded,
-                const Color(0xFFE57373),
+                AppTheme.passageColor1,
                 Colors.white,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildThematicOption(
                 'Foi et Confiance',
                 'Passages encourageant la foi en Dieu',
                 Icons.church_rounded,
-                const Color(0xFF64B5F6),
+                AppTheme.passageColor2,
                 Colors.white,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildThematicOption(
                 'Paix et Espoir',
                 'Versets apportant paix et espérance',
                 Icons.nature_people_rounded,
-                const Color(0xFF81C784),
+                AppTheme.passageColor3,
                 Colors.white,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildThematicOption(
                 'Sagesse et Direction',
                 'Guidance divine pour les décisions',
                 Icons.lightbulb_rounded,
-                const Color(0xFFFFB74D),
+                AppTheme.passageColor4,
                 Colors.white,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildThematicOption(
                 'Pardon et Grâce',
                 'La miséricorde et le pardon de Dieu',
                 Icons.healing_rounded,
-                const Color(0xFFBA68C8),
+                AppTheme.passageColor5,
                 Colors.white,
               ),
             ],
@@ -484,11 +485,11 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Articles bibliques',
               style: GoogleFonts.inter(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
@@ -502,12 +503,12 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               Text(
                 'Études approfondies et commentaires bibliques',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               _buildArticleOption(
                 'Personnages bibliques',
@@ -516,7 +517,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 colorScheme.primaryContainer,
                 colorScheme.onPrimaryContainer,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildArticleOption(
                 'Paraboles de Jésus',
@@ -525,7 +526,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 colorScheme.secondaryContainer,
                 colorScheme.onSecondaryContainer,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildArticleOption(
                 'Prophéties accomplies',
@@ -534,7 +535,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 colorScheme.tertiaryContainer,
                 colorScheme.onTertiaryContainer,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               _buildArticleOption(
                 'Contexte historique',
@@ -576,14 +577,14 @@ class _BibleHomeViewState extends State<BibleHomeView> {
           children: [
             Icon(
               Icons.diamond_rounded,
-              color: const Color(0xFFFFD700), // Couleur or
+              color: AppTheme.goldColor, // Couleur or
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Pépites d\'or',
               style: GoogleFonts.inter(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
@@ -597,33 +598,33 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               Text(
                 'Versets précieux pour l\'inspiration quotidienne',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               _buildGoldenNuggetCard(
                 '"Car je connais les projets que j\'ai formés sur vous, dit l\'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l\'espérance."',
                 'Jérémie 29:11',
                 Icons.star_rounded,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               _buildGoldenNuggetCard(
                 '"Je puis tout par celui qui me fortifie."',
                 'Philippiens 4:13',
                 Icons.fitness_center_rounded,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               _buildGoldenNuggetCard(
                 '"L\'Éternel est mon berger: je ne manquerai de rien."',
                 'Psaume 23:1',
                 Icons.spa_rounded,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               _buildGoldenNuggetCard(
                 '"Car Dieu a tant aimé le monde qu\'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu\'il ait la vie éternelle."',
@@ -659,7 +660,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
         title: Text(
           title,
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: textColor,
           ),
@@ -667,7 +668,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
         subtitle: Text(
           description,
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             color: textColor.withValues(alpha: 0.8),
           ),
         ),
@@ -695,7 +696,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
         title: Text(
           title,
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: textColor,
           ),
@@ -703,7 +704,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
         subtitle: Text(
           description,
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             color: textColor.withValues(alpha: 0.8),
           ),
         ),
@@ -731,7 +732,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
         title: Text(
           title,
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: textColor,
           ),
@@ -739,7 +740,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
         subtitle: Text(
           description,
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             color: textColor.withValues(alpha: 0.8),
           ),
         ),
@@ -765,7 +766,7 @@ class _BibleHomeViewState extends State<BibleHomeView> {
       elevation: 2,
       color: colorScheme.surfaceVariant.withValues(alpha: 0.5),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -773,15 +774,15 @@ class _BibleHomeViewState extends State<BibleHomeView> {
               children: [
                 Icon(
                   icon,
-                  color: const Color(0xFFFFD700), // Couleur or
+                  color: AppTheme.goldColor, // Couleur or
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     reference,
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontSemiBold,
                       color: colorScheme.primary,
                     ),
@@ -806,11 +807,11 @@ class _BibleHomeViewState extends State<BibleHomeView> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               verse,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 height: 1.4,
                 color: colorScheme.onSurface,
                 fontStyle: FontStyle.italic,

@@ -8,6 +8,7 @@ import '../models/song.dart';
 import '../services/songs_service.dart';
 import '../../../auth/auth_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Vue de détail d'un chant
 class SongDetailView extends StatefulWidget {
@@ -230,13 +231,13 @@ ${_song.lyrics}
         ),
       ],
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // En-tête du chant
             _buildSongHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Informations techniques
             if (_song.tonality != null || _song.tempo != null || _song.estimatedDuration != 'Non spécifiée')
@@ -256,7 +257,7 @@ ${_song.lyrics}
             // Statistiques
             _buildStatistics(),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
           ],
         ),
       ),
@@ -266,7 +267,7 @@ ${_song.lyrics}
   Widget _buildSongHeader() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -278,7 +279,7 @@ ${_song.lyrics}
               ),
             ),
             if (_song.subtitle != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 _song.subtitle!,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -287,14 +288,14 @@ ${_song.lyrics}
               ),
             ],
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Auteur et compositeur
             if (_song.author != null || _song.composer != null) ...[
               Row(
                 children: [
                   Icon(Icons.person, size: 16, color: AppTheme.grey600),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       [
@@ -306,7 +307,7 @@ ${_song.lyrics}
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
             ],
 
             // Statut d'approbation
@@ -322,7 +323,7 @@ ${_song.lyrics}
                     _song.isApproved ? 'Approuvé' : 'En attente',
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -332,7 +333,7 @@ ${_song.lyrics}
                   'Créé le ${_song.createdAt.day}/${_song.createdAt.month}/${_song.createdAt.year}',
                   style: TextStyle(
                     color: AppTheme.grey600,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
               ],
@@ -348,7 +349,7 @@ ${_song.lyrics}
       children: [
         CustomCard(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -358,16 +359,16 @@ ${_song.lyrics}
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Row(
                   children: [
                     if (_song.tonality != null) ...[
                       _buildInfoChip('Tonalité', _song.tonality!, Icons.music_note),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                     ],
                     if (_song.tempo != null) ...[
                       _buildInfoChip('Tempo', '${_song.tempo} BPM', Icons.speed),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                     ],
                     if (_song.estimatedDuration != 'Non spécifiée')
                       _buildInfoChip('Durée', _song.estimatedDuration, Icons.access_time),
@@ -377,7 +378,7 @@ ${_song.lyrics}
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
       ],
     );
   }
@@ -393,13 +394,13 @@ ${_song.lyrics}
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: Theme.of(context).primaryColor),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             '$label: $value',
             style: TextStyle(
               color: Theme.of(context).primaryColor,
               fontWeight: AppTheme.fontBold,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
             ),
           ),
         ],
@@ -412,7 +413,7 @@ ${_song.lyrics}
       children: [
         CustomCard(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -422,11 +423,11 @@ ${_song.lyrics}
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 if (_song.categories.isNotEmpty) ...[
                   const Text('Catégories:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Wrap(
                     spacing: 8,
                     runSpacing: 4,
@@ -438,11 +439,11 @@ ${_song.lyrics}
                 ],
 
                 if (_song.categories.isNotEmpty && _song.tags.isNotEmpty)
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
 
                 if (_song.tags.isNotEmpty) ...[
                   const Text('Mots-clés:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Wrap(
                     spacing: 8,
                     runSpacing: 4,
@@ -456,7 +457,7 @@ ${_song.lyrics}
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
       ],
     );
   }
@@ -464,7 +465,7 @@ ${_song.lyrics}
   Widget _buildLyrics() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -484,7 +485,7 @@ ${_song.lyrics}
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildFormattedLyricsText(),
           ],
         ),
@@ -495,10 +496,10 @@ ${_song.lyrics}
   Widget _buildMediaSection() {
     return Column(
       children: [
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         CustomCard(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -508,7 +509,7 @@ ${_song.lyrics}
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 if (_song.audioUrl != null) ...[
                   ListTile(
@@ -556,29 +557,29 @@ ${_song.lyrics}
   Widget _buildStatistics() {
     return Column(
       children: [
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         CustomCard(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Expanded(
                   child: Column(
                     children: [
                       Icon(Icons.visibility, color: AppTheme.grey600),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         _song.views.toString(),
                         style: const TextStyle(
                           fontWeight: AppTheme.fontBold,
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                         ),
                       ),
                       Text(
                         'Vues',
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                         ),
                       ),
                     ],
@@ -593,19 +594,19 @@ ${_song.lyrics}
                   child: Column(
                     children: [
                       Icon(Icons.favorite, color: AppTheme.grey600),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         _song.favorites.length.toString(),
                         style: const TextStyle(
                           fontWeight: AppTheme.fontBold,
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                         ),
                       ),
                       Text(
                         'Favoris',
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                         ),
                       ),
                     ],

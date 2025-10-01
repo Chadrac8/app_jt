@@ -116,7 +116,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           children: [
             // En-tête
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
@@ -127,13 +127,13 @@ class _ComponentEditorState extends State<ComponentEditor> {
                     _getComponentIcon(widget.component.type),
                     color: AppTheme.white100,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Text(
                       'Modifier ${widget.component.typeLabel}',
                       style: const TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -151,7 +151,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -170,12 +170,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
                         },
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
 
                       // Éditeur spécifique au type
                       _buildTypeSpecificEditor(),
                       
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Éditeur d'actions (pour les composants supportés)
                       if (ComponentActionService.supportsActions(widget.component.type))
@@ -196,7 +196,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
 
             // Actions
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 border: Border(top: BorderSide(color: AppTheme.grey300!)),
               ),
@@ -207,7 +207,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                     onPressed: () => Navigator.pop(context),
                     child: const Text('Annuler'),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   ElevatedButton(
                     onPressed: _saveComponent,
                     style: ElevatedButton.styleFrom(
@@ -296,7 +296,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['content'] ?? '',
           decoration: const InputDecoration(
@@ -307,7 +307,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           maxLines: 8,
           onChanged: (value) => _data['content'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -326,7 +326,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => setState(() => _data['textAlign'] = value),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: TextFormField(
                 initialValue: (_data['fontSize'] ?? 16).toString(),
@@ -355,7 +355,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         ImagePickerWidget(
           initialUrl: _data['url'] ?? '',
           onImageSelected: (url) {
@@ -370,7 +370,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           isRequired: true,
           label: 'Source de l\'image',
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['alt'] ?? '',
           decoration: const InputDecoration(
@@ -380,7 +380,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['alt'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -395,7 +395,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['height'] = int.tryParse(value) ?? 200,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: _data['fit'] ?? 'cover',
@@ -415,7 +415,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ),
           ],
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppTheme.spaceLarge),
         _buildImageActionEditor(),
       ],
     );
@@ -452,7 +452,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ],
         ),
         if (hasAction) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<String>(
             value: action?.type ?? 'url',
             decoration: const InputDecoration(
@@ -471,7 +471,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               });
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (action?.type == 'url') _buildUrlActionEditor(action!),
           if (action?.type == 'member_page') _buildMemberPageActionEditor(action!),
         ],
@@ -522,7 +522,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       children: [
                         if (page.icon != null) ...[
                           Icon(_getIconData(page.icon!), size: 16),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                         ],
                         Expanded(child: Text(page.name)),
                       ],
@@ -545,7 +545,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           },
         ),
         if (action.memberPage != null) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildMemberPageParameters(action),
         ],
       ],
@@ -568,7 +568,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         ...pageDefinition.supportedParameters!.map((param) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 16),
@@ -667,7 +667,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['text'] ?? '',
           decoration: const InputDecoration(
@@ -682,7 +682,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['url'] ?? '',
           decoration: const InputDecoration(
@@ -692,7 +692,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['url'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -711,7 +711,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => setState(() => _data['style'] = value),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: _data['size'] ?? 'medium',
@@ -743,7 +743,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Widget spécialisé YouTube
         YouTubePickerWidget(
@@ -753,7 +753,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           label: 'Source vidéo YouTube',
         ),
         
-        const SizedBox(height: 24),
+        const SizedBox(height: AppTheme.spaceLarge),
         
         // Titre personnalisé (optionnel)
         TextFormField(
@@ -766,12 +766,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
           onChanged: (value) => _data['title'] = value,
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Options avancées
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -781,7 +781,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 SwitchListTile(
                   title: const Text('Lecture automatique'),
@@ -811,12 +811,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Configuration du lecteur
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -826,7 +826,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 MediaPlayerConfigWidget(
                   componentType: 'video',
                   data: Map<String, dynamic>.from(_data),
@@ -849,7 +849,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Prévisualisation du type de contenu
         if (_data['url'] != null && (_data['url'] as String).isNotEmpty)
@@ -867,7 +867,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
     return Card(
       color: AppTheme.primaryColor.withOpacity(0.05),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -877,7 +877,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   _getVideoContentIcon(urlInfo.contentType),
                   color: AppTheme.primaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Type: ${urlInfo.displayType}',
                   style: TextStyle(
@@ -889,7 +889,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ),
             
             if (urlInfo.videoId.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'ID Vidéo: ${urlInfo.videoId}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -899,7 +899,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ],
             
             if (urlInfo.playlistId.isNotEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 'ID Playlist: ${urlInfo.playlistId}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -938,7 +938,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['title'] ?? '',
           decoration: const InputDecoration(
@@ -947,7 +947,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['title'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
           value: _data['listType'] ?? 'simple',
           decoration: const InputDecoration(
@@ -962,7 +962,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ],
           onChanged: (value) => setState(() => _data['listType'] = value),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -992,7 +992,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         ...items.asMap().entries.map((entry) {
           final index = entry.key;
           final item = entry.value;
@@ -1000,7 +1000,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           return Card(
             margin: const EdgeInsets.only(bottom: 8),
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               child: Column(
                 children: [
                   Row(
@@ -1019,7 +1019,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                           },
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       IconButton(
                         onPressed: () {
                           setState(() {
@@ -1031,7 +1031,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   TextFormField(
                     initialValue: item['description'] ?? '',
                     decoration: const InputDecoration(
@@ -1064,7 +1064,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         Row(
           children: [
@@ -1096,22 +1096,22 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ],
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         const Divider(),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Aperçu du nombre d'onglets
         if (_data['tabs'] != null) ...[
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Icon(Icons.tab, color: AppTheme.primaryColor),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Aperçu des onglets',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -1120,7 +1120,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   // Informations sur les onglets
                   ...(_data['tabs'] as List<dynamic>).asMap().entries.map((entry) {
@@ -1137,20 +1137,20 @@ class _ComponentEditorState extends State<ComponentEditor> {
                             height: 24,
                             decoration: BoxDecoration(
                               color: AppTheme.primaryColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                             ),
                             child: Center(
                               child: Text(
                                 '${index + 1}',
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontBold,
                                   color: AppTheme.primaryColor,
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1164,7 +1164,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                                 Text(
                                   '$componentsCount composant${componentsCount > 1 ? 's' : ''}',
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: AppTheme.fontSize12,
                                     color: AppTheme.grey600,
                                   ),
                                 ),
@@ -1183,11 +1183,11 @@ class _ComponentEditorState extends State<ComponentEditor> {
           Card(
             color: AppTheme.orangeStandard,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
                   Icon(Icons.info_outline, color: AppTheme.orangeStandard),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Text(
                       'Aucun onglet configuré. Utilisez l\'éditeur avancé pour créer des onglets.',
@@ -1200,7 +1200,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
         ],
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Options de style rapides
         Text(
@@ -1209,7 +1209,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         
         Row(
           children: [
@@ -1230,7 +1230,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => setState(() => _data['tabPosition'] = value),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: CheckboxListTile(
                 title: const Text('Afficher les icônes'),
@@ -1258,7 +1258,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['verse'] ?? '',
           decoration: const InputDecoration(
@@ -1274,7 +1274,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -1288,7 +1288,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['reference'] = value,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: _data['version'] ?? 'LSG',
@@ -1321,7 +1321,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['title'] ?? '',
           decoration: const InputDecoration(
@@ -1336,7 +1336,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['subtitle'] ?? '',
           decoration: const InputDecoration(
@@ -1345,7 +1345,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['subtitle'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -1359,7 +1359,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['backgroundColor'] = value,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: TextFormField(
                 initialValue: _data['textColor'] ?? '#FFFFFF',
@@ -1387,7 +1387,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['address'] ?? '',
           decoration: const InputDecoration(
@@ -1403,7 +1403,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -1417,7 +1417,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['latitude'] = double.tryParse(value) ?? 0.0,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: TextFormField(
                 initialValue: (_data['longitude'] ?? 0.0).toString(),
@@ -1431,7 +1431,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: (_data['zoom'] ?? 15).toString(),
           decoration: const InputDecoration(
@@ -1458,17 +1458,17 @@ class _ComponentEditorState extends State<ComponentEditor> {
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // Onglets pour choisir le type d'audio
           Container(
             decoration: BoxDecoration(
-              color: AppTheme.surface,
+              color: AppTheme.primaryColor, // Couleur d'arrière-plan identique à l'AppBar
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
-            child: const TabBar(
-              labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: AppTheme.grey500,
-              indicatorColor: AppTheme.primaryColor,
+            child: TabBar(
+              labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc
               tabs: [
                 Tab(icon: Icon(Icons.audiotrack), text: 'SoundCloud'),
                 Tab(icon: Icon(Icons.music_note), text: 'Fichier Direct'),
@@ -1478,11 +1478,11 @@ class _ComponentEditorState extends State<ComponentEditor> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // Configuration du lecteur audio
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1492,7 +1492,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   MediaPlayerConfigWidget(
                     componentType: 'audio',
                     data: Map<String, dynamic>.from(_data),
@@ -1510,7 +1510,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // Contenu des onglets
           SizedBox(
             height: 400,
@@ -1535,7 +1535,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.grey50,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1544,17 +1544,17 @@ class _ComponentEditorState extends State<ComponentEditor> {
             child: Row(
               children: [
                 Icon(Icons.info, color: AppTheme.grey700, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     'Sélectionnez un fichier audio depuis votre appareil (MP3, WAV, etc.).',
-                    style: TextStyle(color: AppTheme.grey800, fontSize: 13),
+                    style: TextStyle(color: AppTheme.grey800, fontSize: AppTheme.fontSize13),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ElevatedButton.icon(
             icon: const Icon(Icons.file_upload),
             label: const Text('Joindre un fichier'),
@@ -1574,7 +1574,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               }
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildAudioMetadataEditor(),
         ],
       ),
@@ -1588,26 +1588,26 @@ class _ComponentEditorState extends State<ComponentEditor> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
-              color: Colors.purple[50],
+              color: AppTheme.primaryColor.withAlpha(25),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-              border: Border.all(color: Colors.purple[200]!),
+              border: Border.all(color: AppTheme.primaryColor.withAlpha(102)!),
             ),
             child: Row(
               children: [
-                Icon(Icons.cloud, color: Colors.purple[700], size: 20),
-                const SizedBox(width: 8),
+                Icon(Icons.cloud, color: AppTheme.primaryColor, size: 20),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     'Collez un lien OneDrive ou Google Drive vers un fichier audio ou un album.',
-                    style: TextStyle(color: Colors.purple[800], fontSize: 13),
+                    style: TextStyle(color: AppTheme.primaryColor, fontSize: AppTheme.fontSize13),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             initialValue: _data['cloud_url'] ?? '',
             decoration: const InputDecoration(
@@ -1623,7 +1623,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               });
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildAudioMetadataEditor(),
         ],
       ),
@@ -1637,7 +1637,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.grey50,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1646,17 +1646,17 @@ class _ComponentEditorState extends State<ComponentEditor> {
             child: Row(
               children: [
                 Icon(Icons.album, color: AppTheme.grey700, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     'Ajoutez un album audio (SoundCloud, OneDrive, Drive, fichiers téléchargés, etc.).',
-                    style: TextStyle(color: AppTheme.grey800, fontSize: 13),
+                    style: TextStyle(color: AppTheme.grey800, fontSize: AppTheme.fontSize13),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             initialValue: _data['album_url'] ?? '',
             decoration: const InputDecoration(
@@ -1672,7 +1672,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               });
             },
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           ElevatedButton.icon(
             icon: const Icon(Icons.file_upload),
             label: const Text('Joindre un album local'),
@@ -1689,7 +1689,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               }
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildAudioMetadataEditor(),
         ],
       ),
@@ -1703,7 +1703,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         children: [
           // Section SoundCloud
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.grey50,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1712,13 +1712,13 @@ class _ComponentEditorState extends State<ComponentEditor> {
             child: Row(
               children: [
                 Icon(Icons.info, color: AppTheme.grey700, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     'Intégrez facilement des pistes, playlists ou profils SoundCloud. Collez simplement l\'URL depuis votre navigateur.',
                     style: TextStyle(
                       color: AppTheme.grey800,
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                     ),
                   ),
                 ),
@@ -1726,7 +1726,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Widget de sélection SoundCloud
           SoundCloudPickerWidget(
@@ -1756,7 +1756,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             helperText: 'Piste, playlist ou profil SoundCloud',
           ),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Options d'intégration SoundCloud
           if (_data['soundcloud_url'] != null) ...[
@@ -1766,12 +1766,12 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             _buildSoundCloudOptions(),
           ],
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Métadonnées personnalisables
           _buildAudioMetadataEditor(),
@@ -1782,7 +1782,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
 
   Widget _buildSoundCloudOptions() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1806,7 +1806,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       'Démarre la lecture dès le chargement',
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -1836,7 +1836,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       'Cache les suggestions de pistes similaires',
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -1866,7 +1866,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       'Affiche la pochette de l\'album',
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -1896,7 +1896,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                       'Couleur de l\'interface SoundCloud',
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -1928,7 +1928,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         children: [
           // Information sur les fichiers directs
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.grey50,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1937,13 +1937,13 @@ class _ComponentEditorState extends State<ComponentEditor> {
             child: Row(
               children: [
                 Icon(Icons.info, color: AppTheme.grey700, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     'Pour les fichiers audio hébergés directement (MP3, WAV, etc.). L\'URL doit pointer vers le fichier audio.',
                     style: TextStyle(
                       color: AppTheme.grey800,
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                     ),
                   ),
                 ),
@@ -1951,7 +1951,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // URL du fichier
           TextFormField(
@@ -1976,7 +1976,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             },
           ),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Métadonnées
           _buildAudioMetadataEditor(),
@@ -1995,7 +1995,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         
         // Titre personnalisé
         TextFormField(
@@ -2009,7 +2009,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           onChanged: (value) => _data['title'] = value,
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Artiste/Auteur
         TextFormField(
@@ -2023,7 +2023,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           onChanged: (value) => _data['artist'] = value,
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Durée
         TextFormField(
@@ -2037,7 +2037,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           onChanged: (value) => _data['duration'] = value,
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Description
         TextFormField(
@@ -2065,9 +2065,9 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: AppTheme.grey50,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2076,20 +2076,20 @@ class _ComponentEditorState extends State<ComponentEditor> {
           child: Row(
             children: [
               Icon(Icons.info, color: AppTheme.grey700, size: 20),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   'Saisissez une adresse et elle sera automatiquement reconnue par Google Maps',
                   style: TextStyle(
                     color: AppTheme.grey700,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['address'] ?? '',
           decoration: const InputDecoration(
@@ -2106,14 +2106,14 @@ class _ComponentEditorState extends State<ComponentEditor> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           'Ou saisissez les coordonnées GPS :',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Row(
           children: [
             Expanded(
@@ -2127,7 +2127,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['latitude'] = value.isNotEmpty ? double.tryParse(value) : null,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: TextFormField(
                 initialValue: (_data['longitude'] ?? '').toString(),
@@ -2141,7 +2141,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -2156,7 +2156,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['zoom'] = int.tryParse(value) ?? 15,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
                 value: _data['mapType'] ?? 'roadmap',
@@ -2189,9 +2189,9 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: AppTheme.grey50,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2200,20 +2200,20 @@ class _ComponentEditorState extends State<ComponentEditor> {
           child: Row(
             children: [
               Icon(Icons.warning, color: AppTheme.grey700, size: 20),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   'Attention : Le code HTML sera exécuté tel quel. Assurez-vous qu\'il soit sûr.',
                   style: TextStyle(
                     color: AppTheme.grey700,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['title'] ?? '',
           decoration: const InputDecoration(
@@ -2222,7 +2222,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['title'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['content'] ?? '',
           decoration: const InputDecoration(
@@ -2253,7 +2253,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['quote'] ?? '',
           decoration: const InputDecoration(
@@ -2269,7 +2269,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['author'] ?? '',
           decoration: const InputDecoration(
@@ -2278,7 +2278,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['author'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['context'] ?? '',
           decoration: const InputDecoration(
@@ -2288,14 +2288,14 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['context'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           'Couleurs personnalisées',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Row(
           children: [
             Expanded(
@@ -2309,7 +2309,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['backgroundColor'] = value,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: TextFormField(
                 initialValue: _data['textColor'] ?? '#333333',
@@ -2337,7 +2337,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['title'] ?? 'Nos Groupes',
           decoration: const InputDecoration(
@@ -2346,7 +2346,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['title'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['subtitle'] ?? '',
           decoration: const InputDecoration(
@@ -2356,7 +2356,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['subtitle'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
           value: _data['displayMode'] ?? 'cards',
           decoration: const InputDecoration(
@@ -2370,7 +2370,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ],
           onChanged: (value) => setState(() => _data['displayMode'] = value),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         SwitchListTile(
           title: const Text('Afficher les informations de contact'),
           subtitle: const Text('Email et téléphone des responsables'),
@@ -2389,7 +2389,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           value: _data['showMemberCount'] ?? true,
           onChanged: (value) => setState(() => _data['showMemberCount'] = value),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
           value: _data['filterBy'] ?? 'all',
           decoration: const InputDecoration(
@@ -2405,7 +2405,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           onChanged: (value) => setState(() => _data['filterBy'] = value),
         ),
         if (_data['filterBy'] == 'category') ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             initialValue: _data['category'] ?? '',
             decoration: const InputDecoration(
@@ -2416,14 +2416,14 @@ class _ComponentEditorState extends State<ComponentEditor> {
             onChanged: (value) => _data['category'] = value,
           ),
         ],
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           'Couleurs personnalisées',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Row(
           children: [
             Expanded(
@@ -2437,7 +2437,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                 onChanged: (value) => _data['cardBackgroundColor'] = value,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: TextFormField(
                 initialValue: _data['accentColor'] ?? '#2196F3',
@@ -2465,9 +2465,9 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.grey100,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2493,7 +2493,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['title'] ?? 'Nos Événements',
           decoration: const InputDecoration(
@@ -2502,7 +2502,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['title'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['subtitle'] ?? '',
           decoration: const InputDecoration(
@@ -2511,7 +2511,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ),
           onChanged: (value) => _data['subtitle'] = value,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
           value: _data['displayMode'] ?? 'cards',
           decoration: const InputDecoration(
@@ -2525,7 +2525,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           ],
           onChanged: (value) => setState(() => _data['displayMode'] = value),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         SwitchListTile(
           title: const Text('Afficher les dates'),
           subtitle: const Text('Inclure les dates des événements'),
@@ -2538,7 +2538,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           value: _data['allowRegistration'] ?? true,
           onChanged: (value) => setState(() => _data['allowRegistration'] = value),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['primaryColor'] ?? '#2196F3',
           decoration: const InputDecoration(
@@ -2620,7 +2620,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
                    ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['url'] ?? '',
           decoration: const InputDecoration(
@@ -2643,7 +2643,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         SwitchListTile(
           title: const Text('Autoriser les nouvelles prières'),
           value: _data['allowNewPrayers'] ?? true,
@@ -2663,7 +2663,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['columns']?.toString() ?? '2',
           decoration: const InputDecoration(
@@ -2687,7 +2687,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['title'] ?? '',
           decoration: const InputDecoration(
@@ -2710,7 +2710,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['columns']?.toString() ?? '3',
           decoration: const InputDecoration(
@@ -2734,7 +2734,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['columns']?.toString() ?? '2',
           decoration: const InputDecoration(
@@ -2758,7 +2758,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           initialValue: _data['title'] ?? '',
           decoration: const InputDecoration(
@@ -2781,9 +2781,9 @@ class _ComponentEditorState extends State<ComponentEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.blueStandard,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2794,7 +2794,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
               Row(
                 children: [
                   Icon(Icons.info_outline, color: AppTheme.blueStandard),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Le Container Grid permet d\'organiser des composants en grille.',
@@ -2803,7 +2803,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -2820,14 +2820,14 @@ class _ComponentEditorState extends State<ComponentEditor> {
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           'Configuration rapide',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         TextFormField(
           initialValue: _data['columns']?.toString() ?? '2',
           decoration: const InputDecoration(

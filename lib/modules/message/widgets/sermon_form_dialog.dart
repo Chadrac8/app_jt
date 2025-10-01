@@ -4,6 +4,7 @@ import '../../../../theme.dart';
 import '../models/admin_branham_sermon_model.dart';
 import '../services/admin_branham_sermon_service.dart';
 import '../../../auth/auth_service.dart';
+import '../../../theme.dart';
 
 /// Dialogue pour ajouter/modifier une prédication
 class SermonFormDialog extends StatefulWidget {
@@ -193,7 +194,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.9,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           children: [
             // En-tête
@@ -204,7 +205,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                       ? 'Ajouter une Prédication' 
                       : 'Modifier la Prédication',
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -231,7 +232,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                         required: true,
                         icon: Icons.title,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Row(
                         children: [
                           Expanded(
@@ -243,7 +244,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                               hint: 'Format: AA-MMJJ',
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: AppTheme.spaceMedium),
                           Expanded(
                             child: _buildTextField(
                               controller: _locationController,
@@ -255,7 +256,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       _buildTextField(
                         controller: _descriptionController,
                         label: 'Description',
@@ -264,7 +265,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                       ),
                       
                       // URLs et fichiers
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildSectionTitle('Fichiers multimédia'),
                       Row(
                         children: [
@@ -277,7 +278,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                               hint: 'https://example.com/audio.mp3',
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           if (_isValidatingUrl)
                             const SizedBox(
                               width: 20,
@@ -292,19 +293,19 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                             ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       _buildTextField(
                         controller: _audioDownloadUrlController,
                         label: 'URL de téléchargement (optionnel)',
                         icon: Icons.download,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       _buildTextField(
                         controller: _pdfUrlController,
                         label: 'URL PDF (optionnel)',
                         icon: Icons.picture_as_pdf,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       _buildTextField(
                         controller: _imageUrlController,
                         label: 'URL Image (optionnel)',
@@ -312,7 +313,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                       ),
                       
                       // Métadonnées
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildSectionTitle('Métadonnées'),
                       Row(
                         children: [
@@ -323,7 +324,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                               icon: Icons.list,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: AppTheme.spaceMedium),
                           Expanded(
                             child: DropdownButtonFormField<String>(
                               value: _language,
@@ -345,7 +346,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       _buildTextField(
                         controller: _keywordsController,
                         label: 'Mots-clés (séparés par des virgules)',
@@ -354,7 +355,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                       ),
                       
                       // Durée et paramètres
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildSectionTitle('Configuration'),
                       Row(
                         children: [
@@ -366,7 +367,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                                   'Durée',
                                   style: GoogleFonts.poppins(fontWeight: AppTheme.fontMedium),
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: AppTheme.spaceSmall),
                                 Row(
                                   children: [
                                     Expanded(
@@ -382,7 +383,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                                         },
                                       ),
                                     ),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: AppTheme.spaceSmall),
                                     Expanded(
                                       child: TextFormField(
                                         initialValue: _durationMinutes.toString(),
@@ -401,7 +402,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: AppTheme.spaceMedium),
                           Expanded(
                             child: Column(
                               children: [
@@ -412,7 +413,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                                   keyboardType: TextInputType.number,
                                   hint: '0',
                                 ),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: AppTheme.spaceMedium),
                                 SwitchListTile(
                                   title: const Text('Prédication active'),
                                   subtitle: const Text('Visible dans l\'onglet Écouter'),
@@ -441,7 +442,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                   onPressed: () => Navigator.pop(context),
                   child: const Text('Annuler'),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: _isLoading ? null : _saveSermon,
                   child: _isLoading
@@ -468,12 +469,12 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
           Text(
             title,
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Container(
               height: 1,

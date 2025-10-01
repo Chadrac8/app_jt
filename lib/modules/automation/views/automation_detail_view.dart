@@ -4,6 +4,7 @@ import '../models/automation_execution.dart';
 import '../services/automation_service.dart';
 import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
+import '../../../theme.dart';
 
 /// Vue détaillée d'une automatisation
 class AutomationDetailView extends StatefulWidget {
@@ -102,17 +103,17 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildStatusCard(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   _buildStatsGrid(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   _buildTriggerCard(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   _buildConditionsCard(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   _buildActionsCard(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   _buildExecutionsCard(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   _buildMetadataCard(),
                 ],
               ),
@@ -129,7 +130,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             size: 32,
             color: _automation!.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +172,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: CustomCard(
             child: Column(
@@ -188,7 +189,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: CustomCard(
             child: Column(
@@ -205,7 +206,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: CustomCard(
             child: Column(
@@ -237,20 +238,20 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                 _getTriggerIcon(_automation!.trigger),
                 color: AppTheme.blueStandard,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Déclencheur',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _automation!.trigger.label,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           if (_automation!.triggerConfig.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             const Text('Configuration:'),
             ..._automation!.triggerConfig.entries.map(
               (entry) => Padding(
@@ -273,7 +274,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             'Conditions',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_automation!.conditions.isEmpty)
             const Text('Aucune condition définie')
           else
@@ -295,12 +296,12 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                           style: TextStyle(
                             color: AppTheme.grey800,
                             fontWeight: AppTheme.fontBold,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Text(
                         '${entry.value.field} ${entry.value.operator} ${entry.value.value}',
@@ -324,7 +325,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             'Actions',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_automation!.actions.isEmpty)
             const Text('Aucune action définie')
           else
@@ -346,7 +347,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                         size: 16,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,7 +400,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_executions.isEmpty)
             const Text('Aucune exécution')
           else
@@ -413,7 +414,7 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
                       color: _getExecutionStatusColor(execution.status),
                       size: 20,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -447,21 +448,21 @@ class _AutomationDetailViewState extends State<AutomationDetailView> {
             'Informations',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildInfoRow('Créée le', _formatDate(_automation!.createdAt)),
           _buildInfoRow('Modifiée le', _formatDate(_automation!.updatedAt)),
           _buildInfoRow('Créée par', _automation!.createdBy),
           if (_automation!.lastExecutedAt != null)
             _buildInfoRow('Dernière exécution', _formatDate(_automation!.lastExecutedAt!)),
           if (_automation!.tags.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Tags',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Wrap(
               spacing: 8,
               children: _automation!.tags.map((tag) =>

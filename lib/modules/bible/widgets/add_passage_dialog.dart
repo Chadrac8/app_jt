@@ -3,6 +3,7 @@ import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/thematic_passage_service.dart';
 import '../bible_service.dart';
+import '../../../theme.dart';
 
 class AddPassageDialog extends StatefulWidget {
   final String themeId;
@@ -70,7 +71,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         constraints: const BoxConstraints(maxWidth: 600, maxHeight: 700),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Form(
           key: _formKey,
           child: Column(
@@ -84,7 +85,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                     Icons.add_circle_outline,
                     color: theme.colorScheme.primary,
                     size: 28),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,13 +93,13 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                         Text(
                           'Ajouter un passage',
                           style: GoogleFonts.inter(
-                            fontSize: 20,
+                            fontSize: AppTheme.fontSize20,
                             fontWeight: AppTheme.fontBold,
                             color: theme.colorScheme.onSurface)),
                         Text(
                           'au thème "${widget.themeName}"',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: theme.colorScheme.onSurface.withOpacity(0.6))),
                       ])),
                   IconButton(
@@ -108,7 +109,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                       color: theme.colorScheme.onSurface)),
                 ]),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               Expanded(
                 child: SingleChildScrollView(
@@ -132,7 +133,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                           return null;
                         }),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Détails séparés
                       Row(
@@ -156,7 +157,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                                 });
                                 _updateReference();
                               })),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Expanded(
                             child: TextFormField(
                               controller: _chapterController,
@@ -177,7 +178,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               })),
                         ]),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       Row(
                         children: [
@@ -199,7 +200,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                                 }
                                 return null;
                               })),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Expanded(
                             child: TextFormField(
                               controller: _endVerseController,
@@ -211,7 +212,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               onChanged: (value) => _updateReference())),
                         ]),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Description
                       TextFormField(
@@ -230,13 +231,13 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                           return null;
                         }),
                       
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
                       
                       // Aperçu du texte
                       if (_previewText != null) ...[
                         Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(AppTheme.spaceMedium),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary.withOpacity(0.05),
                             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -248,18 +249,18 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               Text(
                                 'Aperçu du texte :',
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
+                                  fontSize: AppTheme.fontSize14,
                                   fontWeight: AppTheme.fontSemiBold,
                                   color: theme.colorScheme.primary)),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppTheme.spaceSmall),
                               Text(
                                 _previewText!,
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
+                                  fontSize: AppTheme.fontSize14,
                                   color: theme.colorScheme.onSurface,
                                   height: 1.4)),
                             ])),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                       ],
                       
                       // Bouton pour prévisualiser
@@ -273,7 +274,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                               style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)))),
                     ]))),
               
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Boutons d'action
               Row(
@@ -288,7 +289,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                       child: Text(
                         'Annuler',
                         style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)))),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _savePassage,
@@ -464,7 +465,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
             title: Row(
               children: [
                 Icon(Icons.error_outline, color: AppTheme.errorColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(errorMessage),
               ]),
             content: Column(
@@ -472,11 +473,11 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(actionMessage),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 const Text(
                   'Solutions possibles:',
                   style: TextStyle(fontWeight: AppTheme.fontBold)),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 const Text('• Activez l\'authentification anonyme dans Firebase'),
                 const Text('• Connectez-vous avec un compte utilisateur'),
                 const Text('• Contactez l\'administrateur de l\'application'),

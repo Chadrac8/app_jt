@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/permission_model.dart';
 import '../services/current_user_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Dialogue pour assigner un rôle à plusieurs personnes existantes
 class AssignRoleToPersonsDialog extends StatefulWidget {
@@ -46,18 +47,18 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.8,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildSearchBar(),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             _buildOptions(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(child: _buildPersonsList()),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildActions(),
           ],
         ),
@@ -69,7 +70,7 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: _parseColor(widget.role.color).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -80,7 +81,7 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
             size: 24,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +138,7 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
             contentPadding: EdgeInsets.zero,
             title: const Text(
               'Inclure les personnes inactives',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: AppTheme.fontSize14),
             ),
             value: _showInactivePersons,
             onChanged: (value) {
@@ -177,7 +178,7 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 48, color: AppTheme.grey300),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -199,7 +200,7 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.people_outline, size: 48, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   _searchQuery.isEmpty 
                       ? 'Aucune personne trouvée'
@@ -249,11 +250,11 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: AppTheme.grey300,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: const Text(
                           'Inactif',
-                          style: TextStyle(fontSize: 10, color: AppTheme.grey500),
+                          style: TextStyle(fontSize: AppTheme.fontSize10, color: AppTheme.grey500),
                         ),
                       ),
                   ],
@@ -263,7 +264,7 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
                   children: [
                     Text(email),
                     if (hasRole) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
@@ -274,7 +275,7 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
                           'Déjà assigné à ce rôle',
                           style: TextStyle(
                             color: _parseColor(widget.role.color),
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
@@ -312,12 +313,12 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Annuler'),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         ElevatedButton(
           onPressed: _selectedPersonIds.isEmpty || _isLoading 
               ? null 
@@ -406,9 +407,9 @@ class _AssignRoleToPersonsDialogState extends State<AssignRoleToPersonsDialog> {
         case 'green': return AppTheme.greenStandard;
         case 'red': return AppTheme.redStandard;
         case 'orange': return AppTheme.orangeStandard;
-        case 'purple': return Colors.purple;
-        case 'teal': return Colors.teal;
-        case 'indigo': return Colors.indigo;
+        case 'purple': return AppTheme.primaryColor;
+        case 'teal': return AppTheme.secondaryColor;
+        case 'indigo': return AppTheme.secondaryColor;
         default: return AppTheme.blueStandard;
       }
     } catch (e) {

@@ -102,7 +102,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
         icon: Icons.tune,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary.withAlpha(25),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -117,7 +117,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
                   color: Theme.of(context).colorScheme.secondary,
                   size: 32,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Text(
                   'Aucun champ personnalisé configuré',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -126,7 +126,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Vous pouvez créer des champs personnalisés depuis le menu Personnes → Champs personnalisés pour collecter des informations supplémentaires.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -174,7 +174,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary.withAlpha(25),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
@@ -186,7 +186,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
                   color: Theme.of(context).colorScheme.primary,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -198,7 +198,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: children,
             ),
@@ -221,7 +221,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
               child: Text(
                 field.helpText!,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.grey500,
                 ),
               ),
@@ -334,7 +334,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
           onTap: widget.isReadOnly ? null : () => _selectDate(field),
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Theme.of(context).colorScheme.outline.withAlpha(77),
@@ -347,7 +347,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
                   Icons.calendar_today,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,13 +442,13 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
       children: [
         Text(
           field.label + (field.isRequired ? ' *' : ''),
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: AppTheme.fontSize16),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
           decoration: BoxDecoration(
             border: Border.all(color: AppTheme.grey500),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: Column(
             children: field.options.map((option) {

@@ -1058,7 +1058,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 Icons.family_restroom,
                 color: AppTheme.primaryColor,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               const Text('Gestion de famille'),
             ],
           ),
@@ -1067,9 +1067,9 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             children: [
               const Text(
                 'Que souhaitez-vous faire ?',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: AppTheme.fontSize16),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               Row(
                 children: [
                   Expanded(
@@ -1087,7 +1087,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () => Navigator.pop(context, 'join'),
@@ -1141,7 +1141,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 Icons.family_restroom,
                 color: AppTheme.primaryColor,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               const Text('Créer une famille'),
             ],
           ),
@@ -1169,7 +1169,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     },
                     autofocus: true,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextFormField(
                     controller: addressController,
                     decoration: InputDecoration(
@@ -1181,7 +1181,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     ),
                     maxLines: 2,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextFormField(
                     controller: phoneController,
                     decoration: InputDecoration(
@@ -1283,7 +1283,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   Icons.people,
                   color: AppTheme.primaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text('Rejoindre une famille'),
               ],
             ),
@@ -1294,9 +1294,9 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.family_restroom, size: 64, color: AppTheme.grey500),
-                        SizedBox(height: 16),
+                        SizedBox(height: AppTheme.spaceMedium),
                         Text('Aucune famille disponible'),
-                        SizedBox(height: 8),
+                        SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'Demandez à un membre de votre famille de créer une famille d\'abord.',
                           textAlign: TextAlign.center,
@@ -1330,7 +1330,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                                 if (family.address != null)
                                   Text(
                                     family.address!,
-                                    style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
+                                    style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
                                   ),
                               ],
                             ),
@@ -1472,7 +1472,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   Widget _buildErrorState() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -1481,7 +1481,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               size: 64,
               color: AppTheme.grey500,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Impossible de charger votre profil',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -1490,7 +1490,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Vérifiez votre connexion internet et réessayez',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -1498,7 +1498,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             ElevatedButton.icon(
               onPressed: () {
                 setState(() {
@@ -1517,7 +1517,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextButton.icon(
               onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.arrow_back),
@@ -1544,7 +1544,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
           style: TextStyle(
             color: AppTheme.white100,
             fontWeight: AppTheme.fontBold,
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
           ),
         ),
         titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
@@ -1564,7 +1564,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             children: [
               const SizedBox(height: 50),
               _buildProfileImage(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               if (_currentPerson != null) ...[
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -1579,7 +1579,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -1590,7 +1590,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   child: Text(
                     _currentPerson!.email,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.white100,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -1620,7 +1620,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                             role,
                             style: const TextStyle(
                               color: AppTheme.white100,
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
@@ -1630,7 +1630,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   ),
                 ],
               ],
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
             ],
           ),
         ),
@@ -1663,7 +1663,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   Widget _buildInformationTab() {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1677,14 +1677,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 icon: Icons.person_outline,
                 enabled: _isEditing,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
                 controller: _lastNameController,
                 label: 'Nom',
                 icon: Icons.person_outline,
                 enabled: _isEditing,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
                 controller: _emailController,
                 label: 'Email',
@@ -1692,14 +1692,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 enabled: _isEditing,
                 keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
                     flex: 1,
                     child: _buildCountryCodeDropdown(),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     flex: 2,
                     child: _buildTextField(
@@ -1712,17 +1712,17 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildAddressSection(),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildInfoCard(
             title: 'Informations personnelles',
             icon: Icons.info_outline,
             children: [
               _buildDateField(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildDropdown(
                 value: _gender,
                 label: 'Genre',
@@ -1730,7 +1730,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 items: _genderOptions,
                 onChanged: _isEditing ? (value) => setState(() => _gender = value) : null,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildDropdown(
                 value: _maritalStatus,
                 label: 'Statut marital',
@@ -1748,7 +1748,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   Widget _buildFamilyTab() {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1758,7 +1758,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               person: _currentPerson!,
               onFamilyChanged: _loadPersonData,
             ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           if (_family != null) ...[
             _buildInfoCard(
@@ -1779,7 +1779,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildInfoCard(
               title: 'Membres de la famille',
               icon: Icons.people,
@@ -1798,7 +1798,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton.icon(
                   onPressed: _showFamilyManagementDialog,
                   icon: const Icon(Icons.add),
@@ -1822,7 +1822,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   Widget _buildRolesTab() {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1864,7 +1864,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   Widget _buildHistoryTab() {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1901,7 +1901,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1912,18 +1912,18 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   color: AppTheme.primaryColor,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...children,
           ],
         ),
@@ -2020,13 +2020,13 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   item,
                   style: const TextStyle(fontWeight: AppTheme.fontBold),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     _countryCodes[item] ?? '',
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                     ),
                   ),
                 ),
@@ -2128,7 +2128,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             size: 16,
             color: AppTheme.textSecondaryColor,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2136,14 +2136,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 Text(
                   label,
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textPrimaryColor,
                   ),
@@ -2170,7 +2170,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 ? Text(member.displayInitials)
                 : null,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2186,7 +2186,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                   const Text(
                     'Chef de famille',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.primaryColor,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -2203,7 +2203,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         decoration: BoxDecoration(
           color: Color(int.parse(role.color.replaceFirst('#', '0xFF')))
               .withOpacity(0.1),
@@ -2216,7 +2216,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: Color(int.parse(role.color.replaceFirst('#', '0xFF'))),
                 shape: BoxShape.circle,
@@ -2227,7 +2227,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 color: AppTheme.white100,
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -2243,7 +2243,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     Text(
                       role.description,
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -2262,7 +2262,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -2273,7 +2273,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               color: color,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2288,7 +2288,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 Text(
                   date.mediumDate,
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -2325,14 +2325,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
           icon: Icons.home_outlined,
           enabled: _isEditing,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         _buildTextField(
           controller: _addressComplementController,
           label: 'Complément d\'adresse',
           icon: Icons.add_home_outlined,
           enabled: _isEditing,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -2345,7 +2345,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 keyboardType: TextInputType.number,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               flex: 2,
               child: _buildTextField(
@@ -2357,7 +2357,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         _buildCountryDropdown(),
       ],
     );

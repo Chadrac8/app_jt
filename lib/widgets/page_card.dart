@@ -184,7 +184,7 @@ class _PageCardState extends State<PageCard>
 
             // Contenu principal
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -206,7 +206,7 @@ class _PageCardState extends State<PageCard>
                               overflow: TextOverflow.ellipsis,
                             ),
                             if (widget.page.description.isNotEmpty) ...[
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppTheme.spaceXSmall),
                               Text(
                                 widget.page.description,
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -292,7 +292,7 @@ class _PageCardState extends State<PageCard>
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
 
                   // URL et statistiques
                   Row(
@@ -307,12 +307,12 @@ class _PageCardState extends State<PageCard>
                           child: Row(
                             children: [
                               Icon(Icons.link, size: 16, color: AppTheme.grey600),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Expanded(
                                 child: Text(
                                   '/${widget.page.slug}',
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: AppTheme.fontSize12,
                                     color: AppTheme.grey600,
                                     fontFamily: 'monospace',
                                   ),
@@ -323,18 +323,18 @@ class _PageCardState extends State<PageCard>
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         '${widget.page.components.length} composant${widget.page.components.length > 1 ? 's' : ''}',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey600,
                         ),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
 
                   // Badges et informations
                   Row(
@@ -344,7 +344,7 @@ class _PageCardState extends State<PageCard>
                         label: widget.page.statusLabel,
                         color: _statusColor,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       _buildInfoChip(
                         icon: _visibilityIcon,
                         label: widget.page.visibilityLabel,
@@ -370,13 +370,13 @@ class _PageCardState extends State<PageCard>
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.page.iconName != null)
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: AppTheme.white100.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -398,7 +398,7 @@ class _PageCardState extends State<PageCard>
               child: Text(
                 '#${widget.page.displayOrder}',
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
@@ -424,11 +424,11 @@ class _PageCardState extends State<PageCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
               color: color,
             ),
@@ -453,11 +453,11 @@ class _PageCardState extends State<PageCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
               color: color,
             ),

@@ -32,7 +32,7 @@ class CustomCard extends StatelessWidget {
         borderRadius: borderRadius ?? BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Container(
-        padding: padding ?? const EdgeInsets.all(16),
+        padding: padding ?? const EdgeInsets.all(AppTheme.spaceMedium),
         child: child,
       ),
     );
@@ -96,7 +96,7 @@ class ImageCard extends StatelessWidget {
               ),
             ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: content,
           ),
         ],
@@ -131,18 +131,18 @@ class StatusCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: statusColor ?? Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Text(
               status,
               style: const TextStyle(
                 color: AppTheme.white100,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           child,
         ],
       ),
@@ -174,7 +174,7 @@ class ActionCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: (iconColor ?? Theme.of(context).primaryColor).withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -185,7 +185,7 @@ class ActionCard extends StatelessWidget {
               size: 24,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +197,7 @@ class ActionCard extends StatelessWidget {
                   ),
                 ),
                 if (subtitle != null) ...[
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     subtitle!,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(

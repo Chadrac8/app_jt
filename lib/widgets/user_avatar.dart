@@ -239,7 +239,7 @@ class ProfileUserAvatar extends StatelessWidget {
               bottom: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: const BoxDecoration(
                   color: AppTheme.secondaryColor,
                   shape: BoxShape.circle,

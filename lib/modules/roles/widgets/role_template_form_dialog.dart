@@ -5,6 +5,7 @@ import '../models/permission_model.dart';
 import '../providers/role_template_provider.dart';
 import '../providers/permission_provider.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Dialog de création/édition de template de rôle
 class RoleTemplateFormDialog extends StatefulWidget {
@@ -150,7 +151,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -160,7 +161,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Nom du template
             TextFormField(
@@ -181,7 +182,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
               },
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Description
             TextFormField(
@@ -203,7 +204,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
               },
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Catégorie
             DropdownButtonFormField<String>(
@@ -219,7 +220,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                   child: Row(
                     children: [
                       Icon(category.icon, size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(category.displayName),
                     ],
                   ),
@@ -238,7 +239,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
               },
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             Text(
               'Apparence',
@@ -246,7 +247,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Sélection d'icône
             Text(
@@ -255,7 +256,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -273,18 +274,18 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                     decoration: BoxDecoration(
                       color: isSelected 
                           ? AppTheme.primaryColor.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                          : AppTheme.grey500.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
                         color: isSelected 
                             ? AppTheme.primaryColor 
-                            : Colors.grey.withOpacity(0.3),
+                            : AppTheme.grey500.withOpacity(0.3),
                         width: isSelected ? 2 : 1,
                       ),
                     ),
                     child: Icon(
                       entry.value,
-                      color: isSelected ? AppTheme.primaryColor : Colors.grey[600],
+                      color: isSelected ? AppTheme.primaryColor : AppTheme.grey600,
                       size: 24,
                     ),
                   ),
@@ -292,7 +293,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
               }).toList(),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Sélection de couleur
             Text(
@@ -301,7 +302,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -322,7 +323,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                       color: color,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: isSelected ? Colors.black : Colors.grey.withOpacity(0.3),
+                        color: isSelected ? Colors.black : AppTheme.grey500.withOpacity(0.3),
                         width: isSelected ? 3 : 1,
                       ),
                     ),
@@ -349,7 +350,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
         final permissionsByModule = provider.permissionsByModule;
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -368,14 +369,14 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Sélectionnez les permissions qui seront incluses dans ce template de rôle.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
 
               // Actions rapides
               Row(
@@ -389,7 +390,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                     icon: const Icon(Icons.clear_all),
                     label: const Text('Tout désélectionner'),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   OutlinedButton.icon(
                     onPressed: () {
                       setState(() {
@@ -402,7 +403,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
 
               // Liste des permissions par module
               ...permissionsByModule.entries.map((entry) {
@@ -417,12 +418,12 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                   child: ExpansionTile(
                     title: Text(
                       _getModuleName(moduleId),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: AppTheme.fontBold),
                     ),
                     subtitle: Text('$selectedCount/${modulePermissions.length} permissions sélectionnées'),
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         child: Column(
                           children: modulePermissions.map((permission) {
                             final isSelected = _selectedPermissions.contains(permission.id);
@@ -458,7 +459,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
 
   Widget _buildConfigurationTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -468,14 +469,14 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Paramètres spécifiques pour ce template de rôle.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Nombre maximum d'utilisateurs
           Row(
@@ -497,7 +498,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Modules restreints
           Text(
@@ -506,21 +507,21 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
               fontWeight: AppTheme.fontMedium,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Modules auxquels ce rôle ne devrait pas avoir accès.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           
           // TODO: Implémenter la sélection de modules restreints
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[300]!),
-              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppTheme.grey300!),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: const Text(
               'Sélection de modules restreints à implémenter',
@@ -528,7 +529,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Options diverses
           CheckboxListTile(
@@ -557,7 +558,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
           ),
           
           if (_configuration['autoExpiry'] == true) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Durée d\'expiration (jours)',
@@ -571,7 +572,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
             ),
           ],
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           CheckboxListTile(
             title: const Text('Audit requis'),
@@ -604,7 +605,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
     );
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -614,35 +615,35 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Voici à quoi ressemblera votre template une fois créé.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey[600],
+              color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Card d'aperçu du template
           Card(
             elevation: 4,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
                         decoration: BoxDecoration(
                           color: previewTemplate.color.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           border: Border.all(color: previewTemplate.color.withOpacity(0.3)),
                         ),
                         child: Icon(previewTemplate.iconData, color: previewTemplate.color),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -650,15 +651,15 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                             Text(
                               previewTemplate.name,
                               style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                fontSize: AppTheme.fontSize18,
+                                fontWeight: AppTheme.fontBold,
                               ),
                             ),
                             Text(
                               TemplateCategory.fromId(previewTemplate.category).displayName,
                               style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
+                                fontSize: AppTheme.fontSize14,
+                                color: AppTheme.grey600,
                               ),
                             ),
                           ],
@@ -666,33 +667,33 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(previewTemplate.description),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Informations sur les permissions
                   Row(
                     children: [
-                      Icon(Icons.security, size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
+                      Icon(Icons.security, size: 16, color: AppTheme.grey600),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         '${previewTemplate.permissionIds.length} permission(s)',
-                        style: TextStyle(color: Colors.grey[600]),
+                        style: TextStyle(color: AppTheme.grey600),
                       ),
                     ],
                   ),
                   
                   if (_configuration.isNotEmpty) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     const Divider(),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Configuration',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     ..._configuration.entries.map((entry) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 4),
@@ -700,7 +701,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                           children: [
                             Text(
                               '${entry.key}: ',
-                              style: const TextStyle(fontWeight: FontWeight.w500),
+                              style: const TextStyle(fontWeight: AppTheme.fontMedium),
                             ),
                             Text('${entry.value}'),
                           ],
@@ -713,13 +714,13 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Résumé des validations
           Card(
             color: _isFormValid() ? AppTheme.success.withOpacity(0.1) : AppTheme.error.withOpacity(0.1),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -729,7 +730,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                         _isFormValid() ? Icons.check_circle : Icons.error,
                         color: _isFormValid() ? AppTheme.success : AppTheme.error,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         _isFormValid() ? 'Template valide' : 'Template invalide',
                         style: TextStyle(
@@ -739,7 +740,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   ..._getValidationMessages().map((message) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 4),
@@ -751,7 +752,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
                             size: 16,
                             color: message.startsWith('✓') ? AppTheme.success : AppTheme.error,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(child: Text(message.substring(2))),
                         ],
                       ),
@@ -768,11 +769,11 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
 
   Widget _buildBottomBar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
-          top: BorderSide(color: Colors.grey[300]!),
+          top: BorderSide(color: AppTheme.grey300!),
         ),
       ),
       child: Row(
@@ -780,10 +781,10 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
           if (widget.template != null && !widget.template!.isSystemTemplate)
             TextButton.icon(
               onPressed: _isLoading ? null : _deleteTemplate,
-              icon: const Icon(Icons.delete, color: Colors.red),
+              icon: const Icon(Icons.delete, color: AppTheme.errorColor),
               label: const Text(
                 'Supprimer',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: AppTheme.errorColor),
               ),
             ),
           const Spacer(),
@@ -791,7 +792,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
             onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
             child: const Text('Annuler'),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           ElevatedButton(
             onPressed: (_isFormValid() && !_isLoading) ? _saveTemplate : null,
             child: _isLoading

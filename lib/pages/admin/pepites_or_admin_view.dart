@@ -61,7 +61,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
         title: Text(
           'Pépites d\'Or - Administration',
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.white100,
           ),
@@ -125,15 +125,15 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 64, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
-                  style: GoogleFonts.poppins(fontSize: 18, color: AppTheme.grey600),
+                  style: GoogleFonts.poppins(fontSize: AppTheme.fontSize18, color: AppTheme.grey600),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   snapshot.error.toString(),
-                  style: GoogleFonts.poppins(fontSize: 14, color: AppTheme.grey500),
+                  style: GoogleFonts.poppins(fontSize: AppTheme.fontSize14, color: AppTheme.grey500),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -155,7 +155,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
         return RefreshIndicator(
           onRefresh: _actualiser,
           child: ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: pepitesFiltrees.length,
             itemBuilder: (context, index) {
               return _buildPepiteCard(pepitesFiltrees[index]);
@@ -194,7 +194,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
         return RefreshIndicator(
           onRefresh: _actualiser,
           child: ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: pepitesFiltrees.length,
             itemBuilder: (context, index) {
               return _buildPepiteCard(pepitesFiltrees[index]);
@@ -211,19 +211,19 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Aperçu général',
             style: GoogleFonts.poppins(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: const Color(0xFF8B4513),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               Expanded(child: _buildStatCard(
@@ -232,7 +232,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                 Icons.auto_awesome,
                 AppTheme.blueStandard,
               )),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(child: _buildStatCard(
                 'Publiées',
                 _statistiques['pepitesPubliees']?.toString() ?? '0',
@@ -241,7 +241,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
               )),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(child: _buildStatCard(
@@ -250,30 +250,30 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                 Icons.edit_note,
                 AppTheme.orangeStandard,
               )),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(child: _buildStatCard(
                 'Total Vues',
                 _statistiques['totalVues']?.toString() ?? '0',
                 Icons.visibility,
-                Colors.purple,
+                AppTheme.primaryColor,
               )),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           Text(
             'Performance',
             style: GoogleFonts.poppins(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: const Color(0xFF8B4513),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildStatCard(
             'Moyenne de vues par pépite',
             (_statistiques['moyenneVuesParPepite']?.toStringAsFixed(1) ?? '0.0'),
             Icons.trending_up,
-            Colors.teal,
+            AppTheme.secondaryColor,
             isFullWidth: true,
           ),
         ],
@@ -290,7 +290,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
         onTap: () => _voirDetail(pepite),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -303,16 +303,16 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                         Text(
                           pepite.theme,
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontSemiBold,
                             color: const Color(0xFF8B4513),
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           pepite.description,
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: AppTheme.grey600,
                           ),
                           maxLines: 2,
@@ -335,13 +335,13 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                         child: Text(
                           pepite.estPubliee ? 'Publiée' : 'Brouillon',
                           style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                             color: AppTheme.white100,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       PopupMenuButton<String>(
                         onSelected: (value) => _gererActionPepite(value, pepite),
                         itemBuilder: (context) => [
@@ -350,7 +350,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                             child: Row(
                               children: [
                                 Icon(Icons.visibility, size: 18),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Voir détail'),
                               ],
                             ),
@@ -360,7 +360,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                             child: Row(
                               children: [
                                 Icon(Icons.edit, size: 18),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Modifier'),
                               ],
                             ),
@@ -375,7 +375,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                                       : Icons.publish,
                                   size: 18,
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppTheme.spaceSmall),
                                 Text(pepite.estPubliee ? 'Dépublier' : 'Publier'),
                               ],
                             ),
@@ -385,7 +385,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                             child: Row(
                               children: [
                                 Icon(Icons.delete, size: 18, color: AppTheme.redStandard),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                               ],
                             ),
@@ -396,10 +396,10 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               if (pepite.premiereCitation.isNotEmpty) ...[
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.grey50,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -416,17 +416,17 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                       Text(
                         pepite.premiereCitation,
                         style: GoogleFonts.poppins(
-                          fontSize: 13,
+                          fontSize: AppTheme.fontSize13,
                           fontStyle: FontStyle.italic,
                           color: AppTheme.grey700,
                         ),
                       ),
                       if (pepite.premierAuteur.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           '— ${pepite.premierAuteur}',
                           style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                             color: const Color(0xFF8B4513),
                           ),
@@ -435,39 +435,39 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
               ],
               Row(
                 children: [
                   Icon(Icons.person, size: 14, color: AppTheme.grey500),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     pepite.nomAuteur,
-                    style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
+                    style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12, color: AppTheme.grey600),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Icon(Icons.schedule, size: 14, color: AppTheme.grey500),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${pepite.dureeDeeLectureMinutes} min',
-                    style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
+                    style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12, color: AppTheme.grey600),
                   ),
                   const Spacer(),
                   if (pepite.estPubliee) ...[
                     Row(
                       children: [
                         Icon(Icons.visibility, size: 14, color: AppTheme.grey500),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           '${pepite.nbVues}',
-                          style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
+                          style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12, color: AppTheme.grey600),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Icon(Icons.share, size: 14, color: AppTheme.grey500),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           '${pepite.nbPartages}',
-                          style: GoogleFonts.poppins(fontSize: 12, color: AppTheme.grey600),
+                          style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12, color: AppTheme.grey600),
                         ),
                       ],
                     ),
@@ -491,21 +491,21 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
     return CustomCard(
       child: Container(
         width: isFullWidth ? double.infinity : null,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: couleur.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(icone, color: couleur, size: 20),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -513,7 +513,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                       Text(
                         valeur,
                         style: GoogleFonts.poppins(
-                          fontSize: 20,
+                          fontSize: AppTheme.fontSize20,
                           fontWeight: AppTheme.fontBold,
                           color: couleur,
                         ),
@@ -521,7 +521,7 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
                       Text(
                         titre,
                         style: GoogleFonts.poppins(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey600,
                         ),
                       ),
@@ -542,25 +542,25 @@ class _PepitesOrAdminViewState extends State<PepitesOrAdminView>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icone, size: 64, color: AppTheme.grey400),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             titre,
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             description,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey500,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _ajouterPepiteOr,
             icon: const Icon(Icons.add),

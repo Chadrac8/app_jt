@@ -23,7 +23,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
         child: Text(
           'Page d\'accueil membre en construction',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             color: AppTheme.grey500,
           ),
         ),

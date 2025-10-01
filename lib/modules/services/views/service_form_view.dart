@@ -6,6 +6,7 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 
 
@@ -146,20 +147,20 @@ class _ServiceFormViewState extends State<ServiceFormView>
 
   Widget _buildInformationsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Informations de base',
-                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   TextFormField(
                     controller: _nameController,
@@ -176,7 +177,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     },
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   TextFormField(
                     controller: _descriptionController,
@@ -188,7 +189,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     maxLines: 3,
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   DropdownButtonFormField<ServiceType>(
                     value: _selectedType,
@@ -202,7 +203,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                         child: Row(
                           children: [
                             Icon(_getTypeIcon(type)),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Text(type.displayName),
                           ],
                         ),
@@ -215,7 +216,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     },
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   TextFormField(
                     controller: _locationController,
@@ -237,19 +238,19 @@ class _ServiceFormViewState extends State<ServiceFormView>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Équipements nécessaires',
-                    style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   Wrap(
                     spacing: 8,
@@ -272,7 +273,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     }).toList(),
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   TextButton.icon(
                     onPressed: _addCustomEquipment,
@@ -290,20 +291,20 @@ class _ServiceFormViewState extends State<ServiceFormView>
 
   Widget _buildSchedulingTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Planification',
-                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Sélection de date
                   ListTile(
@@ -339,11 +340,11 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     contentPadding: EdgeInsets.zero,
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Durée calculée
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: AppTheme.grey50,
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -352,7 +353,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     child: Row(
                       children: [
                         const Icon(Icons.timer, color: AppTheme.blueStandard),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Text(
                           'Durée: ${_calculateDuration()}',
                           style: const TextStyle(
@@ -368,17 +369,17 @@ class _ServiceFormViewState extends State<ServiceFormView>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Récurrence',
-                    style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontBold),
                   ),
                   
                   SwitchListTile(
@@ -392,9 +393,9 @@ class _ServiceFormViewState extends State<ServiceFormView>
                   ),
                   
                   if (_isRecurring) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         color: AppTheme.grey50,
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -402,7 +403,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                       child: const Row(
                         children: [
                           Icon(Icons.info, color: AppTheme.orangeStandard),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: Text(
                               'Les paramètres de récurrence pourront être configurés après la création.',
@@ -424,20 +425,20 @@ class _ServiceFormViewState extends State<ServiceFormView>
 
   Widget _buildAppearanceTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Couleur du service',
-                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   Wrap(
                     spacing: 12,
@@ -471,11 +472,11 @@ class _ServiceFormViewState extends State<ServiceFormView>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -484,7 +485,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                       const Expanded(
                         child: Text(
                           'Image du service',
-                          style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
+                          style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontBold),
                         ),
                       ),
                       ElevatedButton.icon(
@@ -501,7 +502,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     ],
                   ),
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   Container(
                     height: 120,
@@ -550,18 +551,18 @@ class _ServiceFormViewState extends State<ServiceFormView>
 
   Widget _buildSettingsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Diffusion en ligne',
-                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
                   
                   SwitchListTile(
@@ -575,7 +576,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                   ),
                   
                   if (_isStreamingEnabled) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     TextFormField(
                       controller: _streamingUrlController,
                       decoration: const InputDecoration(
@@ -592,19 +593,19 @@ class _ServiceFormViewState extends State<ServiceFormView>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Notes additionnelles',
-                    style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontBold),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   TextFormField(
                     controller: _notesController,

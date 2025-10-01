@@ -4,6 +4,7 @@ import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../services/pour_vous_action_service.dart';
 import 'action_form_dialog.dart';
+import '../../../theme.dart';
 
 class ActionTemplatesDialog extends StatefulWidget {
   const ActionTemplatesDialog({Key? key}) : super(key: key);
@@ -107,14 +108,14 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.8,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildSearchBar(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildTabs(),
           ],
         ),
@@ -130,12 +131,12 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
           color: AppTheme.primaryColor,
           size: 28,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Text(
             'Templates d\'actions',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
@@ -184,19 +185,21 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
         length: 2,
         child: Column(
           children: [
-            TabBar(
-              labelColor: AppTheme.primaryColor,
-              unselectedLabelColor: AppTheme.textSecondaryColor,
-              labelStyle: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
-              unselectedLabelStyle: GoogleFonts.poppins(),
-              indicatorColor: AppTheme.primaryColor,
+            Container(
+              color: AppTheme.primaryColor, // Couleur primaire cohérente
+              child: TabBar(
+                labelColor: AppTheme.onPrimaryColor, // Texte blanc
+                unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+                labelStyle: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
+                unselectedLabelStyle: GoogleFonts.poppins(),
+                indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc
               tabs: [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.star, size: 16),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Prédéfinis'),
                     ],
                   ),
@@ -206,14 +209,15 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.bookmark, size: 16),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Mes templates'),
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            ),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: TabBarView(
                 children: [
@@ -312,7 +316,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
         onTap: () => _useTemplate(template),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             gradient: LinearGradient(
@@ -352,7 +356,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                     child: Text(
                       template['category'],
                       style: GoogleFonts.poppins(
-                        fontSize: 10,
+                        fontSize: AppTheme.fontSize10,
                         color: cardColor,
                         fontWeight: AppTheme.fontMedium,
                       ),
@@ -360,30 +364,30 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 template['title'],
                 style: GoogleFonts.poppins(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   template['description'],
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.textSecondaryColor,
                   ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Expanded(
@@ -396,7 +400,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                       child: Text(
                         'Utiliser',
                         style: GoogleFonts.poppins(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.white100,
                           fontWeight: AppTheme.fontMedium,
                         ),
@@ -425,7 +429,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
     return Card(
       elevation: 2,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           gradient: LinearGradient(
@@ -476,7 +480,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                       child: Row(
                         children: [
                           const Icon(Icons.play_arrow, size: 16),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text('Utiliser', style: GoogleFonts.poppins()),
                         ],
                       ),
@@ -486,7 +490,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                       child: Row(
                         children: [
                           const Icon(Icons.edit, size: 16),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text('Modifier', style: GoogleFonts.poppins()),
                         ],
                       ),
@@ -496,7 +500,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                       child: Row(
                         children: [
                           Icon(Icons.delete, size: 16, color: AppTheme.errorColor),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text('Supprimer', style: GoogleFonts.poppins(color: AppTheme.errorColor)),
                         ],
                       ),
@@ -505,30 +509,30 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               template.title,
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.textPrimaryColor,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Expanded(
               child: Text(
                 template.description,
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.textSecondaryColor,
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ElevatedButton(
               onPressed: () => _useSavedTemplate(template),
               style: ElevatedButton.styleFrom(
@@ -539,7 +543,7 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
               child: Text(
                 'Utiliser',
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.white100,
                   fontWeight: AppTheme.fontMedium,
                 ),
@@ -561,11 +565,11 @@ class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
             size: 64,
             color: AppTheme.textSecondaryColor,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             message,
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.textSecondaryColor,
             ),
             textAlign: TextAlign.center,

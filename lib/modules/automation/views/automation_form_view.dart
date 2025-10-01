@@ -4,6 +4,7 @@ import '../models/automation_template.dart';
 import '../services/automation_service.dart';
 import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
+import '../../../theme.dart';
 
 /// Vue de formulaire pour créer/modifier une automatisation
 class AutomationFormView extends StatefulWidget {
@@ -98,17 +99,17 @@ class _AutomationFormViewState extends State<AutomationFormView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildBasicInfoCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               _buildTriggerCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               _buildConditionsCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               _buildActionsCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               _buildScheduleCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               _buildTagsCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               _buildStatusCard(),
             ],
           ),
@@ -126,7 +127,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
             'Informations de base',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             controller: _nameController,
             decoration: const InputDecoration(
@@ -140,7 +141,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
               return null;
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             controller: _descriptionController,
             decoration: const InputDecoration(
@@ -163,7 +164,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
             'Déclencheur',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<AutomationTrigger>(
             value: _selectedTrigger,
             decoration: const InputDecoration(
@@ -205,7 +206,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_conditions.isEmpty)
             const Text('Aucune condition définie')
           else
@@ -243,7 +244,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_actions.isEmpty)
             const Text('Aucune action définie')
           else
@@ -284,7 +285,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
             'Planification',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           SwitchListTile(
             title: const Text('Automatisation récurrente'),
             value: _isRecurring,
@@ -295,7 +296,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
             },
           ),
           if (_isRecurring) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               initialValue: _scheduleExpression,
               decoration: const InputDecoration(
@@ -322,7 +323,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
             'Tags',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextFormField(
             controller: _tagsController,
             decoration: const InputDecoration(
@@ -345,7 +346,7 @@ class _AutomationFormViewState extends State<AutomationFormView> {
             'Statut',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<AutomationStatus>(
             value: _selectedStatus,
             decoration: const InputDecoration(

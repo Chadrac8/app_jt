@@ -102,7 +102,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error, size: 64, color: AppTheme.errorColor),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -115,7 +115,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
           children: [
             // Calendar header
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.backgroundColor,
                 boxShadow: [
@@ -146,7 +146,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
                     onPressed: _nextMonth,
                     icon: const Icon(Icons.chevron_right),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   TextButton(
                     onPressed: _goToToday,
                     child: const Text('Aujourd\'hui'),
@@ -255,7 +255,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
               child: Text(
                 '${date.day}',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: isToday ? AppTheme.fontBold : FontWeight.normal,
                   color: isCurrentMonth 
                       ? (isToday ? AppTheme.primaryColor : AppTheme.textPrimaryColor)
@@ -284,7 +284,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
                           task.title,
                           style: const TextStyle(
                             color: AppTheme.white100,
-                            fontSize: 10,
+                            fontSize: AppTheme.fontSize10,
                             fontWeight: AppTheme.fontMedium,
                           ),
                           maxLines: 1,
@@ -307,7 +307,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
                           '+${tasks.length - 3}',
                           style: const TextStyle(
                             color: AppTheme.white100,
-                            fontSize: 10,
+                            fontSize: AppTheme.fontSize10,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
@@ -336,7 +336,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
         maxChildSize: 0.9,
         minChildSize: 0.3,
         builder: (context, scrollController) => Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -347,18 +347,18 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
                   height: 4,
                   decoration: BoxDecoration(
                     color: AppTheme.grey300,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(AppTheme.radius2),
                   ),
                 ),
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Header
               Row(
                 children: [
                   Icon(Icons.calendar_today, color: AppTheme.primaryColor),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     _formatDate(date),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -383,7 +383,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Tasks list
               Expanded(
@@ -419,7 +419,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
           height: double.infinity,
           decoration: BoxDecoration(
             color: _getTaskColor(task),
-            borderRadius: BorderRadius.circular(2),
+            borderRadius: BorderRadius.circular(AppTheme.radius2),
           ),
         ),
         title: Text(
@@ -438,17 +438,17 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 _buildTaskBadge(task.priorityLabel, _getTaskColor(task)),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildTaskBadge(task.statusLabel, _getStatusColor(task)),
                 if (task.dueDate != null) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     _formatTime(task.dueDate!),
-                    style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
+                    style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
                   ),
                 ],
               ],
@@ -481,7 +481,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
         label,
         style: TextStyle(
           color: color,
-          fontSize: 10,
+          fontSize: AppTheme.fontSize10,
           fontWeight: AppTheme.fontMedium,
         ),
       ),

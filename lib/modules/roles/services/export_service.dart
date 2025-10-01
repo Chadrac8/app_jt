@@ -8,6 +8,7 @@ import '../models/role.dart';
 import '../models/permission.dart';
 import '../models/user_role.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ExportService {
   static const String _csvSeparator = ',';
@@ -311,17 +312,17 @@ class _ExportOptionsDialogState extends State<ExportOptionsDialog> {
       ),
       child: Container(
         width: 400,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildDataSelection(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildFormatSelection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildActionButtons(),
           ],
         ),
@@ -333,7 +334,7 @@ class _ExportOptionsDialogState extends State<ExportOptionsDialog> {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -344,7 +345,7 @@ class _ExportOptionsDialogState extends State<ExportOptionsDialog> {
             size: 28,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,7 +379,7 @@ class _ExportOptionsDialogState extends State<ExportOptionsDialog> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         ...{
           'roles': 'Rôles (${widget.roles.length})',
           'permissions': 'Permissions (${widget.permissions.length})',
@@ -410,7 +411,7 @@ class _ExportOptionsDialogState extends State<ExportOptionsDialog> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         ...{
           'json': 'JSON',
           'csv': 'CSV',
@@ -439,7 +440,7 @@ class _ExportOptionsDialogState extends State<ExportOptionsDialog> {
             child: const Text('Annuler'),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: ElevatedButton.icon(
             onPressed: _isLoading ? null : _performExport,

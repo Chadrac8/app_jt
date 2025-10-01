@@ -35,12 +35,12 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: AppTheme.surfaceColor),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildForm(),
           ])));
   }
@@ -51,7 +51,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -67,19 +67,19 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
               Icons.person_add,
               size: 48,
               color: AppTheme.primaryColor),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Rejoignez notre communauté',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Remplissez ce formulaire pour devenir membre de Jubilé Tabernacle France',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.textSecondaryColor)),
           ])));
   }
@@ -89,7 +89,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -98,10 +98,10 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
               Text(
                 'Informations personnelles',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor)),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Prénom
               TextFormField(
@@ -118,7 +118,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   }
                   return null;
                 }),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Nom
               TextFormField(
@@ -135,7 +135,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   }
                   return null;
                 }),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Email
               TextFormField(
@@ -156,7 +156,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   }
                   return null;
                 }),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Téléphone
               TextFormField(
@@ -168,7 +168,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.phone))),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Adresse
               TextFormField(
@@ -181,11 +181,11 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   prefixIcon: const Icon(Icons.home))),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Information
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.blueStandard.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -194,16 +194,16 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(Icons.info, color: AppTheme.blueStandard, size: 20),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Text(
                         'Un responsable vous contactera dans les prochains jours pour finaliser votre adhésion.',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.blueStandard))),
                   ])),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Bouton d'envoi
               SizedBox(
@@ -226,7 +226,7 @@ class _NewMemberFormPageState extends State<NewMemberFormPage> {
                       : const Text(
                           'Envoyer ma demande',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontSemiBold)))),
             ])),
       ),

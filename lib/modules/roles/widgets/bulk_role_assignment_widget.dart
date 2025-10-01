@@ -4,6 +4,7 @@ import '../models/permission_model.dart';
 import '../dialogs/assign_role_to_persons_dialog.dart';
 import '../dialogs/assign_roles_to_person_dialog.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget pour l'assignation en masse de rôles
 class BulkRoleAssignmentWidget extends StatefulWidget {
@@ -72,7 +73,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
 
   Widget _buildAssignRoleToPersonsTab() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -82,14 +83,14 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
               fontWeight: AppTheme.fontSemiBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Choisissez un rôle dans la liste ci-dessous, puis sélectionnez les personnes qui doivent recevoir ce rôle.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Expanded(
             child: _buildRolesList(),
           ),
@@ -100,7 +101,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
 
   Widget _buildAssignRolesToPersonTab() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -110,19 +111,19 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
               fontWeight: AppTheme.fontSemiBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Choisissez une personne dans la liste ci-dessous, puis sélectionnez les rôles à lui assigner.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text(
               'Inclure les personnes inactives',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: AppTheme.fontSize14),
             ),
             value: _showInactivePersons,
             onChanged: (value) {
@@ -132,7 +133,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
             },
             dense: true,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Expanded(
             child: _buildPersonsList(),
           ),
@@ -196,7 +197,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
               margin: const EdgeInsets.only(bottom: 8),
               child: ListTile(
                 leading: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: _parseColor(role.color).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -221,7 +222,7 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
                           'Système',
                           style: TextStyle(
                             color: AppTheme.grey700,
-                            fontSize: 10,
+                            fontSize: AppTheme.fontSize10,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
@@ -315,11 +316,11 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: AppTheme.grey300,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                         ),
                         child: const Text(
                           'Inactif',
-                          style: TextStyle(fontSize: 10, color: AppTheme.grey500),
+                          style: TextStyle(fontSize: AppTheme.fontSize10, color: AppTheme.grey500),
                         ),
                       ),
                   ],
@@ -329,12 +330,12 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
                   children: [
                     Text(email),
                     if (roles.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         '${roles.length} rôle(s) assigné(s)',
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -360,14 +361,14 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.error_outline, size: 48, color: AppTheme.grey300),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Erreur',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppTheme.grey700,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             message,
             textAlign: TextAlign.center,
@@ -386,14 +387,14 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 48, color: AppTheme.grey400),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Text(
@@ -437,9 +438,9 @@ class _BulkRoleAssignmentWidgetState extends State<BulkRoleAssignmentWidget>
         case 'green': return AppTheme.greenStandard;
         case 'red': return AppTheme.redStandard;
         case 'orange': return AppTheme.orangeStandard;
-        case 'purple': return Colors.purple;
-        case 'teal': return Colors.teal;
-        case 'indigo': return Colors.indigo;
+        case 'purple': return AppTheme.primaryColor;
+        case 'teal': return AppTheme.secondaryColor;
+        case 'indigo': return AppTheme.secondaryColor;
         default: return AppTheme.blueStandard;
       }
     } catch (e) {

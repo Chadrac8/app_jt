@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/report.dart';
 import '../services/chart_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget pour afficher des graphiques de rapport
 class ReportChartWidget extends StatefulWidget {
@@ -49,7 +50,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
           // En-tête avec titre et contrôles
           if (widget.title != null || widget.showControls)
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.grey500,
                 borderRadius: const BorderRadius.only(
@@ -84,7 +85,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                           child: Row(
                             children: [
                               Icon(Icons.bar_chart),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Barres'),
                             ],
                           ),
@@ -94,7 +95,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                           child: Row(
                             children: [
                               Icon(Icons.show_chart),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Lignes'),
                             ],
                           ),
@@ -104,7 +105,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                           child: Row(
                             children: [
                               Icon(Icons.pie_chart),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Secteurs'),
                             ],
                           ),
@@ -114,7 +115,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                           child: Row(
                             children: [
                               Icon(Icons.table_chart),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Tableau'),
                             ],
                           ),
@@ -144,7 +145,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
           // Métadonnées
           if (widget.reportData.metadata.isNotEmpty)
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: _buildMetadata(),
             ),
         ],
@@ -184,7 +185,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
             color: AppTheme.grey500,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 16,
           runSpacing: 8,
@@ -206,7 +207,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
       child: Text(
         '$key: $value',
         style: TextStyle(
-          fontSize: 11,
+          fontSize: AppTheme.fontSize11,
           color: AppTheme.blueStandard,
         ),
       ),
@@ -229,7 +230,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 children: [
                   // Graphique en plein écran
@@ -245,12 +246,12 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                   
                   // Résumé
                   if (widget.reportData.summary.isNotEmpty) ...[
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     _buildSummarySection(),
                   ],
                   
                   // Contrôles de type de graphique
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildChartTypeSelector(),
                 ],
               ),
@@ -264,7 +265,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
   Widget _buildSummarySection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -274,7 +275,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -284,7 +285,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
               mainAxisSpacing: 16,
               children: widget.reportData.summary.entries.map((entry) {
                 return Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.blueStandard,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -295,15 +296,15 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                       Text(
                         entry.key,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey500,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         entry.value.toString(),
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
@@ -321,7 +322,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
   Widget _buildChartTypeSelector() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -331,7 +332,7 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -369,11 +370,11 @@ class _ReportChartWidgetState extends State<ReportChartWidget> {
               icon,
               color: isSelected ? AppTheme.white100 : AppTheme.grey500,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               label,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: isSelected ? AppTheme.white100 : AppTheme.grey500,
               ),
             ),

@@ -57,7 +57,7 @@ class _BibleAdminPageState extends State<BibleAdminPage>
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
+              color: AppTheme.primaryColor, // Couleur primaire cohérente
               borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
                 BoxShadow(
@@ -70,13 +70,13 @@ class _BibleAdminPageState extends State<BibleAdminPage>
             child: TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
+                color: AppTheme.onPrimaryColor.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(14),
               ),
-              labelColor: Theme.of(context).colorScheme.primary,
-              unselectedLabelColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              labelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold, fontSize: 15),
-              unselectedLabelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontRegular, fontSize: 15),
+              labelColor: AppTheme.onPrimaryColor, // Texte blanc
+              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.6), // Texte blanc semi-transparent
+              labelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold, fontSize: AppTheme.fontSize15),
+              unselectedLabelStyle: GoogleFonts.inter(fontWeight: AppTheme.fontRegular, fontSize: AppTheme.fontSize15),
               tabs: const [
                 Tab(icon: Icon(Icons.admin_panel_settings), text: 'Gestion'),
                 Tab(icon: Icon(Icons.visibility), text: 'Vue Membre'),

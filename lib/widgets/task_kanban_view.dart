@@ -99,9 +99,9 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error, size: 64, color: AppTheme.errorColor),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => setState(() {}),
                   child: const Text('Réessayer'),
@@ -114,7 +114,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
         final allTasks = snapshot.data ?? [];
         
         return Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: _columns.map((status) {
@@ -147,7 +147,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
         children: [
           // Column header
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               borderRadius: const BorderRadius.only(
@@ -158,7 +158,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
             child: Row(
               children: [
                 Icon(icon, color: color, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     title,
@@ -178,7 +178,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
                     '${tasks.length}',
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -206,7 +206,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
                   child: tasks.isEmpty
                       ? _buildEmptyColumn(status)
                       : ListView.builder(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(AppTheme.spaceSmall),
                           itemCount: tasks.length,
                           itemBuilder: (context, index) {
                             // Vérification de sécurité pour éviter les erreurs d'index
@@ -276,7 +276,7 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -285,23 +285,23 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
               size: 48,
               color: color.withOpacity(0.3),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune tâche\n$title',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: color.withOpacity(0.6),
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Glissez une tâche ici\npour changer son statut',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: color.withOpacity(0.4),
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
             ),
           ],

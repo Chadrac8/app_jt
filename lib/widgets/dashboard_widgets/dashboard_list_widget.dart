@@ -45,7 +45,7 @@ class DashboardListWidget extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             // Liste des éléments
             Expanded(
               child: listData.items.isNotEmpty
@@ -150,7 +150,7 @@ class DashboardListWidget extends StatelessWidget {
             size: compactView ? 32 : 48,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Aucun élément à afficher',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

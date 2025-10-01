@@ -101,7 +101,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
             content: const Row(
               children: [
                 Icon(Icons.check_circle, color: AppTheme.white100),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Text('Informations mises à jour avec succès'),
               ],
             ),
@@ -278,7 +278,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                         tag: 'profile_\${_currentPerson!.id}',
                         child: _buildProfileImage(),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Name and Status
                       Text(
@@ -289,7 +289,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       
                       // Status Badge
                       Container(
@@ -311,7 +311,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                               color: _currentPerson!.isActive ? AppTheme.greenStandard : AppTheme.redStandard,
                               size: 16,
                             ),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: AppTheme.space6),
                             Text(
                               _currentPerson!.isActive ? 'Actif' : 'Inactif',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -336,7 +336,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                     child: const Row(
                       children: [
                         Icon(Icons.edit),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Modifier'),
                       ],
                     ),
@@ -346,7 +346,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                     child: Row(
                       children: [
                         Icon(_currentPerson!.isActive ? Icons.block : Icons.check_circle),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Text(_currentPerson!.isActive ? 'Désactiver' : 'Réactiver'),
                       ],
                     ),
@@ -356,7 +356,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                     child: Row(
                       children: [
                         Icon(Icons.playlist_add_check),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Démarrer un suivi'),
                       ],
                     ),
@@ -396,8 +396,8 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 unselectedLabelColor: Theme.of(context).colorScheme.outline,
                 indicatorColor: Theme.of(context).colorScheme.primary,
                 indicatorWeight: 3,
-                labelStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontSemiBold),
-                unselectedLabelStyle: const TextStyle(fontSize: 12),
+                labelStyle: const TextStyle(fontSize: AppTheme.fontSize12, fontWeight: AppTheme.fontSemiBold),
+                unselectedLabelStyle: const TextStyle(fontSize: AppTheme.fontSize12),
               ),
             ),
           ),
@@ -438,7 +438,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
     return RefreshIndicator(
       onRefresh: _refreshPersonData,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -469,7 +469,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                   ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Personal Information Card
             _buildInfoCard(
@@ -503,7 +503,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                   ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Roles and Tags Card
             if (_currentPerson!.roles.isNotEmpty || _currentPerson!.tags.isNotEmpty)
@@ -513,7 +513,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 children: [
                   if (_currentPerson!.roles.isNotEmpty) ...[
                     _buildTagSection('Rôles', _currentPerson!.roles, AppTheme.blueStandard),
-                    if (_currentPerson!.tags.isNotEmpty) const SizedBox(height: 12),
+                    if (_currentPerson!.tags.isNotEmpty) const SizedBox(height: AppTheme.space12),
                   ],
                   if (_currentPerson!.tags.isNotEmpty)
                     _buildTagSection('Tags', _currentPerson!.tags, AppTheme.greenStandard),
@@ -522,14 +522,14 @@ class _PersonDetailPageState extends State<PersonDetailPage>
             
             // Private Notes Card (Admin only)
             if (_currentPerson!.privateNotes != null && _currentPerson!.privateNotes!.isNotEmpty) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildInfoCard(
                 title: 'Notes Privées',
                 icon: Icons.note,
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -550,7 +550,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
             
             // Custom Fields Card
             if (_currentPerson!.customFields.isNotEmpty) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Custom Fields with proper display
               FutureBuilder<List<CustomFieldModel>>(
@@ -596,7 +596,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
@@ -608,7 +608,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                   color: Theme.of(context).colorScheme.primary,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -620,7 +620,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: children,
             ),
@@ -645,11 +645,11 @@ class _PersonDetailPageState extends State<PersonDetailPage>
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -660,7 +660,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -717,7 +717,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -765,7 +765,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
 
   Widget _buildHistoryTab() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -775,7 +775,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Expanded(
             child: ListView(
               children: [
@@ -803,7 +803,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
   Widget _buildHistoryItem(String title, DateTime date, IconData icon, Color color) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -814,14 +814,14 @@ class _PersonDetailPageState extends State<PersonDetailPage>
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -873,7 +873,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                   Icons.playlist_add_check,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text('Démarrer un suivi'),
               ],
             ),
@@ -888,7 +888,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                       color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   SizedBox(
                     height: 300,
                     child: ListView.builder(
@@ -906,7 +906,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                               ),
                             ),
                             leading: Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(AppTheme.spaceSmall),
                               decoration: BoxDecoration(
                                 color: Color(int.parse(workflow.color.replaceAll('#', '0xFF'))).withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -927,7 +927,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(workflow.description),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppTheme.spaceXSmall),
                                 Row(
                                   children: [
                                     Icon(
@@ -935,7 +935,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                                       size: 12,
                                       color: Theme.of(context).colorScheme.secondary,
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: AppTheme.spaceXSmall),
                                     Text(
                                       workflow.category,
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -943,13 +943,13 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                                         fontWeight: AppTheme.fontMedium,
                                       ),
                                     ),
-                                    const SizedBox(width: 16),
+                                    const SizedBox(width: AppTheme.spaceMedium),
                                     Icon(
                                       Icons.list,
                                       size: 12,
                                       color: Theme.of(context).colorScheme.secondary,
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: AppTheme.spaceXSmall),
                                     Text(
                                       '${workflow.steps.length} étape(s)',
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1001,7 +1001,7 @@ class _PersonDetailPageState extends State<PersonDetailPage>
                 content: Row(
                   children: [
                     const Icon(Icons.check_circle, color: AppTheme.white100),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text('Workflow "${selectedWorkflow.name}" démarré avec succès'),
                     ),

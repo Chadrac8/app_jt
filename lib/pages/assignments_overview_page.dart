@@ -455,7 +455,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                   Text('Chargement des assignations...'),
                 ],
               ),
@@ -470,12 +470,12 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                         size: 64,
                         color: Theme.of(context).colorScheme.error,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Erreur de chargement',
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 32),
                         child: Text(
@@ -484,7 +484,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       FilledButton.icon(
                         onPressed: _loadData,
                         icon: const Icon(Icons.refresh),
@@ -508,7 +508,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
     final stats = _getAssignmentsStats();
     
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -536,7 +536,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -560,7 +560,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
             ),
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Statistics cards
           Text(
@@ -569,7 +569,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           GridView.count(
             shrinkWrap: true,
@@ -601,12 +601,12 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                 'Confirmées',
                 stats['confirmedAssignments'].toString(),
                 Icons.verified,
-                Colors.purple,
+                AppTheme.primaryColor,
               ),
             ],
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Recent assignments
           Text(
@@ -615,7 +615,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           ..._assignments
               .take(5)
@@ -624,7 +624,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
           
           if (_assignments.length > 5)
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Center(
                 child: TextButton(
                   onPressed: () => _tabController.animateTo(2),
@@ -644,7 +644,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
         
         // Filters
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               TextField(
@@ -658,7 +658,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                   setState(() => _searchQuery = value);
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -672,7 +672,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                         }
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Passés'),
                       selected: _timeFilter == 'past',
@@ -682,7 +682,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                         }
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Tous'),
                       selected: _timeFilter == 'all',
@@ -712,7 +712,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
       children: [
         // Filters
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               TextField(
@@ -726,7 +726,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                   setState(() => _searchQuery = value);
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -740,7 +740,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                         }
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('En attente'),
                       selected: _statusFilter == 'invited',
@@ -748,7 +748,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                         if (selected) setState(() => _statusFilter = 'invited');
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Acceptés'),
                       selected: _statusFilter == 'accepted',
@@ -756,7 +756,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                         if (selected) setState(() => _statusFilter = 'accepted');
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Confirmés'),
                       selected: _statusFilter == 'confirmed',
@@ -782,7 +782,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -791,7 +791,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
               size: 32,
               color: color,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -829,7 +829,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('Chargement des services...'),
             ],
           ),
@@ -846,14 +846,14 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
               size: 64,
               color: Theme.of(context).colorScheme.outline,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun service trouvé',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _services.isEmpty 
                 ? 'Il n\'y a aucun service dans la base de données.\nVeuillez créer un service d\'abord depuis la page Services.'
@@ -864,7 +864,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
               textAlign: TextAlign.center,
             ),
             if (_timeFilter != 'all' || _searchQuery.isNotEmpty) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               OutlinedButton.icon(
                 onPressed: () {
                   setState(() {
@@ -878,7 +878,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
               ),
             ],
             if (_services.isEmpty) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               FilledButton.icon(
                 onPressed: () async {
                   final result = await Navigator.push(
@@ -930,7 +930,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                   DateFormat('EEEE d MMMM yyyy à HH:mm', 'fr_FR')
                       .format(service.dateTime),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   '${serviceAssignments.length} assignation(s)',
                   style: TextStyle(
@@ -959,11 +959,11 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                       ),
                       const Text(
                         'OK',
-                        style: TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: AppTheme.fontSize10),
                       ),
                     ],
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -979,11 +979,11 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
                       ),
                       const Text(
                         'Attente',
-                        style: TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: AppTheme.fontSize10),
                       ),
                     ],
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                 ],
                 const Icon(Icons.arrow_forward_ios, size: 16),
               ],
@@ -1015,7 +1015,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
               size: 64,
               color: Theme.of(context).colorScheme.outline,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune assignation trouvée',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -1126,7 +1126,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
             assignment.statusLabel,
             style: TextStyle(
               color: _getStatusColor(assignment.status),
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -1154,7 +1154,7 @@ class _AssignmentsOverviewPageState extends State<AssignmentsOverviewPage>
       case 'tentative':
         return AppTheme.orangeStandard;
       case 'confirmed':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       default:
         return AppTheme.grey500;
     }

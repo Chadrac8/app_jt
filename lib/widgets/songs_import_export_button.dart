@@ -39,13 +39,13 @@ class SongsImportExportButton extends StatelessWidget {
                 size: 32,
                 color: Theme.of(context).primaryColor,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Import/Export',
                 style: Theme.of(context).textTheme.titleSmall,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 'Gérer vos chants',
                 style: Theme.of(context).textTheme.bodySmall,

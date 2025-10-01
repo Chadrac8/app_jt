@@ -143,7 +143,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
 
   Widget _buildDetailsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -162,7 +162,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
               return null;
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Type d'événement
           DropdownButtonFormField<String>(
@@ -176,8 +176,8 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                 value: type['value'],
                 child: Row(
                   children: [
-                    Text(type['icon']!, style: const TextStyle(fontSize: 18)),
-                    const SizedBox(width: 8),
+                    Text(type['icon']!, style: const TextStyle(fontSize: AppTheme.fontSize18)),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(type['label']!),
                   ],
                 ),
@@ -189,7 +189,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
               return null;
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Description
           TextFormField(
@@ -201,7 +201,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
             ),
             maxLines: 3,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Lieu
           TextFormField(
@@ -212,26 +212,26 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
               prefixIcon: Icon(Icons.location_on),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Dates et heures
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       const Icon(Icons.schedule, size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Horaires',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Date et heure de début
                   Row(
@@ -309,7 +309,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
 
   Widget _buildRecurrenceTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -328,10 +328,10 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
           ),
           
           if (_isRecurring) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildRecurrenceConfiguration(),
           ] else ...[
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             Center(
               child: Column(
                 children: [
@@ -340,13 +340,13 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                     size: 64,
                     color: AppTheme.grey400,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Activez la récurrence pour configurer\\ndes événements répétitifs',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                     ),
                   ),
                 ],
@@ -361,7 +361,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
   Widget _buildRecurrenceConfiguration() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -369,15 +369,15 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
               'Configuration de la récurrence',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Fréquence
             _buildFrequencySelector(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Configuration spécifique selon la fréquence
             if (_recurrence != null) _buildFrequencySpecificConfig(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Fin de récurrence
             _buildRecurrenceEndConfig(),
@@ -392,7 +392,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Fréquence'),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           children: [
@@ -474,7 +474,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
         Row(
           children: [
             const Text('Répéter tous les'),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             SizedBox(
               width: 60,
               child: TextFormField(
@@ -489,7 +489,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('jour(s)'),
           ],
         ),
@@ -514,7 +514,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
         Row(
           children: [
             const Text('Répéter toutes les'),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             SizedBox(
               width: 60,
               child: TextFormField(
@@ -529,13 +529,13 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('semaine(s)'),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         const Text('Jours de la semaine:'),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           children: weekDays.map((dayData) {
@@ -570,7 +570,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
         Row(
           children: [
             const Text('Répéter tous les'),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             SizedBox(
               width: 60,
               child: TextFormField(
@@ -585,15 +585,15 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('mois'),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             const Text('Le'),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             SizedBox(
               width: 60,
               child: TextFormField(
@@ -610,7 +610,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('de chaque mois'),
           ],
         ),
@@ -624,7 +624,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
         Row(
           children: [
             const Text('Répéter tous les'),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             SizedBox(
               width: 60,
               child: TextFormField(
@@ -639,11 +639,11 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('an(s)'),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Text('Le ${_startDate.day}/${_startDate.month} de chaque année'),
       ],
     );
@@ -653,12 +653,12 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
     return Card(
       color: AppTheme.grey50,
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Fin de récurrence'),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             
             RadioListTile<RecurrenceEndType>(
               title: const Text('Jamais'),
@@ -696,7 +696,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                 child: Row(
                   children: [
                     const Text('Nombre d\'occurrences:'),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     SizedBox(
                       width: 80,
                       child: TextFormField(
@@ -752,13 +752,13 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
 
   Widget _buildOptionsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           // Visibilité
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -766,7 +766,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                     'Visibilité',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   DropdownButtonFormField<String>(
                     value: _visibility,
                     items: const [
@@ -781,12 +781,12 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Inscription
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -798,7 +798,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                   ),
                   
                   if (_isRegistrationEnabled) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Nombre maximum de participants',
@@ -809,7 +809,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                         _maxParticipants = int.tryParse(value);
                       },
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     SwitchListTile(
                       title: const Text('Liste d\'attente'),
                       subtitle: const Text('Autoriser les inscriptions en attente'),

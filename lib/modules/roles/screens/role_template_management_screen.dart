@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/role_template_model.dart';
 import '../providers/role_template_provider.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Écran de gestion des templates de rôles
 class RoleTemplateManagementScreen extends StatefulWidget {
@@ -128,9 +129,9 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
 
   Widget _buildFilterSection(RoleTemplateProvider provider) {
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -148,7 +149,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                     onChanged: provider.setSearchQuery,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: provider.selectedCategory.isEmpty ? null : provider.selectedCategory,
@@ -167,7 +168,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                           child: Row(
                             children: [
                               Icon(category.icon, size: 16),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(category.displayName),
                             ],
                           ),
@@ -179,7 +180,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 FilterChip(
@@ -187,7 +188,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                   selected: provider.showInactive,
                   onSelected: (_) => provider.toggleShowInactive(),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 ActionChip(
                   label: const Text('Réinitialiser'),
                   avatar: const Icon(Icons.clear, size: 16),
@@ -212,15 +213,15 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search_off, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
+            Icon(Icons.search_off, size: 64, color: AppTheme.grey500),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun template trouvé',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
             Text(
               'Modifiez vos critères de recherche ou créez un nouveau template',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppTheme.grey500),
             ),
           ],
         ),
@@ -242,10 +243,10 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
       margin: const EdgeInsets.only(bottom: 8),
       child: ExpansionTile(
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: template.color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: Border.all(color: template.color.withOpacity(0.3)),
           ),
           child: Icon(template.iconData, color: template.color),
@@ -255,33 +256,33 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
             Expanded(
               child: Text(
                 template.name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: AppTheme.fontBold),
               ),
             ),
             if (template.isSystemTemplate)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                  color: AppTheme.infoColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+                  border: Border.all(color: AppTheme.infoColor.withOpacity(0.3)),
                 ),
                 child: const Text(
                   'SYSTÈME',
-                  style: TextStyle(fontSize: 10, color: Colors.blue),
+                  style: TextStyle(fontSize: AppTheme.fontSize10, color: AppTheme.infoColor),
                 ),
               ),
             if (!template.isActive)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.red.withOpacity(0.3)),
+                  color: AppTheme.errorColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+                  border: Border.all(color: AppTheme.errorColor.withOpacity(0.3)),
                 ),
                 child: const Text(
                   'INACTIF',
-                  style: TextStyle(fontSize: 10, color: Colors.red),
+                  style: TextStyle(fontSize: AppTheme.fontSize10, color: AppTheme.errorColor),
                 ),
               ),
           ],
@@ -290,34 +291,34 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(template.description),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Icon(
                   TemplateCategory.fromId(template.category).icon,
                   size: 14,
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   TemplateCategory.fromId(template.category).displayName,
                   style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
+                    fontSize: AppTheme.fontSize12,
+                    color: AppTheme.grey600,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Icon(
                   Icons.security,
                   size: 14,
-                  color: Colors.grey[600],
+                  color: AppTheme.grey600,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   '${template.permissionIds.length} permissions',
                   style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
+                    fontSize: AppTheme.fontSize12,
+                    color: AppTheme.grey600,
                   ),
                 ),
               ],
@@ -326,14 +327,14 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Informations détaillées
                 _buildTemplateDetails(template),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Actions
                 _buildTemplateActions(template, provider),
@@ -352,25 +353,25 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
         Text(
           'Détails',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         
         // Permissions
         if (template.permissionIds.isNotEmpty) ...[
           Text(
             'Permissions (${template.permissionIds.length}):',
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: AppTheme.fontMedium),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Wrap(
             spacing: 4,
             runSpacing: 4,
             children: template.permissionIds.take(10).map((permission) {
               return Chip(
                 label: Text(permission),
-                labelStyle: const TextStyle(fontSize: 12),
+                labelStyle: const TextStyle(fontSize: AppTheme.fontSize12),
               );
             }).toList(),
           ),
@@ -378,27 +379,27 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
             Text(
               '... et ${template.permissionIds.length - 10} autres',
               style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
+                fontSize: AppTheme.fontSize12,
+                color: AppTheme.grey600,
               ),
             ),
         ],
         
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         
         // Configuration
         if (template.configuration.isNotEmpty) ...[
           Text(
             'Configuration:',
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: AppTheme.fontMedium),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           ...template.configuration.entries.map((entry) {
             return Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Text(
                 '• ${entry.key}: ${entry.value}',
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: AppTheme.fontSize12),
               ),
             );
           }).toList(),
@@ -417,7 +418,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
           label: const Text('Créer rôle'),
         ),
         
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         
         // Dupliquer
         OutlinedButton.icon(
@@ -443,8 +444,8 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
               const PopupMenuItem(
                 value: 'delete',
                 child: ListTile(
-                  leading: Icon(Icons.delete, color: Colors.red),
-                  title: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                  leading: Icon(Icons.delete, color: AppTheme.errorColor),
+                  title: Text('Supprimer', style: TextStyle(color: AppTheme.errorColor)),
                 ),
               ),
             ],
@@ -478,7 +479,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
         final stats = provider.categoryStats;
         
         return ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           children: TemplateCategory.values.map((category) {
             final count = stats[category.id] ?? 0;
             final templates = provider.getTemplatesByCategory(category.id);
@@ -491,7 +492,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                 children: [
                   if (templates.isEmpty)
                     const Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: EdgeInsets.all(AppTheme.spaceMedium),
                       child: Text(
                         'Aucun template dans cette catégorie',
                         style: TextStyle(fontStyle: FontStyle.italic),
@@ -526,19 +527,19 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
         }
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Vue d'ensemble
               _buildStatsOverview(provider),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Templates les plus utilisés
               _buildMostUsedTemplates(provider),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Recommandations
               _buildRecommendations(provider),
@@ -554,17 +555,17 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Vue d\'Ensemble',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Row(
               children: [
@@ -576,7 +577,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                     AppTheme.blueStandard,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: _buildStatCard(
                     'Actifs',
@@ -585,7 +586,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                     AppTheme.greenStandard,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: _buildStatCard(
                     'Système',
@@ -594,7 +595,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                     AppTheme.orangeStandard,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: _buildStatCard(
                     'Personnalisés',
@@ -613,29 +614,29 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
         children: [
           Icon(icon, color: color, size: 32),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+              fontSize: AppTheme.fontSize24,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
           Text(
             title,
             style: const TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
+              fontSize: AppTheme.fontSize12,
+              color: AppTheme.grey500,
             ),
             textAlign: TextAlign.center,
           ),
@@ -650,7 +651,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     if (mostUsed.isEmpty) {
       return const Card(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(AppTheme.spaceMedium),
           child: Text('Aucune donnée d\'utilisation disponible'),
         ),
       );
@@ -658,17 +659,17 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Templates les Plus Utilisés',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             ...mostUsed.map((entry) {
               final template = provider.getTemplate(entry.key);
@@ -682,13 +683,13 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: AppTheme.blueStandard.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: Text(
                     '${entry.value} rôles',
                     style: TextStyle(
                       color: AppTheme.blueStandard,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -706,14 +707,14 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     if (recommendations.isEmpty) {
       return Card(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               Icon(Icons.check_circle, color: AppTheme.greenStandard, size: 48),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               const Text(
                 'Aucune recommandation',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
               const Text('Vos templates sont bien optimisés !'),
             ],
@@ -724,17 +725,17 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Recommandations',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             ...recommendations.map((rec) {
               Color color;
@@ -742,15 +743,15 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
               
               switch (rec['severity']) {
                 case 'error':
-                  color = Colors.red;
+                  color = AppTheme.errorColor;
                   icon = Icons.error;
                   break;
                 case 'warning':
-                  color = Colors.orange;
+                  color = AppTheme.warning;
                   icon = Icons.warning;
                   break;
                 default:
-                  color = Colors.blue;
+                  color = AppTheme.infoColor;
                   icon = Icons.info;
               }
               
@@ -775,22 +776,22 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
 
   Widget _buildSettingsTab() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Paramètres des Templates',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   ListTile(
                     title: const Text('Initialiser les templates système'),
@@ -1004,37 +1005,37 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                     children: [
                       Icon(
                         validation['isValid'] ? Icons.check_circle : Icons.error,
-                        color: validation['isValid'] ? Colors.green : Colors.red,
+                        color: validation['isValid'] ? AppTheme.successColor : AppTheme.errorColor,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         validation['isValid'] ? 'Valide' : 'Invalide',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: validation['isValid'] ? Colors.green : Colors.red,
+                          fontWeight: AppTheme.fontBold,
+                          color: validation['isValid'] ? AppTheme.successColor : AppTheme.errorColor,
                         ),
                       ),
                     ],
                   ),
                   
                   if (validation['errors']?.isNotEmpty == true) ...[
-                    const SizedBox(height: 16),
-                    const Text('Erreurs:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: AppTheme.spaceMedium),
+                    const Text('Erreurs:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                     ...validation['errors'].map<Widget>((error) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 8),
-                        child: Text('• $error', style: const TextStyle(color: Colors.red)),
+                        child: Text('• $error', style: const TextStyle(color: AppTheme.errorColor)),
                       );
                     }).toList(),
                   ],
                   
                   if (validation['warnings']?.isNotEmpty == true) ...[
-                    const SizedBox(height: 16),
-                    const Text('Avertissements:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: AppTheme.spaceMedium),
+                    const Text('Avertissements:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                     ...validation['warnings'].map<Widget>((warning) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 8),
-                        child: Text('• $warning', style: const TextStyle(color: Colors.orange)),
+                        child: Text('• $warning', style: const TextStyle(color: AppTheme.warning)),
                       );
                     }).toList(),
                   ],
@@ -1070,7 +1071,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(template.description),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text('Catégorie: ${TemplateCategory.fromId(template.category).displayName}'),
               Text('Permissions: ${template.permissionIds.length}'),
               Text('Type: ${template.isSystemTemplate ? 'Système' : 'Personnalisé'}'),

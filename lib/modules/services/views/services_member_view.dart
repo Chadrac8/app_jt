@@ -7,6 +7,7 @@ import '../models/service.dart';
 import '../models/service_assignment.dart';
 import '../services/services_service.dart';
 import '../../../extensions/datetime_extensions.dart';
+import '../../../theme.dart';
 
 
 /// Vue membre pour les services
@@ -131,11 +132,11 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
           
           // Conformité Material Design - Typography
           labelStyle: GoogleFonts.inter(
-            fontSize: 12, // Taille adaptée pour bottom tabs
+            fontSize: AppTheme.fontSize12, // Taille adaptée pour bottom tabs
             fontWeight: AppTheme.fontSemiBold,
           ),
           unselectedLabelStyle: GoogleFonts.inter(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             fontWeight: AppTheme.fontMedium,
           ),
           
@@ -166,7 +167,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
 
   Widget _buildSearchAndFilter() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           TextField(
@@ -179,7 +180,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
               setState(() => _searchQuery = value);
             },
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -191,7 +192,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                     setState(() => _selectedType = null);
                   },
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 ...ServiceType.values.map((type) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -227,10 +228,10 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.schedule, size: 64, color: AppTheme.grey500),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun service à venir',
-              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
           ],
         ),
@@ -240,7 +241,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: filteredServices.length,
         itemBuilder: (context, index) {
           final service = filteredServices[index];
@@ -263,10 +264,10 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.history, size: 64, color: AppTheme.grey500),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun service passé',
-              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
           ],
         ),
@@ -276,7 +277,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: filteredServices.length,
         itemBuilder: (context, index) {
           final service = filteredServices[index];
@@ -297,12 +298,12 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.assignment_ind, size: 64, color: AppTheme.grey500),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune assignation',
-              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Vous n\'avez pas encore de rôle assigné pour les services.',
               textAlign: TextAlign.center,
@@ -316,7 +317,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: _myAssignments.length,
         itemBuilder: (context, index) {
           final assignment = _myAssignments[index];
@@ -359,7 +360,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
               ),
             
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -370,7 +371,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                         child: Text(
                           service.name,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
@@ -378,7 +379,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                       Chip(
                         label: Text(
                           service.type.displayName,
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(fontSize: AppTheme.fontSize12),
                         ),
                         backgroundColor: service.colorCode != null
                             ? Color(int.parse(service.colorCode!.replaceFirst('#', '0xff')))
@@ -388,7 +389,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                     ],
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Description
                   if (service.description.isNotEmpty)
@@ -396,19 +397,19 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                       service.description,
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   // Informations pratiques
                   Row(
                     children: [
                       Icon(Icons.access_time, size: 16, color: AppTheme.grey600),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         '${_formatDateTime(service.startDate)} - ${_formatTime(service.endDate)}',
                         style: TextStyle(color: AppTheme.grey600),
@@ -416,12 +417,12 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                     ],
                   ),
                   
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   
                   Row(
                     children: [
                       Icon(Icons.location_on, size: 16, color: AppTheme.grey600),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Expanded(
                         child: Text(
                           service.location,
@@ -432,7 +433,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                     ],
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Statut et durée
                   Row(
@@ -448,7 +449,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                           service.statusDisplay,
                           style: const TextStyle(
                             color: AppTheme.white100,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
@@ -457,7 +458,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                         'Durée: ${_formatDuration(service.duration)}',
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                         ),
                       ),
                     ],
@@ -501,7 +502,7 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                 if (assignment.responsibilities.isNotEmpty)
                   Text(
                     'Responsabilités: ${assignment.responsibilities.join(', ')}',
-                    style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
                   ),
               ],
             ),
@@ -511,13 +512,13 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
                 Chip(
                   label: Text(
                     assignment.status.displayName,
-                    style: const TextStyle(fontSize: 10),
+                    style: const TextStyle(fontSize: AppTheme.fontSize10),
                   ),
                   backgroundColor: Color(int.parse(assignment.statusColor.replaceFirst('#', '0xff'))),
                   labelStyle: const TextStyle(color: AppTheme.white100),
                 ),
                 if (assignment.isTeamLead)
-                  const Icon(Icons.star, size: 16, color: Colors.amber),
+                  const Icon(Icons.star, size: 16, color: AppTheme.warningColor),
               ],
             ),
             onTap: service != null ? () {

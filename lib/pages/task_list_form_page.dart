@@ -277,7 +277,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
       key: _formKey,
       child: ListView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         children: [
           _buildSection(
             title: 'Informations générales',
@@ -294,7 +294,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
                 controller: _descriptionController,
                 label: 'Description',
@@ -303,17 +303,17 @@ class _TaskListFormPageState extends State<TaskListFormPage>
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Apparence',
             icon: Icons.palette,
             children: [
               _buildColorSelector(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildIconSelector(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Visibilité',
             icon: Icons.visibility,
@@ -321,7 +321,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
               _buildVisibilitySelector(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Membres',
             icon: Icons.people_outline,
@@ -329,7 +329,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
               _buildMemberSelector(),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSection(
             title: 'Statut',
             icon: Icons.flag_outlined,
@@ -337,7 +337,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
               _buildStatusSelector(),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
         ],
       ),
     );
@@ -350,14 +350,14 @@ class _TaskListFormPageState extends State<TaskListFormPage>
   }) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(icon, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -367,7 +367,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...children,
           ],
         ),
@@ -401,7 +401,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Couleur de la liste'),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Wrap(
           spacing: 12,
           runSpacing: 12,
@@ -446,7 +446,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Icône de la liste'),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         DropdownButtonFormField<String>(
           value: _iconName,
           decoration: const InputDecoration(
@@ -460,7 +460,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
               child: Row(
                 children: [
                   Icon(_getIconFromString(icon['value']!)),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(icon['label']!),
                 ],
               ),
@@ -479,7 +479,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Qui peut voir cette liste ?'),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         ..._visibilityOptions.map((option) {
           return RadioListTile<String>(
             title: Text(option['label']!),
@@ -495,7 +495,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
           );
         }).toList(),
         if (_visibility == 'group' || _visibility == 'role') ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           const Text('Configuration de la visibilité à implémenter'),
         ],
       ],
@@ -517,7 +517,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
           ],
         ),
         if (_memberIds.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             children: _memberIds.map((id) {
@@ -631,7 +631,7 @@ class _MemberSelectionDialogState extends State<_MemberSelectionDialog> {
                 setState(() => _searchQuery = value);
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredPersons.length,

@@ -251,7 +251,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
       title: Text(
         _list.name,
         style: GoogleFonts.poppins(
-          fontSize: 20,
+          fontSize: AppTheme.fontSize20,
           fontWeight: AppTheme.fontSemiBold,
           color: AppTheme.white100,
         ),
@@ -324,7 +324,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: TextField(
           onChanged: (value) {
             setState(() => _searchQuery = value);
@@ -374,7 +374,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
           child: RefreshIndicator(
             onRefresh: _loadData,
             child: ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               itemCount: filteredData.length,
               itemBuilder: (context, index) {
                 return _buildDataCard(filteredData[index], index);
@@ -388,18 +388,18 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
 
   Widget _buildListInfo(int count) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         children: [
           Icon(
             _getIconForSourceModule(_list.sourceModule),
             color: AppTheme.primaryColor,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             '$count résultat${count > 1 ? 's' : ''}',
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
@@ -409,7 +409,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             Text(
               'Dernière utilisation: ${_formatDate(_list.lastUsed!)}',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey600,
               ),
             ),
@@ -428,17 +428,17 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             size: 80,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _searchQuery.isNotEmpty 
               ? 'Aucun résultat pour "${_searchQuery}"'
               : 'Aucune donnée disponible',
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _loadData,
             icon: const Icon(Icons.refresh),
@@ -473,19 +473,19 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
           _getItemTitle(item),
           style: GoogleFonts.poppins(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
           ),
         ),
         subtitle: Text(
           _getItemSubtitle(item),
           style: TextStyle(
             color: AppTheme.grey600,
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
           ),
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: visibleFields.map((field) {
                 final value = item[field.fieldKey];
@@ -510,7 +510,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
               field.displayName,
               style: GoogleFonts.poppins(
                 fontWeight: AppTheme.fontMedium,
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
               ),
             ),
           ),
@@ -518,7 +518,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             child: Text(
               _formatValue(value, field.fieldType),
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.grey700,
               ),
             ),
@@ -694,7 +694,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
                 setState(() => _sortField = value ?? '');
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: _sortDirection,
               decoration: const InputDecoration(

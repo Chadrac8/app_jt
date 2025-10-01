@@ -107,14 +107,14 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
               size: 64,
               color: AppTheme.grey400,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur de chargement',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.grey600,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _error!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -122,7 +122,7 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             ElevatedButton.icon(
               onPressed: _loadData,
               icon: const Icon(Icons.refresh),
@@ -143,7 +143,7 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
               size: 64,
               color: AppTheme.grey400,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               widget.emptyMessage,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(

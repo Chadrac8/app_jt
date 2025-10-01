@@ -6,6 +6,7 @@ import '../services/roles_permissions_service.dart';
 import '../widgets/role_card_widget.dart';
 import '../widgets/create_role_dialog.dart';
 import '../widgets/permission_guard_widget.dart';
+import '../../../theme.dart';
 
 /// Écran principal de gestion des rôles avec Material Design 3
 class RolesManagementScreen extends StatefulWidget {
@@ -73,7 +74,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
           Text(
             'Gestion des rôles',
             style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           if (provider.roles.isNotEmpty)
@@ -104,7 +105,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
               child: Row(
                 children: [
                   Icon(Icons.system_security_update_good),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Initialiser le système'),
                 ],
               ),
@@ -114,7 +115,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
               child: Row(
                 children: [
                   Icon(Icons.download),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Exporter'),
                 ],
               ),
@@ -124,7 +125,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
               child: Row(
                 children: [
                   Icon(Icons.settings),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Paramètres'),
                 ],
               ),
@@ -180,7 +181,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
     final theme = Theme.of(context);
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: SearchBar(
         controller: _searchController,
         hintText: 'Rechercher des rôles...',
@@ -245,14 +246,14 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
             size: 64,
             color: theme.colorScheme.outline,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun rôle trouvé',
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _searchQuery.isNotEmpty
                 ? 'Essayez de modifier votre recherche'
@@ -262,7 +263,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
             ),
           ),
           if (_searchQuery.isEmpty) ...[
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             FilledButton.icon(
               onPressed: () => _createRole(context),
               icon: const Icon(Icons.add),
@@ -280,7 +281,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(),
-          SizedBox(height: 16),
+          SizedBox(height: AppTheme.spaceMedium),
           Text('Chargement des rôles...'),
         ],
       ),
@@ -299,14 +300,14 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
             size: 64,
             color: theme.colorScheme.error,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Erreur de chargement',
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.error,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             error,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -314,7 +315,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           FilledButton.icon(
             onPressed: () {
               final provider = Provider.of<PermissionProvider>(context, listen: false);
@@ -363,7 +364,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
               Icons.admin_panel_settings,
               color: Color(int.parse(role.color.substring(1), radix: 16) + 0xFF000000),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Expanded(
               child: Text(role.name),
             ),
@@ -380,12 +381,12 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(role.description),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Permissions (${role.allPermissions.length})',
                 style: Theme.of(context).textTheme.titleSmall,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               ...role.modulePermissions.entries.map((entry) {
                 final moduleName = AppModule.allModules
                     .where((m) => m.id == entry.key)
@@ -399,7 +400,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
                         size: 16,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Expanded(
                         child: Text(
                           '$moduleName (${entry.value.length} permissions)',
@@ -540,7 +541,7 @@ class _RolesManagementScreenState extends State<RolesManagementScreen>
           Text(label),
           Text(
             value,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: AppTheme.fontBold),
           ),
         ],
       ),

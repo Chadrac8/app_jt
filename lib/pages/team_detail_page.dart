@@ -205,18 +205,18 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                   size: 64,
                   color: Theme.of(context).colorScheme.error,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur de chargement',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   _error ?? 'Équipe introuvable',
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 FilledButton.icon(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back),
@@ -353,7 +353,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                     child: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(AppTheme.spaceMedium),
                           decoration: BoxDecoration(
                             color: teamColor.withAlpha(230), // 0.9 opacity
                             borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -364,7 +364,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                             size: 32,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppTheme.spaceMedium),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,7 +375,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                                     child: Text(
                                       _team!.name,
                                       style: const TextStyle(
-                                        fontSize: 24,
+                                        fontSize: AppTheme.fontSize24,
                                         fontWeight: AppTheme.fontBold,
                                         color: AppTheme.white100,
                                       ),
@@ -394,7 +394,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                                       child: const Text(
                                         'Inactif',
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: AppTheme.fontSize12,
                                           fontWeight: AppTheme.fontSemiBold,
                                           color: AppTheme.white100,
                                         ),
@@ -402,23 +402,23 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                                     ),
                                 ],
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppTheme.spaceXSmall),
                               Text(
                                 _team!.description.isNotEmpty 
                                     ? _team!.description 
                                     : 'Aucune description',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: AppTheme.fontSize16,
                                   color: AppTheme.white100.withOpacity(0.70),
                                 ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppTheme.spaceSmall),
                               Text(
                                 '${_positions.length} position(s) • Créée le ${_formatDate(_team!.createdAt)}',
                                 style: const TextStyle(
-                                  fontSize: 14,
+                                  fontSize: AppTheme.fontSize14,
                                   color: AppTheme.white100,
                                 ),
                               ),
@@ -495,12 +495,12 @@ class _TeamDetailPageState extends State<TeamDetailPage>
               size: 64,
               color: Theme.of(context).colorScheme.outline,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune position',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Ajoutez des positions pour définir les rôles dans cette équipe',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -508,7 +508,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             FilledButton.icon(
               onPressed: _addPosition,
               icon: const Icon(Icons.add),
@@ -523,7 +523,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _positions.length,
       itemBuilder: (context, index) {
         final position = _positions[index];
@@ -543,14 +543,14 @@ class _TeamDetailPageState extends State<TeamDetailPage>
 
   Widget _buildInfoTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Team details card
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -560,7 +560,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                         Icons.info_outline,
                         color: _parseColor(_team!.color),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Text(
                         'Détails de l\'équipe',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -569,7 +569,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildInfoRow('Nom', _team!.name),
                   _buildInfoRow('Description', 
                     _team!.description.isNotEmpty ? _team!.description : 'Aucune description'
@@ -582,12 +582,12 @@ class _TeamDetailPageState extends State<TeamDetailPage>
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
 
           // Statistics card
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -597,7 +597,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                         Icons.analytics_outlined,
                         color: _parseColor(_team!.color),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Text(
                         'Statistiques',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -606,7 +606,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildInfoRow('Date de création', _formatDate(_team!.createdAt)),
                   _buildInfoRow('Dernière modification', _formatDate(_team!.updatedAt)),
                   _buildInfoRow('Positions actives', 
@@ -620,12 +620,12 @@ class _TeamDetailPageState extends State<TeamDetailPage>
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
 
           // Actions card
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -635,7 +635,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                         Icons.settings,
                         color: _parseColor(_team!.color),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Text(
                         'Actions',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -644,7 +644,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton.icon(
@@ -664,7 +664,7 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Voir toutes les assignations de service liées à cette équipe',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -705,13 +705,13 @@ class _TeamDetailPageState extends State<TeamDetailPage>
                         height: 20,
                         decoration: BoxDecoration(
                           color: _parseColor(_team!.color),
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withAlpha(77), // 0.3 opacity
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         _team!.color,
                         style: Theme.of(context).textTheme.bodyMedium,

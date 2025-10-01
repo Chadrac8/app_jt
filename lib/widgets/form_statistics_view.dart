@@ -81,12 +81,12 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
               size: 64,
               color: AppTheme.errorColor,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Impossible de charger les statistiques',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: _loadStatistics,
               child: const Text('Réessayer'),
@@ -99,16 +99,16 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
     return FadeTransition(
       opacity: _fadeAnimation,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildOverviewSection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildSubmissionsChart(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildStatusDistribution(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildFieldResponsesAnalysis(),
           ],
         ),
@@ -123,14 +123,14 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -141,7 +141,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Vue d\'ensemble',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -150,7 +150,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
@@ -193,7 +193,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
 
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -218,7 +218,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -242,14 +242,14 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.secondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -260,7 +260,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Évolution des soumissions',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -269,7 +269,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             SizedBox(
               height: 200,
               child: LineChart(
@@ -307,7 +307,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                                 '${date.day}/${date.month}',
                                 style: const TextStyle(
                                   color: AppTheme.textTertiaryColor,
-                                  fontSize: 10,
+                                  fontSize: AppTheme.fontSize10,
                                 ),
                               ),
                             );
@@ -325,7 +325,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                             value.toInt().toString(),
                             style: const TextStyle(
                               color: AppTheme.textTertiaryColor,
-                              fontSize: 10,
+                              fontSize: AppTheme.fontSize10,
                             ),
                           );
                         },
@@ -396,14 +396,14 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.warningColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -414,7 +414,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Répartition par statut',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -423,7 +423,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             Row(
               children: [
                 Expanded(
@@ -440,7 +440,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                             title: 'Soumis',
                             radius: 50,
                             titleStyle: const TextStyle(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               fontWeight: AppTheme.fontBold,
                               color: AppTheme.white100,
                             ),
@@ -451,7 +451,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                             title: 'Traités',
                             radius: 50,
                             titleStyle: const TextStyle(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               fontWeight: AppTheme.fontBold,
                               color: AppTheme.white100,
                             ),
@@ -462,7 +462,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                             title: 'Archivés',
                             radius: 50,
                             titleStyle: const TextStyle(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               fontWeight: AppTheme.fontBold,
                               color: AppTheme.white100,
                             ),
@@ -511,10 +511,10 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
             height: 16,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               label,
@@ -541,14 +541,14 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.tertiaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -559,7 +559,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Analyse des réponses par champ',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -568,7 +568,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             ...List.generate(_statistics!.fieldResponses.length, (index) {
               final entry = _statistics!.fieldResponses.entries.elementAt(index);
               final fieldId = entry.key;
@@ -592,7 +592,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
     
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.backgroundColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -610,7 +610,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                 size: 18,
                 color: AppTheme.primaryColor,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   field.label,
@@ -627,7 +627,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           ...List.generate(responses.entries.length.clamp(0, 5), (index) {
             final responseEntry = responses.entries.elementAt(index);
             final response = responseEntry.key;
@@ -655,7 +655,7 @@ class _FormStatisticsViewState extends State<FormStatisticsView>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   LinearProgressIndicator(
                     value: count / totalResponses,
                     backgroundColor: AppTheme.grey500,

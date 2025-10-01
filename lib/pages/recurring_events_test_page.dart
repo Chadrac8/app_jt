@@ -78,12 +78,12 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
 
   Widget _buildCreateTab() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -93,11 +93,11 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   const Text(
                     'Cette section permet de tester la création d\'événements récurrents avec différentes configurations.',
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   ElevatedButton.icon(
                     onPressed: _createTestEvents,
                     icon: const Icon(Icons.add_circle),
@@ -107,7 +107,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Expanded(
             child: RecurringEventFormWidget(
               onEventCreated: (event) {
@@ -133,7 +133,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           color: AppTheme.grey100,
           child: Row(
             children: [
@@ -169,7 +169,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           color: AppTheme.grey100,
           child: Column(
             children: [
@@ -204,7 +204,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
 
   Widget _buildStatsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -214,10 +214,10 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
               fontWeight: AppTheme.fontSemiBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_statistics.isNotEmpty)
             RecurrenceStatisticsWidget(statistics: _statistics),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildTestResults(),
         ],
       ),
@@ -238,12 +238,12 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error, size: 64, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur: ${snapshot.error}',
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => setState(() {}),
                   child: const Text('Réessayer'),
@@ -267,7 +267,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
   Widget _buildTestResults() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -277,7 +277,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildTestResult('Création d\'événements de base', true),
             _buildTestResult('Récurrence quotidienne', _testEvents.any((e) => e.recurrence?.frequency == RecurrenceFrequency.daily)),
             _buildTestResult('Récurrence hebdomadaire', _testEvents.any((e) => e.recurrence?.frequency == RecurrenceFrequency.weekly)),
@@ -301,7 +301,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
             color: passed ? AppTheme.greenStandard : AppTheme.redStandard,
             size: 20,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(testName),
           ),
@@ -514,15 +514,15 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('Description: ${event.description}'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text('Date: ${DateFormat('dd/MM/yyyy HH:mm').format(event.startDate)}'),
               if (event.endDate != null)
                 Text('Fin: ${DateFormat('dd/MM/yyyy HH:mm').format(event.endDate!)}'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text('Lieu: ${event.location}'),
               Text('Type: ${event.typeLabel}'),
               Text('Statut: ${event.statusLabel}'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text('Récurrent: ${event.isRecurring ? 'Oui' : 'Non'}'),
               if (event.recurrence != null) ...[
                 Text('Fréquence: ${event.recurrence!.frequency.toString().split('.').last}'),
@@ -530,7 +530,7 @@ class _RecurringEventsTestPageState extends State<RecurringEventsTestPage>
                   Text('Intervalle: ${event.recurrence!.interval}'),
               ],
               if (data != null) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 const Text('Données d\'instance:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                 ...data.entries.map((entry) => Text('${entry.key}: ${entry.value}')),
               ],

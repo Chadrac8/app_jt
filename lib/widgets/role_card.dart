@@ -130,7 +130,7 @@ class _RoleCardState extends State<RoleCard>
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: _roleColor.withOpacity(0.1),
         borderRadius: const BorderRadius.only(
@@ -149,7 +149,7 @@ class _RoleCardState extends State<RoleCard>
               size: 24,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +173,7 @@ class _RoleCardState extends State<RoleCard>
                       ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 _buildStatusBadge(),
               ],
             ),
@@ -194,7 +194,7 @@ class _RoleCardState extends State<RoleCard>
         widget.role.isActive ? 'Actif' : 'Inactif',
         style: const TextStyle(
           color: AppTheme.white100,
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontMedium,
         ),
       ),
@@ -203,7 +203,7 @@ class _RoleCardState extends State<RoleCard>
 
   Widget _buildContent() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -213,7 +213,7 @@ class _RoleCardState extends State<RoleCard>
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           StreamBuilder<List<PersonModel>>(
             stream: RolesFirebaseService.getPersonsWithRole(widget.role.id),
             builder: (context, snapshot) {
@@ -226,7 +226,7 @@ class _RoleCardState extends State<RoleCard>
                     size: 16,
                     color: AppTheme.grey500,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '$personCount personne${personCount > 1 ? 's' : ''}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -239,7 +239,7 @@ class _RoleCardState extends State<RoleCard>
                     size: 16,
                     color: AppTheme.grey500,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${widget.role.permissions.length} permission${widget.role.permissions.length > 1 ? 's' : ''}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -272,7 +272,7 @@ class _RoleCardState extends State<RoleCard>
               color: AppTheme.grey700,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 4,
@@ -282,7 +282,7 @@ class _RoleCardState extends State<RoleCard>
                 Chip(
                   label: Text('+$remainingCount'),
                   backgroundColor: AppTheme.grey200,
-                  labelStyle: const TextStyle(fontSize: 12),
+                  labelStyle: const TextStyle(fontSize: AppTheme.fontSize12),
                 ),
             ],
           ),
@@ -295,7 +295,7 @@ class _RoleCardState extends State<RoleCard>
     return Chip(
       label: Text(
         RolesFirebaseService.getPermissionLabel(permission),
-        style: const TextStyle(fontSize: 12),
+        style: const TextStyle(fontSize: AppTheme.fontSize12),
       ),
       backgroundColor: _roleColor.withOpacity(0.1),
       side: BorderSide(color: _roleColor.withOpacity(0.3)),
@@ -305,7 +305,7 @@ class _RoleCardState extends State<RoleCard>
 
   Widget _buildFooter() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         children: [
           Icon(
@@ -313,7 +313,7 @@ class _RoleCardState extends State<RoleCard>
             size: 14,
             color: AppTheme.grey400,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             'Créé le ${_formatDate(widget.role.createdAt)}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -353,7 +353,7 @@ class _RoleCardState extends State<RoleCard>
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -362,10 +362,10 @@ class _RoleCardState extends State<RoleCard>
               height: 4,
               decoration: BoxDecoration(
                 color: AppTheme.grey300,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             ListTile(
               leading: const Icon(Icons.edit),
               title: const Text('Modifier'),

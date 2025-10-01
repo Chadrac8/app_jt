@@ -81,7 +81,7 @@ class AutomationModule extends BaseModule {
         final stats = snapshot.data!;
         return Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -91,17 +91,17 @@ class AutomationModule extends BaseModule {
                       Icons.auto_awesome,
                       color: Theme.of(context).primaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     const Text(
                       'Automatisations',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -111,14 +111,14 @@ class AutomationModule extends BaseModule {
                         Text(
                           '${stats['active'] ?? 0}',
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: AppTheme.fontSize20,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.greenStandard,
                           ),
                         ),
                         const Text(
                           'Actives',
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: AppTheme.fontSize12),
                         ),
                       ],
                     ),
@@ -128,14 +128,14 @@ class AutomationModule extends BaseModule {
                         Text(
                           '${stats['totalExecutions'] ?? 0}',
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: AppTheme.fontSize20,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.blueStandard,
                           ),
                         ),
                         const Text(
                           'Exécutions',
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: AppTheme.fontSize12),
                         ),
                       ],
                     ),
@@ -145,20 +145,20 @@ class AutomationModule extends BaseModule {
                         Text(
                           '${(stats['averageSuccessRate'] ?? 0.0).toStringAsFixed(0)}%',
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: AppTheme.fontSize20,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.orangeStandard,
                           ),
                         ),
                         const Text(
                           'Succès',
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: AppTheme.fontSize12),
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
@@ -197,24 +197,24 @@ class AutomationExecutionDetailView extends StatelessWidget {
         title: const Text('Détail de l\'Exécution'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Automatisation: ${execution?.automationName ?? "Inconnu"}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     _buildInfoRow('Statut', '${execution?.status?.label ?? "Inconnu"}'),
                     _buildInfoRow('Déclenchée le', _formatDateTime(execution?.triggeredAt)),
                     if (execution?.startedAt != null)
@@ -225,7 +225,7 @@ class AutomationExecutionDetailView extends StatelessWidget {
                       _buildInfoRow('Durée', '${execution.totalExecutionDuration.inSeconds}s'),
                     _buildInfoRow('Type', execution?.isManual == true ? 'Manuel' : 'Automatique'),
                     if (execution?.error != null) ...[
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       const Text(
                         'Erreur:',
                         style: TextStyle(
@@ -233,7 +233,7 @@ class AutomationExecutionDetailView extends StatelessWidget {
                           color: AppTheme.redStandard,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         execution.error,
                         style: const TextStyle(color: AppTheme.redStandard),
@@ -244,15 +244,15 @@ class AutomationExecutionDetailView extends StatelessWidget {
               ),
             ),
             if (execution?.actionExecutions?.isNotEmpty ?? false) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Text(
                 'Actions Exécutées',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               ...execution.actionExecutions.map((actionExecution) => 
                 Card(
                   margin: const EdgeInsets.only(bottom: 8),

@@ -211,14 +211,14 @@ class _RoleFormPageState extends State<RoleFormPage>
             key: _formKey,
             child: ListView(
               controller: _scrollController,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               children: [
                 _buildBasicInfoSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildAppearanceSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildPermissionsSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildStatusSection(),
                 const SizedBox(height: 100), // Space for FAB
               ],
@@ -268,7 +268,7 @@ class _RoleFormPageState extends State<RoleFormPage>
           },
           textCapitalization: TextCapitalization.words,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           controller: _descriptionController,
           decoration: const InputDecoration(
@@ -299,11 +299,11 @@ class _RoleFormPageState extends State<RoleFormPage>
         const Text(
           'Couleur',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Wrap(
           spacing: 12,
           runSpacing: 12,
@@ -328,15 +328,15 @@ class _RoleFormPageState extends State<RoleFormPage>
             );
           }).toList(),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppTheme.spaceLarge),
         const Text(
           'Icône',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         DropdownButtonFormField<String>(
           value: _selectedIcon,
           decoration: const InputDecoration(
@@ -349,7 +349,7 @@ class _RoleFormPageState extends State<RoleFormPage>
               child: Row(
                 children: [
                   Icon(_getIconFromString(option['value']!)),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Text(option['label']!),
                 ],
               ),
@@ -361,10 +361,10 @@ class _RoleFormPageState extends State<RoleFormPage>
             }
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         // Prévisualisation
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: Color(int.parse(_selectedColor.replaceFirst('#', '0xFF'))).withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -381,7 +381,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                   color: AppTheme.white100,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -394,7 +394,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                   const Text(
                     'Aperçu de l\'apparence du rôle',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey500,
                     ),
                   ),
@@ -418,10 +418,10 @@ class _RoleFormPageState extends State<RoleFormPage>
           '${_selectedPermissions.length} permission${_selectedPermissions.length > 1 ? 's' : ''} sélectionnée${_selectedPermissions.length > 1 ? 's' : ''}',
           style: TextStyle(
             color: AppTheme.grey600,
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         ...permissionCategories.entries.map((entry) {
           final category = entry.key;
           final permissions = entry.value;
@@ -445,7 +445,7 @@ class _RoleFormPageState extends State<RoleFormPage>
                     title: Text(RolesFirebaseService.getPermissionLabel(permission)),
                     subtitle: Text(
                       permission,
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: AppTheme.fontSize12),
                     ),
                     value: isSelected,
                     onChanged: (value) {
@@ -493,24 +493,24 @@ class _RoleFormPageState extends State<RoleFormPage>
   }) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(icon, color: AppTheme.primaryColor),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             ...children,
           ],
         ),

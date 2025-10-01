@@ -5,6 +5,7 @@ import '../models/pour_vous_action.dart';
 import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
 import '../services/action_group_service.dart';
+import '../../../theme.dart';
 
 class ActionFormDialog extends StatefulWidget {
   final PourVousAction? action;
@@ -93,10 +94,10 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
     AppTheme.successColor,
     AppTheme.warningColor,
     AppTheme.errorColor,
-    Colors.purple,
+    AppTheme.primaryColor,
     AppTheme.orangeStandard,
-    Colors.teal,
-    Colors.indigo,
+    AppTheme.secondaryColor,
+    AppTheme.secondaryColor,
     AppTheme.pinkStandard,
   ];
 
@@ -165,11 +166,11 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildBasicInfoSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildAppearanceSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildActionConfigSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildAdvancedSection(),
               ],
             ),
@@ -214,12 +215,12 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         Text(
           'Informations de base',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         TextFormField(
           controller: _titleController,
           decoration: InputDecoration(
@@ -241,7 +242,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           controller: _descriptionController,
           decoration: InputDecoration(
@@ -264,7 +265,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
           value: (_groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
           decoration: InputDecoration(
@@ -306,20 +307,20 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         Text(
           'Apparence',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Text(
           'Icône',
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
           height: 120,
           decoration: BoxDecoration(
@@ -327,7 +328,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 6,
               mainAxisSpacing: 8,
@@ -366,15 +367,15 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             },
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           'Couleur',
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
           height: 60,
           decoration: BoxDecoration(
@@ -382,7 +383,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5,
               mainAxisSpacing: 8,
@@ -424,12 +425,12 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         Text(
           'Configuration de l\'action',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         DropdownButtonFormField<String>(
           value: _selectedActionType,
           decoration: InputDecoration(
@@ -457,7 +458,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           },
         ),
         if (_selectedActionType == 'navigation') ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<String>(
             value: (_targetModules.contains(_selectedTargetModule)) ? _selectedTargetModule : null,
             decoration: InputDecoration(
@@ -484,7 +485,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             },
           ),
           if (_selectedTargetModule != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: ((_moduleRoutes[_selectedTargetModule] ?? []).contains(_selectedTargetRoute)) ? _selectedTargetRoute : null,
               decoration: InputDecoration(
@@ -523,12 +524,12 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         Text(
           'Options avancées',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             Expanded(
@@ -552,12 +553,12 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
                 },
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: SwitchListTile(
                 title: Text(
                   'Action active',
-                  style: GoogleFonts.poppins(fontSize: 14),
+                  style: GoogleFonts.poppins(fontSize: AppTheme.fontSize14),
                 ),
                 value: _isActive,
                 onChanged: (value) {

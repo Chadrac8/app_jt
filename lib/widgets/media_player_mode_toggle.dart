@@ -19,7 +19,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,7 +29,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
                   componentType == 'video' ? Icons.video_settings : Icons.audiotrack,
                   color: Theme.of(context).primaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Mode de lecture',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -38,7 +38,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Mode intégré
             Container(
@@ -65,7 +65,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 onChanged: (value) => onModeChanged(value!),
                 activeColor: AppTheme.greenStandard,
                 secondary: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.grey100,
                     shape: BoxShape.circle,
@@ -78,7 +78,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Mode externe
             Container(
@@ -105,7 +105,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 onChanged: (value) => onModeChanged(value!),
                 activeColor: AppTheme.blueStandard,
                 secondary: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.grey100,
                     shape: BoxShape.circle,
@@ -118,11 +118,11 @@ class MediaPlayerModeToggle extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Informations sur le mode sélectionné
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: AppTheme.grey100,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -134,13 +134,13 @@ class MediaPlayerModeToggle extends StatelessWidget {
                     size: 20,
                     color: AppTheme.grey600,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       _getModeDescription(),
                       style: TextStyle(
                         color: AppTheme.grey700,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ),

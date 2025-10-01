@@ -179,25 +179,25 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Gérer mes disponibilités',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Définissez vos créneaux disponibles pour les rendez-vous',
             style: TextStyle(
               color: AppTheme.textSecondaryColor,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               Expanded(
@@ -211,7 +211,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: _addSpecificDate,
@@ -248,11 +248,11 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -273,20 +273,20 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                   size: 80,
                   color: AppTheme.textTertiaryColor,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 const Text(
                   'Aucune disponibilité définie',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Ajoutez vos créneaux disponibles pour recevoir des demandes de rendez-vous',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     color: AppTheme.textSecondaryColor,
                   ),
                   textAlign: TextAlign.center,
@@ -297,7 +297,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: disponibilites.length,
           itemBuilder: (context, index) {
             return _buildDisponibiliteCard(disponibilites[index]);
@@ -315,7 +315,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -325,12 +325,12 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                   disponibilite.isRecurrenceHebdo ? Icons.repeat : Icons.today,
                   color: AppTheme.primaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     _getDisponibiliteTitle(disponibilite),
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -341,7 +341,7 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             if (disponibilite.isRecurrenceHebdo) ...[
               Wrap(
                 spacing: 8,
@@ -369,15 +369,15 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                 ),
               ),
             ],
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             const Text(
               'Créneaux horaires:',
               style: TextStyle(
                 fontWeight: AppTheme.fontBold,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             ...disponibilite.creneaux.map((creneau) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 4),
@@ -388,19 +388,19 @@ class _AvailabilityManagementPageState extends State<AvailabilityManagementPage>
                       size: 16,
                       color: AppTheme.textTertiaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       '${creneau.debut} - ${creneau.fin}',
                       style: TextStyle(
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       '(${creneau.dureeRendezVous} min/RDV)',
                       style: TextStyle(
                         color: AppTheme.textTertiaryColor,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -489,7 +489,7 @@ class _WeeklyAvailabilityDialogState extends State<_WeeklyAvailabilityDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Jours de la semaine:', style: TextStyle(fontWeight: AppTheme.fontBold)),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 8,
                 children: _weekDays.map((day) {
@@ -508,7 +508,7 @@ class _WeeklyAvailabilityDialogState extends State<_WeeklyAvailabilityDialog> {
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -609,11 +609,11 @@ class _SpecificDateDialogState extends State<_SpecificDateDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Date:', style: TextStyle(fontWeight: AppTheme.fontBold)),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             InkWell(
               onTap: _selectDate,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   border: Border.all(color: AppTheme.grey500),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -621,7 +621,7 @@ class _SpecificDateDialogState extends State<_SpecificDateDialog> {
                 child: Row(
                   children: [
                     const Icon(Icons.calendar_today),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(_selectedDate != null
                         ? '${_selectedDate!.day.toString().padLeft(2, '0')}/${_selectedDate!.month.toString().padLeft(2, '0')}/${_selectedDate!.year}'
                         : 'Sélectionner une date'),
@@ -629,7 +629,7 @@ class _SpecificDateDialogState extends State<_SpecificDateDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -730,7 +730,7 @@ class _CreneauDialogState extends State<_CreneauDialog> {
                   child: InkWell(
                     onTap: _selectDebut,
                     child: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         border: Border.all(color: AppTheme.grey500),
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -738,19 +738,19 @@ class _CreneauDialogState extends State<_CreneauDialog> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Début', style: TextStyle(fontSize: 12)),
+                          const Text('Début', style: TextStyle(fontSize: AppTheme.fontSize12)),
                           Text(_debut?.format(context) ?? 'Sélectionner'),
                         ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: InkWell(
                     onTap: _selectFin,
                     child: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         border: Border.all(color: AppTheme.grey500),
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -758,7 +758,7 @@ class _CreneauDialogState extends State<_CreneauDialog> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Fin', style: TextStyle(fontSize: 12)),
+                          const Text('Fin', style: TextStyle(fontSize: AppTheme.fontSize12)),
                           Text(_fin?.format(context) ?? 'Sélectionner'),
                         ],
                       ),
@@ -767,7 +767,7 @@ class _CreneauDialogState extends State<_CreneauDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<int>(
               value: _duree,
               decoration: const InputDecoration(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/permission_model.dart';
 import '../services/enhanced_permission_provider.dart';
 import '../services/roles_permissions_service.dart';
+import '../../../theme.dart';
 
 /// Écran de configuration et paramètres du système de rôles
 class RoleSettingsScreen extends StatefulWidget {
@@ -37,16 +38,16 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
       body: Consumer<PermissionProvider>(
         builder: (context, provider, child) {
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             children: [
               _buildSystemSection(context, provider),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildSecuritySection(context),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildAuditSection(context),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildMaintenanceSection(context, provider),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildDangerZoneSection(context),
             ],
           );
@@ -60,7 +61,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,33 +71,33 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                   Icons.settings_system_daydream,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Configuration Système',
                   style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Statut du système
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: Row(
                 children: [
                   Icon(
                     provider.isInitialized ? Icons.check_circle : Icons.warning,
                     color: provider.isInitialized 
-                        ? Colors.green 
+                        ? AppTheme.successColor 
                         : theme.colorScheme.error,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +107,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                               ? 'Système initialisé'
                               : 'Système non initialisé',
                           style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                         Text(
@@ -124,7 +125,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Bouton d'initialisation
             if (!provider.isInitialized)
@@ -149,10 +150,10 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
               Text(
                 'Statistiques',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Expanded(
@@ -164,19 +165,19 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                       theme.colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: _buildStatCard(
                       context,
                       'Rôles actifs',
                       provider.activeRoles.length.toString(),
                       Icons.check_circle,
-                      Colors.green,
+                      AppTheme.successColor,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Expanded(
@@ -188,7 +189,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                       theme.colorScheme.secondary,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: _buildStatCard(
                       context,
@@ -212,7 +213,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -222,16 +223,16 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                   Icons.security,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Sécurité',
                   style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             SwitchListTile(
               title: const Text('Rôles multiples'),
@@ -243,7 +244,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
             ),
             
             if (_enableMultipleRoles) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -292,7 +293,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -302,16 +303,16 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                   Icons.history,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Audit et Logs',
                   style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             SwitchListTile(
               title: const Text('Journalisation des audits'),
@@ -322,7 +323,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
               },
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Row(
               children: [
@@ -333,7 +334,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                     label: const Text('Voir les logs'),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () => _exportAuditLogs(context),
@@ -354,7 +355,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -364,16 +365,16 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                   Icons.build,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Maintenance',
                   style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Row(
               children: [
@@ -384,7 +385,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                     label: const Text('Nettoyer les rôles expirés'),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () => _validateDataIntegrity(context),
@@ -395,7 +396,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
               ],
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             Row(
               children: [
@@ -406,7 +407,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                     label: const Text('Optimiser la base'),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () => _refreshCache(context, provider),
@@ -428,7 +429,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
     return Card(
       color: theme.colorScheme.errorContainer.withOpacity(0.1),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -438,17 +439,17 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                   Icons.warning,
                   color: theme.colorScheme.error,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Zone de Danger',
                   style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: theme.colorScheme.error,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Text(
               'Ces actions sont irréversibles et peuvent affecter le système.',
@@ -457,7 +458,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Row(
               children: [
@@ -472,7 +473,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () => _deleteAllCustomRoles(context),
@@ -502,10 +503,10 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
     final theme = Theme.of(context);
     
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: color.withOpacity(0.2),
         ),
@@ -517,11 +518,11 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
             color: color,
             size: 24,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
@@ -601,7 +602,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
               Icons.warning,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('Réinitialiser tous les rôles'),
           ],
         ),
@@ -640,7 +641,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
               Icons.warning,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('Supprimer les rôles personnalisés'),
           ],
         ),
@@ -677,7 +678,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.green,
+        backgroundColor: AppTheme.successColor,
         behavior: SnackBarBehavior.floating,
       ),
     );

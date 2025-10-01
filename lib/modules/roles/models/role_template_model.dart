@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../theme.dart';
 
 /// Modèle pour les templates de rôles pré-configurés
 class RoleTemplate {
@@ -406,7 +407,7 @@ class RoleTemplate {
       final hexColor = colorCode.replaceAll('#', '');
       return Color(int.parse('FF$hexColor', radix: 16));
     } catch (e) {
-      return Colors.blue;
+      return AppTheme.infoColor;
     }
   }
 

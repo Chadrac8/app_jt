@@ -227,7 +227,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                               _totalActiveFilters.toString(),
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.onSecondary,
-                                fontSize: 10,
+                                fontSize: AppTheme.fontSize10,
                                 fontWeight: AppTheme.fontBold,
                               ),
                             ),
@@ -252,7 +252,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
               opacity: _fadeAnimation,
               child: Container(
                 margin: const EdgeInsets.only(top: 12),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -275,7 +275,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                           color: Theme.of(context).colorScheme.primary,
                           size: 20,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Text(
                           'Filtres',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -298,11 +298,11 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Active Only Filter
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -314,7 +314,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                             color: Theme.of(context).colorScheme.primary,
                             size: 20,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: Text(
                               'Groupes actifs uniquement',
@@ -332,7 +332,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                       ),
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Type Filters
                     Text(
@@ -342,7 +342,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -364,7 +364,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                       }).toList(),
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Day Filters
                     Text(
@@ -374,7 +374,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,

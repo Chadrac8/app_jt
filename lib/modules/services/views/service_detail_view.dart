@@ -6,6 +6,7 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Vue de détail d'un service
 class ServiceDetailView extends StatefulWidget {
@@ -139,7 +140,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
 
   Widget _buildDetailsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -164,12 +165,12 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
               ),
             ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Informations principales
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -179,7 +180,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                         child: Text(
                           _service!.name,
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: AppTheme.fontSize24,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
@@ -201,7 +202,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     ],
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   Chip(
                     label: Text(_service!.type.displayName),
@@ -211,19 +212,19 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     labelStyle: const TextStyle(color: AppTheme.white100),
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   if (_service!.description.isNotEmpty) ...[
                     const Text(
                       'Description',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(_service!.description),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                   ],
                   
                   // Détails temporels
@@ -265,24 +266,24 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Notes
           if (_service!.notes != null && _service!.notes!.isNotEmpty)
             CustomCard(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Notes',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(_service!.notes!),
                   ],
                 ),
@@ -304,14 +305,14 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
         children: [
           // Actions
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Expanded(
                   child: Text(
                     'Équipe assignée (${_assignments.length})',
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -333,12 +334,12 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.people_outline, size: 64, color: AppTheme.grey500),
-                        SizedBox(height: 16),
+                        SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Aucune assignation',
-                          style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                          style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'Commencez par assigner des membres à ce service.',
                           textAlign: TextAlign.center,
@@ -363,7 +364,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
 
   Widget _buildLogisticsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -371,18 +372,18 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
           if (_service!.equipmentNeeded.isNotEmpty)
             CustomCard(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Équipements nécessaires',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -398,23 +399,23 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
               ),
             ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Paramètres techniques
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Configuration technique',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   if (_service!.isStreamingEnabled) ...[
                     ListTile(
@@ -441,23 +442,23 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Statistiques de participation (placeholder)
           CustomCard(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Participation',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   ListTile(
                     leading: const Icon(Icons.people, color: AppTheme.greenStandard),
@@ -465,7 +466,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     trailing: Text(
                       _assignments.length.toString(),
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -478,7 +479,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     trailing: Text(
                       _assignments.where((a) => a.status == AssignmentStatus.confirmed).length.toString(),
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -491,7 +492,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                     trailing: Text(
                       _assignments.where((a) => a.status == AssignmentStatus.pending).length.toString(),
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -513,7 +514,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, size: 20, color: AppTheme.grey600),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -522,7 +523,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                   label,
                   style: TextStyle(
                     color: AppTheme.grey600,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
@@ -530,7 +531,7 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
@@ -560,8 +561,8 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
               style: const TextStyle(fontWeight: AppTheme.fontBold),
             ),
             if (assignment.isTeamLead) ...[
-              const SizedBox(width: 8),
-              const Icon(Icons.star, size: 16, color: Colors.amber),
+              const SizedBox(width: AppTheme.spaceSmall),
+              const Icon(Icons.star, size: 16, color: AppTheme.warningColor),
             ],
           ],
         ),
@@ -572,12 +573,12 @@ class _ServiceDetailViewState extends State<ServiceDetailView>
             if (assignment.responsibilities.isNotEmpty)
               Text(
                 assignment.responsibilities.join(', '),
-                style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
               ),
             if (assignment.notes != null && assignment.notes!.isNotEmpty)
               Text(
                 assignment.notes!,
-                style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
               ),
           ],
         ),

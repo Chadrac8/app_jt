@@ -41,7 +41,7 @@ class TeamCard extends StatelessWidget {
         onLongPress: onLongPress,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: isSelected
@@ -74,7 +74,7 @@ class TeamCard extends StatelessWidget {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   
                   // Team info
                   Expanded(
@@ -95,7 +95,7 @@ class TeamCard extends StatelessWidget {
                               ),
                             ),
                             if (!team.isActive) ...[
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8,
@@ -116,7 +116,7 @@ class TeamCard extends StatelessWidget {
                             ],
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           team.description.isNotEmpty 
                               ? team.description 
@@ -133,7 +133,7 @@ class TeamCard extends StatelessWidget {
                   
                   // Selection indicator or positions count
                   if (isSelectionMode) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Checkbox(
                       value: isSelected,
                       onChanged: onSelectionChanged != null 
@@ -142,7 +142,7 @@ class TeamCard extends StatelessWidget {
                       activeColor: Theme.of(context).colorScheme.primary,
                     ),
                   ] else ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Column(
                       children: [
                         Icon(
@@ -172,7 +172,7 @@ class TeamCard extends StatelessWidget {
 
               // Additional info row
               if (team.positionIds.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Row(
                   children: [
                     Icon(
@@ -180,7 +180,7 @@ class TeamCard extends StatelessWidget {
                       size: 16,
                       color: Theme.of(context).colorScheme.outline,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Expanded(
                       child: FutureBuilder<List<PositionModel>>(
                         future: _getPositions(),
@@ -217,7 +217,7 @@ class TeamCard extends StatelessWidget {
               ],
 
               // Last updated info
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -228,7 +228,7 @@ class TeamCard extends StatelessWidget {
                         size: 14,
                         color: Theme.of(context).colorScheme.outline,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         _formatDate(team.updatedAt),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(

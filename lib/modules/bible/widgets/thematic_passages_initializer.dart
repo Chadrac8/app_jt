@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/thematic_passage_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ThematicPassagesInitializer extends StatefulWidget {
   final Widget child;
@@ -76,7 +77,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -87,26 +88,26 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
                 color: theme.colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Text(
               'Initialisation des passages thématiques',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: theme.colorScheme.onBackground,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Préparation des thèmes bibliques par défaut...',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: theme.colorScheme.onBackground.withOpacity(0.7),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
             ),
@@ -123,7 +124,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
       backgroundColor: theme.colorScheme.background,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(AppTheme.spaceXLarge),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -132,35 +133,35 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
                 size: 64,
                 color: theme.colorScheme.error,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               Text(
                 'Erreur d\'initialisation',
                 style: GoogleFonts.inter(
-                  fontSize: 20,
+                  fontSize: AppTheme.fontSize20,
                   fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.onBackground,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 'Impossible d\'initialiser les passages thématiques.',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: theme.colorScheme.onBackground.withOpacity(0.7),
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 _error!,
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: theme.colorScheme.error,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -176,7 +177,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
                       style: GoogleFonts.inter(),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   ElevatedButton(
                     onPressed: _checkAndInitializeThemes,
                     child: Text(

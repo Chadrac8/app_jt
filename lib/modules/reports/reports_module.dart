@@ -121,7 +121,7 @@ class ReportsModule extends AppModule {
             'Analytics',
             style: TextStyle(
               color: AppTheme.blueStandard,
-              fontSize: 10,
+              fontSize: AppTheme.fontSize10,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -254,7 +254,7 @@ class ReportsModule extends AppModule {
         maxChildSize: 0.9,
         minChildSize: 0.5,
         builder: (context, scrollController) => Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -262,7 +262,7 @@ class ReportsModule extends AppModule {
                 'Choisir un template',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Expanded(
                 child: ListView.builder(
                   controller: scrollController,
@@ -290,7 +290,7 @@ class ReportsModule extends AppModule {
                             template.category,
                             style: const TextStyle(
                               color: AppTheme.blueStandard,
-                              fontSize: 11,
+                              fontSize: AppTheme.fontSize11,
                               fontWeight: AppTheme.fontMedium,
                             ),
                           ),
@@ -336,11 +336,11 @@ class ReportsModule extends AppModule {
       case 'financial':
         return AppTheme.greenStandard;
       case 'membership':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'event':
         return AppTheme.orangeStandard;
       case 'custom':
-        return Colors.indigo;
+        return AppTheme.secondaryColor;
       default:
         return AppTheme.grey500;
     }

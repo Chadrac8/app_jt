@@ -57,13 +57,13 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
         _buildSectionTitle('Mode de lecture'),
         _buildPlaybackModeSelector(),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Options de lecture (seulement pour le mode intégré)
         if (_localData['playbackMode'] == 'integrated') ...[
           _buildSectionTitle('Options de lecture'),
           _buildPlaybackOptions(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         // Aperçu du mode sélectionné
@@ -78,7 +78,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           fontWeight: AppTheme.fontSemiBold,
         ),
       ),
@@ -101,7 +101,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
                 ? 'Lit la vidéo directement dans l\'application'
                 : 'Lit l\'audio directement dans l\'application',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey600,
               ),
             ),
@@ -124,7 +124,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
                 ? 'Ouvre la vidéo dans YouTube'
                 : 'Ouvre l\'audio dans SoundCloud/navigateur',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey600,
               ),
             ),
@@ -143,7 +143,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
   
   Widget _buildPlaybackOptions() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -208,7 +208,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
     final isIntegrated = _localData['playbackMode'] == 'integrated';
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: isIntegrated ? AppTheme.grey50 : AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -226,7 +226,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
                 color: isIntegrated ? AppTheme.grey600 : AppTheme.grey600,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 isIntegrated ? 'Mode intégré sélectionné' : 'Mode externe sélectionné',
                 style: TextStyle(
@@ -236,19 +236,19 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             isIntegrated 
               ? _getIntegratedDescription()
               : _getExternalDescription(),
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: isIntegrated ? AppTheme.grey600 : AppTheme.grey600,
             ),
           ),
           
           // Avantages/inconvénients
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           _buildProsCons(isIntegrated),
         ],
       ),
@@ -295,7 +295,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
       children: [
         // Avantages
         _buildProsConsSection('Avantages', pros, AppTheme.greenStandard, Icons.check),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         // Inconvénients
         _buildProsConsSection('Inconvénients', cons, AppTheme.redStandard, Icons.close),
       ],
@@ -309,24 +309,24 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
         Text(
           title,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             fontWeight: AppTheme.fontSemiBold,
             color: color,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         ...items.map((item) => Padding(
           padding: const EdgeInsets.only(left: 8, bottom: 2),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(icon, size: 12, color: color.withOpacity(0.8)),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Expanded(
                 child: Text(
                   item,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: AppTheme.fontSize11,
                     color: color.withOpacity(0.8),
                   ),
                 ),

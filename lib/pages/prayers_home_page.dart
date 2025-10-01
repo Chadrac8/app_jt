@@ -233,18 +233,18 @@ class _PrayersHomePageState extends State<PrayersHomePage>
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Statistiques du Mur de Prière',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 Expanded(
@@ -291,11 +291,11 @@ class _PrayersHomePageState extends State<PrayersHomePage>
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: color,
           ),
@@ -303,7 +303,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
         Text(
           label,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: AppTheme.grey500,
           ),
           textAlign: TextAlign.center,
@@ -404,7 +404,7 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                           size: 64,
                           color: AppTheme.redStandard,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Erreur: ${snapshot.error}',
                           style: const TextStyle(color: AppTheme.redStandard),
@@ -426,17 +426,17 @@ class _PrayersHomePageState extends State<PrayersHomePage>
                           size: 64,
                           color: AppTheme.grey400,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           _searchQuery.isNotEmpty
                               ? 'Aucune prière trouvée pour "${_searchQuery}"'
                               : 'Aucune prière pour le moment',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             color: AppTheme.grey600,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         const Text(
                           'Les nouvelles prières apparaîtront ici',
                           style: TextStyle(color: AppTheme.grey500),

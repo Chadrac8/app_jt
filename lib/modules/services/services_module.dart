@@ -71,14 +71,14 @@ class ServicesModule extends BaseModule {
       child: InkWell(
         onTap: () => _navigateToModule(context),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -89,7 +89,7 @@ class ServicesModule extends BaseModule {
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +97,7 @@ class ServicesModule extends BaseModule {
                         Text(
                           config.name,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
@@ -105,7 +105,7 @@ class ServicesModule extends BaseModule {
                           config.description,
                           style: TextStyle(
                             color: AppTheme.grey600,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                         ),
                       ],
@@ -113,7 +113,7 @@ class ServicesModule extends BaseModule {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Statistics
               FutureBuilder<Map<String, dynamic>>(
@@ -122,7 +122,7 @@ class ServicesModule extends BaseModule {
                   if (snapshot.hasData) {
                     return _buildStatChips(context, snapshot.data!);
                   }
-                  return const SizedBox(height: 20);
+                  return const SizedBox(height: AppTheme.space20);
                 },
               ),
             ],
@@ -142,7 +142,7 @@ class ServicesModule extends BaseModule {
           Icons.event,
           AppTheme.blueStandard,
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         _buildStatChip(
           context,
           'À venir',
@@ -150,7 +150,7 @@ class ServicesModule extends BaseModule {
           Icons.schedule,
           AppTheme.greenStandard,
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         _buildStatChip(
           context,
           'Aujourd\'hui',
@@ -175,7 +175,7 @@ class ServicesModule extends BaseModule {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, size: 14, color: color),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppTheme.spaceXSmall),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +183,7 @@ class ServicesModule extends BaseModule {
                   Text(
                     value,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                       color: color,
                     ),

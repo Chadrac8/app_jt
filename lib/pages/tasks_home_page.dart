@@ -392,9 +392,9 @@ class _TasksHomePageState extends State<TasksHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error, size: 64, color: AppTheme.errorColor),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => setState(() {}),
                   child: const Text('Réessayer'),
@@ -412,14 +412,14 @@ class _TasksHomePageState extends State<TasksHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.list_alt, size: 64, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucune liste de tâches',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: AppTheme.grey600,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Créez votre première liste pour organiser vos tâches',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -427,7 +427,7 @@ class _TasksHomePageState extends State<TasksHomePage>
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 ElevatedButton.icon(
                   onPressed: _createNewTaskList,
                   icon: const Icon(Icons.add),
@@ -440,7 +440,7 @@ class _TasksHomePageState extends State<TasksHomePage>
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: taskLists.length,
           itemBuilder: (context, index) {
             // Vérification de sécurité pour éviter les erreurs d'index
@@ -492,9 +492,9 @@ class _TasksHomePageState extends State<TasksHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.task_alt, size: 64, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 const Text('Aucune tâche trouvée'),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 ElevatedButton.icon(
                   onPressed: _createNewTask,
                   icon: const Icon(Icons.add),
@@ -507,7 +507,7 @@ class _TasksHomePageState extends State<TasksHomePage>
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: tasks.length,
           itemBuilder: (context, index) {
             // Vérification de sécurité pour éviter les erreurs d'index
@@ -596,7 +596,7 @@ class _TasksHomePageState extends State<TasksHomePage>
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -642,7 +642,7 @@ class _TasksHomePageState extends State<TasksHomePage>
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -683,7 +683,7 @@ class _TasksHomePageState extends State<TasksHomePage>
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

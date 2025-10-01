@@ -103,12 +103,12 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
     final categories = _groupWidgetsByCategory();
     
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       children: [
         // En-tête avec actions globales
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -118,7 +118,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Sélectionnez les widgets à afficher sur votre dashboard. '
                   'Vous pouvez réorganiser l\'ordre en glissant-déposant.',
@@ -126,7 +126,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     color: AppTheme.grey600,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Row(
                   children: [
                     ElevatedButton.icon(
@@ -134,7 +134,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                       icon: const Icon(Icons.select_all),
                       label: const Text('Tout sélectionner'),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     OutlinedButton.icon(
                       onPressed: _deselectAllWidgets,
                       icon: const Icon(Icons.deselect),
@@ -146,7 +146,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Widgets groupés par catégorie
         ...categories.entries.map((entry) {
@@ -168,7 +168,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
         leading: Icon(_getCategoryIcon(category)),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: ReorderableListView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -206,11 +206,11 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
 
   Widget _buildPreferencesTab() {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       children: [
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -220,7 +220,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Vue compacte
                 SwitchListTile(
@@ -249,11 +249,11 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -263,7 +263,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Intervalle d'actualisation
                 ListTile(
@@ -276,7 +276,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             ),
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppTheme.spaceLarge),
         
         // Bouton de sauvegarde
         ElevatedButton(
@@ -290,7 +290,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                       height: 16,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Sauvegarde...'),
                   ],
                 )
@@ -549,7 +549,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             Text('Visible: ${widget.isVisible ? "Oui" : "Non"}'),
             Text('Ordre: ${widget.order}'),
             if (widget.config.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               const Text('Configuration:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ...widget.config.entries.map((entry) => 
                 Text('${entry.key}: ${entry.value}'),
@@ -580,7 +580,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('Sélectionnez l\'intervalle d\'actualisation automatique:'),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               DropdownButton<int>(
                 value: selectedInterval,
                 items: const [
@@ -615,12 +615,12 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
 
   Widget _buildMaintenanceTab() {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       children: [
         // Section de nettoyage des modules
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -630,7 +630,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                       Icons.cleaning_services,
                       color: Theme.of(context).primaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Nettoyage des Modules',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -639,13 +639,13 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Text(
                   'Supprime les modules orphelins qui n\'existent plus dans le code '
                   'mais qui sont encore présents dans la configuration Firebase.',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton.icon(
                   onPressed: _cleanupOrphanModules,
                   icon: const Icon(Icons.delete_sweep),
@@ -655,7 +655,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     foregroundColor: AppTheme.white100,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   '⚠️ Cette action supprimera définitivement les modules '
                   '"Pour vous", "Ressources" et "Dons" du menu "Plus".',
@@ -669,12 +669,12 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
           ),
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Section d'informations système
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -684,7 +684,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                       Icons.info_outline,
                       color: Theme.of(context).primaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Informations Système',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -693,11 +693,11 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 _buildInfoRow('Version de l\'application', '1.0.0'),
                 _buildInfoRow('Configuration Firebase', 'Connectée'),
                 _buildInfoRow('Modules actifs', '${_allWidgets.length}'),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Pour plus d\'informations de maintenance, consultez la console Firebase.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -776,7 +776,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             content: Row(
               children: [
                 CircularProgressIndicator(),
-                SizedBox(width: 16),
+                SizedBox(width: AppTheme.spaceMedium),
                 Text('Nettoyage en cours...'),
               ],
             ),

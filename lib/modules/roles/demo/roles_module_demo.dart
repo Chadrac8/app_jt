@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/permission_model.dart';
 import '../services/enhanced_permission_provider.dart';
+import '../../../theme.dart';
 
 /// Widget de démonstration pour tester le module Rôles
 class RolesModuleDemo extends StatelessWidget {
@@ -23,9 +24,9 @@ class RolesModuleDemo extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const CircularProgressIndicator(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   const Text('Initialisation du module...'),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   FilledButton(
                     onPressed: () => provider.initialize('demo_user'),
                     child: const Text('Initialiser'),
@@ -36,18 +37,18 @@ class RolesModuleDemo extends StatelessWidget {
           }
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildWelcomeCard(context),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildStatsCards(context, provider),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildQuickActions(context),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildModulesList(context),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildSystemInfo(context, provider),
               ],
             ),
@@ -64,7 +65,7 @@ class RolesModuleDemo extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -75,7 +76,7 @@ class RolesModuleDemo extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -86,19 +87,19 @@ class RolesModuleDemo extends StatelessWidget {
                     size: 32,
                     color: theme.colorScheme.onPrimaryContainer,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Text(
                       'Module Rôles et Permissions',
                       style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: AppTheme.fontBold,
                         color: theme.colorScheme.onPrimaryContainer,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Système complet de gestion des rôles, permissions et restrictions développé selon Material Design 3.',
                 style: theme.textTheme.bodyLarge?.copyWith(
@@ -106,7 +107,7 @@ class RolesModuleDemo extends StatelessWidget {
                   height: 1.4,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -129,7 +130,7 @@ class RolesModuleDemo extends StatelessWidget {
     return Chip(
       label: Text(
         label,
-        style: const TextStyle(fontSize: 12),
+        style: const TextStyle(fontSize: AppTheme.fontSize12),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.8),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -145,27 +146,27 @@ class RolesModuleDemo extends StatelessWidget {
             'Rôles',
             provider.roles.length.toString(),
             Icons.admin_panel_settings,
-            Colors.blue,
+            AppTheme.infoColor,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             context,
             'Modules',
             AppModule.allModules.length.toString(),
             Icons.apps,
-            Colors.green,
+            AppTheme.successColor,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             context,
             'Système',
             provider.systemRoles.length.toString(),
             Icons.verified_user,
-            Colors.orange,
+            AppTheme.warning,
           ),
         ),
       ],
@@ -181,7 +182,7 @@ class RolesModuleDemo extends StatelessWidget {
   ) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             Icon(
@@ -189,11 +190,11 @@ class RolesModuleDemo extends StatelessWidget {
               size: 32,
               color: color,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: AppTheme.fontBold,
                 color: color,
               ),
             ),
@@ -210,17 +211,17 @@ class RolesModuleDemo extends StatelessWidget {
   Widget _buildQuickActions(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Actions rapides',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
@@ -280,17 +281,17 @@ class RolesModuleDemo extends StatelessWidget {
   Widget _buildModulesList(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Modules de l\'application',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...AppModule.allModules.take(8).map((module) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8),
@@ -301,7 +302,7 @@ class RolesModuleDemo extends StatelessWidget {
                       size: 20,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Text(module.name),
                     ),
@@ -316,7 +317,7 @@ class RolesModuleDemo extends StatelessWidget {
               );
             }).toList(),
             if (AppModule.allModules.length > 8) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Et ${AppModule.allModules.length - 8} autres modules...',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -333,17 +334,17 @@ class RolesModuleDemo extends StatelessWidget {
   Widget _buildSystemInfo(BuildContext context, PermissionProvider provider) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Informations système',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildInfoRow('Statut', provider.isInitialized ? 'Initialisé' : 'Non initialisé'),
             _buildInfoRow('Version du module', '1.0.0'),
             _buildInfoRow('Cache actif', provider.isCacheEnabled ? 'Oui' : 'Non'),
@@ -363,7 +364,7 @@ class RolesModuleDemo extends StatelessWidget {
           Text(label),
           Text(
             value,
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: AppTheme.fontMedium),
           ),
         ],
       ),
@@ -419,7 +420,7 @@ class RolesModuleDemo extends StatelessWidget {
                         Text(entry.key.replaceAll('_', ' ').toUpperCase()),
                         Text(
                           entry.value.toString(),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: AppTheme.fontBold),
                         ),
                       ],
                     ),

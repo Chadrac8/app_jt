@@ -89,7 +89,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
     return Column(
       children: [
         _buildSummaryCards(),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Expanded(
           child: _imageComponentsWithActions.isEmpty
               ? _buildEmptyState()
@@ -107,7 +107,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
     final totalImageActions = _imageComponentsWithActions.length;
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         children: [
           Expanded(
@@ -118,7 +118,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
               color: AppTheme.blueStandard,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: _buildSummaryCard(
               title: 'Pages avec Actions',
@@ -127,7 +127,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
               color: AppTheme.greenStandard,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: _buildSummaryCard(
               title: 'Actions Totales',
@@ -149,22 +149,22 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
   }) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             Icon(icon, size: 32, color: color),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
             Text(
               title,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey500,
               ),
               textAlign: TextAlign.center,
@@ -185,24 +185,24 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune action d\'image configurée',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Ajoutez des actions à vos images via le Constructeur de Pages',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey500,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _showExamples,
             icon: const Icon(Icons.school),
@@ -228,7 +228,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: pageGroups.length,
       itemBuilder: (context, index) {
         final pageId = pageGroups.keys.elementAt(index);
@@ -280,7 +280,7 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
           if (action.parameters != null && action.parameters!.isNotEmpty)
             Text(
               'Paramètres: ${action.parameters!.entries.map((e) => '${e.key}: ${e.value}').join(', ')}',
-              style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
+              style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
             ),
         ],
       ),
@@ -447,14 +447,14 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
                 'Les actions d\'image permettent d\'ajouter de l\'interactivité à vos pages personnalisées.',
                 style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('Types d\'actions disponibles:'),
-              SizedBox(height: 8),
+              SizedBox(height: AppTheme.spaceSmall),
               Text('• Lien URL: Ouvre un site web externe'),
               Text('• Page Membre: Navigue vers une page de l\'application'),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('Pour ajouter une action:'),
-              SizedBox(height: 8),
+              SizedBox(height: AppTheme.spaceSmall),
               Text('1. Allez dans le Constructeur de Pages'),
               Text('2. Sélectionnez un composant Image'),
               Text('3. Activez "Action au clic"'),

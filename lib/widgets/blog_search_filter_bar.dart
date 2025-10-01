@@ -61,7 +61,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
         widget.searchQuery.isNotEmpty;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         boxShadow: [
@@ -101,7 +101,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
                 ),
               ),
               
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               
               // Bouton filtres
               Container(
@@ -124,13 +124,13 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
           
           // Filtres étendus
           if (_isExpanded) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildExpandedFilters(),
           ],
           
           // Indicateur de filtres actifs
           if (hasActiveFilters && !_isExpanded) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             _buildActiveFiltersIndicator(),
           ],
         ],
@@ -150,7 +150,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -161,7 +161,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         // Catégories
@@ -172,7 +172,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -194,7 +194,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         // Tags populaires
@@ -205,7 +205,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -218,7 +218,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         // Actions
@@ -286,7 +286,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
         label: Text('+${widget.selectedTags.length - 3}'),
         backgroundColor: AppTheme.grey200,
         labelStyle: TextStyle(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           color: AppTheme.grey600,
         ),
       ));
@@ -309,12 +309,12 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
               onPressed: widget.onClearFilters,
               child: const Text('Tout effacer'),
               style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 12),
+                textStyle: const TextStyle(fontSize: AppTheme.fontSize12),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Wrap(
           spacing: 6,
           runSpacing: 6,
@@ -331,7 +331,7 @@ class _BlogSearchFilterBarState extends State<BlogSearchFilterBar> {
       deleteIcon: const Icon(Icons.close, size: 16),
       backgroundColor: const Color(0x1A1976D2), // 10% opacity of primaryColor (#1976D2)
       labelStyle: TextStyle(
-        fontSize: 12,
+        fontSize: AppTheme.fontSize12,
         color: Theme.of(context).primaryColor,
       ),
       deleteIconColor: Theme.of(context).primaryColor,

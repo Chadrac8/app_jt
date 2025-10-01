@@ -7,8 +7,8 @@ class UrgentDiagnosticBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [AppTheme.redStandard, AppTheme.orangeStandard],
@@ -34,29 +34,29 @@ class UrgentDiagnosticBanner extends StatelessWidget {
                 color: AppTheme.white100,
                 size: 28,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               const Expanded(
                 child: Text(
                   '🚨 PROBLÈME CRITIQUE - Personnes invisibles',
                   style: TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           const Text(
             'Vous ne voyez aucune personne dans les sélecteurs ? '
             'Lancez le diagnostic immédiat pour identifier le problème.',
             style: TextStyle(
               color: AppTheme.white100,
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               const Text(
@@ -68,12 +68,12 @@ class UrgentDiagnosticBanner extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Le module de gestion des projets a été supprimé.',
             style: TextStyle(
               color: AppTheme.white100.withOpacity(0.70),
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontStyle: FontStyle.italic,
             ),
           ),

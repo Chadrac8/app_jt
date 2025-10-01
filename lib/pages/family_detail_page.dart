@@ -137,18 +137,18 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
 
   Widget _buildInfoTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           _buildFamilyHeader(),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildInfoCard(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildAddressCard(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildContactCard(),
           if (_family!.notes != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildNotesCard(),
           ],
         ],
@@ -159,7 +159,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
   Widget _buildFamilyHeader() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           children: [
             CircleAvatar(
@@ -178,7 +178,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                     )
                   : Icon(Icons.family_restroom, size: 40, color: _getStatusColor(_family!.status)),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _family!.name,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -186,7 +186,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                   ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -201,7 +201,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -210,7 +210,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                   size: 16,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   '${_members.length} membre${_members.length > 1 ? 's' : ''}',
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -226,7 +226,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
   Widget _buildInfoCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -237,23 +237,23 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_family!.tags.isNotEmpty) ...[
               Text(
                 'Étiquettes',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 6,
                 runSpacing: 6,
                 children: _family!.tags.map((tag) => Chip(
-                  label: Text(tag, style: const TextStyle(fontSize: 12)),
+                  label: Text(tag, style: const TextStyle(fontSize: AppTheme.fontSize12)),
                   backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
                   side: BorderSide.none,
                 )).toList(),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
             ],
             _buildInfoRow('Créée le', _formatDate(_family!.createdAt)),
             _buildInfoRow('Modifiée le', _formatDate(_family!.updatedAt)),
@@ -270,7 +270,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -281,14 +281,14 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Icon(
                   Icons.location_on,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     _family!.fullAddress,
@@ -314,7 +314,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -325,14 +325,14 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_family!.homePhone != null) ...[
               _buildContactRow(
                 Icons.phone,
                 'Téléphone domicile',
                 _family!.homePhone!,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
             ],
             if (_family!.emergencyContact != null) ...[
               _buildContactRow(
@@ -340,7 +340,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                 'Contact d\'urgence',
                 _family!.emergencyContact!,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
             ],
             if (_family!.emergencyPhone != null) ...[
               _buildContactRow(
@@ -358,7 +358,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
   Widget _buildNotesCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -369,7 +369,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _family!.notes!,
               style: Theme.of(context).textTheme.bodyMedium,
@@ -391,17 +391,17 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
               size: 64,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun membre',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Ajoutez des personnes à cette famille',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton.icon(
               onPressed: () => _handleMenuAction('add_member'),
               icon: const Icon(Icons.person_add),
@@ -420,15 +420,15 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
         m.familyRole != FamilyRole.child).toList();
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       children: [
         if (parents.isNotEmpty) ...[
           _buildMemberSection('Parents', parents),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         if (children.isNotEmpty) ...[
           _buildMemberSection('Enfants', children),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         if (others.isNotEmpty) ...[
           _buildMemberSection('Autres membres', others),
@@ -440,7 +440,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
   Widget _buildMemberSection(String title, List<PersonModel> members) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -451,7 +451,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -492,7 +492,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
                   shape: BoxShape.circle,
                   border: Border.all(color: AppTheme.white100, width: 2),
                 ),
-                padding: const EdgeInsets.all(2),
+                padding: const EdgeInsets.all(AppTheme.space2),
                 child: const Icon(
                   Icons.star,
                   size: 12,
@@ -573,12 +573,12 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
             size: 64,
             color: AppTheme.grey500,
           ),
-          SizedBox(height: 16),
+          SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Historique d\'activité',
-            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+            style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Fonctionnalité en cours de développement',
             style: TextStyle(color: AppTheme.grey500),
@@ -618,7 +618,7 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
     return Row(
       children: [
         Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

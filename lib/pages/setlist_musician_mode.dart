@@ -188,12 +188,12 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
               Icon(Icons.music_off_outlined,
                 size: 64,
                 color: Theme.of(context).colorScheme.surface.withOpacity(0.7)),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text('Aucun chant dans cette setlist',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.surface,
-                  fontSize: 16)),
-              const SizedBox(height: 24),
+                  fontSize: AppTheme.fontSize16)),
+              const SizedBox(height: AppTheme.spaceLarge),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Text('Retour')),
@@ -235,7 +235,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.amber.withOpacity(0.6), // Couleur musicale
+            AppTheme.warningColor.withOpacity(0.6), // Couleur musicale
             AppTheme.orangeStandard.withOpacity(0.4),
           ]),
         borderRadius: const BorderRadius.only(
@@ -253,9 +253,9 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
               icon: Icon(Icons.close, 
                 color: Theme.of(context).colorScheme.surface, size: 20),
               onPressed: () => Navigator.pop(context),
-              padding: const EdgeInsets.all(8))),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall))),
           
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           
           // Info compacte avec indication musicien
           Expanded(
@@ -270,19 +270,19 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                         song.title,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.surface,
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis)),
                     Text(
                       '🎸',
-                      style: TextStyle(fontSize: 16)),
+                      style: TextStyle(fontSize: AppTheme.fontSize16)),
                   ]),
                 Text(
                   '${_currentIndex + 1}/${_songs.length} • ${widget.setlist.name}',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
-                    fontSize: 11),
+                    fontSize: AppTheme.fontSize11),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis),
               ])),
@@ -303,9 +303,9 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                       : _getTransposedKey(song.tonality ?? 'C'),
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontBold))),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppTheme.space6),
               // Projection
               Container(
                 decoration: BoxDecoration(
@@ -317,7 +317,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                     color: Theme.of(context).colorScheme.surface,
                     size: 18),
                   onPressed: _openProjection,
-                  padding: const EdgeInsets.all(6))),
+                  padding: const EdgeInsets.all(AppTheme.space6))),
             ]),
         ]));
   }
@@ -330,7 +330,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -362,7 +362,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
       child: Text(
         song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
         style: TextStyle(
-          fontSize: 18, // Taille optimisée pour les musiciens
+          fontSize: AppTheme.fontSize18, // Taille optimisée pour les musiciens
           height: 1.7, // Espacement pour faciliter la lecture
           color: Theme.of(context).colorScheme.onSurface,
           fontWeight: AppTheme.fontRegular,
@@ -390,16 +390,16 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           Text(
             'Accords utilisés:',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           if (chords.isEmpty)
             Text(
               'Aucun accord détecté dans ce chant',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)))
           else
             Wrap(
@@ -408,30 +408,30 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
               children: chords.map((chord) => Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withOpacity(0.2),
-                  border: Border.all(color: Colors.amber, width: 2),
+                  color: AppTheme.warningColor.withOpacity(0.2),
+                  border: Border.all(color: AppTheme.warningColor, width: 2),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                 child: Text(
                   _transposeChord(chord),
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: Theme.of(context).colorScheme.onSurface)))).toList()),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           Text(
             'Paroles avec accords:',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Text(
             song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               height: 1.6,
               color: Theme.of(context).colorScheme.onSurface)),
         ]));
@@ -455,45 +455,45 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           Text(
             'Structure du chant:',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           if (structure.isEmpty)
             Text(
               'Structure non détectée',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)))
           else
             ...structure.map((section) => Container(
               margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: AppTheme.warningColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
               child: Text(
                 section,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: Theme.of(context).colorScheme.onSurface)))),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           Text(
             'Paroles complètes:',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: Theme.of(context).colorScheme.onSurface)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Text(
             song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               height: 1.6,
               color: Theme.of(context).colorScheme.onSurface)),
         ]));
@@ -522,13 +522,13 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   'Complet',
                   _viewMode == 'full',
                   () => setState(() => _viewMode = 'full'))),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppTheme.space6),
               Expanded(
                 child: _buildCompactToggleButton(
                   'Accords',
                   _viewMode == 'chords_only',
                   () => setState(() => _viewMode = 'chords_only'))),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppTheme.space6),
               Expanded(
                 child: _buildCompactToggleButton(
                   'Structure',
@@ -536,7 +536,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   () => setState(() => _viewMode = 'structure_only'))),
             ]),
           
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           
           // Contrôles musicaux en ligne
           Row(
@@ -546,7 +546,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                 icon: Icons.skip_previous_rounded,
                 onPressed: _currentIndex > 0 ? _previousSong : null),
               
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               
               // Transposition
               Expanded(
@@ -575,7 +575,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.surface, 
                               fontWeight: AppTheme.fontBold,
-                              fontSize: 11)),
+                              fontSize: AppTheme.fontSize11)),
                         ]),
                       GestureDetector(
                         onTap: () => setState(() => _transposeSteps++),
@@ -583,7 +583,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                           color: Theme.of(context).colorScheme.surface, size: 16)),
                     ]))),
               
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               
               // BPM
               Expanded(
@@ -612,7 +612,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.surface, 
                               fontWeight: AppTheme.fontBold,
-                              fontSize: 11)),
+                              fontSize: AppTheme.fontSize11)),
                         ]),
                       GestureDetector(
                         onTap: () => setState(() => _bpm = (_bpm + 5).clamp(60, 200)),
@@ -620,14 +620,14 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                           color: Theme.of(context).colorScheme.surface, size: 16)),
                     ]))),
               
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               
               // Liste
               _buildMinimalNavButton(
                 icon: Icons.list_rounded,
                 onPressed: _showSongList),
               
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               
               // Navigation suivante
               _buildMinimalNavButton(
@@ -644,7 +644,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: isActive 
-              ? Colors.amber.withOpacity(0.3)
+              ? AppTheme.warningColor.withOpacity(0.3)
               : Theme.of(context).colorScheme.surface.withOpacity(0.1),
           borderRadius: BorderRadius.circular(6)),
         child: Text(
@@ -652,10 +652,10 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           textAlign: TextAlign.center,
           style: TextStyle(
             color: isActive 
-                ? Colors.amber
+                ? AppTheme.warningColor
                 : Theme.of(context).colorScheme.surface,
             fontWeight: isActive ? AppTheme.fontBold : AppTheme.fontMedium,
-            fontSize: 11))));
+            fontSize: AppTheme.fontSize11))));
   }
 
   Widget _buildMinimalNavButton({
@@ -667,7 +667,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
       height: 40,
       decoration: BoxDecoration(
         color: onPressed != null 
-            ? Colors.amber.withOpacity(0.2)
+            ? AppTheme.warningColor.withOpacity(0.2)
             : Theme.of(context).colorScheme.surface.withOpacity(0.05),
         shape: BoxShape.circle),
       child: IconButton(
@@ -675,7 +675,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
         icon: Icon(
           icon,
           color: onPressed != null 
-              ? Colors.amber
+              ? AppTheme.warningColor
               : Theme.of(context).colorScheme.surface.withOpacity(0.4),
           size: 20),
         padding: EdgeInsets.zero));
@@ -733,14 +733,14 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
               height: 4,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(2))),
+                borderRadius: BorderRadius.circular(AppTheme.radius2))),
             
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
-                  Icon(Icons.music_note, color: Colors.amber),
-                  const SizedBox(width: 8),
+                  Icon(Icons.music_note, color: AppTheme.warningColor),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Mode Musicien - Liste des chants',
                     style: Theme.of(context).textTheme.titleLarge),
@@ -756,7 +756,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: isCurrentSong 
-                          ? Colors.amber
+                          ? AppTheme.warningColor
                           : Theme.of(context).colorScheme.surfaceContainerHighest,
                       child: Text(
                         '${index + 1}',
@@ -771,7 +771,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                         fontWeight: isCurrentSong ? AppTheme.fontBold : FontWeight.normal)),
                     subtitle: Text('${song.author ?? 'Auteur inconnu'} • ${song.tonality ?? 'C'}'),
                     trailing: isCurrentSong 
-                        ? Icon(Icons.music_note, color: Colors.amber)
+                        ? Icon(Icons.music_note, color: AppTheme.warningColor)
                         : null,
                     onTap: () {
                       Navigator.pop(context);

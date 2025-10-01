@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/thematic_passage_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget de test pour l'authentification et les opérations de création/modification
 class AuthTestWidget extends StatefulWidget {
@@ -180,7 +181,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
             // Indicateur d'état
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: _currentUser != null ? AppTheme.grey50 : AppTheme.grey50,
                 border: Border.all(
@@ -194,7 +195,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
                     _currentUser != null ? Icons.check_circle : Icons.error,
                     color: _currentUser != null ? AppTheme.greenStandard : AppTheme.redStandard,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     _currentUser != null ? 'Connecté' : 'Non connecté',
                     style: TextStyle(
@@ -206,7 +207,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Boutons d'actions
             Row(
@@ -217,7 +218,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
                     child: const Text('Connexion Anonyme'),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _signOut,
@@ -231,7 +232,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
               ],
             ),
             
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             
             ElevatedButton(
               onPressed: _isLoading ? null : _checkAuthStatus,
@@ -243,18 +244,18 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
               child: const Text('Retester les opérations'),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             if (_isLoading)
               const LinearProgressIndicator(),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Zone de logs
             Expanded(
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -265,7 +266,7 @@ class _AuthTestWidgetState extends State<AuthTestWidget> {
                     _statusText,
                     style: const TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ),

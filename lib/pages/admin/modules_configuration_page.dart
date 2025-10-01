@@ -813,14 +813,14 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildInfoCard(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildModulesList(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildCustomPagesList(),
                 ],
               ),
@@ -831,45 +831,45 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
   Widget _buildInfoCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.info, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Information',
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               '• Cochez "Activé pour les membres" pour rendre un module/page accessible dans la vue membre',
               style: TextStyle(color: AppTheme.textSecondaryColor),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               '• Cochez "Navigation principale" pour afficher le module/page dans la barre de navigation (maximum 5 éléments)',
               style: TextStyle(color: AppTheme.textSecondaryColor),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               '• Les modules et pages non en navigation principale apparaîtront dans le menu "Plus"',
               style: TextStyle(color: AppTheme.textSecondaryColor),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               '• Les pages personnalisées proviennent du module Constructeur de Pages',
               style: TextStyle(color: AppTheme.textSecondaryColor),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               '• Cliquez sur l\'icône d\'un module ou d\'une page pour la changer parmi plus de 100 icônes disponibles',
               style: TextStyle(
@@ -886,19 +886,19 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
   Widget _buildModulesList() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Modules disponibles',
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.primaryColor,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ..._modules.asMap().entries.map((entry) {
               final index = entry.key;
               final module = entry.value;
@@ -918,7 +918,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         border: Border.all(color: AppTheme.grey300!),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -936,7 +936,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                 onTap: () => _changeModuleIcon(index),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -952,7 +952,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                         color: AppTheme.primaryColor,
                         size: 24,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Icon(
                         Icons.edit,
                         color: AppTheme.primaryColor,
@@ -962,7 +962,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -970,7 +970,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       module.name,
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
@@ -978,7 +978,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       module.description,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -986,7 +986,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       'Icône: ${module.iconName}',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.textSecondaryColor,
                         fontStyle: FontStyle.italic,
                       ),
@@ -999,7 +999,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                   label: Text(
                     'Menu principal',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.white100,
                     ),
                   ),
@@ -1007,7 +1007,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(
@@ -1046,7 +1046,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
             ],
           ),
           if (module.isPrimaryInBottomNav) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(
               children: [
                 const Text('Ordre: '),
@@ -1080,36 +1080,36 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
   Widget _buildCustomPagesList() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.web, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Pages personnalisées',
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Pages créées avec le Constructeur de Pages',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_customPages.isEmpty)
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   border: Border.all(color: AppTheme.grey300!),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1121,7 +1121,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Row(
                       children: [
                         Icon(Icons.info_outline, color: AppTheme.grey600),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: Text(
                             'Aucune page personnalisée trouvée',
@@ -1133,23 +1133,23 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Pour voir vos pages ici :',
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 13,
+                        fontSize: AppTheme.fontSize13,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       '1. Allez dans le module Constructeur de Pages\n2. Créez ou modifiez une page\n3. Sauvegardez la page (même en brouillon)\n4. Revenez ici et actualisez',
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 13,
+                        fontSize: AppTheme.fontSize13,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     ElevatedButton.icon(
                       onPressed: () async {
                         setState(() {
@@ -1188,7 +1188,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         border: Border.all(color: AppTheme.grey300!),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1206,7 +1206,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                 onTap: () => _changePageIcon(index),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1222,7 +1222,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                         color: AppTheme.primaryColor,
                         size: 24,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Icon(
                         Icons.edit,
                         color: AppTheme.primaryColor,
@@ -1232,7 +1232,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1240,7 +1240,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       page.title,
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
@@ -1248,7 +1248,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       page.description.isNotEmpty ? page.description : 'Page personnalisée',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -1256,7 +1256,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                     Text(
                       'Icône: ${page.iconName} • Visibilité: ${_getVisibilityLabel(page.visibility)}',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.textSecondaryColor,
                         fontStyle: FontStyle.italic,
                       ),
@@ -1269,7 +1269,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                   label: Text(
                     'Menu principal',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.white100,
                     ),
                   ),
@@ -1277,7 +1277,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(
@@ -1316,7 +1316,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
             ],
           ),
           if (page.isPrimaryInBottomNav) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(
               children: [
                 const Text('Ordre: '),

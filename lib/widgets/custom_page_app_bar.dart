@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../routes/simple_routes.dart';
-import '../../theme.dart';
+import '../theme.dart';
 
 class CustomPageAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -87,8 +86,9 @@ class _CustomPageAppBarState extends State<CustomPageAppBar> {
           ),
         ),
       ),
-      backgroundColor: theme.primaryColor,
-      foregroundColor: AppTheme.white100,
+      // Laissons le thème gérer backgroundColor et foregroundColor
+      // backgroundColor: theme.primaryColor,
+      // foregroundColor: AppTheme.white100,
       elevation: 2,
       leading: _buildLeading(),
       centerTitle: true,
@@ -114,7 +114,7 @@ class _CustomPageAppBarState extends State<CustomPageAppBar> {
         // Actions supplémentaires si fournies
         if (widget.additionalActions != null)
           ...widget.additionalActions!,
-        const SizedBox(width: 8), // Espacement pour le bord
+        const SizedBox(width: AppTheme.spaceSmall), // Espacement pour le bord
       ],
     );
   }
@@ -142,18 +142,17 @@ class SimpleMemberAppBar extends StatelessWidget implements PreferredSizeWidget 
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return AppBar(
-      toolbarHeight: 56.0, // Hauteur standard Material Design (était 44 - trop petit)
+      toolbarHeight: 56.0, // Hauteur standard Material Design (était 44 - trop petit)  
       title: Text(
         title,
         style: const TextStyle(
           fontWeight: AppTheme.fontSemiBold,
         ),
       ),
-      backgroundColor: theme.primaryColor,
-      foregroundColor: AppTheme.white100,
+      // Laissons le thème gérer les couleurs
+      // backgroundColor: theme.primaryColor,
+      // foregroundColor: AppTheme.white100,
       elevation: 1,
       leading: showBackButton 
         ? IconButton(
@@ -184,7 +183,7 @@ class SimpleMemberAppBar extends StatelessWidget implements PreferredSizeWidget 
         ),
         // Actions personnalisées
         if (actions != null) ...actions!,
-        const SizedBox(width: 8), // Espacement pour le bord
+        const SizedBox(width: AppTheme.spaceSmall), // Espacement pour le bord
       ],
     );
   }
@@ -216,8 +215,6 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return AppBar(
       toolbarHeight: subtitle != null ? 72.0 : 56.0, // Hauteurs standard Material Design
       title: Column(
@@ -226,7 +223,7 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
             ),
           ),
@@ -234,15 +231,16 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
             Text(
               subtitle!,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.white100.withOpacity(0.8),
                 fontWeight: AppTheme.fontRegular,
               ),
             ),
         ],
       ),
-      backgroundColor: backgroundColor ?? theme.primaryColor,
-      foregroundColor: AppTheme.white100,
+      // Utilisons les couleurs du thème sauf si backgroundColor est explicit
+      backgroundColor: backgroundColor, // Si null, le thème s'applique
+      // foregroundColor: AppTheme.white100, // Laissons le thème gérer
       elevation: elevation,
       leading: leading ?? (showBackButton 
         ? IconButton(

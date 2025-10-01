@@ -59,24 +59,24 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
   Widget _buildTabBar() {
     return Column(
       children: [
-        // TabBar - Style MD3 moderne avec couleur bottomNavigationBar
+        // TabBar - Style MD3 moderne avec couleur primaire cohérente
         Material(
-          color: AppTheme.surface, // Même couleur que la bottomNavigationBar
+          color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
           elevation: 0,
           child: TabBar(
             controller: _tabController,
-            labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
-            unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
-            indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+            labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+            unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+            indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
             indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 3.0,
             labelStyle: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontSemiBold,
               letterSpacing: 0.1,
             ),
             unselectedLabelStyle: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontMedium,
               letterSpacing: 0.1,
             ),
@@ -94,19 +94,15 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
             ),
             tabs: const [
               Tab(
-                icon: Icon(Icons.auto_awesome_rounded),
                 text: 'Pour vous',
               ),
               Tab(
-                icon: Icon(Icons.video_library_rounded),
                 text: 'Sermons',
               ),
               Tab(
-                icon: Icon(Icons.volunteer_activism_rounded),
                 text: 'Offrandes',
               ),
               Tab(
-                icon: Icon(Icons.favorite_rounded),
                 text: 'Prières',
               ),
             ],
@@ -131,7 +127,7 @@ class VieEgliseModulePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24), // 8px grid compliant
+      padding: const EdgeInsets.all(AppTheme.spaceLarge), // 8px grid compliant
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -151,31 +147,31 @@ class VieEgliseModulePreview extends StatelessWidget {
             Icons.church,
             size: 48,
             color: AppTheme.primaryColor),
-          const SizedBox(height: 16), // 8px grid
+          const SizedBox(height: AppTheme.spaceMedium), // 8px grid
           Text(
             'Vie de l\'Église',
             style: GoogleFonts.inter( // Material Design 3 typography
-              fontSize: 16, // titleMedium
+              fontSize: AppTheme.fontSize16, // titleMedium
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8), // 8px grid
+          const SizedBox(height: AppTheme.spaceSmall), // 8px grid
           Text(
             'Actions personnalisées, sermons, bénévolat et prières',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter( // Material Design 3 typography
-              fontSize: 14, // bodyMedium
+              fontSize: AppTheme.fontSize14, // bodyMedium
               fontWeight: AppTheme.fontRegular,
               color: AppTheme.textSecondaryColor)),
-          const SizedBox(height: 16), // 8px grid
+          const SizedBox(height: AppTheme.spaceMedium), // 8px grid
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildFeatureIcon(Icons.person, 'Pour vous'),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               _buildFeatureIcon(Icons.play_circle, 'Sermons'),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               _buildFeatureIcon(Icons.volunteer_activism, 'Bénévolat'),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               _buildFeatureIcon(Icons.pan_tool, 'Prières'),
             ]),
         ]));
@@ -185,7 +181,7 @@ class VieEgliseModulePreview extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -193,11 +189,11 @@ class VieEgliseModulePreview extends StatelessWidget {
             icon,
             size: 20,
             color: AppTheme.primaryColor)),
-        const SizedBox(height: 8), // 8px grid compliant
+        const SizedBox(height: AppTheme.spaceSmall), // 8px grid compliant
         Text(
           label,
           style: GoogleFonts.inter( // Material Design 3 typography
-            fontSize: 12, // labelSmall
+            fontSize: AppTheme.fontSize12, // labelSmall
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.textSecondaryColor)),
       ]);

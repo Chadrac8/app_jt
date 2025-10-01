@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class PermissionMatrixDialog extends StatefulWidget {
   const PermissionMatrixDialog({super.key});
@@ -23,18 +24,18 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.95,
         height: MediaQuery.of(context).size.height * 0.9,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildFilters(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: _buildMatrix(),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildActionButtons(),
           ],
         ),
@@ -46,7 +47,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
     return Row(
       children: [
         Icon(Icons.grid_view, color: Theme.of(context).primaryColor),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Text(
             'Matrice des Permissions',
@@ -66,7 +67,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
   Widget _buildFilters() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -76,7 +77,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Sélection de module
             Row(
@@ -100,7 +101,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                           child: Row(
                             children: [
                               Icon(_getModuleIcon(module.icon), size: 20),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(module.name),
                             ],
                           ),
@@ -117,7 +118,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
               ],
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Filtres de rôles
             Row(
@@ -166,7 +167,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.filter_alt_off, size: 64, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucune donnée correspondant aux filtres',
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -215,7 +216,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(6),
+                              padding: const EdgeInsets.all(AppTheme.space6),
                               decoration: BoxDecoration(
                                 color: _parseColor(role.color).withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(6),
@@ -226,11 +227,11 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                                 size: 16,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: AppTheme.spaceXSmall),
                             Text(
                               role.name,
                               style: const TextStyle(
-                                fontSize: 10,
+                                fontSize: AppTheme.fontSize10,
                                 fontWeight: AppTheme.fontBold,
                               ),
                               textAlign: TextAlign.center,
@@ -264,7 +265,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                               Text(
                                 permission.description,
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: AppTheme.fontSize11,
                                   color: AppTheme.grey600,
                                 ),
                                 maxLines: 1,
@@ -283,10 +284,10 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                               size: 16,
                               color: AppTheme.grey600,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               module?.name ?? permission.module,
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(fontSize: AppTheme.fontSize12),
                             ),
                           ],
                         ),
@@ -306,11 +307,11 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                                 size: 12,
                                 color: _getPermissionLevelColor(permission.level),
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 permission.level.displayName,
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: AppTheme.fontSize10,
                                   fontWeight: AppTheme.fontBold,
                                   color: _getPermissionLevelColor(permission.level),
                                 ),
@@ -368,7 +369,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
           icon: const Icon(Icons.download),
           label: const Text('Exporter'),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         OutlinedButton.icon(
           onPressed: _printMatrix,
           icon: const Icon(Icons.print),
@@ -556,7 +557,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
           title: const Row(
             children: [
               Icon(Icons.print),
-              SizedBox(width: 8),
+              SizedBox(width: AppTheme.spaceSmall),
               Text('Aperçu d\'impression'),
             ],
           ),
@@ -565,17 +566,17 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
             height: 400,
             child: SingleChildScrollView(
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  border: Border.all(color: Colors.grey[300]!),
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.grey50,
+                  border: Border.all(color: AppTheme.grey300!),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: SelectableText(
                   content,
                   style: const TextStyle(
                     fontFamily: 'Courier',
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     height: 1.2,
                   ),
                 ),
@@ -667,7 +668,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
       case PermissionLevel.write: return AppTheme.greenStandard;
       case PermissionLevel.create: return AppTheme.orangeStandard;
       case PermissionLevel.delete: return AppTheme.redStandard;
-      case PermissionLevel.admin: return Colors.purple;
+      case PermissionLevel.admin: return AppTheme.primaryColor;
     }
   }
 }

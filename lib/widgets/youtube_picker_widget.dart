@@ -71,7 +71,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
         ],
         
         // Champ de saisie URL
@@ -87,7 +87,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   width: 16,
                   height: 16,
                   child: Padding(
-                    padding: EdgeInsets.all(12),
+                    padding: EdgeInsets.all(AppTheme.space12),
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                 )
@@ -109,7 +109,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
           } : null,
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Prévisualisation
         if (_urlInfo != null && _urlInfo!.isValid) 
@@ -117,7 +117,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
         else if (_urlController.text.isNotEmpty && !_isValidating)
           _buildErrorPreview(),
         
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         
         // Aide
         _buildHelpText(),
@@ -138,7 +138,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
         children: [
           // En-tête avec type
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
               borderRadius: const BorderRadius.only(
@@ -153,7 +153,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   color: AppTheme.primaryColor,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   _urlInfo!.displayType,
                   style: TextStyle(
@@ -177,19 +177,19 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
           
           // Contenu de prévisualisation
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Miniature
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   child: Container(
                     width: 120,
                     height: 68,
                     decoration: BoxDecoration(
                       color: AppTheme.grey200,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: _urlInfo!.thumbnailUrl.isNotEmpty
                       ? CachedNetworkImage(
@@ -219,7 +219,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   ),
                 ),
                 
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 
                 // Informations
                 Expanded(
@@ -233,7 +233,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                             fontFamily: 'monospace',
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                       ],
                       
                       if (_urlInfo!.playlistId.isNotEmpty) ...[
@@ -243,7 +243,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                             fontFamily: 'monospace',
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                       ],
                       
                       Text(
@@ -266,7 +266,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
 
   Widget _buildErrorPreview() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         border: Border.all(color: AppTheme.grey200),
@@ -275,7 +275,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
       child: Row(
         children: [
           Icon(Icons.error_outline, color: AppTheme.grey600),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               'URL YouTube invalide. Vérifiez le format.',
@@ -289,7 +289,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
 
   Widget _buildHelpText() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -300,7 +300,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
           Row(
             children: [
               Icon(Icons.info_outline, size: 16, color: AppTheme.grey600),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Formats supportés:',
                 style: TextStyle(
@@ -310,13 +310,13 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             '• Vidéos: youtube.com/watch?v=ID ou youtu.be/ID\\n'
             '• Playlists: youtube.com/playlist?list=ID\\n'
             '• Vidéo dans playlist: youtube.com/watch?v=ID&list=PLAYLIST_ID',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey600,
             ),
           ),
@@ -349,7 +349,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
         title: Row(
           children: [
             Icon(_getContentTypeIcon(), color: AppTheme.primaryColor),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text('Détails ${_urlInfo!.displayType}'),
           ],
         ),
@@ -364,7 +364,7 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   _urlInfo!.videoId,
                   style: const TextStyle(fontFamily: 'monospace'),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
               ],
               
               if (_urlInfo!.playlistId.isNotEmpty) ...[
@@ -373,28 +373,28 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   _urlInfo!.playlistId,
                   style: const TextStyle(fontFamily: 'monospace'),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
               ],
               
               const Text('URL Originale:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               SelectableText(
                 _urlInfo!.originalUrl,
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: AppTheme.fontSize12),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               const Text('URL de visionnage:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               SelectableText(
                 _urlInfo!.watchUrl,
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: AppTheme.fontSize12),
               ),
               
               if (_urlInfo!.embedUrl.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 const Text('URL d\'intégration:', style: TextStyle(fontWeight: AppTheme.fontBold)),
                 SelectableText(
                   _urlInfo!.embedUrl,
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: AppTheme.fontSize12),
                 ),
               ],
             ],

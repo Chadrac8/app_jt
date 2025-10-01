@@ -27,7 +27,7 @@ class SetlistCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -36,7 +36,7 @@ class SetlistCard extends StatelessWidget {
                 children: [
                   // Icône de setlist
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: Color(0x1A1976D2), // 10% opacity of primaryColor (#1976D2)
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -48,7 +48,7 @@ class SetlistCard extends StatelessWidget {
                     ),
                   ),
                   
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   
                   // Titre et description
                   Expanded(
@@ -97,7 +97,7 @@ class SetlistCard extends StatelessWidget {
                           child: Row(
                             children: [
                               Icon(Icons.edit),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Modifier'),
                             ],
                           ),
@@ -107,7 +107,7 @@ class SetlistCard extends StatelessWidget {
                           child: Row(
                             children: [
                               Icon(Icons.delete, color: AppTheme.redStandard),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                             ],
                           ),
@@ -117,7 +117,7 @@ class SetlistCard extends StatelessWidget {
                 ],
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Informations sur le service
               Row(
@@ -133,11 +133,11 @@ class SetlistCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(Icons.calendar_today, size: 14, color: AppTheme.blueStandard),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           _formatDate(setlist.serviceDate),
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.blueStandard,
                           ),
@@ -148,7 +148,7 @@ class SetlistCard extends StatelessWidget {
                   
                   // Type de service (si spécifié)
                   if (setlist.serviceType != null) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
@@ -158,7 +158,7 @@ class SetlistCard extends StatelessWidget {
                       child: Text(
                         setlist.serviceType!,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.greenStandard,
                         ),
@@ -168,7 +168,7 @@ class SetlistCard extends StatelessWidget {
                 ],
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Nombre de chants et aperçu
               Row(
@@ -178,11 +178,11 @@ class SetlistCard extends StatelessWidget {
                     size: 16,
                     color: AppTheme.grey600,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontMedium,
                       color: AppTheme.grey700,
                     ),
@@ -197,11 +197,11 @@ class SetlistCard extends StatelessWidget {
                       size: 16,
                       color: AppTheme.grey600,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       'Notes',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -210,11 +210,11 @@ class SetlistCard extends StatelessWidget {
               ),
               
               // Date de création
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Créé le ${_formatDate(setlist.createdAt)}',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: AppTheme.fontSize11,
                   color: AppTheme.grey500,
                 ),
               ),

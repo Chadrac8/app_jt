@@ -7,6 +7,7 @@ import '../models/role.dart';
 import '../models/permission.dart';
 import '../models/user_role.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class PrintService {
   /// Imprimer la liste des rôles
@@ -266,15 +267,15 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
       ),
       child: Container(
         width: 400,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildDataSelection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildActionButtons(),
           ],
         ),
@@ -286,7 +287,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -297,7 +298,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
             size: 28,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,7 +332,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         ...{
           'roles': 'Rôles (${widget.roles.length})',
           'permissions': 'Permissions (${widget.permissions.length})',
@@ -362,7 +363,7 @@ class _PrintOptionsDialogState extends State<PrintOptionsDialog> {
             child: const Text('Annuler'),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: ElevatedButton.icon(
             onPressed: _isLoading ? null : _performPrint,

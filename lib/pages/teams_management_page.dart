@@ -275,7 +275,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
           children: [
             // Header
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 border: Border(
@@ -293,7 +293,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                           onPressed: _toggleSelectionMode,
                           icon: const Icon(Icons.close),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Text(
                           '${_selectedTeams.length} sélectionné(s)',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -323,9 +323,9 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                           onPressed: () => Navigator.pop(context),
                           icon: const Icon(Icons.arrow_back),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(AppTheme.space12),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -336,7 +336,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppTheme.spaceMedium),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -371,7 +371,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                     ],
                   ),
                   if (!_isSelectionMode) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     // Search bar
                     TextField(
                       controller: _searchController,
@@ -420,12 +420,12 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                             size: 64,
                             color: Theme.of(context).colorScheme.error,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           Text(
                             'Erreur de chargement',
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Text(
                             snapshot.error.toString(),
                             style: Theme.of(context).textTheme.bodyMedium,
@@ -447,7 +447,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
                   }
 
                   return ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     itemCount: teams.length,
                     itemBuilder: (context, index) {
                       final team = teams[index];
@@ -496,7 +496,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
           Container(
             width: double.infinity,
             height: 200,
-            margin: const EdgeInsets.all(24),
+            margin: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
@@ -527,20 +527,20 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Icon(
             Icons.groups_outlined,
             size: 64,
             color: Theme.of(context).colorScheme.primary,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune équipe',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Commencez par créer votre première équipe de service',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -548,7 +548,7 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           FilledButton.icon(
             onPressed: _addNewTeam,
             icon: const Icon(Icons.add),
@@ -569,19 +569,19 @@ class _TeamsManagementPageState extends State<TeamsManagementPage>
             size: 64,
             color: Theme.of(context).colorScheme.outline,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun résultat',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Essayez de modifier vos critères de recherche',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           FilledButton(
             onPressed: () {
               _searchController.clear();

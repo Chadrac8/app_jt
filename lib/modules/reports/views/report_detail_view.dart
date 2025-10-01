@@ -9,6 +9,7 @@ import '../services/scheduler_service.dart';
 import '../widgets/report_chart_widget.dart';
 import '../widgets/export_dialog.dart';
 import '../widgets/schedule_dialog.dart';
+import '../../../theme.dart';
 
 class ReportDetailView extends StatefulWidget {
   final Report report;
@@ -161,11 +162,11 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
               
               // Conformité Material Design - Typography
               labelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
               ),
               
@@ -218,9 +219,9 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
 
   Widget _buildReportHeader() {
     return CustomCard(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -233,7 +234,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                     color: _getTypeColor(),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +256,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                   ),
                 ),
                 if (_isGenerating) ...[
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   const SizedBox(
                     width: 20,
                     height: 20,
@@ -264,7 +265,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 ],
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Statistiques rapides
             Row(
@@ -274,13 +275,13 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                   _getTypeLabel(),
                   _getTypeColor(),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildStatChip(
                   'Fréquence',
                   _getFrequencyLabel(widget.report.frequency),
                   AppTheme.blueStandard,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 if (widget.report.lastGenerated != null)
                   _buildStatChip(
                     'Dernière génération',
@@ -291,7 +292,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
             ),
             
             // Actions rapides
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -301,7 +302,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                     label: Text(_isGenerating ? 'Génération...' : 'Générer maintenant'),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 if (_latestData != null)
                   ElevatedButton.icon(
                     onPressed: _showExportDialog,
@@ -322,26 +323,26 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
 
   Widget _buildOverviewTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Résumé des données
           if (_latestData?.summary.isNotEmpty ?? false) ...[
             _buildSummarySection(),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
           ],
           
           // Aperçu graphique
           if (_latestData != null) ...[
             _buildQuickChart(),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
           ],
           
           // Planifications
           if (_scheduledTasks.isNotEmpty) ...[
             _buildSchedulesSection(),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
           ],
           
           // Informations détaillées
@@ -356,7 +357,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
     
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -366,7 +367,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -376,7 +377,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
               mainAxisSpacing: 16,
               children: _latestData!.summary.entries.map((entry) {
                 return Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.blueStandard,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -387,15 +388,15 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                       Text(
                         entry.key,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey500,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         entry.value.toString(),
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
@@ -418,7 +419,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
@@ -454,7 +455,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
   Widget _buildSchedulesSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -474,7 +475,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...(_scheduledTasks.take(3).map((task) => _buildScheduleCard(task))),
             if (_scheduledTasks.length > 3)
               TextButton(
@@ -492,7 +493,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
   Widget _buildScheduleCard(ScheduledTask task) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: task.isActive ? AppTheme.greenStandard : AppTheme.grey500,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -507,7 +508,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
             size: 16,
             color: task.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -518,7 +519,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 ),
                 Text(
                   'Prochaine: ${_formatDateTime(task.nextExecution)}',
-                  style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
+                  style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -526,7 +527,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
           Text(
             task.lastStatus,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: task.lastStatus == 'Succès' ? AppTheme.greenStandard : AppTheme.redStandard,
             ),
           ),
@@ -538,7 +539,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
   Widget _buildDetailsSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -548,7 +549,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildDetailRow('ID', widget.report.id),
             _buildDetailRow('Type', _getTypeLabel()),
             _buildDetailRow('Créé le', _formatDate(widget.report.createdAt)),
@@ -595,12 +596,12 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.bar_chart, size: 64, color: AppTheme.grey500),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune donnée disponible',
-              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Générez le rapport pour voir les graphiques',
               style: TextStyle(color: AppTheme.grey500),
@@ -611,7 +612,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: ReportChartWidget(
         reportData: _latestData!,
         chartType: _selectedChartType,
@@ -633,12 +634,12 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.table_chart, size: 64, color: AppTheme.grey500),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune donnée disponible',
-              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Générez le rapport pour voir les données',
               style: TextStyle(color: AppTheme.grey500),
@@ -649,7 +650,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: CustomCard(
         child: ReportChartWidget(
           reportData: _latestData!,
@@ -667,10 +668,10 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.history, size: 64, color: AppTheme.grey500),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun historique disponible',
-              style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+              style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
             ),
           ],
         ),
@@ -678,7 +679,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _historyData.length,
       itemBuilder: (context, index) {
         final data = _historyData[index];
@@ -732,7 +733,7 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
       child: Text(
         '$label: $value',
         style: TextStyle(
-          fontSize: 11,
+          fontSize: AppTheme.fontSize11,
           color: color,
           fontWeight: AppTheme.fontMedium,
         ),
@@ -884,11 +885,11 @@ class _ReportDetailViewState extends State<ReportDetailView> with TickerProvider
       case 'financial':
         return AppTheme.greenStandard;
       case 'membership':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'event':
         return AppTheme.orangeStandard;
       case 'custom':
-        return Colors.indigo;
+        return AppTheme.secondaryColor;
       default:
         return AppTheme.grey500;
     }

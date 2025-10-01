@@ -111,7 +111,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
   Widget build(BuildContext context) {
     if (widget.memberAttendance.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -121,7 +121,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                 size: 48,
                 color: AppTheme.redStandard,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Aucun membre ou aucune donnée d’assiduité disponible pour ce groupe.',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -129,7 +129,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Vérifiez que des membres sont bien ajoutés et que des réunions ont été enregistrées.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -146,7 +146,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Card(
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -162,7 +162,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.1),
         borderRadius: const BorderRadius.only(
@@ -177,7 +177,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
             color: AppTheme.primaryColor,
             size: 24,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +189,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   '${widget.memberAttendance.length} membres',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -206,7 +206,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
 
   Widget _buildControls() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           Row(
@@ -235,7 +235,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                   },
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               IconButton(
                 onPressed: () {
                   setState(() {
@@ -247,7 +247,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           DropdownButtonFormField<String>(
             value: _filterBy,
             decoration: const InputDecoration(
@@ -280,7 +280,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
     
     if (members.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Center(
           child: Column(
             children: [
@@ -289,14 +289,14 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                 size: 48,
                 color: AppTheme.textTertiaryColor,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Aucun membre trouvé',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppTheme.textTertiaryColor,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Essayez de modifier les filtres',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -319,7 +319,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
     if (member.personName.isEmpty || member.totalMeetings < 0 || member.presentCount < 0 || member.absentCount < 0) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.errorColor.withOpacity(0.08),
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -327,7 +327,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
         child: Row(
           children: [
             Icon(Icons.error_outline, color: AppTheme.errorColor),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Text(
                 'Erreur d’affichage : données du membre manquantes ou invalides.',
@@ -355,7 +355,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
             style: TextStyle(
               color: _getAttendanceColor(member.attendanceRate),
               fontWeight: AppTheme.fontBold,
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
             ),
           ),
         ),
@@ -366,7 +366,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Container(
@@ -379,13 +379,13 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                     '${(member.attendanceRate * 100).toInt()}% - ${member.attendanceLabel}',
                     style: TextStyle(
                       color: _getAttendanceColor(member.attendanceRate),
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                 ),
                 if (member.consecutiveAbsences >= 3) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
@@ -396,7 +396,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                       '${member.consecutiveAbsences} absences',
                       style: TextStyle(
                         color: AppTheme.errorColor,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
@@ -404,7 +404,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                 ],
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               '${member.presentCount}/${member.totalMeetings} présences',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -415,7 +415,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -449,7 +449,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                     _formatDate(member.lastAttendance!),
                     Icons.access_time,
                   ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildProgressBar(member),
               ],
             ),
@@ -469,7 +469,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
             size: 16,
             color: color ?? AppTheme.textSecondaryColor,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             '$label: ',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -498,14 +498,14 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         LinearProgressIndicator(
           value: member.attendanceRate,
           backgroundColor: AppTheme.backgroundColor,
           valueColor: AlwaysStoppedAnimation<Color>(_getAttendanceColor(member.attendanceRate)),
           minHeight: 8,
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           '${(member.attendanceRate * 100).toInt()}%',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -540,7 +540,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
     }
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -550,7 +550,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           SizedBox(
             height: 200,
             child: PieChart(
@@ -570,7 +570,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                     color: colors[index],
                     radius: 60,
                     titleStyle: const TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.white100,
                     ),
@@ -581,7 +581,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Wrap(
             spacing: 16,
             runSpacing: 8,
@@ -605,7 +605,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: AppTheme.space6),
                   Text(
                     entry.key,
                     style: Theme.of(context).textTheme.bodySmall,

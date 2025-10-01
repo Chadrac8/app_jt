@@ -178,14 +178,14 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                 size: 64,
                 color: AppTheme.grey400,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Connexion requise',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: AppTheme.grey600,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Vous devez être connecté pour voir vos tâches',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -271,7 +271,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
               child: Row(
                 children: [
                   Icon(Icons.settings),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Paramètres'),
                 ],
               ),
@@ -281,7 +281,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
               child: Row(
                 children: [
                   Icon(Icons.download),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Exporter'),
                 ],
               ),
@@ -301,7 +301,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
         if (!snapshot.hasData) {
           return Container(
             height: 120,
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.white100,
               borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -321,8 +321,8 @@ class _MemberTasksPageState extends State<MemberTasksPage>
         _updateStatistics(tasks);
 
         return Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.all(AppTheme.spaceMedium),
+          padding: const EdgeInsets.all(AppTheme.space20),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.8)],
@@ -386,12 +386,12 @@ class _MemberTasksPageState extends State<MemberTasksPage>
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Text(
           value,
           style: const TextStyle(
             color: AppTheme.white100,
-            fontSize: 24,
+            fontSize: AppTheme.fontSize24,
             fontWeight: AppTheme.fontBold,
           ),
         ),
@@ -399,7 +399,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
           label,
           style: TextStyle(
             color: AppTheme.white100.withOpacity(0.70),
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
@@ -420,7 +420,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
               color: AppTheme.grey700,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -438,7 +438,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                             size: 16,
                             color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(entry.value),
                         ],
                       ),
@@ -479,7 +479,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                           value: entry.key,
                           child: Text(
                             entry.value,
-                            style: const TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: AppTheme.fontSize14),
                           ),
                         );
                       }).toList(),
@@ -496,7 +496,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
       ),
     );
@@ -546,7 +546,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.grey600,
               borderRadius: const BorderRadius.only(
@@ -561,13 +561,13 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                   color: AppTheme.white100,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Rappels urgents (${_reminders.length})',
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
@@ -583,7 +583,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                     style: const TextStyle(
                       color: AppTheme.white100,
                       fontWeight: AppTheme.fontBold,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ),
@@ -593,7 +593,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
           ...(_reminders.take(3).map((reminder) {
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: AppTheme.white100,
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -608,7 +608,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: AppTheme.grey100,
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -619,7 +619,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -628,7 +628,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                           _getReminderTitle(reminder.type),
                           style: const TextStyle(
                             fontWeight: AppTheme.fontSemiBold,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                         ),
                         const SizedBox(height: 2),
@@ -636,7 +636,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                           _formatReminderDate(reminder.reminderDate),
                           style: TextStyle(
                             color: AppTheme.grey600,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                       ],
@@ -659,7 +659,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
           }).toList()),
           if (_reminders.length > 3)
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton.icon(
@@ -698,7 +698,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularProgressIndicator(),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Chargement de vos tâches...',
                   style: TextStyle(color: AppTheme.grey500),
@@ -711,8 +711,8 @@ class _MemberTasksPageState extends State<MemberTasksPage>
         if (snapshot.hasError) {
           return Center(
             child: Container(
-              margin: const EdgeInsets.all(32),
-              padding: const EdgeInsets.all(24),
+              margin: const EdgeInsets.all(AppTheme.spaceXLarge),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
                 color: AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -726,21 +726,21 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                     size: 64,
                     color: AppTheme.grey400,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Erreur de chargement',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.grey700,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Impossible de charger vos tâches',
                     style: TextStyle(color: AppTheme.grey600),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   ElevatedButton.icon(
                     onPressed: () => setState(() {}),
                     icon: const Icon(Icons.refresh),
@@ -823,7 +823,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
           children: [
             // Header with priority indicator
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: priorityColor.withOpacity(0.1),
                 borderRadius: const BorderRadius.only(
@@ -838,15 +838,15 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                     height: 20,
                     decoration: BoxDecoration(
                       color: priorityColor,
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(AppTheme.radius2),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Text(
                       task.title,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                       maxLines: 2,
@@ -860,7 +860,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
             
             // Content
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -871,7 +871,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                         task.description,
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -886,27 +886,27 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                           size: 16,
                           color: isOverdue ? AppTheme.grey600 : AppTheme.grey500,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           _formatDueDate(task.dueDate!),
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: isOverdue ? AppTheme.grey600 : AppTheme.grey600,
                             fontWeight: isOverdue ? AppTheme.fontSemiBold : FontWeight.normal,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppTheme.spaceMedium),
                       ],
                       Icon(
                         Icons.flag,
                         size: 16,
                         color: priorityColor,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         _priorityLabels[task.priority] ?? 'Moyenne',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: priorityColor,
                           fontWeight: AppTheme.fontMedium,
                         ),
@@ -955,12 +955,12 @@ class _MemberTasksPageState extends State<MemberTasksPage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
               color: color,
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontSemiBold,
             ),
           ),
@@ -1039,8 +1039,8 @@ class _MemberTasksPageState extends State<MemberTasksPage>
 
     return Center(
       child: Container(
-        margin: const EdgeInsets.all(32),
-        padding: const EdgeInsets.all(32),
+        margin: const EdgeInsets.all(AppTheme.spaceXLarge),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         decoration: BoxDecoration(
           color: AppTheme.white100,
           borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -1056,7 +1056,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -1067,27 +1067,27 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                 color: color,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Text(
               title,
               style: TextStyle(
-                fontSize: 22,
+                fontSize: AppTheme.fontSize22,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.grey800,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               subtitle,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.grey600,
                 height: 1.4,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             ElevatedButton.icon(
               onPressed: () {
                 // Navigate to create new task

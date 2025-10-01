@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../../../theme.dart';
 import '../models/sermon.dart';
+import '../../../theme.dart';
 
 class SermonNotesView extends StatelessWidget {
   final Sermon sermon;
@@ -43,7 +44,7 @@ class SermonNotesView extends StatelessWidget {
   Widget _buildSermonHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         boxShadow: [
@@ -68,25 +69,25 @@ class SermonNotesView extends StatelessWidget {
             child: Text(
               DateFormat('dd MMMM yyyy', 'fr_FR').format(sermon.date),
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.primaryColor,
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Titre
           Text(
             sermon.titre,
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
               height: 1.3,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
 
           // Orateur
           Row(
@@ -96,11 +97,11 @@ class SermonNotesView extends StatelessWidget {
                 size: 18,
                 color: AppTheme.textSecondaryColor,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 sermon.orateur,
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontMedium,
                   color: AppTheme.textSecondaryColor,
                 ),
@@ -110,11 +111,11 @@ class SermonNotesView extends StatelessWidget {
 
           // Description si disponible
           if (sermon.description != null && sermon.description!.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               sermon.description!,
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textSecondaryColor,
                 height: 1.5,
               ),
@@ -123,7 +124,7 @@ class SermonNotesView extends StatelessWidget {
 
           // Tags si disponibles
           if (sermon.tags.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Wrap(
               spacing: 8,
               runSpacing: 6,
@@ -139,7 +140,7 @@ class SermonNotesView extends StatelessWidget {
                 child: Text(
                   tag,
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.primaryColor,
                     fontWeight: AppTheme.fontMedium,
                   ),
@@ -155,7 +156,7 @@ class SermonNotesView extends StatelessWidget {
   Widget _buildNotesContent() {
     if (sermon.notes == null || sermon.notes!.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(AppTheme.space40),
         child: Center(
           child: Column(
             children: [
@@ -164,16 +165,16 @@ class SermonNotesView extends StatelessWidget {
                 size: 64,
                 color: AppTheme.grey500,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Aucune note disponible',
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Les notes de ce sermon ne sont pas encore disponibles',
                 style: GoogleFonts.poppins(
@@ -188,8 +189,8 @@ class SermonNotesView extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -213,18 +214,18 @@ class SermonNotesView extends StatelessWidget {
                 color: AppTheme.primaryColor,
                 size: 24,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Notes du sermon',
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
 
           // Contenu des notes
           _buildFormattedNotes(sermon.notes!),
@@ -242,7 +243,7 @@ class SermonNotesView extends StatelessWidget {
       final line = lines[i].trim();
       
       if (line.isEmpty) {
-        widgets.add(const SizedBox(height: 8));
+        widgets.add(const SizedBox(height: AppTheme.spaceSmall));
         continue;
       }
 
@@ -254,7 +255,7 @@ class SermonNotesView extends StatelessWidget {
             child: Text(
               line.substring(2),
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor,
               ),
@@ -272,7 +273,7 @@ class SermonNotesView extends StatelessWidget {
             child: Text(
               line.substring(3),
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.textPrimaryColor,
               ),
@@ -293,7 +294,7 @@ class SermonNotesView extends StatelessWidget {
                 Text(
                   '• ',
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     color: AppTheme.primaryColor,
                     fontWeight: AppTheme.fontBold,
                   ),
@@ -302,7 +303,7 @@ class SermonNotesView extends StatelessWidget {
                   child: Text(
                     line.substring(2),
                     style: GoogleFonts.poppins(
-                      fontSize: 15,
+                      fontSize: AppTheme.fontSize15,
                       color: AppTheme.textPrimaryColor,
                       height: 1.5,
                     ),
@@ -320,7 +321,7 @@ class SermonNotesView extends StatelessWidget {
         widgets.add(
           Container(
             margin: const EdgeInsets.symmetric(vertical: 12),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.05),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -334,7 +335,7 @@ class SermonNotesView extends StatelessWidget {
             child: Text(
               line,
               style: GoogleFonts.poppins(
-                fontSize: 15,
+                fontSize: AppTheme.fontSize15,
                 color: AppTheme.textPrimaryColor,
                 fontStyle: FontStyle.italic,
                 height: 1.6,
@@ -352,7 +353,7 @@ class SermonNotesView extends StatelessWidget {
           child: Text(
             line,
             style: GoogleFonts.poppins(
-              fontSize: 15,
+              fontSize: AppTheme.fontSize15,
               color: AppTheme.textPrimaryColor,
               height: 1.6,
             ),

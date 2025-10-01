@@ -37,18 +37,18 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
             // Section Export
             _buildExportSection(),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             
             // Section Import
             _buildImportSection(),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             
             // Prévisualisation des chants importés
             if (_importedSongs != null) _buildImportPreview(),
             
             // Section développement (optionnelle)
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildDeveloperSection(),
           ])));
   }
@@ -63,16 +63,16 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
             Row(
               children: [
                 Icon(Icons.file_download, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Exporter les chants',
                   style: Theme.of(context).textTheme.headlineSmall),
               ]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Exportez tous vos chants dans un fichier pour sauvegarde ou partage.',
               style: Theme.of(context).textTheme.bodyMedium),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Boutons d'export
             Row(
@@ -84,7 +84,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
                     label: const Text('Exporter en CSV'),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12)))),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: _isLoading ? null : () => _exportSongs('txt'),
@@ -94,7 +94,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
                       padding: const EdgeInsets.symmetric(vertical: 12)))),
               ]),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Informations sur les formats
             ExpansionTile(
@@ -122,16 +122,16 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
             Row(
               children: [
                 Icon(Icons.file_upload, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Importer des chants',
                   style: Theme.of(context).textTheme.headlineSmall),
               ]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Importez des chants depuis un fichier CSV ou TXT.',
               style: Theme.of(context).textTheme.bodyMedium),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Boutons d'import
             Row(
@@ -143,7 +143,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
                     label: const Text('Importer CSV'),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12)))),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: _isLoading ? null : () => _importSongs('txt'),
@@ -153,7 +153,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
                       padding: const EdgeInsets.symmetric(vertical: 12)))),
               ]),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Instructions d'import
             ExpansionTile(
@@ -167,16 +167,16 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
                       Text(
                         'Format CSV requis:',
                         style: Theme.of(context).textTheme.titleSmall),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       const Text('• Première ligne: en-têtes (doit contenir au moins "Titre")'),
                       const Text('• Colonnes recommandées: Titre, Auteurs, Paroles, Tonalité originale, Style'),
                       const Text('• Séparateur: virgule ()'),
                       const Text('• Encodage: UTF-8'),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Format TXT:',
                         style: Theme.of(context).textTheme.titleSmall),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       const Text('• Un chant par section'),
                       const Text('• Séparateur entre chants: --- (3 tirets)'),
                       const Text('• Format: CHAMP: valeur'),
@@ -196,12 +196,12 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
             Row(
               children: [
                 Icon(Icons.preview, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Prévisualisation (${_importedSongs!.length} chants)',
                   style: Theme.of(context).textTheme.headlineSmall),
               ]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Liste des chants importés
             ListView.separated(
@@ -232,7 +232,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
                   '... et ${_importedSongs!.length - 5} autres chants',
                   style: Theme.of(context).textTheme.bodySmall)),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Actions
             Row(
@@ -245,7 +245,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.successColor,
                       foregroundColor: AppTheme.surfaceColor))),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: _clearImport,
@@ -394,17 +394,17 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
             Row(
               children: [
                 Icon(Icons.code, color: AppTheme.textTertiaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Outils de développement',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppTheme.textTertiaryColor)),
               ]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Générez des données d\'exemple pour tester les fonctionnalités d\'import/export.',
               style: Theme.of(context).textTheme.bodySmall),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             ElevatedButton.icon(
               onPressed: _isLoading ? null : _loadSampleData,
@@ -434,7 +434,7 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
         title: Row(
           children: [
             Icon(Icons.help_outline, color: Theme.of(context).primaryColor),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('Guide d\'utilisation'),
           ]),
         content: SingleChildScrollView(
@@ -445,25 +445,25 @@ class _SongsImportExportPageState extends State<SongsImportExportPage> {
               Text(
                 'Formats supportés',
                 style: Theme.of(context).textTheme.titleSmall),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               const Text('• CSV : Compatible avec Excel, Google Sheets'),
               const Text('• TXT : Format texte simple et lisible'),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Text(
                 'Champs requis pour l\'import',
                 style: Theme.of(context).textTheme.titleSmall),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               const Text('• Titre (obligatoire)'),
               const Text('• Auteurs (recommandé)'),
               const Text('• Paroles (recommandé)'),
               const Text('• Tonalité originale (recommandé)'),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Text(
                 'Conseils',
                 style: Theme.of(context).textTheme.titleSmall),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               const Text('• Testez avec les données d\'exemple'),
               const Text('• Vérifiez la prévisualisation avant de sauvegarder'),
               const Text('• Assurez-vous que vos fichiers sont en UTF-8'),

@@ -276,14 +276,14 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
               size: 64,
               color: AppTheme.textTertiaryColor,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Inscriptions désactivées',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Les inscriptions ne sont pas activées pour cet événement',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -299,13 +299,13 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             // En-tête du formulaire
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: AppTheme.white100,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -338,7 +338,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                     ],
                   ),
                   if (_eventForm?.description?.isNotEmpty == true) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       _eventForm!.description,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -347,7 +347,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                     ),
                   ],
                   if (_isEditMode && _eventForm != null) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Row(
                       children: [
                         Expanded(
@@ -361,7 +361,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         ElevatedButton(
                           onPressed: _saveEventForm,
                           style: ElevatedButton.styleFrom(
@@ -377,7 +377,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Champs du formulaire
             if (_eventForm != null && _eventForm!.fields.isNotEmpty)
@@ -391,7 +391,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
             else
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(40),
+                padding: const EdgeInsets.all(AppTheme.space40),
                 decoration: BoxDecoration(
                   color: AppTheme.white100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -403,14 +403,14 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                       size: 64,
                       color: AppTheme.textTertiaryColor,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Text(
                       'Aucun champ',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Ajoutez des champs pour créer votre formulaire d\'inscription',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -419,7 +419,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                       textAlign: TextAlign.center,
                     ),
                     if (_isEditMode) ...[
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       ElevatedButton.icon(
                         onPressed: _addField,
                         icon: const Icon(Icons.add),
@@ -453,14 +453,14 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: _getFieldColor(field.type).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -471,7 +471,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -491,13 +491,13 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
                                 color: AppTheme.errorColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               ),
                               child: Text(
                                 'Obligatoire',
                                 style: TextStyle(
                                   color: AppTheme.errorColor,
-                                  fontSize: 10,
+                                  fontSize: AppTheme.fontSize10,
                                   fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
@@ -528,7 +528,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
               ],
             ),
             if (field.helpText?.isNotEmpty == true) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 field.helpText!,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -537,7 +537,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
               ),
             ],
             if (field.type == 'select' || field.type == 'checkbox') ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 8,
                 runSpacing: 4,
@@ -547,7 +547,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                     backgroundColor: _getFieldColor(field.type).withOpacity(0.1),
                     labelStyle: TextStyle(
                       color: _getFieldColor(field.type),
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   );
                 }).toList(),
@@ -605,7 +605,7 @@ class _AddFieldDialogState extends State<_AddFieldDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: const InputDecoration(
@@ -620,7 +620,7 @@ class _AddFieldDialogState extends State<_AddFieldDialog> {
               }).toList(),
               onChanged: (value) => setState(() => _selectedType = value!),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             CheckboxListTile(
               value: _isRequired,
               onChanged: (value) => setState(() => _isRequired = value!),
@@ -714,7 +714,7 @@ class _EditFieldDialogState extends State<_EditFieldDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: const InputDecoration(
@@ -729,7 +729,7 @@ class _EditFieldDialogState extends State<_EditFieldDialog> {
               }).toList(),
               onChanged: (value) => setState(() => _selectedType = value!),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             CheckboxListTile(
               value: _isRequired,
               onChanged: (value) => setState(() => _isRequired = value!),

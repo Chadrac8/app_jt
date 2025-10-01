@@ -12,16 +12,16 @@ class GiveLifeToJesusPage extends StatelessWidget {
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: AppTheme.surfaceColor),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildSteps(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildPrayer(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildContact(),
           ])));
   }
@@ -32,7 +32,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -48,19 +48,19 @@ class GiveLifeToJesusPage extends StatelessWidget {
               Icons.favorite,
               size: 60,
               color: AppTheme.surfaceColor),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Un nouveau départ',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.surfaceColor)),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Découvrez l\'amour de Dieu et commencez une nouvelle vie avec Jésus',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.surfaceColor.withOpacity(0.9))),
           ])));
   }
@@ -70,17 +70,17 @@ class GiveLifeToJesusPage extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Comment donner sa vie à Jésus ?',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             _buildStep(
               number: '1',
@@ -88,7 +88,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               description: 'Reconnaissez que vous êtes pécheur et avez besoin de Dieu.',
               verse: '"Car tous ont péché et sont privés de la gloire de Dieu" - Romains 3:23'),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             _buildStep(
               number: '2',
@@ -96,7 +96,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               description: 'Croyez que Jésus est mort sur la croix pour vos péchés et qu\'Il est ressuscité.',
               verse: '"Car Dieu a tant aimé le monde qu\'il a donné son Fils unique" - Jean 3:16'),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             _buildStep(
               number: '3',
@@ -104,7 +104,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               description: 'Confessez Jésus comme votre Seigneur et Sauveur personnel.',
               verse: '"Si tu confesses de ta bouche le Seigneur Jésus... tu seras sauvé" - Romains 10:9'),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             _buildStep(
               number: '4',
@@ -133,10 +133,10 @@ class GiveLifeToJesusPage extends StatelessWidget {
             child: Text(
               number,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.surfaceColor)))),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,25 +144,25 @@ class GiveLifeToJesusPage extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor)),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 description,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: AppTheme.textPrimaryColor)),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
                 child: Text(
                   verse,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: AppTheme.fontSize13,
                     fontStyle: FontStyle.italic,
                     color: AppTheme.primaryColor))),
             ])),
@@ -174,27 +174,27 @@ class GiveLifeToJesusPage extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Prière de salut',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Si vous souhaitez donner votre vie à Jésus, vous pouvez prier cette prière avec sincérité :',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.textSecondaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -202,16 +202,16 @@ class GiveLifeToJesusPage extends StatelessWidget {
               child: Text(
                 '"Seigneur Jésus, je reconnais que je suis pécheur et que j\'ai besoin de Toi. Je crois que Tu es mort sur la croix pour mes péchés et que Tu es ressuscité. Je Te demande de me pardonner et de venir dans ma vie. Je veux Te suivre et T\'obéir. Merci pour Ton amour et Ton salut. Amen."',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontStyle: FontStyle.italic,
                   height: 1.6,
                   color: AppTheme.textPrimaryColor),
                 textAlign: TextAlign.center)),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.greenStandard.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -220,7 +220,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(Icons.celebration, color: AppTheme.greenStandard, size: 24),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,14 +228,14 @@ class GiveLifeToJesusPage extends StatelessWidget {
                         Text(
                           'Félicitations !',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.greenStandard)),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           'Si vous avez prié cette prière avec sincérité, vous êtes maintenant enfant de Dieu !',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: AppTheme.greenStandard)),
                       ])),
                 ])),
@@ -247,17 +247,17 @@ class GiveLifeToJesusPage extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Prochaines étapes',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildNextStep(
               icon: Icons.menu_book,
@@ -279,7 +279,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
               title: 'Partagez votre foi',
               description: 'Témoignez de l\'amour de Dieu autour de vous'),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             SizedBox(
               width: double.infinity,
@@ -297,7 +297,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
                 label: const Text(
                   'Nous contacter pour plus d\'aide',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold)))),
           ])));
   }
@@ -314,7 +314,7 @@ class GiveLifeToJesusPage extends StatelessWidget {
           CircleAvatar(
             backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
             child: Icon(icon, color: AppTheme.primaryColor)),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,13 +322,13 @@ class GiveLifeToJesusPage extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor)),
                 Text(
                   description,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.textSecondaryColor)),
               ])),
         ]));

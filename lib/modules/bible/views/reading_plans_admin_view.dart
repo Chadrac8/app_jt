@@ -8,6 +8,7 @@ import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import 'reading_plan_form_view.dart';
 import 'reading_plan_detail_view.dart';
+import '../../../theme.dart';
 
 class ReadingPlansAdminView extends StatefulWidget {
   const ReadingPlansAdminView({Key? key}) : super(key: key);
@@ -108,7 +109,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                     child: Row(
                       children: [
                         Icon(Icons.delete, color: AppTheme.redStandard),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Supprimer'),
                       ],
                     ),
@@ -118,7 +119,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                     child: Row(
                       children: [
                         Icon(Icons.copy),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Dupliquer'),
                       ],
                     ),
@@ -210,14 +211,14 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
           Container(
             width: double.infinity,
             color: theme.colorScheme.primary.withOpacity(0.1),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Icon(
                   Icons.info_outline,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   '${_selectedPlans.length} plan(s) sélectionné(s)',
                   style: GoogleFonts.inter(
@@ -242,7 +243,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
           child: _filteredPlans.isEmpty
               ? _buildEmptyState()
               : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   itemCount: _filteredPlans.length,
                   itemBuilder: (context, index) {
                     return _buildPlanCard(_filteredPlans[index]);
@@ -262,18 +263,18 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
         _allPlans.map((p) => p.totalDays).reduce((a, b) => a + b) / _allPlans.length;
     
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Statistiques générales',
             style: GoogleFonts.inter(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Cartes de statistiques
           GridView.count(
@@ -311,17 +312,17 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
             ],
           ),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           
           // Répartition par catégorie
           Text(
             'Répartition par catégorie',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           ..._buildCategoryStats(),
         ],
@@ -336,7 +337,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -346,11 +347,11 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: color, size: 32),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
@@ -358,7 +359,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
           Text(
             title,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: color,
             ),
             textAlign: TextAlign.center,
@@ -391,13 +392,13 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                 Text(
                   '${entry.value} (${(percentage * 100).toInt()}%)',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             LinearProgressIndicator(
               value: percentage,
               backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
@@ -421,23 +422,23 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
             size: 64,
             color: theme.colorScheme.onSurface.withOpacity(0.3),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun plan de lecture',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Créez votre premier plan de lecture',
             style: GoogleFonts.inter(
               color: theme.colorScheme.onSurface.withOpacity(0.5),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _createNewPlan,
             icon: const Icon(Icons.add),
@@ -471,7 +472,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                 : null,
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -483,7 +484,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                         onChanged: (_) => _toggleSelection(plan.id),
                       ),
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(AppTheme.spaceSmall),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -493,7 +494,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                         color: theme.colorScheme.primary,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -504,7 +505,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                                 child: Text(
                                   plan.name,
                                   style: GoogleFonts.inter(
-                                    fontSize: 16,
+                                    fontSize: AppTheme.fontSize16,
                                     fontWeight: AppTheme.fontBold,
                                   ),
                                 ),
@@ -522,7 +523,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                                   child: Text(
                                     'Populaire',
                                     style: GoogleFonts.inter(
-                                      fontSize: 10,
+                                      fontSize: AppTheme.fontSize10,
                                       fontWeight: AppTheme.fontSemiBold,
                                       color: AppTheme.grey800,
                                     ),
@@ -533,7 +534,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                           Text(
                             plan.category,
                             style: GoogleFonts.inter(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: theme.colorScheme.primary,
                               fontWeight: AppTheme.fontMedium,
                             ),
@@ -549,7 +550,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                           child: Row(
                             children: [
                               Icon(Icons.visibility),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Voir'),
                             ],
                           ),
@@ -559,7 +560,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                           child: Row(
                             children: [
                               Icon(Icons.edit),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Modifier'),
                             ],
                           ),
@@ -569,7 +570,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                           child: Row(
                             children: [
                               Icon(Icons.copy),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Dupliquer'),
                             ],
                           ),
@@ -579,7 +580,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                           child: Row(
                             children: [
                               Icon(Icons.delete, color: AppTheme.redStandard),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Supprimer'),
                             ],
                           ),
@@ -588,29 +589,29 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Text(
                   plan.description,
                   style: GoogleFonts.inter(
-                    fontSize: 13,
+                    fontSize: AppTheme.fontSize13,
                     color: theme.colorScheme.onSurface.withOpacity(0.7),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Row(
                   children: [
                     _buildInfoChip(
                       icon: Icons.calendar_today,
                       label: '${plan.totalDays} jours',
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildInfoChip(
                       icon: Icons.access_time,
                       label: '${plan.estimatedReadingTime}min',
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildInfoChip(
                       icon: Icons.signal_cellular_alt,
                       label: _getDifficultyLabel(plan.difficulty),
@@ -642,7 +643,7 @@ class _ReadingPlansAdminViewState extends State<ReadingPlansAdminView>
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 10,
+              fontSize: AppTheme.fontSize10,
               color: theme.colorScheme.onSurface.withOpacity(0.8),
             ),
           ),

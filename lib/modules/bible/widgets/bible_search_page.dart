@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/bible_verse.dart';
 import '../services/bible_service.dart';
+import '../../../theme.dart';
 
 class BibleSearchPage extends StatefulWidget {
   final BibleService bibleService;
@@ -112,7 +113,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
         children: [
           // Barre de recherche
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.white100,
               boxShadow: [
@@ -208,7 +209,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _searchResults.length,
       itemBuilder: (context, index) {
         final verse = _searchResults[index];
@@ -219,19 +220,19 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
 
   Widget _buildSearchSuggestions() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Suggestions de recherche',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.primaryColor,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           _buildSuggestionCategory(
             'Mots-clés populaires',
@@ -247,7 +248,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
             ],
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           _buildSuggestionCategory(
             'Thèmes spirituels',
@@ -274,12 +275,12 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
         Text(
           title,
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.grey700,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -312,24 +313,24 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun résultat trouvé',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Essayez avec d\'autres mots-clés',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey500,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: () {
               _searchController.clear();
@@ -356,7 +357,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
         onTap: () => _selectVerse(verse),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -372,7 +373,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
                     child: Text(
                       verse.reference,
                       style: GoogleFonts.inter(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
@@ -392,7 +393,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
                 ],
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Texte du verset avec mise en surbrillance
               RichText(
@@ -410,7 +411,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
       return TextSpan(
         text: text,
         style: GoogleFonts.crimsonText(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           color: AppTheme.black100.withOpacity(0.87),
           height: 1.4,
         ),
@@ -430,7 +431,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
         spans.add(TextSpan(
           text: text.substring(start, index),
           style: GoogleFonts.crimsonText(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             color: AppTheme.black100.withOpacity(0.87),
             height: 1.4,
           ),
@@ -441,7 +442,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
       spans.add(TextSpan(
         text: text.substring(index, index + query.length),
         style: GoogleFonts.crimsonText(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           color: AppTheme.black100.withOpacity(0.87),
           height: 1.4,
           backgroundColor: Colors.yellow.withOpacity(0.3),
@@ -458,7 +459,7 @@ class _BibleSearchPageState extends State<BibleSearchPage> {
       spans.add(TextSpan(
         text: text.substring(start),
         style: GoogleFonts.crimsonText(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           color: AppTheme.black100.withOpacity(0.87),
           height: 1.4,
         ),

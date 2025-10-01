@@ -252,8 +252,8 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
       children: [
         // Header Card
         Container(
-          margin: const EdgeInsets.all(20),
-          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.all(AppTheme.space20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -271,7 +271,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: _groupColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -282,7 +282,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,7 +305,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                 ],
               ),
               
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Meeting Title
               TextField(
@@ -322,7 +322,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                 ),
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Notes
               TextField(
@@ -362,7 +362,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
               children: [
                 // Attendance Header
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   decoration: BoxDecoration(
                     color: _groupColor.withOpacity(0.1),
                     borderRadius: const BorderRadius.only(
@@ -377,7 +377,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                         color: _groupColor,
                         size: 24,
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -415,7 +415,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                             child: Row(
                               children: [
                                 Icon(Icons.select_all, size: 20),
-                                SizedBox(width: 12),
+                                SizedBox(width: AppTheme.space12),
                                 Text('Tout sélectionner'),
                               ],
                             ),
@@ -425,14 +425,14 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                             child: Row(
                               children: [
                                 Icon(Icons.clear_all, size: 20),
-                                SizedBox(width: 12),
+                                SizedBox(width: AppTheme.space12),
                                 Text('Tout désélectionner'),
                               ],
                             ),
                           ),
                         ],
                         child: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(AppTheme.spaceSmall),
                           decoration: BoxDecoration(
                             color: _groupColor.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -462,7 +462,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                                     size: 64,
                                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                                   ),
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: AppTheme.spaceMedium),
                                   Text(
                                     'Aucun membre dans ce groupe',
                                     style: Theme.of(context).textTheme.titleMedium,
@@ -471,9 +471,9 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                               ),
                             )
                           : ListView.separated(
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(AppTheme.space20),
                               itemCount: _groupMembers.length,
-                              separatorBuilder: (context, index) => const SizedBox(height: 12),
+                              separatorBuilder: (context, index) => const SizedBox(height: AppTheme.space12),
                               itemBuilder: (context, index) {
                                 final member = _groupMembers[index];
                                 final isPresent = _presentMemberIds.contains(member.id);
@@ -488,8 +488,8 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
 
         // Report Section
         Container(
-          margin: const EdgeInsets.all(20),
-          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.all(AppTheme.space20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -511,7 +511,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                     color: _groupColor,
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Rapport de réunion',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -521,7 +521,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               TextField(
                 controller: _reportController,
                 decoration: InputDecoration(
@@ -540,7 +540,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
           ),
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: AppTheme.space20),
       ],
     );
   }
@@ -563,7 +563,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             children: [
               // Profile Image/Avatar
@@ -597,7 +597,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
                       ),
               ),
               
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               
               // Member Info
               Expanded(

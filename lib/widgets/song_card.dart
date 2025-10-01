@@ -107,7 +107,7 @@ class _SongCardState extends State<SongCard> {
             ? () => widget.onSelectionChanged!(!widget.isSelected)
             : null,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -122,7 +122,7 @@ class _SongCardState extends State<SongCard> {
                           ? (bool? value) => widget.onSelectionChanged!(value ?? false)
                           : null,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                   ],
                   
                   // Titre du chant
@@ -165,7 +165,7 @@ class _SongCardState extends State<SongCard> {
                           child: Row(
                             children: [
                               Icon(Icons.edit),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Modifier'),
                             ],
                           ),
@@ -175,7 +175,7 @@ class _SongCardState extends State<SongCard> {
                           child: Row(
                             children: [
                               Icon(Icons.delete, color: AppTheme.redStandard),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                             ],
                           ),
@@ -187,7 +187,7 @@ class _SongCardState extends State<SongCard> {
               
               // Auteurs
               if (widget.song.authors.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Par: ${widget.song.authors}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -196,7 +196,7 @@ class _SongCardState extends State<SongCard> {
                 ),
               ],
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Informations musicales
               Row(
@@ -216,7 +216,7 @@ class _SongCardState extends State<SongCard> {
                   
                   // Tempo (si disponible)
                   if (widget.song.tempo != null) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
@@ -225,7 +225,7 @@ class _SongCardState extends State<SongCard> {
                       ),
                       child: Text(
                         '${widget.song.tempo} BPM',
-                        style: const TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: AppTheme.fontSize12),
                       ),
                     ),
                   ],
@@ -247,11 +247,11 @@ class _SongCardState extends State<SongCard> {
                           size: 16,
                           color: _getStatusColor(),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           _getStatusText(),
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: _getStatusColor(),
                             fontWeight: AppTheme.fontBold,
                           ),
@@ -264,7 +264,7 @@ class _SongCardState extends State<SongCard> {
               
               // Tags
               if (widget.song.tags.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Wrap(
                   spacing: 4,
                   runSpacing: 4,
@@ -276,14 +276,14 @@ class _SongCardState extends State<SongCard> {
                     ),
                     child: Text(
                       tag,
-                      style: const TextStyle(fontSize: 10),
+                      style: const TextStyle(fontSize: AppTheme.fontSize10),
                     ),
                   )).toList(),
                 ),
               ],
               
               // Statistiques d'utilisation et audio
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 children: [
                   // Compteur d'utilisation
@@ -293,11 +293,11 @@ class _SongCardState extends State<SongCard> {
                       size: 16,
                       color: AppTheme.grey600,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       '${widget.song.usageCount} utilisations',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -305,17 +305,17 @@ class _SongCardState extends State<SongCard> {
                   
                   // Indicateur audio
                   if (widget.song.audioUrl != null) ...[
-                    if (widget.song.usageCount > 0) const SizedBox(width: 16),
+                    if (widget.song.usageCount > 0) const SizedBox(width: AppTheme.spaceMedium),
                     Icon(
                       Icons.audiotrack,
                       size: 16,
                       color: AppTheme.grey600,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       'Audio',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -324,17 +324,17 @@ class _SongCardState extends State<SongCard> {
                   // Indicateur pièces jointes
                   if (widget.song.attachmentUrls.isNotEmpty) ...[
                     if (widget.song.usageCount > 0 || widget.song.audioUrl != null) 
-                      const SizedBox(width: 16),
+                      const SizedBox(width: AppTheme.spaceMedium),
                     Icon(
                       Icons.attachment,
                       size: 16,
                       color: AppTheme.grey600,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       '${widget.song.attachmentUrls.length} fichier(s)',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -347,7 +347,7 @@ class _SongCardState extends State<SongCard> {
                     Text(
                       'Utilisé le ${_formatDate(widget.song.lastUsedAt!)}',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey600,
                       ),
                     ),

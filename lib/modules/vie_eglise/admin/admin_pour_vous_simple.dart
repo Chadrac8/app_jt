@@ -4,6 +4,7 @@ import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
 import '../services/action_group_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -159,7 +160,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         } else if (group.color == 'orange') {
           return AppTheme.orangeStandard;
         } else if (group.color == 'purple') {
-          return Colors.purple;
+          return AppTheme.primaryColor;
         } else if (group.color == 'red') {
           return AppTheme.redStandard;
         } else {
@@ -206,7 +207,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                 child: Row(
                   children: [
                     Icon(Icons.group_work),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Gestion des groupes'),
                   ],
                 ),
@@ -216,7 +217,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                 child: Row(
                   children: [
                     Icon(Icons.copy),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Templates d\'actions'),
                   ],
                 ),
@@ -226,7 +227,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                 child: Row(
                   children: [
                     Icon(Icons.import_export),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Import/Export'),
                   ],
                 ),
@@ -246,21 +247,21 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               children: [
                 // Statistiques en haut
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Row(
                     children: [
                       Expanded(
                         child: Card(
                           child: Padding(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(AppTheme.spaceMedium),
                             child: Column(
                               children: [
                                 const Icon(Icons.touch_app, size: 32),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: AppTheme.spaceSmall),
                                 Text(
                                   '${_actions.length}',
                                   style: const TextStyle(
-                                    fontSize: 24,
+                                    fontSize: AppTheme.fontSize24,
                                     fontWeight: AppTheme.fontBold,
                                   ),
                                 ),
@@ -270,19 +271,19 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: AppTheme.spaceMedium),
                       Expanded(
                         child: Card(
                           child: Padding(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(AppTheme.spaceMedium),
                             child: Column(
                               children: [
                                 const Icon(Icons.visibility, size: 32, color: AppTheme.greenStandard),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: AppTheme.spaceSmall),
                                 Text(
                                   '${_actions.where((a) => a.isActive).length}',
                                   style: const TextStyle(
-                                    fontSize: 24,
+                                    fontSize: AppTheme.fontSize24,
                                     fontWeight: AppTheme.fontBold,
                                     color: AppTheme.greenStandard,
                                   ),
@@ -293,19 +294,19 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: AppTheme.spaceMedium),
                       Expanded(
                         child: Card(
                           child: Padding(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(AppTheme.spaceMedium),
                             child: Column(
                               children: [
                                 const Icon(Icons.group_work, size: 32, color: AppTheme.blueStandard),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: AppTheme.spaceSmall),
                                 Text(
                                   '${_groups.length}',
                                   style: const TextStyle(
-                                    fontSize: 24,
+                                    fontSize: AppTheme.fontSize24,
                                     fontWeight: AppTheme.fontBold,
                                     color: AppTheme.blueStandard,
                                   ),
@@ -328,15 +329,15 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.touch_app, size: 64, color: AppTheme.grey500),
-                              SizedBox(height: 16),
+                              SizedBox(height: AppTheme.spaceMedium),
                               Text('Aucune action trouvée'),
-                              SizedBox(height: 8),
+                              SizedBox(height: AppTheme.spaceSmall),
                               Text('Les actions apparaîtront ici'),
                             ],
                           ),
                         )
                       : ListView.builder(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(AppTheme.spaceMedium),
                           itemCount: _actions.length,
                           itemBuilder: (context, index) {
                             final action = _actions[index];
@@ -370,7 +371,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(action.description),
-                                    const SizedBox(height: 4),
+                                    const SizedBox(height: AppTheme.spaceXSmall),
                                     Row(
                                       children: [
                                         Container(
@@ -382,13 +383,13 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           child: Text(
                                             group.name,
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: AppTheme.fontSize12,
                                               color: groupColor,
                                               fontWeight: AppTheme.fontBold,
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: AppTheme.spaceSmall),
                                         Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
@@ -398,12 +399,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           child: Text(
                                             action.actionType,
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: AppTheme.fontSize12,
                                               color: Theme.of(context).primaryColor,
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: AppTheme.spaceSmall),
                                         Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
@@ -415,7 +416,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           child: Text(
                                             action.isActive ? 'Actif' : 'Inactif',
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: AppTheme.fontSize12,
                                               color: action.isActive ? AppTheme.greenStandard : AppTheme.grey500,
                                               fontWeight: AppTheme.fontBold,
                                             ),
@@ -429,7 +430,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text('${action.order}'),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: AppTheme.spaceSmall),
                                     PopupMenuButton<String>(
                                       onSelected: (value) {
                                         switch (value) {
@@ -447,7 +448,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           child: Row(
                                             children: [
                                               Icon(Icons.copy),
-                                              SizedBox(width: 8),
+                                              SizedBox(width: AppTheme.spaceSmall),
                                               Text('Dupliquer'),
                                             ],
                                           ),
@@ -457,7 +458,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                                           child: Row(
                                             children: [
                                               Icon(Icons.delete, color: AppTheme.redStandard),
-                                              SizedBox(width: 8),
+                                              SizedBox(width: AppTheme.spaceSmall),
                                               Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                             ],
                                           ),
@@ -608,7 +609,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
@@ -623,7 +624,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 DropdownButtonFormField<String>(
                   value: _actionType,
                   decoration: const InputDecoration(
@@ -641,7 +642,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 DropdownButtonFormField<String>(
                   value: (['rendez_vous','groupes','mur_priere','bible','message','benevolat'].contains(_targetModule)) ? _targetModule : null,
                   decoration: const InputDecoration(
@@ -662,7 +663,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   controller: _targetRouteController,
                   decoration: const InputDecoration(
@@ -671,7 +672,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                     hintText: '/rendez_vous',
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 DropdownButtonFormField<String?>(
                   value: (widget.groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
                   decoration: const InputDecoration(
@@ -691,7 +692,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   controller: _colorController,
                   decoration: const InputDecoration(
@@ -700,7 +701,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                     hintText: '#FF5722',
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Row(
                   children: [
                     Expanded(
@@ -716,7 +717,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: SwitchListTile(
                         title: const Text('Actif'),
@@ -826,7 +827,7 @@ class _GroupManagementDialogState extends State<_GroupManagementDialog> {
               onPressed: _addGroup,
               child: const Text('Ajouter un groupe'),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: ListView.builder(
                 itemCount: widget.groups.length,
@@ -1062,7 +1063,7 @@ class _ImportExportDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('Fonctionnalités d\'import/export en cours de développement.'),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text('Prochainement disponible :'),
             Text('• Export des actions au format JSON'),
             Text('• Import d\'actions depuis un fichier'),

@@ -212,7 +212,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
       child: Column(
         children: [
           _buildHeader(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Expanded(child: _buildDisponibilitesList()),
         ],
       ),
@@ -221,7 +221,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -231,12 +231,12 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
           Row(
             children: [
               Icon(Icons.schedule, color: AppTheme.primaryColor),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               const Expanded(
                 child: Text(
                   'Gestion des disponibilités',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
@@ -244,7 +244,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(
@@ -258,7 +258,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: _addSpecificDate,
@@ -303,15 +303,15 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.schedule, size: 64, color: AppTheme.grey500),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucune disponibilité définie',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     color: AppTheme.grey500,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Ajoutez des créneaux pour permettre aux membres de prendre rendez-vous',
                   textAlign: TextAlign.center,
@@ -351,14 +351,14 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -369,12 +369,12 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     _getDisponibiliteTitle(disponibilite),
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
@@ -387,7 +387,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             if (disponibilite.type == 'recurrence_hebdo' && disponibilite.jours.isNotEmpty)
               Wrap(
                 spacing: 8,
@@ -401,7 +401,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                     child: Text(
                       _formatJour(jour),
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.secondaryColor,
                         fontWeight: AppTheme.fontMedium,
                       ),
@@ -410,22 +410,22 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                 }).toList(),
               ),
             if (disponibilite.dateSpecifique != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 children: [
                   Icon(Icons.calendar_today, size: 16, color: AppTheme.textSecondaryColor),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     _formatDate(disponibilite.dateSpecifique!),
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor,
                     ),
                   ),
                 ],
               ),
             ],
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Wrap(
               spacing: 8,
               runSpacing: 4,
@@ -439,7 +439,7 @@ class _AvailabilityEditorState extends State<AvailabilityEditor>
                   child: Text(
                     '${creneau.debut} - ${creneau.fin}',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.tertiaryColor,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -553,7 +553,7 @@ class _WeeklyRecurrenceDialogState extends State<_WeeklyRecurrenceDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Jours de la semaine:'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 8,
                 children: _weekDays.map((day) {
@@ -573,7 +573,7 @@ class _WeeklyRecurrenceDialogState extends State<_WeeklyRecurrenceDialog> {
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -688,7 +688,7 @@ class _SpecificDateDialogState extends State<_SpecificDateDialog> {
             trailing: const Icon(Icons.calendar_today),
             onTap: _selectDate,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -795,7 +795,7 @@ class _CreneauDialogState extends State<_CreneauDialog> {
               trailing: const Icon(Icons.access_time),
               onTap: _selectFin,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<int>(
               value: _duree,
               decoration: const InputDecoration(

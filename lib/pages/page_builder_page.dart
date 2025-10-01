@@ -73,9 +73,9 @@ class _PageBuilderPageState extends State<PageBuilderPage>
   final Map<String, List<Map<String, dynamic>>> _componentCategories = {
     'Contenu textuel': [
       {'type': 'text', 'label': 'Texte', 'icon': Icons.text_fields, 'color': AppTheme.blueStandard, 'description': 'Paragraphe de texte avec formatage'},
-      {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': Colors.indigo, 'description': 'Citation biblique avec référence'},
-      {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': Colors.amber, 'description': 'Message d\'annonce avec style'},
-      {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': Colors.deepPurple, 'description': 'Citation avec auteur et contexte'},
+      {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': AppTheme.secondaryColor, 'description': 'Citation biblique avec référence'},
+      {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': AppTheme.warningColor, 'description': 'Message d\'annonce avec style'},
+      {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': AppTheme.primaryDark, 'description': 'Citation avec auteur et contexte'},
 
     ],
     'Médias': [
@@ -85,17 +85,17 @@ class _PageBuilderPageState extends State<PageBuilderPage>
     ],
     'Interactif': [
       {'type': 'button', 'label': 'Bouton', 'icon': Icons.smart_button, 'color': AppTheme.orangeStandard, 'description': 'Bouton d\'action cliquable'},
-      {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': Colors.cyan, 'description': 'Code HTML personnalisé'},
+      {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': AppTheme.infoColor, 'description': 'Code HTML personnalisé'},
       {'type': 'webview', 'label': 'WebView', 'icon': Icons.web, 'color': AppTheme.blueStandard, 'description': 'Intégrer une page web externe dans votre application'},
     ],
 
     'Organisation': [
-      {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': Colors.purple, 'description': 'Liste d\'éléments à puces ou numérotée'},
+      {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': AppTheme.primaryColor, 'description': 'Liste d\'éléments à puces ou numérotée'},
       {'type': 'tabs', 'label': 'Onglets', 'icon': Icons.tab, 'color': AppTheme.blueStandard, 'description': 'Interface à onglets pour organiser le contenu en sous-pages'},
-      {'type': 'grid_container', 'label': 'Container Grid', 'icon': Icons.grid_view, 'color': Colors.deepPurple, 'description': 'Container configurable pour organiser des composants en grille'},
-      {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': Colors.brown, 'description': 'Carte géographique interactive'},
+      {'type': 'grid_container', 'label': 'Container Grid', 'icon': Icons.grid_view, 'color': AppTheme.primaryDark, 'description': 'Container configurable pour organiser des composants en grille'},
+      {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': AppTheme.tertiaryColor, 'description': 'Carte géographique interactive'},
       {'type': 'googlemap', 'label': 'Google Map', 'icon': Icons.location_on, 'color': AppTheme.redStandard, 'description': 'Carte Google avec reconnaissance d\'adresse'},
-      {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': Colors.deepOrange, 'description': 'Affichage et gestion des groupes d\'utilisateurs'},
+      {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': AppTheme.warningColor, 'description': 'Affichage et gestion des groupes d\'utilisateurs'},
       {'type': 'events', 'label': 'Evénements', 'icon': Icons.event, 'color': AppTheme.greenStandard, 'description': 'Calendrier et liste d\'événements'},
 
 
@@ -104,9 +104,9 @@ class _PageBuilderPageState extends State<PageBuilderPage>
       {'type': 'prayer_wall', 'label': 'Prières & Témoignages', 'icon': Icons.pan_tool, 'color': AppTheme.pinkStandard, 'description': 'Espace de prières interactif avec demandes, témoignages et communauté'},
     ],
     'Composants Grid': [
-      {'type': 'grid_card', 'label': 'Carte Grid', 'icon': Icons.crop_landscape, 'color': Colors.deepPurple, 'description': 'Carte optimisée pour affichage en grille'},
-      {'type': 'grid_stat', 'label': 'Statistique Grid', 'icon': Icons.analytics, 'color': Colors.teal, 'description': 'Statistique compacte pour grille'},
-      {'type': 'grid_icon_text', 'label': 'Icône + Texte Grid', 'icon': Icons.text_rotate_vertical, 'color': Colors.indigo, 'description': 'Icône avec texte pour disposition en grille'},
+      {'type': 'grid_card', 'label': 'Carte Grid', 'icon': Icons.crop_landscape, 'color': AppTheme.primaryDark, 'description': 'Carte optimisée pour affichage en grille'},
+      {'type': 'grid_stat', 'label': 'Statistique Grid', 'icon': Icons.analytics, 'color': AppTheme.secondaryColor, 'description': 'Statistique compacte pour grille'},
+      {'type': 'grid_icon_text', 'label': 'Icône + Texte Grid', 'icon': Icons.text_rotate_vertical, 'color': AppTheme.secondaryColor, 'description': 'Icône avec texte pour disposition en grille'},
       {'type': 'grid_image_card', 'label': 'Image Card Grid', 'icon': Icons.image_aspect_ratio, 'color': AppTheme.orangeStandard, 'description': 'Carte avec image optimisée pour grille'},
       {'type': 'grid_progress', 'label': 'Progression Grid', 'icon': Icons.pie_chart, 'color': AppTheme.greenStandard, 'description': 'Indicateur de progression pour grille'},
     ],
@@ -876,7 +876,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
 
   Widget _buildPreview() {
     Widget previewContent = SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -896,7 +896,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
           
           // Le titre et la description ne s'affichent plus dans la prévisualisation
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Composants - Linear ou Grid selon le choix
           if (_layoutType == 'linear') ...[
@@ -945,7 +945,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
 
   Widget _buildConfigPanel() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Form(
         key: _formKey,
         child: Column(
@@ -975,7 +975,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     }
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
@@ -984,9 +984,9 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                   ),
                   maxLines: 3,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildCoverImageSection(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   controller: _slugController,
                   decoration: const InputDecoration(
@@ -1008,7 +1008,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Paramètres de visibilité
             _buildSection(
@@ -1035,12 +1035,12 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                   },
                 ),
                 if (_visibility == 'groups' || _visibility == 'roles') ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Groupes/Rôles autorisés :',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Container(
                     height: 100,
                     decoration: BoxDecoration(
@@ -1059,7 +1059,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Paramètres de mise en page
             _buildSection(
@@ -1080,7 +1080,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       child: Row(
                         children: [
                           Icon(Icons.view_stream, size: 18),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Linéaire (vertical)'),
                         ],
                       ),
@@ -1090,7 +1090,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       child: Row(
                         children: [
                           Icon(Icons.grid_view, size: 18),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Grille (colonnes)'),
                         ],
                       ),
@@ -1103,7 +1103,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Paramètres spécifiques à la grille
                 if (_layoutType == 'grid') ...[
@@ -1117,7 +1117,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                               'Nombre de colonnes',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Slider(
                               value: _gridColumns.toDouble(),
                               min: 1,
@@ -1140,7 +1140,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Row(
                     children: [
                       Expanded(
@@ -1151,7 +1151,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                               'Espacement de la grille',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Slider(
                               value: _gridSpacing,
                               min: 0,
@@ -1174,7 +1174,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 ] else ...[
                   // Paramètres pour la disposition linéaire
                   Row(
@@ -1187,7 +1187,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                               'Espacement entre composants',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Slider(
                               value: _componentSpacing,
                               min: 0,
@@ -1210,7 +1210,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 ],
                 
                 // Marge commune à tous les types
@@ -1224,7 +1224,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                             'Marge autour des composants',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Slider(
                             value: _componentMargin,
                             min: 0,
@@ -1247,9 +1247,9 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.blueStandard,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1265,7 +1265,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                             color: AppTheme.blueStandard,
                             size: 20,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: Text(
                               _layoutType == 'grid' 
@@ -1273,14 +1273,14 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                                 : 'En mode linéaire, les composants sont empilés verticalement. L\'espacement contrôle la distance entre chaque composant.',
                               style: TextStyle(
                                 color: AppTheme.blueStandard,
-                                fontSize: 13,
+                                fontSize: AppTheme.fontSize13,
                               ),
                             ),
                           ),
                         ],
                       ),
                       if (_layoutType == 'grid') ...[
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppTheme.space12),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton.icon(
@@ -1301,7 +1301,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Arrière-plan de page
             _buildSection(
@@ -1325,7 +1325,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 if (_backgroundType == 'color') ...[
                   TextFormField(
                     initialValue: _backgroundColor,
@@ -1349,7 +1349,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       return null;
                     },
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Container(
                     height: 50,
                     width: double.infinity,
@@ -1399,7 +1399,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       return null;
                     },
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   if (_backgroundImageUrl.isNotEmpty)
                     Container(
                       height: 100,
@@ -1432,9 +1432,9 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       ),
                     ),
                 ],
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.orangeStandard,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1447,13 +1447,13 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                         color: AppTheme.orangeStandard,
                         size: 20,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Expanded(
                         child: Text(
                           'L\'arrière-plan sera appliqué à toute la page. Pour les images, privilégiez des images de haute qualité et optimisées pour le web.',
                           style: TextStyle(
                             color: AppTheme.orangeStandard,
-                            fontSize: 13,
+                            fontSize: AppTheme.fontSize13,
                           ),
                         ),
                       ),
@@ -1463,7 +1463,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Paramètres de publication
             _buildSection(
@@ -1488,7 +1488,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Ordre d\'affichage',
@@ -1505,7 +1505,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
 
           ],
@@ -1518,7 +1518,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
     return Container(
       color: AppTheme.white100,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Form(
           key: _formKey,
           child: Column(
@@ -1528,7 +1528,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1539,7 +1539,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -1561,7 +1561,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 ],
               ),
               
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
 
               // Informations générales
               _buildSection(
@@ -1587,7 +1587,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       }
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextFormField(
                     controller: _descriptionController,
                     decoration: const InputDecoration(
@@ -1596,9 +1596,9 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     ),
                     maxLines: 3,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildCoverImageSection(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextFormField(
                     controller: _slugController,
                     decoration: const InputDecoration(
@@ -1620,7 +1620,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
 
               // Paramètres de visibilité
               _buildSection(
@@ -1647,12 +1647,12 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     },
                   ),
                   if (_visibility == 'groups' || _visibility == 'roles') ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Text(
                       'Groupes/Rôles autorisés :',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Container(
                       height: 100,
                       decoration: BoxDecoration(
@@ -1671,7 +1671,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
 
               // Paramètres de publication
               _buildSection(
@@ -1696,7 +1696,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       });
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Ordre d\'affichage',
@@ -1713,7 +1713,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
 
               // Structure de la page  
               _buildSection(
@@ -1726,7 +1726,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       color: AppTheme.grey600,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   DropdownButtonFormField<String>(
                     value: _layoutType,
                     decoration: const InputDecoration(
@@ -1754,7 +1754,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
 
               // Espacement et marges
               _buildSection(
@@ -1767,7 +1767,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       color: AppTheme.grey600,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Espacement entre composants
                   Column(
@@ -1779,7 +1779,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           activeTrackColor: AppTheme.primaryColor,
@@ -1804,7 +1804,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     ],
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Marges horizontales
                   Column(
@@ -1816,7 +1816,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         _componentMargin == 0 
                           ? 'Les composants couvrent toute la largeur' 
@@ -1825,7 +1825,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                           color: AppTheme.grey600,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           activeTrackColor: AppTheme.primaryColor,
@@ -1852,11 +1852,11 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     ],
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Aperçu visuel
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.grey50,
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1872,7 +1872,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                             color: AppTheme.grey700,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Container(
                           height: 80,
                           child: Column(
@@ -1883,13 +1883,13 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                                 margin: EdgeInsets.symmetric(horizontal: _componentMargin),
                                 decoration: BoxDecoration(
                                   color: AppTheme.primaryColor.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Composant 1',
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: AppTheme.fontSize12,
                                       color: AppTheme.primaryColor,
                                       fontWeight: AppTheme.fontMedium,
                                     ),
@@ -1903,13 +1903,13 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                                 margin: EdgeInsets.symmetric(horizontal: _componentMargin),
                                 decoration: BoxDecoration(
                                   color: AppTheme.primaryColor.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Composant 2',
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: AppTheme.fontSize12,
                                       color: AppTheme.primaryColor,
                                       fontWeight: AppTheme.fontMedium,
                                     ),
@@ -1925,7 +1925,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
 
               // Arrière-plan
               _buildSection(
@@ -1949,7 +1949,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       });
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   if (_backgroundType == 'color')
                     TextFormField(
                       initialValue: _backgroundColor,
@@ -1967,7 +1967,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 ],
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: AppTheme.space40),
             ],
           ),
         ),
@@ -1982,11 +1982,11 @@ class _PageBuilderPageState extends State<PageBuilderPage>
         children: [
           // En-tête de l'onglet
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1997,7 +1997,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -2039,17 +2039,17 @@ class _PageBuilderPageState extends State<PageBuilderPage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.web, size: 64, color: AppTheme.grey400),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Votre page est vide',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Ajoutez des composants pour créer votre contenu',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             ElevatedButton.icon(
               onPressed: _showComponentSelector,
               icon: const Icon(Icons.add),
@@ -2065,7 +2065,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
     }
 
     return ReorderableListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       onReorder: _reorderComponents,
       itemCount: _components.length,
       itemBuilder: (context, index) {
@@ -2111,7 +2111,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
         Row(
           children: [
             Icon(icon, size: 20, color: AppTheme.primaryColor),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -2121,7 +2121,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         ...children,
       ],
     );
@@ -2154,7 +2154,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
         maxChildSize: 0.9,
         minChildSize: 0.5,
         builder: (context, scrollController) => Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -2165,11 +2165,11 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                   width: 40,
                   decoration: BoxDecoration(
                     color: AppTheme.grey300,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(AppTheme.radius2),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Header
               Row(
@@ -2179,7 +2179,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     color: AppTheme.primaryColor,
                     size: 28,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Text(
                     'Ajouter un composant',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -2189,21 +2189,21 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Choisissez le type de contenu à ajouter à votre page',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppTheme.grey600,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Categories list
               Expanded(
                 child: ListView.separated(
                   controller: scrollController,
                   itemCount: _componentCategories.keys.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 16),
+                  separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceMedium),
                   itemBuilder: (context, categoryIndex) {
                     final categoryName = _componentCategories.keys.elementAt(categoryIndex);
                     final components = _componentCategories[categoryName]!;
@@ -2234,11 +2234,11 @@ class _PageBuilderPageState extends State<PageBuilderPage>
           categoryName,
           style: const TextStyle(
             fontWeight: AppTheme.fontBold,
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
           ),
         ),
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2264,7 +2264,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
         },
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.white100,
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -2283,7 +2283,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
             children: [
               // Icon
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: (component['color'] as Color).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
@@ -2294,7 +2294,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               
               // Content
               Expanded(
@@ -2305,15 +2305,15 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       component['label'],
                       style: const TextStyle(
                         fontWeight: AppTheme.fontSemiBold,
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       component['description'],
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 13,
+                        fontSize: AppTheme.fontSize13,
                       ),
                     ),
                   ],
@@ -2343,7 +2343,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         
         // Affichage de l'image actuelle ou bouton d'ajout
         if (_coverImageUrl != null && _coverImageUrl!.isNotEmpty) ...[
@@ -2378,7 +2378,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                             Icon(Icons.broken_image, 
                                  size: 48, 
                                  color: AppTheme.grey400),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               'Erreur de chargement',
                               style: TextStyle(color: AppTheme.grey600),
@@ -2454,12 +2454,12 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     mainAxisSize: MainAxisSize.min,
                     children: const [
                       Icon(Icons.image, color: AppTheme.white100, size: 14),
-                      SizedBox(width: 4),
+                      SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         'Image de couverture',
                         style: TextStyle(
                           color: AppTheme.white100,
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -2469,7 +2469,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
         ] else ...[
           // Bouton d'ajout amélioré
           Container(
@@ -2499,7 +2499,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
                       shape: BoxShape.circle,
@@ -2510,29 +2510,29 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       color: AppTheme.primaryColor,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Ajouter une image de couverture',
                     style: TextStyle(
                       color: AppTheme.primaryColor,
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Depuis la galerie ou par URL',
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     'Recommandé : 1200x600 pixels',
                     style: TextStyle(
                       color: AppTheme.grey500,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ],
@@ -2541,12 +2541,12 @@ class _PageBuilderPageState extends State<PageBuilderPage>
           ),
         ],
         
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Text(
           'Cette image sera affichée en haut de votre page. Elle remplace l\'affichage du titre et de la description.',
           style: TextStyle(
             color: AppTheme.grey600,
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
           ),
         ),
       ],
@@ -2580,7 +2580,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
             children: [
               // En-tête du dialog
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
                   borderRadius: const BorderRadius.only(
@@ -2591,13 +2591,13 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 child: Row(
                   children: [
                     const Icon(Icons.photo_library, color: AppTheme.white100),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     const Expanded(
                       child: Text(
                         'Choisir une image de couverture',
                         style: TextStyle(
                           color: AppTheme.white100,
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
@@ -2613,7 +2613,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               // Contenu du dialog avec ImagePickerWidget
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     children: [
                       Text(
@@ -2621,7 +2621,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                         style: Theme.of(context).textTheme.bodyMedium,
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
                       
                       // Widget de sélection d'image
                       Expanded(
@@ -2651,7 +2651,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                         ),
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Options d'images suggérées
                       Text(
@@ -2660,7 +2660,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                           color: AppTheme.grey600,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       
                       SizedBox(
                         height: 100,
@@ -2682,7 +2682,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                               child: Container(
                                 width: 80,
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                                 decoration: BoxDecoration(
                                   border: Border.all(color: AppTheme.grey300!),
                                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2695,10 +2695,10 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                                       color: AppTheme.primaryColor,
                                       size: 24,
                                     ),
-                                    const SizedBox(height: 4),
+                                    const SizedBox(height: AppTheme.spaceXSmall),
                                     Text(
                                       option['label']!,
-                                      style: const TextStyle(fontSize: 10),
+                                      style: const TextStyle(fontSize: AppTheme.fontSize10),
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,

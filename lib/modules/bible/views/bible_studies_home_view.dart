@@ -4,6 +4,7 @@ import '../../../../theme.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import 'bible_study_detail_view.dart';
+import '../../../theme.dart';
 
 class BibleStudiesHomeView extends StatefulWidget {
   const BibleStudiesHomeView({Key? key}) : super(key: key);
@@ -148,7 +149,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
       children: [
         // Barre de recherche et filtres
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           color: theme.colorScheme.surface,
           child: Column(
             children: [
@@ -170,7 +171,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                 },
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Filtres par catégorie
               SizedBox(
@@ -194,7 +195,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                           _filterStudies();
                         },
                         labelStyle: GoogleFonts.inter(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontMedium,
                           color: isSelected 
                               ? AppTheme.white100 
@@ -245,7 +246,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
 
   Widget _buildLoadingState() {
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: 5,
       itemBuilder: (context, index) => _buildLoadingCard(),
     );
@@ -256,7 +257,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
     
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -271,7 +272,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,7 +285,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
                   width: 200,
                   height: 14,
@@ -293,7 +294,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                     borderRadius: BorderRadius.circular(7),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
                   width: 100,
                   height: 12,
@@ -322,16 +323,16 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
             size: 64,
             color: theme.colorScheme.onSurface.withOpacity(0.3),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune étude trouvée',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Essayez de modifier vos filtres',
             style: GoogleFonts.inter(
@@ -355,23 +356,23 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
             size: 64,
             color: theme.colorScheme.onSurface.withOpacity(0.3),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune étude en cours',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Commencez une étude pour la voir ici',
             style: GoogleFonts.inter(
               color: theme.colorScheme.onSurface.withOpacity(0.5),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton(
             onPressed: () => _tabController.animateTo(0),
             child: const Text('Découvrir les études'),
@@ -393,16 +394,16 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
             size: 64,
             color: theme.colorScheme.onSurface.withOpacity(0.3),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune étude terminée',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Terminez vos études pour les voir ici',
             style: GoogleFonts.inter(
@@ -416,7 +417,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
 
   Widget _buildStudiesList(List<BibleStudy> studies, {bool showProgress = false, bool showCompleted = false}) {
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: studies.length,
       itemBuilder: (context, index) {
         return _buildStudyCard(studies[index], showProgress: showProgress, showCompleted: showCompleted);
@@ -435,7 +436,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
           onTap: () => _openStudyDetail(study),
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -462,7 +463,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -473,7 +474,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                             child: Text(
                               study.title,
                               style: GoogleFonts.inter(
-                                fontSize: 16,
+                                fontSize: AppTheme.fontSize16,
                                 fontWeight: AppTheme.fontSemiBold,
                                 color: theme.colorScheme.onSurface,
                               ),
@@ -489,7 +490,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                               child: Text(
                                 'POPULAIRE',
                                 style: GoogleFonts.inter(
-                                  fontSize: 10,
+                                  fontSize: AppTheme.fontSize10,
                                   fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.orangeStandard,
                                 ),
@@ -497,26 +498,26 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                             ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         study.author,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: theme.colorScheme.onSurface.withOpacity(0.6),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         study.description,
                         style: GoogleFonts.inter(
-                          fontSize: 13,
+                          fontSize: AppTheme.fontSize13,
                           color: theme.colorScheme.onSurface.withOpacity(0.7),
                           height: 1.3,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       Row(
                         children: [
                           Icon(
@@ -524,29 +525,29 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                             size: 14,
                             color: theme.colorScheme.onSurface.withOpacity(0.5),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             study.formattedDuration,
                             style: GoogleFonts.inter(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: theme.colorScheme.onSurface.withOpacity(0.6),
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: AppTheme.spaceMedium),
                           Icon(
                             Icons.signal_cellular_alt,
                             size: 14,
                             color: theme.colorScheme.onSurface.withOpacity(0.5),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             study.displayDifficulty,
                             style: GoogleFonts.inter(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: theme.colorScheme.onSurface.withOpacity(0.6),
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: AppTheme.spaceMedium),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
@@ -556,7 +557,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                             child: Text(
                               study.category,
                               style: GoogleFonts.inter(
-                                fontSize: 11,
+                                fontSize: AppTheme.fontSize11,
                                 fontWeight: AppTheme.fontMedium,
                                 color: _getCategoryColor(study.category),
                               ),
@@ -565,7 +566,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                         ],
                       ),
                       if (showProgress || showCompleted) ...[
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppTheme.space12),
                         FutureBuilder<UserStudyProgress?>(
                           future: BibleStudyService.getStudyProgress(study.id),
                           builder: (context, snapshot) {
@@ -583,13 +584,13 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: AppTheme.space12),
                                 Text(
                                   showCompleted 
                                       ? 'TERMINÉE' 
                                       : '${progress.progressPercentage.round()}%',
                                   style: GoogleFonts.inter(
-                                    fontSize: 12,
+                                    fontSize: AppTheme.fontSize12,
                                     fontWeight: AppTheme.fontSemiBold,
                                     color: showCompleted 
                                         ? AppTheme.greenStandard 
@@ -619,11 +620,11 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
       case 'Ancien Testament':
         return AppTheme.greenStandard;
       case 'Spiritualité':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'Théologie':
         return AppTheme.orangeStandard;
       case 'Paraboles':
-        return Colors.teal;
+        return AppTheme.secondaryColor;
       default:
         return AppTheme.grey500;
     }

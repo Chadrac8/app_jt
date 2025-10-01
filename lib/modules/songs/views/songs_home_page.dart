@@ -9,6 +9,7 @@ import '../../../pages/setlist_form_page.dart';
 import '../../../pages/songs_import_export_page.dart';
 import '../../../pages/setlist_statistics_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Page d'administration des chants
 class SongsHomePage extends StatefulWidget {
@@ -68,7 +69,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                     child: Row(
                       children: [
                         Icon(Icons.publish),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Publier'),
                       ],
                     ),
@@ -78,7 +79,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                     child: Row(
                       children: [
                         Icon(Icons.archive),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Archiver'),
                       ],
                     ),
@@ -88,7 +89,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                     child: Row(
                       children: [
                         Icon(Icons.delete, color: AppTheme.redStandard),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                       ],
                     ),
@@ -206,9 +207,9 @@ class _SongsHomePageState extends State<SongsHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => setState(() {}),
                   child: const Text('Réessayer'),
@@ -226,12 +227,12 @@ class _SongsHomePageState extends State<SongsHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.music_off, size: 64, color: AppTheme.grey500),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 const Text(
                   'Aucun chant trouvé',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => _navigateToSongForm(),
                   child: const Text('Ajouter le premier chant'),
@@ -275,7 +276,7 @@ class _SongsHomePageState extends State<SongsHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -290,12 +291,12 @@ class _SongsHomePageState extends State<SongsHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.playlist_play, size: 64, color: AppTheme.grey500),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 const Text(
                   'Aucune setlist créée',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => _navigateToSetlistForm(),
                   child: const Text('Créer la première setlist'),
@@ -325,10 +326,10 @@ class _SongsHomePageState extends State<SongsHomePage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (setlist.description.isNotEmpty) Text(setlist.description),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               'Service du ${_formatDate(setlist.serviceDate)} • ${setlist.songIds.length} chants',
-              style: const TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: AppTheme.fontSize12),
             ),
           ],
         ),
@@ -349,7 +350,7 @@ class _SongsHomePageState extends State<SongsHomePage>
               child: Row(
                 children: [
                   Icon(Icons.edit),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Modifier'),
                 ],
               ),
@@ -359,7 +360,7 @@ class _SongsHomePageState extends State<SongsHomePage>
               child: Row(
                 children: [
                   Icon(Icons.delete, color: AppTheme.redStandard),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 ],
               ),
@@ -385,7 +386,7 @@ class _SongsHomePageState extends State<SongsHomePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -395,12 +396,12 @@ class _SongsHomePageState extends State<SongsHomePage>
         final stats = snapshot.data ?? {};
 
         return ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           children: [
             // Statistiques générales
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -408,7 +409,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                       'Statistiques générales',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Row(
                       children: [
                         Expanded(
@@ -419,7 +420,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                             AppTheme.blueStandard,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Expanded(
                           child: _buildStatCard(
                             'Publiés',
@@ -430,7 +431,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Row(
                       children: [
                         Expanded(
@@ -441,7 +442,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                             AppTheme.orangeStandard,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Expanded(
                           child: _buildStatCard(
                             'Archivés',
@@ -452,7 +453,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.pie_chart),
                       label: const Text('Voir dashboard playlists'),
@@ -470,12 +471,12 @@ class _SongsHomePageState extends State<SongsHomePage>
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Statistiques d'utilisation
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -483,7 +484,7 @@ class _SongsHomePageState extends State<SongsHomePage>
                       'Utilisation',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Row(
                       children: [
                         Expanded(
@@ -491,16 +492,16 @@ class _SongsHomePageState extends State<SongsHomePage>
                             'Total utilisations',
                             '${stats['totalUsage'] ?? 0}',
                             Icons.play_arrow,
-                            Colors.purple,
+                            AppTheme.primaryColor,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Expanded(
                           child: _buildStatCard(
                             'Moyenne par chant',
                             '${(stats['averageUsage'] ?? 0).toStringAsFixed(1)}',
                             Icons.trending_up,
-                            Colors.teal,
+                            AppTheme.secondaryColor,
                           ),
                         ),
                       ],
@@ -517,7 +518,7 @@ class _SongsHomePageState extends State<SongsHomePage>
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -525,19 +526,19 @@ class _SongsHomePageState extends State<SongsHomePage>
       child: Column(
         children: [
           Icon(icon, size: 32, color: color),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             title,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: AppTheme.fontSize12),
             textAlign: TextAlign.center,
           ),
         ],

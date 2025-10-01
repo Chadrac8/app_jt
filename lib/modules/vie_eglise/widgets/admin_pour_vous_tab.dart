@@ -6,6 +6,7 @@ import '../services/pour_vous_action_service.dart';
 import '../dialogs/action_form_dialog.dart';
 import '../dialogs/group_management_dialog.dart';
 import '../dialogs/action_templates_dialog.dart';
+import '../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -55,14 +56,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             heroTag: "groups",
             child: Icon(Icons.group, size: 20, color: AppTheme.surfaceColor),
             tooltip: 'Gérer les groupes'),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           FloatingActionButton.small(
             onPressed: _showTemplatesDialog,
             backgroundColor: AppTheme.primaryColor,
             heroTag: "templates",
             child: Icon(Icons.list, size: 20, color: AppTheme.surfaceColor),
             tooltip: 'Actions suggérées'),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           FloatingActionButton(
             onPressed: _showAddActionDialog,
             backgroundColor: AppTheme.primaryColor,
@@ -74,7 +75,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         boxShadow: [
@@ -93,12 +94,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                 Icons.settings,
                 color: AppTheme.primaryColor,
                 size: 24),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   'Gestion des actions "Pour vous"',
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor))),
               // Boutons d'actions rapides
@@ -118,13 +119,13 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                 tooltip: 'Actualiser',
                 color: AppTheme.primaryColor),
             ]),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Configurez les actions disponibles pour les membres',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // Barre de recherche
           TextField(
             controller: _searchController,
@@ -199,8 +200,8 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
     final inactiveCount = actions.length - activeCount;
 
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -246,17 +247,17 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontBold,
             color: color)),
         Text(
           label,
           style: GoogleFonts.poppins(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: AppTheme.textSecondaryColor)),
       ]);
   }
@@ -264,19 +265,19 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
   Widget _buildSearchResultsHeader(int filteredCount, int totalCount) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
       child: Row(
         children: [
           Icon(Icons.search, color: AppTheme.primaryColor, size: 20),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               '$filteredCount résultat${filteredCount > 1 ? 's' : ''} sur $totalCount action${totalCount > 1 ? 's' : ''}',
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.primaryColor,
                 fontWeight: AppTheme.fontMedium))),
         ]));
@@ -284,7 +285,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
 
   Widget _buildActionsList(List<PourVousAction> actions) {
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: actions.length,
       itemBuilder: (context, index) {
         final action = actions[index];
@@ -303,9 +304,9 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
+        contentPadding: const EdgeInsets.all(AppTheme.spaceMedium),
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -321,13 +322,13 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               action.description,
               style: GoogleFonts.poppins(
-                fontSize: 13,
+                fontSize: AppTheme.fontSize13,
                 color: AppTheme.textSecondaryColor)),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Container(
@@ -340,12 +341,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Text(
                     action.isActive ? 'Active' : 'Inactive',
                     style: GoogleFonts.poppins(
-                      fontSize: 11,
+                      fontSize: AppTheme.fontSize11,
                       fontWeight: AppTheme.fontSemiBold,
                       color: action.isActive 
                           ? AppTheme.successColor
                           : AppTheme.warningColor))),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
@@ -354,7 +355,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Text(
                     action.actionType,
                     style: GoogleFonts.poppins(
-                      fontSize: 11,
+                      fontSize: AppTheme.fontSize11,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor))),
               ]),
@@ -393,7 +394,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Row(
                     children: [
                       const Icon(Icons.visibility, size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Prévisualiser', style: GoogleFonts.poppins()),
                     ])),
                 PopupMenuItem(
@@ -401,7 +402,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Row(
                     children: [
                       const Icon(Icons.copy, size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Dupliquer', style: GoogleFonts.poppins()),
                     ])),
                 const PopupMenuDivider(),
@@ -410,7 +411,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Row(
                     children: [
                       Icon(Icons.delete, color: AppTheme.errorColor, size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Supprimer', style: GoogleFonts.poppins(color: AppTheme.errorColor)),
                     ])),
               ]),
@@ -426,18 +427,18 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             Icons.error_outline,
             size: 64,
             color: AppTheme.errorColor.withOpacity(0.6)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Erreur de chargement',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             error,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor),
             textAlign: TextAlign.center),
         ]));
@@ -452,16 +453,16 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             Icons.inbox_outlined,
             size: 64,
             color: AppTheme.textSecondaryColor.withOpacity(0.6)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune action configurée',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -470,11 +471,11 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.info_outline, color: AppTheme.primaryColor, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Utilisez les templates pour créer des actions prédéfinies',
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.primaryColor,
                     fontWeight: AppTheme.fontMedium)),
               ])),
@@ -490,18 +491,18 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             Icons.search_off,
             size: 64,
             color: AppTheme.textSecondaryColor.withOpacity(0.6)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun résultat trouvé',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Essayez de modifier votre recherche',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor)),
         ]));
   }
@@ -576,17 +577,17 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             Text(
               action.title,
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold)),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               action.description,
               style: GoogleFonts.poppins()),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Type: ${action.actionType}',
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.textSecondaryColor)),
           ]),
         actions: [
@@ -646,17 +647,17 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               'Choisissez le format d\'export :',
               style: GoogleFonts.poppins(),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListTile(
               leading: const Icon(Icons.code),
               title: Text('JSON', style: GoogleFonts.poppins()),
-              subtitle: Text('Format de données structurées', style: GoogleFonts.poppins(fontSize: 12)),
+              subtitle: Text('Format de données structurées', style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12)),
               onTap: () => _performExport('json'),
             ),
             ListTile(
               leading: const Icon(Icons.table_chart),
               title: Text('CSV', style: GoogleFonts.poppins()),
-              subtitle: Text('Tableau compatible Excel', style: GoogleFonts.poppins(fontSize: 12)),
+              subtitle: Text('Tableau compatible Excel', style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12)),
               onTap: () => _performExport('csv'),
             ),
           ],
@@ -703,17 +704,17 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               'Importez des actions depuis :',
               style: GoogleFonts.poppins(),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListTile(
               leading: const Icon(Icons.file_upload),
               title: Text('Fichier JSON', style: GoogleFonts.poppins()),
-              subtitle: Text('Importer depuis un fichier de données', style: GoogleFonts.poppins(fontSize: 12)),
+              subtitle: Text('Importer depuis un fichier de données', style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12)),
               onTap: () => _performImport('file'),
             ),
             ListTile(
               leading: const Icon(Icons.cloud_download),
               title: Text('Templates en ligne', style: GoogleFonts.poppins()),
-              subtitle: Text('Bibliothèque de templates prédéfinis', style: GoogleFonts.poppins(fontSize: 12)),
+              subtitle: Text('Bibliothèque de templates prédéfinis', style: GoogleFonts.poppins(fontSize: AppTheme.fontSize12)),
               onTap: () => _performImport('online'),
             ),
           ],

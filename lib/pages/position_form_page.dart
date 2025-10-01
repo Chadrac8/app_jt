@@ -123,7 +123,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +134,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                 fontWeight: AppTheme.fontSemiBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -287,7 +287,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(AppTheme.space12),
                               decoration: BoxDecoration(
                                 color: teamColor.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -300,7 +300,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                 size: 24,
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: AppTheme.spaceMedium),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,7 +308,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                   Text(
                                     isEditing ? 'Modifier la position' : 'Nouvelle position',
                                     style: const TextStyle(
-                                      fontSize: 24,
+                                      fontSize: AppTheme.fontSize24,
                                       fontWeight: AppTheme.fontBold,
                                       color: AppTheme.white100,
                                     ),
@@ -317,7 +317,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                     Text(
                                       'Équipe ${_team!.name}',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: AppTheme.fontSize16,
                                         color: AppTheme.white100.withOpacity(0.70),
                                       ),
                                     ),
@@ -326,13 +326,13 @@ class _PositionFormPageState extends State<PositionFormPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           isEditing 
                               ? 'Modifiez les informations de cette position'
                               : 'Définissez les responsabilités et compétences requises',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             color: AppTheme.white100.withOpacity(0.70),
                           ),
                         ),
@@ -346,7 +346,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
             // Form content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppTheme.spaceLarge),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -372,7 +372,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         textCapitalization: TextCapitalization.words,
                       ),
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
 
                       // Description field
                       TextFormField(
@@ -390,11 +390,11 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         textCapitalization: TextCapitalization.sentences,
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
 
                       // Leader position toggle
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -411,7 +411,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                   ? teamColor
                                   : Theme.of(context).colorScheme.outline,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppTheme.space12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,7 +442,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
 
                       // Max assignments
                       Text(
@@ -451,9 +451,9 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -465,7 +465,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                             Row(
                               children: [
                                 const Icon(Icons.people),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: AppTheme.space12),
                                 Expanded(
                                   child: Text(
                                     'Nombre maximum: $_maxAssignments',
@@ -476,7 +476,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppTheme.space12),
                             Slider(
                               value: _maxAssignments.toDouble(),
                               min: 1,
@@ -492,7 +492,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
 
                       // Required skills
                       Text(
@@ -501,9 +501,9 @@ class _PositionFormPageState extends State<PositionFormPage> {
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -537,7 +537,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                               ],
                             ),
                             if (_requiredSkills.isNotEmpty) ...[
-                              const SizedBox(height: 12),
+                              const SizedBox(height: AppTheme.space12),
                               Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
@@ -556,11 +556,11 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
 
                       // Active status
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -575,7 +575,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                                   ? teamColor
                                   : Theme.of(context).colorScheme.outline,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppTheme.space12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -608,7 +608,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                     ],
                   ),
                 ),
@@ -620,7 +620,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
 
       // Bottom action bar
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           border: Border(
@@ -644,7 +644,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                   child: const Text('Annuler'),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 flex: 2,
                 child: FilledButton(

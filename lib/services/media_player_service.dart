@@ -82,7 +82,7 @@ class MediaPlayerService {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 48, color: AppTheme.grey400),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               message,
               style: TextStyle(color: AppTheme.grey600),
@@ -169,8 +169,8 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
                 child: Text(
                   _controller.metadata.title,
                   style: const TextStyle(
-                    color: AppTheme.white100,
-                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontSize: AppTheme.fontSize18,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -227,7 +227,7 @@ class SoundCloudPlayerWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   decoration: BoxDecoration(
                     color: AppTheme.white100.withOpacity(0.2),
                     shape: BoxShape.circle,
@@ -238,31 +238,31 @@ class SoundCloudPlayerWidget extends StatelessWidget {
                     color: AppTheme.white100,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 const Text(
                   'Lecteur SoundCloud Intégré',
                   style: TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   autoPlay ? 'Lecture automatique activée' : 'Prêt à jouer',
                   style: TextStyle(
                     color: AppTheme.white100.withOpacity(0.8),
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 // Barre de progression simulée
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 32),
                   height: 4,
                   decoration: BoxDecoration(
                     color: AppTheme.white100.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(AppTheme.radius2),
                   ),
                   child: FractionallySizedBox(
                     alignment: Alignment.centerLeft,
@@ -270,7 +270,7 @@ class SoundCloudPlayerWidget extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppTheme.white100,
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius: BorderRadius.circular(AppTheme.radius2),
                       ),
                     ),
                   ),
@@ -414,7 +414,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
   Widget build(BuildContext context) {
     if (_error != null) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.grey50,
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -423,7 +423,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
         child: Row(
           children: [
             const Icon(Icons.error_outline, color: AppTheme.redStandard, size: 32),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Text(_error!, style: const TextStyle(color: AppTheme.redStandard)),
             ),
@@ -432,7 +432,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
       );
     }
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -452,7 +452,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -463,7 +463,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -471,7 +471,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
                     Text(
                       widget.title ?? 'Fichier Audio',
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                       maxLines: 1,
@@ -482,7 +482,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
                       Text(
                         widget.artist!,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey600,
                         ),
                         maxLines: 1,
@@ -494,7 +494,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // Contrôles de lecture
           Row(
             children: [
@@ -531,7 +531,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
                         ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               // Barre de progression
               Expanded(
                 child: Column(
@@ -561,14 +561,14 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
                           Text(
                             _formatDuration(_position),
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: AppTheme.grey600,
                             ),
                           ),
                           Text(
                             _formatDuration(_duration),
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: AppTheme.grey600,
                             ),
                           ),

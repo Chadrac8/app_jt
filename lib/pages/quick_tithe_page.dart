@@ -14,7 +14,7 @@ class QuickTithePage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: AppTheme.orangeStandard.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -31,25 +31,25 @@ class QuickTithePage extends StatelessWidget {
           'Dîme',
           style: GoogleFonts.poppins(
             color: AppTheme.textPrimaryColor,
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildBiblicalVerse(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildTitheCalculator(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildWebViewOption(context),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildTitheInfo(),
           ],
         ),
@@ -59,12 +59,12 @@ class QuickTithePage extends StatelessWidget {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
             AppTheme.orangeStandard.withOpacity(0.1),
-            Colors.deepOrange.withOpacity(0.05),
+            AppTheme.warningColor.withOpacity(0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -78,22 +78,22 @@ class QuickTithePage extends StatelessWidget {
             color: AppTheme.orangeStandard,
             size: 48,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Dîme',
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Fidélité selon les Écritures',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.textSecondaryColor,
             ),
           ),
@@ -104,12 +104,12 @@ class QuickTithePage extends StatelessWidget {
 
   Widget _buildBiblicalVerse() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
-        color: Colors.amber.withOpacity(0.05),
+        color: AppTheme.warningColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: Colors.amber.withOpacity(0.2),
+          color: AppTheme.warningColor.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -119,37 +119,37 @@ class QuickTithePage extends StatelessWidget {
             children: [
               Icon(
                 Icons.menu_book,
-                color: Colors.amber[700],
+                color: AppTheme.warning,
                 size: 24,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 'Parole de Dieu',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
-                  color: Colors.amber[700],
+                  color: AppTheme.warning,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             '"Apportez toutes les dîmes à la maison du trésor, afin qu\'il y ait de la nourriture dans ma maison; mettez-moi de la sorte à l\'épreuve, dit l\'Éternel des armées. Et vous verrez si je n\'ouvre pas pour vous les écluses des cieux, si je ne répands pas sur vous la bénédiction en abondance."',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textPrimaryColor,
               fontStyle: FontStyle.italic,
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Malachie 3:10',
             style: GoogleFonts.poppins(
-              fontSize: 13,
+              fontSize: AppTheme.fontSize13,
               fontWeight: AppTheme.fontSemiBold,
-              color: Colors.amber[700],
+              color: AppTheme.warning,
             ),
           ),
         ],
@@ -164,14 +164,14 @@ class QuickTithePage extends StatelessWidget {
         Text(
           'Calculateur de dîme (10%)',
           style: GoogleFonts.poppins(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.surfaceColor,
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -182,11 +182,11 @@ class QuickTithePage extends StatelessWidget {
           child: Column(
             children: [
               _buildCalculatorRow('Salaire mensuel de 1 500€', '150€'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               _buildCalculatorRow('Salaire mensuel de 2 000€', '200€'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               _buildCalculatorRow('Salaire mensuel de 2 500€', '250€'),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               _buildCalculatorRow('Salaire mensuel de 3 000€', '300€'),
             ],
           ),
@@ -202,7 +202,7 @@ class QuickTithePage extends StatelessWidget {
         Text(
           income,
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             color: AppTheme.textSecondaryColor,
           ),
         ),
@@ -215,7 +215,7 @@ class QuickTithePage extends StatelessWidget {
           child: Text(
             tithe,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.orangeStandard,
             ),
@@ -227,7 +227,7 @@ class QuickTithePage extends StatelessWidget {
 
   Widget _buildWebViewOption(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -240,7 +240,7 @@ class QuickTithePage extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.orangeStandard.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -251,7 +251,7 @@ class QuickTithePage extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,16 +259,16 @@ class QuickTithePage extends StatelessWidget {
                     Text(
                       'Plateforme HelloAsso',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Interface complète pour votre dîme',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -277,7 +277,7 @@ class QuickTithePage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
@@ -313,7 +313,7 @@ class QuickTithePage extends StatelessWidget {
 
   Widget _buildTitheInfo() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.greenStandard.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -331,18 +331,18 @@ class QuickTithePage extends StatelessWidget {
                 color: AppTheme.greenStandard,
                 size: 24,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 'Bénédictions de la dîme',
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.greenStandard,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildInfoItem('🙏', 'Obéissance à la Parole de Dieu'),
           _buildInfoItem('💰', 'Bénédictions financières promises'),
           _buildInfoItem('🏛️', 'Soutien à l\'œuvre de Dieu'),
@@ -358,13 +358,13 @@ class QuickTithePage extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
-          const SizedBox(width: 12),
+          Text(emoji, style: const TextStyle(fontSize: AppTheme.fontSize16)),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Text(
               text,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textSecondaryColor,
               ),
             ),

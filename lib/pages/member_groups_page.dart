@@ -192,7 +192,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
       onTap: () => setState(() => _selectedTab = tabId),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
-        margin: EdgeInsets.all(4),
+        margin: EdgeInsets.all(AppTheme.spaceXSmall),
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.white100 : Colors.transparent,
@@ -213,13 +213,13 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               color: isSelected ? AppTheme.primaryColor : AppTheme.grey600,
               size: 20,
             ),
-            SizedBox(width: 8),
+            SizedBox(width: AppTheme.spaceSmall),
             Text(
               title,
               style: TextStyle(
                 color: isSelected ? AppTheme.primaryColor : AppTheme.grey600,
                 fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
               ),
             ),
           ],
@@ -239,12 +239,12 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               valueColor: AlwaysStoppedAnimation(AppTheme.primaryColor),
               strokeWidth: 3,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Chargement de vos groupes...',
               style: TextStyle(
                 color: AppTheme.grey600,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
               ),
             ),
           ],
@@ -258,7 +258,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
       opacity: _fadeAnimation,
       child: Column(
         children: [
-          SizedBox(height: 24),
+          SizedBox(height: AppTheme.spaceLarge),
           _selectedTab == 'my_groups'
               ? _buildProfessionalMyGroupsList()
               : _buildProfessionalAvailableGroupsList(),
@@ -299,11 +299,11 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
 
   Widget _buildEmptyMyGroupsState() {
     return Container(
-      padding: EdgeInsets.all(32),
+      padding: EdgeInsets.all(AppTheme.spaceXLarge),
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -314,26 +314,26 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               color: AppTheme.primaryColor,
             ),
           ),
-          SizedBox(height: 24),
+          SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Aucun groupe rejoint',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.black100.withOpacity(0.87),
             ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Explorez et rejoignez des groupes pour enrichir votre expérience communautaire',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey600,
               height: 1.4,
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 24),
+          SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: () => setState(() => _selectedTab = 'available'),
             icon: Icon(Icons.explore),
@@ -354,11 +354,11 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
 
   Widget _buildEmptyAvailableGroupsState() {
     return Container(
-      padding: EdgeInsets.all(32),
+      padding: EdgeInsets.all(AppTheme.spaceXLarge),
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               color: AppTheme.secondaryColor.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -369,20 +369,20 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               color: AppTheme.secondaryColor,
             ),
           ),
-          SizedBox(height: 24),
+          SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Aucun groupe disponible',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.black100.withOpacity(0.87),
             ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Tous les groupes publics ont été rejoints ou aucun nouveau groupe n\'est disponible pour le moment',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey600,
               height: 1.4,
             ),
@@ -418,7 +418,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
           
           // Contenu principal
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -429,12 +429,12 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                     style: TextStyle(
                       color: AppTheme.grey700,
                       height: 1.4,
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                 ],
                 
                 // Informations pratiques
@@ -442,11 +442,11 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                 
                 // Prochaine réunion (pour mes groupes)
                 if (isMyGroup && nextMeeting != null) ...[
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                   _buildNextMeetingCard(nextMeeting, group),
                 ],
                 
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 
                 // Actions
                 _buildGroupActions(group, isMyGroup, nextMeeting),
@@ -532,7 +532,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                   group.name,
                   style: TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     shadows: [
                       Shadow(
@@ -543,7 +543,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                     ],
                   ),
                 ),
-                SizedBox(height: 4),
+                SizedBox(height: AppTheme.spaceXSmall),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
@@ -554,7 +554,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                     group.type,
                     style: TextStyle(
                       color: groupColor,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
@@ -642,18 +642,18 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               size: 16,
               color: AppTheme.grey600,
             ),
-            SizedBox(width: 8),
+            SizedBox(width: AppTheme.spaceSmall),
             Text(
               '${group.dayName} à ${group.time}',
               style: TextStyle(
                 color: AppTheme.grey700,
                 fontWeight: AppTheme.fontMedium,
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
               ),
             ),
           ],
         ),
-        SizedBox(height: 8),
+        SizedBox(height: AppTheme.spaceSmall),
         Row(
           children: [
             Icon(
@@ -661,13 +661,13 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               size: 16,
               color: AppTheme.grey600,
             ),
-            SizedBox(width: 8),
+            SizedBox(width: AppTheme.spaceSmall),
             Expanded(
               child: Text(
                 group.location,
                 style: TextStyle(
                   color: AppTheme.grey700,
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                 ),
               ),
             ),
@@ -679,7 +679,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
 
   Widget _buildNextMeetingCard(GroupMeetingModel meeting, GroupModel group) {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -697,32 +697,32 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                 size: 16,
                 color: AppTheme.primaryColor,
               ),
-              SizedBox(width: 8),
+              SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Prochaine réunion',
                 style: TextStyle(
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.primaryColor,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 8),
+          SizedBox(height: AppTheme.spaceSmall),
           Text(
             meeting.title,
             style: TextStyle(
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.black100.withOpacity(0.87),
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
             ),
           ),
-          SizedBox(height: 4),
+          SizedBox(height: AppTheme.spaceXSmall),
           Text(
             _formatDateTime(meeting.date),
             style: TextStyle(
               color: AppTheme.grey600,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
             ),
           ),
         ],
@@ -744,7 +744,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                   fit: BoxFit.scaleDown,
                   child: Text(
                     'Rejoindre',
-                    style: TextStyle(fontSize: 11),
+                    style: TextStyle(fontSize: AppTheme.fontSize11),
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -759,7 +759,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               ),
             ),
           if (group.meetingLink != null && group.meetingLink!.isNotEmpty)
-            SizedBox(width: 4),
+            SizedBox(width: AppTheme.spaceXSmall),
           
           // Bouton signaler absence
           Expanded(
@@ -770,7 +770,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                 fit: BoxFit.scaleDown,
                 child: Text(
                   'Absence',
-                  style: TextStyle(fontSize: 11),
+                  style: TextStyle(fontSize: AppTheme.fontSize11),
                 ),
               ),
               style: OutlinedButton.styleFrom(
@@ -785,7 +785,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
             ),
           ),
           
-          SizedBox(width: 4),
+          SizedBox(width: AppTheme.spaceXSmall),
           
           // Bouton détails complets (seulement pour les membres)
           Expanded(
@@ -801,7 +801,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                 fit: BoxFit.scaleDown,
                 child: Text(
                   'Détails',
-                  style: TextStyle(fontSize: 11),
+                  style: TextStyle(fontSize: AppTheme.fontSize11),
                 ),
               ),
               style: OutlinedButton.styleFrom(
@@ -825,7 +825,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                 fit: BoxFit.scaleDown,
                 child: Text(
                   'Rejoindre',
-                  style: TextStyle(fontSize: 11),
+                  style: TextStyle(fontSize: AppTheme.fontSize11),
                 ),
               ),
               style: ElevatedButton.styleFrom(
@@ -840,7 +840,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
             ),
           ),
           
-          SizedBox(width: 4),
+          SizedBox(width: AppTheme.spaceXSmall),
           
           // Bouton voir description (pour les non-membres)
           Expanded(
@@ -851,7 +851,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                 fit: BoxFit.scaleDown,
                 child: Text(
                   'Description',
-                  style: TextStyle(fontSize: 11),
+                  style: TextStyle(fontSize: AppTheme.fontSize11),
                 ),
               ),
               style: OutlinedButton.styleFrom(
@@ -959,7 +959,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                 height: 4,
                 decoration: BoxDecoration(
                   color: AppTheme.grey300,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
             ),
@@ -978,7 +978,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                   child: _buildGroupCoverImage(group.groupImageUrl!),
                 ),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: AppTheme.spaceLarge),
             ],
             
             // Contenu
@@ -992,12 +992,12 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                     Text(
                       group.name,
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: AppTheme.fontSize28,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.black100.withOpacity(0.87),
                       ),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: AppTheme.spaceSmall),
                     
                     // Type de groupe
                     Container(
@@ -1014,43 +1014,43 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                         style: TextStyle(
                           color: Color(int.parse(group.color.replaceFirst('#', '0xFF'))),
                           fontWeight: AppTheme.fontSemiBold,
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                         ),
                       ),
                     ),
-                    SizedBox(height: 24),
+                    SizedBox(height: AppTheme.spaceLarge),
                     
                     // Informations de base
                     _buildInfoSection('Horaires', '${group.dayName} à ${group.time}', Icons.schedule),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppTheme.spaceMedium),
                     _buildInfoSection('Lieu', group.location, Icons.location_on),
-                    SizedBox(height: 24),
+                    SizedBox(height: AppTheme.spaceLarge),
                     
                     // Description
                     Text(
                       'Description',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: AppTheme.fontSize20,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.black100.withOpacity(0.87),
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: AppTheme.space12),
                     Text(
                       group.description.isNotEmpty 
                         ? group.description
                         : 'Aucune description disponible pour ce groupe.',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         color: AppTheme.grey700,
                         height: 1.6,
                       ),
                     ),
-                    SizedBox(height: 32),
+                    SizedBox(height: AppTheme.spaceXLarge),
                     
                     // Note pour rejoindre
                     Container(
-                      padding: EdgeInsets.all(16),
+                      padding: EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: BoxDecoration(
                         color: AppTheme.primaryColor.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1065,13 +1065,13 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                             color: AppTheme.primaryColor,
                             size: 24,
                           ),
-                          SizedBox(width: 12),
+                          SizedBox(width: AppTheme.space12),
                           Expanded(
                             child: Text(
                               'Rejoignez ce groupe pour accéder aux informations détaillées, aux réunions et aux discussions.',
                               style: TextStyle(
                                 color: AppTheme.primaryColor,
-                                fontSize: 14,
+                                fontSize: AppTheme.fontSize14,
                                 fontWeight: AppTheme.fontMedium,
                               ),
                             ),
@@ -1079,7 +1079,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                         ],
                       ),
                     ),
-                    SizedBox(height: 32),
+                    SizedBox(height: AppTheme.spaceXLarge),
                   ],
                 ),
               ),
@@ -1087,7 +1087,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
             
             // Actions
             Container(
-              padding: EdgeInsets.all(24),
+              padding: EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
                 color: AppTheme.grey50,
                 borderRadius: BorderRadius.only(
@@ -1116,7 +1116,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                       ),
                     ),
                   ),
-                  SizedBox(width: 12),
+                  SizedBox(width: AppTheme.space12),
                   Expanded(
                     flex: 2,
                     child: ElevatedButton.icon(
@@ -1149,7 +1149,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
     return Row(
       children: [
         Container(
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1160,7 +1160,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
             color: AppTheme.primaryColor,
           ),
         ),
-        SizedBox(width: 12),
+        SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1168,7 +1168,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.grey600,
                   fontWeight: AppTheme.fontMedium,
                 ),
@@ -1177,7 +1177,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               Text(
                 value,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: AppTheme.black100.withOpacity(0.87),
                   fontWeight: AppTheme.fontSemiBold,
                 ),

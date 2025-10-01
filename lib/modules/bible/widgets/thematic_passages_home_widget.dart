@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
 import '../views/thematic_passages_view.dart';
+import '../../../theme.dart';
 
 class ThematicPassagesHomeWidget extends StatelessWidget {
   const ThematicPassagesHomeWidget({Key? key}) : super(key: key);
@@ -27,19 +28,19 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
         children: [
           // En-tête
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
-                    color: Colors.purple.withOpacity(0.1),
+                    color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                   child: Icon(
                     Icons.collections_bookmark,
-                    color: Colors.purple[700],
+                    color: AppTheme.primaryColor,
                     size: 24)),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,14 +48,14 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                       Text(
                         'Passages thématiques',
                         style: GoogleFonts.inter(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                           color: theme.colorScheme.onSurface)),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         'Collections de versets par thème',
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: theme.colorScheme.onSurface.withOpacity(0.7))),
                     ])),
                 TextButton(
@@ -82,28 +83,28 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
               if (snapshot.hasError) {
                 print('Erreur dans ThematicPassagesHomeWidget: ${snapshot.error}');
                 return Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   child: Column(
                     children: [
                       Icon(
                         Icons.error_outline,
                         size: 48,
                         color: theme.colorScheme.error.withOpacity(0.6)),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       Text(
                         'Erreur de chargement',
                         style: GoogleFonts.inter(
                           color: theme.colorScheme.error,
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold)),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Impossible de charger les thèmes bibliques',
                         style: GoogleFonts.inter(
                           color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          fontSize: 14),
+                          fontSize: AppTheme.fontSize14),
                         textAlign: TextAlign.center),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       OutlinedButton.icon(
                         onPressed: () async {
                           try {
@@ -140,20 +141,20 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
               
               if (themes.isEmpty) {
                 return Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   child: Column(
                     children: [
                       Icon(
                         Icons.collections_bookmark_outlined,
                         size: 48,
                         color: theme.colorScheme.onSurface.withOpacity(0.3)),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       Text(
                         'Aucun thème disponible',
                         style: GoogleFonts.inter(
                           color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          fontSize: 16)),
-                      const SizedBox(height: 8),
+                          fontSize: AppTheme.fontSize16)),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       TextButton(
                         onPressed: () async {
                           await ThematicPassageService.initializeDefaultThemes();
@@ -197,13 +198,13 @@ class ThematicPassagesHomeWidget extends StatelessWidget {
                                 style: GoogleFonts.inter(
                                   color: theme.colorScheme.primary,
                                   fontWeight: AppTheme.fontSemiBold)),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Icon(
                                 Icons.arrow_forward,
                                 size: 16,
                                 color: theme.colorScheme.primary),
                             ])))),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                 ]);
             }),
         ]));
@@ -230,7 +231,7 @@ class _ThemeCard extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: theme.color.withOpacity(0.05),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -240,7 +241,7 @@ class _ThemeCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: theme.color.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -248,7 +249,7 @@ class _ThemeCard extends StatelessWidget {
                   theme.icon,
                   color: theme.color,
                   size: 20)),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,19 +257,19 @@ class _ThemeCard extends StatelessWidget {
                     Text(
                       theme.name,
                       style: GoogleFonts.inter(
-                        fontSize: 15,
+                        fontSize: AppTheme.fontSize15,
                         fontWeight: AppTheme.fontSemiBold,
                         color: themeData.colorScheme.onSurface)),
                     const SizedBox(height: 2),
                     Text(
                       theme.description,
                       style: GoogleFonts.inter(
-                        fontSize: 13,
+                        fontSize: AppTheme.fontSize13,
                         color: themeData.colorScheme.onSurface.withOpacity(0.6)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis),
                   ])),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -277,10 +278,10 @@ class _ThemeCard extends StatelessWidget {
                 child: Text(
                   '${theme.passages.length}',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontSemiBold,
                     color: theme.color))),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Icon(
                 Icons.arrow_forward_ios,
                 size: 14,

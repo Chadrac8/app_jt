@@ -219,7 +219,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor,
         borderRadius: const BorderRadius.only(
@@ -234,16 +234,16 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
             'Bonjour ${_currentUser!.firstName} !',
             style: const TextStyle(
               color: AppTheme.white100,
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Gérez vos rendez-vous facilement',
             style: TextStyle(
               color: AppTheme.white100.withOpacity(0.70),
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
             ),
           ),
         ],
@@ -253,7 +253,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
 
   Widget _buildFilterSelector() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -305,15 +305,15 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   '${snapshot.error}',
                   style: TextStyle(color: AppTheme.textTertiaryColor),
@@ -331,7 +331,7 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: appointments.length,
           itemBuilder: (context, index) {
             return _buildAppointmentCard(appointments[index]);
@@ -376,26 +376,26 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
             size: 80,
             color: AppTheme.textTertiaryColor,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             title,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             subtitle,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.textSecondaryColor,
             ),
             textAlign: TextAlign.center,
           ),
           if (_selectedFilter == 'upcoming') ...[
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             ElevatedButton.icon(
               onPressed: _bookNewAppointment,
               icon: const Icon(Icons.add),
@@ -467,12 +467,12 @@ class _MemberAppointmentsPageState extends State<MemberAppointmentsPage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             appointment.statutLabel,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontBold,
             ),
           ),

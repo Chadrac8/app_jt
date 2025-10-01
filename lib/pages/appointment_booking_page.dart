@@ -232,30 +232,30 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       key: _formKey,
       child: SingleChildScrollView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildWelcomeCard(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildResponsableSelector(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             if (_selectedResponsable != null) ...[
               _buildDateTimeSelector(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
             ],
             if (_selectedDateTime != null) ...[
               _buildMotifSelector(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildLieuSelector(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildNotesField(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               if (_selectedLieu == 'en_personne')
                 _buildAdresseField(),
               if (_selectedLieu == 'telephone')
                 _buildTelephoneField(),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
               _buildConfirmationSection(),
             ],
           ],
@@ -270,7 +270,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -290,21 +290,21 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
               color: AppTheme.white100,
               size: 32,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             const Text(
               'Prendre rendez-vous',
               style: TextStyle(
                 color: AppTheme.white100,
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Planifiez facilement un moment d\'échange avec un responsable de l\'église.',
               style: TextStyle(
                 color: AppTheme.white100.withOpacity(0.70),
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
               ),
             ),
           ],
@@ -318,24 +318,24 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.person, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Choisir un responsable',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_responsables.isEmpty)
               const Text('Aucun responsable disponible')
             else
@@ -362,7 +362,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
         },
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             border: Border.all(
               color: isSelected ? AppTheme.primaryColor : AppTheme.grey500,
@@ -381,7 +381,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
                   style: const TextStyle(color: AppTheme.white100, fontWeight: AppTheme.fontBold),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,7 +397,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
                       Text(
                         responsable.roles.join(', '),
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.textTertiaryColor,
                         ),
                       ),
@@ -418,29 +418,29 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.schedule, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Choisir un créneau',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_isLoadingSlots)
               const Center(child: CircularProgressIndicator())
             else if (_availableSlots.isEmpty)
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.orangeStandard,
                   border: Border.all(color: AppTheme.orangeStandard),
@@ -449,7 +449,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
                 child: Row(
                   children: [
                     Icon(Icons.info, color: AppTheme.orangeStandard),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text(
                         'Aucun créneau disponible pour ${_selectedResponsable!.fullName} dans les 30 prochains jours.',
@@ -489,10 +489,10 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
                 _formatDateHeader(date),
                 style: const TextStyle(
                   fontWeight: AppTheme.fontBold,
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -536,24 +536,24 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.chat, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Motif du rendez-vous',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -577,7 +577,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
               }).toList(),
             ),
             if (_selectedMotif == 'Autre') ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               TextFormField(
                 controller: _motifController,
                 decoration: InputDecoration(
@@ -607,24 +607,24 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.location_on, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Modalité du rendez-vous',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ..._lieuOptions.entries.map((entry) {
               return RadioListTile<String>(
                 title: Text(entry.value),
@@ -646,24 +646,24 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.note, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Notes personnelles (facultatif)',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _notesController,
               decoration: InputDecoration(
@@ -685,24 +685,24 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.place, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Lieu de rencontre',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _adresseController,
               decoration: InputDecoration(
@@ -724,24 +724,24 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.phone, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Numéro de téléphone',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _numeroTelController,
               decoration: InputDecoration(
@@ -764,23 +764,23 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Récapitulatif',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildSummaryRow('Responsable', _selectedResponsable!.fullName),
             _buildSummaryRow('Date et heure', _formatDateTimeFull(_selectedDateTime!)),
             _buildSummaryRow('Motif', _selectedMotif.isNotEmpty ? _selectedMotif : _motifController.text),
             _buildSummaryRow('Modalité', _lieuOptions[_selectedLieu]!),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -805,7 +805,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage>
                     : const Text(
                         'Confirmer le rendez-vous',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),

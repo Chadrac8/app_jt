@@ -30,7 +30,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
       'date': DateTime.now().add(const Duration(days: 2)),
       'time': '19:00',
       'location': 'Grande salle',
-      'color': Colors.purple,
+      'color': AppTheme.primaryColor,
       'icon': Icons.event,
     },
     {
@@ -169,7 +169,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                 child: Row(
                   children: [
                     Icon(Icons.calendar_month, size: 18),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Vue mensuelle'),
                   ],
                 ),
@@ -179,7 +179,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                 child: Row(
                   children: [
                     Icon(Icons.view_week, size: 18),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Vue hebdomadaire'),
                   ],
                 ),
@@ -210,23 +210,23 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
 
   Widget _buildFilters() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Afficher :',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Wrap(
             spacing: 8,
             children: [
-              _buildFilterChip('events', 'Événements', Icons.event, Colors.purple),
+              _buildFilterChip('events', 'Événements', Icons.event, AppTheme.primaryColor),
               _buildFilterChip('groups', 'Groupes', Icons.groups, AppTheme.secondaryColor),
               _buildFilterChip('services', 'Services', Icons.church, AppTheme.orangeStandard),
             ],
@@ -249,7 +249,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
             size: 16,
             color: isSelected ? AppTheme.white100 : color,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(label),
         ],
       ),
@@ -283,7 +283,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
           Text(
             _getMonthYear(_currentMonth),
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
@@ -307,7 +307,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
       child: Text(
         'Semaine du ${startOfWeek.day}/${startOfWeek.month} au ${endOfWeek.day}/${endOfWeek.month}',
         style: const TextStyle(
-          fontSize: 20,
+          fontSize: AppTheme.fontSize20,
           fontWeight: AppTheme.fontBold,
           color: AppTheme.textPrimaryColor,
         ),
@@ -333,11 +333,11 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
               size: 64,
               color: AppTheme.textSecondaryColor,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun événement cette semaine',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
@@ -347,7 +347,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: weekItems.length,
       itemBuilder: (context, index) {
         final item = weekItems[index];
@@ -416,7 +416,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
     return GestureDetector(
       onTap: () => _showDayDetails(date, items),
       child: Container(
-        margin: const EdgeInsets.all(2),
+        margin: const EdgeInsets.all(AppTheme.space2),
         decoration: BoxDecoration(
           color: isToday ? AppTheme.primaryColor.withOpacity(0.1) : null,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -427,7 +427,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(AppTheme.spaceXSmall),
               child: Text(
                 '${date.day}',
                 style: TextStyle(
@@ -463,7 +463,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
               Text(
                 '+${items.length - 2}',
                 style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: AppTheme.fontSize10,
                   color: AppTheme.textSecondaryColor,
                 ),
               ),
@@ -482,7 +482,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Row(
           children: [
             Container(
@@ -498,7 +498,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                 size: 24,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -506,12 +506,12 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                   Text(
                     item['title'] as String,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Row(
                     children: [
                       Icon(
@@ -519,7 +519,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                         size: 14,
                         color: AppTheme.textSecondaryColor,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         '${_formatDate(date)} à ${item['time']}',
                         style: const TextStyle(
@@ -536,7 +536,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                         size: 14,
                         color: AppTheme.textSecondaryColor,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         item['location'] as String,
                         style: const TextStyle(
@@ -558,7 +558,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                 _getTypeLabel(item['type'] as String),
                 style: const TextStyle(
                   color: AppTheme.white100,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
@@ -578,7 +578,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -586,14 +586,14 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
             Text(
               _formatDate(date),
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...items.map((item) => _buildDayDetailItem(item)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -622,7 +622,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -637,7 +637,7 @@ class _MemberCalendarPageState extends State<MemberCalendarPage>
                 Text(
                   '${item['time']} - ${item['location']}',
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),

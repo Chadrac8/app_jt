@@ -4,6 +4,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../theme.dart';
 import '../models/youtube_playlist_model.dart';
 import '../services/youtube_playlist_service.dart';
+import '../../../theme.dart';
 
 /// Onglet "La voix" avec playlists YouTube de William Marrion Branham
 class LaVoixTab extends StatefulWidget {
@@ -131,7 +132,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.08),
         border: Border(
@@ -146,7 +147,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -164,7 +165,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                   size: 28,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,16 +173,16 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                     Text(
                       'La Voix du 7ème Ange',
                       style: GoogleFonts.poppins(
-                        fontSize: 22,
+                        fontSize: AppTheme.fontSize22,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Playlists vidéo des prédications de William Marrion Branham',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -198,9 +199,9 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
             ],
           ),
           if (_currentPlaylist != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.white100,
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -215,7 +216,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                     color: AppTheme.primaryColor,
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,17 +224,17 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                         Text(
                           _currentPlaylist!.title,
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.primaryColor,
                           ),
                         ),
                         if (_currentPlaylist!.description.isNotEmpty) ...[
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             _currentPlaylist!.description,
                             style: GoogleFonts.inter(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: AppTheme.grey600,
                             ),
                             maxLines: 2,
@@ -260,11 +261,11 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
           CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Chargement des playlists...',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey600,
             ),
           ),
@@ -283,21 +284,21 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune playlist disponible',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Les administrateurs doivent ajouter des playlists YouTube\ndepuis l\'interface d\'administration.',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey500,
             ),
           ),
@@ -313,7 +314,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
         Expanded(
           flex: 3,
           child: Container(
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               boxShadow: [
@@ -359,16 +360,16 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                         color: AppTheme.primaryColor,
                         size: 20,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Playlists disponibles',
                         style: GoogleFonts.poppins(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                           color: AppTheme.primaryColor,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
@@ -378,7 +379,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                         child: Text(
                           '${_playlists.length}',
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.white100,
                           ),
@@ -398,7 +399,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
       ],
     );
   }
@@ -422,14 +423,14 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
           onTap: () => _selectPlaylist(playlist),
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(AppTheme.spaceSmall),
                       decoration: BoxDecoration(
                         color: isSelected 
                             ? AppTheme.primaryColor 
@@ -442,7 +443,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                         size: 20,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -450,7 +451,7 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                           Text(
                             playlist.title,
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               fontWeight: AppTheme.fontSemiBold,
                               color: isSelected ? AppTheme.primaryColor : AppTheme.black100.withOpacity(0.87),
                             ),
@@ -458,11 +459,11 @@ class _LaVoixTabState extends State<LaVoixTab> with AutomaticKeepAliveClientMixi
                             overflow: TextOverflow.ellipsis,
                           ),
                           if (playlist.description.isNotEmpty) ...[
-                            const SizedBox(height: 4),
+                            const SizedBox(height: AppTheme.spaceXSmall),
                             Text(
                               playlist.description,
                               style: GoogleFonts.inter(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 color: AppTheme.grey600,
                               ),
                               maxLines: 2,

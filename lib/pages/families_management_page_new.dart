@@ -128,7 +128,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
 
   Widget _buildSearchBar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: TextField(
         controller: _searchController,
         decoration: InputDecoration(
@@ -169,7 +169,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -180,7 +180,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                       color: AppTheme.primaryColor,
                     ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Expanded(
@@ -220,11 +220,11 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: color,
           ),
@@ -256,18 +256,18 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                   size: 48,
                   color: Theme.of(context).colorScheme.error,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   '${snapshot.error}',
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: () => setState(() {}),
                   child: const Text('Réessayer'),
@@ -294,21 +294,21 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                   size: 48,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   _searchTerm.isNotEmpty
                       ? 'Aucune famille trouvée'
                       : 'Aucune famille enregistrée',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   _searchTerm.isNotEmpty
                       ? 'Essayez avec d\'autres termes de recherche'
                       : 'Commencez par créer une nouvelle famille',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton.icon(
                   onPressed: () => _navigateToFamilyForm(),
                   icon: const Icon(Icons.add),
@@ -320,9 +320,9 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
         }
 
         return ListView.separated(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: filteredFamilies.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          separatorBuilder: (context, index) => const SizedBox(height: AppTheme.space12),
           itemBuilder: (context, index) {
             final family = filteredFamilies[index];
             return _buildFamilyCard(family);
@@ -340,7 +340,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         onTap: () => _navigateToFamilyDetail(family),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -362,7 +362,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                           )
                         : Icon(Icons.family_restroom, color: _getStatusColor(family.status)),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,7 +373,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                                 fontWeight: AppTheme.fontBold,
                               ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Row(
                           children: [
                             Container(
@@ -385,19 +385,19 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                               child: Text(
                                 _getStatusLabel(family.status),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   color: _getStatusColor(family.status),
                                   fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Icon(
                               Icons.people,
                               size: 16,
                               color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               '${family.memberIds.length} membre${family.memberIds.length > 1 ? 's' : ''}',
                               style: Theme.of(context).textTheme.bodySmall,
@@ -439,7 +439,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                 ],
               ),
               if (family.fullAddress.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Row(
                   children: [
                     Icon(
@@ -447,7 +447,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                       size: 16,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Expanded(
                       child: Text(
                         family.fullAddress,
@@ -458,7 +458,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                 ),
               ],
               if (family.homePhone != null) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Row(
                   children: [
                     Icon(
@@ -466,7 +466,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                       size: 16,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       family.homePhone!,
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -475,14 +475,14 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage>
                 ),
               ],
               if (family.tags.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
                   children: family.tags.map((tag) => Chip(
                     label: Text(
                       tag,
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: AppTheme.fontSize12),
                     ),
                     backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
                     side: BorderSide.none,

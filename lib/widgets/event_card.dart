@@ -231,7 +231,7 @@ class _EventCardState extends State<EventCard>
                       widget.event.statusLabel,
                       style: const TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
@@ -270,7 +270,7 @@ class _EventCardState extends State<EventCard>
                     bottom: 12,
                     right: 12,
                     child: Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(AppTheme.spaceSmall),
                       decoration: BoxDecoration(
                         color: AppTheme.white100.withOpacity(0.9),
                         shape: BoxShape.circle,
@@ -288,7 +288,7 @@ class _EventCardState extends State<EventCard>
             // Contenu
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -316,7 +316,7 @@ class _EventCardState extends State<EventCard>
                             widget.event.typeLabel,
                             style: TextStyle(
                               color: AppTheme.primaryColor,
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               fontWeight: AppTheme.fontMedium,
                             ),
                           ),
@@ -324,7 +324,7 @@ class _EventCardState extends State<EventCard>
                       ],
                     ),
                     
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     
                     // Date et heure
                     Row(
@@ -334,7 +334,7 @@ class _EventCardState extends State<EventCard>
                           size: 16,
                           color: AppTheme.textSecondaryColor,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Expanded(
                           child: Text(
                             _formatDateTime(widget.event.startDate),
@@ -346,7 +346,7 @@ class _EventCardState extends State<EventCard>
                       ],
                     ),
                     
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     
                     // Lieu
                     Row(
@@ -356,7 +356,7 @@ class _EventCardState extends State<EventCard>
                           size: 16,
                           color: AppTheme.textSecondaryColor,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Expanded(
                           child: Text(
                             widget.event.location,
@@ -370,7 +370,7 @@ class _EventCardState extends State<EventCard>
                       ],
                     ),
                     
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     
                     // Informations supplémentaires
                     Row(
@@ -389,7 +389,7 @@ class _EventCardState extends State<EventCard>
                                     size: 16,
                                     color: AppTheme.secondaryColor,
                                   ),
-                                  const SizedBox(width: 4),
+                                  const SizedBox(width: AppTheme.spaceXSmall),
                                   Text(
                                     '$count inscrit${count > 1 ? 's' : ''}',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(

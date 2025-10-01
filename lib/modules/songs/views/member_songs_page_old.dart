@@ -8,6 +8,7 @@ import '../../../pages/song_projection_page.dart';
 import '../../../widgets/setlist_card_perfect13.dart';
 import '../../../pages/setlist_detail_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Page des chants pour les membres
 class MemberSongsPage extends StatefulWidget {
@@ -76,7 +77,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
           Container(
             height: 50,
             decoration: BoxDecoration(
-              color: AppTheme.backgroundColor,
+              color: AppTheme.primaryColor, // Couleur primaire cohérente
               boxShadow: [
                 BoxShadow(
                   color: AppTheme.black100.withOpacity(0.08),
@@ -89,17 +90,17 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               bottom: false,
               child: TabBar(
                 controller: _tabController,
-                labelColor: AppTheme.primaryColor,
-                unselectedLabelColor: AppTheme.textSecondaryColor,
-                indicatorColor: AppTheme.primaryColor,
+                labelColor: AppTheme.onPrimaryColor, // Texte blanc
+                unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+                indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc
                 indicatorWeight: 3.0,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 labelStyle: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                 ),
                 unselectedLabelStyle: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontMedium,
                 ),
                 tabs: const [
@@ -181,11 +182,11 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               });
             },
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               const Text('Rechercher dans: '),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               ChoiceChip(
                 label: const Text('Titre'),
                 selected: !_searchInLyrics,
@@ -199,7 +200,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                   color: !_searchInLyrics ? AppTheme.primaryColor : null,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               ChoiceChip(
                 label: const Text('Paroles'),
                 selected: _searchInLyrics,
@@ -234,7 +235,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -250,10 +251,10 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.music_note, size: 64, color: AppTheme.grey500),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun chant trouvé',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -290,7 +291,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -306,12 +307,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.favorite_border, size: 64, color: AppTheme.grey500),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun chant favori trouvé',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Ajoutez des chants à vos favoris en touchant le cœur',
                   style: TextStyle(color: AppTheme.grey500),
@@ -367,7 +368,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                   });
                 }),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Filtres rapides
               SingleChildScrollView(
@@ -375,13 +376,13 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 child: Row(
                   children: [
                     _buildSetlistFilterChip('Tous', null),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildSetlistFilterChip('Cette semaine', 'week'),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildSetlistFilterChip('Ce mois', 'month'),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildSetlistFilterChip('Favoris', 'favorites'),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildSetlistFilterChip('Récents', 'recent'),
                   ])),
             ])),
@@ -404,16 +405,16 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                         Icons.error_outline,
                         size: 64,
                         color: Theme.of(context).colorScheme.error),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Erreur de chargement',
                         style: Theme.of(context).textTheme.titleMedium),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Impossible de charger les setlists',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       ElevatedButton.icon(
                         onPressed: () {
                           setState(() {});
@@ -435,12 +436,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                         Icons.playlist_play_outlined,
                         size: 64,
                         color: Theme.of(context).colorScheme.onSurfaceVariant),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         allSetlists.isEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         allSetlists.isEmpty 
                           ? 'Les setlists créées apparaîtront ici'
@@ -511,7 +512,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                   margin: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
                     color: Theme.of(context).dividerColor,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(AppTheme.radius2),
                   ),
                 ),
                 
@@ -529,7 +530,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                           maxLines: 2,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       
                       StreamBuilder<List<String>>(
                         stream: SongsFirebaseService.getUserFavorites(),

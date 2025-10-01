@@ -62,16 +62,16 @@ class _DonationsPageState extends State<DonationsPage> {
     return Container(
       color: AppTheme.surfaceColor, // Material Design 3 background
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24), // 8px grid compliant
+        padding: const EdgeInsets.all(AppTheme.spaceLarge), // 8px grid compliant
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildBiblicalVerse(),
-            const SizedBox(height: 32), // 8px grid
+            const SizedBox(height: AppTheme.spaceXLarge), // 8px grid
             _buildDonationTypes(),
-            const SizedBox(height: 32), // 8px grid
+            const SizedBox(height: AppTheme.spaceXLarge), // 8px grid
             _buildPaymentMethods(),
-            const SizedBox(height: 24), // 8px grid
+            const SizedBox(height: AppTheme.spaceLarge), // 8px grid
             if (_showRIB) _buildRIBSection(),
           ],
         ),
@@ -81,7 +81,7 @@ class _DonationsPageState extends State<DonationsPage> {
 
   Widget _buildBiblicalVerse() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -103,7 +103,7 @@ class _DonationsPageState extends State<DonationsPage> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -114,12 +114,12 @@ class _DonationsPageState extends State<DonationsPage> {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Text(
                   'Parole de Dieu',
                   style: GoogleFonts.inter( // Material Design 3 typography
-                    fontSize: 16, // titleMedium
+                    fontSize: AppTheme.fontSize16, // titleMedium
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
@@ -127,22 +127,22 @@ class _DonationsPageState extends State<DonationsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Text(
             '"Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie."',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               height: 1.6,
               fontStyle: FontStyle.italic,
               color: AppTheme.textPrimaryColor,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             '2 Corinthiens 9:7',
             style: GoogleFonts.inter( // Material Design 3 typography
-              fontSize: 14, // bodyLarge
+              fontSize: AppTheme.fontSize14, // bodyLarge
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
@@ -159,12 +159,12 @@ class _DonationsPageState extends State<DonationsPage> {
         Text(
           'Types de dons',
           style: GoogleFonts.inter(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         ...List.generate(_donationTypes.length, (index) {
           final donation = _donationTypes[index];
           final isSelected = _selectedDonationType == index;
@@ -206,7 +206,7 @@ class _DonationsPageState extends State<DonationsPage> {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppTheme.space20),
                 decoration: BoxDecoration(
                   color: isSelected ? donation.color.withOpacity(0.1) : AppTheme.surfaceColor,
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -231,7 +231,7 @@ class _DonationsPageState extends State<DonationsPage> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         color: donation.color.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -242,7 +242,7 @@ class _DonationsPageState extends State<DonationsPage> {
                         size: 24,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,16 +250,16 @@ class _DonationsPageState extends State<DonationsPage> {
                           Text(
                             donation.title,
                             style: GoogleFonts.inter(
-                              fontSize: 16,
+                              fontSize: AppTheme.fontSize16,
                               fontWeight: AppTheme.fontSemiBold,
                               color: AppTheme.textPrimaryColor,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             donation.description,
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               color: AppTheme.textSecondaryColor,
                             ),
                           ),
@@ -289,12 +289,12 @@ class _DonationsPageState extends State<DonationsPage> {
         Text(
           'Moyens de paiement',
           style: GoogleFonts.inter(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.textPrimaryColor,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         _buildPaymentMethodCard(
           icon: Icons.account_balance,
           title: 'Virement bancaire',
@@ -305,7 +305,7 @@ class _DonationsPageState extends State<DonationsPage> {
             });
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         _buildPaymentMethodCard(
           icon: Icons.receipt_long,
           title: 'Chèque',
@@ -325,7 +325,7 @@ class _DonationsPageState extends State<DonationsPage> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -344,7 +344,7 @@ class _DonationsPageState extends State<DonationsPage> {
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -355,7 +355,7 @@ class _DonationsPageState extends State<DonationsPage> {
                 size: 24,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,16 +363,16 @@ class _DonationsPageState extends State<DonationsPage> {
                   Text(
                     title,
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     description,
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor,
                     ),
                   ),
@@ -392,7 +392,7 @@ class _DonationsPageState extends State<DonationsPage> {
 
   Widget _buildRIBSection() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -418,22 +418,22 @@ class _DonationsPageState extends State<DonationsPage> {
                 color: AppTheme.primaryColor,
                 size: 24,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 'Informations bancaires',
                 style: GoogleFonts.inter(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildRIBField('Titulaire du compte', _titulaire),
           _buildRIBField('IBAN', _iban),
           _buildRIBField('BIC/SWIFT', _bic),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Row(
             children: [
               Expanded(
@@ -443,7 +443,7 @@ class _DonationsPageState extends State<DonationsPage> {
                   () => _copyToClipboard(_iban, 'IBAN copié'),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: _buildActionButton(
                   'Partager',
@@ -453,9 +453,9 @@ class _DonationsPageState extends State<DonationsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.blueStandard.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -471,12 +471,12 @@ class _DonationsPageState extends State<DonationsPage> {
                   color: AppTheme.grey700,
                   size: 20,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Précisez le type de don en commentaire du virement',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: AppTheme.grey700,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -499,15 +499,15 @@ class _DonationsPageState extends State<DonationsPage> {
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 13,
+              fontSize: AppTheme.fontSize13,
               fontWeight: AppTheme.fontMedium,
               color: AppTheme.textSecondaryColor,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: AppTheme.space6),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: AppTheme.grey500.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -519,7 +519,7 @@ class _DonationsPageState extends State<DonationsPage> {
             child: Text(
               value,
               style: GoogleFonts.robotoMono(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textPrimaryColor,
                 fontWeight: AppTheme.fontMedium,
               ),
@@ -544,7 +544,7 @@ class _DonationsPageState extends State<DonationsPage> {
         ),
         elevation: 2,
         textStyle: GoogleFonts.inter(
-          fontSize: 13,
+          fontSize: AppTheme.fontSize13,
           fontWeight: AppTheme.fontMedium,
         ),
       ),
@@ -588,7 +588,7 @@ Merci pour votre générosité ! 🙏
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: const BoxDecoration(
           color: AppTheme.white100,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -604,22 +604,22 @@ Merci pour votre générosité ! 🙏
                   color: AppTheme.primaryColor,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Paiement par chèque',
                   style: GoogleFonts.inter(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             _buildCheckInstruction('À l\'ordre de', _titulaire),
             _buildCheckInstruction('Préciser au dos', _donationTypes[_selectedDonationType].title),
             _buildCheckInstruction('Envoyer à', 'Adresse de l\'église\n[À compléter avec l\'adresse réelle]'),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -635,7 +635,7 @@ Merci pour votre générosité ! 🙏
                 child: Text(
                   'Compris',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
@@ -662,7 +662,7 @@ Merci pour votre générosité ! 🙏
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -670,16 +670,16 @@ Merci pour votre générosité ! 🙏
                 Text(
                   label,
                   style: GoogleFonts.inter(
-                    fontSize: 13,
+                    fontSize: AppTheme.fontSize13,
                     fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   value,
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.textPrimaryColor,
                     fontWeight: AppTheme.fontMedium,
                   ),
@@ -701,7 +701,7 @@ Merci pour votre générosité ! 🙏
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: const BoxDecoration(
           color: AppTheme.white100,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -712,7 +712,7 @@ Merci pour votre générosité ! 🙏
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: donation.color.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -723,12 +723,12 @@ Merci pour votre générosité ! 🙏
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Text(
                     'Options de chargement',
                     style: GoogleFonts.inter(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
@@ -736,7 +736,7 @@ Merci pour votre générosité ! 🙏
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             _buildLoadingOption(
               context,
               'Chargement normal',
@@ -758,7 +758,7 @@ Merci pour votre générosité ! 🙏
                 );
               },
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             _buildLoadingOption(
               context,
               'Chargement simplifié',
@@ -797,7 +797,7 @@ Merci pour votre générosité ! 🙏
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -808,7 +808,7 @@ Merci pour votre générosité ! 🙏
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(AppTheme.space10),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
@@ -819,7 +819,7 @@ Merci pour votre générosité ! 🙏
                 size: 20,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -827,16 +827,16 @@ Merci pour votre générosité ! 🙏
                   Text(
                     title,
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     description,
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor,
                     ),
                   ),

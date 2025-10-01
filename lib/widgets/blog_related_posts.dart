@@ -21,7 +21,7 @@ class BlogRelatedPosts extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(AppTheme.spaceMedium),
               child: CircularProgressIndicator(),
             ),
           );
@@ -95,7 +95,7 @@ class BlogRelatedPosts extends StatelessWidget {
               // Contenu
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -120,7 +120,7 @@ class BlogRelatedPosts extends StatelessWidget {
                             size: 14,
                             color: AppTheme.grey600,
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             '${post.readingTimeMinutes} min',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -133,7 +133,7 @@ class BlogRelatedPosts extends StatelessWidget {
                             size: 14,
                             color: AppTheme.grey600,
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             post.likes.toString(),
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(

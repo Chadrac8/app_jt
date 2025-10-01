@@ -58,7 +58,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
         title: Text(
           widget.pepite != null ? 'Modifier la Pépite' : 'Nouvelle Pépite d\'Or',
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.white100,
           ),
@@ -84,16 +84,16 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
           : Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildInfoGeneraleSection(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     _buildCitationsSection(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     _buildOptionsPublication(),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppTheme.spaceXLarge),
                     _buildBoutonsSauvegarde(),
                   ],
                 ),
@@ -105,19 +105,19 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
   Widget _buildInfoGeneraleSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Informations générales',
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _themeController,
               decoration: InputDecoration(
@@ -135,7 +135,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _descriptionController,
               decoration: InputDecoration(
@@ -154,7 +154,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _tagsController,
               decoration: InputDecoration(
@@ -176,7 +176,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
   Widget _buildCitationsSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -185,7 +185,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 Text(
                   'Citations (${_citations.length})',
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontSemiBold,
                     color: const Color(0xFF8B4513),
                   ),
@@ -203,18 +203,18 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_citations.isEmpty)
               Center(
                 child: Column(
                   children: [
                     Icon(Icons.format_quote, size: 48, color: AppTheme.grey400),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Aucune citation ajoutée',
                       style: GoogleFonts.poppins(color: AppTheme.grey600),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     ElevatedButton(
                       onPressed: _ajouterCitationVide,
                       child: const Text('Ajouter une citation'),
@@ -245,17 +245,17 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
       key: ValueKey(citation.id),
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(AppTheme.space6),
                   decoration: BoxDecoration(
                     color: const Color(0xFF8B4513).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Text(
                     '${index + 1}',
@@ -265,7 +265,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Citation ${index + 1}',
@@ -282,7 +282,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             TextFormField(
               initialValue: citation.texte,
               decoration: InputDecoration(
@@ -301,7 +301,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 Expanded(
@@ -324,7 +324,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                     },
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: TextFormField(
                     initialValue: citation.reference,
@@ -350,19 +350,19 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
   Widget _buildOptionsPublication() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Options de publication',
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             SwitchListTile(
               title: Text(
                 'Publier immédiatement',
@@ -372,7 +372,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                 _estPubliee 
                     ? 'Cette pépite sera visible par tous les membres'
                     : 'Cette pépite restera en brouillon',
-                style: GoogleFonts.poppins(fontSize: 13),
+                style: GoogleFonts.poppins(fontSize: AppTheme.fontSize13),
               ),
               value: _estPubliee,
               onChanged: (value) {
@@ -397,7 +397,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
             child: const Text('Annuler'),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: ElevatedButton(
             onPressed: _isLoading ? null : _sauvegarder,

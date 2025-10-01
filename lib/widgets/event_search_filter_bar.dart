@@ -160,7 +160,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                       color: _isSearchFocused 
                           ? AppTheme.primaryColor.withOpacity(0.05)
                           : AppTheme.backgroundColor,
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                       border: Border.all(
                         color: _isSearchFocused 
                             ? AppTheme.primaryColor
@@ -199,7 +199,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                   ),
                 ),
                 
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 
                 // Bouton filtres
                 Container(
@@ -208,7 +208,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                     color: _isFilterExpanded || _totalActiveFilters > 0
                         ? AppTheme.primaryColor
                         : AppTheme.backgroundColor,
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                     border: Border.all(
                       color: _isFilterExpanded || _totalActiveFilters > 0
                           ? AppTheme.primaryColor
@@ -232,7 +232,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                           top: 6,
                           right: 6,
                           child: Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                             decoration: BoxDecoration(
                               color: AppTheme.errorColor,
                               shape: BoxShape.circle,
@@ -245,7 +245,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                               '$_totalActiveFilters',
                               style: const TextStyle(
                                 color: AppTheme.white100,
-                                fontSize: 10,
+                                fontSize: AppTheme.fontSize10,
                                 fontWeight: AppTheme.fontBold,
                               ),
                               textAlign: TextAlign.center,
@@ -300,7 +300,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                         ],
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Types d'événements
                       Text(
@@ -309,7 +309,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
@@ -331,7 +331,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                         }).toList(),
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Statuts
                       Text(
@@ -340,7 +340,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
@@ -362,7 +362,7 @@ class _EventSearchFilterBarState extends State<EventSearchFilterBar>
                         }).toList(),
                       ),
                       
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Plage de dates
                       Row(

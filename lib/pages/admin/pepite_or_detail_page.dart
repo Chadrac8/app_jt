@@ -47,7 +47,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
         title: Text(
           'Pépite d\'Or',
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.white100,
           ),
@@ -69,7 +69,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 child: Row(
                   children: [
                     Icon(Icons.edit, size: 18),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Modifier'),
                   ],
                 ),
@@ -82,7 +82,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                       _pepite.estPubliee ? Icons.unpublished : Icons.publish,
                       size: 18,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(_pepite.estPubliee ? 'Dépublier' : 'Publier'),
                   ],
                 ),
@@ -92,7 +92,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 child: Row(
                   children: [
                     Icon(Icons.delete, size: 18, color: AppTheme.redStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                   ],
                 ),
@@ -104,14 +104,14 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildEntete(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildCitations(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildInfosComplementaires(),
                 ],
               ),
@@ -122,7 +122,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
   Widget _buildEntete() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -137,7 +137,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                   child: Text(
                     _pepite.estPubliee ? 'Publiée' : 'Brouillon',
                     style: GoogleFonts.poppins(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.white100,
                     ),
@@ -157,7 +157,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                         child: Text(
                           tag,
                           style: GoogleFonts.poppins(
-                            fontSize: 11,
+                            fontSize: AppTheme.fontSize11,
                             color: const Color(0xFF8B4513),
                             fontWeight: AppTheme.fontMedium,
                           ),
@@ -168,68 +168,68 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 ],
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _pepite.theme,
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               _pepite.description,
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.grey700,
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             Row(
               children: [
                 Icon(Icons.person, size: 16, color: AppTheme.grey600),
-                const SizedBox(width: 6),
+                const SizedBox(width: AppTheme.space6),
                 Text(
                   _pepite.nomAuteur,
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.grey600,
                   ),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(width: AppTheme.space20),
                 Icon(Icons.schedule, size: 16, color: AppTheme.grey600),
-                const SizedBox(width: 6),
+                const SizedBox(width: AppTheme.space6),
                 Text(
                   '${_pepite.dureeDeeLectureMinutes} min de lecture',
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.grey600,
                   ),
                 ),
               ],
             ),
             if (_pepite.estPubliee) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Icon(Icons.visibility, size: 16, color: AppTheme.grey600),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: AppTheme.space6),
                   Text(
                     '${_pepite.nbVues} vue${_pepite.nbVues > 1 ? 's' : ''}',
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey600,
                     ),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: AppTheme.space20),
                   Icon(Icons.share, size: 16, color: AppTheme.grey600),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: AppTheme.space6),
                   Text(
                     '${_pepite.nbPartages} partage${_pepite.nbPartages > 1 ? 's' : ''}',
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey600,
                     ),
                   ),
@@ -249,12 +249,12 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
         Text(
           'Citations (${_pepite.citations.length})',
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontBold,
             color: const Color(0xFF8B4513),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -273,7 +273,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -290,7 +290,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                     child: Text(
                       '$numero',
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.white100,
                       ),
@@ -305,10 +305,10 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -322,30 +322,30 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
               child: Text(
                 citation.texte,
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   height: 1.6,
                   color: AppTheme.grey800,
                   fontStyle: FontStyle.italic,
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 Text(
                   '— ${citation.auteur}',
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontSemiBold,
                     color: const Color(0xFF8B4513),
                   ),
                 ),
                 if (citation.reference != null && citation.reference!.isNotEmpty) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     '(${citation.reference})',
                     style: GoogleFonts.poppins(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: AppTheme.grey600,
                       fontStyle: FontStyle.italic,
                     ),
@@ -362,19 +362,19 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
   Widget _buildInfosComplementaires() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Informations',
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF8B4513),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildInfoRow(
               'Créée le',
               _formatDate(_pepite.dateCreation),
@@ -410,7 +410,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icone, size: 18, color: AppTheme.grey600),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -418,7 +418,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 Text(
                   label,
                   style: GoogleFonts.poppins(
-                    fontSize: 13,
+                    fontSize: AppTheme.fontSize13,
                     color: AppTheme.grey600,
                     fontWeight: AppTheme.fontMedium,
                   ),
@@ -427,7 +427,7 @@ class _PepiteOrDetailPageState extends State<PepiteOrDetailPage> {
                 Text(
                   valeur,
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.grey800,
                   ),
                 ),

@@ -277,7 +277,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,12 +298,12 @@ class _FormDetailPageState extends State<FormDetailPage>
                                 _currentForm!.statusLabel,
                                 style: const TextStyle(
                                   color: AppTheme.white100,
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
@@ -317,19 +317,19 @@ class _FormDetailPageState extends State<FormDetailPage>
                                 _currentForm!.accessibilityLabel,
                                 style: const TextStyle(
                                   color: AppTheme.white100,
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           _currentForm!.description,
                           style: TextStyle(
                             color: AppTheme.white100.withOpacity(0.70),
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -384,7 +384,7 @@ class _FormDetailPageState extends State<FormDetailPage>
 
   Widget _buildOverviewTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -421,7 +421,7 @@ class _FormDetailPageState extends State<FormDetailPage>
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           _buildInfoCard(
             title: 'Champs du formulaire',
@@ -433,7 +433,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                   fontWeight: AppTheme.fontMedium,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               ...List.generate(_currentForm!.fields.length, (index) {
                 final field = _currentForm!.fields[index];
                 return _buildFieldPreview(field);
@@ -442,7 +442,7 @@ class _FormDetailPageState extends State<FormDetailPage>
           ),
           
           if (_currentForm!.publishDate != null || _currentForm!.closeDate != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildInfoCard(
               title: 'Dates de publication',
               icon: Icons.schedule,
@@ -477,7 +477,7 @@ class _FormDetailPageState extends State<FormDetailPage>
 
   Widget _buildSettingsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -504,7 +504,7 @@ class _FormDetailPageState extends State<FormDetailPage>
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           _buildInfoCard(
             title: 'Actions post-soumission',
@@ -531,7 +531,7 @@ class _FormDetailPageState extends State<FormDetailPage>
           ),
           
           if (_currentForm!.settings.notificationEmails.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildInfoCard(
               title: 'Notifications',
               icon: Icons.notifications,
@@ -542,7 +542,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 ...List.generate(_currentForm!.settings.notificationEmails.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 4),
@@ -571,14 +571,14 @@ class _FormDetailPageState extends State<FormDetailPage>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -589,7 +589,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -598,7 +598,7 @@ class _FormDetailPageState extends State<FormDetailPage>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...children,
           ],
         ),
@@ -621,7 +621,7 @@ class _FormDetailPageState extends State<FormDetailPage>
             size: 18,
             color: AppTheme.textSecondaryColor,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             flex: 2,
             child: Text(
@@ -647,7 +647,7 @@ class _FormDetailPageState extends State<FormDetailPage>
   Widget _buildFieldPreview(CustomFormField field) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.backgroundColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -662,7 +662,7 @@ class _FormDetailPageState extends State<FormDetailPage>
             size: 18,
             color: AppTheme.primaryColor,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -688,13 +688,13 @@ class _FormDetailPageState extends State<FormDetailPage>
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
                 color: AppTheme.errorColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Text(
                 'Obligatoire',
                 style: TextStyle(
                   color: AppTheme.errorColor,
-                  fontSize: 10,
+                  fontSize: AppTheme.fontSize10,
                   fontWeight: AppTheme.fontMedium,
                 ),
               ),

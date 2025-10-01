@@ -21,12 +21,12 @@ class HomePageWithDailyBread extends StatelessWidget {
             // Widget de prévisualisation du pain quotidien
             const DailyBreadPreviewWidget(),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Autres widgets...
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: AppTheme.white100,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -43,7 +43,7 @@ class HomePageWithDailyBread extends StatelessWidget {
                 'Le widget affiche automatiquement le verset et la citation du jour '
                 'récupérés depuis branham.org.',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,

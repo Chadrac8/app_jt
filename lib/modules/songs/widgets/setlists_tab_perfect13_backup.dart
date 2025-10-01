@@ -4,6 +4,7 @@ import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
 import '../../../widgets/setlist_card_perfect13.dart';
 import '../../../pages/setlist_detail_page.dart';
+import '../../../theme.dart';
 
 /// Onglet Setlists - Style Perfect 13
 class SetlistsTabPerfect13 extends StatefulWidget {
@@ -47,7 +48,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                   });
                 }),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Filtres rapides
               SingleChildScrollView(
@@ -55,13 +56,13 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                 child: Row(
                   children: [
                     _buildFilterChip('Tous', null),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildFilterChip('Cette semaine', 'week'),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildFilterChip('Ce mois', 'month'),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildFilterChip('Favoris', 'favorites'),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildFilterChip('Récents', 'recent'),
                   ])),
             ])),
@@ -84,16 +85,16 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                         Icons.error_outline,
                         size: 64,
                         color: Theme.of(context).colorScheme.error),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Erreur de chargement',
                         style: Theme.of(context).textTheme.titleMedium),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Impossible de charger les setlists',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       ElevatedButton.icon(
                         onPressed: () {
                           setState(() {});
@@ -115,12 +116,12 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                         Icons.playlist_play_outlined,
                         size: 64,
                         color: Theme.of(context).colorScheme.onSurfaceVariant),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         allSetlists.isEmpty ? 'Aucune setlist disponible' : 'Aucun résultat',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         allSetlists.isEmpty 
                           ? 'Les setlists créées apparaîtront ici'
@@ -196,7 +197,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           onTap: () => _showSetlistDetails(setlist),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -205,7 +206,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                   children: [
                     // Icône moderne
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(AppTheme.space10),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -224,7 +225,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                         color: Theme.of(context).colorScheme.onPrimary,
                         size: 20)),
                     
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     
                     // Titre et infos
                     Expanded(
@@ -282,7 +283,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                       ]),
                   ]),
                 
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 // Description si présente
                 if (setlist.description.isNotEmpty) ...[
@@ -292,7 +293,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                       color: Theme.of(context).colorScheme.onSurfaceVariant),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                 ],
                 
                 // Informations détaillées
@@ -311,16 +312,16 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                             Icons.calendar_today_outlined,
                             size: 12,
                             color: Theme.of(context).colorScheme.onSecondaryContainer),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             _formatDate(setlist.serviceDate),
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: AppTheme.fontSize11,
                               fontWeight: AppTheme.fontSemiBold,
                               color: Theme.of(context).colorScheme.onSecondaryContainer)),
                         ])),
                     
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     
                     // Badge nombre de chants
                     Container(
@@ -335,11 +336,11 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
                             Icons.music_note_rounded,
                             size: 12,
                             color: Theme.of(context).colorScheme.onTertiaryContainer),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: AppTheme.fontSize11,
                               fontWeight: AppTheme.fontSemiBold,
                               color: Theme.of(context).colorScheme.onTertiaryContainer)),
                         ])),
@@ -366,7 +367,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
         child: Text(
           'Planifiée',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.blueStandard)));
     } else if (diff >= 0) {
@@ -378,7 +379,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
         child: Text(
           'Bientôt',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.warningColor)));
     } else if (diff >= -1) {
@@ -390,7 +391,7 @@ class _SetlistsTabPerfect13State extends State<SetlistsTabPerfect13> {
         child: Text(
           'Actuelle',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.successColor)));
     }

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../models/branham_message.dart';
 import '../../../../theme.dart';
 import '../services/admin_branham_messages_service.dart';
+import '../../../theme.dart';
 
 class AdminBranhamMessagesScreen extends StatefulWidget {
   const AdminBranhamMessagesScreen({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
         title: Text(
           'Administration - Prédications',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
@@ -72,7 +73,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
         children: [
           Container(
             color: AppTheme.white100,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: TextField(
               onChanged: (value) => setState(() => _searchQuery = value),
               decoration: InputDecoration(
@@ -97,11 +98,11 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                         child: Text(
                           'Aucune prédication trouvée.\nCommencez par en ajouter une !',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, color: AppTheme.grey500),
+                          style: TextStyle(fontSize: AppTheme.fontSize16, color: AppTheme.grey500),
                         ),
                       )
                     : ListView.builder(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         itemCount: _filteredMessages.length,
                         itemBuilder: (context, index) {
                           final message = _filteredMessages[index];
@@ -119,11 +120,11 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                               ],
                             ),
                             child: ListTile(
-                              contentPadding: const EdgeInsets.all(16),
+                              contentPadding: const EdgeInsets.all(AppTheme.spaceMedium),
                               title: Text(
                                 message.title,
                                 style: GoogleFonts.inter(
-                                  fontSize: 16,
+                                  fontSize: AppTheme.fontSize16,
                                   fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.primaryColor,
                                 ),
@@ -131,7 +132,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                               subtitle: Text(
                                 '${message.formattedDate} • ${message.location}',
                                 style: GoogleFonts.inter(
-                                  fontSize: 13,
+                                  fontSize: AppTheme.fontSize13,
                                   color: AppTheme.grey500,
                                 ),
                               ),
@@ -261,7 +262,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextField(
                     controller: locationController,
                     decoration: const InputDecoration(
@@ -269,7 +270,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   InkWell(
                     onTap: () async {
                       final date = await showDatePicker(
@@ -291,7 +292,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                       child: Text('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -305,7 +306,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextField(
                     controller: pdfUrlController,
                     decoration: const InputDecoration(
@@ -314,7 +315,7 @@ class _AdminBranhamMessagesScreenState extends State<AdminBranhamMessagesScreen>
                       hintText: 'https://exemple.com/document.pdf',
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   TextField(
                     controller: audioUrlController,
                     decoration: const InputDecoration(

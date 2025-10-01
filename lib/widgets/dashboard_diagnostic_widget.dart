@@ -138,17 +138,17 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                   Text('Diagnostic en cours...'),
                 ],
               ),
             )
           : ListView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               children: [
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -158,13 +158,13 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         ..._diagnosticData.entries.map((entry) => _buildDiagnosticItem(entry.key, entry.value)),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton.icon(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back),
@@ -179,7 +179,7 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
     final bool isOk = value['status'] == 'OK';
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: isOk ? AppTheme.grey50 : AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -197,7 +197,7 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
                 color: isOk ? AppTheme.grey600 : AppTheme.grey600,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 _getTestName(key),
                 style: TextStyle(
@@ -207,11 +207,11 @@ class _DashboardDiagnosticWidgetState extends State<DashboardDiagnosticWidget> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _formatDiagnosticData(value),
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey700,
             ),
           ),

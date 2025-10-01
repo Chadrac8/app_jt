@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'dart:typed_data';
+import '../theme.dart';
 
 /// Service d'optimisation des images et assets
 class AssetOptimizationService {
@@ -87,8 +88,8 @@ class OptimizedImage extends StatelessWidget {
                 },
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.error, color: Colors.red),
+                    color: AppTheme.grey300,
+                    child: const Icon(Icons.error, color: AppTheme.errorColor),
                   );
                 },
               )
@@ -102,8 +103,8 @@ class OptimizedImage extends StatelessWidget {
                 fadeOutDuration: const Duration(milliseconds: 300),
                 imageErrorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.error, color: Colors.red),
+                    color: AppTheme.grey300,
+                    child: const Icon(Icons.error, color: AppTheme.errorColor),
                   );
                 },
               ),
@@ -223,7 +224,7 @@ class _OptimizedLoadingState extends State<OptimizedLoading>
               ),
             ),
             if (widget.message != null) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 widget.message!,
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -371,7 +372,7 @@ class _AnimatedOptimizedButtonState extends State<AnimatedOptimizedButton>
                   children: [
                     if (widget.icon != null && !widget.isLoading) ...[
                       widget.icon!,
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                     ],
                     if (widget.isLoading) ...[
                       SizedBox(
@@ -384,13 +385,13 @@ class _AnimatedOptimizedButtonState extends State<AnimatedOptimizedButton>
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                     ],
                     Text(
                       widget.text,
                       style: TextStyle(
                         color: widget.textColor ?? Colors.white,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                   ],

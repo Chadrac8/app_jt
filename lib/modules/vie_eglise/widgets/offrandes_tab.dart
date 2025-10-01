@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../pages/donation_webview_page.dart';
+import '../../../theme.dart';
 
 class OffrandesTab extends StatefulWidget {
   const OffrandesTab({Key? key}) : super(key: key);
@@ -112,19 +113,19 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
             children: [
               _buildHeader(colorScheme),
               Padding(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppTheme.spaceLarge),
                 child: Column(
                   children: [
                     _buildBiblicalVerse(colorScheme),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppTheme.spaceXLarge),
                     _buildDonationTypes(colorScheme),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppTheme.spaceXLarge),
                     _buildPaymentMethods(colorScheme),
                     if (_showRIB) ...[
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildRIBSection(colorScheme),
                     ],
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppTheme.spaceXLarge),
                   ],
                 ),
               ),
@@ -165,10 +166,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: colorScheme.primary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                 ),
                 child: Icon(
                   Icons.volunteer_activism_rounded,
@@ -176,7 +177,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   size: 32,
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: AppTheme.space20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,17 +186,17 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                       'Offrandes & Dons',
                       style: GoogleFonts.inter(
                         fontSize: 26,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: AppTheme.fontBold,
                         color: colorScheme.onPrimaryContainer,
                         height: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Participez à l\'œuvre de Dieu avec joie',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontRegular,
                         color: colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
                         height: 1.4,
                       ),
@@ -205,10 +206,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
               ),
               PopupMenuButton<String>(
                 icon: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: colorScheme.surface.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                     border: Border.all(
                       color: colorScheme.outline.withValues(alpha: 0.2),
                     ),
@@ -242,11 +243,11 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                           size: 20,
                           color: colorScheme.primary,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Informations',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: colorScheme.onSurface,
                           ),
                         ),
@@ -262,11 +263,11 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                           size: 20,
                           color: colorScheme.primary,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Partager',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: colorScheme.onSurface,
                           ),
                         ),
@@ -282,11 +283,11 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                           size: 20,
                           color: colorScheme.primary,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Contact',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: colorScheme.onSurface,
                           ),
                         ),
@@ -297,12 +298,12 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: colorScheme.surface.withValues(alpha: 0.6),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               border: Border.all(
                 color: colorScheme.outline.withValues(alpha: 0.2),
               ),
@@ -314,13 +315,13 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   color: colorScheme.onSurfaceVariant,
                   size: 18,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Plateforme sécurisée HelloAsso & virements SEPA',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
+                      fontSize: AppTheme.fontSize13,
+                      fontWeight: AppTheme.fontMedium,
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -335,7 +336,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
 
   Widget _buildBiblicalVerse(ColorScheme colorScheme) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -345,7 +346,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
             colorScheme.tertiaryContainer.withValues(alpha: 0.3),
           ],
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         border: Border.all(
           color: colorScheme.outline.withValues(alpha: 0.2),
         ),
@@ -363,10 +364,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: colorScheme.tertiaryContainer,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 ),
                 child: Icon(
                   Icons.auto_stories_rounded,
@@ -374,25 +375,25 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Text(
                   'Parole de Dieu',
                   style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontSize: AppTheme.fontSize18,
+                    fontWeight: AppTheme.fontSemiBold,
                     color: colorScheme.onSurface,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,25 +401,25 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                 Text(
                   '"Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie."',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     height: 1.6,
                     fontStyle: FontStyle.italic,
                     color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     color: colorScheme.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: Text(
                     '2 Corinthiens 9:7',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontSize: AppTheme.fontSize14,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: colorScheme.primary,
                     ),
                   ),
@@ -442,18 +443,18 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Types de dons',
               style: GoogleFonts.inter(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
+                fontSize: AppTheme.fontSize22,
+                fontWeight: AppTheme.fontBold,
                 color: colorScheme.onSurface,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppTheme.space20),
         ...List.generate(_donationTypes.length, (index) {
           final donation = _donationTypes[index];
           final isSelected = _selectedDonationType == index;
@@ -497,18 +498,18 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
       margin: const EdgeInsets.only(bottom: 16),
       child: Material(
         elevation: 0,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
         color: isSelected 
             ? cardColor.withValues(alpha: 0.08)
             : colorScheme.surfaceContainerLow,
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
           onTap: () => _handleDonationTap(donation, index),
           onLongPress: () => _showDonationOptions(donation, index),
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
               border: Border.all(
                 color: isSelected 
                     ? cardColor
@@ -533,7 +534,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: cardColor.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                       ),
                       child: Icon(
                         donation.icon,
@@ -541,7 +542,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                         size: 28,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -550,15 +551,15 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                             donation.title,
                             style: GoogleFonts.inter(
                               fontSize: 17,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: colorScheme.onSurface,
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          const SizedBox(height: AppTheme.space6),
                           Text(
                             donation.description,
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               color: colorScheme.onSurfaceVariant,
                               height: 1.4,
                             ),
@@ -568,10 +569,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     ),
                     if (isSelected)
                       Container(
-                        padding: const EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(AppTheme.space6),
                         decoration: BoxDecoration(
                           color: cardColor,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                         ),
                         child: Icon(
                           Icons.check_rounded,
@@ -588,13 +589,13 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   ],
                 ),
                 if (donation.biblicalText.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: cardColor.withValues(alpha: 0.06),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                       border: Border.all(
                         color: cardColor.withValues(alpha: 0.2),
                       ),
@@ -606,15 +607,15 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                           color: cardColor,
                           size: 18,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: Text(
                             donation.biblicalText,
                             style: GoogleFonts.inter(
-                              fontSize: 13,
+                              fontSize: AppTheme.fontSize13,
                               fontStyle: FontStyle.italic,
                               color: cardColor,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ),
@@ -622,7 +623,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     ),
                   ),
                 ],
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
@@ -631,8 +632,8 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     label: Text(
                       'Donner maintenant',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     style: FilledButton.styleFrom(
@@ -640,7 +641,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                       foregroundColor: colorScheme.surface,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                       ),
                     ),
                   ),
@@ -664,18 +665,18 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Moyens de paiement',
               style: GoogleFonts.inter(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
+                fontSize: AppTheme.fontSize22,
+                fontWeight: AppTheme.fontBold,
                 color: colorScheme.onSurface,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppTheme.space20),
         _buildPaymentMethodCard(
           icon: Icons.credit_card_rounded,
           title: 'HelloAsso (Recommandé)',
@@ -691,7 +692,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
             }
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         _buildPaymentMethodCard(
           icon: Icons.account_balance_rounded,
           title: 'Virement bancaire',
@@ -715,17 +716,17 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
   }) {
     return Material(
       elevation: 0,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
       color: isPrimary 
           ? colorScheme.primaryContainer.withValues(alpha: 0.3)
           : colorScheme.surfaceContainerLow,
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             border: Border.all(
               color: isPrimary 
                   ? colorScheme.primary.withValues(alpha: 0.3)
@@ -735,12 +736,12 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: isPrimary 
                       ? colorScheme.primary.withValues(alpha: 0.12)
                       : colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Icon(
                   icon,
@@ -748,7 +749,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -756,16 +757,16 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     Text(
                       title,
                       style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontSize: AppTheme.fontSize16,
+                        fontWeight: AppTheme.fontSemiBold,
                         color: colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       description,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -786,10 +787,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
 
   Widget _buildRIBSection(ColorScheme colorScheme) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
         border: Border.all(
           color: colorScheme.outline.withValues(alpha: 0.2),
         ),
@@ -807,10 +808,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(AppTheme.space10),
                 decoration: BoxDecoration(
                   color: colorScheme.primary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Icon(
                   Icons.account_balance_rounded,
@@ -818,12 +819,12 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 'Informations bancaires',
                 style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontSize: AppTheme.fontSize18,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: colorScheme.onSurface,
                 ),
               ),
@@ -838,11 +839,11 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildBankInfoRow('Titulaire', _titulaire, colorScheme),
           _buildBankInfoRow('IBAN', _iban, colorScheme),
           _buildBankInfoRow('BIC', _bic, colorScheme),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Row(
             children: [
               Expanded(
@@ -852,19 +853,19 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   label: Text(
                     'Copier tout',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                      fontSize: AppTheme.fontSize14,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: FilledButton.tonalIcon(
                   onPressed: _shareBankInfo,
@@ -872,14 +873,14 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   label: Text(
                     'Partager',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                      fontSize: AppTheme.fontSize14,
+                      fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     ),
                   ),
                 ),
@@ -900,18 +901,18 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontSize: AppTheme.fontSize12,
+              fontWeight: AppTheme.fontSemiBold,
               color: colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: AppTheme.space6),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               border: Border.all(
                 color: colorScheme.outline.withValues(alpha: 0.2),
               ),
@@ -922,13 +923,13 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   child: Text(
                     value,
                     style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                      fontSize: AppTheme.fontSize14,
+                      fontWeight: AppTheme.fontMedium,
                       color: colorScheme.onSurface,
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 IconButton(
                   onPressed: () => _copyToClipboard(value, label),
                   icon: Icon(
@@ -938,7 +939,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   ),
                   style: IconButton.styleFrom(
                     minimumSize: const Size(32, 32),
-                    padding: const EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(AppTheme.space6),
                   ),
                 ),
               ],
@@ -953,13 +954,13 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
   Color _getColorFromName(String colorName, ColorScheme colorScheme) {
     switch (colorName) {
       case 'pink':
-        return Colors.pink;
+        return AppTheme.pinkStandard;
       case 'blue':
-        return Colors.blue;
+        return AppTheme.infoColor;
       case 'green':
-        return Colors.green;
+        return AppTheme.successColor;
       case 'orange':
-        return Colors.orange;
+        return AppTheme.warning;
       default:
         return colorScheme.primary;
     }
@@ -978,7 +979,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: BoxDecoration(
           color: colorScheme.surfaceContainerHigh,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
@@ -991,17 +992,17 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
               height: 4,
               decoration: BoxDecoration(
                 color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: _getColorFromName(donation.colorName, colorScheme).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   ),
                   child: Icon(
                     donation.icon,
@@ -1009,7 +1010,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1017,15 +1018,15 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                       Text(
                         donation.title,
                         style: GoogleFonts.inter(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                          fontSize: AppTheme.fontSize18,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         donation.description,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
@@ -1034,7 +1035,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
@@ -1047,12 +1048,12 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             SizedBox(
               width: double.infinity,
               child: FilledButton.tonalIcon(
@@ -1068,7 +1069,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   ),
                 ),
               ),
@@ -1108,7 +1109,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
         backgroundColor: colorScheme.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         ),
       ),
     );
@@ -1127,7 +1128,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
         backgroundColor: colorScheme.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         ),
       ),
     );
@@ -1181,8 +1182,8 @@ Merci pour votre générosité !
         title: Text(
           'Informations sur les dons',
           style: GoogleFonts.inter(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontSize: AppTheme.fontSize18,
+            fontWeight: AppTheme.fontSemiBold,
             color: colorScheme.onSurface,
           ),
         ),
@@ -1193,12 +1194,12 @@ Merci pour votre générosité !
             Text(
               'Vos dons nous permettent de :',
               style: GoogleFonts.inter(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: AppTheme.fontSize15,
+                fontWeight: AppTheme.fontMedium,
                 color: colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...[
               '• Maintenir nos activités spirituelles',
               '• Soutenir les missions d\'évangélisation',
@@ -1209,24 +1210,24 @@ Merci pour votre générosité !
               child: Text(
                 text,
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
             )),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: colorScheme.primaryContainer.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               ),
               child: Text(
                 'Tous les dons sont sécurisés et peuvent donner lieu à une déduction fiscale.',
                 style: GoogleFonts.inter(
-                  fontSize: 13,
+                  fontSize: AppTheme.fontSize13,
                   color: colorScheme.onSurface,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: AppTheme.fontMedium,
                 ),
               ),
             ),
@@ -1239,7 +1240,7 @@ Merci pour votre générosité !
               'Fermer',
               style: GoogleFonts.inter(
                 color: colorScheme.primary,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),
@@ -1261,8 +1262,8 @@ Merci pour votre générosité !
         title: Text(
           'Contact',
           style: GoogleFonts.inter(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontSize: AppTheme.fontSize18,
+            fontWeight: AppTheme.fontSemiBold,
             color: colorScheme.onSurface,
           ),
         ),
@@ -1273,15 +1274,15 @@ Merci pour votre générosité !
             Text(
               'Pour toute question concernant vos dons :',
               style: GoogleFonts.inter(
-                fontSize: 15,
+                fontSize: AppTheme.fontSize15,
                 color: colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Email : contact@jubile-tabernacle.fr\nTéléphone : +33 1 23 45 67 89',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
@@ -1295,7 +1296,7 @@ Merci pour votre générosité !
               'Fermer',
               style: GoogleFonts.inter(
                 color: colorScheme.primary,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),

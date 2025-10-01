@@ -6,6 +6,7 @@ import '../models/song.dart';
 import '../models/song_category.dart';
 import '../services/songs_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Vue de formulaire pour créer/modifier un chant
 class SongFormView extends StatefulWidget {
@@ -232,35 +233,35 @@ class _SongFormViewState extends State<SongFormView> {
           : Form(
               key: _formKey,
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 children: [
                   // Informations de base
                   _buildBasicInfoSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
 
                   // Paroles
                   _buildLyricsSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
 
                   // Informations techniques
                   _buildTechnicalInfoSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
 
                   // Catégories
                   _buildCategoriesSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
 
                   // Tags
                   _buildTagsSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
 
                   // Médias
                   _buildMediaSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
 
                   // Paramètres
                   _buildSettingsSection(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppTheme.spaceXLarge),
                 ],
               ),
             ),
@@ -270,7 +271,7 @@ class _SongFormViewState extends State<SongFormView> {
   Widget _buildBasicInfoSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -280,7 +281,7 @@ class _SongFormViewState extends State<SongFormView> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Champ numéro
             Row(
@@ -306,14 +307,14 @@ class _SongFormViewState extends State<SongFormView> {
                     },
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   flex: 2,
                   child: Container(), // Espace pour garder l'alignement
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             TextFormField(
               controller: _titleController,
@@ -328,7 +329,7 @@ class _SongFormViewState extends State<SongFormView> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             TextFormField(
               controller: _subtitleController,
@@ -337,7 +338,7 @@ class _SongFormViewState extends State<SongFormView> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             Row(
               children: [
@@ -350,7 +351,7 @@ class _SongFormViewState extends State<SongFormView> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: TextFormField(
                     controller: _composerController,
@@ -371,7 +372,7 @@ class _SongFormViewState extends State<SongFormView> {
   Widget _buildLyricsSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -381,7 +382,7 @@ class _SongFormViewState extends State<SongFormView> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             TextFormField(
               controller: _lyricsController,
@@ -407,7 +408,7 @@ class _SongFormViewState extends State<SongFormView> {
   Widget _buildTechnicalInfoSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -417,7 +418,7 @@ class _SongFormViewState extends State<SongFormView> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             Row(
               children: [
@@ -430,7 +431,7 @@ class _SongFormViewState extends State<SongFormView> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: TextFormField(
                     controller: _tempoController,
@@ -451,7 +452,7 @@ class _SongFormViewState extends State<SongFormView> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             TextFormField(
               controller: _structureController,
@@ -469,7 +470,7 @@ class _SongFormViewState extends State<SongFormView> {
   Widget _buildCategoriesSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -479,7 +480,7 @@ class _SongFormViewState extends State<SongFormView> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             if (_availableCategories.isEmpty)
               const Text('Aucune catégorie disponible')
@@ -507,7 +508,7 @@ class _SongFormViewState extends State<SongFormView> {
   Widget _buildTagsSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -517,7 +518,7 @@ class _SongFormViewState extends State<SongFormView> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             Row(
               children: [
@@ -531,14 +532,14 @@ class _SongFormViewState extends State<SongFormView> {
                     onFieldSubmitted: (_) => _addTag(),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 ElevatedButton(
                   onPressed: _addTag,
                   child: const Text('Ajouter'),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             if (_tags.isNotEmpty)
               Wrap(
@@ -559,7 +560,7 @@ class _SongFormViewState extends State<SongFormView> {
   Widget _buildMediaSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -569,7 +570,7 @@ class _SongFormViewState extends State<SongFormView> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             TextFormField(
               controller: _audioUrlController,
@@ -588,7 +589,7 @@ class _SongFormViewState extends State<SongFormView> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             TextFormField(
               controller: _videoUrlController,
@@ -607,7 +608,7 @@ class _SongFormViewState extends State<SongFormView> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             TextFormField(
               controller: _musicSheetController,
@@ -635,7 +636,7 @@ class _SongFormViewState extends State<SongFormView> {
   Widget _buildSettingsSection() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -645,7 +646,7 @@ class _SongFormViewState extends State<SongFormView> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             SwitchListTile(
               title: const Text('Chant public'),

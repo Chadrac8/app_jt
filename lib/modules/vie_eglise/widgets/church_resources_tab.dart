@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../theme.dart';
 import '../models/church_resource.dart';
 import '../services/church_resource_service.dart';
+import '../../../theme.dart';
 
 class ChurchResourcesTab extends StatefulWidget {
   const ChurchResourcesTab({Key? key}) : super(key: key);
@@ -48,7 +49,7 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -65,20 +66,20 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
           Text(
             'Ressources',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.primaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Découvrez nos ressources spirituelles et éducatives',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
@@ -133,11 +134,11 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                       color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       size: 20,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       type['label'],
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                         color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
                       ),
@@ -166,11 +167,11 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur de chargement',
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textSecondaryColor,
                   ),
@@ -201,7 +202,7 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: resources.length,
           itemBuilder: (context, index) {
             return _buildResourceCard(resources[index]);
@@ -221,13 +222,13 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
             size: 80,
             color: AppTheme.grey500,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _selectedType == 'all' 
                 ? 'Aucune ressource disponible'
                 : 'Aucune ressource de ce type',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontMedium,
               color: AppTheme.textSecondaryColor,
             ),
@@ -291,11 +292,11 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                               color: AppTheme.white100,
                               size: 14,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               type.label,
                               style: GoogleFonts.poppins(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 fontWeight: AppTheme.fontMedium,
                                 color: AppTheme.white100,
                               ),
@@ -322,7 +323,7 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                 ),
               ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -343,11 +344,11 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                                 color: AppTheme.primaryColor,
                                 size: 14,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 type.label,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontMedium,
                                   color: AppTheme.primaryColor,
                                 ),
@@ -359,43 +360,43 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                         Text(
                           _formatDate(resource.createdAt),
                           style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: AppTheme.textSecondaryColor,
                           ),
                         ),
                       ],
                     ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     resource.title,
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   if (resource.createdBy != null)
                     Text(
                       'Par ${resource.createdBy}',
                       style: GoogleFonts.poppins(
-                        fontSize: 13,
+                        fontSize: AppTheme.fontSize13,
                         color: AppTheme.primaryColor,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     resource.description,
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (resource.downloadCount > 0) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Row(
                       children: [
                         Icon(
@@ -403,11 +404,11 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                           size: 16,
                           color: AppTheme.grey500,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           '${resource.downloadCount} téléchargements',
                           style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: AppTheme.grey500,
                           ),
                         ),
@@ -464,7 +465,7 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
             ),
             child: SingleChildScrollView(
               controller: scrollController,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -474,11 +475,11 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                       height: 4,
                       decoration: BoxDecoration(
                         color: AppTheme.grey500,
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius: BorderRadius.circular(AppTheme.radius2),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   if (resource.imageUrl != null && resource.imageUrl!.isNotEmpty) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -489,45 +490,45 @@ class _ChurchResourcesTabState extends State<ChurchResourcesTab> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppTheme.space20),
                   ],
                   Text(
                     resource.title,
                     style: GoogleFonts.poppins(
-                      fontSize: 24,
+                      fontSize: AppTheme.fontSize24,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   if (resource.createdBy != null)
                     Text(
                       'Par ${resource.createdBy}',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         color: AppTheme.primaryColor,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     _formatDate(resource.createdAt),
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     resource.description,
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       color: AppTheme.textPrimaryColor,
                       height: 1.6,
                     ),
                   ),
                   if (resource.fileUrl != null && resource.fileUrl!.isNotEmpty) ...[
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppTheme.space20),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(

@@ -7,6 +7,7 @@ import '../../../auth/auth_service.dart';
 import '../models/song.dart';
 import '../models/song_category.dart';
 import 'song_detail_view.dart';
+import '../../../theme.dart';
 
 /// Vue membre pour la gestion des chants
 class SongsMemberView extends StatefulWidget {
@@ -186,7 +187,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
           child: Container(
             height: 50, // Hauteur Material Design standard
             decoration: BoxDecoration(
-              color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
+              color: AppTheme.primaryColor, // Couleur primaire cohérente
               boxShadow: [
                 BoxShadow(
                   color: AppTheme.black100.withOpacity(0.08),
@@ -197,17 +198,17 @@ class _SongsMemberViewState extends State<SongsMemberView>
             ),
             child: TabBar(
               controller: _tabController,
-              labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
-              unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
-              indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+              labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
               indicatorWeight: 3.0, // Poids standard Material Design
               padding: const EdgeInsets.symmetric(horizontal: 16),
               labelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
               ),
               tabs: const [
@@ -299,7 +300,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
 
           // Contenu des onglets
@@ -334,14 +335,14 @@ class _SongsMemberViewState extends State<SongsMemberView>
               size: 64,
               color: AppTheme.grey400,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun chant trouvé',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: AppTheme.grey600,
                   ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Essayez de modifier vos critères de recherche',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -356,7 +357,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: songs.length,
         itemBuilder: (context, index) {
           final song = songs[index];
@@ -373,7 +374,7 @@ class _SongsMemberViewState extends State<SongsMemberView>
     return CustomCard(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(12),
+        contentPadding: const EdgeInsets.all(AppTheme.space12),
         leading: Container(
           width: 48,
           height: 48,
@@ -396,17 +397,17 @@ class _SongsMemberViewState extends State<SongsMemberView>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (song.author != null) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text('Par ${song.author}'),
             ],
             if (song.categories.isNotEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Wrap(
                 spacing: 4,
                 children: song.categories.take(2).map((category) => Chip(
                       label: Text(
                         category,
-                        style: const TextStyle(fontSize: 10),
+                        style: const TextStyle(fontSize: AppTheme.fontSize10),
                       ),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity: VisualDensity.compact,
@@ -414,14 +415,14 @@ class _SongsMemberViewState extends State<SongsMemberView>
               ),
             ],
             if (song.preview.isNotEmpty) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 song.preview,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: AppTheme.grey600,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
               ),
             ],
@@ -435,10 +436,10 @@ class _SongsMemberViewState extends State<SongsMemberView>
                 '${song.views} vues',
                 style: TextStyle(
                   color: AppTheme.grey500,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
               ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             IconButton(
               icon: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_border,

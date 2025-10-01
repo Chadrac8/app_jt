@@ -64,7 +64,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildHeader(),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         if (_isLoading)
           const Center(child: CircularProgressIndicator())
@@ -72,9 +72,9 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
           _buildNoRecurrenceMessage()
         else ...[
           _buildMonthNavigator(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildRecurrencesList(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildInstancesCalendar(),
         ],
       ],
@@ -85,7 +85,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
     return Row(
       children: [
         Icon(Icons.repeat, color: Theme.of(context).primaryColor),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         Text(
           'Gestion des récurrences',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -113,12 +113,12 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
               size: 48,
               color: AppTheme.grey500,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune récurrence configurée',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             const Text(
               'Cet événement n\'a pas de récurrence définie.',
               style: TextStyle(color: AppTheme.grey500),
@@ -181,7 +181,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
             child: Row(
               children: [
                 Icon(Icons.settings, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Règles de récurrence (${_recurrences.length})',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -200,7 +200,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
   Widget _buildRecurrenceItem(EventRecurrenceModel recurrence) {
     return ListTile(
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(AppTheme.spaceSmall),
         decoration: BoxDecoration(
           color: recurrence.isActive ? AppTheme.greenStandard : AppTheme.grey500,
           shape: BoxShape.circle,
@@ -284,7 +284,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
             child: Row(
               children: [
                 Icon(Icons.calendar_month, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Occurrences du mois (${_instances.length})',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -312,7 +312,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
   Widget _buildInstanceItem(EventInstanceModel instance) {
     return ListTile(
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(AppTheme.spaceSmall),
         decoration: BoxDecoration(
           color: instance.isCancelled 
               ? AppTheme.redStandard 
@@ -484,7 +484,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Modification de récurrence'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 const Text('Récurrence active: '),
@@ -530,7 +530,7 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
           child: Column(
             children: [
               const Text('Dates d\'exception (événement annulé ces jours-là):'),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Expanded(
                 child: recurrence.exceptions.isEmpty
                     ? const Center(child: Text('Aucune exception définie'))

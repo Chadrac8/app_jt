@@ -26,7 +26,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
         title: Row(
           children: [
             Icon(Icons.family_restroom, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(isEdit ? 'Modifier la famille' : 'Créer une famille'),
           ],
         ),
@@ -44,7 +44,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                   ),
                   validator: (v) => v == null || v.trim().isEmpty ? 'Nom requis' : null,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   controller: addressController,
                   decoration: const InputDecoration(
@@ -52,7 +52,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                     prefixIcon: Icon(Icons.location_on),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextFormField(
                   controller: phoneController,
                   decoration: const InputDecoration(
@@ -178,9 +178,9 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
           }
           final families = snapshot.data!;
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: families.length,
-            separatorBuilder: (context, i) => const SizedBox(height: 16),
+            separatorBuilder: (context, i) => const SizedBox(height: AppTheme.spaceMedium),
             itemBuilder: (context, i) {
               final family = families[i];
               return Card(
@@ -206,7 +206,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                           child: Row(
                             children: [
                               const Icon(Icons.location_on, size: 16, color: Color(0xFF39D2C0)),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: AppTheme.space6),
                               Expanded(child: Text(family.address!)),
                             ],
                           ),
@@ -217,7 +217,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                           child: Row(
                             children: [
                               const Icon(Icons.phone, size: 16, color: Color(0xFF39D2C0)),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: AppTheme.space6),
                               Text(family.homePhone!),
                             ],
                           ),
@@ -227,7 +227,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                         child: Row(
                           children: [
                             const Icon(Icons.people, size: 16, color: Color(0xFF39D2C0)),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: AppTheme.space6),
                             Text('Membres: ${family.memberIds.length}'),
                           ],
                         ),
@@ -275,7 +275,7 @@ class _FamiliesManagementPageState extends State<FamiliesManagementPage> {
                           children: [
                             if (family.address != null) Text('Adresse: ${family.address}'),
                             if (family.homePhone != null) Text('Téléphone: ${family.homePhone}'),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             const Text('Membres:'),
                             ...members.whereType<PersonModel>().map((m) => Text('${m.firstName} ${m.lastName}')),
                           ],

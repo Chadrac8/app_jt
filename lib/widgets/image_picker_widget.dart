@@ -203,7 +203,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
           ],
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
 
         // Interface selon le mode sélectionné
         if (_selectionMode == 'url') ...[
@@ -242,7 +242,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   label: const Text('Choisir de la galerie'),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: _isUploading ? null : _captureImageFromCamera,
@@ -254,7 +254,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
           ),
           
           if (_currentImageUrl != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 Expanded(
@@ -293,9 +293,9 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
         // Indicateur de chargement
         if (_isUploading) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -311,7 +311,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                     valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 const Text('Upload en cours...'),
               ],
             ),
@@ -320,7 +320,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
         // Prévisualisation de l'image
         if (_currentImageUrl != null && _currentImageUrl!.isNotEmpty) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Container(
             height: widget.height,
             width: double.infinity,
@@ -346,7 +346,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.error, size: 48, color: AppTheme.grey500),
-                        SizedBox(height: 8),
+                        SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'Erreur de chargement',
                           style: TextStyle(color: AppTheme.grey500),

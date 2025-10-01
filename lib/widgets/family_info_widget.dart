@@ -63,13 +63,13 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
     if (_isLoading) {
       return Card(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               Row(
                 children: [
                   Icon(Icons.family_restroom, color: AppTheme.primaryColor),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Famille',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -79,7 +79,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Center(child: CircularProgressIndicator()),
             ],
           ),
@@ -97,14 +97,14 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
   Widget _buildNoFamilyCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.family_restroom, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Famille',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -136,10 +136,10 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -151,14 +151,14 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                     size: 48,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Aucune famille',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: AppTheme.fontMedium,
                         ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     'Cette personne n\'appartient à aucune famille',
                     style: Theme.of(context).textTheme.bodySmall,
@@ -183,14 +183,14 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.family_restroom, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     'Famille ${_family!.name}',
@@ -231,7 +231,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Statut et rôle de la personne
             Container(
@@ -248,20 +248,20 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                     size: 16,
                     color: _getStatusColor(_family!.status),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     _getRoleLabel(widget.person.familyRole),
                     style: TextStyle(
                       color: _getStatusColor(_family!.status),
                       fontWeight: AppTheme.fontMedium,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Informations de base de la famille
             if (_family!.fullAddress.isNotEmpty) ...[
@@ -272,7 +272,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                     size: 16,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       _family!.fullAddress,
@@ -281,7 +281,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
             ],
 
             if (_family!.homePhone != null) ...[
@@ -292,14 +292,14 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                     size: 16,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     _family!.homePhone!,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
             ],
 
             Row(
@@ -309,7 +309,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                   size: 16,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   '${_familyMembers.length} membre${_familyMembers.length > 1 ? 's' : ''}',
                   style: Theme.of(context).textTheme.bodySmall,
@@ -317,7 +317,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
               ],
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Aperçu des membres
             if (_familyMembers.isNotEmpty) ...[
@@ -327,23 +327,23 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                       fontWeight: AppTheme.fontMedium,
                     ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               if (parents.isNotEmpty) ...[
                 _buildMemberPreview('Parents', parents),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               
               if (children.isNotEmpty) ...[
                 _buildMemberPreview('Enfants', children),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               
               if (others.isNotEmpty) ...[
                 _buildMemberPreview('Autres', others),
               ],
 
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Bouton pour voir tous les détails
               Center(
@@ -371,7 +371,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Wrap(
           spacing: 8,
           runSpacing: 4,
@@ -396,7 +396,7 @@ class _FamilyInfoWidgetState extends State<FamilyInfoWidget> {
                         )
                       : null,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   member.firstName,
                   style: Theme.of(context).textTheme.bodySmall,
@@ -671,7 +671,7 @@ class _FamilySelectorDialogState extends State<_FamilySelectorDialog> {
                 });
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: filteredFamilies.isEmpty
                   ? const Center(

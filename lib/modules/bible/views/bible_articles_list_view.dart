@@ -5,6 +5,7 @@ import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import 'bible_article_detail_view.dart';
 import 'bible_article_form_view.dart';
+import '../../../theme.dart';
 
 class BibleArticlesListView extends StatefulWidget {
   final bool isAdmin;
@@ -141,7 +142,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
 
   Widget _buildSearchAndFilters(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           // Barre de recherche
@@ -171,7 +172,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
               fillColor: theme.colorScheme.surface,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Filtres
           Row(
@@ -194,12 +195,12 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                   items: ['Toutes', ..._articleService.getAvailableCategories()]
                       .map((category) => DropdownMenuItem(
                             value: category,
-                            child: Text(category, style: GoogleFonts.inter(fontSize: 14)),
+                            child: Text(category, style: GoogleFonts.inter(fontSize: AppTheme.fontSize14)),
                           ))
                       .toList(),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               
               // Tri
               Expanded(
@@ -242,23 +243,23 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
               size: 64,
               color: theme.hintColor,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _searchController.text.isNotEmpty
                   ? 'Aucun article trouvé'
                   : 'Aucun article disponible',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: theme.hintColor,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _searchController.text.isNotEmpty
                   ? 'Essayez avec d\'autres mots-clés'
                   : 'Les articles apparaîtront ici',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: theme.hintColor.withValues(alpha: 0.7),
               ),
             ),
@@ -268,9 +269,9 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _filteredArticles.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 16),
+      separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceMedium),
       itemBuilder: (context, index) {
         final article = _filteredArticles[index];
         return _buildArticleCard(article, theme);
@@ -288,7 +289,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
         onTap: () => _navigateToArticleDetail(article),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -304,7 +305,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                     child: Text(
                       article.category,
                       style: GoogleFonts.inter(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                         color: theme.primaryColor,
                       ),
@@ -321,7 +322,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                       child: Text(
                         'Brouillon',
                         style: GoogleFonts.inter(
-                          fontSize: 11,
+                          fontSize: AppTheme.fontSize11,
                           fontWeight: AppTheme.fontMedium,
                           color: AppTheme.orangeStandard,
                         ),
@@ -336,7 +337,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                           child: Row(
                             children: [
                               Icon(Icons.edit_outlined, size: 18),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Modifier'),
                             ],
                           ),
@@ -351,7 +352,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                                     : Icons.visibility_outlined,
                                 size: 18,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(article.isPublished ? 'Dépublier' : 'Publier'),
                             ],
                           ),
@@ -361,7 +362,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                           child: Row(
                             children: [
                               Icon(Icons.delete_outline, size: 18, color: AppTheme.redStandard),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                             ],
                           ),
@@ -370,30 +371,30 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                     ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Titre et résumé
               Text(
                 article.title,
                 style: GoogleFonts.inter(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: theme.textTheme.titleLarge?.color,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 article.summary,
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Métadonnées
               Row(
@@ -403,39 +404,39 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                     size: 16,
                     color: theme.hintColor,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     article.author,
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: theme.hintColor,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Icon(
                     Icons.access_time_outlined,
                     size: 16,
                     color: theme.hintColor,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${article.readingTimeMinutes} min',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: theme.hintColor,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Icon(
                     Icons.visibility_outlined,
                     size: 16,
                     color: theme.hintColor,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${article.viewCount}',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: theme.hintColor,
                     ),
                   ),
@@ -443,7 +444,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                   Text(
                     _formatDate(article.createdAt),
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: theme.hintColor,
                     ),
                   ),
@@ -452,7 +453,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
               
               // Tags
               if (article.tags.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Wrap(
                   spacing: 8,
                   runSpacing: 4,
@@ -465,7 +466,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
                     child: Text(
                       tag,
                       style: GoogleFonts.inter(
-                        fontSize: 11,
+                        fontSize: AppTheme.fontSize11,
                         color: theme.textTheme.bodySmall?.color,
                       ),
                     ),

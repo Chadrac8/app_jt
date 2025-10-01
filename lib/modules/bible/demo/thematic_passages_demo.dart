@@ -7,6 +7,7 @@ import '../widgets/add_passage_dialog.dart';
 import '../services/thematic_passage_service.dart';
 import '../services/predefined_themes.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Fichier de démonstration des passages thématiques
 /// 
@@ -44,19 +45,19 @@ class DemoHomePage extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSectionHeader('Widget d\'accueil'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             // Widget d'accueil intégré
             const ThematicPassagesHomeWidget(),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             
             _buildSectionHeader('Actions disponibles'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Boutons de démonstration
             _buildActionButton(
@@ -67,7 +68,7 @@ class DemoHomePage extends StatelessWidget {
               () => _showFullView(context),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             _buildActionButton(
               context,
@@ -77,7 +78,7 @@ class DemoHomePage extends StatelessWidget {
               () => _showCreateThemeDialog(context),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             _buildActionButton(
               context,
@@ -87,20 +88,20 @@ class DemoHomePage extends StatelessWidget {
               () => _showAddPassageDialog(context),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             _buildActionButton(
               context,
               'Initialiser thèmes par défaut',
               Icons.refresh,
-              Colors.purple,
+              AppTheme.primaryColor,
               () => _initializeDefaultThemes(context),
             ),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             
             _buildSectionHeader('Informations'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildInfoCard(
               'Thèmes pré-définis',
@@ -109,7 +110,7 @@ class DemoHomePage extends StatelessWidget {
               AppTheme.blueStandard,
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             _buildInfoCard(
               'Fonctionnalités',
@@ -118,7 +119,7 @@ class DemoHomePage extends StatelessWidget {
               AppTheme.greenStandard,
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             _buildInfoCard(
               'Support des plages',
@@ -127,10 +128,10 @@ class DemoHomePage extends StatelessWidget {
               AppTheme.orangeStandard,
             ),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             
             _buildSectionHeader('Données de démonstration'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildThemesList(),
           ],
@@ -143,7 +144,7 @@ class DemoHomePage extends StatelessWidget {
     return Text(
       title,
       style: TextStyle(
-        fontSize: 20,
+        fontSize: AppTheme.fontSize20,
         fontWeight: AppTheme.fontBold,
         color: AppTheme.black100.withOpacity(0.87),
       ),
@@ -182,7 +183,7 @@ class DemoHomePage extends StatelessWidget {
     Color color,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -191,14 +192,14 @@ class DemoHomePage extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: color.withOpacity(0.15),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +207,7 @@ class DemoHomePage extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
@@ -214,7 +215,7 @@ class DemoHomePage extends StatelessWidget {
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.black100.withOpacity(0.6),
                   ),
                 ),
@@ -234,7 +235,7 @@ class DemoHomePage extends StatelessWidget {
         final passages = themeData['passages'] as List;
         return Container(
           margin: const EdgeInsets.only(bottom: 8),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: AppTheme.grey50,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -243,7 +244,7 @@ class DemoHomePage extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: Color(themeData['color'] as int).withOpacity(0.15),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -257,7 +258,7 @@ class DemoHomePage extends StatelessWidget {
                   size: 18,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,14 +266,14 @@ class DemoHomePage extends StatelessWidget {
                     Text(
                       themeData['name'] as String,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                     Text(
                       '${passages.length} passages',
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey500,
                       ),
                     ),
@@ -358,7 +359,7 @@ class ThematicPassagesExamples {
       final themeId = await ThematicPassageService.createTheme(
         name: 'Mon Thème Personnel',
         description: 'Un thème créé par l\'utilisateur',
-        color: Colors.purple,
+        color: AppTheme.primaryColor,
         icon: Icons.star,
         isPublic: false,
       );

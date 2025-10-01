@@ -84,16 +84,16 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
     return FadeTransition(
       opacity: _fadeAnimation,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildOverviewSection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildMonthlyChart(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildStatusDistribution(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildLocationDistribution(),
           ],
         ),
@@ -103,7 +103,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
 
   Widget _buildOverviewSection() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -121,18 +121,18 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
           Row(
             children: [
               Icon(Icons.analytics, color: AppTheme.primaryColor),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               const Text(
                 'Vue d\'ensemble',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: AppTheme.fontSize20,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
@@ -167,13 +167,13 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildRateIndicator(
             'Taux de confirmation',
             _statistics!.confirmationRate,
             AppTheme.successColor,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           _buildRateIndicator(
             'Taux de finalisation',
             _statistics!.completionRate,
@@ -186,7 +186,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
 
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withAlpha(25), // 0.1 * 255 ≈ 25
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -196,20 +196,20 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: color, size: 28),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.textSecondaryColor,
             ),
             textAlign: TextAlign.center,
@@ -229,7 +229,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
             Text(
               label,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
                 color: AppTheme.textPrimaryColor,
               ),
@@ -237,14 +237,14 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
             Text(
               '${(rate * 100).toStringAsFixed(1)}%',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontBold,
                 color: color,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         LinearProgressIndicator(
           value: rate,
           backgroundColor: AppTheme.grey500,
@@ -256,7 +256,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
 
   Widget _buildMonthlyChart() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -274,18 +274,18 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
           Row(
             children: [
               Icon(Icons.show_chart, color: AppTheme.primaryColor),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               const Text(
                 'Rendez-vous par mois',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           SizedBox(
             height: 200,
             child: BarChart(
@@ -301,7 +301,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                       getTitlesWidget: (value, meta) {
                         return Text(
                           _getMonthName(value.toInt()),
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(fontSize: AppTheme.fontSize12),
                         );
                       },
                     ),
@@ -335,7 +335,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
             toY: count,
             color: AppTheme.primaryColor,
             width: 20,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
         ],
       );
@@ -350,7 +350,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
 
   Widget _buildStatusDistribution() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -368,18 +368,18 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
           Row(
             children: [
               Icon(Icons.pie_chart, color: AppTheme.primaryColor),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               const Text(
                 'Répartition par statut',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Row(
             children: [
               Expanded(
@@ -395,7 +395,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
                   ),
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: AppTheme.space20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -424,28 +424,28 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
         value: _statistics!.pendingAppointments.toDouble(),
         title: '${((_statistics!.pendingAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
+        titleStyle: const TextStyle(fontSize: AppTheme.fontSize12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
       PieChartSectionData(
         color: AppTheme.successColor,
         value: _statistics!.confirmedAppointments.toDouble(),
         title: '${((_statistics!.confirmedAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
+        titleStyle: const TextStyle(fontSize: AppTheme.fontSize12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
       PieChartSectionData(
         color: AppTheme.greenStandard,
         value: _statistics!.completedAppointments.toDouble(),
         title: '${((_statistics!.completedAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
+        titleStyle: const TextStyle(fontSize: AppTheme.fontSize12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
       PieChartSectionData(
         color: AppTheme.errorColor,
         value: _statistics!.cancelledAppointments.toDouble(),
         title: '${((_statistics!.cancelledAppointments / total) * 100).toStringAsFixed(1)}%',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
+        titleStyle: const TextStyle(fontSize: AppTheme.fontSize12, fontWeight: AppTheme.fontBold, color: AppTheme.white100),
       ),
     ];
   }
@@ -463,12 +463,12 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               label,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
@@ -476,7 +476,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
           Text(
             value.toString(),
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
@@ -488,7 +488,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
 
   Widget _buildLocationDistribution() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -506,18 +506,18 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
           Row(
             children: [
               Icon(Icons.location_on, color: AppTheme.primaryColor),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               const Text(
                 'Répartition par lieu',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ..._statistics!.appointmentsByLieu.entries.map((entry) {
             return _buildLocationItem(entry.key, entry.value);
           }),
@@ -558,7 +558,7 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: color.withAlpha(25),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -567,12 +567,12 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
       child: Row(
         children: [
           Icon(icon, color: color, size: 20),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Text(
               label,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
                 color: AppTheme.textPrimaryColor,
               ),
@@ -581,16 +581,16 @@ class _AppointmentStatisticsWidgetState extends State<AppointmentStatisticsWidge
           Text(
             count.toString(),
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             '(${(percentage * 100).toStringAsFixed(1)}%)',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.textSecondaryColor,
             ),
           ),

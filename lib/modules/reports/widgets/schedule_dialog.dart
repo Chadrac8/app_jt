@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/scheduler_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Dialog pour planifier un rapport
 class ScheduleDialog extends StatefulWidget {
@@ -56,7 +57,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
       title: Row(
         children: [
           const Icon(Icons.schedule, color: AppTheme.blueStandard),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(widget.initialConfig == null ? 'Planifier le rapport' : 'Modifier la planification'),
         ],
       ),
@@ -69,19 +70,19 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
             children: [
               // Informations du rapport
               _buildReportInfo(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Statut de la planification
               _buildEnabledSwitch(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Fréquence
               _buildFrequencySelector(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Configuration selon la fréquence
               _buildFrequencyConfig(),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Aperçu de la prochaine exécution
               _buildNextExecutionPreview(),
@@ -110,7 +111,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   
   Widget _buildReportInfo() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.blueStandard,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -118,7 +119,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
       child: Row(
         children: [
           const Icon(Icons.assessment, color: AppTheme.blueStandard),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,14 +128,14 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                   widget.reportName,
                   style: const TextStyle(
                     fontWeight: AppTheme.fontSemiBold,
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   'Génération automatique des données',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.grey500,
                   ),
                 ),
@@ -167,10 +168,10 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
           'Fréquence',
           style: TextStyle(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         ...ScheduleFrequency.values.map((frequency) {
           return RadioListTile<ScheduleFrequency>(
             title: Text(_getFrequencyLabel(frequency)),
@@ -210,7 +211,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   Widget _buildHourlyConfig() {
     return const Card(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppTheme.spaceMedium),
         child: Text(
           'Le rapport sera généré toutes les heures.',
           style: TextStyle(fontStyle: FontStyle.italic),
@@ -222,7 +223,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   Widget _buildDailyConfig() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -230,7 +231,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               'Configuration quotidienne',
               style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListTile(
               leading: const Icon(Icons.access_time),
               title: const Text('Heure de génération'),
@@ -246,7 +247,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   Widget _buildWeeklyConfig() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -254,7 +255,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               'Configuration hebdomadaire',
               style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListTile(
               leading: const Icon(Icons.calendar_today),
               title: const Text('Jour de la semaine'),
@@ -276,7 +277,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   Widget _buildMonthlyConfig() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -284,7 +285,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               'Configuration mensuelle',
               style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListTile(
               leading: const Icon(Icons.calendar_month),
               title: const Text('Jour du mois'),
@@ -306,7 +307,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   Widget _buildCustomConfig() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -314,7 +315,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               'Configuration personnalisée',
               style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListTile(
               leading: const Icon(Icons.event),
               title: const Text('Date et heure'),
@@ -337,14 +338,14 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
     return Card(
       color: AppTheme.greenStandard,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Row(
               children: [
                 Icon(Icons.schedule, color: AppTheme.greenStandard),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Prochaine exécution',
                   style: TextStyle(
@@ -354,10 +355,10 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _formatDateTime(nextExecution),
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: AppTheme.fontSize16),
             ),
           ],
         ),

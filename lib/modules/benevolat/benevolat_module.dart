@@ -18,11 +18,11 @@ class BenevolatModule extends StatelessWidget {
               color: AppTheme.blueStandard,
               size: 28,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               'Bénévolat',
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.grey800,
               ),

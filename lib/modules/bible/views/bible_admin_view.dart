@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import './bible_reading_view.dart';
+import '../../../theme.dart';
 
 class BibleAdminView extends StatefulWidget {
   const BibleAdminView({Key? key}) : super(key: key);
@@ -124,7 +125,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
 
   Widget _buildReadingPlansTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -138,7 +139,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                     Text(
                       'Plans de Lecture',
                       style: GoogleFonts.inter(
-                        fontSize: 24,
+                        fontSize: AppTheme.fontSize24,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
@@ -146,7 +147,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                     Text(
                       'Gérez les plans de lecture disponibles',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -165,12 +166,12 @@ class _BibleAdminViewState extends State<BibleAdminView>
             ],
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Statistiques rapides
           _buildQuickStats(),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Liste des plans (simulation)
           _buildPlansList(),
@@ -181,7 +182,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
 
   Widget _buildBibleStudiesTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -195,7 +196,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                     Text(
                       'Études Bibliques',
                       style: GoogleFonts.inter(
-                        fontSize: 24,
+                        fontSize: AppTheme.fontSize24,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                       ),
@@ -203,7 +204,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
                     Text(
                       'Gérez les études bibliques disponibles',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.grey600,
                       ),
                     ),
@@ -222,12 +223,12 @@ class _BibleAdminViewState extends State<BibleAdminView>
             ],
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Statistiques rapides
           _buildStudiesStats(),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Liste des études (simulation)
           _buildStudiesList(),
@@ -247,7 +248,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             AppTheme.greenStandard,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             'Utilisateurs',
@@ -256,7 +257,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
             AppTheme.blueStandard,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             'Completions',
@@ -277,25 +278,25 @@ class _BibleAdminViewState extends State<BibleAdminView>
             'Études Actives',
             '8',
             Icons.school,
-            Colors.purple,
+            AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             'Participants',
             '156',
             Icons.group,
-            Colors.teal,
+            AppTheme.secondaryColor,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             'Progression',
             '76%',
             Icons.trending_up,
-            Colors.indigo,
+            AppTheme.secondaryColor,
           ),
         ),
       ],
@@ -304,7 +305,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -319,18 +320,18 @@ class _BibleAdminViewState extends State<BibleAdminView>
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
@@ -338,7 +339,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
           Text(
             title,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey600,
             ),
             textAlign: TextAlign.center,
@@ -412,7 +413,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -425,14 +426,14 @@ class _BibleAdminViewState extends State<BibleAdminView>
                       Text(
                         plan['title'],
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       Text(
                         plan['description'],
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey600,
                         ),
                       ),
@@ -462,13 +463,13 @@ class _BibleAdminViewState extends State<BibleAdminView>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 _buildInfoChip(Icons.people, '${plan['participants']} participants'),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildInfoChip(Icons.category, plan['category']),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildStatusChip(plan['status']),
               ],
             ),
@@ -482,7 +483,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -495,14 +496,14 @@ class _BibleAdminViewState extends State<BibleAdminView>
                       Text(
                         study['title'],
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
                       Text(
                         study['description'],
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey600,
                         ),
                       ),
@@ -536,13 +537,13 @@ class _BibleAdminViewState extends State<BibleAdminView>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 _buildInfoChip(Icons.group, '${study['participants']} participants'),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildInfoChip(Icons.school, study['category']),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildStatusChip(study['status']),
               ],
             ),
@@ -563,11 +564,11 @@ class _BibleAdminViewState extends State<BibleAdminView>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: AppTheme.grey600),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             text,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey600,
             ),
           ),
@@ -587,7 +588,7 @@ class _BibleAdminViewState extends State<BibleAdminView>
       child: Text(
         status,
         style: GoogleFonts.inter(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontMedium,
           color: color,
         ),

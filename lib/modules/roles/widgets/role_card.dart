@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/permission_model.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class RoleCard extends StatelessWidget {
   final Role role;
@@ -25,14 +26,14 @@ class RoleCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: _parseColor(role.color).withOpacity(0.2),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -43,7 +44,7 @@ class RoleCard extends StatelessWidget {
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +69,7 @@ class RoleCard extends StatelessWidget {
                                 child: Text(
                                   'SYSTÈME',
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: AppTheme.fontSize10,
                                     fontWeight: AppTheme.fontBold,
                                     color: AppTheme.grey800,
                                   ),
@@ -84,7 +85,7 @@ class RoleCard extends StatelessWidget {
                                 child: Text(
                                   'INACTIF',
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: AppTheme.fontSize10,
                                     fontWeight: AppTheme.fontBold,
                                     color: AppTheme.grey800,
                                   ),
@@ -92,7 +93,7 @@ class RoleCard extends StatelessWidget {
                               ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           role.description,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -123,7 +124,7 @@ class RoleCard extends StatelessWidget {
                             child: Row(
                               children: [
                                 Icon(Icons.edit, size: 20),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Modifier'),
                               ],
                             ),
@@ -134,7 +135,7 @@ class RoleCard extends StatelessWidget {
                             child: Row(
                               children: [
                                 Icon(Icons.delete, size: 20, color: AppTheme.redStandard),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                               ],
                             ),
@@ -143,7 +144,7 @@ class RoleCard extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Statistiques du rôle
               Row(
@@ -153,7 +154,7 @@ class RoleCard extends StatelessWidget {
                     '${role.allPermissions.length} permissions',
                     AppTheme.blueStandard,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   _buildStatChip(
                     Icons.widgets,
                     '${role.modulePermissions.length} modules',
@@ -162,7 +163,7 @@ class RoleCard extends StatelessWidget {
                 ],
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Modules avec accès
               if (role.modulePermissions.isNotEmpty) ...[
@@ -172,7 +173,7 @@ class RoleCard extends StatelessWidget {
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
@@ -187,7 +188,7 @@ class RoleCard extends StatelessWidget {
                       child: Text(
                         module?.name ?? moduleId,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
@@ -203,7 +204,7 @@ class RoleCard extends StatelessWidget {
                         child: Text(
                           '+${role.modulePermissions.length - 5}',
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: AppTheme.grey500,
                           ),
                         ),
@@ -213,11 +214,11 @@ class RoleCard extends StatelessWidget {
               ],
               
               // Informations de création
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Icon(Icons.access_time, size: 14, color: AppTheme.grey600),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'Créé le ${_formatDate(role.createdAt)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -225,9 +226,9 @@ class RoleCard extends StatelessWidget {
                     ),
                   ),
                   if (role.createdBy != null) ...[
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Icon(Icons.person, size: 14, color: AppTheme.grey600),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       'par ${role.createdBy}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -255,11 +256,11 @@ class RoleCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: color,
               fontWeight: AppTheme.fontMedium,
             ),

@@ -215,7 +215,7 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
                       'Actions de nettoyage:',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -249,15 +249,15 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Logs:',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -274,7 +274,7 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
                               _logs[index],
                               style: const TextStyle(
                                 fontFamily: 'monospace',
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                               ),
                             ),
                           );

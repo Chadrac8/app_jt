@@ -310,18 +310,18 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                   _buildSliverAppBar(eventColor),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildEventHeader(),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppTheme.spaceLarge),
                           _buildEventDetails(),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppTheme.spaceLarge),
                           _buildQuickActions(),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppTheme.spaceLarge),
                           _buildEventDescription(),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppTheme.spaceLarge),
                           if (_userRegistration != null)
                             _buildRegistrationStatus()
                           else if (isRegistrationOpen && isUpcoming)
@@ -446,25 +446,25 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                 size: 16,
                 color: _getEventColor(widget.event.type),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Text(
                 widget.event.typeLabel,
                 style: TextStyle(
                   color: _getEventColor(widget.event.type),
                   fontWeight: AppTheme.fontSemiBold,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         
         // Titre
         Text(
           widget.event.title,
           style: const TextStyle(
-            fontSize: 28,
+            fontSize: AppTheme.fontSize28,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.textPrimaryColor,
           ),
@@ -478,7 +478,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           children: [
             _buildDetailRow(
@@ -511,7 +511,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: _getEventColor(widget.event.type).withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -522,7 +522,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
             color: _getEventColor(widget.event.type),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -530,16 +530,16 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
               Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textSecondaryColor,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 value,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: AppTheme.textPrimaryColor,
                 ),
               ),
@@ -559,7 +559,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -569,22 +569,22 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                   Icons.description,
                   color: AppTheme.primaryColor,
                 ),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Description',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               widget.event.description,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.textPrimaryColor,
                 height: 1.5,
               ),
@@ -600,7 +600,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -610,18 +610,18 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                   Icons.flash_on,
                   color: AppTheme.primaryColor,
                 ),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Actions rapides',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -639,7 +639,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: _shareEvent,
@@ -688,13 +688,13 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.1),
                     shape: BoxShape.circle,
@@ -705,7 +705,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                     size: 28,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -713,16 +713,16 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                       Text(
                         'Votre inscription',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontSemiBold,
                           color: AppTheme.textSecondaryColor,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         statusText,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                           color: statusColor,
                         ),
@@ -732,16 +732,16 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Inscrit le ${DateFormat('dd/MM/yyyy à HH:mm').format(registration.registrationDate)}',
               style: const TextStyle(
                 color: AppTheme.textSecondaryColor,
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
               ),
             ),
             if (widget.event.startDate.isAfter(DateTime.now()) && !registration.isCancelled) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
@@ -766,13 +766,13 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: _getEventColor(widget.event.type).withOpacity(0.1),
                     shape: BoxShape.circle,
@@ -783,7 +783,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                     size: 28,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 const Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -791,12 +791,12 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                       Text(
                         'Participer',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         'Inscrivez-vous pour participer à cet événement',
                         style: TextStyle(
@@ -808,7 +808,7 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

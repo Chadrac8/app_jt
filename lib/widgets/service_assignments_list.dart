@@ -274,7 +274,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
             children: [
               // Header with add team button
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
                   border: Border(
@@ -317,12 +317,12 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                               size: 64,
                               color: Theme.of(context).colorScheme.error,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppTheme.spaceMedium),
                             Text(
                               'Erreur lors du chargement',
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               snapshot.error.toString(),
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -347,7 +347,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(32),
+                              padding: const EdgeInsets.all(AppTheme.spaceXLarge),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                                 shape: BoxShape.circle,
@@ -358,21 +358,21 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: AppTheme.spaceLarge),
                             Text(
                               'Aucune affectation',
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                 fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               'Commencez par assigner des équipes à ce service',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: AppTheme.spaceLarge),
                             FilledButton.icon(
                               onPressed: _assignTeamToService,
                               icon: const Icon(Icons.add),
@@ -423,7 +423,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
             final persons = personsSnapshot.data!;
 
             return ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               itemCount: groupedAssignments.keys.length,
               itemBuilder: (context, index) {
                 final positionId = groupedAssignments.keys.elementAt(index);
@@ -456,7 +456,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -464,7 +464,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: position.isLeaderPosition 
                         ? Theme.of(context).colorScheme.primaryContainer
@@ -479,7 +479,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                         : Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -509,9 +509,9 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
             ),
 
             if (assignments.isNotEmpty) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Divider(),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               // Assignments list
               ...assignments.map((assignment) {
@@ -548,7 +548,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
             person: person,
             radius: 20,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           
           // Person info
           Expanded(
@@ -578,7 +578,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                       ),
                     ),
                     if (assignment.respondedAt != null) ...[
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         _formatDate(assignment.respondedAt!),
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -626,7 +626,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                   child: Row(
                     children: [
                       Icon(Icons.check, color: AppTheme.greenStandard),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppTheme.spaceSmall),
                       Text('Accepter'),
                     ],
                   ),
@@ -636,7 +636,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                   child: Row(
                     children: [
                       Icon(Icons.close, color: AppTheme.redStandard),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppTheme.spaceSmall),
                       Text('Refuser'),
                     ],
                   ),
@@ -646,7 +646,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                   child: Row(
                     children: [
                       Icon(Icons.help, color: AppTheme.orangeStandard),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppTheme.spaceSmall),
                       Text('Peut-être'),
                     ],
                   ),
@@ -658,7 +658,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                   child: Row(
                     children: [
                       Icon(Icons.verified),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppTheme.spaceSmall),
                       Text('Confirmer'),
                     ],
                   ),
@@ -668,7 +668,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                 child: Row(
                   children: [
                     Icon(Icons.notifications),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Envoyer rappel'),
                   ],
                 ),
@@ -678,7 +678,7 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
                 child: Row(
                   children: [
                     Icon(Icons.delete, color: AppTheme.redStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Supprimer'),
                   ],
                 ),
@@ -796,7 +796,7 @@ class _PersonSelectionDialogState extends State<_PersonSelectionDialog> {
               ),
               onChanged: (value) => setState(() => _searchQuery = value),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredPersons.length,

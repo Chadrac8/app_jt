@@ -283,7 +283,7 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
           },
           dropdownColor: _bgColor,
           underline: Container(),
-          style: TextStyle(color: _textColor, fontSize: 14),
+          style: TextStyle(color: _textColor, fontSize: AppTheme.fontSize14),
           items: SongModel.availableKeys.map((key) {
             return DropdownMenuItem<String>(
               value: key,
@@ -293,7 +293,7 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
         ),
       ),
       
-      const SizedBox(width: 8),
+      const SizedBox(width: AppTheme.spaceSmall),
       
       // Bouton accords
       IconButton(
@@ -323,7 +323,7 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
             widget.song.title,
             style: TextStyle(
               color: _textColor,
-              fontSize: 28,
+              fontSize: AppTheme.fontSize28,
               fontWeight: AppTheme.fontBold,
               fontFamily: _fontFamily,
             ),
@@ -334,12 +334,12 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
           
           // Auteur (avec espacement approprié)
           if (widget.song.authors.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               widget.song.authors,
               style: TextStyle(
                 color: _textColor.withOpacity(0.7),
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontStyle: FontStyle.italic,
                 fontFamily: _fontFamily,
               ),
@@ -419,7 +419,7 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
             }),
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Contrôles de navigation
           Row(
@@ -440,7 +440,7 @@ class _SongProjectionPageState extends State<SongProjectionPage> {
                 '${_currentSection + 1} / ${_sections.length}',
                 style: TextStyle(
                   color: _textColor,
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontMedium,
                 ),
               ),

@@ -37,7 +37,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
         // Formulaire d'ajout de commentaire
         _buildCommentForm(),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Liste des commentaires
         StreamBuilder<List<BlogComment>>(
@@ -46,7 +46,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: Padding(
-                  padding: EdgeInsets.all(32),
+                  padding: EdgeInsets.all(AppTheme.spaceXLarge),
                   child: CircularProgressIndicator(),
                 ),
               );
@@ -54,7 +54,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
 
             if (snapshot.hasError) {
               return Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey50,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -63,7 +63,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                 child: Row(
                   children: [
                     Icon(Icons.error_outline, color: AppTheme.grey600),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text(
                         'Erreur lors du chargement des commentaires',
@@ -101,7 +101,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
 
   Widget _buildCommentForm() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -113,7 +113,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
           // Indicateur de réponse
           if (_replyingTo != null) ...[
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -125,14 +125,14 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                     size: 16,
                     color: Theme.of(context).primaryColor,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Réponse à ${_replyingTo!.authorName}',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: AppTheme.fontMedium,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ),
@@ -145,7 +145,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
           ],
           
           // Champ de commentaire
@@ -154,13 +154,13 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
             decoration: const InputDecoration(
               hintText: 'Ajouter un commentaire...',
               border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.all(12),
+              contentPadding: EdgeInsets.all(AppTheme.space12),
             ),
             maxLines: 3,
             minLines: 2,
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Actions
           Row(
@@ -172,7 +172,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                   child: const Text('Annuler'),
                 ),
               
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               
               ElevatedButton(
                 onPressed: _isSubmitting ? null : _submitComment,
@@ -193,7 +193,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
 
   Widget _buildEmptyState() {
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(AppTheme.spaceXLarge),
       child: Column(
         children: [
           Icon(
@@ -201,14 +201,14 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun commentaire',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Soyez le premier à commenter cet article!',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -228,7 +228,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
         
         // Réponses
         if (replies.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Padding(
             padding: const EdgeInsets.only(left: 32),
             child: Column(
@@ -240,14 +240,14 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
           ),
         ],
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
       ],
     );
   }
 
   Widget _buildCommentCard(BlogComment comment, {required bool isReply}) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: isReply ? AppTheme.grey50 : AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -272,7 +272,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                     : null,
               ),
               
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               
               // Nom et date
               Expanded(
@@ -288,7 +288,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                           ),
                         ),
                         if (comment.isAuthorReply) ...[
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 6,
@@ -302,7 +302,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                               'AUTEUR',
                               style: TextStyle(
                                 color: AppTheme.white100,
-                                fontSize: 10,
+                                fontSize: AppTheme.fontSize10,
                                 fontWeight: AppTheme.fontBold,
                               ),
                             ),
@@ -351,7 +351,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
             ],
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Contenu du commentaire
           Text(
@@ -361,7 +361,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
             ),
           ),
           
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           
           // Actions du commentaire
           Row(
@@ -377,7 +377,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                 label: Text(
                   comment.likes > 0 ? comment.likes.toString() : 'J\'aime',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.grey600,
                   ),
                 ),
@@ -389,7 +389,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
               ),
               
               if (!isReply) ...[
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 
                 // Répondre
                 TextButton.icon(
@@ -402,7 +402,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
                   label: Text(
                     'Répondre',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey600,
                     ),
                   ),

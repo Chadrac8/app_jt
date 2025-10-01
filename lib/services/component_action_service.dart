@@ -100,10 +100,10 @@ class ComponentActionService {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Impossible d\'ouvrir le lien dans l\'application.'),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text('URL: $url', style: const TextStyle(fontWeight: AppTheme.fontBold)),
-            const SizedBox(height: 8),
-            Text('Erreur: $error', style: const TextStyle(fontSize: 12, color: AppTheme.grey500)),
+            const SizedBox(height: AppTheme.spaceSmall),
+            Text('Erreur: $error', style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500)),
           ],
         ),
         actions: [
@@ -351,12 +351,12 @@ class ComponentActionService {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('La page personnalisée demandée n\'a pas pu être trouvée.'),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'ID: $pageId',
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: AppTheme.fontSize12),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             const Text(
               'Causes possibles:',
               style: TextStyle(fontWeight: AppTheme.fontBold),
@@ -387,15 +387,15 @@ class ComponentActionService {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Erreur lors du chargement de la page personnalisée:'),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               error,
-              style: const TextStyle(color: AppTheme.redStandard, fontSize: 12),
+              style: const TextStyle(color: AppTheme.redStandard, fontSize: AppTheme.fontSize12),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'ID: $pageId',
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: AppTheme.fontSize12),
             ),
           ],
         ),
@@ -575,15 +575,15 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
               size: 64,
               color: AppTheme.orangeStandard,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             const Text(
               'WebView non disponible',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'URL: ${widget.url}',
               textAlign: TextAlign.center,
@@ -591,15 +591,15 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Détails: $error',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppTheme.grey500, fontSize: 12),
+              style: const TextStyle(color: AppTheme.grey500, fontSize: AppTheme.fontSize12),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton.icon(
               onPressed: () async {
                 try {
@@ -632,26 +632,26 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
               size: 64,
               color: AppTheme.redStandard,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             const Text(
               'Impossible de charger la page',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _errorMessage,
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppTheme.grey500),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: _loadUrl,
               child: const Text('Réessayer'),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             TextButton(
               onPressed: () async {
                 try {

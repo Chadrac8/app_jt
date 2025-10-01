@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/bible_verse.dart';
+import '../../../theme.dart';
 
 class VerseActionsDialog extends StatefulWidget {
   final BibleVerse verse;
@@ -50,26 +51,26 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
             width: 40,
             decoration: BoxDecoration(
               color: AppTheme.grey300,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(AppTheme.radius2),
             ),
           ),
           
           // En-tête avec référence du verset
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: [
                 Text(
                   widget.verse.reference,
                   style: GoogleFonts.inter(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.grey50,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -77,7 +78,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                   child: Text(
                     widget.verse.text,
                     style: GoogleFonts.crimsonText(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       color: AppTheme.black100.withOpacity(0.87),
                       height: 1.4,
                     ),
@@ -101,7 +102,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                     _buildHighlightColors(),
                   ),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Actions rapides
                   Row(
@@ -114,7 +115,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                           widget.onFavorite,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: _buildActionButton(
                           'Note',
@@ -127,7 +128,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                           },
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: _buildActionButton(
                           'Partager',
@@ -149,7 +150,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
             _buildNoteInput(),
           ],
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
       ),
     );
@@ -162,18 +163,18 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
         Row(
           children: [
             Icon(icon, size: 20, color: AppTheme.primaryColor),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.black100.withOpacity(0.87),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         content,
       ],
     );
@@ -186,7 +187,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
       AppTheme.blueStandard,
       AppTheme.orangeStandard,
       AppTheme.pinkStandard,
-      Colors.purple,
+      AppTheme.primaryColor,
     ];
 
     return Row(
@@ -240,11 +241,11 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
         child: Column(
           children: [
             Icon(icon, color: color, size: 24),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               label,
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontMedium,
                 color: color,
               ),
@@ -257,7 +258,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
 
   Widget _buildNoteInput() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -275,7 +276,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
               Text(
                 'Ajouter une note',
                 style: GoogleFonts.inter(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.primaryColor,
                 ),
@@ -283,7 +284,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           TextField(
             controller: _noteController,
@@ -301,7 +302,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
             autofocus: true,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Row(
             children: [
@@ -316,7 +317,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                   child: const Text('Annuler'),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {

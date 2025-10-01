@@ -207,7 +207,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
               children: [
                 // App branding
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   decoration: BoxDecoration(
                     color: AppTheme.blueStandard,
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -218,13 +218,13 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     color: AppTheme.blueStandard,
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppTheme.spaceXLarge),
                 const CircularProgressIndicator(),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 Text(
                   message,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     color: AppTheme.grey500,
                   ),
                   textAlign: TextAlign.center,
@@ -250,7 +250,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.orangeStandard,
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -262,25 +262,25 @@ class _AuthWrapperState extends State<AuthWrapper> {
                       size: 48,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   Text(
                     'Problème d\'Authentification',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: AppTheme.fontSize20,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.orangeStandard,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     'Impossible de vérifier votre statut de connexion. Vérifiez votre connexion internet.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey500,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -293,7 +293,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                           foregroundColor: AppTheme.white100,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       OutlinedButton.icon(
                         onPressed: _continueOffline,
                         icon: const Icon(Icons.offline_bolt),
@@ -323,7 +323,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.redStandard,
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -335,35 +335,35 @@ class _AuthWrapperState extends State<AuthWrapper> {
                       size: 48,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   Text(
                     'Erreur de Profil',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: AppTheme.fontSize20,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.redStandard,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     'Impossible de charger votre profil utilisateur.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey500,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Utilisateur: ${user.email ?? 'Inconnu'}',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey500,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -376,7 +376,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                           foregroundColor: AppTheme.white100,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       OutlinedButton.icon(
                         onPressed: () => _signOut(),
                         icon: const Icon(Icons.logout),
@@ -415,7 +415,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.redStandard,
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -427,27 +427,27 @@ class _AuthWrapperState extends State<AuthWrapper> {
                       size: 48,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   Text(
                     'Erreur d\'Authentification',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: AppTheme.fontSize20,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.redStandard,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     _errorMessage.isNotEmpty 
                         ? _errorMessage
                         : 'Une erreur inattendue s\'est produite.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey500,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   ElevatedButton.icon(
                     onPressed: _resetAndRetry,
                     icon: const Icon(Icons.refresh),
@@ -479,14 +479,14 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 size: 64,
                 color: AppTheme.blueStandard,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               const Text(
                 'Connexion Required',
-                style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               const Text('Veuillez vous connecter pour continuer.'),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               ElevatedButton(
                 onPressed: _retryAuthentication,
                 child: const Text('Actualiser'),

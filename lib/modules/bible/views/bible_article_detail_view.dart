@@ -4,6 +4,7 @@ import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import 'bible_article_form_view.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class BibleArticleDetailView extends StatefulWidget {
   final BibleArticle article;
@@ -62,7 +63,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
           SliverToBoxAdapter(
             child: _isLoading
                 ? const Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(AppTheme.space20),
                     child: Center(child: CircularProgressIndicator()),
                   )
                 : _buildContent(theme),
@@ -97,7 +98,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                 child: Row(
                   children: [
                     Icon(Icons.edit_outlined, size: 18),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Modifier'),
                   ],
                 ),
@@ -112,7 +113,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                           : Icons.visibility_outlined,
                       size: 18,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(_article.isPublished ? 'Dépublier' : 'Publier'),
                   ],
                 ),
@@ -134,7 +135,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -149,19 +150,19 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                     child: Text(
                       _article.category,
                       style: GoogleFonts.inter(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                         color: AppTheme.white100,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   // Titre
                   Text(
                     _article.title,
                     style: GoogleFonts.inter(
-                      fontSize: 24,
+                      fontSize: AppTheme.fontSize24,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.white100,
                     ),
@@ -177,24 +178,24 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
 
   Widget _buildContent(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildMetadata(theme),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildSummary(theme),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           _buildContent1(theme),
           if (_article.bibleReferences.isNotEmpty) ...[
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildBibleReferences(theme),
           ],
           if (_article.tags.isNotEmpty) ...[
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildTags(theme),
           ],
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           _buildAuthorInfo(theme),
         ],
       ),
@@ -209,25 +210,25 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
           size: 16,
           color: theme.hintColor,
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppTheme.spaceXSmall),
         Text(
           _article.author,
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             color: theme.hintColor,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Icon(
           Icons.access_time_outlined,
           size: 16,
           color: theme.hintColor,
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppTheme.spaceXSmall),
         Text(
           '${_article.readingTimeMinutes} min de lecture',
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             color: theme.hintColor,
           ),
         ),
@@ -237,11 +238,11 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
           size: 16,
           color: theme.hintColor,
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: AppTheme.spaceXSmall),
         Text(
           '${_article.viewCount} lectures',
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             color: theme.hintColor,
           ),
         ),
@@ -251,7 +252,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
 
   Widget _buildSummary(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -270,22 +271,22 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                 color: theme.primaryColor,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Résumé',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: theme.primaryColor,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             _article.summary,
             style: GoogleFonts.inter(
-              fontSize: 15,
+              fontSize: AppTheme.fontSize15,
               height: 1.6,
               color: theme.textTheme.bodyLarge?.color,
             ),
@@ -302,16 +303,16 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
         Text(
           'Article',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: theme.textTheme.titleLarge?.color,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           _article.content,
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             height: 1.7,
             color: theme.textTheme.bodyLarge?.color,
           ),
@@ -331,18 +332,18 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
               color: theme.primaryColor,
               size: 20,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               'Références bibliques',
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontSemiBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -359,7 +360,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
             child: Text(
               ref.displayText,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
                 color: theme.textTheme.bodyMedium?.color,
               ),
@@ -381,18 +382,18 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
               color: theme.primaryColor,
               size: 20,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               'Mots-clés',
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontSemiBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -405,7 +406,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
             child: Text(
               '#$tag',
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontMedium,
                 color: theme.primaryColor,
               ),
@@ -418,7 +419,7 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
 
   Widget _buildAuthorInfo(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -435,13 +436,13 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
             child: Text(
               _article.author.substring(0, 1).toUpperCase(),
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: theme.primaryColor,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,16 +450,16 @@ class _BibleArticleDetailViewState extends State<BibleArticleDetailView> {
                 Text(
                   _article.author,
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                     color: theme.textTheme.titleMedium?.color,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   'Publié le ${_formatDate(_article.createdAt)}',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: theme.hintColor,
                   ),
                 ),

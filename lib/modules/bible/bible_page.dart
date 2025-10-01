@@ -133,11 +133,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Mes marque-pages',
               style: GoogleFonts.inter(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
@@ -170,21 +170,21 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         size: 64,
                         color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun marque-page',
                         style: GoogleFonts.inter(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Vos chapitres favoris apparaîtront ici',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
@@ -204,10 +204,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
                     child: ListTile(
                       leading: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
                         decoration: BoxDecoration(
                           color: colorScheme.tertiaryContainer,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Icon(
                           Icons.bookmark_rounded,
@@ -218,7 +218,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       title: Text(
                         '${bookmark['book']} ${bookmark['chapter']}',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
@@ -297,16 +297,16 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   children: [
                     Icon(
                       Icons.lightbulb_outline,
-                      color: Colors.amber[300],
+                      color: AppTheme.warning,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text(
                         'Tapez sur un verset pour accéder aux notes, favoris et surlignements !',
                         style: GoogleFonts.inter(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                          fontSize: AppTheme.fontSize13,
+                          fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ),
@@ -318,7 +318,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
-                margin: const EdgeInsets.all(16),
+                margin: const EdgeInsets.all(AppTheme.spaceLarge),
               ),
             );
           }
@@ -340,7 +340,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           mainAxisSize: MainAxisSize.min,
           children: [
             CircularProgressIndicator(color: colorScheme.primary),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Recherche en cours...',
               style: GoogleFonts.inter(
@@ -400,12 +400,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Text(
                 'Résultats pour "$query"',
                 style: GoogleFonts.inter(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontSemiBold,
                   color: colorScheme.onSurface,
                 ),
@@ -427,21 +427,21 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         size: 64,
                         color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun résultat',
                         style: GoogleFonts.inter(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Essayez avec d\'autres termes',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
@@ -456,7 +456,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       child: Text(
                         '${results.length} résultat${results.length > 1 ? 's' : ''} trouvé${results.length > 1 ? 's' : ''}',
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontMedium,
                           color: colorScheme.primary,
                         ),
@@ -473,7 +473,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                             elevation: 1,
                             color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
                             child: Padding(
-                              padding: const EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(AppTheme.spaceMedium),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -486,12 +486,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                         ),
                                         decoration: BoxDecoration(
                                           color: colorScheme.primaryContainer,
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                         ),
                                         child: Text(
                                           '${verse.book} ${verse.chapter}:${verse.verse}',
                                           style: GoogleFonts.inter(
-                                            fontSize: 12,
+                                            fontSize: AppTheme.fontSize12,
                                             fontWeight: AppTheme.fontMedium,
                                             color: colorScheme.onPrimaryContainer,
                                           ),
@@ -508,11 +508,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: AppTheme.spaceSmall),
                                   Text(
                                     verse.text,
                                     style: GoogleFonts.inter(
-                                      fontSize: 14,
+                                      fontSize: AppTheme.fontSize14,
                                       height: 1.4,
                                       color: colorScheme.onSurface,
                                     ),
@@ -790,16 +790,16 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: AppTheme.space18),
                 Container(
                   width: 320,
                   height: 120,
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                   ),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: AppTheme.space18),
                 Container(
                   width: 180,
                   height: 18,
@@ -820,24 +820,24 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         data: theme,
         child: Column(
         children: [
-          // TabBar - Style MD3 moderne avec couleur surface
+          // TabBar - Style MD3 moderne avec couleur primaire cohérente
           Material(
-            color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
+            color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
             elevation: 0,
             child: TabBar(
               controller: _tabController,
-              labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
-              unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
-              indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+              labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 3.0,
               labelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
                 letterSpacing: 0.1,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
                 letterSpacing: 0.1,
               ),
@@ -845,29 +845,25 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               overlayColor: WidgetStateProperty.resolveWith<Color?>(
                 (Set<WidgetState> states) {
                   if (states.contains(WidgetState.pressed)) {
-                    return AppTheme.primaryColor.withValues(alpha: 0.12); // Overlay rouge sur fond clair
+                    return AppTheme.onPrimaryColor.withValues(alpha: 0.12); // Overlay blanc sur fond primaire
                   }
                   if (states.contains(WidgetState.hovered)) {
-                    return AppTheme.primaryColor.withValues(alpha: 0.08); // Hover rouge sur fond clair
+                    return AppTheme.onPrimaryColor.withValues(alpha: 0.08); // Hover blanc sur fond primaire
                   }
                   return null;
                 },
               ),
               tabs: const [
                 Tab(
-                  icon: Icon(Icons.menu_book_rounded),
                   text: 'La Bible',
                 ),
                 Tab(
-                  icon: Icon(Icons.play_circle_rounded),
                   text: 'Le Message',
                 ),
                 Tab(
-                  icon: Icon(Icons.library_books_rounded),
                   text: 'Ressources',
                 ),
                 Tab(
-                  icon: Icon(Icons.sticky_note_2_rounded),
                   text: 'Notes',
                 ),
               ],
@@ -937,15 +933,15 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           SliverToBoxAdapter(
             child: Column(
               children: [
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 const ReadingPlanHomeWidget(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 const BibleStudyHomeWidget(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 const ThematicPassagesHomeWidget(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 const BibleArticleHomeWidget(isAdmin: true),
-                const SizedBox(height: 40),
+                const SizedBox(height: AppTheme.space40),
               ],
             ),
           ),
@@ -957,7 +953,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   Widget _buildModernHeader() {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -967,7 +963,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             AppTheme.primaryColor.withOpacity(0.8),
           ],
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
             color: AppTheme.primaryColor.withOpacity(0.3),
@@ -982,7 +978,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.white100.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -993,7 +989,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   size: 28,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1001,16 +997,16 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     Text(
                       _getGreeting(),
                       style: GoogleFonts.inter(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         color: AppTheme.white100.withOpacity(0.9),
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Continuons notre lecture',
                       style: GoogleFonts.poppins(
-                        fontSize: 24,
+                        fontSize: AppTheme.fontSize24,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.white100,
                       ),
@@ -1021,7 +1017,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             ],
           ),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Statistiques
           Row(
@@ -1034,16 +1030,16 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   color: AppTheme.orangeStandard,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: _buildStatCard(
                   icon: Icons.bookmark,
                   title: 'Favoris',
                   value: '${_favorites.length}',
-                  color: Colors.amber,
+                  color: AppTheme.warning,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: _buildStatCard(
                   icon: Icons.schedule,
@@ -1072,7 +1068,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     final displayLabel = label ?? title;
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100.withOpacity(0.15),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -1083,7 +1079,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: color.withOpacity(0.2),
               shape: BoxShape.circle,
@@ -1094,11 +1090,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               size: 20,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             displayValue,
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.white100,
             ),
@@ -1106,7 +1102,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           Text(
             displayLabel,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.white100.withOpacity(0.8),
             ),
           ),
@@ -1123,39 +1119,39 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.amber[50]!,
+            AppTheme.warning.withAlpha(25),
             AppTheme.grey50,
           ],
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         border: Border.all(
-          color: Colors.amber.withOpacity(0.2),
+          color: AppTheme.warning.withAlpha(51),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.amber.withOpacity(0.1),
+            color: AppTheme.warning.withAlpha(25),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.amber, AppTheme.orangeStandard],
+                      colors: [AppTheme.warning, AppTheme.orangeStandard],
                     ),
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.amber.withOpacity(0.3),
+                        color: AppTheme.warning.withAlpha(76),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -1167,7 +1163,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1175,16 +1171,16 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       Text(
                         'Verset du jour',
                         style: GoogleFonts.poppins(
-                          fontSize: 20,
+                          fontSize: AppTheme.fontSize20,
                           fontWeight: AppTheme.fontBold,
-                          color: Colors.amber[800],
+                          color: AppTheme.warning,
                         ),
                       ),
                       Text(
                         _getCurrentDate(),
                         style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.amber[600],
+                          fontSize: AppTheme.fontSize14,
+                          color: AppTheme.warning,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -1196,17 +1192,17 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   icon: const Icon(Icons.share),
                   style: IconButton.styleFrom(
                     backgroundColor: AppTheme.white100,
-                    foregroundColor: Colors.amber[700],
+                    foregroundColor: AppTheme.warning,
                   ),
                 ),
               ],
             ),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             // Quote container
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: AppTheme.white100,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -1223,10 +1219,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 children: [
                   Icon(
                     Icons.format_quote,
-                    color: Colors.amber[300],
+                    color: AppTheme.warning,
                     size: 32,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 600),
                     child: Text(
@@ -1241,21 +1237,21 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: Colors.amber[100],
+                        color: AppTheme.warning.withAlpha(51),
                         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                       ),
                       child: Text(
                         '${_verseOfTheDay!.book} ${_verseOfTheDay!.chapter}:${_verseOfTheDay!.verse}',
                         style: GoogleFonts.inter(
-                          color: Colors.amber[800],
+                          color: AppTheme.warning,
                           fontWeight: AppTheme.fontSemiBold,
-                          fontSize: 13,
+                          fontSize: AppTheme.fontSize13,
                         ),
                       ),
                     ),
@@ -1280,7 +1276,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             child: Text(
               'Actions rapides',
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.grey800,
               ),
@@ -1299,7 +1295,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   },
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: _buildQuickActionCard(
                   icon: Icons.search,
@@ -1311,19 +1307,19 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   },
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: _buildQuickActionCard(
                   icon: Icons.star,
                   title: 'Mes\nfavoris',
-                  color: Colors.amber,
+                  color: AppTheme.warningColor,
                   onTap: () {
                     // Ouvrir les favoris
                     _showFavorites();
                   },
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: _buildQuickActionCard(
                   icon: Icons.note,
@@ -1352,7 +1348,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -1363,7 +1359,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -1381,11 +1377,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 size: 24,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontSemiBold,
                 color: color,
                 height: 1.2,
@@ -1435,19 +1431,19 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.favorite_border, size: 64, color: AppTheme.grey500),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun verset favori',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           color: AppTheme.grey500,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Appuyez longuement sur un verset pour l\'ajouter aux favoris',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey500,
                         ),
                         textAlign: TextAlign.center,
@@ -1538,19 +1534,19 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.note_add_outlined, size: 64, color: AppTheme.grey500),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucune note',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           color: AppTheme.grey500,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Appuyez longuement sur un verset pour ajouter une note',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey500,
                         ),
                         textAlign: TextAlign.center,
@@ -1587,13 +1583,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           children: [
                             Text(
                               bibleVerse?.text ?? 'Verset non trouvé',
-                              style: GoogleFonts.plusJakartaSans(fontSize: 12),
+                              style: GoogleFonts.plusJakartaSans(fontSize: AppTheme.fontSize12),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: AppTheme.spaceXSmall),
                             Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(AppTheme.spaceSmall),
                               decoration: BoxDecoration(
                                 color: AppTheme.grey100,
                                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1601,7 +1597,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                               child: Text(
                                 note,
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
+                                  fontSize: AppTheme.fontSize14,
                                   fontStyle: FontStyle.italic,
                                 ),
                                 maxLines: 2,
@@ -1716,7 +1712,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -1741,7 +1737,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1749,7 +1745,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     Text(
                       'Lecture Biblique',
                       style: GoogleFonts.poppins(
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor,
                         height: 1.1,
@@ -1758,7 +1754,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     Text(
                       'Explorez les Saintes Écritures',
                       style: GoogleFonts.inter(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey600,
                         fontWeight: AppTheme.fontMedium,
                       ),
@@ -1769,7 +1765,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               // Menu d'options compact
               PopupMenuButton<String>(
                 icon: Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(AppTheme.space6),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
@@ -1803,11 +1799,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           color: AppTheme.primaryColor,
                           size: 20,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Paramètres de lecture',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
@@ -1823,11 +1819,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           color: AppTheme.primaryColor,
                           size: 20,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Historique',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
@@ -1843,11 +1839,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           color: AppTheme.primaryColor,
                           size: 20,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Marquer ce chapitre',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
@@ -1859,7 +1855,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             ],
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Sélecteurs compacts
           Row(
@@ -1893,12 +1889,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           color: AppTheme.grey600,
                           size: 16,
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: AppTheme.space6),
                         Text(
                           'Livre',
                           style: GoogleFonts.inter(
                             color: AppTheme.grey600,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                       ],
@@ -1912,7 +1908,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     ),
                     style: GoogleFonts.inter(
                       color: AppTheme.primaryColor,
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                     items: books.map((b) => DropdownMenuItem(
@@ -1924,12 +1920,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                             color: AppTheme.primaryColor,
                             size: 14,
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: AppTheme.space6),
                           Expanded(
                             child: Text(
                               b.name,
                               style: GoogleFonts.inter(
-                                fontSize: 13,
+                                fontSize: AppTheme.fontSize13,
                                 fontWeight: AppTheme.fontMedium,
                               ),
                             ),
@@ -1946,7 +1942,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 ),
               ),
               
-              const SizedBox(width: 10),
+              const SizedBox(width: AppTheme.space10),
               
               // Sélecteur de chapitre compact
               Expanded(
@@ -1977,13 +1973,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           color: _selectedBook != null ? AppTheme.grey600 : AppTheme.grey400,
                           size: 16,
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: AppTheme.space6),
                         Expanded(
                           child: Text(
                             'Chap.',
                             style: GoogleFonts.inter(
                               color: _selectedBook != null ? AppTheme.grey600 : AppTheme.grey400,
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                             ),
                           ),
                         ),
@@ -1998,7 +1994,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     ),
                     style: GoogleFonts.inter(
                       color: AppTheme.primaryColor,
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                     items: _selectedBook != null
@@ -2017,7 +2013,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                     child: Text(
                                       '${i + 1}',
                                       style: GoogleFonts.poppins(
-                                        fontSize: 11,
+                                        fontSize: AppTheme.fontSize11,
                                         fontWeight: AppTheme.fontSemiBold,
                                         color: AppTheme.primaryColor,
                                       ),
@@ -2050,12 +2046,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   Widget _buildReadingPlaceholder() {
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(AppTheme.spaceXLarge),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -2073,31 +2069,31 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 color: AppTheme.primaryColor.withOpacity(0.7),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             Text(
               _selectedBook == null
                   ? 'Choisissez un livre pour commencer'
                   : 'Sélectionnez un chapitre',
               style: GoogleFonts.poppins(
-                fontSize: 22,
+                fontSize: AppTheme.fontSize22,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.grey700,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _selectedBook == null
                   ? 'Explorez les 66 livres de la Bible et plongez dans la Parole de Dieu'
                   : 'Découvrez les versets du livre ${_selectedBook}',
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.grey600,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             if (_selectedBook == null) ...[
               ElevatedButton.icon(
                 onPressed: () {
@@ -2133,9 +2129,9 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     
     if (_isLoading) {
       return ListView.separated(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: 8,
-        separatorBuilder: (_, __) => const SizedBox(height: 10),
+        separatorBuilder: (_, __) => const SizedBox(height: AppTheme.space10),
         itemBuilder: (context, i) => Shimmer.fromColors(
           baseColor: theme.colorScheme.surface,
           highlightColor: theme.colorScheme.primary.withOpacity(0.13),
@@ -2156,7 +2152,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         Container(
           width: double.infinity,
           margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -2176,7 +2172,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10),
@@ -2187,7 +2183,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       size: 18,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2195,7 +2191,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         Text(
                           '${book.name} ${chapter}',
                           style: GoogleFonts.crimsonText(
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontBold,
                             color: AppTheme.primaryColor,
                           ),
@@ -2203,7 +2199,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         Text(
                           '${verses.length} versets',
                           style: GoogleFonts.inter(
-                            fontSize: 11,
+                            fontSize: AppTheme.fontSize11,
                             color: AppTheme.grey600,
                             fontWeight: AppTheme.fontMedium,
                           ),
@@ -2226,12 +2222,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           style: IconButton.styleFrom(
                             backgroundColor: AppTheme.white100,
                             foregroundColor: AppTheme.primaryColor,
-                            padding: const EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(AppTheme.space6),
                             minimumSize: const Size(32, 32),
                           ),
                           tooltip: 'Chapitre précédent',
                         ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: AppTheme.space6),
                       if (chapter < book.chapters.length)
                         IconButton(
                           onPressed: () {
@@ -2244,7 +2240,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           style: IconButton.styleFrom(
                             backgroundColor: AppTheme.white100,
                             foregroundColor: AppTheme.primaryColor,
-                            padding: const EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(AppTheme.space6),
                             minimumSize: const Size(32, 32),
                           ),
                           tooltip: 'Chapitre suivant',
@@ -2262,7 +2258,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           child: ListView.separated(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             itemCount: verses.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 6),
+            separatorBuilder: (_, __) => const SizedBox(height: AppTheme.space6),
             itemBuilder: (context, i) {
               final v = BibleVerse(book: book.name, chapter: chapter, verse: i + 1, text: verses[i]);
               final key = _verseKey(v);
@@ -2337,7 +2333,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                     child: Text(
                                       '${v.verse}',
                                       style: GoogleFonts.poppins(
-                                        fontSize: 12,
+                                        fontSize: AppTheme.fontSize12,
                                         fontWeight: AppTheme.fontBold,
                                         color: AppTheme.primaryColor,
                                       ),
@@ -2355,7 +2351,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                           height: 6,
                                           margin: const EdgeInsets.symmetric(horizontal: 1),
                                           decoration: BoxDecoration(
-                                            color: Colors.amber[700],
+                                            color: AppTheme.warning,
                                             shape: BoxShape.circle,
                                           ),
                                         ),
@@ -2386,7 +2382,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                 ],
                               ),
                               
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppTheme.space12),
                               
                               // Texte du verset
                               Expanded(
@@ -2411,13 +2407,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                             ),
                                     ),
                                     
-                                    const SizedBox(height: 6),
+                                    const SizedBox(height: AppTheme.space6),
                                     
                                     // Référence compacte
                                     Text(
                                       '${v.book} ${v.chapter}:${v.verse}',
                                       style: GoogleFonts.inter(
-                                        fontSize: 10,
+                                        fontSize: AppTheme.fontSize10,
                                         color: AppTheme.grey500,
                                         fontWeight: AppTheme.fontMedium,
                                       ),
@@ -2431,21 +2427,21 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                 children: [
                                   if (isFav)
                                     Container(
-                                      padding: const EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                                       decoration: BoxDecoration(
-                                        color: Colors.amber.withOpacity(0.1),
+                                        color: AppTheme.warning.withAlpha(25),
                                         shape: BoxShape.circle,
                                       ),
                                       child: Icon(
                                         Icons.star,
                                         size: 12,
-                                        color: Colors.amber[700],
+                                        color: AppTheme.warning,
                                       ),
                                     ),
                                   if (note != null && note.isNotEmpty) ...[
                                     const SizedBox(height: 3),
                                     Container(
-                                      padding: const EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                                       decoration: BoxDecoration(
                                         color: AppTheme.blueStandard.withOpacity(0.1),
                                         shape: BoxShape.circle,
@@ -2464,10 +2460,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           
                           // Note si présente (compacte)
                           if (note != null && note.isNotEmpty) ...[
-                            const SizedBox(height: 10),
+                            const SizedBox(height: AppTheme.space10),
                             Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(AppTheme.space12),
                               decoration: BoxDecoration(
                                 color: AppTheme.blueStandard.withOpacity(0.05),
                                 borderRadius: BorderRadius.circular(10),
@@ -2483,12 +2479,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                     color: AppTheme.grey700,
                                     size: 14,
                                   ),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: AppTheme.spaceSmall),
                                   Expanded(
                                     child: Text(
                                       note,
                                       style: GoogleFonts.inter(
-                                        fontSize: 12,
+                                        fontSize: AppTheme.fontSize12,
                                         color: AppTheme.grey700,
                                         fontStyle: FontStyle.italic,
                                       ),
@@ -2501,11 +2497,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           
                           // Actions compactes (quand le verset est sélectionné)
                           if (_selectedVerseKey == key) ...[
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppTheme.space12),
                             AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeOutCubic,
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(AppTheme.space12),
                               decoration: BoxDecoration(
                                 color: AppTheme.primaryColor.withOpacity(0.08),
                                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -2531,18 +2527,18 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                         size: 14,
                                         color: AppTheme.primaryColor,
                                       ),
-                                      const SizedBox(width: 6),
+                                      const SizedBox(width: AppTheme.space6),
                                       Text(
                                         'Choisissez une action pour ce verset',
                                         style: GoogleFonts.inter(
-                                          fontSize: 11,
+                                          fontSize: AppTheme.fontSize11,
                                           fontWeight: AppTheme.fontMedium,
                                           color: AppTheme.primaryColor,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: AppTheme.space10),
                                   // Actions
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -2550,7 +2546,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                       _buildVerseAction(
                                         icon: isFav ? Icons.star : Icons.star_border,
                                         label: isFav ? 'Favori' : 'Favoris',
-                                        color: Colors.amber[700]!,
+                                        color: AppTheme.warning,
                                         isActive: isFav,
                                         onTap: () => _toggleFavorite(v),
                                       ),
@@ -2654,11 +2650,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Paramètres de lecture',
               style: GoogleFonts.inter(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
@@ -2674,18 +2670,18 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               Text(
                 'Taille de police',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 children: [
                   Text(
                     'A',
                     style: GoogleFonts.inter(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -2707,24 +2703,24 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   Text(
                     'A',
                     style: GoogleFonts.inter(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Interligne
               Text(
                 'Interligne',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Slider(
                 value: _lineHeight,
                 min: 1.0,
@@ -2739,14 +2735,14 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   _savePrefs();
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Mode sombre
               SwitchListTile(
                 title: Text(
                   'Mode sombre',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontMedium,
                     color: colorScheme.onSurface,
                   ),
@@ -2754,7 +2750,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 subtitle: Text(
                   'Interface sombre pour la lecture',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -2803,11 +2799,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               color: colorScheme.primary,
               size: 24,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Text(
               'Historique de lecture',
               style: GoogleFonts.inter(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
@@ -2840,21 +2836,21 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                         size: 64,
                         color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun historique',
                         style: GoogleFonts.inter(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Vos lectures récentes apparaîtront ici',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
@@ -2876,10 +2872,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
                     child: ListTile(
                       leading: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
                         decoration: BoxDecoration(
                           color: colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Icon(
                           Icons.menu_book_rounded,
@@ -2890,7 +2886,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       title: Text(
                         '${item['book']} ${item['chapter']}',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
@@ -2898,7 +2894,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       subtitle: Text(
                         timeAgo,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
@@ -2977,7 +2973,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   color: colorScheme.onInverseSurface,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Marque-page supprimé',
                   style: GoogleFonts.inter(
@@ -3015,7 +3011,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   color: colorScheme.onInverseSurface,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Chapitre $_selectedBook $_selectedChapter marqué',
                   style: GoogleFonts.inter(
@@ -3065,7 +3061,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 color: colorScheme.onInverseSurface,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   'Verset copié dans le presse-papiers',
@@ -3146,10 +3142,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
 
   Widget _buildModernSearchHeader() {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
             color: AppTheme.black100.withOpacity(0.06),
@@ -3162,7 +3158,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         children: [
           // En-tête avec titre
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -3180,7 +3176,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.white100.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -3191,7 +3187,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     size: 28,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -3199,7 +3195,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       Text(
                         'Recherche Biblique',
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: AppTheme.fontSize24,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.white100,
                         ),
@@ -3207,7 +3203,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       Text(
                         'Explorez les Écritures',
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.white100.withOpacity(0.9),
                           fontWeight: AppTheme.fontMedium,
                         ),
@@ -3225,7 +3221,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     child: Text(
                       '${_searchResults.length} résultat${_searchResults.length > 1 ? 's' : ''}',
                       style: GoogleFonts.inter(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.white100,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
@@ -3237,7 +3233,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
           
           // Champ de recherche et filtres
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             child: Column(
               children: [
                 // Champ de recherche principal
@@ -3251,18 +3247,18 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   ),
                   child: TextField(
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontMedium,
                     ),
                     decoration: InputDecoration(
                       hintText: 'Rechercher un mot, "expression" ou référence (ex: Jean 3:16)',
                       hintStyle: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.grey500,
                       ),
                       prefixIcon: Container(
-                        margin: const EdgeInsets.all(12),
-                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(AppTheme.space12),
+                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
                         decoration: BoxDecoration(
                           color: AppTheme.blueStandard.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -3298,7 +3294,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   ),
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Filtres de recherche
                 _buildSearchFilters(),
@@ -3341,11 +3337,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         color: AppTheme.grey600,
                         size: 20,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Tous les livres',
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey600,
                           fontWeight: AppTheme.fontMedium,
                         ),
@@ -3364,10 +3360,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       child: Row(
                         children: [
                           const Icon(Icons.all_inclusive, size: 20),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(
                             'Tous les livres',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
                           ),
                         ],
                       ),
@@ -3376,7 +3372,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       value: book.name,
                       child: Text(
                         book.name,
-                        style: GoogleFonts.inter(fontSize: 14),
+                        style: GoogleFonts.inter(fontSize: AppTheme.fontSize14),
                       ),
                     )).toList(),
                   ],
@@ -3389,7 +3385,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               ),
             ),
             
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             
             // Bouton de recherche avancée
             Container(
@@ -3412,7 +3408,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   onTap: () => _showAdvancedSearchDialog(),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -3421,11 +3417,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           color: AppTheme.white100,
                           size: 20,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Text(
                           'Avancé',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: AppTheme.white100,
                             fontWeight: AppTheme.fontSemiBold,
                           ),
@@ -3446,8 +3442,8 @@ Partagé depuis l'app Jubilé Tabernacle''';
     final suggestions = [
       {'text': 'amour', 'icon': Icons.favorite, 'color': AppTheme.redStandard},
       {'text': 'paix', 'icon': Icons.spa, 'color': AppTheme.greenStandard},
-      {'text': 'sagesse', 'icon': Icons.psychology, 'color': Colors.purple},
-      {'text': 'espoir', 'icon': Icons.star, 'color': Colors.amber},
+      {'text': 'sagesse', 'icon': Icons.psychology, 'color': AppTheme.primaryColor},
+      {'text': 'espoir', 'icon': Icons.star, 'color': AppTheme.warningColor},
       {'text': 'Jean 3:16', 'icon': Icons.auto_stories, 'color': AppTheme.blueStandard},
       {'text': 'Psaume 23', 'icon': Icons.music_note, 'color': AppTheme.orangeStandard},
     ];
@@ -3455,16 +3451,16 @@ Partagé depuis l'app Jubilé Tabernacle''';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           'Suggestions de recherche',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.grey700,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -3488,11 +3484,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     size: 16,
                     color: suggestion['color'] as Color,
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: AppTheme.space6),
                   Text(
                     suggestion['text'] as String,
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       fontWeight: AppTheme.fontMedium,
                       color: suggestion['color'] as Color,
                     ),
@@ -3512,7 +3508,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               color: AppTheme.blueStandard.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -3523,26 +3519,26 @@ Partagé depuis l'app Jubilé Tabernacle''';
               color: AppTheme.grey300,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Commencez votre recherche',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.grey700,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Tapez un mot, une expression ou une référence\npour explorer les Écritures',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey500,
               height: 1.5,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           _buildQuickSearchCards(),
         ],
       ),
@@ -3555,7 +3551,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         'title': 'Versets célèbres',
         'description': 'Jean 3:16, Psaume 23:1',
         'icon': Icons.star,
-        'color': Colors.amber,
+        'color': AppTheme.warningColor,
         'searches': ['Jean 3:16', 'Psaume 23:1', 'Matthieu 5:3-12'],
       },
       {
@@ -3569,7 +3565,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         'title': 'Sagesse',
         'description': 'Proverbes et conseils',
         'icon': Icons.psychology,
-        'color': Colors.purple,
+        'color': AppTheme.primaryColor,
         'searches': ['sagesse', 'conseil', 'prudence'],
       },
     ];
@@ -3586,7 +3582,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             },
             borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: (search['color'] as Color).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -3597,7 +3593,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: search['color'] as Color,
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -3608,21 +3604,21 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       size: 24,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     search['title'] as String,
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.grey700,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     search['description'] as String,
                     style: GoogleFonts.inter(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey500,
                       height: 1.3,
                     ),
@@ -3649,7 +3645,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -3667,7 +3663,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.greenStandard,
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -3678,7 +3674,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -3686,7 +3682,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       Text(
                         '${_searchResults.length} résultat${_searchResults.length > 1 ? 's' : ''} trouvé${_searchResults.length > 1 ? 's' : ''}',
                         style: GoogleFonts.poppins(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.grey700,
                         ),
@@ -3694,7 +3690,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       Text(
                         'Pour la recherche: "$_searchQuery"',
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey600,
                           fontStyle: FontStyle.italic,
                         ),
@@ -3726,7 +3722,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
 
         // Espacement final
         const SliverToBoxAdapter(
-          child: SizedBox(height: 20),
+          child: SizedBox(height: AppTheme.space20),
         ),
       ],
     );
@@ -3775,7 +3771,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             });
           },
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -3802,14 +3798,14 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       child: Text(
                         '${verse.verse}',
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.white100,
                         ),
                       ),
                     ),
                     
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     
                     // Texte du verset
                     Expanded(
@@ -3834,7 +3830,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                                   ),
                           ),
                           
-                          const SizedBox(height: 12),
+                          const SizedBox(height: AppTheme.space12),
                           
                           // Référence avec badge
                           Container(
@@ -3846,7 +3842,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                             child: Text(
                               '${verse.book} ${verse.chapter}:${verse.verse}',
                               style: GoogleFonts.inter(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 color: AppTheme.grey700,
                                 fontWeight: AppTheme.fontSemiBold,
                               ),
@@ -3861,21 +3857,21 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       children: [
                         if (isFav)
                           Container(
-                            padding: const EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(AppTheme.space6),
                             decoration: BoxDecoration(
-                              color: Colors.amber.withOpacity(0.1),
+                              color: AppTheme.warning.withAlpha(25),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               Icons.star,
                               size: 16,
-                              color: Colors.amber[700],
+                              color: AppTheme.warning,
                             ),
                           ),
                         if (note != null && note.isNotEmpty) ...[
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Container(
-                            padding: const EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(AppTheme.space6),
                             decoration: BoxDecoration(
                               color: AppTheme.greenStandard.withOpacity(0.1),
                               shape: BoxShape.circle,
@@ -3894,10 +3890,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 
                 // Note si présente
                 if (note != null && note.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.greenStandard.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -3913,12 +3909,12 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           color: AppTheme.grey700,
                           size: 18,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: Text(
                             note,
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               color: AppTheme.grey700,
                               fontStyle: FontStyle.italic,
                             ),
@@ -3931,9 +3927,9 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 
                 // Actions (quand le verset est sélectionné)
                 if (_selectedVerseKey == key) ...[
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.grey500.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -3944,7 +3940,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         _buildVerseAction(
                           icon: isFav ? Icons.star : Icons.star_border,
                           label: isFav ? 'Favori' : 'Favoris',
-                          color: Colors.amber[700]!,
+                          color: AppTheme.warning,
                           isActive: isFav,
                           onTap: () => _toggleFavorite(verse),
                         ),
@@ -3987,7 +3983,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               color: AppTheme.orangeStandard.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -3998,26 +3994,26 @@ Partagé depuis l'app Jubilé Tabernacle''';
               color: AppTheme.grey300,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Aucun résultat trouvé',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.grey700,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Essayez avec d\'autres mots-clés\nou vérifiez l\'orthographe',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey500,
               height: 1.5,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           ElevatedButton.icon(
             onPressed: () {
               setState(() {
@@ -4063,11 +4059,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 color: colorScheme.primary,
                 size: 24,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 'Recherche avancée',
                 style: GoogleFonts.inter(
-                  fontSize: 20,
+                  fontSize: AppTheme.fontSize20,
                   fontWeight: AppTheme.fontSemiBold,
                   color: colorScheme.onSurface,
                 ),
@@ -4103,18 +4099,18 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Sélection du livre
                 Text(
                   'Livre',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 DropdownButtonFormField<String>(
                   value: selectedBook,
                   decoration: InputDecoration(
@@ -4138,31 +4134,31 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     });
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Options de recherche
                 Text(
                   'Options',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 
                 CheckboxListTile(
                   title: Text(
                     'Correspondance exacte',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: colorScheme.onSurface,
                     ),
                   ),
                   subtitle: Text(
                     'Rechercher le terme exact uniquement',
                     style: GoogleFonts.inter(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -4179,14 +4175,14 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   title: Text(
                     'Respecter la casse',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: colorScheme.onSurface,
                     ),
                   ),
                   subtitle: Text(
                     'Différencier majuscules et minuscules',
                     style: GoogleFonts.inter(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -4260,7 +4256,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.amber[50]!,
+            AppTheme.warning.withAlpha(25),
             AppTheme.white100,
           ],
         ),
@@ -4283,33 +4279,33 @@ Partagé depuis l'app Jubilé Tabernacle''';
 
   Widget _buildModernFavoritesHeader(int favoritesCount) {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.amber[600]!,
+            AppTheme.warning,
             AppTheme.grey600,
           ],
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
-            color: Colors.amber.withOpacity(0.3),
+            color: AppTheme.warningColor.withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.white100.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -4320,7 +4316,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     size: 28,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -4328,7 +4324,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       Text(
                         'Mes Favoris',
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: AppTheme.fontSize24,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.white100,
                         ),
@@ -4338,7 +4334,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                             ? '$favoritesCount verset${favoritesCount > 1 ? 's' : ''} précieux'
                             : 'Collection de versets inspirants',
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.white100.withOpacity(0.9),
                           fontWeight: AppTheme.fontMedium,
                         ),
@@ -4356,7 +4352,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     child: Text(
                       '$favoritesCount',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         color: AppTheme.white100,
                         fontWeight: AppTheme.fontBold,
                       ),
@@ -4366,7 +4362,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             ),
             
             if (favoritesCount > 0) ...[
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Actions rapides
               Row(
@@ -4378,7 +4374,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       onTap: () => _shareAllFavorites(favoritesCount),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: _buildFavoriteActionButton(
                       icon: Icons.download,
@@ -4386,7 +4382,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       onTap: () => _exportFavorites(),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: _buildFavoriteActionButton(
                       icon: Icons.sort,
@@ -4427,11 +4423,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
               color: AppTheme.white100,
               size: 20,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               label,
               style: GoogleFonts.inter(
-                fontSize: 11,
+                fontSize: AppTheme.fontSize11,
                 color: AppTheme.white100.withOpacity(0.9),
                 fontWeight: AppTheme.fontMedium,
               ),
@@ -4449,15 +4445,15 @@ Partagé depuis l'app Jubilé Tabernacle''';
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(AppTheme.spaceXLarge),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.amber[100]!, AppTheme.grey100],
+                colors: [AppTheme.warning.withAlpha(51)!, AppTheme.grey100],
               ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.amber.withOpacity(0.2),
+                  color: AppTheme.warningColor.withOpacity(0.2),
                   blurRadius: 20,
                   offset: const Offset(0, 4),
                 ),
@@ -4466,29 +4462,29 @@ Partagé depuis l'app Jubilé Tabernacle''';
             child: Icon(
               Icons.star_border,
               size: 64,
-              color: Colors.amber[600],
+              color: AppTheme.warning,
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           Text(
             'Aucun favori pour le moment',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.grey700,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             'Commencez à créer votre collection\nde versets inspirants',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey500,
               height: 1.5,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           _buildDiscoveryCards(),
         ],
       ),
@@ -4522,7 +4518,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             onTap: discovery['onTap'] as VoidCallback,
             borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             child: Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
                 color: (discovery['color'] as Color).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -4540,7 +4536,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: discovery['color'] as Color,
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -4558,21 +4554,21 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       size: 28,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     discovery['title'] as String,
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.grey700,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     discovery['description'] as String,
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: AppTheme.grey500,
                       height: 1.3,
                     ),
@@ -4595,22 +4591,22 @@ Partagé depuis l'app Jubilé Tabernacle''';
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.amber[50]!, AppTheme.grey50],
+                colors: [AppTheme.warning.withAlpha(25)!, AppTheme.grey50],
               ),
               borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               border: Border.all(
-                color: Colors.amber.withOpacity(0.2),
+                color: AppTheme.warningColor.withOpacity(0.2),
               ),
             ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: AppTheme.warning,
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: const Icon(
@@ -4619,7 +4615,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -4627,16 +4623,16 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       Text(
                         'Collection personnelle',
                         style: GoogleFonts.poppins(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
-                          color: Colors.amber[700],
+                          color: AppTheme.warning,
                         ),
                       ),
                       Text(
                         'Vos versets précieux, toujours à portée de main',
                         style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.amber[600],
+                          fontSize: AppTheme.fontSize14,
+                          color: AppTheme.warning,
                         ),
                       ),
                     ],
@@ -4666,7 +4662,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
 
         // Espacement final
         const SliverToBoxAdapter(
-          child: SizedBox(height: 20),
+          child: SizedBox(height: AppTheme.space20),
         ),
       ],
     );
@@ -4695,16 +4691,16 @@ Partagé depuis l'app Jubilé Tabernacle''';
             end: Alignment.bottomRight,
             colors: [
               AppTheme.white100,
-              Colors.amber[25]!,
+              AppTheme.warningColor.withAlpha(25),
             ],
           ),
           borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: Border.all(
-            color: Colors.amber.withOpacity(0.2),
+            color: AppTheme.warningColor.withOpacity(0.2),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.amber.withOpacity(0.1),
+              color: AppTheme.warningColor.withOpacity(0.1),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -4719,7 +4715,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             });
           },
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -4729,15 +4725,15 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   children: [
                     // Badge favori doré
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(AppTheme.spaceSmall),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.amber, AppTheme.orangeStandard],
+                          colors: [AppTheme.warningColor, AppTheme.orangeStandard],
                         ),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.amber.withOpacity(0.3),
+                            color: AppTheme.warningColor.withOpacity(0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -4750,21 +4746,21 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       ),
                     ),
                     
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     
                     // Numéro du verset
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.amber.withOpacity(0.2),
+                        color: AppTheme.warningColor.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
                         '${verse.verse}',
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontBold,
-                          color: Colors.amber[700],
+                          color: AppTheme.warning,
                         ),
                       ),
                     ),
@@ -4776,7 +4772,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       children: [
                         if (isHighlight)
                           Container(
-                            padding: const EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(AppTheme.space6),
                             decoration: BoxDecoration(
                               color: AppTheme.primaryColor.withOpacity(0.1),
                               shape: BoxShape.circle,
@@ -4788,9 +4784,9 @@ Partagé depuis l'app Jubilé Tabernacle''';
                             ),
                           ),
                         if (note != null && note.isNotEmpty) ...[
-                          if (isHighlight) const SizedBox(height: 4),
+                          if (isHighlight) const SizedBox(height: AppTheme.spaceXSmall),
                           Container(
-                            padding: const EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(AppTheme.space6),
                             decoration: BoxDecoration(
                               color: AppTheme.greenStandard.withOpacity(0.1),
                               shape: BoxShape.circle,
@@ -4807,16 +4803,16 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   ],
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Texte du verset avec style élégant
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   decoration: BoxDecoration(
                     color: AppTheme.white100,
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     border: Border.all(
-                      color: Colors.amber.withOpacity(0.1),
+                      color: AppTheme.warningColor.withOpacity(0.1),
                     ),
                   ),
                   child: Column(
@@ -4825,10 +4821,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       // Icône de citation
                       Icon(
                         Icons.format_quote,
-                        color: Colors.amber[300],
+                        color: AppTheme.warning.withAlpha(153),
                         size: 24,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         verse.text,
                         style: _fontFamily.isNotEmpty
@@ -4847,7 +4843,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                                 fontStyle: FontStyle.italic,
                               ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       // Référence avec style
                       Align(
                         alignment: Alignment.centerRight,
@@ -4855,15 +4851,15 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Colors.amber[100]!, AppTheme.grey100],
+                              colors: [AppTheme.warning.withAlpha(51)!, AppTheme.grey100],
                             ),
                             borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                           ),
                           child: Text(
                             '${verse.book} ${verse.chapter}:${verse.verse}',
                             style: GoogleFonts.inter(
-                              fontSize: 13,
-                              color: Colors.amber[800],
+                              fontSize: AppTheme.fontSize13,
+                              color: AppTheme.warning,
                               fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
@@ -4875,10 +4871,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 
                 // Note si présente
                 if (note != null && note.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       color: AppTheme.greenStandard.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -4894,7 +4890,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           color: AppTheme.grey700,
                           size: 18,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -4902,16 +4898,16 @@ Partagé depuis l'app Jubilé Tabernacle''';
                               Text(
                                 'Ma note personnelle',
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.grey700,
                                 ),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppTheme.spaceXSmall),
                               Text(
                                 note,
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
+                                  fontSize: AppTheme.fontSize14,
                                   color: AppTheme.grey600,
                                   fontStyle: FontStyle.italic,
                                 ),
@@ -4926,12 +4922,12 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 
                 // Actions (quand le verset est sélectionné)
                 if (_selectedVerseKey == key) ...[
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.amber[50]!, AppTheme.grey50],
+                        colors: [AppTheme.warning.withAlpha(25)!, AppTheme.grey50],
                       ),
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     ),
@@ -4983,7 +4979,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Partage de $count verset${count > 1 ? 's' : ''} favori${count > 1 ? 's' : ''}'),
-        backgroundColor: Colors.amber,
+        backgroundColor: AppTheme.warningColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       ),
@@ -5010,7 +5006,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
           color: AppTheme.white100,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -5019,18 +5015,18 @@ Partagé depuis l'app Jubilé Tabernacle''';
               height: 4,
               decoration: BoxDecoration(
                 color: AppTheme.grey300,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             Text(
               'Options de tri',
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             ListTile(
               leading: const Icon(Icons.sort_by_alpha),
               title: const Text('Par ordre alphabétique'),
@@ -5114,21 +5110,21 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       Icons.view_list,
                       totalNotes + totalHighlights + totalFavorites,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildCompactFilterChip(
                       'notes',
                       'Notes',
                       Icons.note_alt_outlined,
                       totalNotes,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildCompactFilterChip(
                       'highlights',
                       'Surlignés',
                       Icons.highlight,
                       totalHighlights,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     _buildCompactFilterChip(
                       'favorites',
                       'Favoris',
@@ -5156,13 +5152,13 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 hintStyle: WidgetStateProperty.all(
                   GoogleFonts.inter(
                     color: colorScheme.onSurfaceVariant,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                 ),
                 textStyle: WidgetStateProperty.all(
                   GoogleFonts.inter(
                     color: colorScheme.onSurface,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                 ),
                 leading: Icon(
@@ -5199,7 +5195,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             ),
           ),
 
-          const SliverToBoxAdapter(child: SizedBox(height: 20)),
+          const SliverToBoxAdapter(child: SizedBox(height: AppTheme.space20)),
 
           // Liste des versets
           filteredVerseKeys.isEmpty
@@ -5270,12 +5266,12 @@ Partagé depuis l'app Jubilé Tabernacle''';
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 13,
+              fontSize: AppTheme.fontSize13,
               fontWeight: AppTheme.fontSemiBold,
             ),
           ),
           if (count > 0) ...[
-            const SizedBox(width: 4),
+            const SizedBox(width: AppTheme.spaceXSmall),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
@@ -5287,7 +5283,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               child: Text(
                 count.toString(),
                 style: GoogleFonts.inter(
-                  fontSize: 11,
+                  fontSize: AppTheme.fontSize11,
                   fontWeight: AppTheme.fontSemiBold,
                   color: isSelected 
                       ? colorScheme.onSecondaryContainer
@@ -5323,34 +5319,34 @@ Partagé depuis l'app Jubilé Tabernacle''';
             size: 64,
             color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _notesSearchQuery.isNotEmpty 
                 ? 'Aucun résultat pour "${_notesSearchQuery}"'
                 : 'Aucun élément trouvé',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _notesSearchQuery.isNotEmpty
                 ? 'Essayez avec d\'autres mots-clés ou vérifiez l\'orthographe'
                 : 'Commencez à prendre des notes ou surligner des versets',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           // Guide étape par étape
           if (_notesSearchQuery.isEmpty) ...[
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 32),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -5365,21 +5361,21 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     color: colorScheme.primary,
                     size: 32,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     'Comment créer des notes :',
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     '1. Allez dans l\'onglet Lecture\n2. Tapez sur un verset\n3. Choisissez "Note", "Favoris" ou "Surligner"\n4. Vos éléments apparaîtront ici !',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       height: 1.4,
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -5426,7 +5422,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
           children: [
             // En-tête avec référence et badges
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: getCardAccentColor().withValues(alpha: 0.05),
                 borderRadius: const BorderRadius.only(
@@ -5440,7 +5436,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     child: Text(
                       _getVerseDisplayText(verseKey),
                       style: GoogleFonts.inter(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontBold,
                         color: getCardAccentColor(),
                       ),
@@ -5450,7 +5446,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     children: [
                       if (hasNote)
                         Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(AppTheme.space6),
                           decoration: BoxDecoration(
                             color: colorScheme.tertiaryContainer,
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -5462,9 +5458,9 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           ),
                         ),
                       if (hasHighlight) ...[
-                        if (hasNote) const SizedBox(width: 8),
+                        if (hasNote) const SizedBox(width: AppTheme.spaceSmall),
                         Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(AppTheme.space6),
                           decoration: BoxDecoration(
                             color: colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -5477,9 +5473,9 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         ),
                       ],
                       if (isFavorite) ...[
-                        if (hasNote || hasHighlight) const SizedBox(width: 8),
+                        if (hasNote || hasHighlight) const SizedBox(width: AppTheme.spaceSmall),
                         Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(AppTheme.space6),
                           decoration: BoxDecoration(
                             color: colorScheme.errorContainer,
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -5503,7 +5499,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               child: Text(
                 _getVerseText(verseKey),
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: colorScheme.onSurface,
                   height: 1.5,
                 ),
@@ -5514,7 +5510,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
             if (hasNote && _notes[verseKey]!.isNotEmpty) ...[
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: colorScheme.tertiaryContainer.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -5532,22 +5528,22 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           size: 16,
                           color: colorScheme.tertiary,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Text(
                           'Ma note',
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontSemiBold,
                             color: colorScheme.tertiary,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       _notes[verseKey]!,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: colorScheme.onSurface,
                         height: 1.4,
                       ),

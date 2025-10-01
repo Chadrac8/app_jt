@@ -142,7 +142,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
 
   Widget _buildTabSelector() {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -196,7 +196,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               color: isSelected ? AppTheme.white100 : AppTheme.textSecondaryColor,
               size: 20,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               title,
               style: TextStyle(
@@ -205,7 +205,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               ),
             ),
             if (count > 0) ...[
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
@@ -216,7 +216,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                   '$count',
                   style: TextStyle(
                     color: isSelected ? AppTheme.white100 : AppTheme.white100,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -239,15 +239,15 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               size: 64,
               color: AppTheme.textSecondaryColor,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun formulaire disponible',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Les formulaires à remplir apparaîtront ici',
               style: TextStyle(
@@ -261,7 +261,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _availableForms.length,
       itemBuilder: (context, index) {
         final form = _availableForms[index];
@@ -282,15 +282,15 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               size: 64,
               color: AppTheme.textSecondaryColor,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune réponse soumise',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Vos réponses aux formulaires apparaîtront ici',
               style: TextStyle(
@@ -304,7 +304,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: _mySubmissions.length,
       itemBuilder: (context, index) {
         final submission = _mySubmissions[index];
@@ -322,7 +322,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -341,7 +341,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,7 +349,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                       Text(
                         form.title,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
@@ -375,7 +375,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                       'Rempli',
                       style: TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -384,7 +384,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
             ),
             
             if (form.description.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 form.description,
                 style: const TextStyle(
@@ -396,7 +396,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               ),
             ],
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Informations du formulaire
             Row(
@@ -406,21 +406,21 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                   size: 16,
                   color: AppTheme.textSecondaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   '${form.fields.length} questions',
                   style: const TextStyle(
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 if (form.closeDate != null) ...[
                   Icon(
                     Icons.schedule,
                     size: 16,
                     color: AppTheme.textSecondaryColor,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Ferme le ${_formatDate(form.closeDate!)}',
                     style: const TextStyle(
@@ -432,7 +432,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
             ),
             
             if (form.hasSubmissionLimit) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 children: [
                   Icon(
@@ -440,7 +440,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                     size: 16,
                     color: AppTheme.textSecondaryColor,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Limité à ${form.submissionLimit} réponses',
                     style: const TextStyle(
@@ -451,7 +451,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               ),
             ],
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             SizedBox(
               width: double.infinity,
@@ -489,14 +489,14 @@ class _MemberFormsPageState extends State<MemberFormsPage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.1),
                     shape: BoxShape.circle,
@@ -507,7 +507,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -515,7 +515,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                       Text(
                         'Formulaire ID: ${submission.formId}', // TODO: Charger le titre du formulaire
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
@@ -539,7 +539,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                     _getSubmissionStatusLabel(submission.status),
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -547,12 +547,12 @@ class _MemberFormsPageState extends State<MemberFormsPage>
               ],
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Aperçu des réponses
             if (submission.responses.isNotEmpty) ...[
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -567,14 +567,14 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     ...submission.responses.entries.take(3).map((entry) => 
                       Padding(
                         padding: const EdgeInsets.only(bottom: 4),
                         child: Text(
                           '• ${entry.key}: ${_truncateText(entry.value.toString(), 50)}',
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: AppTheme.textSecondaryColor,
                           ),
                         ),
@@ -584,7 +584,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                       Text(
                         '... et ${submission.responses.length - 3} autres réponses',
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.textSecondaryColor,
                           fontStyle: FontStyle.italic,
                         ),
@@ -595,7 +595,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
             ],
             
             if (submission.isTestSubmission) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -613,11 +613,11 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                       size: 14,
                       color: AppTheme.warningColor,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       'Soumission',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.warningColor,
                         fontWeight: AppTheme.fontMedium,
                       ),

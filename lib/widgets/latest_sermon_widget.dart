@@ -92,11 +92,11 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                   color: AppTheme.primaryColor,
                   fontWeight: AppTheme.fontSemiBold))),
           ]),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         if (_isLoading)
           const Center(
             child: Padding(
-              padding: EdgeInsets.all(32),
+              padding: EdgeInsets.all(AppTheme.spaceXLarge),
               child: CircularProgressIndicator()))
         else if (_homeConfig?.sermonYouTubeUrl == null)
           _buildNoSermonWidget()
@@ -110,18 +110,18 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           children: [
             Icon(
               Icons.play_circle_outline,
               size: 64,
               color: AppTheme.textSecondaryColor),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune prédication disponible',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.textSecondaryColor)),
           ])));
   }
@@ -160,7 +160,7 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                         Icons.video_library,
                         size: 48,
                         color: AppTheme.textSecondaryColor),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Vidéo non disponible',
                         style: TextStyle(
@@ -169,17 +169,17 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
             
             // Informations sur le sermon
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _homeConfig!.sermonTitle,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor)),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Row(
                     children: [
                       GestureDetector(
@@ -206,11 +206,11 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                                 Icons.play_arrow,
                                 size: 16,
                                 color: AppTheme.primaryColor),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 'Regarder',
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   color: AppTheme.primaryColor,
                                   fontWeight: AppTheme.fontSemiBold)),
                             ])),
@@ -220,11 +220,11 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                         Icons.schedule,
                         size: 16,
                         color: AppTheme.textSecondaryColor),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         _formatDate(_homeConfig!.lastUpdated),
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.textSecondaryColor)),
                     ]),
                 ])),

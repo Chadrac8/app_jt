@@ -5,6 +5,7 @@ import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
+import '../../../theme.dart';
 
 class ReadingPlanFormView extends StatefulWidget {
   final ReadingPlan? plan;
@@ -148,7 +149,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
 
   Widget _buildInfoTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -156,9 +157,9 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
           Text(
             'Informations de base',
             style: GoogleFonts.inter(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           TextFormField(
             controller: _nameController,
@@ -174,7 +175,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               return null;
             }),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Description
           TextFormField(
@@ -192,7 +193,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               return null;
             }),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Catégorie et difficulté
           Row(
@@ -220,7 +221,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   onChanged: (value) {
                     setState(() => _selectedCategory = value!);
                   })),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: DropdownButtonFormField<String>(
                   value: _selectedDifficulty,
@@ -238,7 +239,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   })),
             ]),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Durée et temps estimé
           Row(
@@ -262,7 +263,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                     }
                     return null;
                   })),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: TextFormField(
                   controller: _estimatedTimeController,
@@ -284,15 +285,15 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   })),
             ]),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Options
           Text(
             'Options',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           SwitchListTile(
             title: Text(
@@ -300,7 +301,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium)),
             subtitle: Text(
               'Mettre en avant ce plan dans la section populaires',
-              style: GoogleFonts.inter(fontSize: 12)),
+              style: GoogleFonts.inter(fontSize: AppTheme.fontSize12)),
             value: _isPopular,
             onChanged: (value) {
               setState(() => _isPopular = value);
@@ -315,14 +316,14 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
       children: [
         // En-tête avec compteur
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           color: theme.colorScheme.surface,
           child: Row(
             children: [
               Icon(
                 Icons.calendar_today,
                 color: theme.colorScheme.primary),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 '${_days.length} jour(s) configuré(s)',
                 style: GoogleFonts.inter(
@@ -340,7 +341,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
           child: _days.isEmpty
               ? _buildEmptyDaysState()
               : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   itemCount: _days.length,
                   itemBuilder: (context, index) {
                     return _buildDayCard(_days[index], index);
@@ -355,35 +356,35 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
     }
     
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Aperçu du plan',
             style: GoogleFonts.inter(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Informations générales
           _buildPreviewInfo(),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Premiers jours
           Text(
             'Premiers jours (aperçu)',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           ..._days.take(3).map((day) => _buildPreviewDayCard(day)),
           
           if (_days.length > 3)
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               margin: const EdgeInsets.only(top: 8),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
@@ -400,7 +401,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
     final theme = Theme.of(context);
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
@@ -410,22 +411,22 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
           Text(
             _nameController.text.isEmpty ? 'Nom du plan' : _nameController.text,
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: theme.colorScheme.primary)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _descriptionController.text.isEmpty 
                 ? 'Description du plan' 
                 : _descriptionController.text,
-            style: GoogleFonts.inter(fontSize: 14)),
-          const SizedBox(height: 12),
+            style: GoogleFonts.inter(fontSize: AppTheme.fontSize14)),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               _buildPreviewChip('Catégorie: $_selectedCategory'),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               _buildPreviewChip('${_totalDaysController.text} jours'),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               _buildPreviewChip('${_estimatedTimeController.text}min/jour'),
             ]),
         ]));
@@ -441,7 +442,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
       child: Text(
         label,
-        style: GoogleFonts.inter(fontSize: 12)));
+        style: GoogleFonts.inter(fontSize: AppTheme.fontSize12)));
   }
 
   Widget _buildPreviewDayCard(ReadingPlanDay day) {
@@ -449,7 +450,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
     
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
@@ -459,11 +460,11 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
           Text(
             'Jour ${day.day}: ${day.title}',
             style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             'Lectures: ${day.readings.map((r) => r.displayText).join(', ')}',
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: theme.colorScheme.onSurface.withOpacity(0.7))),
         ]));
   }
@@ -479,19 +480,19 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             Icons.calendar_today,
             size: 64,
             color: theme.colorScheme.onSurface.withOpacity(0.3)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun jour configuré',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onSurface.withOpacity(0.7))),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Ajoutez des jours pour construire votre plan',
             style: GoogleFonts.inter(
               color: theme.colorScheme.onSurface.withOpacity(0.5))),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _addDay,
             icon: const Icon(Icons.add),
@@ -508,7 +509,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
           style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
         subtitle: Text(
           'Lectures: ${day.readings.map((r) => r.displayText).join(', ')}',
-          style: GoogleFonts.inter(fontSize: 12)),
+          style: GoogleFonts.inter(fontSize: AppTheme.fontSize12)),
         trailing: PopupMenuButton<String>(
           onSelected: (action) => _handleDayAction(action, index),
           itemBuilder: (context) => [
@@ -518,7 +519,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
           ]),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -527,7 +528,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                     'Réflexion:',
                     style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   Text(day.reflection!),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                 ],
                 if (day.prayer != null) ...[
                   Text(
@@ -618,7 +619,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   decoration: const InputDecoration(
                     labelText: 'Titre du jour',
                     hintText: 'Ex: Les commencements')),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Lectures
                 Row(
@@ -645,7 +646,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                       }));
                 }),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 TextField(
                   controller: _dayReflectionController,
@@ -653,7 +654,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   decoration: const InputDecoration(
                     labelText: 'Réflexion (optionnel)',
                     hintText: 'Réflexion pour ce jour...')),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 TextField(
                   controller: _dayPrayerController,
@@ -705,7 +706,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   onChanged: (value) {
                     setDialogState(() => book = value!);
                   }),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 TextField(
                   decoration: const InputDecoration(
                     labelText: 'Chapitre',
@@ -714,7 +715,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                   onChanged: (value) {
                     chapter = int.tryParse(value);
                   }),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Row(
                   children: [
                     Expanded(
@@ -726,7 +727,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
                         onChanged: (value) {
                           startVerse = int.tryParse(value);
                         })),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: TextField(
                         decoration: const InputDecoration(

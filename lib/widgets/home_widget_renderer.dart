@@ -42,7 +42,7 @@ class HomeWidgetRenderer extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,7 +50,7 @@ class HomeWidgetRenderer extends StatelessWidget {
               widget.title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: AppTheme.fontBold)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...actions.map<Widget>((action) => _buildQuickActionItem(context, action)),
           ])));
   }
@@ -65,14 +65,14 @@ class HomeWidgetRenderer extends StatelessWidget {
         onTap: isPreview ? null : () => _handleAction(context, action['action']),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
           child: Row(
             children: [
               Icon(_getIconData(iconName), color: color, size: 24),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +86,7 @@ class HomeWidgetRenderer extends StatelessWidget {
                       Text(
                         action['subtitle'],
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.textSecondaryColor)),
                   ])),
               Icon(Icons.arrow_forward_ios, size: 16, color: AppTheme.textTertiaryColor),
@@ -98,7 +98,7 @@ class HomeWidgetRenderer extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -114,27 +114,27 @@ class HomeWidgetRenderer extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.auto_stories, color: AppTheme.primaryColor, size: 24),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   widget.title,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
               ]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               '"Car Dieu a tant aimé le monde qu\'il a donné son Fils unique..."',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontStyle: FontStyle.italic,
                 height: 1.4,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Jean 3:16',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.primaryColor)),
           ])));
@@ -158,22 +158,22 @@ class HomeWidgetRenderer extends StatelessWidget {
                 size: 48,
                 color: AppTheme.primaryColor))),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.title,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 if (widget.description != null)
                   Text(
                     widget.description!,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textSecondaryColor)),
               ])),
         ]));
@@ -184,7 +184,7 @@ class HomeWidgetRenderer extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -200,22 +200,22 @@ class HomeWidgetRenderer extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.favorite, color: AppTheme.greenStandard, size: 24),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   widget.title,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
               ]),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             if (widget.description != null)
               Text(
                 widget.description!,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: AppTheme.textSecondaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -234,7 +234,7 @@ class HomeWidgetRenderer extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -243,7 +243,7 @@ class HomeWidgetRenderer extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: AppTheme.fontBold)),
             if (widget.description != null) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 widget.description!,
                 style: Theme.of(context).textTheme.bodyMedium),
@@ -256,7 +256,7 @@ class HomeWidgetRenderer extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -265,16 +265,16 @@ class HomeWidgetRenderer extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: AppTheme.fontBold)),
             if (widget.description != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 widget.description!,
                 style: Theme.of(context).textTheme.bodySmall),
             ],
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Type: ${widget.type}',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.textTertiaryColor)),
           ])));
   }

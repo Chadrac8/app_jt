@@ -42,7 +42,7 @@ class DashboardStatWidget extends StatelessWidget {
               children: [
                 if (stat.icon != null) ...[
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: color.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -53,7 +53,7 @@ class DashboardStatWidget extends StatelessWidget {
                       size: compactView ? 20 : 24,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                 ],
                 Expanded(
                   child: Text(
@@ -68,7 +68,7 @@ class DashboardStatWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: AppTheme.space6),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -85,7 +85,7 @@ class DashboardStatWidget extends StatelessWidget {
                   ),
                 ),
                 if (stat.trend != null && !compactView) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   _buildTrendIndicator(context, color),
                 ],
               ],
@@ -108,7 +108,7 @@ class DashboardStatWidget extends StatelessWidget {
                 stat.trendValue!,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: _getTrendColor(stat.trend),
-                  fontSize: 11,
+                  fontSize: AppTheme.fontSize11,
                 ),
               ),
             ],

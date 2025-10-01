@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../models/pepite_or_model.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class PepiteFormDialog extends StatefulWidget {
   final PepiteOrModel? pepite; // null = création, non-null = édition
@@ -107,7 +108,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.9,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -119,11 +120,11 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                   color: AppTheme.primaryColor,
                   size: 28,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   widget.pepite == null ? 'Nouvelle Pépite d\'Or' : 'Modifier la Pépite',
                   style: GoogleFonts.poppins(
-                    fontSize: 24,
+                    fontSize: AppTheme.fontSize24,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.primaryColor,
                   ),
@@ -135,7 +136,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Formulaire
             Expanded(
@@ -149,11 +150,11 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                       Text(
                         'Thème de la pépite',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       TextFormField(
                         controller: _themeController,
                         decoration: InputDecoration(
@@ -169,17 +170,17 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
                       
                       // Description
                       Text(
                         'Description',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       TextFormField(
                         controller: _descriptionController,
                         maxLines: 3,
@@ -190,7 +191,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
                       
                       // Citations
                       Row(
@@ -198,7 +199,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                           Text(
                             'Citations de William Branham',
                             style: GoogleFonts.inter(
-                              fontSize: 16,
+                              fontSize: AppTheme.fontSize16,
                               fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
@@ -217,24 +218,24 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       
                       // Liste des citations
                       ...List.generate(_citationsControllers.length, (index) {
                         return _buildCitationCard(index);
                       }),
                       
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
                       
                       // Tags
                       Text(
                         'Tags',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Row(
                         children: [
                           Expanded(
@@ -249,7 +250,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                               onFieldSubmitted: (_) => _addTag(),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           IconButton(
                             onPressed: _addTag,
                             icon: const Icon(Icons.add),
@@ -260,7 +261,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       
                       // Affichage des tags
                       if (_tags.isNotEmpty)
@@ -277,21 +278,21 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                           }).toList(),
                         ),
                       
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
                       
                       // Publication
                       CheckboxListTile(
                         title: Text(
                           'Publier immédiatement',
                           style: GoogleFonts.inter(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                         subtitle: Text(
                           'La pépite sera visible par tous les utilisateurs',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: AppTheme.grey600,
                           ),
                         ),
@@ -310,7 +311,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
             ),
             
             // Actions
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Row(
               children: [
                 Expanded(
@@ -325,7 +326,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                     child: const Text('Annuler'),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _savePepite,
@@ -353,7 +354,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
     
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         border: Border.all(color: AppTheme.grey300!),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -366,7 +367,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
               Text(
                 'Citation ${index + 1}',
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.primaryColor,
                 ),
@@ -380,7 +381,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Texte de la citation
           TextFormField(
@@ -400,7 +401,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
               return null;
             },
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Auteur/Brochure
           TextFormField(
@@ -419,7 +420,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
               return null;
             },
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Référence (optionnel)
           TextFormField(

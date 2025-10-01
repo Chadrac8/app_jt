@@ -153,7 +153,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: const EdgeInsets.all(16),
+      insetPadding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Container(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height * 0.9,
@@ -161,7 +161,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
           children: [
             // En-tête
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
@@ -169,13 +169,13 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
               child: Row(
                 children: [
                   const Icon(Icons.grid_view, color: AppTheme.white100),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   const Expanded(
                     child: Text(
                       'Éditeur de Container Grid',
                       style: TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -190,12 +190,12 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
 
             // Onglets
             Container(
-              color: AppTheme.surface,
+              color: AppTheme.primaryColor, // Couleur d'arrière-plan identique à l'AppBar
               child: TabBar(
                 controller: _tabController,
-                labelColor: AppTheme.primaryColor,
-                unselectedLabelColor: AppTheme.grey600,
-                indicatorColor: AppTheme.primaryColor,
+                labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+                unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+                indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc
                 tabs: const [
                   Tab(
                     icon: Icon(Icons.settings),
@@ -222,7 +222,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
 
             // Actions
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.grey500,
                 border: Border(top: BorderSide(color: AppTheme.grey500)),
@@ -234,7 +234,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                     onPressed: () => Navigator.pop(context),
                     child: const Text('Annuler'),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   ElevatedButton(
                     onPressed: _saveChanges,
                     style: ElevatedButton.styleFrom(
@@ -254,7 +254,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
 
   Widget _buildConfigurationTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -273,7 +273,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           'Nombre de colonnes: ${_containerData['columns']}',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Slider(
                           value: (_containerData['columns'] ?? 2).toDouble(),
                           min: 1,
@@ -291,7 +291,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -302,7 +302,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           'Rapport hauteur/largeur: ${_containerData['childAspectRatio']?.toStringAsFixed(1)}',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Slider(
                           value: (_containerData['childAspectRatio'] ?? 1.0).toDouble(),
                           min: 0.5,
@@ -323,7 +323,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Espacement
           _buildSection(
@@ -340,7 +340,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           'Espacement vertical: ${_containerData['mainAxisSpacing']?.round()}px',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Slider(
                           value: (_containerData['mainAxisSpacing'] ?? 12.0).toDouble(),
                           min: 0,
@@ -358,7 +358,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -369,7 +369,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           'Espacement horizontal: ${_containerData['crossAxisSpacing']?.round()}px',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Slider(
                           value: (_containerData['crossAxisSpacing'] ?? 12.0).toDouble(),
                           min: 0,
@@ -387,7 +387,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -398,7 +398,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           'Padding interne: ${_containerData['padding']?.round()}px',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Slider(
                           value: (_containerData['padding'] ?? 16.0).toDouble(),
                           min: 0,
@@ -419,7 +419,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Apparence
           _buildSection(
@@ -438,7 +438,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                   _containerStyling['backgroundColor'] = value;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -454,7 +454,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                       },
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: TextFormField(
                       initialValue: _containerStyling['borderWidth']?.toString() ?? '1.0',
@@ -471,7 +471,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -482,7 +482,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           'Rayon des coins: ${_containerStyling['borderRadius']?.round()}px',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Slider(
                           value: (_containerStyling['borderRadius'] ?? 8.0).toDouble(),
                           min: 0,
@@ -500,7 +500,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -511,7 +511,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           'Élévation: ${_containerStyling['elevation']?.round()}',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Slider(
                           value: (_containerStyling['elevation'] ?? 0.0).toDouble(),
                           min: 0,
@@ -532,7 +532,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Hauteur
           _buildSection(
@@ -550,7 +550,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                 },
               ),
               if (!(_containerData['autoHeight'] ?? true)) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Row(
                   children: [
                     Expanded(
@@ -561,7 +561,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                             'Hauteur maximale: ${_containerData['maxHeight']?.round()}px',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Slider(
                             value: (_containerData['maxHeight'] ?? 400.0).toDouble(),
                             min: 200,
@@ -583,7 +583,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Aperçu
           _buildSection(
@@ -591,7 +591,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             icon: Icons.visibility,
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey500,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -603,12 +603,12 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                       'Configuration actuelle',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       '${_containerData['columns']} colonnes • ${_children.length} composants',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Container(
                       height: 100,
                       child: ComponentRenderer(
@@ -635,7 +635,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
       children: [
         // En-tête avec bouton d'ajout
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.grey500,
             border: Border(bottom: BorderSide(color: AppTheme.grey500)),
@@ -643,7 +643,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
           child: Row(
             children: [
               Icon(Icons.extension, color: AppTheme.primaryColor),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -688,24 +688,24 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                         size: 64,
                         color: AppTheme.grey500,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun composant dans la grille',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           color: AppTheme.grey500,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Ajoutez des composants pour les organiser en grille',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey500,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       ElevatedButton.icon(
                         onPressed: _addComponent,
                         icon: const Icon(Icons.add),
@@ -723,7 +723,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                   ),
                 )
               : ReorderableListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   onReorder: _reorderComponents,
                   itemCount: _children.length,
                   itemBuilder: (context, index) {
@@ -733,7 +733,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                       margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
                         leading: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(AppTheme.spaceSmall),
                           decoration: BoxDecoration(
                             color: _getComponentColor(component.type).withOpacity(0.1),
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -752,7 +752,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
                           _getComponentTypeName(component.type),
                           style: TextStyle(
                             color: AppTheme.grey500,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                         trailing: Row(
@@ -792,7 +792,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
         Row(
           children: [
             Icon(icon, color: AppTheme.primaryColor, size: 20),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -802,7 +802,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         ...children,
       ],
     );
@@ -842,20 +842,20 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
       case 'button': return AppTheme.orangeStandard;
       case 'video': return AppTheme.redStandard;
       case 'audio': return AppTheme.pinkStandard;
-      case 'list': return Colors.purple;
-      case 'banner': return Colors.amber;
-      case 'quote': return Colors.deepPurple;
-      case 'scripture': return Colors.indigo;
-      case 'html': return Colors.cyan;
+      case 'list': return AppTheme.primaryColor;
+      case 'banner': return AppTheme.warningColor;
+      case 'quote': return AppTheme.primaryDark;
+      case 'scripture': return AppTheme.secondaryColor;
+      case 'html': return AppTheme.infoColor;
       case 'webview': return AppTheme.blueStandard;
-      case 'map': return Colors.brown;
+      case 'map': return AppTheme.tertiaryColor;
       case 'googlemap': return AppTheme.redStandard;
-      case 'groups': return Colors.deepOrange;
+      case 'groups': return AppTheme.warningColor;
       case 'events': return AppTheme.greenStandard;
       case 'prayer_wall': return AppTheme.pinkStandard;
-      case 'grid_card': return Colors.deepPurple;
-      case 'grid_stat': return Colors.teal;
-      case 'grid_icon_text': return Colors.indigo;
+      case 'grid_card': return AppTheme.primaryDark;
+      case 'grid_stat': return AppTheme.secondaryColor;
+      case 'grid_icon_text': return AppTheme.secondaryColor;
       case 'grid_image_card': return AppTheme.orangeStandard;
       case 'grid_progress': return AppTheme.greenStandard;
       default: return AppTheme.grey500;
@@ -1064,9 +1064,9 @@ class _ComponentTypeSelector extends StatelessWidget {
   final Map<String, List<Map<String, dynamic>>> _componentCategories = {
     'Contenu textuel': [
       {'type': 'text', 'label': 'Texte', 'icon': Icons.text_fields, 'color': AppTheme.blueStandard},
-      {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': Colors.indigo},
-      {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': Colors.amber},
-      {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': Colors.deepPurple},
+      {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': AppTheme.secondaryColor},
+      {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': AppTheme.warningColor},
+      {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': AppTheme.primaryDark},
     ],
     'Médias': [
       {'type': 'image', 'label': 'Image', 'icon': Icons.image, 'color': AppTheme.greenStandard},
@@ -1075,21 +1075,21 @@ class _ComponentTypeSelector extends StatelessWidget {
     ],
     'Interactif': [
       {'type': 'button', 'label': 'Bouton', 'icon': Icons.smart_button, 'color': AppTheme.orangeStandard},
-      {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': Colors.cyan},
+      {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': AppTheme.infoColor},
       {'type': 'webview', 'label': 'WebView', 'icon': Icons.web, 'color': AppTheme.blueStandard},
     ],
     'Organisation': [
-      {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': Colors.purple},
-      {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': Colors.brown},
+      {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': AppTheme.primaryColor},
+      {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': AppTheme.tertiaryColor},
       {'type': 'googlemap', 'label': 'Google Map', 'icon': Icons.location_on, 'color': AppTheme.redStandard},
-      {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': Colors.deepOrange},
+      {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': AppTheme.warningColor},
       {'type': 'events', 'label': 'Événements', 'icon': Icons.event, 'color': AppTheme.greenStandard},
       {'type': 'prayer_wall', 'label': 'Prières & Témoignages', 'icon': Icons.pan_tool, 'color': AppTheme.pinkStandard},
     ],
     'Composants Grid': [
-      {'type': 'grid_card', 'label': 'Carte Grid', 'icon': Icons.crop_landscape, 'color': Colors.deepPurple},
-      {'type': 'grid_stat', 'label': 'Statistique Grid', 'icon': Icons.analytics, 'color': Colors.teal},
-      {'type': 'grid_icon_text', 'label': 'Icône + Texte Grid', 'icon': Icons.text_rotate_vertical, 'color': Colors.indigo},
+      {'type': 'grid_card', 'label': 'Carte Grid', 'icon': Icons.crop_landscape, 'color': AppTheme.primaryDark},
+      {'type': 'grid_stat', 'label': 'Statistique Grid', 'icon': Icons.analytics, 'color': AppTheme.secondaryColor},
+      {'type': 'grid_icon_text', 'label': 'Icône + Texte Grid', 'icon': Icons.text_rotate_vertical, 'color': AppTheme.secondaryColor},
       {'type': 'grid_image_card', 'label': 'Image Card Grid', 'icon': Icons.image_aspect_ratio, 'color': AppTheme.orangeStandard},
       {'type': 'grid_progress', 'label': 'Progression Grid', 'icon': Icons.pie_chart, 'color': AppTheme.greenStandard},
     ],
@@ -1117,7 +1117,7 @@ class _ComponentTypeSelector extends StatelessWidget {
                     child: Text(
                       categoryName,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.black100.withOpacity(0.87),
                       ),
@@ -1150,10 +1150,10 @@ class _ComponentTypeSelector extends StatelessWidget {
                                   size: 28,
                                   color: componentType['color'] ?? AppTheme.primaryColor,
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppTheme.spaceXSmall),
                                 Text(
                                   componentType['label'],
-                                  style: const TextStyle(fontSize: 10),
+                                  style: const TextStyle(fontSize: AppTheme.fontSize10),
                                   textAlign: TextAlign.center,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -1165,7 +1165,7 @@ class _ComponentTypeSelector extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 ],
               );
             }).toList(),

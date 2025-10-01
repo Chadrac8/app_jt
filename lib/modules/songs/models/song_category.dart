@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Modèle représentant une catégorie de chant
 class SongCategory {
@@ -120,7 +121,7 @@ class DefaultSongCategories {
       name: 'Prière',
       description: 'Chants de prière et de méditation',
       icon: 'church',
-      color: Colors.purple,
+      color: AppTheme.primaryColor,
       sortOrder: 3,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -156,7 +157,7 @@ class DefaultSongCategories {
       name: 'Jeunesse',
       description: 'Chants pour les jeunes et enfants',
       icon: 'child_friendly',
-      color: Colors.cyan,
+      color: AppTheme.infoColor,
       sortOrder: 7,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -165,7 +166,7 @@ class DefaultSongCategories {
       name: 'Traditionnel',
       description: 'Chants traditionnels et cantiques',
       icon: 'library_music',
-      color: Colors.brown,
+      color: AppTheme.tertiaryColor,
       sortOrder: 8,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

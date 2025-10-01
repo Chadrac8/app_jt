@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/sermon.dart';
 import '../services/sermon_service.dart';
 import '../views/sermon_notes_view.dart';
+import '../../../theme.dart';
 
 class SermonsTab extends StatefulWidget {
   const SermonsTab({Key? key}) : super(key: key);
@@ -125,10 +126,10 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: colorScheme.primary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                 ),
                 child: Icon(
                   Icons.play_circle_rounded,
@@ -136,7 +137,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                   size: 32,
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: AppTheme.space20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,17 +146,17 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                       'Sermons',
                       style: GoogleFonts.inter(
                         fontSize: 26,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: AppTheme.fontBold,
                         color: colorScheme.onPrimaryContainer,
                         height: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Écoutez et relisez les messages inspirants',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontRegular,
                         color: colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
                         height: 1.4,
                       ),
@@ -166,10 +167,10 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
               if (!_isLoading && _sermons.isNotEmpty)
                 PopupMenuButton<String>(
                   icon: Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: colorScheme.surface.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                       border: Border.all(
                         color: colorScheme.outline.withValues(alpha: 0.2),
                       ),
@@ -203,11 +204,11 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                             size: 20,
                             color: colorScheme.primary,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Actualiser',
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               color: colorScheme.onSurface,
                             ),
                           ),
@@ -223,11 +224,11 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                             size: 20,
                             color: colorScheme.primary,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Rechercher',
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               color: colorScheme.onSurface,
                             ),
                           ),
@@ -243,11 +244,11 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                             size: 20,
                             color: colorScheme.primary,
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Filtrer',
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               color: colorScheme.onSurface,
                             ),
                           ),
@@ -259,11 +260,11 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
             ],
           ),
           if (_isSearching) ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             Container(
               decoration: BoxDecoration(
                 color: colorScheme.surface.withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                 border: Border.all(
                   color: colorScheme.outline.withValues(alpha: 0.3),
                 ),
@@ -280,14 +281,14 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                 onChanged: _onSearchChanged,
                 autofocus: true,
                 style: GoogleFonts.inter(
-                  fontSize: 15,
+                  fontSize: AppTheme.fontSize15,
                   color: colorScheme.onSurface,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Rechercher un sermon, orateur...',
                   hintStyle: GoogleFonts.inter(
                     color: colorScheme.onSurfaceVariant,
-                    fontSize: 15,
+                    fontSize: AppTheme.fontSize15,
                   ),
                   prefixIcon: Icon(
                     Icons.search_rounded,
@@ -323,12 +324,12 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
             ),
           ],
           if (_selectedFilter != 'Tous') ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
                 color: colorScheme.surface.withValues(alpha: 0.8),
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                 border: Border.all(
                   color: colorScheme.outline.withValues(alpha: 0.3),
                 ),
@@ -341,16 +342,16 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                     size: 18,
                     color: colorScheme.primary,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     _selectedFilter,
                     style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
+                      fontSize: AppTheme.fontSize13,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   GestureDetector(
                     onTap: () {
                       if (mounted) setState(() => _selectedFilter = 'Tous');
@@ -367,12 +368,12 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
             ),
           ],
           if (!_isLoading && _sermons.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: colorScheme.surface.withValues(alpha: 0.6),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 border: Border.all(
                   color: colorScheme.outline.withValues(alpha: 0.2),
                 ),
@@ -384,13 +385,13 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                     color: colorScheme.onSurfaceVariant,
                     size: 18,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Text(
                       '${_filteredSermons.length} sermon${_filteredSermons.length > 1 ? 's' : ''} disponible${_filteredSermons.length > 1 ? 's' : ''}',
                       style: GoogleFonts.inter(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                        fontSize: AppTheme.fontSize13,
+                        fontWeight: AppTheme.fontMedium,
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -410,30 +411,30 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(32),
+              borderRadius: BorderRadius.circular(AppTheme.radiusRound),
             ),
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
               strokeWidth: 3,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Chargement des sermons...',
             style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontSize: AppTheme.fontSize16,
+              fontWeight: AppTheme.fontMedium,
               color: colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Veuillez patienter',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
             ),
           ),
@@ -445,12 +446,12 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
   Widget _buildEmptyState(ColorScheme colorScheme) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(AppTheme.space40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(AppTheme.spaceXLarge),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -475,16 +476,16 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             Text(
               'Aucun sermon trouvé',
               style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTheme.fontSize20,
+                fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _searchQuery.isNotEmpty 
                   ? 'Aucun résultat pour "${_searchQuery}"'
@@ -492,13 +493,13 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                       ? 'Aucun sermon dans cette catégorie'
                       : 'Les sermons apparaîtront ici bientôt',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
               ),
               textAlign: TextAlign.center,
             ),
             if (_searchQuery.isNotEmpty || _selectedFilter != 'Tous') ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               FilledButton.tonal(
                 onPressed: () {
                   _clearSearch();
@@ -508,14 +509,14 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                   ),
                 ),
                 child: Text(
                   'Voir tous les sermons',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontSize: AppTheme.fontSize14,
+                    fontWeight: AppTheme.fontMedium,
                   ),
                 ),
               ),
@@ -575,14 +576,14 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
       margin: const EdgeInsets.only(bottom: 20),
       child: Material(
         elevation: 0,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         color: colorScheme.surfaceContainerLow,
         child: InkWell(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
           onTap: () => _showSermonDetails(sermon),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
               border: Border.all(
                 color: colorScheme.outlineVariant.withValues(alpha: 0.5),
                 width: 1,
@@ -596,7 +597,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -610,13 +611,13 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                         ),
                         decoration: BoxDecoration(
                           color: colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                         ),
                         child: Text(
                           DateFormat('dd/MM/yyyy').format(sermon.date),
                           style: GoogleFonts.inter(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                            fontSize: AppTheme.fontSize12,
+                            fontWeight: AppTheme.fontSemiBold,
                             color: colorScheme.onPrimaryContainer,
                           ),
                         ),
@@ -630,7 +631,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                           ),
                           decoration: BoxDecoration(
                             color: colorScheme.secondaryContainer,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -640,12 +641,12 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                                 size: 14,
                                 color: colorScheme.onSecondaryContainer,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 '${sermon.duree} min',
                                 style: GoogleFonts.inter(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: AppTheme.fontSize11,
+                                  fontWeight: AppTheme.fontMedium,
                                   color: colorScheme.onSecondaryContainer,
                                 ),
                               ),
@@ -654,30 +655,30 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                         ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppTheme.space20),
 
                   // Titre du sermon
                   Text(
                     sermon.titre,
                     style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontSize: AppTheme.fontSize18,
+                      fontWeight: AppTheme.fontSemiBold,
                       color: colorScheme.onSurface,
                       height: 1.3,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
 
                   // Informations d'orateur
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(AppTheme.space6),
                         decoration: BoxDecoration(
                           color: colorScheme.tertiaryContainer,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Icon(
                           Icons.person_rounded,
@@ -685,13 +686,13 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                           color: colorScheme.onTertiaryContainer,
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: AppTheme.space10),
                       Expanded(
                         child: Text(
                           sermon.orateur,
                           style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontSize: AppTheme.fontSize14,
+                            fontWeight: AppTheme.fontMedium,
                             color: colorScheme.onSurfaceVariant,
                           ),
                           maxLines: 1,
@@ -703,12 +704,12 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
 
                   // Description si disponible
                   if (sermon.description != null && sermon.description!.isNotEmpty) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: BoxDecoration(
                         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                         border: Border.all(
                           color: colorScheme.outline.withValues(alpha: 0.2),
                         ),
@@ -716,7 +717,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                       child: Text(
                         sermon.description!,
                         style: GoogleFonts.inter(
-                          fontSize: 13,
+                          fontSize: AppTheme.fontSize13,
                           color: colorScheme.onSurfaceVariant,
                           height: 1.4,
                         ),
@@ -728,7 +729,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
 
                   // Tags si disponibles
                   if (sermon.tags.isNotEmpty) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -736,21 +737,21 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: colorScheme.secondaryContainer.withValues(alpha: 0.7),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                         ),
                         child: Text(
                           tag,
                           style: GoogleFonts.inter(
-                            fontSize: 11,
+                            fontSize: AppTheme.fontSize11,
                             color: colorScheme.onSecondaryContainer,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       )).toList(),
                     ),
                   ],
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
 
                   // Actions
                   Row(
@@ -767,19 +768,19 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                           label: Text(
                             'Écouter',
                             style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                              fontSize: AppTheme.fontSize14,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: FilledButton.tonalIcon(
                           onPressed: sermon.notes != null && sermon.notes!.isNotEmpty
@@ -792,14 +793,14 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                           label: Text(
                             'Notes',
                             style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                              fontSize: AppTheme.fontSize14,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                             ),
                           ),
                         ),
@@ -939,7 +940,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
               height: 4,
               decoration: BoxDecoration(
                 color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
             Expanded(
@@ -955,13 +956,13 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
                             color: colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                           ),
                           child: Text(
                             DateFormat('dd MMMM yyyy', 'fr_FR').format(sermon.date),
                             style: GoogleFonts.inter(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
+                              fontSize: AppTheme.fontSize13,
+                              fontWeight: AppTheme.fontSemiBold,
                               color: colorScheme.onPrimaryContainer,
                             ),
                           ),
@@ -972,7 +973,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
                               color: colorScheme.secondaryContainer,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -982,12 +983,12 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                                   size: 16,
                                   color: colorScheme.onSecondaryContainer,
                                 ),
-                                const SizedBox(width: 6),
+                                const SizedBox(width: AppTheme.space6),
                                 Text(
                                   '${sermon.duree} min',
                                   style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: AppTheme.fontSize12,
+                                    fontWeight: AppTheme.fontMedium,
                                     color: colorScheme.onSecondaryContainer,
                                   ),
                                 ),
@@ -996,26 +997,26 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
 
                     // Titre du sermon
                     Text(
                       sermon.titre,
                       style: GoogleFonts.inter(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
+                        fontSize: AppTheme.fontSize24,
+                        fontWeight: AppTheme.fontBold,
                         color: colorScheme.onSurface,
                         height: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
 
                     // Orateur
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: BoxDecoration(
                         color: colorScheme.tertiaryContainer.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                         border: Border.all(
                           color: colorScheme.outline.withValues(alpha: 0.2),
                         ),
@@ -1023,10 +1024,10 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(AppTheme.spaceSmall),
                             decoration: BoxDecoration(
                               color: colorScheme.tertiaryContainer,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                             ),
                             child: Icon(
                               Icons.person_rounded,
@@ -1034,7 +1035,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                               color: colorScheme.onTertiaryContainer,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: AppTheme.spaceMedium),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1042,8 +1043,8 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                                 Text(
                                   'Orateur',
                                   style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: AppTheme.fontSize12,
+                                    fontWeight: AppTheme.fontMedium,
                                     color: colorScheme.onSurfaceVariant,
                                   ),
                                 ),
@@ -1051,8 +1052,8 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                                 Text(
                                   sermon.orateur,
                                   style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: AppTheme.fontSize16,
+                                    fontWeight: AppTheme.fontSemiBold,
                                     color: colorScheme.onSurface,
                                   ),
                                 ),
@@ -1065,22 +1066,22 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
 
                     // Description si disponible
                     if (sermon.description != null && sermon.description!.isNotEmpty) ...[
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       Text(
                         'Description',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontSize: AppTheme.fontSize16,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(AppTheme.space20),
                         decoration: BoxDecoration(
                           color: colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                           border: Border.all(
                             color: colorScheme.outline.withValues(alpha: 0.2),
                           ),
@@ -1088,7 +1089,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                         child: Text(
                           sermon.description!,
                           style: GoogleFonts.inter(
-                            fontSize: 15,
+                            fontSize: AppTheme.fontSize15,
                             color: colorScheme.onSurfaceVariant,
                             height: 1.5,
                           ),
@@ -1098,16 +1099,16 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
 
                     // Tags si disponibles
                     if (sermon.tags.isNotEmpty) ...[
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       Text(
                         'Thèmes',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontSize: AppTheme.fontSize16,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       Wrap(
                         spacing: 12,
                         runSpacing: 8,
@@ -1115,21 +1116,21 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
                             color: colorScheme.secondaryContainer,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                           ),
                           child: Text(
                             tag,
                             style: GoogleFonts.inter(
-                              fontSize: 13,
+                              fontSize: AppTheme.fontSize13,
                               color: colorScheme.onSecondaryContainer,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         )).toList(),
                       ),
                     ],
 
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppTheme.spaceXLarge),
 
                     // Actions
                     Column(
@@ -1144,20 +1145,20 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                             label: Text(
                               'Écouter le sermon',
                               style: GoogleFonts.inter(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontSize: AppTheme.fontSize16,
+                                fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                             style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                               ),
                             ),
                           ),
                         ),
                         if (sermon.notes != null && sermon.notes!.isNotEmpty) ...[
-                          const SizedBox(height: 12),
+                          const SizedBox(height: AppTheme.space12),
                           SizedBox(
                             width: double.infinity,
                             child: FilledButton.tonalIcon(
@@ -1166,14 +1167,14 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                               label: Text(
                                 'Voir les Écritures & Notes',
                                 style: GoogleFonts.inter(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: AppTheme.fontSize15,
+                                  fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                               style: FilledButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusXXLarge),
                                 ),
                               ),
                             ),
@@ -1204,8 +1205,8 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
         title: Text(
           'Filtrer les sermons',
           style: GoogleFonts.inter(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontSize: AppTheme.fontSize18,
+            fontWeight: AppTheme.fontSemiBold,
             color: colorScheme.onSurface,
           ),
         ),
@@ -1218,7 +1219,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
             title: Text(
               filter['key'],
               style: GoogleFonts.inter(
-                fontSize: 15,
+                fontSize: AppTheme.fontSize15,
                 color: colorScheme.onSurface,
               ),
             ),
@@ -1238,7 +1239,7 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
               'Annuler',
               style: GoogleFonts.inter(
                 color: colorScheme.primary,
-                fontWeight: FontWeight.w500,
+                fontWeight: AppTheme.fontMedium,
               ),
             ),
           ),

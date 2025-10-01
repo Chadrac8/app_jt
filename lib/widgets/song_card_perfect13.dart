@@ -59,7 +59,7 @@ class SongCardPerfect13 extends StatelessWidget {
                   child: Text(
                     songNumber.toString(),
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: colorScheme.onPrimaryContainer,
                       letterSpacing: 0.1,
@@ -79,7 +79,7 @@ class SongCardPerfect13 extends StatelessWidget {
                     Text(
                       song.title,
                       style: GoogleFonts.inter(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                         color: colorScheme.onSurface,
                         letterSpacing: 0.15,
@@ -96,7 +96,7 @@ class SongCardPerfect13 extends StatelessWidget {
                       Text(
                         _getFirstLyricsLine(song.lyrics),
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: colorScheme.onSurfaceVariant,
                           letterSpacing: 0.25,
                           height: 1.4,

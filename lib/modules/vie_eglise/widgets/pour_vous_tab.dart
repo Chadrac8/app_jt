@@ -5,6 +5,7 @@ import '../../../pages/form_public_page.dart';
 import '../../../pages/member_appointments_page.dart';
 import '../../../pages/special_song_reservation_page.dart';
 import '../../../services/forms_firebase_service.dart';
+import '../../../theme.dart';
 
 class PourVousTab extends StatefulWidget {
   const PourVousTab({Key? key}) : super(key: key);
@@ -50,12 +51,12 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
         opacity: _fadeAnimation,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16), // M3 standard padding
+          padding: const EdgeInsets.all(AppTheme.spaceMedium), // M3 standard padding
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildActionsGrid(colorScheme),
-              const SizedBox(height: 16), // M3 spacing
+              const SizedBox(height: AppTheme.spaceMedium), // M3 spacing
             ],
           ),
         ),
@@ -79,7 +80,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
                 colorScheme,
               ),
             ),
-            const SizedBox(width: 12), // M3 grid spacing
+            const SizedBox(width: AppTheme.space12), // M3 grid spacing
             Expanded(
               child: _buildActionCard(
                 'Rejoindre une équipe',
@@ -93,7 +94,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
           ],
         ),
         
-        const SizedBox(height: 16), // M3 spacing between rows
+        const SizedBox(height: AppTheme.spaceMedium), // M3 spacing between rows
         
         Row(
           children: [
@@ -107,7 +108,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
                 colorScheme,
               ),
             ),
-            const SizedBox(width: 12), // M3 grid spacing
+            const SizedBox(width: AppTheme.space12), // M3 grid spacing
             Expanded(
               child: _buildActionCard(
                 'Poser une question',
@@ -121,7 +122,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
           ],
         ),
         
-        const SizedBox(height: 16), // M3 spacing between rows
+        const SizedBox(height: AppTheme.spaceMedium), // M3 spacing between rows
         
         Row(
           children: [
@@ -135,7 +136,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
                 colorScheme,
               ),
             ),
-            const SizedBox(width: 12), // M3 grid spacing
+            const SizedBox(width: AppTheme.space12), // M3 grid spacing
             Expanded(
               child: _buildActionCard(
                 'Partager un témoignage',
@@ -149,7 +150,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
           ],
         ),
         
-        const SizedBox(height: 16), // M3 spacing between rows
+        const SizedBox(height: AppTheme.spaceMedium), // M3 spacing between rows
         
         Row(
           children: [
@@ -163,7 +164,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
                 colorScheme,
               ),
             ),
-            const SizedBox(width: 12), // M3 grid spacing
+            const SizedBox(width: AppTheme.space12), // M3 grid spacing
             Expanded(
               child: _buildActionCard(
                 'Signaler un problème',
@@ -187,7 +188,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
       elevation: 0, // M3 cards have no elevation by default
       color: colorScheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12), // M3 standard corner radius
+        borderRadius: BorderRadius.circular(AppTheme.radiusLarge), // M3 standard corner radius
         side: BorderSide(
           color: colorScheme.outlineVariant,
           width: 1,
@@ -200,7 +201,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
         highlightColor: color.withValues(alpha: 0.08),
         hoverColor: color.withValues(alpha: 0.04), // M3 hover state
         child: Padding(
-          padding: const EdgeInsets.all(16), // M3 card padding
+          padding: const EdgeInsets.all(AppTheme.spaceMedium), // M3 card padding
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,7 +213,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
                 height: 48,
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Icon(
                   icon,
@@ -220,18 +221,18 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
                   size: 24,
                 ),
               ),
-              const SizedBox(height: 16), // M3 spacing
+              const SizedBox(height: AppTheme.spaceMedium), // M3 spacing
               // Title with M3 typography
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4), // M3 tight spacing
+              const SizedBox(height: AppTheme.spaceXSmall), // M3 tight spacing
               // Subtitle with M3 typography
               Text(
                 subtitle,

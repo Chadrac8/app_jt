@@ -91,7 +91,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -101,7 +101,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                   Icons.touch_app,
                   color: Theme.of(context).primaryColor,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Action au clic',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -110,7 +110,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Type d'action
             DropdownButtonFormField<ComponentActionType>(
@@ -128,7 +128,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                         ComponentActionService.getActionIcon(type),
                         size: 20,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(ComponentActionService.getActionTypeLabel(type)),
                     ],
                   ),
@@ -143,7 +143,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                 }
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Configuration selon le type
             ..._buildTypeSpecificConfiguration(),
@@ -259,7 +259,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                         Text(
                           page.description,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: AppTheme.grey500,
                           ),
                         ),
@@ -341,7 +341,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
                         Text(
                           form.description,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: AppTheme.grey500,
                           ),
                         ),

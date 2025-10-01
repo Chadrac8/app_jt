@@ -52,14 +52,14 @@ class OffrandesModule extends BaseModule {
             onTap: () => Navigator.of(context).pushNamed('/admin/offrandes'),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(AppTheme.space12),
                         decoration: BoxDecoration(
                           color: AppTheme.greenStandard.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -70,7 +70,7 @@ class OffrandesModule extends BaseModule {
                           size: 24,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,14 +78,14 @@ class OffrandesModule extends BaseModule {
                             Text(
                               config.name,
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: AppTheme.fontSize16,
                                 fontWeight: AppTheme.fontBold,
                               ),
                             ),
                             Text(
                               config.description,
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 color: AppTheme.grey600,
                               ),
                               maxLines: 2,
@@ -96,7 +96,7 @@ class OffrandesModule extends BaseModule {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Row(
                     children: [
                       _buildQuickStat(
@@ -104,7 +104,7 @@ class OffrandesModule extends BaseModule {
                         stats['monthlyTotal']?.toString() ?? '€ 0',
                         AppTheme.greenStandard,
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: AppTheme.spaceMedium),
                       _buildQuickStat(
                         'Dons',
                         stats['donationsCount']?.toString() ?? '0',
@@ -124,7 +124,7 @@ class OffrandesModule extends BaseModule {
   Widget _buildQuickStat(String label, String value, Color color) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -136,7 +136,7 @@ class OffrandesModule extends BaseModule {
             Text(
               value,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: color,
               ),
@@ -144,7 +144,7 @@ class OffrandesModule extends BaseModule {
             Text(
               label,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey600,
               ),
             ),

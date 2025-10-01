@@ -4,6 +4,7 @@ import '../models/permission.dart';
 import '../models/user_role.dart';
 import '../services/print_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class PrintOptionsDialog extends StatelessWidget {
   final List<Role> roles;
@@ -25,7 +26,7 @@ class PrintOptionsDialog extends StatelessWidget {
       title: Row(
         children: [
           Icon(Icons.print, color: theme.primaryColor),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           const Text('Options d\'impression'),
         ],
       ),
@@ -34,9 +35,9 @@ class PrintOptionsDialog extends StatelessWidget {
         children: [
           const Text(
             'Choisissez le type de données à imprimer :',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: AppTheme.fontSize16),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildPrintOption(
             context,
             'Rôles',
@@ -44,7 +45,7 @@ class PrintOptionsDialog extends StatelessWidget {
             Icons.admin_panel_settings,
             () => _printRoles(context),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildPrintOption(
             context,
             'Permissions',
@@ -52,7 +53,7 @@ class PrintOptionsDialog extends StatelessWidget {
             Icons.security,
             () => _printPermissions(context),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildPrintOption(
             context,
             'Affectations',
@@ -60,7 +61,7 @@ class PrintOptionsDialog extends StatelessWidget {
             Icons.assignment_ind,
             () => _printUserRoles(context),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildPrintOption(
             context,
             'Rapport complet',

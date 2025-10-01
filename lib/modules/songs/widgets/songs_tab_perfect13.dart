@@ -4,6 +4,7 @@ import '../services/songs_firebase_service.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Onglet Chants - Reproduction exacte de Perfect 13
 class SongsTabPerfect13 extends StatefulWidget {
@@ -96,7 +97,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
         // Liste des chants
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: filteredSongs.length,
             itemBuilder: (context, index) {
               final song = filteredSongs[index];
@@ -140,7 +141,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
           onTap: () => _showSongDetails(song),
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 // Numéro du chant dans un cercle
@@ -175,7 +176,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 
                 // Informations du chant
                 Expanded(
@@ -192,7 +193,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       if (song.authors.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           song.authors,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -236,7 +237,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
             size: 64,
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             searchQuery.isEmpty 
                 ? 'Aucun chant disponible'
@@ -246,7 +247,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
             ),
           ),
           if (searchQuery.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Essayez avec d\'autres mots-clés',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -299,7 +300,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                 height: 4,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(2))),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2))),
               
               // En-tête moderne avec design bottomsheet
               Container(
@@ -308,7 +309,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                   children: [
                     // Icône moderne du chant
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(AppTheme.space10),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -327,7 +328,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                         color: Theme.of(context).colorScheme.onPrimary,
                         size: 20)),
                     
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     
                     // Informations du chant
                     Expanded(
@@ -352,7 +353,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis),
                           ],
-                          const SizedBox(height: 6),
+                          const SizedBox(height: AppTheme.space6),
                           // Badges d'information
                           Wrap(
                             spacing: 4,
@@ -374,7 +375,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                                     Text(
                                       song.originalKey,
                                       style: TextStyle(
-                                        fontSize: 10,
+                                        fontSize: AppTheme.fontSize10,
                                         fontWeight: AppTheme.fontSemiBold,
                                         color: Theme.of(context).colorScheme.onSecondaryContainer)),
                                   ])),
@@ -389,7 +390,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                               //     child: Text(
                               //       song.tags.first,
                               //       style: TextStyle(
-                              //         fontSize: 10,
+                              //         fontSize: AppTheme.fontSize10,
                               //         fontWeight: AppTheme.fontSemiBold,
                               //         color: Theme.of(context).colorScheme.onTertiaryContainer,
                               //       ),
@@ -428,7 +429,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                                 });
                               },
                               tooltip: showAudioPlayer ? 'Masquer lecteur audio' : 'Afficher lecteur audio')),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                         ],
                         // Bouton projection
                         Container(
@@ -453,7 +454,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                                   builder: (context) => SongProjectionPage(song: song)));
                             },
                             tooltip: 'Mode projection')),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         // Bouton fermer
                         Container(
                           decoration: BoxDecoration(
@@ -496,7 +497,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
                                     size: 48,
                                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
                                   ),
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: AppTheme.spaceMedium),
                                   Text(
                                     'Paroles non disponibles',
                                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -514,7 +515,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
     // Widget simple pour le lecteur audio - peut être étendu plus tard
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -525,7 +526,7 @@ class _SongsTabPerfect13State extends State<SongsTabPerfect13> {
             Icons.audiotrack_rounded,
             color: Theme.of(context).colorScheme.onSecondaryContainer,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Text(
               'Lecteur audio - ${song.title}',

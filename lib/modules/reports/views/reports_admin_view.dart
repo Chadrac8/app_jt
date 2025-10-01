@@ -4,6 +4,7 @@ import '../../../shared/widgets/custom_card.dart';
 import '../services/reports_service.dart';
 import '../models/report.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ReportsAdminView extends StatefulWidget {
   const ReportsAdminView({Key? key}) : super(key: key);
@@ -153,7 +154,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
       children: [
         // Barre de recherche et filtres
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               TextField(
@@ -168,7 +169,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   });
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -220,7 +221,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
 
   Widget _buildStatisticsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -235,7 +236,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   AppTheme.blueStandard,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: _buildStatCard(
                   'Rapports actifs',
@@ -246,7 +247,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               Expanded(
@@ -257,7 +258,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   AppTheme.orangeStandard,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: _buildStatCard(
                   'À régénérer',
@@ -268,12 +269,12 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Répartition par type
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -281,18 +282,18 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                     'Répartition par type',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   ..._buildTypeBreakdown(),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Répartition par fréquence
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -300,7 +301,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                     'Répartition par fréquence',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   ..._buildFrequencyBreakdown(),
                 ],
               ),
@@ -315,7 +316,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
     final categories = ReportTemplate.getCategories();
     
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: categories.length,
       itemBuilder: (context, index) {
         final category = categories[index];
@@ -359,7 +360,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
         }
         
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: reportDataList.length,
           itemBuilder: (context, index) {
             final reportData = reportDataList[index];
@@ -386,7 +387,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (report.description != null) Text(report.description!),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Chip(
@@ -394,7 +395,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                   backgroundColor: _getTypeColor(report.type).withOpacity(0.1),
                   labelStyle: TextStyle(color: _getTypeColor(report.type)),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 if (!report.isActive)
                   const Chip(
                     label: Text('Inactif'),
@@ -478,7 +479,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -495,7 +496,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               title,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -529,7 +530,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                 valueColor: AlwaysStoppedAnimation(_getTypeColor(entry.key)),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text('${entry.value} ($percentage%)'),
           ],
         ),
@@ -557,7 +558,7 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
                 backgroundColor: AppTheme.grey300,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text('${entry.value} ($percentage%)'),
           ],
         ),
@@ -763,11 +764,11 @@ class _ReportsAdminViewState extends State<ReportsAdminView> with TickerProvider
       case 'financial':
         return AppTheme.greenStandard;
       case 'membership':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'event':
         return AppTheme.orangeStandard;
       case 'custom':
-        return Colors.indigo;
+        return AppTheme.secondaryColor;
       default:
         return AppTheme.grey500;
     }

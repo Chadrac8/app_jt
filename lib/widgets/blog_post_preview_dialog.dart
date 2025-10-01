@@ -21,7 +21,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
           children: [
             // En-tête
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: const BorderRadius.vertical(
@@ -34,7 +34,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                     Icons.preview,
                     color: AppTheme.white100,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Aperçu de l\'article',
@@ -55,7 +55,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
             // Contenu de l'aperçu
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -82,7 +82,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                     ],
                     
                     // Titre
@@ -94,17 +94,17 @@ class BlogPostPreviewDialog extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Métadonnées
                     BlogPostMetadata(post: post),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Excerpt
                     if (post.excerpt.isNotEmpty) ...[
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           color: AppTheme.grey100,
                           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -119,7 +119,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                     ],
                     
                     // Contenu
@@ -130,17 +130,17 @@ class BlogPostPreviewDialog extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Images additionnelles
                     if (post.imageUrls.isNotEmpty) ...[
                       const Divider(),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Images additionnelles',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -170,13 +170,13 @@ class BlogPostPreviewDialog extends StatelessWidget {
                           );
                         },
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                     ],
                     
                     // Catégories et tags
                     if (post.categories.isNotEmpty || post.tags.isNotEmpty) ...[
                       const Divider(),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       // Catégories
                       if (post.categories.isNotEmpty) ...[
@@ -186,7 +186,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -197,7 +197,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                             labelStyle: TextStyle(color: Theme.of(context).primaryColor),
                           )).toList(),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                       ],
                       
                       // Tags
@@ -208,7 +208,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -221,11 +221,11 @@ class BlogPostPreviewDialog extends StatelessWidget {
                       ],
                     ],
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Informations de statut
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: BoxDecoration(
                         color: _getStatusColor().withOpacity(0.1),
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -241,7 +241,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                                 color: _getStatusColor(),
                                 size: 20,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(
                                 'Statut: ${post.status.displayName}',
                                 style: TextStyle(
@@ -253,17 +253,17 @@ class BlogPostPreviewDialog extends StatelessWidget {
                           ),
                           
                           if (post.status == BlogPostStatus.scheduled && post.scheduledAt != null) ...[
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               'Programmé pour le ${_formatDate(post.scheduledAt!)}',
                               style: TextStyle(
                                 color: _getStatusColor(),
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                               ),
                             ),
                           ],
                           
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           
                           Row(
                             children: [
@@ -278,29 +278,29 @@ class BlogPostPreviewDialog extends StatelessWidget {
                                     'Commentaires autorisés',
                                     style: TextStyle(
                                       color: AppTheme.greenStandard,
-                                      fontSize: 12,
+                                      fontSize: AppTheme.fontSize12,
                                     ),
                                   ),
                                 ),
                               
                               if (post.isFeatured) ...[
-                                if (post.allowComments) const SizedBox(width: 8),
+                                if (post.allowComments) const SizedBox(width: AppTheme.spaceSmall),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: Colors.amber.withOpacity(0.1),
+                                    color: AppTheme.warningColor.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                   ),
                                   child: const Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(Icons.star, size: 12, color: Colors.amber),
-                                      SizedBox(width: 4),
+                                      Icon(Icons.star, size: 12, color: AppTheme.warningColor),
+                                      SizedBox(width: AppTheme.spaceXSmall),
                                       Text(
                                         'En vedette',
                                         style: TextStyle(
-                                          color: Colors.amber,
-                                          fontSize: 12,
+                                          color: AppTheme.warningColor,
+                                          fontSize: AppTheme.fontSize12,
                                         ),
                                       ),
                                     ],

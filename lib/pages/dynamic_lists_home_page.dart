@@ -133,7 +133,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
       title: Text(
         'Listes Dynamiques',
         style: GoogleFonts.poppins(
-          fontSize: 20,
+          fontSize: AppTheme.fontSize20,
           fontWeight: AppTheme.fontSemiBold,
           color: AppTheme.white100,
         ),
@@ -189,7 +189,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
 
   Widget _buildSearchBar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         children: [
           Expanded(
@@ -219,7 +219,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
               style: const TextStyle(color: AppTheme.white100),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
@@ -289,7 +289,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
     return RefreshIndicator(
       onRefresh: _loadLists,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: lists.length,
         itemBuilder: (context, index) {
           return _buildListCard(lists[index]);
@@ -308,15 +308,15 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
             size: 80,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             message,
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _createNewList,
             icon: const Icon(Icons.add),
@@ -346,7 +346,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
           list.name,
           style: GoogleFonts.poppins(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
           ),
         ),
         subtitle: Column(
@@ -357,31 +357,31 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.grey600,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Icon(Icons.category, size: 14, color: AppTheme.grey500),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   list.category,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.grey500,
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 if (list.lastUsed != null) ...[
                   Icon(Icons.access_time, size: 14, color: AppTheme.grey500),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'Utilisée ${_formatLastUsed(list.lastUsed!)}',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey500,
                     ),
                   ),
@@ -394,7 +394,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
           mainAxisSize: MainAxisSize.min,
           children: [
             if (list.isFavorite)
-              Icon(Icons.star, color: Colors.amber, size: 20),
+              Icon(Icons.star, color: AppTheme.warningColor, size: 20),
             if (list.isPublic)
               Icon(Icons.public, color: AppTheme.greenStandard, size: 20),
             if (list.sharedWith.isNotEmpty)
@@ -510,7 +510,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: _selectedCategory,
               onChanged: (value) => setState(() => _selectedCategory = value!),
@@ -619,13 +619,13 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
                 'Les listes dynamiques vous permettent de créer des vues personnalisées de vos données.',
                 style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('• Créez des listes sur mesure à partir de vos modules'),
               Text('• Appliquez des filtres et des tris'),
               Text('• Partagez vos listes avec d\'autres utilisateurs'),
               Text('• Utilisez des templates prédéfinis'),
               Text('• Exportez vos données'),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Pour commencer, cliquez sur le bouton + ou choisissez un template.',
                 style: TextStyle(fontStyle: FontStyle.italic),

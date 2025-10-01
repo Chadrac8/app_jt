@@ -57,7 +57,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                   Icons.playlist_add_check,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text('Démarrer un suivi'),
               ],
             ),
@@ -70,7 +70,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                     color: const Color(0xB3000000), // 70% opacity black
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 
                 // Option : Utiliser un workflow existant
                 if (workflows.isNotEmpty)
@@ -84,7 +84,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
@@ -102,7 +102,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
@@ -162,7 +162,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                 Icons.list_alt,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               const Text('Choisir un workflow'),
             ],
           ),
@@ -177,7 +177,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                     color: const Color(0xB3000000), // 70% opacity black
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: workflows.length,
@@ -193,7 +193,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                           ),
                         ),
                         leading: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(AppTheme.spaceSmall),
                           decoration: BoxDecoration(
                             color: Color(int.parse(workflow.color.replaceFirst('#', '0xFF'))).withAlpha(25), // 10% opacity
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -214,7 +214,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(workflow.description),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: AppTheme.spaceXSmall),
                             Row(
                               children: [
                                 Container(
@@ -231,7 +231,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppTheme.spaceSmall),
                                 Text(
                                   '${workflow.steps.length} étape(s)',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -269,7 +269,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
             content: Row(
               children: [
                 const Icon(Icons.check_circle, color: AppTheme.white100),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text('Workflow "${selectedWorkflow.name}" démarré'),
                 ),
@@ -303,7 +303,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
             content: const Row(
               children: [
                 Icon(Icons.check_circle, color: AppTheme.white100),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text('Nouveau workflow créé et assigné avec succès'),
                 ),
@@ -350,7 +350,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -390,7 +390,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Workflows list
             Expanded(
@@ -411,7 +411,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                             size: 64,
                             color: Theme.of(context).colorScheme.error,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           Text(
                             'Erreur de chargement',
                             style: Theme.of(context).textTheme.titleMedium,
@@ -454,7 +454,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(AppTheme.spaceXLarge),
             decoration: BoxDecoration(
               color: const Color(0x1A388E3C), // 10% opacity of secondary (#388E3C)
               shape: BoxShape.circle,
@@ -465,7 +465,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Aucun suivi en cours',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -473,7 +473,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Commencez un nouveau suivi pour accompagner cette personne',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -481,7 +481,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -498,7 +498,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               OutlinedButton.icon(
                 onPressed: () => _createNewWorkflow(),
                 icon: const Icon(Icons.add_task),
@@ -555,7 +555,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
             children: [
               // Header
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: Color(int.parse(workflow.color.replaceFirst('#', '0xFF'))).withAlpha(25), // 10% opacity
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
@@ -563,7 +563,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(AppTheme.spaceSmall),
                       decoration: BoxDecoration(
                         color: Color(int.parse(workflow.color.replaceFirst('#', '0xFF'))),
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -574,7 +574,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                         size: 20,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -585,7 +585,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                               fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Row(
                             children: [
                               Container(
@@ -602,7 +602,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
@@ -628,7 +628,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
               
               // Progress and details
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   children: [
                     // Progress bar
@@ -653,7 +653,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppTheme.spaceSmall),
                               LinearProgressIndicator(
                                 value: progress,
                                 backgroundColor: const Color(0x33000000), // 20% opacity black
@@ -664,7 +664,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                             ],
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppTheme.spaceMedium),
                         Text(
                           '${(progress * 100).round()}%',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -675,7 +675,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Dates and actions
                     Row(
@@ -715,7 +715,7 @@ class _WorkflowTrackerState extends State<WorkflowTracker>
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             ElevatedButton.icon(
                               onPressed: () => _openWorkflowDetails(personWorkflow, workflow),
                               icon: const Icon(Icons.visibility, size: 16),

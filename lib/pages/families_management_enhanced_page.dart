@@ -295,7 +295,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                       .toList(),
                   onChanged: (value) => setDialogState(() => _selectedFamilyType = value!),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // City filter
                 DropdownButtonFormField<String>(
@@ -306,7 +306,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                       .toList(),
                   onChanged: (value) => setDialogState(() => _selectedCity = value!),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Family size range
                 Text('Taille de famille: $_minFamilySize - $_maxFamilySize'),
@@ -378,15 +378,15 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
               _buildStatCard('Total membres', _statistics['totalMembers']?.toString() ?? '0'),
               _buildStatCard('Taille moyenne', _statistics['averageFamilySize']?.toStringAsFixed(1) ?? '0'),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Text('Distribution par type:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ..._buildDistributionList(_statistics['familyTypeDistribution']),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Text('Distribution par taille:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ..._buildDistributionList(_statistics['sizeDistribution']),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Text('Top 5 villes:', style: TextStyle(fontWeight: AppTheme.fontBold)),
               ..._buildTopCities(_statistics['locationDistribution']),
             ],
@@ -582,7 +582,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
         children: [
           // Search bar
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
@@ -675,7 +675,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                               size: 64,
                               color: AppTheme.grey400,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppTheme.spaceMedium),
                             Text(
                               'Aucune famille trouvée',
                               style: Theme.of(context).textTheme.titleMedium,
@@ -687,14 +687,14 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                         onRefresh: _loadFamilies,
                         child: ListView.separated(
                           controller: _scrollController,
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(AppTheme.spaceMedium),
                           itemCount: _filteredFamilies.length + (_isLoadingMore ? 1 : 0),
-                          separatorBuilder: (context, index) => const SizedBox(height: 8),
+                          separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceSmall),
                           itemBuilder: (context, index) {
                             if (index >= _filteredFamilies.length) {
                               return const Center(
                                 child: Padding(
-                                  padding: EdgeInsets.all(16),
+                                  padding: EdgeInsets.all(AppTheme.spaceMedium),
                                   child: CircularProgressIndicator(),
                                 ),
                               );
@@ -748,7 +748,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
           _toggleFamilySelection(familyId);
         },
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             children: [
               // Selection checkbox
@@ -767,7 +767,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                 ),
               ),
               
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               
               // Family info
               Expanded(
@@ -796,7 +796,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                         child: Row(
                           children: [
                             Icon(Icons.location_on, size: 16, color: AppTheme.grey600),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               '${address['city']}${address['region'] != null ? ', ${address['region']}' : ''}',
                               style: Theme.of(context).textTheme.bodySmall,
@@ -811,7 +811,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                         child: Row(
                           children: [
                             Icon(Icons.phone, size: 16, color: AppTheme.grey600),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               family['phone'] as String,
                               style: Theme.of(context).textTheme.bodySmall,
@@ -825,7 +825,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                       child: Row(
                         children: [
                           Icon(Icons.people, size: 16, color: AppTheme.grey600),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppTheme.spaceXSmall),
                           Text(
                             '$memberCount membre(s)',
                             style: Theme.of(context).textTheme.bodySmall,

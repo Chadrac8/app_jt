@@ -52,7 +52,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
       case PrayerType.testimony:
         return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
-        return Colors.purple;
+        return AppTheme.primaryColor;
     }
   }
 
@@ -163,7 +163,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
           if (_isLoading)
             const Center(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppTheme.spaceMedium),
                 child: SizedBox(
                   width: 20,
                   height: 20,
@@ -187,23 +187,23 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           children: [
             // Sélection du type de prière
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Type de prière',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -239,7 +239,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                       ? _getTypeColor(type)
                                       : AppTheme.grey500,
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppTheme.spaceSmall),
                                 Text(
                                   type.label,
                                   style: TextStyle(
@@ -261,12 +261,12 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Titre
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: TextFormField(
                   controller: _titleController,
                   decoration: const InputDecoration(
@@ -288,12 +288,12 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Contenu
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: TextFormField(
                   controller: _contentController,
                   decoration: const InputDecoration(
@@ -317,23 +317,23 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Options
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Options',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     SwitchListTile(
                       title: const Text('Publier anonymement'),
                       subtitle: const Text('Votre nom ne sera pas affiché'),
@@ -345,26 +345,26 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Aperçu
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Aperçu',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
                         color: AppTheme.grey500.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -396,12 +396,12 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                       size: 14,
                                       color: _getTypeColor(_selectedType),
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: AppTheme.spaceXSmall),
                                     Text(
                                       _selectedType.label,
                                       style: TextStyle(
                                         color: _getTypeColor(_selectedType),
-                                        fontSize: 10,
+                                        fontSize: AppTheme.fontSize10,
                                         fontWeight: AppTheme.fontSemiBold,
                                       ),
                                     ),
@@ -410,26 +410,26 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Text(
                             _titleController.text.trim().isEmpty
                                 ? 'Titre de la prière'
                                 : _titleController.text.trim(),
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               fontWeight: AppTheme.fontSemiBold,
                               color: _titleController.text.trim().isEmpty
                                   ? AppTheme.grey500
                                   : null,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             _contentController.text.trim().isEmpty
                                 ? 'Contenu de la prière...'
                                 : _contentController.text.trim(),
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: _contentController.text.trim().isEmpty
                                   ? AppTheme.grey500
                                   : AppTheme.grey700,
@@ -437,7 +437,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Row(
                             children: [
                               Icon(
@@ -447,13 +447,13 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                                 size: 12,
                                 color: AppTheme.grey500,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 _isAnonymous 
                                     ? 'Anonyme' 
                                     : (AuthService.currentUser?.displayName ?? 'Utilisateur'),
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: AppTheme.fontSize10,
                                   color: AppTheme.grey500,
                                   fontStyle: _isAnonymous 
                                       ? FontStyle.italic 
@@ -469,7 +469,7 @@ class _PrayerFormPageState extends State<PrayerFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
           ],
         ),
       ),

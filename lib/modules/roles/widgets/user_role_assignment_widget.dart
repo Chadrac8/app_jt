@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget pour l'assignation de rôles aux utilisateurs
 class UserRoleAssignmentWidget extends StatefulWidget {
@@ -46,9 +47,9 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
         case 'green': return AppTheme.greenStandard;
         case 'red': return AppTheme.redStandard;
         case 'orange': return AppTheme.orangeStandard;
-        case 'purple': return Colors.purple;
-        case 'teal': return Colors.teal;
-        case 'indigo': return Colors.indigo;
+        case 'purple': return AppTheme.primaryColor;
+        case 'teal': return AppTheme.secondaryColor;
+        case 'indigo': return AppTheme.secondaryColor;
         default: return AppTheme.blueStandard;
       }
     } catch (e) {
@@ -86,7 +87,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
 
   Widget _buildSearchAndFilters() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border(
@@ -121,7 +122,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                   : null,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(
@@ -158,7 +159,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                   },
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               FilterChip(
                 label: const Text('Inactifs'),
                 selected: _showInactiveUsers,
@@ -211,7 +212,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.people_outline, size: 64, color: AppTheme.grey500),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppTheme.spaceMedium),
                     Text('Aucun utilisateur trouvé'),
                   ],
                 ),
@@ -219,7 +220,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               itemCount: filteredUsers.length,
               itemBuilder: (context, index) {
                 final userDoc = filteredUsers[index];
@@ -305,7 +306,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(AppTheme.spaceMedium),
             child: Center(child: CircularProgressIndicator()),
           );
         }
@@ -317,7 +318,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
             final roles = provider.roles;
             
             return Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -340,10 +341,10 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   if (userRoleDocs.isEmpty)
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: BoxDecoration(
                         color: AppTheme.grey50,
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -351,7 +352,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                       child: const Row(
                         children: [
                           Icon(Icons.warning_amber, color: AppTheme.orangeStandard),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Aucun rôle assigné à cet utilisateur'),
                         ],
                       ),
@@ -492,9 +493,9 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
         case 'green': return AppTheme.greenStandard;
         case 'red': return AppTheme.redStandard;
         case 'orange': return AppTheme.orangeStandard;
-        case 'purple': return Colors.purple;
-        case 'teal': return Colors.teal;
-        case 'indigo': return Colors.indigo;
+        case 'purple': return AppTheme.primaryColor;
+        case 'teal': return AppTheme.secondaryColor;
+        case 'indigo': return AppTheme.secondaryColor;
         default: return AppTheme.blueStandard;
       }
     } catch (e) {
@@ -528,7 +529,7 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Sélectionnez un rôle à assigner à cet utilisateur :'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Consumer<PermissionProvider>(
               builder: (context, provider, child) {
                 final availableRoles = provider.roles.where((role) => role.isActive).toList();
@@ -571,7 +572,7 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
                           child: Row(
                             children: [
                               Icon(roleIcon, color: roleColor, size: 20),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -6,6 +6,7 @@ import '../services/admin_branham_sermon_service.dart';
 import '../widgets/sermon_form_dialog.dart';
 import '../widgets/admin_branham_messages_screen.dart';
 import '../widgets/admin_tab.dart';
+import '../../../theme.dart';
 
 /// Vue admin pour gérer les prédications de William Marrion Branham
 class MessageAdminView extends StatefulWidget {
@@ -201,11 +202,11 @@ class _MessageAdminViewState extends State<MessageAdminView>
               unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
               padding: const EdgeInsets.symmetric(horizontal: 16),
               labelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontSemiBold,
               ),
               unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 fontWeight: AppTheme.fontMedium,
               ),
               tabs: const [
@@ -254,7 +255,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
       children: [
         // Barre de recherche et filtres
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               // Barre de recherche
@@ -273,7 +274,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
                   _filterSermons();
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Filtres de tri
               Row(
@@ -302,7 +303,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
                       },
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   IconButton(
                     icon: Icon(
                       _sortAscending ? Icons.arrow_upward : Icons.arrow_downward,
@@ -327,7 +328,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
                   ? const Center(
                       child: Text(
                         'Aucune prédication trouvée',
-                        style: TextStyle(fontSize: 16, color: AppTheme.grey500),
+                        style: TextStyle(fontSize: AppTheme.fontSize16, color: AppTheme.grey500),
                       ),
                     )
                   : ListView.builder(
@@ -379,7 +380,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
               child: Row(
                 children: const [
                   Icon(Icons.edit),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Modifier'),
                 ],
               ),
@@ -389,7 +390,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
               child: Row(
                 children: [
                   Icon(sermon.isActive ? Icons.pause : Icons.play_arrow),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(sermon.isActive ? 'Désactiver' : 'Activer'),
                 ],
               ),
@@ -399,7 +400,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
               child: Row(
                 children: const [
                   Icon(Icons.delete, color: AppTheme.redStandard),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                 ],
               ),

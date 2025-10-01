@@ -82,7 +82,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
       children: [
         // Calendar Header
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             border: Border(
@@ -111,7 +111,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                 onPressed: _nextMonth,
                 icon: const Icon(Icons.chevron_right),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               TextButton(
                 onPressed: _goToToday,
                 child: const Text('Aujourd\'hui'),
@@ -162,7 +162,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
     final startDate = firstDayOfMonth.subtract(Duration(days: firstWeekday - 1));
 
     return GridView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
         childAspectRatio: 0.8,
@@ -196,7 +196,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         onTap: services.isNotEmpty ? () => _showDayServices(date, services) : null,
         child: Padding(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(AppTheme.spaceXSmall),
           child: Column(
             children: [
               // Date number
@@ -272,13 +272,13 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
               margin: const EdgeInsets.only(top: 12, bottom: 8),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onSurface.withAlpha(51), // 0.2 opacity
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
 
             // Header
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
                   Text(
@@ -310,7 +310,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                         width: 4,
                         decoration: BoxDecoration(
                           color: _getServiceColor(service),
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: BorderRadius.circular(AppTheme.radius2),
                         ),
                       ),
                       title: Text(
@@ -335,7 +335,7 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView> {
                           service.statusLabel,
                           style: const TextStyle(
                             color: AppTheme.white100,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),

@@ -115,12 +115,12 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
             Icons.music_off_outlined,
             size: 80,
             color: Theme.of(context).colorScheme.surface.withOpacity(0.7)),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Text(
             'Aucun chant dans cette setlist',
             style: TextStyle(
               color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontMedium)),
           const SizedBox(height: 30),
           ElevatedButton.icon(
@@ -184,12 +184,12 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                     Icons.live_tv,
                     color: Theme.of(context).colorScheme.surface,
                     size: 12),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'LIVE',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.surface,
-                      fontSize: 10,
+                      fontSize: AppTheme.fontSize10,
                       fontWeight: AppTheme.fontBold)),
                 ]))),
       ]);
@@ -222,9 +222,9 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
               icon: Icon(Icons.close, 
                 color: Theme.of(context).colorScheme.surface, size: 20),
               onPressed: () => Navigator.pop(context),
-              padding: const EdgeInsets.all(8))),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall))),
           
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           
           // Info setlist compacte
           Expanded(
@@ -236,7 +236,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                   song.title,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface,
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis),
@@ -244,7 +244,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                   '${_currentIndex + 1}/${_songs.length} • ${widget.setlist.name}',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
-                    fontSize: 11),
+                    fontSize: AppTheme.fontSize11),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis),
               ])),
@@ -267,8 +267,8 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                       _showLyrics = !_showLyrics;
                     });
                   },
-                  padding: const EdgeInsets.all(6))),
-              const SizedBox(width: 6),
+                  padding: const EdgeInsets.all(AppTheme.space6))),
+              const SizedBox(width: AppTheme.space6),
               Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface.withOpacity(_isProjecting ? 0.3 : 0.1),
@@ -279,7 +279,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                     color: Theme.of(context).colorScheme.surface,
                     size: 18),
                   onPressed: _toggleProjection,
-                  padding: const EdgeInsets.all(6))),
+                  padding: const EdgeInsets.all(AppTheme.space6))),
             ]),
         ]));
   }
@@ -288,7 +288,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
   Widget _buildMaximizedLyricsView(Song song) {
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -305,7 +305,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
           child: Text(
             song.lyrics.isEmpty ? 'Aucune parole disponible' : song.lyrics,
             style: TextStyle(
-              fontSize: 20, // Taille de police augmentée pour les conducteurs
+              fontSize: AppTheme.fontSize20, // Taille de police augmentée pour les conducteurs
               height: 1.8, // Espacement de ligne augmenté pour la lisibilité
               color: Theme.of(context).colorScheme.onSurface,
               fontWeight: AppTheme.fontRegular,
@@ -317,7 +317,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
   Widget _buildCompactSongInfo(Song song) {
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.98),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -336,31 +336,31 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
               // Informations essentielles seulement
               if (song.tonality != null && song.tonality!.isNotEmpty) ...[
                 _buildCompactInfoRow('Tonalité', song.tonality!),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               
               if (song.author != null && song.author!.isNotEmpty) ...[
                 _buildCompactInfoRow('Auteur', song.author!),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               
               if (song.tempo != null) ...[
                 _buildCompactInfoRow('Tempo', '${song.tempo} BPM'),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               
               // Aperçu des paroles optimisé
               if (song.lyrics.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Text(
                   'Aperçu des paroles:',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontSemiBold,
                     color: Theme.of(context).colorScheme.onSurface)),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -369,7 +369,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                         ? '${song.lyrics.substring(0, 300)}...'
                         : song.lyrics,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       height: 1.6,
                       color: Theme.of(context).colorScheme.onSurface))),
               ],
@@ -385,14 +385,14 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
           child: Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontSemiBold,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)))),
         Expanded(
           child: Text(
             value,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: Theme.of(context).colorScheme.onSurface))),
       ]);
   }
@@ -590,10 +590,10 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
               height: 4,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(2))),
+                borderRadius: BorderRadius.circular(AppTheme.radius2))),
             
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Text(
                 'Liste des chants',
                 style: Theme.of(context).textTheme.titleLarge)),
@@ -662,10 +662,10 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
               height: 4,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(2))),
+                borderRadius: BorderRadius.circular(AppTheme.radius2))),
             
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Text(
                 'Options du conducteur',
                 style: Theme.of(context).textTheme.titleLarge)),
@@ -692,7 +692,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                   Navigator.pop(context);
                 })),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
           ])));
   }
 }

@@ -5,6 +5,7 @@ import '../models/permission.dart';
 import '../models/user_role.dart';
 import '../services/export_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ExportOptionsDialog extends StatelessWidget {
   final List<Role> roles;
@@ -26,7 +27,7 @@ class ExportOptionsDialog extends StatelessWidget {
       title: Row(
         children: [
           Icon(Icons.file_download, color: theme.primaryColor),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           const Text('Options d\'export'),
         ],
       ),
@@ -35,9 +36,9 @@ class ExportOptionsDialog extends StatelessWidget {
         children: [
           const Text(
             'Choisissez le type de données à exporter :',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: AppTheme.fontSize16),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildExportOption(
             context,
             'Rôles',
@@ -45,7 +46,7 @@ class ExportOptionsDialog extends StatelessWidget {
             Icons.admin_panel_settings,
             () => _exportRoles(context),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildExportOption(
             context,
             'Permissions',
@@ -53,7 +54,7 @@ class ExportOptionsDialog extends StatelessWidget {
             Icons.security,
             () => _exportPermissions(context),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildExportOption(
             context,
             'Affectations',
@@ -61,7 +62,7 @@ class ExportOptionsDialog extends StatelessWidget {
             Icons.assignment_ind,
             () => _exportUserRoles(context),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildExportOption(
             context,
             'Matrice des permissions',
@@ -69,7 +70,7 @@ class ExportOptionsDialog extends StatelessWidget {
             Icons.grid_on,
             () => _exportPermissionMatrix(context),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildExportOption(
             context,
             'Rapport complet',

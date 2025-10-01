@@ -55,10 +55,10 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
           backgroundColor: color.withOpacity(0.15),
           child: Icon(icon, color: color),
         ),
-        const SizedBox(height: 8),
-        Text(value, style: TextStyle(fontWeight: AppTheme.fontBold, color: color, fontSize: 18)),
-        const SizedBox(height: 4),
-        Text(label, style: TextStyle(color: color, fontSize: 12)),
+        const SizedBox(height: AppTheme.spaceSmall),
+        Text(value, style: TextStyle(fontWeight: AppTheme.fontBold, color: color, fontSize: AppTheme.fontSize18)),
+        const SizedBox(height: AppTheme.spaceXSmall),
+        Text(label, style: TextStyle(color: color, fontSize: AppTheme.fontSize12)),
       ],
     );
   }
@@ -71,7 +71,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
     final poorMembers = memberAttendance.where((m) => m.attendanceRate < 0.5).toList();
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -81,12 +81,12 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               fontWeight: AppTheme.fontBold,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -97,9 +97,9 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text('Meilleurs membres', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           bestMembers.isEmpty
               ? Text('Aucun membre avec une assiduité ≥90%.', style: Theme.of(context).textTheme.bodyMedium)
               : Wrap(
@@ -110,9 +110,9 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                     backgroundColor: AppTheme.successColor.withOpacity(0.1),
                   )).toList(),
                 ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text('Absences consécutives', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           absents.isEmpty
               ? Text('Aucun membre avec 3 absences consécutives.', style: Theme.of(context).textTheme.bodyMedium)
               : Wrap(
@@ -123,9 +123,9 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                     backgroundColor: AppTheme.errorColor.withOpacity(0.1),
                   )).toList(),
                 ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text('Assiduité faible (<50%)', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           poorMembers.isEmpty
               ? Text('Aucun membre avec une assiduité faible.', style: Theme.of(context).textTheme.bodyMedium)
               : Wrap(
@@ -136,9 +136,9 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                     backgroundColor: AppTheme.warningColor.withOpacity(0.1),
                   )).toList(),
                 ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           Text('Évolution mensuelle', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildMonthlyTrendsChart(detailed: true),
         ],
       ),
@@ -270,12 +270,12 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               size: 64,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur lors du chargement',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _errorMessage!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -283,7 +283,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             ElevatedButton.icon(
               onPressed: _loadStatistics,
               icon: const Icon(Icons.refresh),
@@ -315,7 +315,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
     final stats = _statistics!;
     
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -330,7 +330,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                   _groupColor,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: _buildStatCard(
                   'Réunions',
@@ -341,7 +341,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Row(
             children: [
               Expanded(
@@ -352,7 +352,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                   AppTheme.successColor,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: _buildStatCard(
                   'Total membres',
@@ -364,12 +364,12 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
             ],
           ),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           
           // Attendance distribution chart
           _buildAttendanceDistributionChart(),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           
           // Monthly trends
           _buildMonthlyTrendsChart(),
@@ -390,7 +390,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               size: 48,
               color: AppTheme.redStandard,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun membre ou aucune donnée d’assiduité disponible pour ce groupe.',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -398,7 +398,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Vérifiez que des membres sont bien ajoutés et que des réunions ont été enregistrées.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -420,7 +420,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
   // Move widget-building methods inside the class
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -446,7 +446,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -486,7 +486,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -496,7 +496,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             SizedBox(
               height: 200,
               child: PieChart(
@@ -516,7 +516,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                       color: colors[index],
                       radius: 60,
                       titleStyle: const TextStyle(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.white100,
                       ),
@@ -527,7 +527,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Wrap(
               spacing: 16,
               runSpacing: 8,
@@ -551,7 +551,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppTheme.space6),
                     Text(
                       '${entry.key}: ${entry.value}',
                       style: Theme.of(context).textTheme.bodySmall,
@@ -571,7 +571,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -581,7 +581,7 @@ class _GroupAttendanceStatsPageState extends State<GroupAttendanceStatsPage> wit
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             SizedBox(
               height: detailed ? 300 : 200,
               child: LineChart(

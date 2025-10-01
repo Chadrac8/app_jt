@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import '../views/reading_plans_home_page.dart';
+import '../../../theme.dart';
 
 class ReadingPlanHomeWidget extends StatefulWidget {
   const ReadingPlanHomeWidget({Key? key}) : super(key: key);
@@ -73,12 +74,12 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withOpacity(0.13),
                 borderRadius: BorderRadius.circular(18)),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               child: const SizedBox(
                 width: 32,
                 height: 32,
                 child: CircularProgressIndicator(strokeWidth: 2))),
-            const SizedBox(width: 18),
+            const SizedBox(width: AppTheme.space18),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +90,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                     decoration: BoxDecoration(
                       color: theme.colorScheme.onSurface.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall))),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Container(
                     height: 12,
                     width: 200,
@@ -122,26 +123,26 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.13),
                   borderRadius: BorderRadius.circular(18)),
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 child: Icon(Icons.flag, color: theme.colorScheme.primary, size: 32)),
-              const SizedBox(width: 18),
+              const SizedBox(width: AppTheme.space18),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Plans de lecture',
-                      style: GoogleFonts.inter(fontWeight: AppTheme.fontBold, fontSize: 18)),
-                    const SizedBox(height: 4),
+                      style: GoogleFonts.inter(fontWeight: AppTheme.fontBold, fontSize: AppTheme.fontSize18)),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Découvre des plans pour lire la Bible chaque jour.',
-                      style: GoogleFonts.inter(fontSize: 14, color: theme.colorScheme.secondary)),
+                      style: GoogleFonts.inter(fontSize: AppTheme.fontSize14, color: theme.colorScheme.secondary)),
                   ])),
               Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 child: const Icon(Icons.chevron_right, size: 24)),
             ]))));
   }
@@ -165,7 +166,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
               builder: (context) => const ReadingPlansHomePage())).then((_) => _loadActivePlan());
         },
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -182,12 +183,12 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight),
                       borderRadius: BorderRadius.circular(18)),
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     child: Icon(
                       Icons.menu_book,
                       color: theme.colorScheme.primary,
                       size: 32)),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,17 +197,17 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                           _activePlan!.name,
                           style: GoogleFonts.inter(
                             fontWeight: AppTheme.fontBold,
-                            fontSize: 18)),
-                        const SizedBox(height: 4),
+                            fontSize: AppTheme.fontSize18)),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Row(
                           children: [
                             Text(
                               'Jour $currentDay/${_activePlan!.totalDays}',
                               style: GoogleFonts.inter(
-                                fontSize: 14,
+                                fontSize: AppTheme.fontSize14,
                                 color: theme.colorScheme.primary,
                                 fontWeight: AppTheme.fontSemiBold)),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             if (isUpToDate)
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -218,7 +219,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                                 child: Text(
                                   '✓',
                                   style: GoogleFonts.inter(
-                                    fontSize: 12,
+                                    fontSize: AppTheme.fontSize12,
                                     color: AppTheme.successColor,
                                     fontWeight: AppTheme.fontBold))),
                           ]),
@@ -227,11 +228,11 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     child: const Icon(Icons.chevron_right, size: 24)),
                 ]),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Barre de progression
               Row(
@@ -252,16 +253,16 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                                 theme.colorScheme.secondary,
                               ]),
                             borderRadius: BorderRadius.circular(3)))))),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Text(
                     '${(progressPercentage * 100).toInt()}%',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontSemiBold,
                       color: theme.colorScheme.primary)),
                 ]),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Lecture du jour
               if (_activePlan!.days.isNotEmpty && currentDay <= _activePlan!.days.length)
@@ -277,7 +278,7 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
     final isCompleted = _progress!.completedDays.contains(currentDay);
     
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: isCompleted 
             ? AppTheme.successColor.withOpacity(0.1)
@@ -298,27 +299,27 @@ class _ReadingPlanHomeWidgetState extends State<ReadingPlanHomeWidget> {
                 color: isCompleted 
                     ? AppTheme.successColor 
                     : theme.colorScheme.primary),
-              const SizedBox(width: 6),
+              const SizedBox(width: AppTheme.space6),
               Text(
                 isCompleted ? 'Lecture terminée' : 'Lecture du jour',
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   fontWeight: AppTheme.fontSemiBold,
                   color: isCompleted 
                       ? AppTheme.successColor
                       : theme.colorScheme.primary)),
             ]),
-          const SizedBox(height: 6),
+          const SizedBox(height: AppTheme.space6),
           Text(
             todayReading.title,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontMedium)),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             todayReading.readings.map((r) => r.displayText).join(' • '),
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: theme.colorScheme.onSurface.withOpacity(0.7)),
             maxLines: 1,
             overflow: TextOverflow.ellipsis),

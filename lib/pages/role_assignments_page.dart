@@ -237,7 +237,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
 
   Widget _buildSearchBar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         boxShadow: [
@@ -267,7 +267,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
 
   Widget _buildRoleSelector() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor.withOpacity(0.1),
         border: Border(
@@ -283,7 +283,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
               fontWeight: AppTheme.fontMedium,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           StreamBuilder<List<RoleModel>>(
             stream: RolesFirebaseService.getRolesStream(activeOnly: true),
             builder: (context, snapshot) {
@@ -354,7 +354,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: persons.length,
           itemBuilder: (context, index) {
             final person = persons[index];
@@ -403,7 +403,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                       return Chip(
                         label: Text(
                           role.name,
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(fontSize: AppTheme.fontSize12),
                         ),
                         backgroundColor: roleColor.withOpacity(0.1),
                         side: BorderSide(color: roleColor.withOpacity(0.3)),
@@ -450,7 +450,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: roles.length,
           itemBuilder: (context, index) {
             final role = roles[index];
@@ -494,7 +494,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(AppTheme.spaceMedium),
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
@@ -503,7 +503,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
 
               if (persons.isEmpty) {
                 return const Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(AppTheme.spaceMedium),
                   child: Text('Aucune personne avec ce rôle'),
                 );
               }
@@ -517,7 +517,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                       radius: 16,
                       child: Text(
                         person.displayInitials,
-                        style: const TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: AppTheme.fontSize12),
                       ),
                     ),
                     title: Text(person.fullName),

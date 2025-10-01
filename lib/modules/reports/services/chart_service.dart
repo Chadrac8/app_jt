@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/report.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Service pour générer des graphiques à partir des données de rapport
 class ChartService {
@@ -31,7 +32,7 @@ class ChartService {
             toY: value,
             color: primaryColor ?? AppTheme.blueStandard,
             width: 20,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             backDrawRodData: BackgroundBarChartRodData(
               show: true,
               color: AppTheme.grey500.withOpacity(0.1),
@@ -44,7 +45,7 @@ class ChartService {
     
     return Container(
       height: 300,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: BarChart(
         BarChartData(
           maxY: _getMaxValue(chartData) * 1.2,
@@ -62,7 +63,7 @@ class ChartService {
                       angle: -0.5,
                       child: Text(
                         _truncateLabel(label),
-                        style: const TextStyle(fontSize: 10),
+                        style: const TextStyle(fontSize: AppTheme.fontSize10),
                       ),
                     );
                   }
@@ -77,7 +78,7 @@ class ChartService {
                 getTitlesWidget: (value, meta) {
                   return Text(
                     _formatValue(value),
-                    style: const TextStyle(fontSize: 10),
+                    style: const TextStyle(fontSize: AppTheme.fontSize10),
                   );
                 },
               ),
@@ -127,7 +128,7 @@ class ChartService {
     
     return Container(
       height: 300,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: LineChart(
         LineChartData(
           minY: 0,
@@ -166,7 +167,7 @@ class ChartService {
                       angle: -0.5,
                       child: Text(
                         _truncateLabel(label),
-                        style: const TextStyle(fontSize: 10),
+                        style: const TextStyle(fontSize: AppTheme.fontSize10),
                       ),
                     );
                   }
@@ -181,7 +182,7 @@ class ChartService {
                 getTitlesWidget: (value, meta) {
                   return Text(
                     _formatValue(value),
-                    style: const TextStyle(fontSize: 10),
+                    style: const TextStyle(fontSize: AppTheme.fontSize10),
                   );
                 },
               ),
@@ -239,7 +240,7 @@ class ChartService {
         title: showPercentage ? '${percentage.toStringAsFixed(1)}%' : '',
         radius: 60,
         titleStyle: const TextStyle(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontBold,
           color: AppTheme.white100,
         ),
@@ -248,7 +249,7 @@ class ChartService {
     
     return Container(
       height: 300,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         children: [
           Expanded(
@@ -262,7 +263,7 @@ class ChartService {
             ),
           ),
           if (showLabels) ...[
-            const SizedBox(width: 20),
+            const SizedBox(width: AppTheme.space20),
             Expanded(
               flex: 1,
               child: Column(
@@ -283,11 +284,11 @@ class ChartService {
                           height: 12,
                           color: colors[index % colors.length],
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Expanded(
                           child: Text(
                             '${data['label']} (${percentage.toStringAsFixed(1)}%)',
-                            style: const TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: AppTheme.fontSize12),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -318,7 +319,7 @@ class ChartService {
     final displayRows = reportData.rows.take(maxRows).toList();
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -328,7 +329,7 @@ class ChartService {
               child: Text(
                 'Affichage des ${maxRows} premiers éléments sur ${reportData.rows.length}',
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.grey500,
                   fontStyle: FontStyle.italic,
                 ),
@@ -453,13 +454,13 @@ class ChartService {
       AppTheme.blueStandard,
       AppTheme.greenStandard,
       AppTheme.orangeStandard,
-      Colors.purple,
+      AppTheme.primaryColor,
       AppTheme.redStandard,
-      Colors.teal,
-      Colors.indigo,
+      AppTheme.secondaryColor,
+      AppTheme.secondaryColor,
       AppTheme.pinkStandard,
-      Colors.cyan,
-      Colors.amber,
+      AppTheme.infoColor,
+      AppTheme.warningColor,
     ];
     
     final colors = <Color>[];

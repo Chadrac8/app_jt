@@ -187,7 +187,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text('Chargement du dashboard...'),
           ],
         ),
@@ -204,13 +204,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
               size: 64,
               color: AppTheme.grey300,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _errorMessage!,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: AppTheme.fontSize16),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: _initializeDashboard,
               child: const Text('Réessayer'),
@@ -233,12 +233,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                   size: 64,
                   color: AppTheme.grey300,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur: ${snapshot.error}',
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: _initializeDashboard,
                   child: const Text('Réessayer'),
@@ -278,14 +278,14 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             size: 80,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun widget configuré',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Configurez votre dashboard pour afficher les statistiques importantes',
             textAlign: TextAlign.center,
@@ -293,7 +293,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
               color: AppTheme.grey500,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _navigateToConfiguration,
             icon: const Icon(Icons.settings),
@@ -309,7 +309,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: SizedBox(
             height: constraints.maxHeight,
             child: StaggeredGridView.countBuilder(
@@ -398,7 +398,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
       default:
         return Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Center(
               child: Text('Widget non supporté: ${widget.type}'),
             ),
@@ -410,12 +410,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   Widget _buildLoadingWidget(String title) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircularProgressIndicator(),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               title,
               style: Theme.of(context).textTheme.bodyMedium,

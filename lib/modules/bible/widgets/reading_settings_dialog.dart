@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ReadingSettingsDialog extends StatefulWidget {
   final double fontSize;
@@ -83,19 +84,19 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
             width: 40,
             decoration: BoxDecoration(
               color: AppTheme.grey300,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(AppTheme.radius2),
             ),
           ),
           
           // En-tête
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Text(
                   'Paramètres de lecture',
                   style: GoogleFonts.inter(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
@@ -119,22 +120,22 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                   // Aperçu du texte
                   _buildPreviewSection(),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Paramètres de texte
                   _buildTextSettings(),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Paramètres d'affichage
                   _buildDisplaySettings(),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Paramètres de navigation
                   _buildNavigationSettings(),
                   
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppTheme.spaceXLarge),
                 ],
               ),
             ),
@@ -151,14 +152,14 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
         Text(
           'Aperçu',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: _isDarkMode ? const Color(0xFF121212) : AppTheme.grey50,
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -200,12 +201,12 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
         Text(
           'Paramètres du texte',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Taille de police
         _buildSliderSetting(
@@ -222,7 +223,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           },
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Hauteur de ligne
         _buildSliderSetting(
@@ -239,7 +240,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           },
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Police
         _buildFontFamilySetting(),
@@ -254,12 +255,12 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
         Text(
           'Affichage',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Mode sombre
         _buildSwitchSetting(
@@ -275,7 +276,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           },
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Numéros de versets
         _buildSwitchSetting(
@@ -291,7 +292,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
           },
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Un verset par ligne
         _buildSwitchSetting(
@@ -317,12 +318,12 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
         Text(
           'Navigation',
           style: GoogleFonts.inter(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Boutons de navigation
         _buildSwitchSetting(
@@ -339,7 +340,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
         ),
         
         if (_versePerLine) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Espacement des paragraphes
           _buildSliderSetting(
@@ -377,7 +378,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontMedium,
                 color: AppTheme.black100.withOpacity(0.87),
               ),
@@ -391,7 +392,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
               child: Text(
                 displayValue,
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.primaryColor,
                 ),
@@ -399,7 +400,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
             activeTrackColor: AppTheme.primaryColor,
@@ -426,7 +427,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
     Function(bool) onChanged,
   ) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -435,7 +436,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -446,7 +447,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
               size: 20,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -454,7 +455,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                 Text(
                   title,
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontMedium,
                     color: AppTheme.black100.withOpacity(0.87),
                   ),
@@ -462,7 +463,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                 Text(
                   subtitle,
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.grey600,
                   ),
                 ),
@@ -494,12 +495,12 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
         Text(
           'Police de caractères',
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.black100.withOpacity(0.87),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -528,7 +529,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> {
                 child: Text(
                   font['name']!,
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                     color: isSelected ? AppTheme.white100 : AppTheme.black100.withOpacity(0.87),
                   ),

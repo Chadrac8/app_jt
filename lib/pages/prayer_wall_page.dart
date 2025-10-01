@@ -30,14 +30,14 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: AppTheme.surfaceColor),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildForm(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildRecentPrayers(),
           ])));
   }
@@ -48,7 +48,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -64,19 +64,19 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
               Icons.favorite,
               size: 48,
               color: AppTheme.primaryColor),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Partagez vos demandes de prière',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Notre communauté prie pour vous. Partagez vos besoins et soyez béni.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.textSecondaryColor)),
           ])));
   }
@@ -86,7 +86,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -95,10 +95,10 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
               Text(
                 'Nouvelle demande de prière',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor)),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Case anonyme
               CheckboxListTile(
@@ -116,7 +116,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                 },
                 activeColor: AppTheme.primaryColor),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Nom (si pas anonyme)
               if (!_isAnonymous) ...[
@@ -134,7 +134,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                     }
                     return null;
                   }),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
               ],
               
               // Demande de prière
@@ -154,7 +154,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                   return null;
                 }),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Bouton d'envoi
               SizedBox(
@@ -177,7 +177,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                       : const Text(
                           'Partager ma demande',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontSemiBold)))),
             ])),
       ),
@@ -189,17 +189,17 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Prières récentes',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Exemple de prières (normalement chargées depuis Firestore)
             _buildPrayerItem(
@@ -242,7 +242,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                   style: TextStyle(
                     color: AppTheme.primaryColor,
                     fontWeight: AppTheme.fontBold))),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +255,7 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                     Text(
                       time,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.textSecondaryColor)),
                   ])),
               Container(
@@ -270,20 +270,20 @@ class _PrayerWallPageState extends State<PrayerWallPage> {
                       Icons.favorite,
                       size: 14,
                       color: AppTheme.primaryColor),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       '$prayerCount',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.primaryColor)),
                   ])),
             ]),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             request,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textPrimaryColor)),
         ]));
   }

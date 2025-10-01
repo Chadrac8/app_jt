@@ -4,6 +4,7 @@ import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../services/advanced_roles_permissions_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget avancé pour la gestion des permissions et assignations en masse
 class BulkPermissionManagementWidget extends StatefulWidget {
@@ -94,7 +95,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               child: Row(
                 children: [
                   Icon(Icons.analytics),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Rapport d\'analyse'),
                 ],
               ),
@@ -104,7 +105,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               child: Row(
                 children: [
                   Icon(Icons.cleaning_services),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Nettoyage automatique'),
                 ],
               ),
@@ -114,7 +115,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               child: Row(
                 children: [
                   Icon(Icons.history),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Journal d\'audit'),
                 ],
               ),
@@ -144,9 +145,9 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
 
   Widget _buildFilterSection() {
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -156,7 +157,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             Row(
               children: [
@@ -177,7 +178,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                   ),
                 ),
                 
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 
                 // Filtre par module
                 Expanded(
@@ -207,7 +208,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                   ),
                 ),
                 
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 
                 // Filtre par niveau de permission
                 Expanded(
@@ -239,7 +240,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               ],
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             Row(
               children: [
@@ -252,7 +253,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                     });
                   },
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 ActionChip(
                   label: const Text('Réinitialiser filtres'),
                   avatar: const Icon(Icons.clear, size: 16),
@@ -279,9 +280,9 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
           children: [
             // Section de sélection des rôles
             Card(
-              margin: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -291,7 +292,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     
                     Wrap(
                       spacing: 8,
@@ -348,9 +349,9 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
         return Column(
           children: [
             Card(
-              margin: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -360,7 +361,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     
                     // Options de révocation
                     Row(
@@ -372,7 +373,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                             label: const Text('Révoquer les rôles expirés'),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: OutlinedButton.icon(
                             onPressed: _revokeInactiveRoles,
@@ -383,7 +384,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                       ],
                     ),
                     
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     
                     Row(
                       children: [
@@ -394,7 +395,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                             label: const Text('Révocation sélective'),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: OutlinedButton.icon(
                             onPressed: _showRoleTransferDialog,
@@ -418,19 +419,19 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
 
   Widget _buildAnalyticsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Statistiques générales
           _buildStatsOverview(),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Graphiques et analyses
           _buildPermissionAnalysis(),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Recommandations
           _buildRecommendations(),
@@ -443,7 +444,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -453,7 +454,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Barre de recherche d'utilisateurs
             TextField(
@@ -465,7 +466,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               onChanged: _searchUsers,
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Liste des utilisateurs sélectionnés
             if (_selectedUsers.isNotEmpty) ...[
@@ -475,7 +476,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                   fontWeight: AppTheme.fontMedium,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 8,
                 runSpacing: 4,
@@ -492,16 +493,16 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               ),
             ] else ...[
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppTheme.spaceLarge),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[300]!),
-                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppTheme.grey300!),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: const Center(
                   child: Text(
                     'Aucun utilisateur sélectionné\nUtilisez la barre de recherche pour trouver des utilisateurs',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: AppTheme.grey500),
                   ),
                 ),
               ),
@@ -514,9 +515,9 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
 
   Widget _buildBulkAssignmentActions() {
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -526,7 +527,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             Row(
               children: [
@@ -546,7 +547,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: _previewBulkAssignment,
@@ -567,7 +568,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
       builder: (context, provider, child) {
         return Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -577,7 +578,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 Row(
                   children: [
@@ -589,7 +590,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                         AppTheme.blueStandard,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: _buildStatCard(
                         'Permissions',
@@ -598,7 +599,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                         AppTheme.greenStandard,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: _buildStatCard(
                         'Assignations',
@@ -607,7 +608,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                         AppTheme.orangeStandard,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Expanded(
                       child: _buildStatCard(
                         'Modules',
@@ -628,20 +629,20 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
         children: [
           Icon(icon, color: color, size: 32),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
@@ -649,8 +650,8 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
           Text(
             title,
             style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
+              fontSize: AppTheme.fontSize12,
+              color: AppTheme.grey600,
             ),
             textAlign: TextAlign.center,
           ),
@@ -662,7 +663,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
   Widget _buildPermissionAnalysis() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -672,7 +673,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             const Text(
               'Graphiques et analyses détaillées à implémenter',
@@ -689,7 +690,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
   Widget _buildRecommendations() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -699,7 +700,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             _buildRecommendationItem(
               'Rôles inutilisés',
@@ -748,9 +749,9 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
 
   Widget _buildRevocationHistory() {
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -760,7 +761,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             const Text(
               'Historique des révocations récentes à implémenter',
@@ -912,7 +913,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               Text('Rôles à assigner: ${_selectedRoles.length}'),
               Text('Utilisateurs concernés: ${_selectedUsers.length}'),
               Text('Total d\'assignations: ${_selectedRoles.length * _selectedUsers.length}'),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Text(
                 'Cette action créera de nouvelles assignations de rôles. '
                 'Voulez-vous continuer ?',

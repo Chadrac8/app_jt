@@ -118,18 +118,18 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           children: [
             _buildBasicInfoSection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildAddressSection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildContactSection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildMembersSection(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildAdditionalInfoSection(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
           ],
         ),
       ),
@@ -139,7 +139,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
   Widget _buildBasicInfoSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -150,7 +150,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(
@@ -165,7 +165,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<FamilyStatus>(
               value: _selectedStatus,
               decoration: const InputDecoration(
@@ -194,7 +194,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
   Widget _buildAddressSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -205,7 +205,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _addressController,
               decoration: const InputDecoration(
@@ -214,7 +214,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -227,7 +227,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: TextFormField(
                     controller: _stateController,
@@ -239,7 +239,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -251,7 +251,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: TextFormField(
                     controller: _countryController,
@@ -272,7 +272,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
   Widget _buildContactSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -283,7 +283,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _homePhoneController,
               decoration: const InputDecoration(
@@ -293,7 +293,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
               ),
               keyboardType: TextInputType.phone,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _emergencyContactController,
               decoration: const InputDecoration(
@@ -302,7 +302,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _emergencyPhoneController,
               decoration: const InputDecoration(
@@ -321,7 +321,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
   Widget _buildMembersSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -342,7 +342,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_selectedMembers.isNotEmpty) ...[
               ListView.separated(
                 shrinkWrap: true,
@@ -385,7 +385,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
               ),
             ] else ...[
               Container(
-                padding: const EdgeInsets.all(32),
+                padding: const EdgeInsets.all(AppTheme.spaceXLarge),
                 child: Column(
                   children: [
                     Icon(
@@ -393,12 +393,12 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                       size: 48,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Text(
                       'Aucun membre ajouté',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Ajoutez des personnes à cette famille',
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -416,7 +416,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
   Widget _buildAdditionalInfoSection() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -427,7 +427,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
                     color: AppTheme.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _notesController,
               decoration: const InputDecoration(
@@ -437,12 +437,12 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
               ),
               maxLines: 3,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Étiquettes',
               style: Theme.of(context).textTheme.labelLarge,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Wrap(
               spacing: 8,
               children: [
@@ -721,7 +721,7 @@ class _PersonSelectorDialogState extends State<_PersonSelectorDialog> {
                 });
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredPersons.length,

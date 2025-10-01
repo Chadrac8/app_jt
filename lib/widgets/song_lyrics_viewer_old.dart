@@ -117,7 +117,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
             }).toList(),
           ),
           
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           
           // Bouton afficher/masquer les accords
           IconButton(
@@ -182,7 +182,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
 
   Widget _buildLyricsContent() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +198,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
               ),
               
               if (widget.song.authors.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Par: ${widget.song.authors}',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -208,7 +208,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
                 ),
               ],
               
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               
               // Informations musicales
               Row(
@@ -221,13 +221,13 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
                     ),
                   ),
                   if (widget.song.tempo != null) ...[
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Text(
                       'Tempo: ${widget.song.tempo} BPM',
                       style: TextStyle(fontSize: _fontSize - 2),
                     ),
                   ],
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Text(
                     widget.song.style,
                     style: TextStyle(fontSize: _fontSize - 2),
@@ -235,7 +235,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
                 ],
               ),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
             ],
             
             // Paroles
@@ -243,7 +243,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
             
             // Références bibliques
             if (widget.song.bibleReferences.isNotEmpty && !widget.isProjectionMode) ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               Text(
                 'Références bibliques:',
                 style: TextStyle(
@@ -251,7 +251,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
                   fontSize: _fontSize - 2,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               ...widget.song.bibleReferences.map((ref) => Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
@@ -373,7 +373,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(AppTheme.spaceXLarge),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -382,13 +382,13 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
                 widget.song.title,
                 style: const TextStyle(
                   color: AppTheme.white100,
-                  fontSize: 36,
+                  fontSize: AppTheme.fontSize36,
                   fontWeight: AppTheme.fontBold,
                 ),
                 textAlign: TextAlign.center,
               ),
               
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
               
               // Paroles en grand format
               Expanded(
@@ -397,7 +397,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
                     _displayedLyrics,
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 28,
+                      fontSize: AppTheme.fontSize28,
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,
@@ -412,7 +412,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer> {
                   'Touchez l\'écran pour quitter le mode projection',
                   style: TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                   textAlign: TextAlign.center,
                 ),

@@ -4,6 +4,7 @@ import '../../../shared/widgets/custom_card.dart';
 import '../services/reports_service.dart';
 import '../models/report.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ReportsMemberView extends StatefulWidget {
   const ReportsMemberView({Key? key}) : super(key: key);
@@ -103,7 +104,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
         children: [
           // Barre de recherche et filtres
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: [
                 // Barre de recherche
@@ -120,7 +121,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                     _filterReports();
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 // Filtres par type
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -180,7 +181,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
             size: 80,
             color: AppTheme.grey500,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _searchQuery.isNotEmpty
                 ? 'Aucun rapport trouvé pour "$_searchQuery"'
@@ -189,7 +190,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Les rapports publics et partagés apparaîtront ici',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -211,7 +212,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
         onTap: () => _viewReport(report),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -228,12 +229,12 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(typeIcon, size: 16, color: typeColor),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           _getTypeLabel(report.type),
                           style: TextStyle(
                             color: typeColor,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
@@ -245,7 +246,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                     const Icon(Icons.public, size: 16, color: AppTheme.greenStandard),
                   if (!report.isPublic)
                     const Icon(Icons.people, size: 16, color: AppTheme.blueStandard),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   PopupMenuButton<String>(
                     onSelected: (value) => _handleAction(value, report),
                     itemBuilder: (context) => [
@@ -269,7 +270,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Titre et description
               Text(
@@ -279,7 +280,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                 ),
               ),
               if (report.description != null) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   report.description!,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -289,7 +290,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Méta-informations
               Row(
@@ -299,7 +300,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
                     _getFrequencyLabel(report.frequency),
                     AppTheme.orangeStandard,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   if (report.lastGenerated != null)
                     _buildMetaChip(
                       Icons.update,
@@ -344,7 +345,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
             label,
             style: TextStyle(
               color: color,
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -379,7 +380,7 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
         content: Row(
           children: [
             CircularProgressIndicator(),
-            SizedBox(width: 16),
+            SizedBox(width: AppTheme.spaceMedium),
             Text('Génération en cours...'),
           ],
         ),
@@ -434,11 +435,11 @@ class _ReportsMemberViewState extends State<ReportsMemberView> {
       case 'financial':
         return AppTheme.greenStandard;
       case 'membership':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'event':
         return AppTheme.orangeStandard;
       case 'custom':
-        return Colors.indigo;
+        return AppTheme.secondaryColor;
       default:
         return AppTheme.grey500;
     }

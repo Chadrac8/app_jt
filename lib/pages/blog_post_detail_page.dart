@@ -93,7 +93,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.error_outline, size: 64, color: AppTheme.grey500),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('Article non trouvé ou supprimé'),
             ],
           ),
@@ -115,7 +115,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
                 _buildPostActions(),
                 if (_post!.allowComments) _buildCommentsSection(),
                 _buildRelatedPosts(),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppTheme.spaceXLarge),
               ],
             ),
           ),
@@ -225,14 +225,14 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
 
   Widget _buildPostHeader() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Métadonnées de l'article
           BlogPostMetadata(post: _post!),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Excerpt si disponible
           if (_post!.excerpt.isNotEmpty) ...[
@@ -243,7 +243,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
                 color: AppTheme.grey700,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             const Divider(),
           ],
         ],
@@ -262,29 +262,29 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
             _post!.content,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               height: 1.6,
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
             ),
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Images additionnelles
           if (_post!.imageUrls.isNotEmpty) ...[
             const Divider(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Images',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             _buildImageGallery(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
           
           // Tags
           if (_post!.tags.isNotEmpty) ...[
             const Divider(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -371,7 +371,7 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
 
   Widget _buildPostActions() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: BlogPostActions(
         post: _post!,
         hasLiked: _hasLiked,
@@ -388,12 +388,12 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Divider(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Commentaires',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           BlogCommentsSection(postId: _post!.id),
         ],
       ),
@@ -402,17 +402,17 @@ class _BlogPostDetailPageState extends State<BlogPostDetailPage> {
 
   Widget _buildRelatedPosts() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Divider(),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Articles similaires',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           BlogRelatedPosts(
             currentPost: _post!,
             onPostTap: (post) {

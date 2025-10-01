@@ -136,7 +136,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
         actions: [
           if (_isLoading)
             const Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(AppTheme.spaceMedium),
               child: SizedBox(
                 width: 20,
                 height: 20,
@@ -153,7 +153,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               // Name and Label
@@ -177,7 +177,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
                   }
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
 
               TextFormField(
                 controller: _nameController,
@@ -197,7 +197,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
 
               // Field Type
               DropdownButtonFormField<CustomFieldType>(
@@ -218,7 +218,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
                   });
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
 
               // Placeholder
               TextFormField(
@@ -229,7 +229,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
 
               // Options (only for select/multiselect)
               if (_selectedType == CustomFieldType.select || _selectedType == CustomFieldType.multiselect) ...[
@@ -252,7 +252,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
               ],
 
               // Default Value
@@ -264,7 +264,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
 
               // Help Text
               TextFormField(
@@ -276,7 +276,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
                 ),
                 maxLines: 2,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
 
               // Switches
               SwitchListTile(

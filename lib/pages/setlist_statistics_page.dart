@@ -21,29 +21,29 @@ class SetlistStatisticsPage extends StatelessWidget {
           }
           final stats = snapshot.data ?? {};
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             children: [
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Playlists créées', style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text('Total: [200m${stats['totalSetlists'] ?? 0}[0m'),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text('Utilisations totales: [200m${stats['totalUsage'] ?? 0}[0m'),
                     ]))),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Top utilisateurs (créateurs)', style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       if ((stats['topCreators'] ?? []).isEmpty)
                         const Text('Aucune donnée'),
                       for (final user in (stats['topCreators'] ?? []))
@@ -52,15 +52,15 @@ class SetlistStatisticsPage extends StatelessWidget {
                           title: Text(user['name'] ?? user['id'] ?? 'Inconnu'),
                           trailing: Text('${user['count']} playlists')),
                     ]))),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Top playlists par nombre de chants', style: Theme.of(context).textTheme.titleLarge),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       if ((stats['topSetlists'] ?? []).isEmpty)
                         const Text('Aucune donnée'),
                       if ((stats['topSetlists'] ?? []).isNotEmpty)
@@ -74,10 +74,10 @@ class SetlistStatisticsPage extends StatelessWidget {
                             AppTheme.blueStandard,
                             AppTheme.successColor,
                             AppTheme.warningColor,
-                            Colors.purple,
+                            AppTheme.primaryColor,
                             AppTheme.errorColor,
-                            Colors.teal,
-                            Colors.brown,
+                            AppTheme.secondaryColor,
+                            AppTheme.tertiaryColor,
                             AppTheme.pinkStandard,
                           ]),
                     ]))),

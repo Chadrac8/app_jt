@@ -182,7 +182,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               
               // Filter Button
               AnimatedContainer(
@@ -213,7 +213,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     onTap: _toggleFilters,
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -224,7 +224,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                 : Theme.of(context).colorScheme.onSurface,
                           ),
                           if (_totalActiveFilters > 0) ...[
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
@@ -236,7 +236,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontWeight: AppTheme.fontBold,
-                                  fontSize: 10,
+                                  fontSize: AppTheme.fontSize10,
                                 ),
                               ),
                             ),
@@ -263,7 +263,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                     child: Container(
                       width: double.infinity,
                       margin: const EdgeInsets.only(top: 16),
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -282,7 +282,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                 color: Theme.of(context).colorScheme.primary,
                                 size: 20,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(
                                 'Filtres',
                                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -298,13 +298,13 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                     'Effacer tout',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.error,
-                                      fontSize: 12,
+                                      fontSize: AppTheme.fontSize12,
                                     ),
                                   ),
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Status Filter
                           Row(
@@ -314,7 +314,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                 color: Theme.of(context).colorScheme.outline,
                                 size: 16,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(
                                 'Statut:',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -322,7 +322,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: AppTheme.spaceMedium),
                               FilterChip(
                                 label: const Text('Actifs uniquement'),
                                 selected: widget.showActiveOnly,
@@ -333,12 +333,12 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                   color: widget.showActiveOnly
                                       ? Theme.of(context).colorScheme.secondary
                                       : Theme.of(context).colorScheme.onSurface,
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Role Filters
                           Row(
@@ -349,7 +349,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                 color: Theme.of(context).colorScheme.outline,
                                 size: 16,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(
                                 'Rôles:',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -357,7 +357,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: AppTheme.spaceMedium),
                               Expanded(
                                 child: StreamBuilder<List<RoleModel>>(
                                   stream: RolesFirebaseService.getRolesStream(activeOnly: true),
@@ -398,7 +398,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                             color: isSelected
                                                 ? Color(int.parse(role.color.replaceFirst('#', '0xFF')))
                                                 : Theme.of(context).colorScheme.onSurface,
-                                            fontSize: 12,
+                                            fontSize: AppTheme.fontSize12,
                                             fontWeight: isSelected ? AppTheme.fontMedium : FontWeight.normal,
                                           ),
                                         );

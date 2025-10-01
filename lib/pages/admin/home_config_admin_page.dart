@@ -234,26 +234,26 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
 
   Widget _buildCoverTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Configuration de la couverture'),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           _buildTextField(
             controller: _coverTitleController,
             label: 'Titre de la couverture',
             hint: 'Jubilé Tabernacle',
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           _buildTextField(
             controller: _coverSubtitleController,
             label: 'Sous-titre',
             hint: 'Bienvenue dans la maison de Dieu',
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           SwitchListTile(
             title: const Text(
@@ -264,7 +264,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             onChanged: (value) => setState(() => _useVideo = value),
             activeColor: AppTheme.blueStandard,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           if (_useVideo) ...[
             _buildTextField(
@@ -272,7 +272,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               label: 'URL de la vidéo',
               hint: 'https://example.com/video.mp4',
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 ElevatedButton.icon(
@@ -280,7 +280,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   icon: const Icon(Icons.upload_file),
                   label: const Text('Sélectionner une vidéo'),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 if (_coverVideoUrl != null && _coverVideoUrl!.isNotEmpty)
                   Expanded(
                     child: Text(
@@ -296,7 +296,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               label: 'URL de l\'image de couverture',
               hint: 'https://example.com/image.jpg',
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 ElevatedButton.icon(
@@ -304,7 +304,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   icon: const Icon(Icons.photo_library),
                   label: const Text('Sélectionner des images'),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 ElevatedButton.icon(
                   onPressed: _clearCoverImages,
                   icon: const Icon(Icons.delete_forever),
@@ -313,11 +313,11 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             _buildCoverThumbnails(),
           ],
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildPreviewButton('Prévisualiser la couverture'),
         ],
       ),
@@ -326,12 +326,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
 
   Widget _buildLiveTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Configuration du live'),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           SwitchListTile(
             title: const Text(
@@ -344,21 +344,21 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           ),
           
           if (_isLiveActive) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _liveDescriptionController,
               label: 'Description du live',
               hint: 'Prochain culte dans',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _liveUrlController,
               label: 'URL du live stream',
               hint: 'https://youtube.com/watch?v=...',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Card(
               color: const Color(0xFF2A2D3A),
@@ -383,12 +383,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
 
   Widget _buildDailyBreadTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Configuration du pain quotidien'),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           SwitchListTile(
             title: const Text(
@@ -401,14 +401,14 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           ),
           
           if (_isDailyBreadActive) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _dailyBreadTitleController,
               label: 'Titre',
               hint: 'Pain quotidien',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _dailyBreadVerseController,
@@ -416,7 +416,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
               hint: 'Car l\'Éternel, ton Dieu, t\'a béni...',
               maxLines: 3,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _dailyBreadReferenceController,
@@ -431,12 +431,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
 
   Widget _buildSermonTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Configuration de la dernière prédication'),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           SwitchListTile(
             title: const Text(
@@ -449,35 +449,35 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           ),
           
           if (_isLastSermonActive) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _sermonTitleController,
               label: 'Titre de la prédication',
               hint: 'La grâce de Dieu',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _sermonPreacherController,
               label: 'Prédicateur',
               hint: 'Pasteur Jean-Baptiste',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _sermonDurationController,
               label: 'Durée',
               hint: '45 min',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _sermonThumbnailController,
               label: 'URL de la miniature',
               hint: 'https://example.com/thumbnail.jpg',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _sermonUrlController,
@@ -492,12 +492,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
 
   Widget _buildEventsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Configuration des événements'),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           SwitchListTile(
             title: const Text(
@@ -510,7 +510,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           ),
           
           if (_areEventsActive) ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -519,7 +519,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   'Événements à venir',
                   style: TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -534,13 +534,13 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             if (_events.isEmpty)
               const Card(
                 color: Color(0xFF2A2D3A),
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(AppTheme.space20),
                   child: Center(
                     child: Text(
                       'Aucun événement configuré',
@@ -559,12 +559,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
 
   Widget _buildQuickActionsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Configuration des actions rapides'),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           SwitchListTile(
             title: const Text(
@@ -577,7 +577,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           ),
           
           if (_areQuickActionsActive) ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -586,7 +586,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   'Actions disponibles',
                   style: TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -601,13 +601,13 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             if (_quickActions.isEmpty)
               const Card(
                 color: Color(0xFF2A2D3A),
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(AppTheme.space20),
                   child: Center(
                     child: Text(
                       'Aucune action configurée',
@@ -626,12 +626,12 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
 
   Widget _buildContactTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Configuration des contacts'),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           SwitchListTile(
             title: const Text(
@@ -644,28 +644,28 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
           ),
           
           if (_isContactActive) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _contactEmailController,
               label: 'Email',
               hint: 'contact@jubiletabernacle.org',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _contactPhoneController,
               label: 'Téléphone',
               hint: '+33 6 77 45 72 78',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _contactWhatsAppController,
               label: 'WhatsApp',
               hint: '+33 6 77 45 72 78',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             _buildTextField(
               controller: _contactAddressController,
@@ -684,7 +684,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       title,
       style: const TextStyle(
         color: AppTheme.white100,
-        fontSize: 20,
+        fontSize: AppTheme.fontSize20,
         fontWeight: AppTheme.fontBold,
       ),
     );
@@ -934,7 +934,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: TextField(
                       controller: monthController,
@@ -950,7 +950,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               TextField(
                 controller: titleController,
                 style: const TextStyle(color: AppTheme.white100),
@@ -962,7 +962,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               TextField(
                 controller: descriptionController,
                 style: const TextStyle(color: AppTheme.white100),
@@ -974,7 +974,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               TextField(
                 controller: timeController,
                 style: const TextStyle(color: AppTheme.white100),
@@ -1076,7 +1076,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextField(
                   controller: descriptionController,
                   style: const TextStyle(color: AppTheme.white100),
@@ -1088,14 +1088,14 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 
                 // Sélection d'icône
                 const Text(
                   'Icône',
-                  style: TextStyle(color: AppTheme.white100, fontSize: 16),
+                  style: TextStyle(color: AppTheme.white100, fontSize: AppTheme.fontSize16),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -1120,14 +1120,14 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 
                 // Sélection de couleur
                 const Text(
                   'Couleur',
-                  style: TextStyle(color: AppTheme.white100, fontSize: 16),
+                  style: TextStyle(color: AppTheme.white100, fontSize: AppTheme.fontSize16),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -1340,7 +1340,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       return const Card(
         color: Color(0xFF2A2D3A),
         child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: EdgeInsets.all(AppTheme.space12),
           child: Center(
             child: Text('Aucune image sélectionnée', style: TextStyle(color: AppTheme.grey500)),
           ),
@@ -1353,7 +1353,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: _coverImageUrls.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, __) => const SizedBox(width: AppTheme.spaceSmall),
         itemBuilder: (context, index) {
           final url = _coverImageUrls[index];
           return Stack(
@@ -1380,7 +1380,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                       color: AppTheme.black100,
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     ),
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                     child: const Icon(Icons.delete, color: AppTheme.white100, size: 18),
                   ),
                 ),

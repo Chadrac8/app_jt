@@ -30,7 +30,7 @@ class BlogPostActions extends StatelessWidget {
             onTap: onLike,
           ),
           
-          const SizedBox(width: 24),
+          const SizedBox(width: AppTheme.spaceLarge),
           
           // Commentaires
           _buildActionButton(
@@ -39,7 +39,7 @@ class BlogPostActions extends StatelessWidget {
             onTap: null, // Navigation handled by parent
           ),
           
-          const SizedBox(width: 24),
+          const SizedBox(width: AppTheme.spaceLarge),
           
           // Vues
           _buildActionButton(
@@ -80,7 +80,7 @@ class BlogPostActions extends StatelessWidget {
               size: 20,
               color: color ?? AppTheme.grey600,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppTheme.spaceXSmall),
             Text(
               label,
               style: TextStyle(

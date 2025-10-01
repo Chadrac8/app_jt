@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class RoleSettingsDialog extends StatefulWidget {
   const RoleSettingsDialog({super.key});
@@ -55,7 +56,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         constraints: const BoxConstraints(maxHeight: 700),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -68,7 +69,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                   color: Theme.of(context).primaryColor,
                   size: 28,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Paramètres des Rôles et Permissions',
@@ -84,7 +85,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
               ],
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Contenu avec onglets
             Expanded(
@@ -101,7 +102,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     Expanded(
                       child: TabBarView(
@@ -118,7 +119,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
               ),
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Actions
             Row(
@@ -128,7 +129,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Annuler'),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 ElevatedButton(
                   onPressed: _isLoading ? null : _saveSettings,
                   child: _isLoading 
@@ -155,7 +156,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
           // Expiration des rôles
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -165,7 +166,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   SwitchListTile(
                     title: const Text('Activer l\'expiration automatique'),
                     subtitle: const Text('Les rôles expireront automatiquement après la durée définie'),
@@ -177,7 +178,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                     },
                   ),
                   if (_roleExpirationEnabled) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Text('Durée d\'expiration: $_roleExpirationDays jours'),
                     Slider(
                       value: _roleExpirationDays.toDouble(),
@@ -197,12 +198,12 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Nettoyage automatique
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -212,7 +213,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   SwitchListTile(
                     title: const Text('Nettoyage automatique des rôles expirés'),
                     subtitle: const Text('Supprimer automatiquement les assignations de rôles expirées'),
@@ -228,12 +229,12 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Audit et journalisation
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -243,7 +244,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   SwitchListTile(
                     title: const Text('Journal d\'audit'),
                     subtitle: const Text('Enregistrer toutes les modifications de rôles et permissions'),
@@ -270,7 +271,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -280,7 +281,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   SwitchListTile(
                     title: const Text('Notifications système'),
                     subtitle: const Text('Afficher les notifications lors des changements de rôles'),
@@ -317,7 +318,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -327,7 +328,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   SwitchListTile(
                     title: const Text('Sauvegarde automatique'),
                     subtitle: const Text('Créer automatiquement des sauvegardes des configurations de rôles'),
@@ -338,7 +339,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       });
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Row(
                     children: [
                       Expanded(
@@ -348,7 +349,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                           label: const Text('Exporter Configuration'),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: _importConfiguration,
@@ -374,7 +375,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -384,7 +385,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Couleur par défaut des rôles
                   Text(
@@ -393,7 +394,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                       fontWeight: AppTheme.fontMedium,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   Wrap(
                     spacing: 8,
@@ -416,7 +417,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             border: isSelected
                                 ? Border.all(color: Theme.of(context).primaryColor, width: 3)
-                                : Border.all(color: Colors.grey[300]!, width: 1),
+                                : Border.all(color: AppTheme.grey300!, width: 1),
                           ),
                           child: isSelected
                               ? const Icon(Icons.check, color: Colors.white, size: 20)
@@ -426,7 +427,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                     }).toList(),
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   SwitchListTile(
                     title: const Text('Vérification stricte des permissions'),

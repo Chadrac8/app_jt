@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'theme.dart';
+import 'theme.dart';
 
 // Navigation
 import 'module_navigation_page.dart';
@@ -70,7 +72,7 @@ class AppTheme {
   
   // Couleurs spéciales
   static const Color pinkStandard = Color(0xFFE91E63);
-  static const Color goldStandard = Color(0xFFFFD700);
+  static const Color goldStandard = AppTheme.goldColor;
   
   // Thème principal
   static ThemeData get lightTheme {
@@ -88,8 +90,8 @@ class AppTheme {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
         titleTextStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
+          fontSize: AppTheme.fontSize20,
+          fontWeight: AppTheme.fontSemiBold,
           color: Colors.white,
         ),
       ),
@@ -109,7 +111,7 @@ class AppTheme {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
         ),
       ),
@@ -120,7 +122,7 @@ class AppTheme {
           side: const BorderSide(color: primaryColor),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
         ),
       ),
@@ -128,25 +130,25 @@ class AppTheme {
       // Input Decoration
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           borderSide: const BorderSide(color: primaryColor, width: 2),
         ),
       ),
       
       // Chips
       chipTheme: ChipThemeData(
-        backgroundColor: Colors.grey[200],
-        labelStyle: const TextStyle(fontSize: 12),
+        backgroundColor: AppTheme.grey200,
+        labelStyle: const TextStyle(fontSize: AppTheme.fontSize12),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       ),
       
       // Tab Bar
       tabBarTheme: const TabBarThemeData(
         labelColor: primaryColor,
-        unselectedLabelColor: Colors.grey,
+        unselectedLabelColor: AppTheme.grey500,
         indicatorColor: primaryColor,
         indicatorSize: TabBarIndicatorSize.tab,
       ),

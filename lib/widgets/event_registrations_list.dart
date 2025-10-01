@@ -192,14 +192,14 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
               size: 64,
               color: AppTheme.textTertiaryColor,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Inscriptions désactivées',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Les inscriptions ne sont pas activées pour cet événement',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -219,7 +219,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
           // Barre de recherche et filtres
           Container(
             color: AppTheme.white100,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: [
                 // Champ de recherche
@@ -246,7 +246,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                   onChanged: (value) => setState(() => _searchQuery = value),
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Filtres et actions
                 Row(
@@ -273,7 +273,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                       ),
                     ),
                     
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     
                     // Bouton d'ajout manuel
                     IconButton(
@@ -317,12 +317,12 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                           size: 64,
                           color: AppTheme.errorColor,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Erreur de chargement',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text('${snapshot.error}'),
                       ],
                     ),
@@ -359,14 +359,14 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                           size: 64,
                           color: AppTheme.textTertiaryColor,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Aucune inscription',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: AppTheme.textSecondaryColor,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           _searchQuery.isNotEmpty || _statusFilter != 'all'
                               ? 'Aucun résultat pour les critères sélectionnés'
@@ -382,7 +382,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   itemCount: registrations.length,
                   itemBuilder: (context, index) {
                     final registration = registrations[index];
@@ -414,7 +414,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -435,7 +435,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                   ),
                 ),
                 
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 
                 // Nom et email
                 Expanded(
@@ -469,7 +469,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                     _getStatusLabel(registration.status),
                     style: TextStyle(
                       color: _getStatusColor(registration.status),
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontMedium,
                     ),
                   ),
@@ -477,7 +477,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
               ],
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Informations supplémentaires
             Row(
@@ -487,7 +487,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                   size: 16,
                   color: AppTheme.textSecondaryColor,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   'Inscrit le ${_formatDate(registration.registrationDate)}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -496,13 +496,13 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                 ),
                 
                 if (registration.phone != null) ...[
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Icon(
                     Icons.phone,
                     size: 16,
                     color: AppTheme.textSecondaryColor,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     registration.phone!,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -515,7 +515,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
             
             // Présence
             if (registration.isConfirmed) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Icon(
@@ -523,7 +523,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                     size: 16,
                     color: registration.isPresent ? AppTheme.successColor : AppTheme.textTertiaryColor,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     registration.isPresent ? 'Présent' : 'Absence non marquée',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -536,7 +536,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
             
             // Réponses du formulaire
             if (registration.formResponses.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               ExpansionTile(
                 title: const Text('Réponses du formulaire'),
                 tilePadding: EdgeInsets.zero,
@@ -571,7 +571,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
             ],
             
             // Actions
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 // Marquer présent/absent

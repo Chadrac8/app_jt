@@ -174,14 +174,14 @@ class _AppointmentCardState extends State<AppointmentCard>
           children: [
             _buildHeader(),
             if (!widget.isCompact) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               _buildDetails(),
               if (widget.appointment.notes != null) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 _buildNotes(),
               ],
               if (widget.showActions) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 _buildActions(),
               ],
             ],
@@ -195,7 +195,7 @@ class _AppointmentCardState extends State<AppointmentCard>
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: _statusColor.withAlpha(25), // 10% opacity
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -206,7 +206,7 @@ class _AppointmentCardState extends State<AppointmentCard>
             size: widget.isCompact ? 16 : 20,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +237,7 @@ class _AppointmentCardState extends State<AppointmentCard>
                     size: widget.isCompact ? 12 : 14,
                     color: AppTheme.textSecondaryColor,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     _formatDateTime(widget.appointment.dateTime),
                     style: TextStyle(
@@ -277,7 +277,7 @@ class _AppointmentCardState extends State<AppointmentCard>
           label: 'Lieu',
           value: widget.appointment.lieuLabel,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         _buildDetailRow(
           icon: Icons.subject,
           label: 'Motif',
@@ -299,11 +299,11 @@ class _AppointmentCardState extends State<AppointmentCard>
           size: 16,
           color: AppTheme.textSecondaryColor,
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         Text(
           '$label: ',
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.textSecondaryColor,
           ),
@@ -312,7 +312,7 @@ class _AppointmentCardState extends State<AppointmentCard>
           child: Text(
             value,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textPrimaryColor,
             ),
           ),
@@ -323,7 +323,7 @@ class _AppointmentCardState extends State<AppointmentCard>
 
   Widget _buildNotes() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.grey500,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -337,12 +337,12 @@ class _AppointmentCardState extends State<AppointmentCard>
             size: 16,
             color: AppTheme.textSecondaryColor,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               widget.appointment.notes!,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textPrimaryColor,
                 fontStyle: FontStyle.italic,
               ),
@@ -368,7 +368,7 @@ class _AppointmentCardState extends State<AppointmentCard>
               ),
             ),
           ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         Expanded(
           child: ElevatedButton.icon(
             onPressed: widget.onTap,

@@ -375,12 +375,12 @@ class _FormBuilderPageState extends State<FormBuilderPage>
       key: _formKey,
       child: SingleChildScrollView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildFormSettings(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildFieldsList(),
             const SizedBox(height: 100), // Space for FAB
           ],
@@ -392,7 +392,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
   Widget _buildFormSettings() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -402,7 +402,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Title and description
             TextFormField(
@@ -419,7 +419,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
               },
               onChanged: (_) => _markAsChanged(),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             TextFormField(
               controller: _descriptionController,
@@ -430,7 +430,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
               maxLines: 3,
               onChanged: (_) => _markAsChanged(),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Status and accessibility
             Row(
@@ -455,7 +455,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                     },
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _accessibility,
@@ -479,14 +479,14 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Advanced settings
             ExpansionTile(
               title: const Text('Paramètres avancés'),
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     children: [
                       TextFormField(
@@ -498,7 +498,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                         maxLines: 2,
                         onChanged: (_) => _markAsChanged(),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       TextFormField(
                         initialValue: _submissionLimit?.toString(),
                         decoration: const InputDecoration(
@@ -526,7 +526,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
   Widget _buildFieldsList() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -547,11 +547,11 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             if (_fields.isEmpty)
               Container(
-                padding: const EdgeInsets.all(32),
+                padding: const EdgeInsets.all(AppTheme.spaceXLarge),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundColor,
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -567,14 +567,14 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                       size: 48,
                       color: AppTheme.textTertiaryColor,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Text(
                       'Aucun champ ajouté',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Glissez-déposez des champs depuis le panneau de droite',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -645,14 +645,14 @@ class _FormBuilderPageState extends State<FormBuilderPage>
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: const BoxDecoration(
             color: AppTheme.primaryColor,
           ),
           child: Row(
             children: [
               const Icon(Icons.widgets, color: AppTheme.white100),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Types de champs',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -665,7 +665,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
         ),
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             children: groupedFields.entries.map((entry) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -681,7 +681,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                     ),
                   ),
                   ...entry.value.map((fieldType) => _buildFieldTypeCard(fieldType)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 ],
               );
             }).toList(),
@@ -701,7 +701,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
           onTap: () => _addField(fieldType),
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               border: Border.all(color: AppTheme.grey500),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -713,7 +713,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                   size: 20,
                   color: AppTheme.primaryColor,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     fieldType['label'] as String,

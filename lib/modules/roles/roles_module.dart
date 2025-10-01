@@ -140,12 +140,12 @@ class RolesModule {
   static Color getModuleColor(String module) {
     switch (module.toLowerCase()) {
       case 'users': return AppTheme.blueStandard;
-      case 'roles': return Colors.purple;
+      case 'roles': return AppTheme.primaryColor;
       case 'content': return AppTheme.greenStandard;
       case 'settings': return AppTheme.orangeStandard;
       case 'notifications': return AppTheme.redStandard;
-      case 'analytics': return Colors.teal;
-      case 'reports': return Colors.indigo;
+      case 'analytics': return AppTheme.secondaryColor;
+      case 'reports': return AppTheme.secondaryColor;
       default: return AppTheme.grey500;
     }
   }

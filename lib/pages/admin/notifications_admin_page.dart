@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme.dart';
 // import '../../services/push_notification_service.dart';  // Temporarily disabled
 
 class NotificationsAdminPage extends StatefulWidget {
@@ -41,9 +42,9 @@ class _NotificationsAdminPageState extends State<NotificationsAdminPage> {
           children: [
             Text('FCM Token:', style: Theme.of(context).textTheme.titleSmall),
             SelectableText(_token ?? 'No token yet. Initialize notifications.'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextField(controller: _topicController, decoration: const InputDecoration(labelText: 'Topic name')),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(children: [
               Expanded(
                 child: ElevatedButton(
@@ -55,7 +56,7 @@ class _NotificationsAdminPageState extends State<NotificationsAdminPage> {
                   },
                   child: const Text('Subscribe')),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () async {
@@ -67,7 +68,7 @@ class _NotificationsAdminPageState extends State<NotificationsAdminPage> {
                   child: const Text('Unsubscribe')),
               ),
             ]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: () async {
                 // await PushNotificationService.showTestNotification(title: 'Test', body: 'This is a test');  // Temporarily disabled

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class OffrandesWidget extends StatelessWidget {
   const OffrandesWidget({super.key});
@@ -10,7 +11,7 @@ class OffrandesWidget extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -26,21 +27,21 @@ class OffrandesWidget extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.favorite, color: AppTheme.greenStandard, size: 28),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Soutenir l\'œuvre',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor)),
               ]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Votre générosité permet de soutenir les ministères de l\'église et d\'étendre le Royaume de Dieu.',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.textSecondaryColor)),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             Row(
               children: [
                 Expanded(
@@ -59,7 +60,7 @@ class OffrandesWidget extends StatelessWidget {
                     label: const Text(
                       'Faire un don',
                       style: TextStyle(fontWeight: AppTheme.fontSemiBold)))),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 OutlinedButton.icon(
                   onPressed: () {
                     // Afficher plus d'informations sur les dons

@@ -232,7 +232,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: const EdgeInsets.all(16),
+      insetPadding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Container(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height * 0.9,
@@ -240,7 +240,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
           children: [
             // En-tête
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
@@ -248,13 +248,13 @@ class _TabPageBuilderState extends State<TabPageBuilder>
               child: Row(
                 children: [
                   const Icon(Icons.tab, color: AppTheme.white100),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   const Expanded(
                     child: Text(
                       'Éditeur d\'onglets',
                       style: TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -269,14 +269,12 @@ class _TabPageBuilderState extends State<TabPageBuilder>
 
             // Onglets principaux
             Container(
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: AppTheme.grey500)),
-              ),
+              color: AppTheme.primaryColor, // Couleur d'arrière-plan identique à l'AppBar
               child: TabBar(
                 controller: _mainTabController,
-                labelColor: AppTheme.primaryColor,
-                unselectedLabelColor: AppTheme.grey500,
-                indicatorColor: AppTheme.primaryColor,
+                labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+                unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+                indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc
                 tabs: const [
                   Tab(text: 'Configuration'),
                   Tab(text: 'Composants'),
@@ -297,7 +295,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
 
             // Actions
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.grey500,
                 border: Border(top: BorderSide(color: AppTheme.grey500)),
@@ -309,7 +307,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                     onPressed: () => Navigator.pop(context),
                     child: const Text('Annuler'),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   ElevatedButton(
                     onPressed: _saveChanges,
                     style: ElevatedButton.styleFrom(
@@ -329,7 +327,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
 
   Widget _buildConfigurationTab() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,7 +335,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
             // Configuration générale des onglets
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -347,11 +345,11 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Position des onglets
                     Text('Position des onglets', style: Theme.of(context).textTheme.bodyMedium),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     DropdownButtonFormField<String>(
                       value: _componentData['tabPosition'],
                       items: const [
@@ -362,7 +360,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                       ],
                       onChanged: (value) => setState(() => _componentData['tabPosition'] = value),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Afficher les icônes
                     SwitchListTile(
@@ -373,7 +371,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                     
                     // Style des onglets
                     Text('Style des onglets', style: Theme.of(context).textTheme.bodyMedium),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     DropdownButtonFormField<String>(
                       value: _componentData['tabStyle'],
                       items: const [
@@ -388,12 +386,12 @@ class _TabPageBuilderState extends State<TabPageBuilder>
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Style et apparence
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -403,7 +401,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Couleur de fond
                     Row(
@@ -417,12 +415,12 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                           decoration: BoxDecoration(
                             color: Color(int.parse(_componentStyling['backgroundColor']!.substring(1), radix: 16) + 0xFF000000),
                             border: Border.all(color: AppTheme.grey500),
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     TextFormField(
                       initialValue: _componentStyling['backgroundColor'],
                       decoration: const InputDecoration(
@@ -431,7 +429,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                       ),
                       onChanged: (value) => setState(() => _componentStyling['backgroundColor'] = value),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Couleur de l'indicateur
                     Row(
@@ -445,12 +443,12 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                           decoration: BoxDecoration(
                             color: Color(int.parse(_componentStyling['indicatorColor']!.substring(1), radix: 16) + 0xFF000000),
                             border: Border.all(color: AppTheme.grey500),
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     TextFormField(
                       initialValue: _componentStyling['indicatorColor'],
                       decoration: const InputDecoration(
@@ -464,12 +462,12 @@ class _TabPageBuilderState extends State<TabPageBuilder>
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Gestion des onglets
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -494,7 +492,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Liste des onglets
                     ..._tabs.asMap().entries.map((entry) {
@@ -539,7 +537,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
       children: [
         // Sélecteur d'onglet
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.grey500,
             border: Border(bottom: BorderSide(color: AppTheme.grey500)),
@@ -550,7 +548,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                 'Onglet sélectionné:',
                 style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: DropdownButtonFormField<int>(
                   value: _selectedTabIndex,
@@ -568,7 +566,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                   },
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               ElevatedButton.icon(
                 onPressed: () => _addComponentToTab(_selectedTabIndex),
                 icon: const Icon(Icons.add),
@@ -603,15 +601,15 @@ class _TabPageBuilderState extends State<TabPageBuilder>
               size: 64,
               color: AppTheme.grey500,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun composant dans cet onglet',
               style: TextStyle(
                 color: AppTheme.grey500,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton.icon(
               onPressed: () => _addComponentToTab(tabIndex),
               icon: const Icon(Icons.add),
@@ -627,7 +625,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
     }
     
     return ReorderableListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: tab.components.length,
       onReorder: (oldIndex, newIndex) => _reorderComponents(tabIndex, oldIndex, newIndex),
       itemBuilder: (context, index) {
@@ -870,9 +868,9 @@ class _TabEditDialogState extends State<_TabEditDialog> {
               border: OutlineInputBorder(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           const Text('Icône de l\'onglet'),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Container(
             height: 200,
             width: double.maxFinite,
@@ -881,7 +879,7 @@ class _TabEditDialogState extends State<_TabEditDialog> {
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: GridView.builder(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 6,
                 crossAxisSpacing: 4,
@@ -896,7 +894,7 @@ class _TabEditDialogState extends State<_TabEditDialog> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: isSelected ? AppTheme.primaryColor : null,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: Icon(
                       icon,
@@ -932,9 +930,9 @@ class _ComponentTypeSelector extends StatelessWidget {
   final Map<String, List<Map<String, dynamic>>> _componentCategories = {
     'Contenu textuel': [
       {'type': 'text', 'label': 'Texte', 'icon': Icons.text_fields, 'color': AppTheme.blueStandard, 'description': 'Paragraphe de texte avec formatage'},
-      {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': Colors.indigo, 'description': 'Citation biblique avec référence'},
-      {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': Colors.amber, 'description': 'Message d\'annonce avec style'},
-      {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': Colors.deepPurple, 'description': 'Citation avec auteur et contexte'},
+      {'type': 'scripture', 'label': 'Verset biblique', 'icon': Icons.menu_book, 'color': AppTheme.secondaryColor, 'description': 'Citation biblique avec référence'},
+      {'type': 'banner', 'label': 'Bannière', 'icon': Icons.campaign, 'color': AppTheme.warningColor, 'description': 'Message d\'annonce avec style'},
+      {'type': 'quote', 'label': 'Citation', 'icon': Icons.format_quote, 'color': AppTheme.primaryDark, 'description': 'Citation avec auteur et contexte'},
     ],
     'Médias': [
       {'type': 'image', 'label': 'Image', 'icon': Icons.image, 'color': AppTheme.greenStandard, 'description': 'Photo ou illustration'},
@@ -943,15 +941,15 @@ class _ComponentTypeSelector extends StatelessWidget {
     ],
     'Interactif': [
       {'type': 'button', 'label': 'Bouton', 'icon': Icons.smart_button, 'color': AppTheme.orangeStandard, 'description': 'Bouton d\'action cliquable'},
-      {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': Colors.cyan, 'description': 'Code HTML personnalisé'},
+      {'type': 'html', 'label': 'HTML', 'icon': Icons.code, 'color': AppTheme.infoColor, 'description': 'Code HTML personnalisé'},
       {'type': 'webview', 'label': 'WebView', 'icon': Icons.web, 'color': AppTheme.blueStandard, 'description': 'Intégrer une page web externe dans votre application'},
     ],
     'Organisation': [
-      {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': Colors.purple, 'description': 'Liste d\'éléments à puces ou numérotée'},
-      {'type': 'grid_container', 'label': 'Container Grid', 'icon': Icons.grid_view, 'color': Colors.deepPurple, 'description': 'Container configurable pour organiser des composants en grille'},
-      {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': Colors.brown, 'description': 'Carte géographique interactive'},
+      {'type': 'list', 'label': 'Liste', 'icon': Icons.list, 'color': AppTheme.primaryColor, 'description': 'Liste d\'éléments à puces ou numérotée'},
+      {'type': 'grid_container', 'label': 'Container Grid', 'icon': Icons.grid_view, 'color': AppTheme.primaryDark, 'description': 'Container configurable pour organiser des composants en grille'},
+      {'type': 'map', 'label': 'Carte', 'icon': Icons.map, 'color': AppTheme.tertiaryColor, 'description': 'Carte géographique interactive'},
       {'type': 'googlemap', 'label': 'Google Map', 'icon': Icons.location_on, 'color': AppTheme.redStandard, 'description': 'Carte Google avec reconnaissance d\'adresse'},
-      {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': Colors.deepOrange, 'description': 'Affichage et gestion des groupes d\'utilisateurs'},
+      {'type': 'groups', 'label': 'Groupes', 'icon': Icons.groups, 'color': AppTheme.warningColor, 'description': 'Affichage et gestion des groupes d\'utilisateurs'},
       {'type': 'events', 'label': 'Evénements', 'icon': Icons.event, 'color': AppTheme.greenStandard, 'description': 'Calendrier et liste d\'événements'},
     ],
   };
@@ -984,7 +982,7 @@ class _ComponentTypeSelector extends StatelessWidget {
                     child: Text(
                       categoryName,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.black100,
                       ),
@@ -1017,10 +1015,10 @@ class _ComponentTypeSelector extends StatelessWidget {
                                   size: 28,
                                   color: componentType['color'] ?? AppTheme.primaryColor,
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppTheme.spaceXSmall),
                                 Text(
                                   componentType['label'],
-                                  style: const TextStyle(fontSize: 10),
+                                  style: const TextStyle(fontSize: AppTheme.fontSize10),
                                   textAlign: TextAlign.center,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -1032,7 +1030,7 @@ class _ComponentTypeSelector extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 ],
               );
             }).toList(),

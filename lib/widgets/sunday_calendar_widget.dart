@@ -98,18 +98,18 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
               size: 48,
               color: AppTheme.grey400,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur de chargement',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _errorMessage!,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton.icon(
               onPressed: _loadMonthlyStats,
               icon: const Icon(Icons.refresh),
@@ -141,7 +141,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
         // En-tête du mois
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(8), // Réduit de 12 à 8
+          padding: const EdgeInsets.all(AppTheme.spaceSmall), // Réduit de 12 à 8
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.8)],
@@ -160,25 +160,25 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                     color: AppTheme.white100,
                     size: 18, // Réduit de 20 à 18
                   ),
-                  const SizedBox(width: 8), // Réduit de 10 à 8
+                  const SizedBox(width: AppTheme.spaceSmall), // Réduit de 10 à 8
                   Expanded(
                     child: Text(
                       monthName,
                       style: const TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 16, // Réduit de 18 à 16
+                        fontSize: AppTheme.fontSize16, // Réduit de 18 à 16
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 4), // Réduit de 6 à 4
+              const SizedBox(height: AppTheme.spaceXSmall), // Réduit de 6 à 4
               Text(
                 'Réservations pour les chants spéciaux',
                 style: TextStyle(
                   color: AppTheme.white100.withOpacity(0.9),
-                  fontSize: 11, // Réduit de 12 à 11
+                  fontSize: AppTheme.fontSize11, // Réduit de 12 à 11
                 ),
               ),
             ],
@@ -195,7 +195,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                   size: 48,
                   color: AppTheme.grey400,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun dimanche disponible ce mois',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -227,7 +227,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: sortedSundays.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 6), // Réduit de 8 à 6
+      separatorBuilder: (context, index) => const SizedBox(height: AppTheme.space6), // Réduit de 8 à 6
       itemBuilder: (context, index) {
         final sunday = sortedSundays[index];
         return _buildSundayCard(sunday);
@@ -313,7 +313,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.all(10), // Réduit de 12 à 10
+          padding: const EdgeInsets.all(AppTheme.space10), // Réduit de 12 à 10
           decoration: BoxDecoration(
             color: backgroundColor,
             border: Border.all(
@@ -333,7 +333,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
             children: [
               // Section gauche : Date et icône
               Container(
-                padding: const EdgeInsets.all(10), // Réduit de 12 à 10
+                padding: const EdgeInsets.all(AppTheme.space10), // Réduit de 12 à 10
                 decoration: BoxDecoration(
                   color: borderColor.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10), // Réduit de 12 à 10
@@ -352,7 +352,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                       style: TextStyle(
                         color: textColor,
                         fontWeight: AppTheme.fontBold,
-                        fontSize: 14, // Réduit de 16 à 14
+                        fontSize: AppTheme.fontSize14, // Réduit de 16 à 14
                       ),
                     ),
                     Text(
@@ -367,7 +367,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                 ),
               ),
               
-              const SizedBox(width: 10), // Réduit de 12 à 10
+              const SizedBox(width: AppTheme.space10), // Réduit de 12 à 10
               
               // Section centrale : Informations
               Expanded(
@@ -390,7 +390,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                         status,
                         style: TextStyle(
                           color: textColor,
-                          fontSize: 10, // Réduit de 12 à 10
+                          fontSize: AppTheme.fontSize10, // Réduit de 12 à 10
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
@@ -398,13 +398,13 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                     
                     // Informations de réservation
                     if (isReserved && reservation.id.isNotEmpty) ...[
-                      const SizedBox(height: 6), // Réduit de 8 à 6
+                      const SizedBox(height: AppTheme.space6), // Réduit de 8 à 6
                       if (isUserReservation) ...[
                         Text(
                           'Chant: ${reservation.songTitle}',
                           style: TextStyle(
                             color: textColor,
-                            fontSize: 13,
+                            fontSize: AppTheme.fontSize13,
                             fontWeight: AppTheme.fontSemiBold,
                           ),
                           maxLines: 2,
@@ -415,7 +415,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                           'Réservé par: ${reservation.fullName}',
                           style: TextStyle(
                             color: textColor,
-                            fontSize: 13,
+                            fontSize: AppTheme.fontSize13,
                             fontWeight: AppTheme.fontSemiBold,
                           ),
                           maxLines: 1,
@@ -429,7 +429,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
               
               // Section droite : Bouton d'annulation si applicable
               if (isUserReservation && !isPast) ...[
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 _buildCompactCancelButton(reservation),
               ],
             ],
@@ -462,7 +462,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
         child: const Text(
           'Annuler',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
@@ -477,7 +477,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
         title: Row(
           children: [
             Icon(Icons.warning_amber, color: AppTheme.grey600),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('Annuler la réservation'),
           ],
         ),
@@ -489,9 +489,9 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
               'Êtes-vous sûr de vouloir annuler votre réservation ?',
               style: const TextStyle(fontWeight: AppTheme.fontMedium),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -503,18 +503,18 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                   Row(
                     children: [
                       Icon(Icons.calendar_today, size: 16, color: AppTheme.grey600),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: AppTheme.space6),
                       Text(
                         DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(reservation.reservedDate),
                         style: const TextStyle(fontWeight: AppTheme.fontMedium),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppTheme.space6),
                   Row(
                     children: [
                       Icon(Icons.music_note, size: 16, color: AppTheme.grey600),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: AppTheme.space6),
                       Expanded(
                         child: Text(
                           reservation.songTitle,
@@ -526,11 +526,11 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Cette action ne peut pas être annulée.',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey600,
               ),
             ),
@@ -589,7 +589,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
             content: Row(
               children: [
                 Icon(Icons.check_circle, color: AppTheme.white100),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text('Réservation annulée avec succès'),
               ],
             ),
@@ -609,7 +609,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
             content: Row(
               children: [
                 Icon(Icons.error, color: AppTheme.white100),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(child: Text('Erreur: $e')),
               ],
             ),

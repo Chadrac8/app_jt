@@ -5,6 +5,7 @@ import '../services/songs_firebase_service.dart';
 import '../widgets/setlists_tab_perfect13.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
+import '../../../theme.dart';
 
 /// Page des cantiques pour les membres - Material Design 3
 class MemberSongsPage extends StatefulWidget {
@@ -68,28 +69,28 @@ class _MemberSongsPageState extends State<MemberSongsPage>
       height: 56,
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainer,
+        color: AppTheme.primaryColor, // Couleur primaire cohérente
         borderRadius: BorderRadius.circular(28),
       ),
       child: TabBar(
         controller: _tabController,
         dividerColor: Colors.transparent,
         indicator: BoxDecoration(
-          color: colorScheme.primary,
-          borderRadius: BorderRadius.circular(24),
+          color: AppTheme.onPrimaryColor.withOpacity(0.2), // Indicateur blanc semi-transparent
+          borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         ),
         indicatorSize: TabBarIndicatorSize.tab,
-        indicatorPadding: const EdgeInsets.all(4),
+        indicatorPadding: const EdgeInsets.all(AppTheme.spaceXSmall),
         labelStyle: GoogleFonts.inter(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
+          fontSize: AppTheme.fontSize14,
+          fontWeight: AppTheme.fontSemiBold,
         ),
         unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontSize: AppTheme.fontSize14,
+          fontWeight: AppTheme.fontMedium,
         ),
-        labelColor: colorScheme.onPrimary,
-        unselectedLabelColor: colorScheme.onSurfaceVariant,
+        labelColor: AppTheme.onPrimaryColor, // Texte blanc
+        unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
         tabs: const [
           Tab(text: 'Cantiques'),
           Tab(text: 'Favoris'),
@@ -142,12 +143,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
           Text(
             'Rechercher dans:',
             style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontSize: AppTheme.fontSize14,
+              fontWeight: AppTheme.fontMedium,
               color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           
           // Chip Titre
           FilterChip(
@@ -161,8 +162,8 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             backgroundColor: colorScheme.surfaceContainer,
             selectedColor: colorScheme.secondaryContainer,
             labelStyle: GoogleFonts.inter(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
+              fontSize: AppTheme.fontSize13,
+              fontWeight: AppTheme.fontMedium,
               color: !_searchInLyrics 
                   ? colorScheme.onSecondaryContainer 
                   : colorScheme.onSurfaceVariant,
@@ -175,7 +176,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             ),
           ),
           
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           
           // Chip Paroles
           FilterChip(
@@ -189,8 +190,8 @@ class _MemberSongsPageState extends State<MemberSongsPage>
             backgroundColor: colorScheme.surfaceContainer,
             selectedColor: colorScheme.secondaryContainer,
             labelStyle: GoogleFonts.inter(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
+              fontSize: AppTheme.fontSize13,
+              fontWeight: AppTheme.fontMedium,
               color: _searchInLyrics 
                   ? colorScheme.onSecondaryContainer 
                   : colorScheme.onSurfaceVariant,
@@ -217,12 +218,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
           CircularProgressIndicator(
             color: colorScheme.primary,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Chargement des cantiques...',
             style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontSize: AppTheme.fontSize16,
+              fontWeight: AppTheme.fontMedium,
               color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
@@ -236,7 +237,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -245,20 +246,20 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               size: 64,
               color: colorScheme.error,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur de chargement',
               style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTheme.fontSize20,
+                fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               error,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
@@ -274,7 +275,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -283,22 +284,22 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               size: 64,
               color: colorScheme.onSurface.withValues(alpha: 0.4),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _searchQuery.isNotEmpty ? 'Aucun résultat' : 'Aucun cantique',
               style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTheme.fontSize20,
+                fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _searchQuery.isNotEmpty 
                   ? 'Essayez avec d\'autres mots-clés'
                   : 'Les cantiques apparaîtront ici',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               textAlign: TextAlign.center,
@@ -353,15 +354,15 @@ class _MemberSongsPageState extends State<MemberSongsPage>
       margin: const EdgeInsets.only(bottom: 12),
       child: Material(
         color: colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         elevation: 0,
         child: InkWell(
           onTap: () => _showSongDetails(song),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               border: Border.all(
                 color: colorScheme.outline.withValues(alpha: 0.2),
                 width: 1,
@@ -375,21 +376,21 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                   height: 48,
                   decoration: BoxDecoration(
                     color: colorScheme.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: Center(
                     child: Text(
                       '$songNumber',
                       style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                        fontSize: AppTheme.fontSize16,
+                        fontWeight: AppTheme.fontBold,
                         color: colorScheme.primary,
                       ),
                     ),
                   ),
                 ),
                 
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 
                 // Informations du cantique
                 Expanded(
@@ -399,8 +400,8 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                       Text(
                         song.title,
                         style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontSize: AppTheme.fontSize16,
+                          fontWeight: AppTheme.fontSemiBold,
                           color: colorScheme.onSurface,
                           height: 1.2,
                         ),
@@ -409,12 +410,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                       ),
                       
                       if (song.authors.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           'Par ${song.authors}',
                           style: GoogleFonts.inter(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                            fontSize: AppTheme.fontSize13,
+                            fontWeight: AppTheme.fontMedium,
                             color: colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                           maxLines: 1,
@@ -423,11 +424,11 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                       ],
                       
                       if (song.lyrics.isNotEmpty) ...[
-                        const SizedBox(height: 6),
+                        const SizedBox(height: AppTheme.space6),
                         Text(
                           _getPreviewText(song.lyrics),
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: colorScheme.onSurface.withValues(alpha: 0.5),
                             height: 1.3,
                           ),
@@ -440,7 +441,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 ),
                 
                 // Bouton favoris
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 StreamBuilder<List<String>>(
                   stream: SongsFirebaseService.getUserFavorites(),
                   builder: (context, snapshot) {
@@ -501,7 +502,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -510,22 +511,22 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               size: 64,
               color: colorScheme.onSurface.withValues(alpha: 0.4),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _searchQuery.isNotEmpty ? 'Aucun favori trouvé' : 'Aucun cantique favori',
               style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTheme.fontSize20,
+                fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _searchQuery.isNotEmpty 
                   ? 'Essayez avec d\'autres mots-clés'
                   : 'Ajoutez des cantiques à vos favoris\nen touchant le cœur',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               textAlign: TextAlign.center,
@@ -590,7 +591,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 margin: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                   color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
               
@@ -606,8 +607,8 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                           Text(
                             song.title,
                             style: GoogleFonts.inter(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
+                              fontSize: AppTheme.fontSize20,
+                              fontWeight: AppTheme.fontBold,
                               color: colorScheme.onSurface,
                               height: 1.2,
                             ),
@@ -615,12 +616,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                             overflow: TextOverflow.ellipsis,
                           ),
                           if (song.authors.isNotEmpty) ...[
-                            const SizedBox(height: 4),
+                            const SizedBox(height: AppTheme.spaceXSmall),
                             Text(
                               'Par ${song.authors}',
                               style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                                fontSize: AppTheme.fontSize14,
+                                fontWeight: AppTheme.fontMedium,
                                 color: colorScheme.onSurface.withValues(alpha: 0.7),
                               ),
                             ),
@@ -665,7 +666,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                           },
                         ),
                         
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         
                         // Bouton projection
                         FilledButton.icon(
@@ -686,13 +687,13 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                           label: Text(
                             'Projeter',
                             style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              fontSize: AppTheme.fontSize14,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
                         ),
                         
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         
                         // Bouton fermer
                         IconButton(

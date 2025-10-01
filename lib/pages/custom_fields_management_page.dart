@@ -162,14 +162,14 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
 
   Widget _buildEmptyState() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           // Card d'information d'accès
           Card(
             color: Theme.of(context).colorScheme.primaryContainer,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -179,7 +179,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                         Icons.info_outline,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Comment accéder à cette page ?',
                         style: TextStyle(
@@ -189,21 +189,21 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     'Vous pouvez accéder à la gestion des champs personnalisés de 2 façons :',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     '• Depuis le module Personnes → Menu (⋮) → Champs personnalisés',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     '• Depuis la navigation Admin → Plus → Champs personnalisés',
                     style: TextStyle(
@@ -214,7 +214,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // État vide principal
           Icon(
@@ -222,29 +222,29 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
             size: 64,
             color: Theme.of(context).colorScheme.secondary,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           const Text(
             'Aucun champ personnalisé',
-            style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+            style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           const Text(
             'Créez des champs personnalisés pour enrichir\nles informations de vos membres',
             textAlign: TextAlign.center,
             style: TextStyle(color: AppTheme.grey500),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: () => _editField(null),
             icon: const Icon(Icons.add),
             label: const Text('Créer un champ'),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           
           // Card d'aide sur les types de champs
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -254,7 +254,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                         Icons.help_outline,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Types de champs disponibles',
                         style: TextStyle(
@@ -264,7 +264,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   _buildFieldTypeInfo(Icons.text_fields, 'Texte', 'Champ texte libre'),
                   _buildFieldTypeInfo(Icons.numbers, 'Nombre', 'Nombre entier ou décimal'),
                   _buildFieldTypeInfo(Icons.calendar_today, 'Date', 'Sélecteur de date'),
@@ -289,16 +289,16 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
       child: Row(
         children: [
           Icon(icon, size: 16, color: AppTheme.grey600),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             name,
             style: const TextStyle(fontWeight: AppTheme.fontMedium),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               '- $description',
-              style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+              style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
             ),
           ),
         ],
@@ -311,11 +311,11 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
       children: [
         // Card d'information d'accès (version condensée)
         Container(
-          margin: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Card(
             color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               child: Row(
                 children: [
                   Icon(
@@ -323,12 +323,12 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                     size: 16,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Accessible depuis : Personnes → Menu (⋮) → Champs personnalisés',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                     ),
@@ -372,7 +372,7 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                   Text(
                     field.helpText!,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey500,
                     ),
                   ),
@@ -392,11 +392,11 @@ class _CustomFieldsManagementPageState extends State<CustomFieldsManagementPage>
                       'Requis',
                       style: TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 10,
+                        fontSize: AppTheme.fontSize10,
                       ),
                     ),
                   ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     switch (value) {

@@ -60,7 +60,7 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
   Widget build(BuildContext context) {
     if (_tabs.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           border: Border.all(color: AppTheme.grey500),
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -106,16 +106,19 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
     required String tabStyle,
     required Color indicatorColor,
   }) {
-    final tabBar = TabBar(
-      controller: _tabController,
-      isScrollable: _tabs.length > 3,
-      indicatorColor: indicatorColor,
-      labelColor: indicatorColor,
-      unselectedLabelColor: AppTheme.grey500,
-      tabs: _tabs.map((tab) => Tab(
-        icon: showIcons ? Icon(tab.icon) : null,
-        text: tab.title,
-      )).toList(),
+    final tabBar = Container(
+      color: AppTheme.primaryColor, // Couleur d'arrière-plan identique à l'AppBar
+      child: TabBar(
+        controller: _tabController,
+        isScrollable: _tabs.length > 3,
+        indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
+        labelColor: AppTheme.onPrimaryColor, // Texte blanc pour onglet sélectionné
+        unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+        tabs: _tabs.map((tab) => Tab(
+          icon: showIcons ? Icon(tab.icon) : null,
+          text: tab.title,
+        )).toList(),
+      ),
     );
 
     final tabBarView = TabBarView(
@@ -169,7 +172,7 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
   Widget _buildTabContent(TabData tab) {
     if (tab.components.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -179,20 +182,20 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
                 size: 48,
                 color: AppTheme.grey500,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Onglet "${tab.title}" vide',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: AppTheme.grey500,
                   fontWeight: AppTheme.fontMedium,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Ajoutez des composants pour créer le contenu',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: AppTheme.grey500,
                 ),
               ),
@@ -203,7 +206,7 @@ class _CustomTabsWidgetState extends State<CustomTabsWidget>
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: tab.components.map((component) {
           return Padding(

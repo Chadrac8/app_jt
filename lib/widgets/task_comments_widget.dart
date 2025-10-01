@@ -86,7 +86,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.error, size: 64, color: AppTheme.errorColor),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text('Erreur: ${snapshot.error}'),
                     ],
                   ),
@@ -101,14 +101,14 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.chat_bubble_outline, size: 64, color: AppTheme.grey400),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun commentaire',
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           color: AppTheme.grey600,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Ajoutez le premier commentaire pour démarrer la discussion',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -123,7 +123,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
 
               return ListView.builder(
                 controller: _scrollController,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 itemCount: comments.length,
                 itemBuilder: (context, index) {
                   final comment = comments[index];
@@ -165,7 +165,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -182,11 +182,11 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                         style: const TextStyle(
                           color: AppTheme.white100,
                           fontWeight: AppTheme.fontBold,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,7 +212,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                   ],
                 ),
                 
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 // Comment content
                 Text(
@@ -229,7 +229,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
 
   Widget _buildCommentInput() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         border: Border(
@@ -245,11 +245,11 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                 decoration: InputDecoration(
                   hintText: 'Ajouter un commentaire...',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                     borderSide: BorderSide(color: AppTheme.grey300!),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
                     borderSide: BorderSide(color: AppTheme.primaryColor),
                   ),
                   contentPadding: const EdgeInsets.symmetric(
@@ -261,7 +261,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                 textCapitalization: TextCapitalization.sentences,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               child: IconButton(
@@ -276,7 +276,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                 style: IconButton.styleFrom(
                   backgroundColor: AppTheme.primaryColor,
                   foregroundColor: AppTheme.white100,
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                 ),
               ),
             ),

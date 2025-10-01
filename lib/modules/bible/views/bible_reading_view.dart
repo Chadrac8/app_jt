@@ -12,6 +12,7 @@ import '../widgets/bible_search_page.dart';
 import '../widgets/book_chapter_selector.dart';
 import '../widgets/verse_actions_dialog.dart';
 import '../widgets/reading_settings_dialog.dart';
+import '../../../theme.dart';
 
 class BibleReadingView extends StatefulWidget {
   final bool isAdminMode;
@@ -216,16 +217,16 @@ class _BibleReadingViewState extends State<BibleReadingView> {
             size: 80,
             color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Sélectionnez un livre et un chapitre',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontMedium,
               color: colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           FilledButton.icon(
             onPressed: _showBookChapterSelector,
             icon: const Icon(Icons.library_books_outlined),
@@ -301,12 +302,12 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                   Text(
                     book.name,
                     style: GoogleFonts.inter(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                       color: colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
@@ -316,7 +317,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                     child: Text(
                       '$_selectedChapter',
                       style: GoogleFonts.inter(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                         color: colorScheme.onPrimaryContainer,
                       ),
@@ -364,7 +365,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                           size: 20,
                           color: colorScheme.onSurfaceVariant,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Marquer ce chapitre',
                           style: GoogleFonts.inter(
@@ -384,7 +385,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                           size: 20,
                           color: colorScheme.onSurfaceVariant,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Partager',
                           style: GoogleFonts.inter(
@@ -404,7 +405,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                           size: 20,
                           color: colorScheme.onSurfaceVariant,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Taille du texte',
                           style: TextStyle(
@@ -423,7 +424,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                           size: 20,
                           color: (_isDarkMode ? AppTheme.white100 : AppTheme.textTertiaryColor).withOpacity(0.8),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Text(
                           'Paramètres',
                           style: TextStyle(
@@ -449,7 +450,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
         child: Text(
           'Chapitre non trouvé',
           style: GoogleFonts.crimsonText(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             color: (_isDarkMode ? AppTheme.white100 : AppTheme.textTertiaryColor).withOpacity(0.8),
             fontWeight: AppTheme.fontMedium,
           ),
@@ -464,7 +465,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
       padding: const EdgeInsets.fromLTRB(24, 32, 24, 120),
       child: Container(
         decoration: BoxDecoration(
-          color: _isDarkMode ? const Color(0xFF1E1E1E) : AppTheme.surfaceColor,
+          color: _isDarkMode ? AppTheme.darkModeBackground : AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           boxShadow: [
             BoxShadow(
@@ -474,7 +475,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
             ),
           ],
         ),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -500,17 +501,17 @@ class _BibleReadingViewState extends State<BibleReadingView> {
           Text(
             book.name.toUpperCase(),
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontSemiBold,
               color: colorScheme.primary,
               letterSpacing: 0.5,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Chapitre $chapter',
             style: GoogleFonts.inter(
-              fontSize: 32,
+              fontSize: AppTheme.fontSize32,
               fontWeight: AppTheme.fontBold,
               color: colorScheme.onSurface,
               height: 1.2,
@@ -522,7 +523,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
             width: 60,
             decoration: BoxDecoration(
               color: colorScheme.primary,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(AppTheme.radius2),
             ),
           ),
         ],
@@ -558,7 +559,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
         onLongPress: () => _handleVerseLongPress(verseKey, verseNumber, verseText, bookName, chapter),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: isSelected
                 ? colorScheme.primaryContainer.withValues(alpha: 0.3)
@@ -617,19 +618,19 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                       onTap: () => _showNotePopup(verseKey, _notes[verseKey]!),
                       child: Container(
                         margin: const EdgeInsets.only(left: 8),
-                        padding: const EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(AppTheme.space6),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withOpacity(0.15),
+                          color: AppTheme.successColorBright.withAlpha((255 * AppTheme.opacity15).round()),
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           border: Border.all(
-                            color: const Color(0xFF10B981).withOpacity(0.3),
+                            color: AppTheme.successColorBright.withAlpha((255 * AppTheme.opacityLow).round()),
                             width: 1,
                           ),
                         ),
                         child: const Icon(
                           Icons.sticky_note_2_rounded,
                           size: 16,
-                          color: Color(0xFF10B981),
+                          color: AppTheme.successColorBright,
                         ),
                       ),
                     ),
@@ -644,7 +645,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
 
   Widget _buildContinuousTextContent(List<String> verses, BibleBook book, int chapter) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(AppTheme.spaceSmall),
       child: GestureDetector(
         onLongPress: () {
           if (!_isMultiSelectMode && verses.isNotEmpty) {
@@ -706,7 +707,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                           : (_isDarkMode ? AppTheme.white100.withOpacity(0.87) : AppTheme.black100.withOpacity(0.87)),
                       shadows: isFavorite ? [
                         Shadow(
-                          color: Colors.amber.withOpacity(0.3),
+                          color: AppTheme.warningColor.withOpacity(0.3),
                           blurRadius: 2,
                         ),
                       ] : null,
@@ -756,7 +757,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                 foregroundColor: colorScheme.onSecondaryContainer,
                 elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 ),
                 child: const Icon(
                   Icons.chevron_left_rounded,
@@ -775,7 +776,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                 foregroundColor: colorScheme.onSecondaryContainer,
                 elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 ),
                 child: const Icon(
                   Icons.chevron_right_rounded,
@@ -827,7 +828,7 @@ class _BibleReadingViewState extends State<BibleReadingView> {
                 color: AppTheme.white100,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Navigation vers ${result['book']} ${result['chapter']}:${result['verse']}',
                 style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium),

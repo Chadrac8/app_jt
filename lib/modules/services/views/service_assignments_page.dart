@@ -6,6 +6,7 @@ import '../../../services/services_firebase_service.dart';
 import '../../../services/firebase_service.dart';
 import '../../../auth/auth_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 
 class ServiceAssignmentsPage extends StatefulWidget {
@@ -343,7 +344,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,7 +371,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
         
         // Filters and search
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               TextField(
@@ -384,7 +385,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   setState(() => _searchQuery = value);
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -396,7 +397,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                         if (selected) setState(() => _statusFilter = 'all');
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Invités'),
                       selected: _statusFilter == 'invited',
@@ -404,7 +405,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                         if (selected) setState(() => _statusFilter = 'invited');
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Acceptés'),
                       selected: _statusFilter == 'accepted',
@@ -412,7 +413,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                         if (selected) setState(() => _statusFilter = 'accepted');
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Refusés'),
                       selected: _statusFilter == 'declined',
@@ -420,7 +421,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                         if (selected) setState(() => _statusFilter = 'declined');
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     FilterChip(
                       label: const Text('Confirmés'),
                       selected: _statusFilter == 'confirmed',
@@ -456,7 +457,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
               size: 64,
               color: Theme.of(context).colorScheme.outline,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _assignments.isEmpty 
                   ? 'Aucune assignation pour ce service'
@@ -465,7 +466,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                 color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Utilisez l\'onglet "Nouvelle assignation" pour ajouter des personnes.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -539,7 +540,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   '${team.name} • ${position.name}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
@@ -550,7 +551,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     assignment.statusLabel,
                     style: TextStyle(
                       color: _getStatusColor(assignment.status),
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontMedium,
                     ),
                   ),
@@ -566,7 +567,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     child: Row(
                       children: [
                         Icon(Icons.check, color: AppTheme.greenStandard),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Accepter'),
                       ],
                     ),
@@ -576,7 +577,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     child: Row(
                       children: [
                         Icon(Icons.close, color: AppTheme.redStandard),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Refuser'),
                       ],
                     ),
@@ -588,7 +589,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     child: Row(
                       children: [
                         Icon(Icons.verified, color: AppTheme.blueStandard),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Confirmer'),
                       ],
                     ),
@@ -599,7 +600,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   child: Row(
                     children: [
                       Icon(Icons.note),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppTheme.spaceSmall),
                       Text('Notes'),
                     ],
                   ),
@@ -609,7 +610,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   child: Row(
                     children: [
                       Icon(Icons.delete, color: AppTheme.redStandard),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppTheme.spaceSmall),
                       Text('Supprimer'),
                     ],
                   ),
@@ -627,7 +628,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
       children: [
         // Header
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -638,7 +639,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Sélectionnez un poste puis assignez des personnes pour le service "${widget.service.name}".',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -668,14 +669,14 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
               size: 64,
               color: Theme.of(context).colorScheme.outline,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune équipe assignée',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Ajoutez des équipes à ce service pour pouvoir faire des assignations.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -708,7 +709,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                     shape: BoxShape.circle,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     team.name,
@@ -731,7 +732,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                   children: [
                     if (position.description.isNotEmpty)
                       Text(position.description),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Row(
                       children: [
                         Icon(
@@ -740,10 +741,10 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                               : Icons.person,
                           size: 16,
                           color: position.isLeaderPosition 
-                              ? Colors.amber 
+                              ? AppTheme.warningColor 
                               : Theme.of(context).colorScheme.outline,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           '$existingAssignments/${position.maxAssignments} assigné(s)',
                           style: TextStyle(
@@ -934,7 +935,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
       case 'tentative':
         return AppTheme.orangeStandard;
       case 'confirmed':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       default:
         return AppTheme.grey500;
     }

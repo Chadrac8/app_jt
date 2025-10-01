@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../../theme.dart';
+import '../../../theme.dart';
 import '../services/branham_scraping_service.dart';
 import '../services/ios_branham_service.dart';
 
@@ -122,13 +122,13 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                         size: 64,
                         color: AppTheme.errorColor,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         _error!,
                         style: const TextStyle(color: AppTheme.textPrimaryColor),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       ElevatedButton(
                         onPressed: _loadContent,
                         style: ElevatedButton.styleFrom(
@@ -158,7 +158,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                             // Header avec date
                             Container(
                               margin: const EdgeInsets.only(bottom: 32),
-                              padding: const EdgeInsets.all(24),
+                              padding: const EdgeInsets.all(AppTheme.spaceLarge),
                               decoration: BoxDecoration(
                                 color: AppTheme.surfaceColor,
                                 borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
@@ -185,22 +185,22 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                                       size: 28,
                                     ),
                                   ),
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: AppTheme.spaceMedium),
                                   const Text(
                                     'Pain quotidien',
                                     style: TextStyle(
                                       color: Color(0xFF1A1A1A),
-                                      fontSize: 24,
+                                      fontSize: AppTheme.fontSize24,
                                       fontWeight: AppTheme.fontBold,
                                       letterSpacing: -0.5,
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: AppTheme.spaceSmall),
                                   Text(
                                     _quote!.date.isNotEmpty ? _quote!.date : _getFormattedDate(),
                                     style: const TextStyle(
                                       color: AppTheme.textSecondaryColor,
-                                      fontSize: 16,
+                                      fontSize: AppTheme.fontSize16,
                                       fontWeight: AppTheme.fontMedium,
                                     ),
                                   ),
@@ -211,7 +211,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                             // Page continue avec verset et citation
                             _buildContinuousContent(),
 
-                            const SizedBox(height: 32),
+                            const SizedBox(height: AppTheme.spaceXLarge),
 
                             // Source attribution
                             Center(
@@ -219,13 +219,13 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                                 'Source : www.branham.org',
                                 style: TextStyle(
                                   color: AppTheme.textSecondaryColor.withOpacity(0.6),
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontRegular,
                                 ),
                               ),
                             ),
 
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppTheme.spaceMedium),
                           ],
                         ),
                       ),
@@ -268,13 +268,13 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   const Expanded(
                     child: Text(
                       'Verset du jour',
                       style: TextStyle(
                         color: Color(0xFF1A1A1A),
-                        fontSize: 20,
+                        fontSize: AppTheme.fontSize20,
                         fontWeight: AppTheme.fontBold,
                         letterSpacing: -0.3,
                       ),
@@ -282,7 +282,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Contenu du verset
               Text(
@@ -297,7 +297,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
               ),
               
               if (_quote!.dailyBreadReference.isNotEmpty) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Container(
@@ -312,7 +312,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                       _quote!.dailyBreadReference,
                       style: const TextStyle(
                         color: AppTheme.surfaceColor,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontSemiBold,
                         letterSpacing: 0.3,
                       ),
@@ -324,7 +324,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
 
             // Séparateur élégant
             if (_quote!.dailyBread.isNotEmpty && _quote!.text.isNotEmpty) ...[
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
               Row(
                 children: [
                   Expanded(
@@ -343,7 +343,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -370,7 +370,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
             ],
 
             // Citation du jour
@@ -390,13 +390,13 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   const Expanded(
                     child: Text(
                       'Citation du jour',
                       style: TextStyle(
                         color: Color(0xFF1A1A1A),
-                        fontSize: 20,
+                        fontSize: AppTheme.fontSize20,
                         fontWeight: AppTheme.fontBold,
                         letterSpacing: -0.3,
                       ),
@@ -404,7 +404,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Contenu de la citation
               Column(
@@ -414,14 +414,14 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                     '"${_quote!.text}"',
                     style: const TextStyle(
                       color: Color(0xFF1E293B),
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontMedium,
                       height: 1.6,
                       letterSpacing: 0.2,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Informations sur la prédication
                   Column(
@@ -432,18 +432,18 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                           _quote!.sermonTitle,
                           style: const TextStyle(
                             color: Color(0xFFAA6C39),
-                            fontSize: 15,
+                            fontSize: AppTheme.fontSize15,
                             fontWeight: AppTheme.fontSemiBold,
                             letterSpacing: 0.1,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                       ],
                       Text(
                         '— William Marrion Branham',
                         style: TextStyle(
                           color: const Color(0xFF1E293B).withOpacity(0.7),
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -454,7 +454,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
               
               // Bouton audio si disponible
               if (_quote!.audioUrl.isNotEmpty) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Container(
                   width: double.infinity,
                   height: 48,
@@ -494,12 +494,12 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                               color: Color(0xFFAA6C39),
                               size: 20,
                             ),
-                            SizedBox(width: 8),
+                            SizedBox(width: AppTheme.spaceSmall),
                             Text(
                               'Écouter la prédication',
                               style: TextStyle(
                                 color: Color(0xFFAA6C39),
-                                fontSize: 15,
+                                fontSize: AppTheme.fontSize15,
                                 fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),

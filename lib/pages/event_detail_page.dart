@@ -350,7 +350,7 @@ class _EventDetailPageState extends State<EventDetailPage>
       onRefresh: _refreshEventData,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             // Statut et visibilité
@@ -373,7 +373,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                       style: TextStyle(
                         color: _statusColor,
                         fontWeight: AppTheme.fontMedium,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ),
@@ -386,7 +386,7 @@ class _EventDetailPageState extends State<EventDetailPage>
               ],
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Informations générales
             _buildInfoCard(
@@ -427,7 +427,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                               size: 20,
                               color: AppTheme.textSecondaryColor,
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Text(
                               'Description',
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -436,7 +436,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           _currentEvent!.description,
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -447,7 +447,7 @@ class _EventDetailPageState extends State<EventDetailPage>
               ],
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Inscriptions
             if (_currentEvent!.isRegistrationEnabled)
@@ -468,7 +468,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                 ],
               ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Récurrence
             if (_currentEvent!.isRecurring)
@@ -484,7 +484,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                 ],
               ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Métadonnées
             _buildInfoCard(
@@ -550,14 +550,14 @@ class _EventDetailPageState extends State<EventDetailPage>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -568,7 +568,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -577,7 +577,7 @@ class _EventDetailPageState extends State<EventDetailPage>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...children,
           ],
         ),
@@ -600,7 +600,7 @@ class _EventDetailPageState extends State<EventDetailPage>
             size: 16,
             color: AppTheme.textSecondaryColor,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               label,

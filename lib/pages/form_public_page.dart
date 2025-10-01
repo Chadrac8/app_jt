@@ -248,7 +248,7 @@ class _FormPublicPageState extends State<FormPublicPage>
               size: 64,
               color: AppTheme.errorColor,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -256,7 +256,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               _errorMessage!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -264,7 +264,7 @@ class _FormPublicPageState extends State<FormPublicPage>
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             ElevatedButton(
               onPressed: _loadForm,
               child: const Text('Réessayer'),
@@ -282,7 +282,7 @@ class _FormPublicPageState extends State<FormPublicPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppTheme.spaceLarge),
                 decoration: BoxDecoration(
                   color: AppTheme.successColor.withOpacity(0.1),
                   shape: BoxShape.circle,
@@ -293,7 +293,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                   color: AppTheme.successColor,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               Text(
                 'Formulaire soumis !',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -301,7 +301,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Container(
                 constraints: const BoxConstraints(maxWidth: 400),
                 child: Text(
@@ -312,7 +312,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                   textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppTheme.spaceXLarge),
               if (_form!.settings.redirectUrl != null)
                 ElevatedButton(
                   onPressed: () {
@@ -356,7 +356,7 @@ class _FormPublicPageState extends State<FormPublicPage>
               Expanded(
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(AppTheme.spaceLarge),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -369,7 +369,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                         ),
                       ),
                       if (_form!.description.isNotEmpty) ...[
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           _form!.description,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -378,7 +378,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                         ),
                       ],
                       
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                       
                       // Form fields
                       ...List.generate(_form!.fields.length, (index) {
@@ -386,7 +386,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                         return _buildField(field);
                       }),
                       
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                       
                       // Submit button
                       SizedBox(
@@ -413,26 +413,26 @@ class _FormPublicPageState extends State<FormPublicPage>
                                         valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white100),
                                       ),
                                     ),
-                                    SizedBox(width: 12),
+                                    SizedBox(width: AppTheme.space12),
                                     Text('Envoi en cours...'),
                                   ],
                                 )
                               : const Text(
                                   'Soumettre le formulaire',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: AppTheme.fontSize16,
                                     fontWeight: AppTheme.fontBold,
                                   ),
                                 ),
                         ),
                       ),
                       
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Form info
                       if (_form!.hasSubmissionLimit)
                         Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(AppTheme.space12),
                           decoration: BoxDecoration(
                             color: AppTheme.warningColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -444,12 +444,12 @@ class _FormPublicPageState extends State<FormPublicPage>
                                 color: AppTheme.warningColor,
                                 size: 16,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(
                                 'Limite de ${_form!.submissionLimit} soumissions',
                                 style: TextStyle(
                                   color: AppTheme.warningColor,
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                 ),
                               ),
                             ],
@@ -494,7 +494,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                 height: 2,
                 color: AppTheme.primaryColor,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 field.label,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -503,7 +503,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                 ),
               ),
               if (field.helpText != null) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   field.helpText!,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -523,7 +523,7 @@ class _FormPublicPageState extends State<FormPublicPage>
         );
       case 'instructions':
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -539,7 +539,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                 color: AppTheme.primaryColor,
                 size: 20,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Text(
                   field.label,
@@ -577,7 +577,7 @@ class _FormPublicPageState extends State<FormPublicPage>
                 '*',
                 style: TextStyle(
                   color: AppTheme.errorColor,
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
@@ -585,7 +585,7 @@ class _FormPublicPageState extends State<FormPublicPage>
         ),
         
         if (field.helpText != null) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             field.helpText!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -594,7 +594,7 @@ class _FormPublicPageState extends State<FormPublicPage>
           ),
         ],
         
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         
         // Input widget
         _buildInputWidget(field),
@@ -816,7 +816,7 @@ class _FormPublicPageState extends State<FormPublicPage>
               size: 48,
               color: AppTheme.textTertiaryColor,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Cliquez pour télécharger un fichier',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -849,14 +849,14 @@ class _FormPublicPageState extends State<FormPublicPage>
               size: 48,
               color: AppTheme.textTertiaryColor,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Zone de signature',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               'Fonctionnalité en développement',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

@@ -388,7 +388,7 @@ class _SongProjectionPageState extends State<SongProjectionPage>
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: AppTheme.grey500),
                     ),
                   ),
                   const SizedBox(width: AppTheme.spaceSmall),
@@ -451,19 +451,19 @@ class _SongProjectionPageState extends State<SongProjectionPage>
           itemBuilder: (context) => [
             PopupMenuItem(
               value: 20.0,
-              child: Text('Petit (20pt)', style: GoogleFonts.inter(fontSize: 14)),
+              child: Text('Petit (20pt)', style: GoogleFonts.inter(fontSize: AppTheme.fontSize14)),
             ),
             PopupMenuItem(
               value: 24.0,
-              child: Text('Moyen (24pt)', style: GoogleFonts.inter(fontSize: 16)),
+              child: Text('Moyen (24pt)', style: GoogleFonts.inter(fontSize: AppTheme.fontSize16)),
             ),
             PopupMenuItem(
               value: 32.0,
-              child: Text('Grand (32pt)', style: GoogleFonts.inter(fontSize: 18)),
+              child: Text('Grand (32pt)', style: GoogleFonts.inter(fontSize: AppTheme.fontSize18)),
             ),
             PopupMenuItem(
               value: 40.0,
-              child: Text('Très grand (40pt)', style: GoogleFonts.inter(fontSize: 20)),
+              child: Text('Très grand (40pt)', style: GoogleFonts.inter(fontSize: AppTheme.fontSize20)),
             ),
           ],
         ),
@@ -490,7 +490,7 @@ class _SongProjectionPageState extends State<SongProjectionPage>
           underline: Container(),
           style: GoogleFonts.inter(
             color: _textColor,
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
           ),
           items: SongModel.availableKeys.map((key) {
@@ -550,7 +550,7 @@ class _SongProjectionPageState extends State<SongProjectionPage>
             widget.song.title,
             style: GoogleFonts.inter(
               color: _textColor,
-              fontSize: 28,
+              fontSize: AppTheme.fontSize28,
               fontWeight: AppTheme.fontSemiBold,
               letterSpacing: -0.5,
               height: 1.2,
@@ -567,7 +567,7 @@ class _SongProjectionPageState extends State<SongProjectionPage>
               widget.song.authors,
               style: GoogleFonts.inter(
                 color: _textColor.withOpacity(0.7),
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontRegular,
                 fontStyle: FontStyle.italic,
                 letterSpacing: 0.1,
@@ -661,7 +661,7 @@ class _SongProjectionPageState extends State<SongProjectionPage>
                       color: isActive 
                           ? _textColor 
                           : _textColor.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                   );
                 }),
@@ -701,7 +701,7 @@ class _SongProjectionPageState extends State<SongProjectionPage>
                     '${_currentSection + 1} / ${_sections.length}',
                     style: GoogleFonts.inter(
                       color: _textColor,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontMedium,
                       letterSpacing: 0.1,
                     ),

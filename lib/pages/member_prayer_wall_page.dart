@@ -123,7 +123,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -134,25 +134,25 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                   color: AppTheme.primaryColor,
                   size: 24,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Mur de Prière Communautaire',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             const Text(
               'Partagez vos demandes, témoignages et actions de grâce avec la communauté',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.grey500,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -199,11 +199,11 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
     return Column(
       children: [
         Icon(icon, color: color, size: 20),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontBold,
             color: color,
           ),
@@ -211,7 +211,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
         Text(
           label,
           style: const TextStyle(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             color: AppTheme.grey500,
           ),
           textAlign: TextAlign.center,
@@ -226,7 +226,7 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       child: Padding(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(AppTheme.spaceXSmall),
         child: Row(
           children: [
             Expanded(
@@ -288,12 +288,12 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                     ? AppTheme.primaryColor 
                     : AppTheme.grey500,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Flexible(
                 child: Text(
                   label,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: isSelected ? AppTheme.fontSemiBold : FontWeight.normal,
                     color: isSelected 
                         ? AppTheme.primaryColor 
@@ -389,12 +389,12 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                           size: 64,
                           color: AppTheme.redStandard,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Erreur: ${snapshot.error}',
                           style: const TextStyle(color: AppTheme.redStandard),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         ElevatedButton(
                           onPressed: () => setState(() {}),
                           child: const Text('Réessayer'),
@@ -441,23 +441,23 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
                           size: 64,
                           color: AppTheme.grey400,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           emptyMessage,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             color: AppTheme.grey600,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           emptySubtitle,
                           style: const TextStyle(color: AppTheme.grey500),
                           textAlign: TextAlign.center,
                         ),
                         if (_selectedTab == 'all' || _selectedTab == 'my_prayers') ...[
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppTheme.spaceLarge),
                           ElevatedButton.icon(
                             onPressed: () => _navigateToPrayerForm(),
                             icon: const Icon(Icons.add),

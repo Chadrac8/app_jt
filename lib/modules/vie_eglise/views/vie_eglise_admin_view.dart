@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../widgets/admin_pour_vous_tab.dart';
 import '../widgets/admin_sermons_tab.dart';
+import '../../../theme.dart';
 
 class VieEgliseAdminView extends StatefulWidget {
   const VieEgliseAdminView({Key? key}) : super(key: key);
@@ -34,21 +35,21 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
           'Administration - Vie de l\'Église',
           style: GoogleFonts.poppins(
             fontWeight: AppTheme.fontSemiBold,
-            color: AppTheme.textPrimaryColor)),
-        backgroundColor: AppTheme.surfaceColor,
+            color: AppTheme.onPrimaryColor)), // Texte blanc sur fond primaire
+        backgroundColor: AppTheme.primaryColor, // Couleur primaire cohérente
         elevation: 1,
-        iconTheme: IconThemeData(color: AppTheme.textPrimaryColor),
+        iconTheme: const IconThemeData(color: Colors.white), // Icônes blanches
         bottom: TabBar(
           controller: _tabController,
-          labelColor: AppTheme.primaryColor,
-          unselectedLabelColor: AppTheme.textTertiaryColor,
-          indicatorColor: AppTheme.primaryColor,
+          labelColor: AppTheme.onPrimaryColor, // Texte blanc
+          unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+          indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc
           indicatorWeight: 3,
           labelStyle: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontSemiBold),
           unselectedLabelStyle: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium),
           tabs: const [
             Tab(
@@ -88,18 +89,18 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
             Icons.construction,
             size: 80,
             color: AppTheme.textTertiaryColor),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Text(
             'Administration $tabName',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 10),
+          const SizedBox(height: AppTheme.space10),
           Text(
             'Cette section sera bientôt disponible',
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.textSecondaryColor)),
         ]));
   }

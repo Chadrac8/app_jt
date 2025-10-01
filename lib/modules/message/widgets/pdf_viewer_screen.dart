@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../models/branham_message.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final BranhamMessage message;
@@ -123,7 +124,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Text(
             widget.message.title,
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
@@ -133,7 +134,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           Text(
             '${widget.message.formattedDate} • ${widget.message.location}',
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey500,
             ),
           ),
@@ -185,7 +186,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -200,26 +201,26 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     size: 64,
                     color: AppTheme.primaryColor,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     widget.message.title,
                     style: GoogleFonts.inter(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Cliquez sur le bouton ci-dessous pour ouvrir le PDF dans un nouvel onglet',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.grey500,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   ElevatedButton.icon(
                     onPressed: _openInBrowser,
                     icon: const Icon(Icons.open_in_new),
@@ -255,11 +256,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Chargement du PDF...',
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.primaryColor,
               ),
             ),
@@ -277,7 +278,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
                 color: AppTheme.redStandard,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -292,25 +293,25 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     size: 64,
                     color: AppTheme.redStandard,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Text(
                     'Erreur de chargement',
                     style: GoogleFonts.inter(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.redStandard,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     _error ?? 'Une erreur s\'est produite',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.redStandard,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -323,7 +324,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                           side: BorderSide(color: AppTheme.redStandard),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       ElevatedButton.icon(
                         onPressed: _openInBrowser,
                         icon: const Icon(Icons.open_in_new),

@@ -313,7 +313,7 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   decoration: BoxDecoration(
                     color: AppTheme.redStandard,
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -325,25 +325,25 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
                     size: 64,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 Text(
                   'Erreur de l\'Application',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: AppTheme.fontSize24,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.redStandard,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Une erreur inattendue s\'est produite. Veuillez redémarrer l\'application.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     color: AppTheme.grey500,
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppTheme.spaceXLarge),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
@@ -378,12 +378,12 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
               color: AppTheme.redStandard,
               size: 48,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur d\'affichage',
               style: TextStyle(
                 color: AppTheme.redStandard,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
@@ -413,15 +413,15 @@ class SafeAuthWrapper extends StatelessWidget {
                 color: AppTheme.orangeStandard,
                 size: 64,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               const Text(
                 'Erreur d\'authentification',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Impossible de charger le système d\'authentification.',
                 textAlign: TextAlign.center,

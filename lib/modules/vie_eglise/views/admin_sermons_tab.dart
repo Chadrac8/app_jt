@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../../theme.dart';
 import '../models/sermon.dart';
 import '../services/sermon_service.dart';
+import '../../../theme.dart';
 
 class AdminSermonsTab extends StatefulWidget {
   const AdminSermonsTab({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         boxShadow: [
@@ -74,16 +75,16 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                     Text(
                       'Gestion des Sermons',
                       style: GoogleFonts.poppins(
-                        fontSize: 24,
+                        fontSize: AppTheme.fontSize24,
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Ajoutez et gérez les sermons de l\'église',
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -93,7 +94,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
               _buildQuickStats(),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // Barre de recherche
           TextField(
             controller: _searchController,
@@ -145,7 +146,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
       builder: (context, snapshot) {
         final sermons = snapshot.data ?? [];
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -155,7 +156,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
               Text(
                 '${sermons.length}',
                 style: GoogleFonts.poppins(
-                  fontSize: 24,
+                  fontSize: AppTheme.fontSize24,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.primaryColor,
                 ),
@@ -163,7 +164,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
               Text(
                 'Sermons',
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.primaryColor,
                   fontWeight: AppTheme.fontMedium,
                 ),
@@ -197,11 +198,11 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                   size: 64,
                   color: AppTheme.redStandard,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
@@ -223,16 +224,16 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                   size: 64,
                   color: AppTheme.grey500,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun sermon',
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Commencez par ajouter votre premier sermon',
                   style: GoogleFonts.poppins(
@@ -245,7 +246,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: sermons.length,
           itemBuilder: (context, index) {
             final sermon = sermons[index];
@@ -272,7 +273,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -286,16 +287,16 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                       Text(
                         sermon.titre,
                         style: GoogleFonts.poppins(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         'Par ${sermon.orateur} • ${DateFormat('dd/MM/yyyy').format(sermon.date)}',
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.textSecondaryColor,
                         ),
                       ),
@@ -322,7 +323,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                       child: Row(
                         children: [
                           Icon(Icons.edit, size: 18, color: AppTheme.primaryColor),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(
                             'Modifier',
                             style: GoogleFonts.poppins(),
@@ -335,7 +336,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                       child: Row(
                         children: [
                           Icon(Icons.copy, size: 18, color: AppTheme.primaryColor),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(
                             'Dupliquer',
                             style: GoogleFonts.poppins(),
@@ -349,7 +350,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                       child: Row(
                         children: [
                           const Icon(Icons.delete, size: 18, color: AppTheme.redStandard),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(
                             'Supprimer',
                             style: GoogleFonts.poppins(color: AppTheme.redStandard),
@@ -363,11 +364,11 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             ),
 
             if (sermon.description != null && sermon.description!.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 sermon.description!,
                 style: GoogleFonts.poppins(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: AppTheme.textSecondaryColor,
                   height: 1.4,
                 ),
@@ -376,7 +377,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
               ),
             ],
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Statuts
             Row(
@@ -386,14 +387,14 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                   sermon.lienYoutube != null && sermon.lienYoutube!.isNotEmpty,
                   Icons.play_arrow,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildStatusChip(
                   'Notes',
                   sermon.notes != null && sermon.notes!.isNotEmpty,
                   Icons.notes,
                 ),
                 if (sermon.duree > 0) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
@@ -403,7 +404,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                     child: Text(
                       '${sermon.duree} min',
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -413,7 +414,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             ),
 
             if (sermon.tags.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Wrap(
                 spacing: 6,
                 runSpacing: 4,
@@ -426,7 +427,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                   child: Text(
                     tag,
                     style: GoogleFonts.poppins(
-                      fontSize: 11,
+                      fontSize: AppTheme.fontSize11,
                       color: AppTheme.primaryColor,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -457,11 +458,11 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             size: 14,
             color: isComplete ? AppTheme.greenStandard : AppTheme.orangeStandard,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: GoogleFonts.poppins(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: isComplete ? AppTheme.greenStandard : AppTheme.orangeStandard,
               fontWeight: AppTheme.fontMedium,
             ),
@@ -619,7 +620,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Orateur
                 TextFormField(
@@ -638,7 +639,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Date
                 InkWell(
@@ -669,7 +670,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Description
                 TextFormField(
@@ -683,7 +684,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                   ),
                   maxLines: 2,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Durée
                 TextFormField(
@@ -697,7 +698,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Lien YouTube
                 TextFormField(
@@ -710,7 +711,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Tags
                 TextFormField(
@@ -724,7 +725,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                     hintText: 'ex: foi, espoir, amour',
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Notes
                 TextFormField(

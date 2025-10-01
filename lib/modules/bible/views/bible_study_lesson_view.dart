@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class BibleStudyLessonView extends StatefulWidget {
   final BibleStudy study;
@@ -167,7 +168,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
         title: Text(
           widget.lesson.title,
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.white100,
           ),
@@ -185,7 +186,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -193,11 +194,11 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                   Text(
                     'Leçon ${widget.lessonIndex + 1} sur ${widget.study.lessons.length}',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.white100.withOpacity(0.9),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   LinearProgressIndicator(
                     value: (widget.lessonIndex + 1) / widget.study.lessons.length,
                     backgroundColor: AppTheme.white100.withOpacity(0.3),
@@ -212,7 +213,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
       actions: [
         if (_isLessonCompleted)
           const Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(AppTheme.spaceSmall),
             child: Icon(
               Icons.check_circle,
               color: AppTheme.greenStandard,
@@ -224,7 +225,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
 
   Widget _buildContent(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -233,12 +234,12 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
             Text(
               'Objectifs de la leçon',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: theme.colorScheme.onBackground,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...widget.lesson.objectives.map((objective) => Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
@@ -249,12 +250,12 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                     size: 20,
                     color: theme.colorScheme.primary,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       objective,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: theme.colorScheme.onBackground.withOpacity(0.8),
                       ),
                     ),
@@ -262,22 +263,22 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                 ],
               ),
             )),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
           ],
 
           // Contenu de la leçon
           Text(
             'Contenu',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onBackground,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -288,29 +289,29 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
             child: Text(
               widget.lesson.content,
               style: GoogleFonts.inter(
-                fontSize: 15,
+                fontSize: AppTheme.fontSize15,
                 height: 1.6,
                 color: theme.colorScheme.onBackground,
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Références bibliques
           if (widget.lesson.bibleReferences.isNotEmpty) ...[
             Text(
               'Références bibliques',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: theme.colorScheme.onBackground,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...widget.lesson.bibleReferences.map((ref) => Container(
               width: double.infinity,
               margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -324,26 +325,26 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                   Text(
                     ref.reference,
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: theme.colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     ref.text,
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontStyle: FontStyle.italic,
                       color: theme.colorScheme.onBackground.withOpacity(0.8),
                     ),
                   ),
                   if (ref.commentary.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       ref.commentary,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: theme.colorScheme.onBackground.withOpacity(0.7),
                       ),
                     ),
@@ -351,7 +352,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                 ],
               ),
             )),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
           ],
 
           // Questions de réflexion
@@ -359,19 +360,19 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
             Text(
               'Questions de réflexion',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: theme.colorScheme.onBackground,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...widget.lesson.questions.asMap().entries.map((entry) {
               final index = entry.key;
               final question = entry.value;
               return Container(
                 width: double.infinity,
                 margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surface,
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -396,19 +397,19 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                             child: Text(
                               '${index + 1}',
                               style: GoogleFonts.inter(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 fontWeight: AppTheme.fontSemiBold,
                                 color: AppTheme.white100,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: Text(
                             question.question,
                             style: GoogleFonts.inter(
-                              fontSize: 15,
+                              fontSize: AppTheme.fontSize15,
                               fontWeight: AppTheme.fontMedium,
                               color: theme.colorScheme.onBackground,
                             ),
@@ -417,7 +418,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                       ],
                     ),
                     if (question.type == 'reflection') ...[
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       TextField(
                         maxLines: 3,
                         decoration: InputDecoration(
@@ -425,7 +426,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
-                          contentPadding: const EdgeInsets.all(12),
+                          contentPadding: const EdgeInsets.all(AppTheme.space12),
                         ),
                         onChanged: (value) {
                           _questionAnswers[question.id] = value;
@@ -436,21 +437,21 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                       ),
                     ],
                     if (question.hints.isNotEmpty) ...[
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       ExpansionTile(
                         title: Text(
                           'Aide',
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: theme.colorScheme.primary,
                           ),
                         ),
                         children: question.hints.map((hint) => Padding(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(AppTheme.spaceSmall),
                           child: Text(
                             '• $hint',
                             style: GoogleFonts.inter(
-                              fontSize: 13,
+                              fontSize: AppTheme.fontSize13,
                               color: theme.colorScheme.onBackground.withOpacity(0.7),
                             ),
                           ),
@@ -461,13 +462,13 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                 ),
               );
             }),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
           ],
 
           // Section de prière/méditation
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withOpacity(0.05),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -485,22 +486,22 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                       color: theme.colorScheme.primary,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Moment de prière et méditation',
                       style: GoogleFonts.inter(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         fontWeight: AppTheme.fontSemiBold,
                         color: theme.colorScheme.primary,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Text(
                   'Prenez quelques minutes pour prier et méditer sur ce que vous avez appris dans cette leçon. Demandez à Dieu de vous aider à appliquer ces vérités dans votre vie quotidienne.',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     height: 1.5,
                     color: theme.colorScheme.onBackground.withOpacity(0.8),
                   ),
@@ -519,7 +520,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
         _answeredQuestions.every((answered) => answered);
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         boxShadow: [
@@ -551,7 +552,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                   ),
                 ),
               ),
-            if (widget.lessonIndex > 0) const SizedBox(width: 12),
+            if (widget.lessonIndex > 0) const SizedBox(width: AppTheme.space12),
             
             // Bouton principal
             Expanded(

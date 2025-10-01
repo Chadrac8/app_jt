@@ -342,16 +342,16 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildWorkflowInfoCard(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildStatusCard(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildNotesCard(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildStepsCard(),
                 ],
               ),
@@ -362,7 +362,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
   Widget _buildWorkflowInfoCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -372,7 +372,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                   Icons.track_changes,
                   color: Color(int.parse(_currentWorkflow?.color.replaceFirst('#', '0xFF') ?? '0xFF2196F3')),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Informations du suivi',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -381,7 +381,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.person),
@@ -409,7 +409,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
   Widget _buildStatusCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -419,7 +419,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: const InputDecoration(
@@ -439,7 +439,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                           shape: BoxShape.circle,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(_statusLabels[status] ?? status),
                     ],
                   ),
@@ -463,7 +463,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
   Widget _buildNotesCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -473,7 +473,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextField(
               controller: _notesController,
               maxLines: 4,
@@ -493,7 +493,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
   Widget _buildStepsCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -512,11 +512,11 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_currentWorkflow?.steps.isEmpty ?? true)
               const Center(
                 child: Padding(
-                  padding: EdgeInsets.all(32),
+                  padding: EdgeInsets.all(AppTheme.spaceXLarge),
                   child: Text('Aucune étape définie'),
                 ),
               )
@@ -544,7 +544,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                           '\${index + 1}',
                           style: TextStyle(
                             color: isCompleted ? AppTheme.white100 : AppTheme.grey500,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
@@ -562,7 +562,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                       children: [
                         if (step.description.isNotEmpty)
                           Text(step.description),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Row(
                           children: [
                             Icon(
@@ -570,16 +570,16 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                               size: 14,
                               color: AppTheme.grey500,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               '\${step.estimatedDuration} min',
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 color: AppTheme.grey500,
                               ),
                             ),
                             if (step.isRequired) ...[
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
@@ -589,7 +589,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                                 child: Text(
                                   'Requis',
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: AppTheme.fontSize10,
                                     color: AppTheme.redStandard,
                                     fontWeight: AppTheme.fontBold,
                                   ),
@@ -599,7 +599,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                           ],
                         ),
                         if (step.assignedToName != null) ...[
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Row(
                             children: [
                               Icon(
@@ -607,11 +607,11 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
                                 size: 14,
                                 color: AppTheme.blueStandard,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 'Assigné à : \${step.assignedToName}',
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   color: AppTheme.blueStandard,
                                   fontWeight: AppTheme.fontMedium,
                                 ),
@@ -767,7 +767,7 @@ class _StepEditDialogState extends State<_StepEditDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextField(
               controller: _descriptionController,
               maxLines: 3,
@@ -777,7 +777,7 @@ class _StepEditDialogState extends State<_StepEditDialog> {
                 alignLabelWithHint: true,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextField(
               controller: _durationController,
               keyboardType: TextInputType.number,
@@ -786,7 +786,7 @@ class _StepEditDialogState extends State<_StepEditDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             CheckboxListTile(
               title: const Text('Étape requise'),
               value: _isRequired,

@@ -215,7 +215,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +230,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                               _priorityColor,
                               Icons.flag,
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             _buildBadge(
                               _currentTask!.statusLabel,
                               _statusColor,
@@ -239,7 +239,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                           ],
                         ),
                         
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppTheme.space12),
                         
                         // Due date if present
                         if (_currentTask!.dueDate != null)
@@ -252,12 +252,12 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                                 color: AppTheme.white100,
                                 size: 16,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 _formatDateTime(_currentTask!.dueDate!),
                                 style: const TextStyle(
                                   color: AppTheme.white100,
-                                  fontSize: 14,
+                                  fontSize: AppTheme.fontSize14,
                                 ),
                               ),
                             ],
@@ -358,12 +358,12 @@ class _TaskDetailPageState extends State<TaskDetailPage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: AppTheme.white100),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: const TextStyle(
               color: AppTheme.white100,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -374,7 +374,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
 
   Widget _buildDetailsTab() {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       children: [
         // Description
         if (_currentTask!.description.isNotEmpty) ...[
@@ -388,7 +388,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         // Details
@@ -421,7 +421,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
           ],
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Tags
         if (_currentTask!.tags.isNotEmpty) ...[
@@ -441,7 +441,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         // Attachments
@@ -462,7 +462,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
               }).toList()),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         // Linked items
@@ -505,14 +505,14 @@ class _TaskDetailPageState extends State<TaskDetailPage>
   }) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(icon, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -522,7 +522,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...children,
           ],
         ),
@@ -540,7 +540,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
       child: Row(
         children: [
           Icon(icon, size: 16, color: AppTheme.grey600),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             '$label:',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -548,7 +548,7 @@ class _TaskDetailPageState extends State<TaskDetailPage>
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               value,

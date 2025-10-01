@@ -146,7 +146,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
         children: [
           // Search bar
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Expanded(
@@ -181,7 +181,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 // Filter button
                 Material(
                   color: _isFilterExpanded ? AppTheme.primaryColor : AppTheme.white100,
@@ -222,7 +222,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                     '$_totalActiveFilters',
                                     style: const TextStyle(
                                       color: AppTheme.white100,
-                                      fontSize: 10,
+                                      fontSize: AppTheme.fontSize10,
                                       fontWeight: AppTheme.fontBold,
                                     ),
                                   ),
@@ -251,7 +251,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                       child: Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(AppTheme.spaceMedium),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -273,7 +273,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                 ],
                               ),
                               
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppTheme.spaceMedium),
                               
                               // Status filters
                               Text(
@@ -282,7 +282,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                   fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppTheme.spaceSmall),
                               Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
@@ -298,7 +298,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                 }).toList(),
                               ),
                               
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppTheme.spaceMedium),
                               
                               // Priority filters
                               Text(
@@ -307,7 +307,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                   fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppTheme.spaceSmall),
                               Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
@@ -327,7 +327,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                 }).toList(),
                               ),
                               
-                              const SizedBox(height: 16),
+                              const SizedBox(height: AppTheme.spaceMedium),
                               
                               // Date range filter
                               Text(
@@ -336,7 +336,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                   fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppTheme.spaceSmall),
                               Row(
                                 children: [
                                   Expanded(
@@ -351,7 +351,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                     ),
                                   ),
                                   if (widget.dueBefore != null || widget.dueAfter != null) ...[
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: AppTheme.spaceSmall),
                                     IconButton(
                                       onPressed: () => _onDateRangeChanged(null, null),
                                       icon: const Icon(Icons.clear),
@@ -362,9 +362,9 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                               ),
                               
                               if (widget.dueBefore != null && widget.dueAfter != null) ...[
-                                const SizedBox(height: 8),
+                                const SizedBox(height: AppTheme.spaceSmall),
                                 Container(
-                                  padding: const EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                                   decoration: BoxDecoration(
                                     color: AppTheme.primaryColor.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -373,7 +373,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                     'Du ${_formatDate(widget.dueAfter!)} au ${_formatDate(widget.dueBefore!)}',
                                     style: TextStyle(
                                       color: AppTheme.primaryColor,
-                                      fontSize: 12,
+                                      fontSize: AppTheme.fontSize12,
                                     ),
                                   ),
                                 ),

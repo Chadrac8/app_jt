@@ -676,13 +676,13 @@ class _PersonFormPageState extends State<PersonFormPage>
                   item,
                   style: const TextStyle(fontWeight: AppTheme.fontBold),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     country,
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                     ),
                   ),
                 ),
@@ -1030,7 +1030,7 @@ class _PersonFormPageState extends State<PersonFormPage>
           actions: [
             if (_formController.isLoading)
               const Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppTheme.spaceMedium),
                 child: SizedBox(
                   width: 20,
                   height: 20,
@@ -1061,13 +1061,13 @@ class _PersonFormPageState extends State<PersonFormPage>
                 key: _formKey,
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Profile Image Section
                       _buildProfileImageSection(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Basic Information
                       _buildSection(
@@ -1089,7 +1089,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                   },
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: AppTheme.spaceMedium),
                               Expanded(
                                 child: _buildTextField(
                                   controller: _lastNameController,
@@ -1105,7 +1105,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           _buildTextField(
                             controller: _emailController,
                             label: 'Email *',
@@ -1121,7 +1121,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                               return null;
                             },
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           // Section téléphone avec code pays et pays
                           Row(
                             children: [
@@ -1130,7 +1130,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                 width: 120,
                                 child: _buildCountryCodeDropdown(),
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppTheme.space12),
                               // Champ téléphone
                               Expanded(
                                 child: _buildTextField(
@@ -1142,12 +1142,12 @@ class _PersonFormPageState extends State<PersonFormPage>
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           // Dropdown pour le pays
                           _buildCountryDropdown(),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Personal Information
                       _buildSection(
@@ -1159,7 +1159,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                             onTap: _selectBirthDate,
                             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             child: Container(
-                              padding: const EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(AppTheme.spaceMedium),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
@@ -1172,7 +1172,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                     Icons.cake,
                                     color: Theme.of(context).colorScheme.primary,
                                   ),
-                                  const SizedBox(width: 16),
+                                  const SizedBox(width: AppTheme.spaceMedium),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1204,7 +1204,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Gender and Marital Status
                           Row(
@@ -1218,7 +1218,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                   onChanged: (value) => setState(() => _gender = value),
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: AppTheme.spaceMedium),
                               Expanded(
                                 child: _buildDropdown(context,
                                   value: _maritalStatus,
@@ -1230,20 +1230,20 @@ class _PersonFormPageState extends State<PersonFormPage>
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           _buildTextField(
                             controller: _addressController,
                             label: 'Adresse',
                             icon: Icons.home_outlined,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           _buildTextField(
                             controller: _addressComplementController,
                             label: 'Complément d\'adresse',
                             icon: Icons.add_home_outlined,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           Row(
                             children: [
                               Expanded(
@@ -1255,7 +1255,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: AppTheme.spaceMedium),
                               Expanded(
                                 flex: 2,
                                 child: _buildTextField(
@@ -1268,7 +1268,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Children Section
                       _buildSection(
@@ -1295,7 +1295,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                     color: Theme.of(context).colorScheme.secondary,
                                     size: 20,
                                   ),
-                                  const SizedBox(width: 12),
+                                  const SizedBox(width: AppTheme.space12),
                                   Expanded(
                                     child: Text(
                                       child,
@@ -1331,7 +1331,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Tags Section
                       _buildSection(
@@ -1360,7 +1360,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                 );
                               }).toList(),
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppTheme.space12),
                           ],
                           ElevatedButton.icon(
                             onPressed: _addTag,
@@ -1373,7 +1373,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Roles Section
                       _buildSection(
@@ -1398,7 +1398,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                 );
                               },
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppTheme.space12),
                           ],
                           ElevatedButton.icon(
                             onPressed: _selectRoles,
@@ -1411,7 +1411,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Custom Fields Section
                       CustomFieldsWidget(
@@ -1422,7 +1422,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                           });
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Private Notes Section
                       _buildSection(
@@ -1437,7 +1437,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       
                       // Status Section
                       _buildSection(
@@ -1522,7 +1522,7 @@ class _PersonFormPageState extends State<PersonFormPage>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextButton.icon(
             onPressed: _pickProfileImage,
             icon: const Icon(Icons.camera_alt),
@@ -1548,7 +1548,7 @@ class _PersonFormPageState extends State<PersonFormPage>
               size: 40,
               color: Theme.of(context).colorScheme.primary,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Photo',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1586,7 +1586,7 @@ class _PersonFormPageState extends State<PersonFormPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
@@ -1598,7 +1598,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                   color: Theme.of(context).colorScheme.primary,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -1610,7 +1610,7 @@ class _PersonFormPageState extends State<PersonFormPage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: children,
             ),

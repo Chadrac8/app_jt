@@ -147,19 +147,19 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
         
         // Prévisualisation
         if (widget.showPreview && _urlInfo != null) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildPreview(),
         ],
         
         // Messages d'erreur
         if (_errorMessage.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           _buildErrorMessage(),
         ],
         
         // Aide et exemples
         if (widget.showExamples) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildHelpSection(),
         ],
       ],
@@ -195,7 +195,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
             else if (_errorMessage.isNotEmpty)
               Icon(Icons.error, color: AppTheme.grey600, size: 20),
             
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             
             // Bouton coller
             IconButton(
@@ -235,7 +235,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
     if (_urlInfo == null || !_urlInfo!.isValid) return const SizedBox.shrink();
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -248,7 +248,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(6),
@@ -259,7 +259,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,7 +275,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
                       _urlInfo!.userName,
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 13,
+                        fontSize: AppTheme.fontSize13,
                       ),
                     ),
                   ],
@@ -292,12 +292,12 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.check, color: AppTheme.grey700, size: 14),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       'Valide',
                       style: TextStyle(
                         color: AppTheme.grey700,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -307,7 +307,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
             ],
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Informations détaillées
           _buildDetailRow('Utilisateur', _urlInfo!.userName),
@@ -318,7 +318,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
           if (_urlInfo!.contentType == SoundCloudContentType.playlist)
             _buildDetailRow('Playlist', _urlInfo!.playlistSlug.replaceAll('-', ' ')),
           
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           
           // Bouton d'ouverture
           Align(
@@ -346,7 +346,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
             '$label: ',
             style: TextStyle(
               color: AppTheme.grey600,
-              fontSize: 13,
+              fontSize: AppTheme.fontSize13,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -355,7 +355,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
               value,
               style: TextStyle(
                 color: AppTheme.grey800,
-                fontSize: 13,
+                fontSize: AppTheme.fontSize13,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -368,7 +368,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
 
   Widget _buildErrorMessage() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(6),
@@ -377,13 +377,13 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
       child: Row(
         children: [
           Icon(Icons.error_outline, color: AppTheme.grey600, size: 20),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               _errorMessage,
               style: TextStyle(
                 color: AppTheme.grey700,
-                fontSize: 13,
+                fontSize: AppTheme.fontSize13,
               ),
             ),
           ),
@@ -411,9 +411,9 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
         
         // Section d'aide dépliable
         if (_showHelp) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.grey50,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -429,7 +429,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
                     color: AppTheme.grey800,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 // Exemples cliquables
                 ..._buildExamples(),
@@ -467,7 +467,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
           onTap: () => _insertExampleUrl(example['url']!),
           borderRadius: BorderRadius.circular(6),
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               border: Border.all(color: AppTheme.grey300),
               borderRadius: BorderRadius.circular(6),
@@ -482,23 +482,23 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
                       color: AppTheme.grey700,
                       size: 16,
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppTheme.space6),
                     Text(
                       example['type']!,
                       style: TextStyle(
                         fontWeight: AppTheme.fontMedium,
                         color: AppTheme.grey800,
-                        fontSize: 13,
+                        fontSize: AppTheme.fontSize13,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   example['url']!,
                   style: TextStyle(
                     color: AppTheme.grey600,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontFamily: 'monospace',
                   ),
                 ),
@@ -506,7 +506,7 @@ class _SoundCloudPickerWidgetState extends State<SoundCloudPickerWidget> {
                   example['description']!,
                   style: TextStyle(
                     color: AppTheme.grey600,
-                    fontSize: 11,
+                    fontSize: AppTheme.fontSize11,
                   ),
                 ),
               ],

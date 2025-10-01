@@ -5,6 +5,7 @@ import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import '../views/bible_articles_list_view.dart';
 import '../views/bible_article_detail_view.dart';
+import '../../../theme.dart';
 
 class BibleArticleHomeWidget extends StatefulWidget {
   final bool isAdmin;
@@ -80,7 +81,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
 
   Widget _buildHeader(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -95,7 +96,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: AppTheme.surfaceColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
@@ -103,7 +104,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
               Icons.article_outlined,
               color: AppTheme.surfaceColor,
               size: 24)),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,14 +112,14 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                 Text(
                   'Articles bibliques',
                   style: GoogleFonts.inter(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.surfaceColor)),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   'Enrichissez votre compréhension des Écritures',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.surfaceColor.withValues(alpha: 0.9))),
               ])),
           if (widget.isAdmin)
@@ -133,7 +134,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
 
   Widget _buildStats(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Row(
         children: [
           Expanded(
@@ -142,14 +143,14 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
               value: '${_stats['publishedArticles'] ?? 0}',
               label: 'Articles',
               color: theme.primaryColor)),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: _buildStatItem(
               icon: Icons.visibility_outlined,
               value: '${_stats['totalViews'] ?? 0}',
               label: 'Lectures',
               color: AppTheme.warningColor)),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: _buildStatItem(
               icon: Icons.category_outlined,
@@ -166,7 +167,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -176,18 +177,18 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
       child: Column(
         children: [
           Icon(icon, color: color, size: 24),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: color)),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: color.withValues(alpha: 0.8))),
         ]));
   }
@@ -195,7 +196,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
   Widget _buildRecentArticles(ThemeData theme) {
     if (_recentArticles.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Center(
           child: Column(
             children: [
@@ -203,18 +204,18 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                 Icons.article_outlined,
                 size: 48,
                 color: theme.hintColor),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Aucun article disponible',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: theme.hintColor)),
               if (widget.isAdmin) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Commencez par créer votre premier article',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: theme.hintColor.withValues(alpha: 0.7))),
               ],
             ])));
@@ -228,15 +229,15 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
           Text(
             'Articles récents',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.textTheme.titleLarge?.color)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _recentArticles.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            separatorBuilder: (context, index) => const SizedBox(height: AppTheme.space12),
             itemBuilder: (context, index) {
               final article = _recentArticles[index];
               return _buildArticleCard(article, theme);
@@ -249,7 +250,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
       onTap: () => _navigateToArticleDetail(article),
       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -269,21 +270,21 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                       Text(
                         article.title,
                         style: GoogleFonts.inter(
-                          fontSize: 15,
+                          fontSize: AppTheme.fontSize15,
                           fontWeight: AppTheme.fontSemiBold,
                           color: theme.textTheme.titleMedium?.color),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         article.summary,
                         style: GoogleFonts.inter(
-                          fontSize: 13,
+                          fontSize: AppTheme.fontSize13,
                           color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8)),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis),
                     ])),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
@@ -292,44 +293,44 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                   child: Text(
                     article.category,
                     style: GoogleFonts.inter(
-                      fontSize: 11,
+                      fontSize: AppTheme.fontSize11,
                       fontWeight: AppTheme.fontMedium,
                       color: theme.primaryColor))),
               ]),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 Icon(
                   Icons.person_outline,
                   size: 14,
                   color: theme.hintColor),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   article.author,
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: theme.hintColor)),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Icon(
                   Icons.access_time_outlined,
                   size: 14,
                   color: theme.hintColor),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   '${article.readingTimeMinutes} min',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: theme.hintColor)),
                 const Spacer(),
                 Icon(
                   Icons.visibility_outlined,
                   size: 14,
                   color: theme.hintColor),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   '${article.viewCount}',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: theme.hintColor)),
               ]),
           ])));
@@ -337,7 +338,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
 
   Widget _buildActionButtons(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         children: [
           SizedBox(
@@ -356,7 +357,7 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium))))),
           if (widget.isAdmin) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(

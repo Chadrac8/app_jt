@@ -273,7 +273,7 @@ class _ServiceCardState extends State<ServiceCard>
 
             // Content
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -289,7 +289,7 @@ class _ServiceCardState extends State<ServiceCard>
                   ),
                   
                   if (widget.service.description != null) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       widget.service.description!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -300,7 +300,7 @@ class _ServiceCardState extends State<ServiceCard>
                     ),
                   ],
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
 
                   // Date and Time
                   Row(
@@ -310,7 +310,7 @@ class _ServiceCardState extends State<ServiceCard>
                         size: 16,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Expanded(
                         child: Text(
                           _formatDateTime(widget.service.dateTime),
@@ -323,7 +323,7 @@ class _ServiceCardState extends State<ServiceCard>
                     ],
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
 
                   // Location
                   Row(
@@ -333,7 +333,7 @@ class _ServiceCardState extends State<ServiceCard>
                         size: 16,
                         color: Color(0x99000000), // 60% opacity black
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Expanded(
                         child: Text(
                           widget.service.location,
@@ -347,7 +347,7 @@ class _ServiceCardState extends State<ServiceCard>
                     ],
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
 
                   // Duration and Teams
                   Row(
@@ -367,7 +367,7 @@ class _ServiceCardState extends State<ServiceCard>
                               size: 12,
                               color: Theme.of(context).colorScheme.onSecondaryContainer,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               '${widget.service.durationMinutes}min',
                               style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -379,7 +379,7 @@ class _ServiceCardState extends State<ServiceCard>
                         ),
                       ),
 
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
 
                       // Teams count
                       if (widget.service.teamIds.isNotEmpty)
@@ -397,7 +397,7 @@ class _ServiceCardState extends State<ServiceCard>
                                 size: 12,
                                 color: Theme.of(context).colorScheme.onTertiaryContainer,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 '${widget.service.teamIds.length} équipe(s)',
                                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -426,7 +426,7 @@ class _ServiceCardState extends State<ServiceCard>
                               child: Row(
                                 children: [
                                   Icon(Icons.visibility),
-                                  SizedBox(width: 8),
+                                  SizedBox(width: AppTheme.spaceSmall),
                                   Text('Voir'),
                                 ],
                               ),
@@ -436,7 +436,7 @@ class _ServiceCardState extends State<ServiceCard>
                               child: Row(
                                 children: [
                                   Icon(Icons.edit),
-                                  SizedBox(width: 8),
+                                  SizedBox(width: AppTheme.spaceSmall),
                                   Text('Modifier'),
                                 ],
                               ),
@@ -446,7 +446,7 @@ class _ServiceCardState extends State<ServiceCard>
                               child: Row(
                                 children: [
                                   Icon(Icons.copy),
-                                  SizedBox(width: 8),
+                                  SizedBox(width: AppTheme.spaceSmall),
                                   Text('Dupliquer'),
                                 ],
                               ),
@@ -457,7 +457,7 @@ class _ServiceCardState extends State<ServiceCard>
                                 child: Row(
                                   children: [
                                     Icon(Icons.publish),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: AppTheme.spaceSmall),
                                     Text('Publier'),
                                   ],
                                 ),
@@ -468,7 +468,7 @@ class _ServiceCardState extends State<ServiceCard>
                                 child: Row(
                                   children: [
                                     Icon(Icons.archive),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: AppTheme.spaceSmall),
                                     Text('Archiver'),
                                   ],
                                 ),
@@ -479,7 +479,7 @@ class _ServiceCardState extends State<ServiceCard>
                                 child: Row(
                                   children: [
                                     Icon(Icons.cancel),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: AppTheme.spaceSmall),
                                     Text('Annuler'),
                                   ],
                                 ),
@@ -489,7 +489,7 @@ class _ServiceCardState extends State<ServiceCard>
                               child: Row(
                                 children: [
                                   Icon(Icons.delete, color: AppTheme.redStandard),
-                                  SizedBox(width: 8),
+                                  SizedBox(width: AppTheme.spaceSmall),
                                   Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                 ],
                               ),
@@ -579,7 +579,7 @@ class _ServiceCardState extends State<ServiceCard>
               Icons.warning,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('Confirmer la suppression'),
           ],
         ),
@@ -591,9 +591,9 @@ class _ServiceCardState extends State<ServiceCard>
               'Êtes-vous sûr de vouloir supprimer ce service ?',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.errorContainer,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -605,7 +605,7 @@ class _ServiceCardState extends State<ServiceCard>
                     color: Theme.of(context).colorScheme.onErrorContainer,
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Cette action est irréversible. Toutes les assignations et feuilles de route associées seront également supprimées.',
@@ -617,14 +617,14 @@ class _ServiceCardState extends State<ServiceCard>
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Service à supprimer :',
               style: Theme.of(context).textTheme.labelMedium,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -671,7 +671,7 @@ class _ServiceCardState extends State<ServiceCard>
                 height: 20,
                 child: CircularProgressIndicator(strokeWidth: 2),
               ),
-              SizedBox(width: 12),
+              SizedBox(width: AppTheme.space12),
               Text('Suppression du service en cours...'),
             ],
           ),
@@ -690,7 +690,7 @@ class _ServiceCardState extends State<ServiceCard>
             content: const Row(
               children: [
                 Icon(Icons.check_circle, color: AppTheme.white100),
-                SizedBox(width: 12),
+                SizedBox(width: AppTheme.space12),
                 Text('Service supprimé avec succès'),
               ],
             ),
@@ -708,7 +708,7 @@ class _ServiceCardState extends State<ServiceCard>
             content: Row(
               children: [
                 const Icon(Icons.error, color: AppTheme.white100),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text('Erreur lors de la suppression: ${e.toString()}'),
                 ),

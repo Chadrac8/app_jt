@@ -59,7 +59,7 @@ class _MemberViewToggleButtonState extends State<MemberViewToggleButton>
               onTapCancel: () => _animationController.reverse(),
               borderRadius: BorderRadius.circular(25),
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(25),
@@ -76,16 +76,16 @@ class _MemberViewToggleButtonState extends State<MemberViewToggleButton>
                       color: Theme.of(context).primaryColor,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Vue Membre',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: AppTheme.fontSemiBold,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Icon(
                       Icons.swap_horiz,
                       color: Theme.of(context).primaryColor,
@@ -245,12 +245,12 @@ class AppBarMemberViewToggle extends StatelessWidget {
                   color: AppTheme.white100,
                   size: 16,
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   'Vue Membre',
                   style: TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),

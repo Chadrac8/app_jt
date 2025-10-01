@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
+import '../../../theme.dart';
 
 import '../models/blog_post.dart';
 import '../models/blog_comment.dart';
@@ -172,7 +173,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
   Widget _buildArticleTab() {
     return SingleChildScrollView(
       controller: _scrollController,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -201,59 +202,59 @@ class _BlogDetailViewState extends State<BlogDetailView>
               ),
             ),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Métadonnées de l'article
           _buildPostMetadata(),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Titre
           Text(
             _post!.title,
             style: const TextStyle(
-              fontSize: 28,
+              fontSize: AppTheme.fontSize28,
               fontWeight: AppTheme.fontBold,
               height: 1.2,
             ),
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Extrait
           if (_post!.excerpt.isNotEmpty)
             Text(
               _post!.excerpt,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.grey600,
                 height: 1.4,
                 fontStyle: FontStyle.italic,
               ),
             ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Contenu
           Text(
             _post!.content,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               height: 1.6,
             ),
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Tags
           if (_post!.tags.isNotEmpty) _buildTags(),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Actions
           _buildActionButtons(),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Informations sur l'auteur
           _buildAuthorInfo(),
@@ -265,7 +266,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
   Widget _buildPostMetadata() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             Row(
@@ -279,7 +280,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       ? Text(_post!.authorName.isNotEmpty ? _post!.authorName[0] : 'A')
                       : null,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,14 +289,14 @@ class _BlogDetailViewState extends State<BlogDetailView>
                         _post!.authorName,
                         style: const TextStyle(
                           fontWeight: AppTheme.fontMedium,
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                         ),
                       ),
                       Text(
                         _formatDate(_post!.publishedAt ?? _post!.createdAt),
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ],
@@ -303,7 +304,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -323,18 +324,18 @@ class _BlogDetailViewState extends State<BlogDetailView>
     return Column(
       children: [
         Icon(icon, size: 20, color: AppTheme.grey600),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: const TextStyle(
             fontWeight: AppTheme.fontBold,
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
           ),
         ),
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: AppTheme.grey600,
           ),
         ),
@@ -349,11 +350,11 @@ class _BlogDetailViewState extends State<BlogDetailView>
         const Text(
           'Tags',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -409,18 +410,18 @@ class _BlogDetailViewState extends State<BlogDetailView>
   Widget _buildAuthorInfo() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'À propos de l\'auteur',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 CircleAvatar(
@@ -432,7 +433,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       ? Text(_post!.authorName.isNotEmpty ? _post!.authorName[0] : 'A')
                       : null,
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -440,11 +441,11 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       Text(
                         _post!.authorName,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         'Membre de l\'équipe de rédaction',
                         style: TextStyle(
@@ -467,7 +468,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
       children: [
         // Bouton pour ajouter un commentaire
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: ElevatedButton.icon(
             onPressed: _showCommentDialog,
             icon: const Icon(Icons.add_comment),
@@ -486,12 +487,12 @@ class _BlogDetailViewState extends State<BlogDetailView>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.comment_outlined, size: 64, color: AppTheme.grey500),
-                      SizedBox(height: 16),
+                      SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun commentaire pour le moment',
                         style: TextStyle(color: AppTheme.grey500),
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Soyez le premier à commenter !',
                         style: TextStyle(color: AppTheme.grey500),
@@ -516,7 +517,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
     return CustomCard(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -531,7 +532,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       ? Text(comment.authorName.isNotEmpty ? comment.authorName[0] : 'A')
                       : null,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -545,7 +546,7 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       Text(
                         _formatDate(comment.createdAt),
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey600,
                         ),
                       ),
@@ -563,22 +564,22 @@ class _BlogDetailViewState extends State<BlogDetailView>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(Icons.favorite, size: 12, color: AppTheme.redStandard),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           comment.likes.toString(),
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(fontSize: AppTheme.fontSize12),
                         ),
                       ],
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               comment.content,
               style: const TextStyle(height: 1.4),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(
               children: [
                 TextButton.icon(
@@ -614,13 +615,13 @@ class _BlogDetailViewState extends State<BlogDetailView>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.article_outlined, size: 64, color: AppTheme.grey500),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text('Aucun article similaire trouvé'),
               ],
             ),
           )
         : ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: _relatedPosts.length,
             itemBuilder: (context, index) {
               final post = _relatedPosts[index];
@@ -664,11 +665,11 @@ class _BlogDetailViewState extends State<BlogDetailView>
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               'Par ${post.authorName} • ${post.views} vues',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.grey600,
               ),
             ),

@@ -8,6 +8,7 @@ import '../../../widgets/service_sheet_editor.dart';
 import '../../../widgets/service_assignments_list.dart';
 import 'service_form_page.dart';
 import 'service_assignments_page.dart';
+import '../../../theme.dart';
 
 
 class ServiceDetailPage extends StatefulWidget {
@@ -297,12 +298,12 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                               _currentService!.statusLabel,
                               style: const TextStyle(
                                 color: AppTheme.white100,
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Text(
                             _currentService!.name,
                             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -310,7 +311,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                               fontWeight: AppTheme.fontBold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             '${_currentService!.typeLabel} • ${_formatDateTime(_currentService!.dateTime)}',
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -338,7 +339,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                       child: Row(
                         children: [
                           Icon(Icons.edit),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Modifier'),
                         ],
                       ),
@@ -348,7 +349,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                       child: Row(
                         children: [
                           Icon(Icons.copy),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Dupliquer'),
                         ],
                       ),
@@ -359,7 +360,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                         child: Row(
                           children: [
                             Icon(Icons.publish),
-                            SizedBox(width: 8),
+                            SizedBox(width: AppTheme.spaceSmall),
                             Text('Publier'),
                           ],
                         ),
@@ -370,7 +371,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                         child: Row(
                           children: [
                             Icon(Icons.archive),
-                            SizedBox(width: 8),
+                            SizedBox(width: AppTheme.spaceSmall),
                             Text('Archiver'),
                           ],
                         ),
@@ -380,7 +381,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                       child: Row(
                         children: [
                           Icon(Icons.delete, color: AppTheme.redStandard),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                         ],
                       ),
@@ -402,11 +403,11 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                   
                   // Conformité Material Design - Typography
                   labelStyle: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                   unselectedLabelStyle: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                   ),
                   
@@ -471,7 +472,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
 
   Widget _buildInformationTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -510,7 +511,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                     _currentService!.statusLabel,
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
@@ -519,7 +520,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Schedule Information Card
           _buildInfoCard(
@@ -549,7 +550,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Options Card
           _buildInfoCard(
@@ -570,7 +571,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Metadata Card
           _buildInfoCard(
@@ -604,7 +605,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
 
   Widget _buildStatisticsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           FutureBuilder<ServiceStatisticsModel>(
@@ -617,7 +618,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               if (snapshot.hasError) {
                 return Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     child: Text('Erreur: ${snapshot.error}'),
                   ),
                 );
@@ -637,7 +638,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: _buildStatCard(
                           'Acceptées',
@@ -648,7 +649,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Row(
                     children: [
                       Expanded(
@@ -659,7 +660,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                           AppTheme.orangeStandard,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: _buildStatCard(
                           'Refusées',
@@ -670,7 +671,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   _buildStatCard(
                     'Taux de réponse',
                     '${(stats.responseRate * 100).toStringAsFixed(1)}%',
@@ -693,7 +694,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
   }) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -714,7 +715,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -725,7 +726,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                   color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -735,7 +736,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ...children,
         ],
       ),
@@ -758,7 +759,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             size: 20,
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -789,7 +790,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
 
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -800,7 +801,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: color.withOpacity(0.2),
               shape: BoxShape.circle,
@@ -811,7 +812,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               color: color,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             value,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -819,7 +820,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               color: color,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -869,7 +870,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               Icons.warning,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('Confirmer la suppression'),
           ],
         ),
@@ -881,9 +882,9 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
               'Êtes-vous sûr de vouloir supprimer ce service ?',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.errorContainer,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -895,7 +896,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                     color: Theme.of(context).colorScheme.onErrorContainer,
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       'Cette action est irréversible. Toutes les assignations et feuilles de route associées seront également supprimées.',
@@ -907,14 +908,14 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Service à supprimer :',
               style: Theme.of(context).textTheme.labelMedium,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -962,7 +963,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
-                SizedBox(width: 12),
+                SizedBox(width: AppTheme.space12),
                 Text('Suppression du service en cours...'),
               ],
             ),
@@ -982,7 +983,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             content: const Row(
               children: [
                 Icon(Icons.check_circle, color: AppTheme.white100),
-                SizedBox(width: 12),
+                SizedBox(width: AppTheme.space12),
                 Text('Service supprimé avec succès'),
               ],
             ),
@@ -1003,7 +1004,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             content: Row(
               children: [
                 const Icon(Icons.error, color: AppTheme.white100),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text('Erreur lors de la suppression: ${e.toString()}'),
                 ),

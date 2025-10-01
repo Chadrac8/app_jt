@@ -5,6 +5,7 @@ import '../models/automation_template.dart';
 import '../services/automation_service.dart';
 import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
+import '../../../theme.dart';
 
 /// Vue admin pour la gestion des automatisations
 class AutomationAdminView extends StatefulWidget {
@@ -124,14 +125,14 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
 
   Widget _buildOverviewTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildStatsGrid(),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildRecentActivity(),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           _buildPopularTemplates(),
         ],
       ),
@@ -169,7 +170,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           'Taux de Succès Moyen',
           '${(_stats['averageSuccessRate'] ?? 0.0).toStringAsFixed(1)}%',
           Icons.trending_up,
-          Colors.purple,
+          AppTheme.primaryColor,
         ),
       ],
     );
@@ -178,26 +179,26 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: color, size: 32),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppTheme.grey600,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
             ),
           ],
@@ -217,15 +218,15 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
       children: [
         const Text(
           'Activité Récente',
-          style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+          style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         if (recentFailures.isNotEmpty) ...[
           const Text(
             'Échecs Récents à Examiner:',
-            style: TextStyle(fontSize: 14, fontWeight: AppTheme.fontMedium, color: AppTheme.redStandard),
+            style: TextStyle(fontSize: AppTheme.fontSize14, fontWeight: AppTheme.fontMedium, color: AppTheme.redStandard),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           ...recentFailures.map((execution) => Card(
             margin: const EdgeInsets.only(bottom: 8),
             child: ListTile(
@@ -260,7 +261,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           children: [
             const Text(
               'Templates Populaires',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
             TextButton(
               onPressed: () => _tabController.animateTo(3),
@@ -268,7 +269,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         ...popularTemplates.map((template) => Card(
           margin: const EdgeInsets.only(bottom: 8),
           child: ListTile(
@@ -300,7 +301,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
           child: _filteredAutomations.isEmpty
               ? _buildEmptyAutomations()
               : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   itemCount: _filteredAutomations.length,
                   itemBuilder: (context, index) {
                     final automation = _filteredAutomations[index];
@@ -314,7 +315,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
 
   Widget _buildAutomationsHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       color: AppTheme.grey50,
       child: Column(
         children: [
@@ -335,7 +336,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                   },
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               DropdownButtonHideUnderline(
                 child: DropdownButton<AutomationStatus?>(
                   value: _filterStatus,
@@ -359,7 +360,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             '${_filteredAutomations.length} automatisation(s) trouvée(s)',
             style: TextStyle(color: AppTheme.grey600),
@@ -379,17 +380,17 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _searchQuery.isEmpty 
                 ? 'Aucune automatisation créée'
                 : 'Aucun résultat pour "$_searchQuery"',
             style: TextStyle(
               color: AppTheme.grey600,
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ElevatedButton.icon(
             onPressed: _showCreateAutomationDialog,
             icon: const Icon(Icons.add),
@@ -404,7 +405,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
     return CustomCard(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -418,15 +419,15 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                         automation.name,
                         style: const TextStyle(
                           fontWeight: AppTheme.fontBold,
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         automation.description,
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ],
@@ -441,7 +442,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       child: Row(
                         children: const [
                           Icon(Icons.visibility),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Voir détails'),
                         ],
                       ),
@@ -451,7 +452,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       child: Row(
                         children: const [
                           Icon(Icons.edit),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Modifier'),
                         ],
                       ),
@@ -461,7 +462,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       child: Row(
                         children: [
                           Icon(automation.isActive ? Icons.pause : Icons.play_arrow),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(automation.isActive ? 'Désactiver' : 'Activer'),
                         ],
                       ),
@@ -471,7 +472,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       child: Row(
                         children: const [
                           Icon(Icons.play_circle_filled),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Déclencher'),
                         ],
                       ),
@@ -481,7 +482,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                       child: Row(
                         children: const [
                           Icon(Icons.delete, color: AppTheme.redStandard),
-                          SizedBox(width: 8),
+                          SizedBox(width: AppTheme.spaceSmall),
                           Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                         ],
                       ),
@@ -490,7 +491,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 _buildInfoChip(
@@ -498,13 +499,13 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                   automation.trigger.label,
                   AppTheme.blueStandard,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildInfoChip(
                   Icons.settings,
                   '${automation.actions.length} actions',
                   AppTheme.greenStandard,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 _buildInfoChip(
                   Icons.bar_chart,
                   '${automation.successRate.toStringAsFixed(0)}% succès',
@@ -513,29 +514,29 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
               ],
             ),
             if (automation.tags.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 6,
                 children: automation.tags.take(3).map((tag) =>
                   Chip(
-                    label: Text(tag, style: const TextStyle(fontSize: 10)),
+                    label: Text(tag, style: const TextStyle(fontSize: AppTheme.fontSize10)),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ).toList(),
               ),
             ],
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(
               children: [
                 Text(
                   '${automation.executionCount} exécutions',
-                  style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                  style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 if (automation.lastExecutedAt != null)
                   Text(
                     'Dernière: ${_formatDateTime(automation.lastExecutedAt!)}',
-                    style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
                   ),
               ],
             ),
@@ -572,7 +573,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
         status.label,
         style: const TextStyle(
           color: AppTheme.white100,
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontMedium,
         ),
       ),
@@ -590,12 +591,12 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             text,
             style: TextStyle(
               color: color,
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -608,7 +609,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           color: AppTheme.grey50,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -627,7 +628,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
         ),
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: _executions.length,
             itemBuilder: (context, index) {
               final execution = _executions[index];
@@ -660,14 +661,14 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
             Text(execution.statusMessage),
             Text(
               'Déclenchée: ${_formatDateTime(execution.triggeredAt)}',
-              style: const TextStyle(fontSize: 11),
+              style: const TextStyle(fontSize: AppTheme.fontSize11),
             ),
           ],
         ),
         trailing: Text(
           execution.isManual ? 'Manuel' : 'Auto',
           style: TextStyle(
-            fontSize: 11,
+            fontSize: AppTheme.fontSize11,
             color: AppTheme.grey600,
           ),
         ),
@@ -710,7 +711,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
     final templates = AutomationTemplates.getByCategory(category);
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: templates.length,
       itemBuilder: (context, index) {
         final template = templates[index];
@@ -723,7 +724,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
     return CustomCard(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -733,7 +734,7 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                   Icons.auto_awesome,
                   color: Theme.of(context).primaryColor,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -742,15 +743,15 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                         template.name,
                         style: const TextStyle(
                           fontWeight: AppTheme.fontBold,
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         template.description,
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ],
@@ -758,14 +759,14 @@ class _AutomationAdminViewState extends State<AutomationAdminView> with TickerPr
                 ),
                 if (template.isPopular)
                   const Icon(Icons.star, color: AppTheme.orangeStandard, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 ElevatedButton(
                   onPressed: () => _createFromTemplate(template),
                   child: const Text('Utiliser'),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Wrap(
               spacing: 6,
               children: [

@@ -6,6 +6,7 @@ import '../providers/role_provider.dart';
 import '../services/current_user_service.dart';
 import '../widgets/module_permissions_selector.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class CreateEditRoleDialog extends StatefulWidget {
   final Role? existingRole;
@@ -175,7 +176,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
           children: [
             // En-tête
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: const BorderRadius.only(
@@ -190,13 +191,13 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                     color: AppTheme.white100,
                     size: 28,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Text(
                       widget.existingRole != null ? 'Modifier le rôle' : 'Créer un nouveau rôle',
                       style: const TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 20,
+                        fontSize: AppTheme.fontSize20,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
@@ -231,7 +232,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
             
             // Actions
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(color: AppTheme.grey500),
@@ -244,7 +245,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                     onPressed: () => Navigator.of(context).pop(),
                     child: const Text('Annuler'),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   ElevatedButton(
                     onPressed: _isLoading ? null : _saveRole,
                     child: _isLoading
@@ -266,7 +267,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
 
   Widget _buildInfoTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Form(
         key: _formKey,
         child: Column(
@@ -292,7 +293,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
               },
               textInputAction: TextInputAction.next,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Description
             TextFormField(
@@ -311,14 +312,14 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                 return null;
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Couleur
             Text(
               'Couleur du rôle',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -343,14 +344,14 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                 );
               }).toList(),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Icône
             Text(
               'Icône du rôle',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -375,7 +376,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
                 );
               }).toList(),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // État actif
             SwitchListTile(
@@ -399,7 +400,7 @@ class _CreateEditRoleDialogState extends State<CreateEditRoleDialog>
       children: [
         // Barre de recherche
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: TextField(
             decoration: const InputDecoration(
               labelText: 'Rechercher un module',

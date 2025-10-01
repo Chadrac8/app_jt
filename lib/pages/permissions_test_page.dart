@@ -30,7 +30,7 @@ class PermissionsTestPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                   Text('Initialisation des permissions...'),
                 ],
               ),
@@ -38,14 +38,14 @@ class PermissionsTestPage extends StatelessWidget {
           }
           
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildUserInfo(provider),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildPermissionTests(provider),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildProtectedWidgets(context, currentUserId),
               ],
             ),
@@ -58,19 +58,19 @@ class PermissionsTestPage extends StatelessWidget {
   Widget _buildUserInfo(PermissionProvider provider) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Informations utilisateur',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text('ID Utilisateur: ${provider.currentUserId ?? "Non défini"}'),
             Text('Rôles: ${provider.userRoles.length}'),
             Text('Permissions: ${provider.userPermissions.length}'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             if (provider.userRoles.isNotEmpty) ...[
               const Text('Rôles attribués:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
               ...provider.userRoles.map((role) => 
@@ -96,15 +96,15 @@ class PermissionsTestPage extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Test des permissions',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             ...testPermissions.map((permission) => 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
@@ -119,7 +119,7 @@ class PermissionsTestPage extends StatelessWidget {
                         : AppTheme.redStandard,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(child: Text(permission)),
                   ],
                 ),
@@ -134,22 +134,22 @@ class PermissionsTestPage extends StatelessWidget {
   Widget _buildProtectedWidgets(BuildContext context, String currentUserId) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Widgets protégés',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Test PermissionGuard
             PermissionGuard(
               permission: 'dashboard_visualisation_read',
               userId: currentUserId,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -157,13 +157,13 @@ class PermissionsTestPage extends StatelessWidget {
                 child: const Row(
                   children: [
                     Icon(Icons.dashboard, color: AppTheme.greenStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Dashboard accessible'),
                   ],
                 ),
               ),
               fallback: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -171,21 +171,21 @@ class PermissionsTestPage extends StatelessWidget {
                 child: const Row(
                   children: [
                     Icon(Icons.block, color: AppTheme.redStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Dashboard non accessible'),
                   ],
                 ),
               ),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             // Test ModuleGuard
             ModuleGuard(
               moduleId: 'personnes',
               userId: currentUserId,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -193,13 +193,13 @@ class PermissionsTestPage extends StatelessWidget {
                 child: const Row(
                   children: [
                     Icon(Icons.people, color: AppTheme.blueStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Module Personnes accessible'),
                   ],
                 ),
               ),
               fallback: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -207,14 +207,14 @@ class PermissionsTestPage extends StatelessWidget {
                 child: const Row(
                   children: [
                     Icon(Icons.warning, color: AppTheme.orangeStandard),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text('Module Personnes non accessible'),
                   ],
                 ),
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Boutons d'action protégés
             Wrap(
@@ -243,7 +243,7 @@ class PermissionsTestPage extends StatelessWidget {
                     icon: const Icon(Icons.admin_panel_settings),
                     label: const Text('Gérer rôles'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
+                      backgroundColor: AppTheme.primaryColor,
                       foregroundColor: AppTheme.white100,
                     ),
                   ),

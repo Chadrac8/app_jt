@@ -6,6 +6,7 @@ import '../../../models/prayer_model.dart';
 import '../../../services/prayers_firebase_service.dart';
 import '../../../pages/prayer_form_page.dart';
 import '../../../pages/prayer_detail_page.dart';
+import '../../../theme.dart';
 
 /// Onglet "Prières" moderne du module Vie de l'église
 /// Design inspiré des meilleures applications d'église
@@ -156,7 +157,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
             // Barre de recherche et catégories
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   children: [
                     // Barre de recherche
@@ -179,7 +180,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                           hintText: 'Rechercher dans les prières...',
                           hintStyle: GoogleFonts.inter(
                             color: AppTheme.textTertiaryColor,
-                            fontSize: 15),
+                            fontSize: AppTheme.fontSize15),
                           prefixIcon: Icon(
                             Icons.search,
                             color: AppTheme.textTertiaryColor,
@@ -199,7 +200,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 16)))),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
 
                     // Catégories horizontales (compactes)
                     SizedBox(
@@ -257,11 +258,11 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                             ? AppTheme.surfaceColor
                                             : category['color'],
                                         size: 18),
-                                      const SizedBox(width: 6),
+                                      const SizedBox(width: AppTheme.space6),
                                       Text(
                                         category['label'],
                                         style: GoogleFonts.inter(
-                                          fontSize: 12,
+                                          fontSize: AppTheme.fontSize12,
                                           fontWeight: AppTheme.fontSemiBold,
                                           color: isSelected
                                               ? AppTheme.surfaceColor
@@ -283,7 +284,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                 child: _buildEmptyState())
             else
               SliverPadding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -300,7 +301,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
         label: Text(
           'Nouvelle prière',
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontSemiBold)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30))));
@@ -340,7 +341,7 @@ class _PrayerWallTabState extends State<PrayerWallTab>
               borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               onTap: () => _navigateToPrayerDetail(prayer),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -360,11 +361,11 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                 category['icon'],
                                 size: 14,
                                 color: AppTheme.surfaceColor),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: AppTheme.space6),
                               Text(
                                 category['label'],
                                 style: GoogleFonts.inter(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.surfaceColor)),
                             ])),
@@ -372,40 +373,40 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                         Text(
                           _formatDate(prayer.createdAt),
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: AppTheme.textTertiaryColor,
                             fontWeight: AppTheme.fontMedium)),
                       ]),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
 
                     // Titre
                     Text(
                       prayer.title,
                       style: GoogleFonts.inter( // Material Design 3 typography
-                        fontSize: 14, // bodyLarge
+                        fontSize: AppTheme.fontSize14, // bodyLarge
                         fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor, // MD3 color token
                         height: 1.3),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
 
                     // Contenu
                     Text(
                       prayer.content,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: AppTheme.textTertiaryColor,
                         height: 1.5),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
 
                     // Footer avec auteur et actions
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(AppTheme.spaceSmall),
                           decoration: BoxDecoration(
                             color: category['color'].withValues(alpha: 0.1),
                             shape: BoxShape.circle),
@@ -413,12 +414,12 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                             Icons.person,
                             size: 16,
                             color: category['color'])),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppTheme.space12),
                         Expanded(
                           child: Text(
                             prayer.authorName,
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: AppTheme.fontSize14,
                               fontWeight: AppTheme.fontSemiBold,
                               color: AppTheme.textTertiaryColor))),
                         Container(
@@ -433,11 +434,11 @@ class _PrayerWallTabState extends State<PrayerWallTab>
                                 Icons.favorite,
                                 size: 14,
                                 color: AppTheme.errorColor),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 'Prier',
                                 style: GoogleFonts.inter(
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontSemiBold,
                                   color: AppTheme.textTertiaryColor)),
                             ])),
@@ -452,18 +453,18 @@ class _PrayerWallTabState extends State<PrayerWallTab>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               color: const Color(0xFF6B73FF).withValues(alpha: 0.1),
               shape: BoxShape.circle),
             child: const CircularProgressIndicator(
               color: Color(0xFF6B73FF),
               strokeWidth: 3)),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Chargement des prières...',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontMedium,
               color: AppTheme.textTertiaryColor)),
         ]));
@@ -484,18 +485,18 @@ class _PrayerWallTabState extends State<PrayerWallTab>
               Icons.volunteer_activism,
               size: 64,
               color: AppTheme.textTertiaryColor)),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Aucune prière trouvée',
             style: GoogleFonts.inter( // Material Design 3 typography
-              fontSize: 16, // titleMedium
+              fontSize: AppTheme.fontSize16, // titleMedium
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textSecondaryColor)), // MD3 color token
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Soyez le premier à partager une prière\nou modifiez vos filtres de recherche',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textTertiaryColor),
             textAlign: TextAlign.center),
         ]));

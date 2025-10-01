@@ -129,7 +129,7 @@ class _FormResponsesListState extends State<FormResponsesList>
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: const BoxDecoration(
         color: AppTheme.white100,
         boxShadow: [
@@ -160,7 +160,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               ElevatedButton.icon(
                 onPressed: _exportResponses,
                 icon: const Icon(Icons.download),
@@ -172,7 +172,7 @@ class _FormResponsesListState extends State<FormResponsesList>
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(
@@ -194,7 +194,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                   }).toList(),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: CheckboxListTile(
                   title: const Text('Inclure les tests'),
@@ -229,12 +229,12 @@ class _FormResponsesListState extends State<FormResponsesList>
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement des réponses',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   snapshot.error.toString(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -276,14 +276,14 @@ class _FormResponsesListState extends State<FormResponsesList>
                   size: 64,
                   color: AppTheme.textTertiaryColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucune réponse trouvée',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   widget.form.isPublished 
                       ? 'Les réponses apparaîtront ici une fois le formulaire soumis'
@@ -299,7 +299,7 @@ class _FormResponsesListState extends State<FormResponsesList>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: submissions.length,
           itemBuilder: (context, index) {
             final submission = submissions[index];
@@ -321,7 +321,7 @@ class _FormResponsesListState extends State<FormResponsesList>
         onTap: () => _showSubmissionDetails(submission),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -338,7 +338,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,12 +375,12 @@ class _FormResponsesListState extends State<FormResponsesList>
                           _getStatusLabel(submission.status),
                           style: const TextStyle(
                             color: AppTheme.white100,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         _formatDate(submission.submittedAt),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -393,9 +393,9 @@ class _FormResponsesListState extends State<FormResponsesList>
               ),
               
               // Response preview
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundColor,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -410,7 +410,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     ...List.generate(
                       (submission.responses.length > 3 ? 3 : submission.responses.length),
                       (index) {
@@ -460,7 +460,7 @@ class _FormResponsesListState extends State<FormResponsesList>
               ),
               
               // Actions
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   if (submission.isTestSubmission)
@@ -469,7 +469,7 @@ class _FormResponsesListState extends State<FormResponsesList>
                       backgroundColor: Color(0x1AFFA000), // 10% opacity of warningColor (#FFA000)
                       labelStyle: TextStyle(
                         color: AppTheme.warningColor,
-                        fontSize: 10,
+                        fontSize: AppTheme.fontSize10,
                       ),
                     ),
                   const Spacer(),
@@ -543,7 +543,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: const BoxDecoration(
                 color: AppTheme.primaryColor,
                 borderRadius: BorderRadius.only(
@@ -554,7 +554,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
               child: Row(
                 children: [
                   const Icon(Icons.description, color: AppTheme.white100),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -584,7 +584,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppTheme.spaceLarge),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -599,7 +599,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
                         _buildInfoRow('Type', 'Soumission de test'),
                     ]),
                     
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     
                     // Responses
                     _buildInfoSection('Réponses au formulaire', [
@@ -617,7 +617,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
                     
                     // Files
                     if (submission.fileUrls.isNotEmpty) ...[
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildInfoSection('Fichiers joints', [
                         ...List.generate(submission.fileUrls.length, (index) {
                           // fileUrl variable removed as it was unused
@@ -637,7 +637,7 @@ class _SubmissionDetailsDialog extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: const BoxDecoration(
                 color: AppTheme.backgroundColor,
                 borderRadius: BorderRadius.only(
@@ -668,11 +668,11 @@ class _SubmissionDetailsDialog extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         ...children,
       ],
     );

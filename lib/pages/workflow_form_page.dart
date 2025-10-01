@@ -299,7 +299,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
           if (_isLoading)
             const Center(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppTheme.spaceMedium),
                 child: SizedBox(
                   width: 20,
                   height: 20,
@@ -317,7 +317,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           children: [
             // Image d'en-tête
             Container(
@@ -351,7 +351,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         size: 32,
                         color: AppTheme.white100,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         _existingWorkflow != null ? 'Modifier le workflow' : 'Créer un nouveau workflow',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -368,7 +368,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
             // Informations de base
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -378,7 +378,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Nom du workflow
                     TextFormField(
@@ -395,7 +395,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Description
                     TextFormField(
@@ -407,7 +407,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                       ),
                       maxLines: 3,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Catégorie
                     DropdownButtonFormField<String>(
@@ -432,12 +432,12 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Apparence
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -447,14 +447,14 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Couleur
                     Text(
                       'Couleur',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -483,14 +483,14 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Icône
                     Text(
                       'Icône',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -531,12 +531,12 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Étapes du workflow
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -561,11 +561,11 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     if (_steps.isEmpty)
                       Container(
-                        padding: const EdgeInsets.all(32),
+                        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -580,7 +580,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                               size: 48,
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppTheme.spaceMedium),
                             Text(
                               'Aucune étape définie',
                               style: Theme.of(context).textTheme.titleMedium,
@@ -607,12 +607,12 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Statut
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -622,7 +622,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     SwitchListTile(
                       title: const Text('Workflow actif'),
                       subtitle: Text(_isActive 
@@ -639,7 +639,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
           ],
         ),
       ),
@@ -672,13 +672,13 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                   '${index + 1}',
                   style: const TextStyle(
                     color: AppTheme.white100,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Text(
                 step.name.isEmpty ? 'Étape ${index + 1}' : step.name,
@@ -710,7 +710,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
               child: const Row(
                 children: [
                   Icon(Icons.delete, color: AppTheme.redStandard),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Supprimer'),
                 ],
               ),
@@ -720,7 +720,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: [
                 // Nom de l'étape
@@ -741,7 +741,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                     ));
                   },
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 // Description
                 TextFormField(
@@ -762,7 +762,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                     ));
                   },
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 
                 // Options
                 Row(
@@ -788,7 +788,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Column(
                       children: [
                         const Text('Obligatoire'),

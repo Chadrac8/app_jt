@@ -349,17 +349,17 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
               width: 40,
               decoration: BoxDecoration(
                 color: AppTheme.grey300,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
             
             // Titre
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
                   Icon(Icons.more_horiz, color: Theme.of(context).primaryColor),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Plus de modules',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -404,7 +404,7 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
               ),
             ),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
           ],
         ),
       ),
@@ -436,13 +436,13 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
               size: 32,
               color: Theme.of(context).primaryColor,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               page.title,
               style: TextStyle(
                 fontWeight: AppTheme.fontMedium,
                 color: Theme.of(context).primaryColor,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,

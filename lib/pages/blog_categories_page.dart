@@ -36,7 +36,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
         children: [
           // Barre de recherche
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
@@ -78,12 +78,12 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                           size: 64,
                           color: AppTheme.grey300,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Erreur lors du chargement',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           snapshot.error.toString(),
                           textAlign: TextAlign.center,
@@ -137,7 +137,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _searchQuery.isNotEmpty 
                 ? 'Aucune catégorie trouvée'
@@ -146,7 +146,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _searchQuery.isNotEmpty
                 ? 'Essayez avec d\'autres mots-clés'
@@ -156,7 +156,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (_searchQuery.isEmpty)
             ElevatedButton.icon(
               onPressed: () => _showCategoryDialog(),
@@ -179,7 +179,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
         onTap: () => _showCategoryDialog(category: category),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             children: [
               // Icône/couleur
@@ -198,7 +198,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                 ),
               ),
               
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               
               // Informations
               Expanded(
@@ -212,7 +212,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                       ),
                     ),
                     if (category.description.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         category.description,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -222,7 +222,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       '${category.postCount} article${category.postCount > 1 ? 's' : ''}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -288,7 +288,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                   ),
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Description
                 TextField(
@@ -300,14 +300,14 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                   maxLines: 3,
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Couleur
                 Text(
                   'Couleur',
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -333,14 +333,14 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
                   }).toList(),
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Icône
                 Text(
                   'Icône',
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -473,7 +473,7 @@ class _BlogCategoriesPageState extends State<BlogCategoriesPage> {
           children: [
             Text('Êtes-vous sûr de vouloir supprimer "${category.name}" ?'),
             if (category.postCount > 0) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Attention: ${category.postCount} article${category.postCount > 1 ? 's' : ''} ${category.postCount > 1 ? 'utilisent' : 'utilise'} cette catégorie.',
                 style: const TextStyle(

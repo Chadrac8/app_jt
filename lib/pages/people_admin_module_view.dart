@@ -126,7 +126,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
                     .map((role) => Chip(
                           label: Text(
                             role,
-                            style: const TextStyle(fontSize: 10),
+                            style: const TextStyle(fontSize: AppTheme.fontSize10),
                           ),
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ))
@@ -187,7 +187,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
   Widget _buildSearchAndFilters() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             TextField(
@@ -203,7 +203,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
                 });
               },
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Row(
               children: [
                 Expanded(

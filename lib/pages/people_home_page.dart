@@ -112,7 +112,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
           content: const Row(
             children: [
               Icon(Icons.check_circle, color: AppTheme.white100),
-              SizedBox(width: 8),
+              SizedBox(width: AppTheme.spaceSmall),
               Text('Nouvelle personne ajoutée avec succès'),
             ],
           ),
@@ -373,7 +373,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                     color: Theme.of(context).colorScheme.primary,
                     size: 28,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Text(
                     'Personnes',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -499,8 +499,8 @@ class _PeopleHomePageState extends State<PeopleHomePage>
           
           // Statistics Row
           Container(
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(AppTheme.spaceMedium),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary.withAlpha(25),
               borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -577,12 +577,12 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                           size: 64,
                           color: Theme.of(context).colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Erreur de chargement',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           snapshot.error.toString(),
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -605,14 +605,14 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                           size: 64,
                           color: Theme.of(context).colorScheme.outline,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           _searchQuery.isNotEmpty
                               ? 'Aucun résultat trouvé'
                               : 'Aucune personne enregistrée',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           _searchQuery.isNotEmpty
                               ? 'Essayez de modifier vos critères de recherche'
@@ -620,7 +620,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                           style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppTheme.spaceLarge),
                         if (_searchQuery.isEmpty)
                           ElevatedButton.icon(
                             onPressed: _addNewPerson,
@@ -675,7 +675,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -717,7 +717,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
   Widget _buildGridView(List<PersonModel> persons) {
     return GridView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.8,
@@ -771,7 +771,7 @@ class _PeopleHomePageState extends State<PeopleHomePage>
       ),
       builder: (context) {
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -780,15 +780,15 @@ class _PeopleHomePageState extends State<PeopleHomePage>
                 height: 4,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.outline,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Actions pour ${_selectedPersons.length} personne(s)',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               ListTile(
                 leading: const Icon(Icons.person_add),
                 title: const Text('Attribuer un rôle'),

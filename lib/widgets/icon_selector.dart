@@ -53,7 +53,7 @@ class _IconSelectorState extends State<IconSelector> {
           children: [
             // Header
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor,
                 borderRadius: const BorderRadius.only(
@@ -64,11 +64,11 @@ class _IconSelectorState extends State<IconSelector> {
               child: Row(
                 children: [
                   Icon(Icons.palette, color: AppTheme.white100),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Sélectionner une icône',
                     style: GoogleFonts.poppins(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.white100,
                     ),
@@ -84,7 +84,7 @@ class _IconSelectorState extends State<IconSelector> {
             
             // Search bar
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: TextField(
                 onChanged: _filterIcons,
                 decoration: InputDecoration(
@@ -103,7 +103,7 @@ class _IconSelectorState extends State<IconSelector> {
             if (widget.currentIcon.isNotEmpty)
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -115,7 +115,7 @@ class _IconSelectorState extends State<IconSelector> {
                       _getIconData(widget.currentIcon),
                       color: AppTheme.primaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Actuellement sélectionné: ${widget.currentIcon}',
                       style: TextStyle(
@@ -127,7 +127,7 @@ class _IconSelectorState extends State<IconSelector> {
                 ),
               ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Icons grid
             Expanded(
@@ -183,12 +183,12 @@ class _IconSelectorState extends State<IconSelector> {
             
             // Footer with count
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Text(
                 '${_filteredIcons.length} icône(s) trouvée(s)',
                 style: TextStyle(
                   color: AppTheme.textSecondaryColor,
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                 ),
               ),
             ),

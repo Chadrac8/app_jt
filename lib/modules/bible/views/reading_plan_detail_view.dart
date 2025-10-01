@@ -4,6 +4,7 @@ import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import '../bible_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ReadingPlanDetailView extends StatefulWidget {
   final ReadingPlan plan;
@@ -81,7 +82,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -113,43 +114,43 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                     ],
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Description
                   Text(
                     'Description',
                     style: GoogleFonts.inter(
-                      fontSize: 20,
+                      fontSize: AppTheme.fontSize20,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Text(
                     widget.plan.description,
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       height: 1.5,
                       color: theme.colorScheme.onSurface.withOpacity(0.8),
                     ),
                   ),
                   
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppTheme.spaceXLarge),
                   
                   // Progrès si le plan est déjà commencé
                   if (_progress != null) ...[
                     _buildProgressSection(),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppTheme.spaceXLarge),
                   ],
                   
                   // Aperçu des premiers jours
                   Text(
                     'Aperçu du plan',
                     style: GoogleFonts.inter(
-                      fontSize: 20,
+                      fontSize: AppTheme.fontSize20,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Afficher les 5 premiers jours
                   ...widget.plan.days.take(5).map((day) => _buildDayPreview(day)),
@@ -174,7 +175,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
       bottomNavigationBar: _isLoading 
           ? null 
           : Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surface,
                 boxShadow: [
@@ -199,7 +200,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
     final progressPercentage = _progress!.completedDays.length / widget.plan.totalDays;
     
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -213,40 +214,40 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
               Text(
                 'Votre progrès',
                 style: GoogleFonts.inter(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
               Text(
                 '${_progress!.completedDays.length}/${widget.plan.totalDays}',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.primary,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           LinearProgressIndicator(
             value: progressPercentage,
             backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
             valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             '${(progressPercentage * 100).toInt()}% terminé',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
           if (_progress!.lastReadDate != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Dernière lecture: ${_formatDate(_progress!.lastReadDate!)}',
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
@@ -271,11 +272,11 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 6),
+          const SizedBox(width: AppTheme.space6),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
               color: color,
             ),
@@ -290,7 +291,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
     
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -320,32 +321,32 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Text(
                   day.title,
                   style: GoogleFonts.inter(
                     fontWeight: AppTheme.fontSemiBold,
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             'Lectures: ${day.readings.map((r) => r.displayText).join(', ')}',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
           if (day.reflection != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               day.reflection!,
               style: GoogleFonts.inter(
-                fontSize: 13,
+                fontSize: AppTheme.fontSize13,
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
                 fontStyle: FontStyle.italic,
               ),
@@ -385,7 +386,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
             : Text(
                 'Commencer ce plan',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
@@ -419,7 +420,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
         child: Text(
           'Continuer la lecture',
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),

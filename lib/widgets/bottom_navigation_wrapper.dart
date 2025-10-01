@@ -708,15 +708,15 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
                 width: 40,
                 decoration: BoxDecoration(
                   color: AppTheme.grey300,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppTheme.spaceMedium),
                 child: Row(
                   children: [
                     Icon(Icons.more_horiz, color: AppTheme.primaryColor),
-                    SizedBox(width: 8),
+                    SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Plus de modules',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -729,11 +729,11 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
               ),
               if (deduplicatedItems.isEmpty)
                 Padding(
-                  padding: EdgeInsets.all(32),
+                  padding: EdgeInsets.all(AppTheme.spaceXLarge),
                   child: Column(
                     children: [
                       Icon(Icons.apps, size: 48, color: AppTheme.grey500),
-                      SizedBox(height: 16),
+                      SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Aucun module ou page secondaire configuré',
                         style: TextStyle(color: AppTheme.grey500),
@@ -767,7 +767,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
                     ),
                   ),
                 ),
-              SizedBox(height: 24),
+              SizedBox(height: AppTheme.spaceLarge),
             ],
           ),
         ),
@@ -799,13 +799,13 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
               size: 32,
               color: AppTheme.primaryColor,
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               module.name,
               style: TextStyle(
                 fontWeight: AppTheme.fontMedium,
                 color: AppTheme.primaryColor,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -841,13 +841,13 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
               size: 32,
               color: AppTheme.primaryColor,
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               page.title,
               style: TextStyle(
                 fontWeight: AppTheme.fontMedium,
                 color: AppTheme.primaryColor,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -907,13 +907,29 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   AppBar _buildAppBar() {
     return AppBar(
       // Toutes les propriétés viennent du thème appBarTheme
+      centerTitle: false, // MD3 conforme : titre aligné à gauche
       leading: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 4),
-        child: Image.asset(
-          'assets/logo_jt.png',
-          height: 24, // Taille légèrement plus grande sans cercle
-          width: 24,
-          fit: BoxFit.contain,
+        padding: const EdgeInsets.only(left: 16, right: 4), // MD3 conforme : 16dp du bord gauche
+        child: Container(
+          width: 36, // Taille du container pour inclure le cadre
+          height: 36,
+          decoration: BoxDecoration(
+            color: Colors.white, // Fond blanc pour contraste
+            shape: BoxShape.circle, // Forme circulaire
+            border: Border.all(
+              color: Colors.white, // Bordure blanche
+              width: 2, // Épaisseur de la bordure
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(2), // Espacement interne
+            child: Image.asset(
+              'assets/logo_jt.png',
+              height: 28, // Logo légèrement réduit pour laisser place au cadre
+              width: 28,
+              fit: BoxFit.contain,
+            ),
+          ),
         ),
       ),
       title: Text(_getPageTitle()), // Style vient du thème titleTextStyle
@@ -925,11 +941,14 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         // Notifications avec badge
         _buildNotificationButton(),
         // Icône Mon profil
-        IconButton(
-          onPressed: _showProfileMenu,
-          icon: NavigationUserAvatar(
-            person: _currentUser,
-            onTap: _showProfileMenu,
+        Padding(
+          padding: const EdgeInsets.only(right: 16), // MD3 conforme : 16dp du bord droit
+          child: IconButton(
+            onPressed: _showProfileMenu,
+            icon: NavigationUserAvatar(
+              person: _currentUser,
+              onTap: _showProfileMenu,
+            ),
           ),
         ),
       ],
@@ -1029,7 +1048,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return Stack(
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications, color: AppTheme.onSurface),
+          icon: const Icon(Icons.notifications),
           tooltip: 'Notifications',
           onPressed: () {
             setState(() {
@@ -1046,7 +1065,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
             right: 8,
             top: 8,
             child: Container(
-              padding: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(AppTheme.space2),
               decoration: BoxDecoration(
                 color: AppTheme.redStandard,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1059,7 +1078,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
                 _unreadNotificationsCount > 99 ? '99+' : _unreadNotificationsCount.toString(),
                 style: const TextStyle(
                   color: AppTheme.white100,
-                  fontSize: 10,
+                  fontSize: AppTheme.fontSize10,
                   fontWeight: AppTheme.fontBold,
                 ),
                 textAlign: TextAlign.center,
@@ -1074,7 +1093,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return IconButton(
       icon: const Icon(
         Icons.search,
-        color: AppTheme.onSurface,
       ),
       tooltip: 'Rechercher des cantiques',
       onPressed: () {
@@ -1231,13 +1249,13 @@ class _ProfileMenuSheet extends StatelessWidget {
               width: 48,
               decoration: BoxDecoration(
                 color: AppTheme.grey300,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
             
             // Header avec profil
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Row(
                 children: [
                   // Photo de profil
@@ -1247,7 +1265,7 @@ class _ProfileMenuSheet extends StatelessWidget {
                     showBorder: true,
                     borderColor: AppTheme.primaryColor.withOpacity(0.2),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   
                   // Informations utilisateur
                   Expanded(
@@ -1257,25 +1275,25 @@ class _ProfileMenuSheet extends StatelessWidget {
                         Text(
                           currentUser?.fullName ?? 'Utilisateur',
                           style: GoogleFonts.poppins(
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           currentUser?.email ?? '',
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: AppTheme.textSecondaryColor,
                           ),
                         ),
                         if (currentUser?.roles.isNotEmpty == true) ...[
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             currentUser!.roles.join(' • '),
                             style: GoogleFonts.poppins(
-                              fontSize: 12,
+                              fontSize: AppTheme.fontSize12,
                               color: AppTheme.primaryColor,
                               fontWeight: AppTheme.fontMedium,
                             ),
@@ -1303,7 +1321,7 @@ class _ProfileMenuSheet extends StatelessWidget {
             // Menu items relatifs au profil
             ..._buildProfileMenuItems(context),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
           ],
         ),
       ),
@@ -1378,7 +1396,7 @@ class _ProfileMenuSheet extends StatelessWidget {
   }) {
     return ListTile(
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(AppTheme.spaceSmall),
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1392,7 +1410,7 @@ class _ProfileMenuSheet extends StatelessWidget {
       title: Text(
         title,
         style: GoogleFonts.poppins(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           fontWeight: AppTheme.fontMedium,
           color: AppTheme.textPrimaryColor,
         ),
@@ -1400,7 +1418,7 @@ class _ProfileMenuSheet extends StatelessWidget {
       subtitle: Text(
         subtitle,
         style: GoogleFonts.poppins(
-          fontSize: 13,
+          fontSize: AppTheme.fontSize13,
           color: AppTheme.textSecondaryColor,
         ),
       ),
@@ -1496,16 +1514,16 @@ class _CustomPageDirectViewState extends State<CustomPageDirectView> {
                 size: 64,
                 color: AppTheme.grey400,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 _errorMessage!,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: AppTheme.grey500,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               ElevatedButton(
                 onPressed: _loadPage,
                 child: const Text('Réessayer'),

@@ -5,6 +5,7 @@ import '../services/thematic_passage_service.dart';
 import '../widgets/add_passage_dialog.dart';
 import '../widgets/theme_creation_dialog.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget de diagnostic pour tester l'ajout de passages bibliques
 class PassageTestWidget extends StatefulWidget {
@@ -181,7 +182,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
             // État de l'authentification
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: _currentUser != null ? AppTheme.grey50 : AppTheme.grey50,
                 border: Border.all(
@@ -198,7 +199,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                         _currentUser != null ? Icons.check_circle : Icons.warning,
                         color: _currentUser != null ? AppTheme.greenStandard : AppTheme.orangeStandard,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'État de l\'authentification',
                         style: TextStyle(
@@ -208,7 +209,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(_currentUser != null 
                     ? 'Connecté: ${_currentUser!.uid}' 
                     : 'Non connecté - L\'authentification sera automatique'),
@@ -216,18 +217,18 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
 
             // Tests disponibles
             Text(
               'Tests disponibles:',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Boutons de test
             Wrap(
@@ -257,7 +258,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                   icon: const Icon(Icons.flash_on),
                   label: const Text('3. Test ajout direct'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
+                    backgroundColor: AppTheme.primaryColor,
                     foregroundColor: AppTheme.white100,
                   ),
                 ),
@@ -282,18 +283,18 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
               ],
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
 
             if (_isLoading)
               const LinearProgressIndicator(),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
 
             // Zone de statut
             Expanded(
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -306,17 +307,17 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                       'État des tests:',
                       style: GoogleFonts.inter(
                         fontWeight: AppTheme.fontBold,
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Text(
                           _statusText,
                           style: const TextStyle(
                             fontFamily: 'monospace',
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                         ),
                       ),
@@ -326,11 +327,11 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
 
             // Instructions
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -346,7 +347,7 @@ class _PassageTestWidgetState extends State<PassageTestWidget> {
                       color: AppTheme.grey800,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   const Text('1. Créez un thème de test'),
                   const Text('2. Testez l\'ajout via le dialog (comme un utilisateur)'),
                   const Text('3. Testez l\'ajout direct (pour vérifier le service)'),

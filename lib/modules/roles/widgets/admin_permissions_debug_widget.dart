@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/permission_provider.dart';
 import '../config/admin_permissions_config.dart';
+import '../../../theme.dart';
 
 /// Widget de debug pour afficher les informations sur les permissions admin
 /// À utiliser uniquement en mode développement
@@ -22,55 +23,55 @@ class AdminPermissionsDebugWidget extends StatelessWidget {
           subtitle: const Text('Informations de debug sur les permissions administrateur'),
           children: [
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildPermissionsList(
                     'Permissions Super Admin',
                     AdminPermissionsConfig.superAdminPermissions,
-                    Colors.red,
+                    AppTheme.errorColor,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildPermissionsList(
                     'Permissions Admin',
                     AdminPermissionsConfig.adminPermissions,
-                    Colors.orange,
+                    AppTheme.warning,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   _buildPermissionsList(
                     'Modules Admin',
                     AdminPermissionsConfig.adminModules,
-                    Colors.blue,
+                    AppTheme.infoColor,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   FutureBuilder<bool>(
                     future: permissionProvider.hasAdminRole(),
                     builder: (context, snapshot) {
                       final hasAdmin = snapshot.data ?? false;
                       return Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(AppTheme.space12),
                         decoration: BoxDecoration(
-                          color: hasAdmin ? Colors.green.shade100 : Colors.red.shade100,
-                          borderRadius: BorderRadius.circular(8),
+                          color: hasAdmin ? AppTheme.successContainer : AppTheme.errorContainer,
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                           border: Border.all(
-                            color: hasAdmin ? Colors.green : Colors.red,
+                            color: hasAdmin ? AppTheme.successColor : AppTheme.errorColor,
                           ),
                         ),
                         child: Row(
                           children: [
                             Icon(
                               hasAdmin ? Icons.check_circle : Icons.cancel,
-                              color: hasAdmin ? Colors.green : Colors.red,
+                              color: hasAdmin ? AppTheme.successColor : AppTheme.errorColor,
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Text(
                               hasAdmin 
                                   ? 'Utilisateur a accès admin ✅' 
                                   : 'Utilisateur n\'a PAS accès admin ❌',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: hasAdmin ? Colors.green.shade800 : Colors.red.shade800,
+                                fontWeight: AppTheme.fontBold,
+                                color: hasAdmin ? AppTheme.successColor : AppTheme.errorColor,
                               ),
                             ),
                           ],
@@ -101,22 +102,22 @@ class AdminPermissionsDebugWidget extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               title,
               style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontWeight: AppTheme.fontBold,
+                fontSize: AppTheme.fontSize16,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: Border.all(color: color.withOpacity(0.3)),
           ),
           child: Column(
@@ -127,7 +128,7 @@ class AdminPermissionsDebugWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.security, size: 14, color: color),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppTheme.space6),
                     Text(
                       permission,
                       style: TextStyle(

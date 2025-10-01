@@ -79,7 +79,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
         child: Text(
           'Planifiée',
           style: GoogleFonts.inter(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: colorScheme.onPrimaryContainer,
             letterSpacing: 0.1,
@@ -96,7 +96,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
         child: Text(
           'Bientôt',
           style: GoogleFonts.inter(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: colorScheme.onTertiaryContainer,
             letterSpacing: 0.1,
@@ -113,7 +113,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
         child: Text(
           'Actuelle',
           style: GoogleFonts.inter(
-            fontSize: 10,
+            fontSize: AppTheme.fontSize10,
             fontWeight: AppTheme.fontSemiBold,
             color: colorScheme.onSecondaryContainer,
             letterSpacing: 0.1,
@@ -141,7 +141,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
               elevation: _elevationAnimation.value,
               surfaceTintColor: colorScheme.surfaceTint,
               child: InkWell(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 onTap: () {
                   HapticFeedback.selectionClick();
                   widget.onTap?.call();
@@ -182,7 +182,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
                                 Text(
                                   widget.setlist.name,
                                   style: GoogleFonts.inter(
-                                    fontSize: 16,
+                                    fontSize: AppTheme.fontSize16,
                                     fontWeight: AppTheme.fontSemiBold,
                                     color: colorScheme.onSurface,
                                     letterSpacing: -0.2,
@@ -195,7 +195,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
                                   Text(
                                     widget.setlist.serviceType!,
                                     style: GoogleFonts.inter(
-                                      fontSize: 12,
+                                      fontSize: AppTheme.fontSize12,
                                       fontWeight: AppTheme.fontMedium,
                                       color: colorScheme.primary,
                                       letterSpacing: 0.1,
@@ -218,7 +218,7 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
                         Text(
                           widget.setlist.description,
                           style: GoogleFonts.inter(
-                            fontSize: 13,
+                            fontSize: AppTheme.fontSize13,
                             fontWeight: AppTheme.fontRegular,
                             color: colorScheme.onSurfaceVariant,
                             height: 1.3,
@@ -358,11 +358,11 @@ class _SetlistCardPerfect13State extends State<SetlistCardPerfect13>
             size: 12,
             color: onColor,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontMedium,
               color: onColor,
               letterSpacing: 0.1,

@@ -156,13 +156,13 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
               size: 64,
               color: Theme.of(context).colorScheme.error,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur: $_error',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton(
               onPressed: _loadData,
               child: const Text('Réessayer'),
@@ -182,7 +182,7 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
               size: 64,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               widget.emptyMessage,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -240,13 +240,13 @@ class _BaseFormPageState extends State<BaseFormPage> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: widget.form,
             ),
           ),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: ElevatedButton(
               onPressed: widget.isLoading ? null : widget.onSave,
               style: ElevatedButton.styleFrom(

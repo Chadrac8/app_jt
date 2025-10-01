@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../theme.dart';
 
 class OffrandesAdminView extends StatefulWidget {
   const OffrandesAdminView({super.key});
@@ -42,16 +43,16 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
         foregroundColor: AppTheme.white100,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildStatsCards(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildDonationForm(),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             _buildRecentDonations(),
           ],
         ),
@@ -61,7 +62,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -77,7 +78,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.greenStandard.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -88,7 +89,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               size: 32,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,16 +97,16 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
                 Text(
                   'Gestion des Offrandes',
                   style: GoogleFonts.inter(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   'Enregistrez et suivez les dons et offrandes de l\'église',
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -128,7 +129,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
             AppTheme.greenStandard,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: _buildStatCard(
             'Nombre de dons',
@@ -137,7 +138,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
             AppTheme.blueStandard,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: _buildStatCard(
             'Moyenne',
@@ -152,7 +153,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -181,20 +182,20 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             title,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.textSecondaryColor,
             ),
           ),
@@ -205,7 +206,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
 
   Widget _buildDonationForm() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -225,12 +226,12 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
             Text(
               'Enregistrer un don',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             Row(
               children: [
                 Expanded(
@@ -241,7 +242,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
                     (value) => setState(() => _selectedType = value!),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: _buildDropdownField(
                     'Méthode',
@@ -252,21 +253,21 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildTextField(
               'Montant (€)',
               _amountController,
               TextInputType.number,
               'Entrez le montant',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildTextField(
               'Donateur (optionnel)',
               _donorController,
               TextInputType.name,
               'Nom du donateur',
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildTextField(
               'Notes (optionnel)',
               _notesController,
@@ -274,7 +275,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               'Notes ou commentaires',
               maxLines: 3,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -290,7 +291,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
                 child: Text(
                   'Enregistrer le don',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
@@ -314,12 +315,12 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
         Text(
           label,
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.textPrimaryColor,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<String>(
           value: value,
           onChanged: onChanged,
@@ -359,12 +360,12 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
         Text(
           label,
           style: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
             color: AppTheme.textPrimaryColor,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
@@ -402,7 +403,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
 
   Widget _buildRecentDonations() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -422,7 +423,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               Text(
                 'Dons récents',
                 style: GoogleFonts.inter(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
@@ -442,13 +443,13 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           _buildDonationItem('Offrande', '€ 50', 'Espèces', 'Aujourd\'hui'),
           _buildDonationItem('Dîme', '€ 120', 'Virement', 'Hier'),
           _buildDonationItem('Mission', '€ 200', 'Chèque', '2 jours'),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.greenStandard.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -457,12 +458,12 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
             child: Row(
               children: [
                 Icon(Icons.info_outline, color: AppTheme.greenStandard, size: 20),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Les dons anonymes sont acceptés. Seuls les montants sont enregistrés.',
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.greenStandard,
                     ),
                   ),
@@ -481,7 +482,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: AppTheme.greenStandard.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -492,7 +493,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               size: 16,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -500,7 +501,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
                 Text(
                   type,
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                     color: AppTheme.textPrimaryColor,
                   ),
@@ -508,7 +509,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
                 Text(
                   method,
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
@@ -521,7 +522,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               Text(
                 amount,
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.greenStandard,
                 ),
@@ -529,7 +530,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               Text(
                 date,
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.textSecondaryColor,
                 ),
               ),

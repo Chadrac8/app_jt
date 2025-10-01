@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../views/role_assignment_screen.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget de navigation pour le module des rôles et permissions
 class RoleModuleMenuWidget extends StatelessWidget {
@@ -53,7 +54,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
               title: 'Audit des Accès',
               subtitle: 'Historique des assignations',
               icon: Icons.history,
-              color: Colors.purple,
+              color: AppTheme.primaryColor,
               onTap: () => _showComingSoon(context),
             ),
           ],
@@ -76,12 +77,12 @@ class RoleModuleMenuWidget extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(50),
@@ -92,7 +93,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
                   color: color,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -100,7 +101,7 @@ class RoleModuleMenuWidget extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 subtitle,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(

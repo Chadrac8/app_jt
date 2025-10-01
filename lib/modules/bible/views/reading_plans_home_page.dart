@@ -5,6 +5,7 @@ import '../services/reading_plan_service.dart';
 import 'reading_plan_detail_view.dart';
 import 'active_reading_plan_view.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ReadingPlansHomePage extends StatefulWidget {
   const ReadingPlansHomePage({Key? key}) : super(key: key);
@@ -159,12 +160,12 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -175,25 +176,25 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                 color: theme.colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Text(
               'Aucun plan actif',
               style: GoogleFonts.inter(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
                 color: theme.colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               'Choisissez un plan de lecture pour commencer votre parcours spirituel',
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: theme.colorScheme.onSurface.withOpacity(0.7),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
@@ -220,7 +221,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
       children: [
         // Barre de recherche et filtres
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               // Barre de recherche
@@ -240,7 +241,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                   _filterPlans();
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               // Filtres par catégorie
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -286,7 +287,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
     final popularPlans = _allPlans.where((plan) => plan.isPopular).toList();
     
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: popularPlans.length,
       itemBuilder: (context, index) {
         return _buildPlanCard(popularPlans[index], showPopularBadge: true);
@@ -304,14 +305,14 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         onTap: () => _navigateToPlanDetail(plan),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -322,7 +323,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,7 +334,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                               child: Text(
                                 plan.name,
                                 style: GoogleFonts.inter(
-                                  fontSize: 18,
+                                  fontSize: AppTheme.fontSize18,
                                   fontWeight: AppTheme.fontBold,
                                 ),
                               ),
@@ -351,7 +352,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                                 child: Text(
                                   'Populaire',
                                   style: GoogleFonts.inter(
-                                    fontSize: 12,
+                                    fontSize: AppTheme.fontSize12,
                                     fontWeight: AppTheme.fontSemiBold,
                                     color: AppTheme.grey800,
                                   ),
@@ -359,11 +360,11 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                               ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           plan.category,
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: theme.colorScheme.primary,
                             fontWeight: AppTheme.fontMedium,
                           ),
@@ -373,16 +374,16 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 plan.description,
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: theme.colorScheme.onSurface.withOpacity(0.7),
                   height: 1.4,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   _buildInfoChip(
@@ -390,13 +391,13 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
                     label: '${plan.totalDays} jours',
                     theme: theme,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   _buildInfoChip(
                     icon: Icons.access_time,
                     label: '${plan.estimatedReadingTime}min/jour',
                     theme: theme,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   _buildInfoChip(
                     icon: Icons.signal_cellular_alt,
                     label: _getDifficultyLabel(plan.difficulty),
@@ -426,11 +427,11 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: theme.colorScheme.onSurface.withOpacity(0.6)),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: theme.colorScheme.onSurface.withOpacity(0.8),
             ),
           ),

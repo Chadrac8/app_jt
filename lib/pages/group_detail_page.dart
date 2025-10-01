@@ -73,7 +73,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
       case 'image':
         return AppTheme.orangeStandard;
       case 'audio':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'media':
       case 'youtube':
         return AppTheme.redStandard;
@@ -82,11 +82,11 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
       case 'photo_gallery':
         return AppTheme.orangeStandard;
       case 'video_file':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case 'podcast':
-        return Colors.indigo;
+        return AppTheme.secondaryColor;
       case 'stream':
-        return Colors.teal;
+        return AppTheme.secondaryColor;
       case 'link':
         return AppTheme.blueStandard;
       default:
@@ -381,7 +381,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 child: Row(
                   children: [
                     Icon(Icons.people, size: 20),
-                    SizedBox(width: 12),
+                    SizedBox(width: AppTheme.space12),
                     Text('Voir les membres'),
                   ],
                 ),
@@ -395,7 +395,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                       _currentGroup!.isActive ? Icons.visibility_off : Icons.visibility,
                       size: 20,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                     Text(_currentGroup!.isActive ? 'Désactiver' : 'Activer'),
                   ],
                 ),
@@ -405,7 +405,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 child: Row(
                   children: [
                     Icon(Icons.copy, size: 20),
-                    SizedBox(width: 12),
+                    SizedBox(width: AppTheme.space12),
                     Text('Dupliquer'),
                   ],
                 ),
@@ -415,7 +415,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 child: Row(
                   children: [
                     Icon(Icons.download, size: 20),
-                    SizedBox(width: 12),
+                    SizedBox(width: AppTheme.space12),
                     Text('Exporter'),
                   ],
                 ),
@@ -425,7 +425,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 child: Row(
                   children: [
                     Icon(Icons.analytics, size: 20),
-                    SizedBox(width: 12),
+                    SizedBox(width: AppTheme.space12),
                     Text('Statistiques détaillées'),
                   ],
                 ),
@@ -476,7 +476,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               foregroundColor: AppTheme.white100,
               child: const Icon(Icons.how_to_reg),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             FloatingActionButton.extended(
               heroTag: "meeting",
               onPressed: () async {
@@ -521,7 +521,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
 
   Widget _buildInformationTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -530,7 +530,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
             child: Column(
               children: [
                 _buildGroupImage(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   _currentGroup!.name,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -539,7 +539,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
@@ -559,7 +559,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
             ),
           ),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           
           // Description
           if (_currentGroup!.description.isNotEmpty)
@@ -574,7 +574,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               ],
             ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Schedule Information
           _buildInfoCard(
@@ -594,7 +594,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Location Information
           _buildInfoCard(
@@ -616,7 +616,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
 
           // Settings Information
           _buildInfoCard(
@@ -649,7 +649,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
 
           // Tags
           if (_currentGroup!.tags.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildTagSection('Tags', _currentGroup!.tags, _groupColor),
           ],
 
@@ -672,7 +672,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         }
         final resources = snapshot.data ?? [];
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppTheme.space20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -683,7 +683,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   color: _groupColor,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               if (resources.isEmpty)
                 const Text('Aucune ressource pour le moment', style: TextStyle(color: AppTheme.grey500)),
               if (resources.isNotEmpty)
@@ -720,18 +720,18 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                     _confirmDeleteResource(res['id'], res['title'] ?? '');
                   },
                 )),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               Card(
                 elevation: 2,
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Icon(Icons.add_circle, color: _groupColor, size: 24),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           Text(
                             'Actions rapides',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -740,7 +740,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Row(
                         children: [
                           Expanded(
@@ -753,18 +753,18 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                               },
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: _buildActionButton(
                               'Ajouter média',
                               Icons.video_library,
-                              Colors.purple,
+                              AppTheme.primaryColor,
                               () {
                                 _showAddResourceDialog('media');
                               },
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: _buildActionButton(
                               'Ajouter lien',
@@ -816,7 +816,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               ),
               child: Icon(icon, color: color, size: 20),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -827,7 +827,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                       fontWeight: AppTheme.fontMedium,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1012,14 +1012,14 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: _groupColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1030,7 +1030,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -1039,7 +1039,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...children,
           ],
         ),
@@ -1066,7 +1066,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               size: 20,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1114,7 +1114,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1124,7 +1124,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -1285,7 +1285,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                 },
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               TextFormField(
                 controller: _descriptionController,
@@ -1296,7 +1296,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                 maxLines: 2,
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               Row(
                 children: [
@@ -1314,7 +1314,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: InkWell(
                       onTap: _selectTime,
@@ -1332,7 +1332,7 @@ class _CreateMeetingDialogState extends State<_CreateMeetingDialog> {
                 ],
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               TextFormField(
                 controller: _locationController,
@@ -1410,7 +1410,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
     {'value': 'doc', 'label': 'Document Word', 'icon': Icons.description, 'color': AppTheme.blueStandard},
     {'value': 'excel', 'label': 'Feuille Excel', 'icon': Icons.table_chart, 'color': AppTheme.greenStandard},
     {'value': 'image', 'label': 'Image', 'icon': Icons.image, 'color': AppTheme.orangeStandard},
-    {'value': 'audio', 'label': 'Fichier audio', 'icon': Icons.audio_file, 'color': Colors.purple},
+    {'value': 'audio', 'label': 'Fichier audio', 'icon': Icons.audio_file, 'color': AppTheme.primaryColor},
     {'value': 'other', 'label': 'Autre', 'icon': Icons.insert_drive_file, 'color': AppTheme.grey500},
   ];
 
@@ -1418,9 +1418,9 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
     {'value': 'youtube', 'label': 'Vidéo YouTube', 'icon': Icons.play_circle, 'color': AppTheme.redStandard},
     {'value': 'spotify', 'label': 'Playlist Spotify', 'icon': Icons.music_note, 'color': AppTheme.greenStandard},
     {'value': 'photo_gallery', 'label': 'Galerie photos', 'icon': Icons.photo_library, 'color': AppTheme.orangeStandard},
-    {'value': 'video_file', 'label': 'Fichier vidéo', 'icon': Icons.video_file, 'color': Colors.purple},
-    {'value': 'podcast', 'label': 'Podcast', 'icon': Icons.podcasts, 'color': Colors.indigo},
-    {'value': 'stream', 'label': 'Diffusion en direct', 'icon': Icons.live_tv, 'color': Colors.teal},
+    {'value': 'video_file', 'label': 'Fichier vidéo', 'icon': Icons.video_file, 'color': AppTheme.primaryColor},
+    {'value': 'podcast', 'label': 'Podcast', 'icon': Icons.podcasts, 'color': AppTheme.secondaryColor},
+    {'value': 'stream', 'label': 'Diffusion en direct', 'icon': Icons.live_tv, 'color': AppTheme.secondaryColor},
   ];
 
   @override
@@ -1505,7 +1505,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
       title: Row(
         children: [
           Icon(_dialogIcon, color: widget.groupColor, size: 28),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Text(
               _dialogTitle,
@@ -1540,7 +1540,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
                   },
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Description
                 TextFormField(
@@ -1554,7 +1554,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
                   maxLines: 3,
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Type spécifique selon la ressource
                 if (widget.type == 'file') ..._buildFileFields(),
@@ -1613,7 +1613,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
           fontWeight: AppTheme.fontBold,
         ),
       ),
-      const SizedBox(height: 8),
+      const SizedBox(height: AppTheme.spaceSmall),
       
       Wrap(
         spacing: 8,
@@ -1640,7 +1640,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
         ).toList(),
       ),
       
-      const SizedBox(height: 16),
+      const SizedBox(height: AppTheme.spaceMedium),
       
       // Bouton de sélection de fichier
       SizedBox(
@@ -1650,7 +1650,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
           icon: Icon(_isLoading ? Icons.hourglass_empty : Icons.upload_file),
           label: Text(_isLoading ? 'Sélection...' : 'Sélectionner le fichier'),
           style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
           ),
         ),
       ),
@@ -1666,7 +1666,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
           fontWeight: AppTheme.fontBold,
         ),
       ),
-      const SizedBox(height: 8),
+      const SizedBox(height: AppTheme.spaceSmall),
       
       Wrap(
         spacing: 8,
@@ -1693,7 +1693,7 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
         ).toList(),
       ),
       
-      const SizedBox(height: 16),
+      const SizedBox(height: AppTheme.spaceMedium),
       
       // URL du média
       TextFormField(
@@ -1741,11 +1741,11 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
         },
       ),
       
-      const SizedBox(height: 8),
+      const SizedBox(height: AppTheme.spaceSmall),
       
       // Aide pour les URLs
       Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         decoration: BoxDecoration(
           color: AppTheme.blueStandard,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1754,13 +1754,13 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
         child: Row(
           children: [
             Icon(Icons.info_outline, color: AppTheme.blueStandard, size: 20),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Expanded(
               child: Text(
                 'Vous pouvez ajouter des liens vers des sites web, des documents en ligne, ou des ressources externes.',
                 style: TextStyle(
                   color: AppTheme.blueStandard,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
               ),
             ),

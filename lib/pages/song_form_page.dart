@@ -106,12 +106,12 @@ class _SongFormPageState extends State<SongFormPage> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           children: [
             // Informations de base
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -119,7 +119,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       'Informations générales',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: AppTheme.fontBold)),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Titre
                     TextFormField(
@@ -134,7 +134,7 @@ class _SongFormPageState extends State<SongFormPage> {
                         return null;
                       }),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Auteurs
                     TextFormField(
@@ -144,7 +144,7 @@ class _SongFormPageState extends State<SongFormPage> {
                         border: OutlineInputBorder(),
                         hintText: 'Ex: John Doe, Jane Smith')),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Tonalité
                     Row(
@@ -168,7 +168,7 @@ class _SongFormPageState extends State<SongFormPage> {
                             })),
                       ]),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Tempo
                     TextFormField(
@@ -189,12 +189,12 @@ class _SongFormPageState extends State<SongFormPage> {
                       }),
                   ]))),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Paroles
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -202,12 +202,12 @@ class _SongFormPageState extends State<SongFormPage> {
                       'Paroles et Accords',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: AppTheme.fontBold)),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       'Tapez les paroles avec les accords. Les accords doivent être placés au-dessus des mots correspondants.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppTheme.textTertiaryColor)),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     TextFormField(
                       controller: _lyricsController,
@@ -224,12 +224,12 @@ class _SongFormPageState extends State<SongFormPage> {
                       }),
                   ]))),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Tags
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -237,7 +237,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       'Tags',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: AppTheme.fontBold)),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     Wrap(
                       spacing: 8,
@@ -259,12 +259,12 @@ class _SongFormPageState extends State<SongFormPage> {
                       }).toList()),
                   ]))),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Références bibliques
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -272,7 +272,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       'Références bibliques',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: AppTheme.fontBold)),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     TextFormField(
                       controller: _bibleReferencesController,
@@ -283,12 +283,12 @@ class _SongFormPageState extends State<SongFormPage> {
                       maxLines: 2),
                   ]))),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Médias
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -296,7 +296,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       'Médias',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: AppTheme.fontBold)),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // URL Audio
                     TextFormField(
@@ -316,12 +316,12 @@ class _SongFormPageState extends State<SongFormPage> {
                       }),
                   ]))),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Paramètres de publication
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -329,7 +329,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       'Paramètres de publication',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: AppTheme.fontBold)),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     Row(
                       children: [
@@ -351,7 +351,7 @@ class _SongFormPageState extends State<SongFormPage> {
                               }
                             })),
                         
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppTheme.spaceMedium),
                         
                         Expanded(
                           child: DropdownButtonFormField<String>(
@@ -372,7 +372,7 @@ class _SongFormPageState extends State<SongFormPage> {
                             })),
                       ]),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Notes privées
                     TextFormField(
@@ -383,7 +383,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       maxLines: 3),
                   ]))),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
           ])));
   }
 

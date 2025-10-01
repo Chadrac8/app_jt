@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../theme.dart';
+import '../../../theme.dart';
 import '../../../models/pepite_or_model.dart';
 import '../../../services/pepite_or_firebase_service.dart';
 import '../pages/pepite_detail_page.dart';
@@ -148,7 +148,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                         hintText: 'Rechercher une pépite d\'or...',
                         hintStyle: GoogleFonts.inter(
                           color: AppTheme.grey500,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                         prefixIcon: Icon(
                           Icons.search,
@@ -179,7 +179,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                   ),
                 ),
 
-                const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppTheme.space20)),
 
                 // Liste des pépites
                 _filteredPepites.isEmpty
@@ -208,7 +208,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
         case 'Tous':
           return const Color(0xFF6366F1);
         case 'Foi':
-          return const Color(0xFF10B981);
+          return AppTheme.successColorBright;
         case 'Espérance':
           return const Color(0xFFF59E0B);
         case 'Amour':
@@ -259,13 +259,13 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
             Text(
               theme,
               style: GoogleFonts.inter(
-                fontSize: 13,
+                fontSize: AppTheme.fontSize13,
                 fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
                 color: isSelected ? AppTheme.white100 : AppTheme.grey700,
               ),
             ),
             if (count > 0) ...[
-              const SizedBox(width: 6),
+              const SizedBox(width: AppTheme.space6),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
@@ -277,7 +277,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                 child: Text(
                   '$count',
                   style: GoogleFonts.inter(
-                    fontSize: 11,
+                    fontSize: AppTheme.fontSize11,
                     fontWeight: AppTheme.fontSemiBold,
                     color: isSelected ? AppTheme.white100 : color,
                   ),
@@ -310,7 +310,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           onTap: () => _openPepiteDetail(pepite),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -326,7 +326,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                       child: Text(
                         pepite.theme,
                         style: GoogleFonts.inter(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           fontWeight: AppTheme.fontSemiBold,
                           color: AppTheme.primaryColor,
                         ),
@@ -344,26 +344,26 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                   ],
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Description
                 if (pepite.description.isNotEmpty) ...[
                   Text(
                     pepite.description,
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.grey800,
                       height: 1.4,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                 ],
                 
                 // Citations
                 ...pepite.citations.take(2).map((citation) => Container(
                   margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   decoration: BoxDecoration(
                     color: AppTheme.grey50,
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -377,17 +377,17 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                       Text(
                         '"${citation.texte}"',
                         style: GoogleFonts.crimsonText(
-                          fontSize: 15,
+                          fontSize: AppTheme.fontSize15,
                           fontStyle: FontStyle.italic,
                           color: AppTheme.grey700,
                           height: 1.5,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         '— ${citation.auteur}',
                         style: GoogleFonts.inter(
-                          fontSize: 13,
+                          fontSize: AppTheme.fontSize13,
                           fontWeight: AppTheme.fontMedium,
                           color: AppTheme.primaryColor,
                         ),
@@ -398,11 +398,11 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                 
                 // Afficher le nombre de citations restantes
                 if (pepite.citations.length > 2) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     '+${pepite.citations.length - 2} autre${pepite.citations.length - 2 > 1 ? 's' : ''} citation${pepite.citations.length - 2 > 1 ? 's' : ''}',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
+                      fontSize: AppTheme.fontSize13,
                       color: AppTheme.primaryColor,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -411,7 +411,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                 
                 // Tags
                 if (pepite.tags.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Wrap(
                     spacing: 8,
                     runSpacing: 4,
@@ -424,7 +424,7 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
                       child: Text(
                         tag,
                         style: GoogleFonts.inter(
-                          fontSize: 11,
+                          fontSize: AppTheme.fontSize11,
                           color: AppTheme.grey600,
                           fontWeight: AppTheme.fontMedium,
                         ),
@@ -448,11 +448,11 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
           CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Chargement des pépites d\'or...',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey600,
             ),
           ),
@@ -471,24 +471,24 @@ class _PepitesOrTabState extends State<PepitesOrTab> with TickerProviderStateMix
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             _searchQuery.isNotEmpty 
                 ? 'Aucun résultat trouvé'
                 : 'Aucune pépite d\'or disponible',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _searchQuery.isNotEmpty 
                 ? 'Essayez un autre terme de recherche'
                 : 'Les citations apparaîtront ici',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.grey500,
             ),
           ),

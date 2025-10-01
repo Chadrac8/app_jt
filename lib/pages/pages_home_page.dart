@@ -314,7 +314,7 @@ child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
 Icon(Icons.error, size: 64, color: AppTheme.grey400),
-const SizedBox(height: 16),
+const SizedBox(height: AppTheme.spaceMedium),
 Text(
 'Erreur: ${snapshot.error}',
 style: Theme.of(context).textTheme.bodyLarge,
@@ -333,12 +333,12 @@ child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
 Icon(Icons.web_asset, size: 64, color: AppTheme.grey400),
-const SizedBox(height: 16),
+const SizedBox(height: AppTheme.spaceMedium),
 Text(
 'Aucun modèle disponible',
 style: Theme.of(context).textTheme.headlineSmall,
 ),
-const SizedBox(height: 8),
+const SizedBox(height: AppTheme.spaceSmall),
 Text(
 'Les modèles vous permettent de créer rapidement des pages prédéfinies',
 style: Theme.of(context).textTheme.bodyMedium,
@@ -356,7 +356,7 @@ return _buildTemplatesList(templates);
 
 Widget _buildSearchAndFilters() {
 return Container(
-padding: const EdgeInsets.all(16),
+padding: const EdgeInsets.all(AppTheme.spaceMedium),
 decoration: BoxDecoration(
 color: AppTheme.white100,
 boxShadow: [
@@ -393,7 +393,7 @@ filled: true,
 fillColor: AppTheme.grey100,
 ),
 ),
-const SizedBox(height: 16),
+const SizedBox(height: AppTheme.spaceMedium),
 // Filtres
 Row(
 children: [
@@ -416,7 +416,7 @@ child: Text(filter['label']!),
 onChanged: _onStatusFilterChanged,
 ),
 ),
-const SizedBox(width: 16),
+const SizedBox(width: AppTheme.spaceMedium),
 Expanded(
 child: DropdownButtonFormField<String>(
 value: _visibilityFilter.isEmpty ? null : _visibilityFilter,
@@ -461,7 +461,7 @@ child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
 Icon(Icons.error, size: 64, color: AppTheme.grey400),
-const SizedBox(height: 16),
+const SizedBox(height: AppTheme.spaceMedium),
 Text(
 'Erreur: ${snapshot.error}',
 style: Theme.of(context).textTheme.bodyLarge,
@@ -480,17 +480,17 @@ child: Column(
 mainAxisAlignment: MainAxisAlignment.center,
 children: [
 Icon(Icons.web, size: 64, color: AppTheme.grey400),
-const SizedBox(height: 16),
+const SizedBox(height: AppTheme.spaceMedium),
 Text(
 'Aucune page trouvée',
 style: Theme.of(context).textTheme.headlineSmall,
 ),
-const SizedBox(height: 8),
+const SizedBox(height: AppTheme.spaceSmall),
 Text(
 'Créez votre première page personnalisée',
 style: Theme.of(context).textTheme.bodyMedium,
 ),
-const SizedBox(height: 24),
+const SizedBox(height: AppTheme.spaceLarge),
 ElevatedButton.icon(
 onPressed: _createNewPage,
 icon: const Icon(Icons.add),
@@ -507,9 +507,9 @@ foregroundColor: AppTheme.white100,
 
 return ListView.separated(
 controller: _scrollController,
-padding: const EdgeInsets.all(16),
+padding: const EdgeInsets.all(AppTheme.spaceMedium),
 itemCount: pages.length,
-separatorBuilder: (context, index) => const SizedBox(height: 16),
+separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceMedium),
 itemBuilder: (context, index) {
 final page = pages[index];
 return PageCard(
@@ -535,7 +535,7 @@ final categories = templates
 ..sort();
 
 return ListView.builder(
-padding: const EdgeInsets.all(16),
+padding: const EdgeInsets.all(AppTheme.spaceMedium),
 itemCount: categories.length,
 itemBuilder: (context, index) {
 final category = categories[index];
@@ -546,7 +546,7 @@ final categoryTemplates = templates
 return Column(
 crossAxisAlignment: CrossAxisAlignment.start,
 children: [
-if (index > 0) const SizedBox(height: 24),
+if (index > 0) const SizedBox(height: AppTheme.spaceLarge),
 Text(
 category,
 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -554,7 +554,7 @@ color: AppTheme.primaryColor,
 fontWeight: AppTheme.fontBold,
 ),
 ),
-const SizedBox(height: 12),
+const SizedBox(height: AppTheme.space12),
 ...categoryTemplates.map((template) => Padding(
 padding: const EdgeInsets.only(bottom: 12),
 child: _buildTemplateCard(template),
@@ -591,12 +591,12 @@ child: Text(
 'Intégré',
 style: TextStyle(
 color: AppTheme.grey700,
-fontSize: 12,
+fontSize: AppTheme.fontSize12,
 fontWeight: AppTheme.fontMedium,
 ),
 ),
 ),
-const SizedBox(width: 8),
+const SizedBox(width: AppTheme.spaceSmall),
 const Icon(Icons.arrow_forward_ios, size: 16),
 ],
 ),
@@ -643,7 +643,7 @@ shape: const RoundedRectangleBorder(
 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
 ),
 builder: (context) => Container(
-padding: const EdgeInsets.all(16),
+padding: const EdgeInsets.all(AppTheme.spaceMedium),
 child: Column(
 mainAxisSize: MainAxisSize.min,
 children: [
@@ -652,15 +652,15 @@ height: 4,
 width: 40,
 decoration: BoxDecoration(
 color: AppTheme.grey300,
-borderRadius: BorderRadius.circular(2),
+borderRadius: BorderRadius.circular(AppTheme.radius2),
 ),
 ),
-const SizedBox(height: 16),
+const SizedBox(height: AppTheme.spaceMedium),
 Text(
 '${_selectedPages.length} page(s) sélectionnée(s)',
 style: Theme.of(context).textTheme.titleMedium,
 ),
-const SizedBox(height: 16),
+const SizedBox(height: AppTheme.spaceMedium),
 ListTile(
 leading: const Icon(Icons.publish, color: AppTheme.greenStandard),
 title: const Text('Publier'),

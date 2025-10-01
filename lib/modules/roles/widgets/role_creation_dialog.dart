@@ -4,6 +4,7 @@ import '../models/role.dart';
 import '../models/permission.dart';
 import '../providers/role_provider.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class RoleCreationDialog extends StatefulWidget {
   final Role? role; // null pour création, non-null pour édition
@@ -82,28 +83,28 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
             maxHeight: 700,
             maxWidth: 600,
           ),
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               Flexible(
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: [
                       _buildBasicInfoSection(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildPermissionsSection(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildStatusSection(),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildActionButtons(),
             ],
           ),
@@ -116,7 +117,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -127,7 +128,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
             size: 28,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +169,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           controller: _nameController,
           decoration: const InputDecoration(
@@ -187,7 +188,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           controller: _descriptionController,
           maxLines: 3,
@@ -233,7 +234,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -323,7 +324,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
       subtitle: Text(
         permission.description,
         style: TextStyle(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           color: AppTheme.grey600,
         ),
       ),
@@ -350,7 +351,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Switch(
           value: _isActive,
           onChanged: (value) {
@@ -359,7 +360,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
             });
           },
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppTheme.spaceSmall),
         Text(
           _isActive ? 'Actif' : 'Inactif',
           style: TextStyle(
@@ -380,7 +381,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
             child: const Text('Annuler'),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: ElevatedButton(
             onPressed: _isLoading ? null : _saveRole,

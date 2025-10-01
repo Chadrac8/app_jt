@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'theme.dart';
+import 'theme.dart';
 
 // Providers
 import 'modules/roles/providers/role_provider.dart';
@@ -39,16 +41,16 @@ class ModuleNavigationPage extends StatelessWidget {
           ),
         ),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildWelcomeSection(context),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildModulesSection(context),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildQuickActionsSection(context),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               _buildInfoSection(context),
             ],
           ),
@@ -68,9 +70,9 @@ class ModuleNavigationPage extends StatelessWidget {
       elevation: 2,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           gradient: LinearGradient(
             colors: [
               AppTheme.primaryColor.withOpacity(0.8),
@@ -88,25 +90,25 @@ class ModuleNavigationPage extends StatelessWidget {
                   color: Colors.white,
                   size: 32,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 const Expanded(
                   child: Text(
                     'Bienvenue dans l\'application',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontSize: AppTheme.fontSize24,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             const Text(
               'Gérez facilement tous les aspects de votre communauté religieuse',
               style: TextStyle(
                 color: Colors.white70,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
               ),
             ),
           ],
@@ -122,11 +124,11 @@ class ModuleNavigationPage extends StatelessWidget {
         Text(
           'Modules disponibles',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -202,11 +204,11 @@ class ModuleNavigationPage extends StatelessWidget {
         Text(
           'Actions rapides',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: AppTheme.fontBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Row(
           children: [
             Expanded(
@@ -221,7 +223,7 @@ class ModuleNavigationPage extends StatelessWidget {
                 label: const Text('Templates Rôles'),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () => _showSystemInfo(context),
@@ -242,21 +244,21 @@ class ModuleNavigationPage extends StatelessWidget {
   Widget _buildInfoSection(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.lightbulb, color: AppTheme.warning),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'État du développement',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(fontWeight: AppTheme.fontBold, fontSize: AppTheme.fontSize16),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             _buildStatusItem('Module Rôles', true, 'Complètement fonctionnel avec système de templates'),
             _buildStatusItem('Module Événements', false, 'En cours de développement'),
             _buildStatusItem('Module Membres', false, 'Planifié pour la prochaine version'),
@@ -282,11 +284,11 @@ class ModuleNavigationPage extends StatelessWidget {
       elevation: isImplemented ? 4 : 2,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             border: isImplemented 
                 ? Border.all(color: color.withOpacity(0.3), width: 2)
                 : null,
@@ -295,50 +297,50 @@ class ModuleNavigationPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
-                  color: isImplemented ? color.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  color: isImplemented ? color.withOpacity(0.1) : AppTheme.grey500.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: Icon(
                   icon,
-                  color: isImplemented ? color : Colors.grey,
+                  color: isImplemented ? color : AppTheme.grey500,
                   size: 32,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Text(
                 title,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: isImplemented ? Colors.black87 : Colors.grey,
+                  fontWeight: AppTheme.fontBold,
+                  fontSize: AppTheme.fontSize14,
+                  color: isImplemented ? Colors.black87 : AppTheme.grey500,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 subtitle,
                 style: TextStyle(
-                  fontSize: 12,
-                  color: isImplemented ? Colors.black54 : Colors.grey,
+                  fontSize: AppTheme.fontSize12,
+                  color: isImplemented ? Colors.black54 : AppTheme.grey500,
                 ),
                 textAlign: TextAlign.center,
               ),
               if (!isImplemented) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppTheme.warning.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: const Text(
                     'À venir',
                     style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.orange,
-                      fontWeight: FontWeight.bold,
+                      fontSize: AppTheme.fontSize10,
+                      color: AppTheme.warning,
+                      fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
@@ -369,20 +371,20 @@ class ModuleNavigationPage extends StatelessWidget {
               size: 12,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontWeight: AppTheme.fontMedium),
                 ),
                 Text(
                   description,
                   style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
+                    fontSize: AppTheme.fontSize12,
+                    color: AppTheme.grey600,
                   ),
                 ),
               ],
@@ -430,7 +432,7 @@ class ModuleNavigationPage extends StatelessWidget {
         title: Row(
           children: [
             Icon(Icons.construction, color: AppTheme.warning),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text('Module $moduleName'),
           ],
         ),
@@ -440,14 +442,14 @@ class ModuleNavigationPage extends StatelessWidget {
           children: [
             Text(
               'Le module $moduleName est actuellement en cours de développement.',
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: AppTheme.fontSize16),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             const Text(
               'Fonctionnalités prévues :',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             _getModuleFeatures(moduleName),
           ],
         ),
@@ -513,7 +515,7 @@ class ModuleNavigationPage extends StatelessWidget {
       children: moduleFeatures
           .map((feature) => Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(feature, style: const TextStyle(fontSize: 14)),
+                child: Text(feature, style: const TextStyle(fontSize: AppTheme.fontSize14)),
               ))
           .toList(),
     );
@@ -526,7 +528,7 @@ class ModuleNavigationPage extends StatelessWidget {
         title: Row(
           children: [
             Icon(Icons.info, color: AppTheme.info),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             const Text('Informations Système'),
           ],
         ),
@@ -537,27 +539,27 @@ class ModuleNavigationPage extends StatelessWidget {
             children: [
               Text(
                 'Application Jubilé Tabernacle',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(fontWeight: AppTheme.fontBold, fontSize: AppTheme.fontSize16),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: AppTheme.spaceSmall),
               Text('Version: 1.0.0 (Beta)'),
               Text('Framework: Flutter 3.32.5'),
               Text('Backend: Firebase'),
               Text('État: Développement actif'),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Module Rôles & Permissions:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
               Text('✅ Templates système (9 prédéfinis)'),
               Text('✅ Gestion complète des rôles'),
               Text('✅ Matrice des permissions'),
               Text('✅ Opérations en masse'),
               Text('✅ Interface de test complète'),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Prochaines étapes:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: AppTheme.fontBold),
               ),
               Text('🔄 Finalisation module Événements'),
               Text('🔄 Intégration Firebase complète'),

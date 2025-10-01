@@ -72,7 +72,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.8,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,7 +90,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             Expanded(
               child: Form(
                 key: _formKey,
@@ -99,16 +99,16 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildBasicInfoSection(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildAppearanceSection(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildPermissionsSection(),
                     ],
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildActionButtons(),
           ],
         ),
@@ -126,7 +126,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           controller: _nameController,
           decoration: const InputDecoration(
@@ -141,7 +141,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           controller: _descriptionController,
           maxLines: 3,
@@ -151,7 +151,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             border: OutlineInputBorder(),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         SwitchListTile(
           title: const Text('Rôle actif'),
           subtitle: const Text('Les rôles inactifs ne peuvent pas être assignés'),
@@ -176,11 +176,11 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Aperçu
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -189,7 +189,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   color: _parseColor(_selectedColor).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -200,7 +200,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                   size: 32,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,7 +226,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
           ),
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Sélection de couleur
         Text(
@@ -235,7 +235,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -266,7 +266,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
           }).toList(),
         ),
         
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Sélection d'icône
         Text(
@@ -275,7 +275,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -345,7 +345,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Modules avec permissions
             ...AppModule.allModules.map((module) {
@@ -379,13 +379,13 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
                 ),
                 child: Text(
                   '$selectedCount',
-                  style: const TextStyle(color: AppTheme.white100, fontSize: 12),
+                  style: const TextStyle(color: AppTheme.white100, fontSize: AppTheme.fontSize12),
                 ),
               )
             : null,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               children: [
                 // Boutons de sélection rapide
@@ -444,7 +444,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
             child: const Text('Annuler'),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: ElevatedButton(
             onPressed: _isLoading ? null : _saveRole,
@@ -652,7 +652,7 @@ class _CreateRoleDialogState extends State<CreateRoleDialog> {
       case PermissionLevel.write: return AppTheme.greenStandard;
       case PermissionLevel.create: return AppTheme.orangeStandard;
       case PermissionLevel.delete: return AppTheme.redStandard;
-      case PermissionLevel.admin: return Colors.purple;
+      case PermissionLevel.admin: return AppTheme.primaryColor;
     }
   }
 }

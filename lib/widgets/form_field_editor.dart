@@ -187,7 +187,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: const BoxDecoration(
                 color: AppTheme.primaryColor,
                 borderRadius: BorderRadius.only(
@@ -198,7 +198,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               child: Row(
                 children: [
                   const Icon(Icons.edit, color: AppTheme.white100),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Modifier le champ',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -218,15 +218,15 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(AppTheme.spaceLarge),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildBasicSettings(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       if (_hasOptions) _buildOptionsSection(),
                       if (_selectedType == 'person_field') _buildPersonFieldSection(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       _buildAdvancedSettings(),
                     ],
                   ),
@@ -234,7 +234,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: const BoxDecoration(
                 color: AppTheme.backgroundColor,
                 borderRadius: BorderRadius.only(
@@ -249,7 +249,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                     onPressed: () => Navigator.of(context).pop(),
                     child: const Text('Annuler'),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   ElevatedButton(
                     onPressed: _saveField,
                     style: ElevatedButton.styleFrom(
@@ -277,7 +277,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Type de champ
         DropdownButtonFormField<String>(
@@ -292,7 +292,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               child: Row(
                 children: [
                   Icon(type['icon'] as IconData, size: 20),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(type['label'] as String),
                 ],
               ),
@@ -308,7 +308,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             });
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Label
         TextFormField(
@@ -324,7 +324,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Placeholder (si applicable)
         if (_canHavePlaceholder)
@@ -337,7 +337,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
             ],
           ),
         
@@ -350,7 +350,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
           ),
           maxLines: 2,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Required checkbox
         if (_canBeRequired)
@@ -392,11 +392,11 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         if (_options.isEmpty)
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               color: AppTheme.backgroundColor,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -409,7 +409,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                   size: 48,
                   color: AppTheme.textTertiaryColor,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Aucune option ajoutée',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -443,7 +443,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
               ),
             );
           }),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppTheme.spaceLarge),
       ],
     );
   }
@@ -458,7 +458,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             fontWeight: AppTheme.fontBold,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         DropdownButtonFormField<String>(
           value: _personField['field'],
@@ -478,14 +478,14 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
             });
           },
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Text(
           'Ce champ sera automatiquement pré-rempli avec les données de la personne connectée',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppTheme.textSecondaryColor,
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppTheme.spaceLarge),
       ],
     );
   }
@@ -495,7 +495,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
       title: const Text('Paramètres avancés'),
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -507,7 +507,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 
                 if (_selectedType == 'text' || _selectedType == 'textarea') ...[
                   Row(
@@ -532,7 +532,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                           },
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: AppTheme.spaceMedium),
                       Expanded(
                         child: TextFormField(
                           initialValue: _validation['maxLength']?.toString(),
@@ -557,7 +557,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                   ),
                 ],
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
               ],
               
               // TODO: Add conditional logic settings
@@ -567,9 +567,9 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundColor,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),

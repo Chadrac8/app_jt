@@ -4,6 +4,7 @@ import '../../../../theme.dart';
 import '../models/action_group.dart';
 import '../services/action_group_service.dart';
 import 'group_form_dialog.dart';
+import '../../../theme.dart';
 
 class GroupManagementDialog extends StatefulWidget {
   const GroupManagementDialog({Key? key}) : super(key: key);
@@ -39,18 +40,18 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.8,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildSearchBar(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildStats(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(child: _buildGroupsList()),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildActions(),
           ],
         ),
@@ -66,12 +67,12 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
           color: AppTheme.primaryColor,
           size: 28,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Text(
             'Gestion des groupes',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.primaryColor,
             ),
@@ -127,7 +128,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
         final inactiveGroups = groups.length - activeGroups;
 
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.05),
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -182,11 +183,11 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
     return Column(
       children: [
         Icon(icon, color: color, size: 20),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: GoogleFonts.poppins(
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontSemiBold,
             color: color,
           ),
@@ -194,7 +195,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
         Text(
           label,
           style: GoogleFonts.poppins(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: AppTheme.textSecondaryColor,
           ),
         ),
@@ -222,11 +223,11 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     color: AppTheme.errorColor,
                   ),
                 ),
@@ -252,18 +253,18 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                   size: 64,
                   color: AppTheme.textSecondaryColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   _searchQuery.isEmpty 
                       ? 'Aucun groupe trouvé'
                       : 'Aucun résultat pour "$_searchQuery"',
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
                 if (_searchQuery.isEmpty) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   TextButton.icon(
                     onPressed: _initializeDefaultGroups,
                     icon: const Icon(Icons.add),
@@ -337,7 +338,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                 child: Text(
                   'Inactif',
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.warningColor,
                     fontWeight: AppTheme.fontMedium,
                   ),
@@ -351,11 +352,11 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
             Text(
               group.description,
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             FutureBuilder<int>(
               future: _groupService.countActionsInGroup(group.id),
               builder: (context, snapshot) {
@@ -363,7 +364,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                 return Text(
                   '$count action${count > 1 ? 's' : ''}',
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.primaryColor,
                     fontWeight: AppTheme.fontMedium,
                   ),
@@ -374,7 +375,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -383,7 +384,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                     Text(
                       'Ordre: ${group.order}',
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
@@ -391,13 +392,13 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                     Text(
                       'Créé le ${_formatDate(group.createdAt)}',
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.textSecondaryColor,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Row(
                   children: [
                     Expanded(
@@ -410,7 +411,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () => _duplicateGroup(group),
@@ -421,7 +422,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () => _toggleGroupStatus(group),
@@ -435,7 +436,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     OutlinedButton.icon(
                       onPressed: () => _confirmDeleteGroup(group),
                       icon: const Icon(Icons.delete, size: 16),
@@ -471,7 +472,7 @@ class _GroupManagementDialogState extends State<GroupManagementDialog> {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: ElevatedButton.icon(
             onPressed: _createNewGroup,

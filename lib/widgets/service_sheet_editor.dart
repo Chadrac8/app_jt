@@ -18,14 +18,14 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
   bool _isEditMode = false;
 
   final List<Map<String, dynamic>> _itemTypes = [
-    {'value': 'section', 'label': 'Section', 'icon': Icons.view_headline, 'color': Colors.teal},
-    {'value': 'louange', 'label': 'Louange', 'icon': Icons.music_note, 'color': Colors.purple},
+    {'value': 'section', 'label': 'Section', 'icon': Icons.view_headline, 'color': AppTheme.secondaryColor},
+    {'value': 'louange', 'label': 'Louange', 'icon': Icons.music_note, 'color': AppTheme.primaryColor},
     {'value': 'predication', 'label': 'Prédication', 'icon': Icons.record_voice_over, 'color': AppTheme.blueStandard},
     {'value': 'annonce', 'label': 'Annonces', 'icon': Icons.campaign, 'color': AppTheme.orangeStandard},
     {'value': 'priere', 'label': 'Prière', 'icon': Icons.favorite, 'color': AppTheme.redStandard},
     {'value': 'chant', 'label': 'Chant', 'icon': Icons.library_music, 'color': AppTheme.greenStandard},
-    {'value': 'lecture', 'label': 'Lecture', 'icon': Icons.menu_book, 'color': Colors.indigo},
-    {'value': 'offrande', 'label': 'Offrande', 'icon': Icons.volunteer_activism, 'color': Colors.amber},
+    {'value': 'lecture', 'label': 'Lecture', 'icon': Icons.menu_book, 'color': AppTheme.secondaryColor},
+    {'value': 'offrande', 'label': 'Offrande', 'icon': Icons.volunteer_activism, 'color': AppTheme.warningColor},
     {'value': 'autre', 'label': 'Autre', 'icon': Icons.more_horiz, 'color': AppTheme.grey500},
   ];
 
@@ -316,12 +316,12 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
               size: 64,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune feuille de service',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Créez une feuille de service pour organiser votre culte',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -329,7 +329,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             FilledButton.icon(
               onPressed: () {
                 setState(() {
@@ -349,7 +349,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
       children: [
         // Header
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             border: Border(
@@ -419,7 +419,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
         // Items List
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: _serviceSheet!.items.length,
             itemBuilder: (context, index) {
               final item = _serviceSheet!.items[index];
@@ -444,7 +444,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
           elevation: 2,
           color: color.withOpacity(0.1),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Container(
@@ -461,7 +461,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                       Text(
                         '${item.order}',
                         style: const TextStyle(
-                          fontSize: 10,
+                          fontSize: AppTheme.fontSize10,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.white100,
                         ),
@@ -469,7 +469,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                     ],
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -477,7 +477,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                       Text(
                         item.title,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontBold,
                           color: color,
                           letterSpacing: 1.2,
@@ -516,7 +516,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                         child: Row(
                           children: [
                             Icon(Icons.edit),
-                            SizedBox(width: 8),
+                            SizedBox(width: AppTheme.spaceSmall),
                             Text('Modifier'),
                           ],
                         ),
@@ -526,7 +526,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                         child: Row(
                           children: [
                             Icon(Icons.delete),
-                            SizedBox(width: 8),
+                            SizedBox(width: AppTheme.spaceSmall),
                             Text('Supprimer'),
                           ],
                         ),
@@ -558,7 +558,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
               Text(
                 '${item.order}',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: AppTheme.fontSize10,
                   fontWeight: AppTheme.fontBold,
                   color: color,
                 ),
@@ -596,14 +596,14 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                 child: Text(
                   '${item.durationMinutes}min',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium,
                     color: color,
                   ),
                 ),
               ),
             if (_isEditMode) ...[
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               PopupMenuButton<String>(
                 icon: const Icon(Icons.more_vert),
                 onSelected: (value) {
@@ -622,7 +622,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                     child: Row(
                       children: [
                         Icon(Icons.edit),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Modifier'),
                       ],
                     ),
@@ -632,7 +632,7 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                     child: Row(
                       children: [
                         Icon(Icons.delete),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppTheme.spaceSmall),
                         Text('Supprimer'),
                       ],
                     ),
@@ -688,7 +688,7 @@ class _AddItemDialogState extends State<_AddItemDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextField(
               controller: _descriptionController,
               decoration: const InputDecoration(
@@ -697,7 +697,7 @@ class _AddItemDialogState extends State<_AddItemDialog> {
               ),
               maxLines: 2,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: const InputDecoration(
@@ -710,7 +710,7 @@ class _AddItemDialogState extends State<_AddItemDialog> {
                   child: Row(
                     children: [
                       Icon(type['icon'], color: type['color'], size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(type['label']),
                     ],
                   ),
@@ -718,11 +718,11 @@ class _AddItemDialogState extends State<_AddItemDialog> {
               }).toList(),
               onChanged: (value) => setState(() => _selectedType = value!),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Text('Durée: $_duration min'),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Slider(
                     value: _duration.toDouble(),
@@ -815,7 +815,7 @@ class _EditItemDialogState extends State<_EditItemDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextField(
               controller: _descriptionController,
               decoration: const InputDecoration(
@@ -824,7 +824,7 @@ class _EditItemDialogState extends State<_EditItemDialog> {
               ),
               maxLines: 2,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: const InputDecoration(
@@ -837,7 +837,7 @@ class _EditItemDialogState extends State<_EditItemDialog> {
                   child: Row(
                     children: [
                       Icon(type['icon'], color: type['color'], size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(type['label']),
                     ],
                   ),
@@ -845,11 +845,11 @@ class _EditItemDialogState extends State<_EditItemDialog> {
               }).toList(),
               onChanged: (value) => setState(() => _selectedType = value!),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Text('Durée: $_duration min'),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: Slider(
                     value: _duration.toDouble(),

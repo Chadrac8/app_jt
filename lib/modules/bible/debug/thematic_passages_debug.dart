@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/thematic_passage_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Widget de débogage pour les passages thématiques
 class ThematicPassagesDebugWidget extends StatefulWidget {
@@ -103,11 +104,11 @@ class _ThematicPassagesDebugWidgetState extends State<ThematicPassagesDebugWidge
           children: [
             if (_isLoading)
               const LinearProgressIndicator(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -118,13 +119,13 @@ class _ThematicPassagesDebugWidgetState extends State<ThematicPassagesDebugWidge
                     _debugInfo,
                     style: const TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -135,7 +136,7 @@ class _ThematicPassagesDebugWidgetState extends State<ThematicPassagesDebugWidge
                     child: const Text('Test Stream'),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : () async {

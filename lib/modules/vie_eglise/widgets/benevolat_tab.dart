@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
+import '../../../theme.dart';
 
 import '../../services/models/service_assignment.dart';
 import '../../services/services/services_service.dart';
@@ -245,7 +246,7 @@ class _BenevolatTabState extends State<BenevolatTab>
         content: Row(
           children: [
             Icon(Icons.settings, color: AppTheme.surfaceColor, size: 20),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(message),
           ]),
         backgroundColor: AppTheme.errorColor,
@@ -268,13 +269,13 @@ class _BenevolatTabState extends State<BenevolatTab>
             color: const Color(0xFF6B73FF),
             child: SingleChildScrollView(
               controller: _scrollController,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Section Mes Contributions
                   _buildContributionsSection(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppTheme.spaceXLarge),
                   
                   // Section Actions rapides
                   _buildQuickActionsSection(),
@@ -292,11 +293,11 @@ class _BenevolatTabState extends State<BenevolatTab>
           child: Text(
             'Mes Contributions',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: const Color(0xFF1a1a1a),
               letterSpacing: -0.5))),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppTheme.space20),
         
         // Première rangée
         Row(
@@ -313,7 +314,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                   colors: [Color(0xFF4CAF50), Color(0xFF8BC34A)]),
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const MemberTasksPage())))),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: _buildModernContributionCard(
                 title: 'Mes Services',
@@ -327,7 +328,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const MemberServicesPage())))),
           ]),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Deuxième rangée
         Row(
@@ -341,10 +342,10 @@ class _BenevolatTabState extends State<BenevolatTab>
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF2196F3), Color(0xFF64B5F6)]),
+                  colors: [Color(0xFF2196F3), AppTheme.passageColor2]),
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const MemberGroupsPage())))),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: _buildModernContributionCard(
                 title: 'Suivis',
@@ -354,7 +355,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF9C27B0), Color(0xFFBA68C8)]),
+                  colors: [Color(0xFF9C27B0), AppTheme.passageColor5]),
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const WorkflowFollowupsManagementPage())))),
           ]),
@@ -372,13 +373,13 @@ class _BenevolatTabState extends State<BenevolatTab>
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
       child: Container(
         height: 140,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           gradient: gradient,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
           boxShadow: [
             BoxShadow(
               color: gradient.colors.first.withOpacity(0.3),
@@ -392,7 +393,7 @@ class _BenevolatTabState extends State<BenevolatTab>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(AppTheme.space10),
                   decoration: BoxDecoration(
                     color: AppTheme.surfaceColor.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
@@ -403,7 +404,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                 Text(
                   count,
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.surfaceColor)),
               ]),
@@ -411,14 +412,14 @@ class _BenevolatTabState extends State<BenevolatTab>
             Text(
               title,
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.surfaceColor)),
             const SizedBox(height: 2),
             Text(
               subtitle,
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.surfaceColor.withOpacity(0.8))),
           ])));
   }
@@ -433,11 +434,11 @@ class _BenevolatTabState extends State<BenevolatTab>
           child: Text(
             'Actions Rapides',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: const Color(0xFF1a1a1a),
               letterSpacing: -0.5))),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppTheme.space20),
         
         // Première rangée
         Row(
@@ -456,7 +457,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Création de tâche - À implémenter')));
                 })),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: _buildModernActionCard(
                 title: 'Planning',
@@ -472,7 +473,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                     const SnackBar(content: Text('Planning - À implémenter')));
                 })),
           ]),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Deuxième rangée
         Row(
@@ -491,7 +492,7 @@ class _BenevolatTabState extends State<BenevolatTab>
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Notifications - À implémenter')));
                 })),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: _buildModernActionCard(
                 title: 'Aide',
@@ -520,13 +521,13 @@ class _BenevolatTabState extends State<BenevolatTab>
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
       child: Container(
         height: 120,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
           border: Border.all(
             color: gradient.colors.first.withOpacity(0.2),
             width: 2),
@@ -540,7 +541,7 @@ class _BenevolatTabState extends State<BenevolatTab>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(AppTheme.space10),
               decoration: BoxDecoration(
                 gradient: gradient,
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
@@ -552,14 +553,14 @@ class _BenevolatTabState extends State<BenevolatTab>
             Text(
               title,
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 fontWeight: AppTheme.fontSemiBold,
                 color: const Color(0xFF1a1a1a))),
             const SizedBox(height: 2),
             Text(
               subtitle,
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.textSecondaryColor)),
           ])));
   }

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/action_group.dart';
 import '../services/action_group_service.dart';
+import '../../../theme.dart';
 
 class GroupFormDialog extends StatefulWidget {
   final ActionGroup? group;
@@ -59,15 +60,15 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
     AppTheme.successColor,
     AppTheme.warningColor,
     AppTheme.errorColor,
-    Colors.purple,
+    AppTheme.primaryColor,
     AppTheme.orangeStandard,
-    Colors.teal,
-    Colors.indigo,
+    AppTheme.secondaryColor,
+    AppTheme.secondaryColor,
     AppTheme.pinkStandard,
-    Colors.cyan,
-    Colors.amber,
-    Colors.lime,
-    Colors.brown,
+    AppTheme.infoColor,
+    AppTheme.warningColor,
+    AppTheme.successColor,
+    AppTheme.tertiaryColor,
     AppTheme.grey500,
   ];
 
@@ -124,9 +125,9 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildBasicInfoSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildAppearanceSection(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 _buildAdvancedSection(),
               ],
             ),
@@ -171,12 +172,12 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
         Text(
           'Informations de base',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         TextFormField(
           controller: _nameController,
           decoration: InputDecoration(
@@ -198,7 +199,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
             return null;
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         TextFormField(
           controller: _descriptionController,
           decoration: InputDecoration(
@@ -232,20 +233,20 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
         Text(
           'Apparence',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Text(
           'Icône',
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
           height: 100,
           decoration: BoxDecoration(
@@ -253,7 +254,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 6,
               mainAxisSpacing: 8,
@@ -293,15 +294,15 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
             },
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         Text(
           'Couleur',
           style: GoogleFonts.poppins(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
           height: 60,
           decoration: BoxDecoration(
@@ -309,7 +310,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           ),
           child: GridView.builder(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5,
               mainAxisSpacing: 8,
@@ -351,12 +352,12 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
         Text(
           'Options avancées',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold,
             color: AppTheme.primaryColor,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         Row(
           children: [
             Expanded(
@@ -380,12 +381,12 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
                 },
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: SwitchListTile(
                 title: Text(
                   'Groupe actif',
-                  style: GoogleFonts.poppins(fontSize: 14),
+                  style: GoogleFonts.poppins(fontSize: AppTheme.fontSize14),
                 ),
                 value: _isActive,
                 onChanged: (value) {

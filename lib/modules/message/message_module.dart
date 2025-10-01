@@ -33,24 +33,24 @@ class _MessageModuleState extends State<MessageModule>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // TabBar - Style MD3 moderne avec couleur surface
+        // TabBar - Style MD3 moderne avec couleur primaire cohérente
         Material(
-          color: AppTheme.surface, // Couleur blanche/crème comme bottomNavigationBar
+          color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
           elevation: 0,
           child: TabBar(
             controller: _tabController,
-            labelColor: AppTheme.primaryColor, // Texte rouge sur fond clair
-            unselectedLabelColor: AppTheme.onSurfaceVariant, // Texte gris sur fond clair
-            indicatorColor: AppTheme.primaryColor, // Indicateur rouge sur fond clair
+            labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
+            unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+            indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
             indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 3.0,
             labelStyle: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontSemiBold,
               letterSpacing: 0.1,
             ),
             unselectedLabelStyle: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontMedium,
               letterSpacing: 0.1,
             ),
@@ -68,15 +68,12 @@ class _MessageModuleState extends State<MessageModule>
             ),
             tabs: const [
               Tab(
-                icon: Icon(Icons.headphones_rounded),
                 text: 'Écouter',
               ),
               Tab(
-                icon: Icon(Icons.menu_book_rounded),
                 text: 'Lire',
               ),
               Tab(
-                icon: Icon(Icons.star_rounded),
                 text: 'Pépites d\'Or',
               ),
             ],

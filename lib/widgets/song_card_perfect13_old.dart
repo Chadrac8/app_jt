@@ -104,7 +104,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
           onTap: widget.onTap,
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 // Numéro du chant dans un cercle
@@ -139,7 +139,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 
                 // Informations du chant
                 Expanded(
@@ -156,7 +156,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
                         overflow: TextOverflow.ellipsis,
                       ),
                       if (widget.song.authors.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           widget.song.authors,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -180,7 +180,7 @@ class _SongCardPerfect13State extends State<SongCardPerfect13>
                       onTap: _toggleFavorite,
                       customBorder: const CircleBorder(),
                       child: Padding(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
                         child: Icon(
                           _isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: _isFavorite 

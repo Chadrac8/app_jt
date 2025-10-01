@@ -242,7 +242,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
         final stats = snapshot.data!;
         
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -267,7 +267,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
               _buildStatCard(
                 'Catégories',
                 stats['total_categories']?.toString() ?? '0',
-                Colors.purple,
+                AppTheme.primaryColor,
                 Icons.category,
               ),
             ],
@@ -285,11 +285,11 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: color, size: 20),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               value,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: color,
               ),
@@ -344,18 +344,18 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
                   size: 64,
                   color: AppTheme.grey300,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   snapshot.error.toString(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 ElevatedButton(
                   onPressed: _loadFilterOptions,
                   child: const Text('Réessayer'),
@@ -374,7 +374,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
         return RefreshIndicator(
           onRefresh: _loadFilterOptions,
           child: ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
@@ -409,7 +409,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             isPublicView 
                 ? 'Aucun article publié'
@@ -418,7 +418,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             isPublicView
                 ? 'Les articles apparaîtront ici une fois publiés.'
@@ -429,7 +429,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
             ),
           ),
           if (!isPublicView) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
@@ -443,7 +443,7 @@ class _BlogHomePageState extends State<BlogHomePage> with TickerProviderStateMix
               label: const Text('Créer un article'),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           TextButton(
             onPressed: _clearFilters,
             child: const Text('Effacer les filtres'),

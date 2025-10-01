@@ -197,7 +197,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                         Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(AppTheme.space12),
                               decoration: BoxDecoration(
                                 color: _parseColor(_selectedColor).withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -208,12 +208,12 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                 size: 24,
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: AppTheme.spaceMedium),
                             Expanded(
                               child: Text(
                                 isEditing ? 'Modifier l\'équipe' : 'Nouvelle équipe',
                                 style: const TextStyle(
-                                  fontSize: 24,
+                                  fontSize: AppTheme.fontSize24,
                                   fontWeight: AppTheme.fontBold,
                                   color: AppTheme.white100,
                                 ),
@@ -221,13 +221,13 @@ class _TeamFormPageState extends State<TeamFormPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           isEditing 
                               ? 'Modifiez les informations de votre équipe'
                               : 'Créez une nouvelle équipe de service',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             color: AppTheme.white100.withOpacity(0.70),
                           ),
                         ),
@@ -241,7 +241,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
             // Form content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppTheme.spaceLarge),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -267,7 +267,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                         textCapitalization: TextCapitalization.words,
                       ),
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppTheme.space20),
 
                       // Description field
                       TextFormField(
@@ -285,7 +285,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                         textCapitalization: TextCapitalization.sentences,
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
 
                       // Color section
                       Text(
@@ -294,9 +294,9 @@ class _TeamFormPageState extends State<TeamFormPage> {
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppTheme.space12),
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -325,7 +325,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                     size: 20,
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: AppTheme.space12),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,7 +350,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppTheme.spaceMedium),
                             // Color grid
                             GridView.builder(
                               shrinkWrap: true,
@@ -401,11 +401,11 @@ class _TeamFormPageState extends State<TeamFormPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
 
                       // Active status
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -420,7 +420,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(context).colorScheme.outline,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppTheme.space12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -452,7 +452,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppTheme.spaceXLarge),
                     ],
                   ),
                 ),
@@ -464,7 +464,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
 
       // Bottom action bar
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           border: Border(
@@ -488,7 +488,7 @@ class _TeamFormPageState extends State<TeamFormPage> {
                   child: const Text('Annuler'),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 flex: 2,
                 child: FilledButton(

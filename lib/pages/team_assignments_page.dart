@@ -127,7 +127,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
             const Text('Assignations'),
             Text(
               widget.team.name,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+              style: const TextStyle(fontSize: AppTheme.fontSize14, fontWeight: FontWeight.normal),
             ),
           ],
         ),
@@ -148,7 +148,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  SizedBox(height: AppTheme.spaceMedium),
                   Text('Chargement des assignations...'),
                 ],
               ),
@@ -163,12 +163,12 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                         size: 64,
                         color: Theme.of(context).colorScheme.error,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Erreur de chargement',
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 32),
                         child: Text(
@@ -177,7 +177,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppTheme.spaceLarge),
                       FilledButton.icon(
                         onPressed: _loadData,
                         icon: const Icon(Icons.refresh),
@@ -201,12 +201,12 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
               size: 64,
               color: Theme.of(context).colorScheme.outline,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune assignation',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Cette équipe n\'a pas encore d\'assignations de service',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -223,8 +223,8 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
       children: [
         // Statistiques
         Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(AppTheme.spaceMedium),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceVariant,
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -350,12 +350,12 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                         service.name,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                         ),
                       ),
                       Text(
                         _formatDate(service.dateTime),
-                        style: const TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: AppTheme.fontSize12),
                       ),
                     ],
                   ),
@@ -372,7 +372,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
                       _getStatusText(assignment.status),
                       style: TextStyle(
                         color: _getStatusColor(assignment.status),
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),

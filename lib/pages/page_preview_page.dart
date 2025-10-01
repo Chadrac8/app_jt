@@ -315,13 +315,13 @@ class _PagePreviewPageState extends State<PagePreviewPage>
 
           // Contenu principal
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Le titre et la description ne s'affichent plus dans le rendu de la page
 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
 
                 // Composants de la page
                 if (_currentPage!.components.isEmpty)
@@ -343,7 +343,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
                   }),
 
                 // Espacement de fin
-                const SizedBox(height: 32),
+                const SizedBox(height: AppTheme.spaceXLarge),
               ],
             ),
           ),
@@ -381,7 +381,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
   Widget _buildEmptyState() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(AppTheme.spaceXLarge),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -390,14 +390,14 @@ class _PagePreviewPageState extends State<PagePreviewPage>
       child: Column(
         children: [
           Icon(Icons.web, size: 64, color: AppTheme.grey400),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Page vide',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Cette page ne contient encore aucun contenu.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -405,7 +405,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ElevatedButton.icon(
             onPressed: _editPage,
             icon: const Icon(Icons.edit),

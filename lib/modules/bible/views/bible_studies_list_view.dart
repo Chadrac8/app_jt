@@ -4,6 +4,7 @@ import '../../../../theme.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import 'bible_study_detail_view.dart';
+import '../../../theme.dart';
 
 class BibleStudiesListView extends StatefulWidget {
   final String? initialCategory;
@@ -109,7 +110,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
 
   Widget _buildSearchAndFilters(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         boxShadow: [
@@ -149,7 +150,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
               });
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Filtres par catégorie
           SizedBox(
@@ -167,7 +168,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                     label: Text(
                       category,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
                         color: isSelected 
                             ? AppTheme.white100 
@@ -207,7 +208,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
     return RefreshIndicator(
       onRefresh: _loadStudies,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: _filteredStudies.length,
         itemBuilder: (context, index) {
           final study = _filteredStudies[index];
@@ -227,20 +228,20 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
             size: 64,
             color: theme.colorScheme.onBackground.withOpacity(0.4),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune étude trouvée',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: theme.colorScheme.onBackground.withOpacity(0.6),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Essayez de modifier vos critères de recherche',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: theme.colorScheme.onBackground.withOpacity(0.5),
             ),
             textAlign: TextAlign.center,
@@ -268,7 +269,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
         onTap: () => _navigateToStudyDetail(study),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -296,7 +297,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                           )
                         : _buildDefaultImage(theme),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   
                   // Contenu
                   Expanded(
@@ -309,7 +310,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                               child: Text(
                                 study.title,
                                 style: GoogleFonts.inter(
-                                  fontSize: 16,
+                                  fontSize: AppTheme.fontSize16,
                                   fontWeight: AppTheme.fontSemiBold,
                                   color: theme.colorScheme.onSurface,
                                 ),
@@ -328,7 +329,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                                 child: Text(
                                   'Populaire',
                                   style: GoogleFonts.inter(
-                                    fontSize: 10,
+                                    fontSize: AppTheme.fontSize10,
                                     fontWeight: AppTheme.fontSemiBold,
                                     color: AppTheme.orangeStandard,
                                   ),
@@ -336,19 +337,19 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                               ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           'Par ${study.author}',
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             color: theme.colorScheme.onSurface.withOpacity(0.6),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           study.description,
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: theme.colorScheme.onSurface.withOpacity(0.8),
                             height: 1.4,
                           ),
@@ -360,7 +361,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Métadonnées
               Row(
@@ -370,13 +371,13 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                     label: study.category,
                     theme: theme,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   _buildMetaChip(
                     icon: Icons.signal_cellular_alt,
                     label: study.displayDifficulty,
                     theme: theme,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   _buildMetaChip(
                     icon: Icons.access_time,
                     label: study.formattedDuration,
@@ -386,7 +387,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                   Text(
                     '${study.lessons.length} leçon${study.lessons.length > 1 ? 's' : ''}',
                     style: GoogleFonts.inter(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontMedium,
                       color: theme.colorScheme.primary,
                     ),
@@ -396,7 +397,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
               
               // Tags
               if (study.tags.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
@@ -409,7 +410,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                     child: Text(
                       '#$tag',
                       style: GoogleFonts.inter(
-                        fontSize: 11,
+                        fontSize: AppTheme.fontSize11,
                         fontWeight: AppTheme.fontMedium,
                         color: theme.colorScheme.primary,
                       ),
@@ -462,11 +463,11 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
             size: 12,
             color: theme.colorScheme.onBackground.withOpacity(0.6),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 11,
+              fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontMedium,
               color: theme.colorScheme.onBackground.withOpacity(0.7),
             ),

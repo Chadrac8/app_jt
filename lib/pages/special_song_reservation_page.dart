@@ -176,7 +176,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
           ),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [Color(0xFFFF6B6B), Color(0xFFFF8E53)],
@@ -226,7 +226,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                   },
                 ),
                 
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 
                 // Titre avec animation
                 TweenAnimationBuilder<double>(
@@ -239,7 +239,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                         '🚫 LIMITE ATTEINTE',
                         style: TextStyle(
                           color: AppTheme.white100,
-                          fontSize: 24,
+                          fontSize: AppTheme.fontSize24,
                           fontWeight: AppTheme.fontBold,
                           letterSpacing: 2.0,
                         ),
@@ -249,7 +249,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                   },
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Zone d'information avec animation
                 TweenAnimationBuilder<double>(
@@ -260,7 +260,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                       opacity: opacity,
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           color: AppTheme.white100,
                           borderRadius: BorderRadius.circular(15),
@@ -279,19 +279,19 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                               color: AppTheme.grey600,
                               size: 28,
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppTheme.space12),
                             Text(
                               'Vous avez déjà effectué votre réservation pour ce mois',
                               style: TextStyle(
                                 color: AppTheme.grey800,
-                                fontSize: 16,
+                                fontSize: AppTheme.fontSize16,
                                 fontWeight: AppTheme.fontSemiBold,
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppTheme.space12),
                             Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(AppTheme.space12),
                               decoration: BoxDecoration(
                                 color: AppTheme.grey50,
                                 borderRadius: BorderRadius.circular(10),
@@ -301,13 +301,13 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.schedule, color: AppTheme.grey700, size: 20),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: AppTheme.spaceSmall),
                                   Expanded(
                                     child: Text(
                                       'Prochaine réservation possible :\n${DateFormat('MMMM yyyy', 'fr_FR').format(DateTime.now().add(const Duration(days: 32)))}',
                                       style: TextStyle(
                                         color: AppTheme.grey800,
-                                        fontSize: 14,
+                                        fontSize: AppTheme.fontSize14,
                                         fontWeight: AppTheme.fontMedium,
                                       ),
                                       textAlign: TextAlign.center,
@@ -323,7 +323,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                   },
                 ),
                 
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 
                 // Badge de règle avec animation
                 TweenAnimationBuilder<double>(
@@ -335,20 +335,20 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: Colors.amber[100],
+                          color: AppTheme.warning.withAlpha(51),
                           borderRadius: BorderRadius.circular(25),
-                          border: Border.all(color: Colors.amber[600]!, width: 2),
+                          border: Border.all(color: AppTheme.warning!, width: 2),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.rule, color: Colors.amber[800], size: 18),
-                            const SizedBox(width: 8),
+                            Icon(Icons.rule, color: AppTheme.warning, size: 18),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Text(
                               'Maximum 1 réservation par mois',
                               style: TextStyle(
-                                color: Colors.amber[800],
-                                fontSize: 14,
+                                color: AppTheme.warning,
+                                fontSize: AppTheme.fontSize14,
                                 fontWeight: AppTheme.fontBold,
                               ),
                             ),
@@ -359,7 +359,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                   },
                 ),
                 
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 
                 // Bouton de fermeture avec animation
                 TweenAnimationBuilder<double>(
@@ -383,11 +383,11 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.check, color: AppTheme.grey700),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Text(
                               'Compris',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: AppTheme.fontSize16,
                                 fontWeight: AppTheme.fontBold,
                                 color: AppTheme.grey700,
                               ),
@@ -501,7 +501,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
           'Réservation Chant Spécial',
           style: theme.textTheme.titleLarge?.copyWith(
             color: colorScheme.onPrimary,
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
             letterSpacing: 0.1,
           ),
         ),
@@ -629,7 +629,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                                   'Comment procéder',
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: AppTheme.fontSemiBold,
                                   ),
                                 ),
                                 if (!_showInstructions) ...[
@@ -701,7 +701,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                                     // Étapes avec animations décalées
                                     ..._buildAnimatedSteps(),
                                     
-                                    const SizedBox(height: 16),
+                                    const SizedBox(height: AppTheme.spaceMedium),
                                     
                                     // Note importante avec effet de brillance
                                     _buildImportantNote(),
@@ -827,7 +827,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                               step['number'] as String,
                               style: theme.textTheme.titleMedium?.copyWith(
                                 color: colorScheme.onPrimary,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: AppTheme.fontBold,
                               ),
                             ),
                           ),
@@ -852,13 +852,13 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                                       step['title'] as String,
                                       style: theme.textTheme.titleSmall?.copyWith(
                                         color: colorScheme.onSurface,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: AppTheme.fontSemiBold,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppTheme.spaceXSmall),
                               Text(
                                 step['description'] as String,
                                 style: theme.textTheme.bodySmall?.copyWith(
@@ -929,10 +929,10 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                             'Règle importante',
                             style: theme.textTheme.titleSmall?.copyWith(
                               color: AppTheme.onWarningContainer,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             'Une seule réservation par personne et par mois',
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -991,7 +991,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                         'Sélectionner une date',
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: colorScheme.onSurface,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
                       Text(
@@ -1071,12 +1071,12 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                               color: colorScheme.onPrimaryContainer,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(_selectedSunday!),
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: colorScheme.onPrimaryContainer,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: AppTheme.fontSemiBold,
                             ),
                           ),
                         ],
@@ -1298,7 +1298,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                 title,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: AppTheme.fontSemiBold,
                 ),
               ),
               Text(
@@ -1415,7 +1415,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
         label: Text(
           text,
           style: theme.textTheme.labelLarge?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
       ),
@@ -1445,7 +1445,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
         label: Text(
           text,
           style: theme.textTheme.labelLarge?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: AppTheme.fontSemiBold,
           ),
         ),
       ),

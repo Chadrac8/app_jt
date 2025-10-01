@@ -21,16 +21,16 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildHeader(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildContactInfo(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildServiceHours(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildDescription(),
                 ])));
   }
@@ -41,7 +41,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           gradient: LinearGradient(
@@ -64,18 +64,18 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
                 Icons.church,
                 color: AppTheme.surfaceColor,
                 size: 40)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Jubilé Tabernacle France',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.surfaceColor)),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Votre communauté spirituelle',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 color: AppTheme.surfaceColor.withOpacity(0.9))),
           ])));
   }
@@ -85,17 +85,17 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Informations de contact',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildContactItem(
               icon: Icons.location_on,
               title: 'Adresse',
@@ -131,7 +131,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
             CircleAvatar(
               backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
               child: Icon(icon, color: AppTheme.primaryColor)),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,13 +139,13 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.textSecondaryColor)),
                   Text(
                     value,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       color: AppTheme.textPrimaryColor)),
                 ])),
             if (onTap != null)
@@ -161,17 +161,17 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Horaires des services',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildServiceHour('Dimanche', 'Culte principal', '10h00 - 12h00'),
             _buildServiceHour('Mercredi', 'Prière & Étude biblique', '19h30 - 21h00'),
             _buildServiceHour('Samedi', 'Réunion des jeunes', '18h00 - 20h00'),
@@ -189,7 +189,7 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: AppTheme.primaryColor)),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,13 +197,13 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
                 Text(
                   '$day - $service',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor)),
                 Text(
                   time,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     color: AppTheme.textSecondaryColor)),
               ])),
         ]));
@@ -214,28 +214,28 @@ class _ChurchInfoPageState extends State<ChurchInfoPage> {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'À propos de nous',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Jubilé Tabernacle France est une communauté chrétienne dynamique qui accueille tous ceux qui cherchent à grandir dans leur relation avec Dieu. Nous sommes une famille unie par la foi, l\'amour et le service.',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 height: 1.5,
                 color: AppTheme.textPrimaryColor)),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Notre mission est de partager l\'amour du Christ, d\'édifier les croyants et de servir notre communauté avec compassion et excellence.',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
                 height: 1.5,
                 color: AppTheme.textPrimaryColor)),
           ])));

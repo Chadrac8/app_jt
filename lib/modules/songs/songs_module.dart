@@ -98,25 +98,25 @@ class SongsModule extends BaseModule {
         onTap: () => Navigator.of(context).pushNamed('/member/songs'),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
-                      color: Colors.purple.withOpacity(0.1),
+                      color: AppTheme.primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: const Icon(
                       Icons.library_music,
-                      color: Colors.purple,
+                      color: AppTheme.primaryColor,
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,16 +124,16 @@ class SongsModule extends BaseModule {
                         Text(
                           config.name,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontBold,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           config.description,
                           style: TextStyle(
                             color: AppTheme.grey600,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -143,7 +143,7 @@ class SongsModule extends BaseModule {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Fonctionnalités principales
               Wrap(
@@ -157,7 +157,7 @@ class SongsModule extends BaseModule {
                 ],
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               
               // Statistiques (sera mis à jour dynamiquement)
               FutureBuilder<Map<String, int>>(
@@ -168,10 +168,10 @@ class SongsModule extends BaseModule {
                     return Row(
                       children: [
                         _buildStatChip('${stats['total'] ?? 0} chants', Icons.library_music),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         _buildStatChip('${stats['approved'] ?? 0} approuvés', Icons.check_circle),
                         if ((stats['pending'] ?? 0) > 0) ...[
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           _buildStatChip('${stats['pending']} en attente', Icons.pending),
                         ],
                       ],
@@ -195,19 +195,19 @@ class SongsModule extends BaseModule {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.purple.withOpacity(0.1),
+        color: AppTheme.primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: Colors.purple),
-          const SizedBox(width: 4),
+          Icon(icon, size: 12, color: AppTheme.primaryColor),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: const TextStyle(
-              fontSize: 10,
-              color: Colors.purple,
+              fontSize: AppTheme.fontSize10,
+              color: AppTheme.primaryColor,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -227,7 +227,7 @@ class SongsModule extends BaseModule {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 10, color: AppTheme.grey600),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(

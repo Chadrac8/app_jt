@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:async';
+import '../theme.dart';
 
 /// Service d'optimisation spécialisé pour les listes
 class ListOptimizationService {
@@ -278,11 +279,11 @@ class OptimizedSearchDelegate<T> extends SearchDelegate<T?> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
+            Icon(Icons.search, size: 64, color: AppTheme.onSurfaceVariant),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Tapez pour rechercher...',
-              style: TextStyle(color: Colors.grey[600]),
+              style: TextStyle(color: AppTheme.onSurface.withAlpha(179)),
             ),
           ],
         ),
@@ -297,11 +298,11 @@ class OptimizedSearchDelegate<T> extends SearchDelegate<T?> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
+            Icon(Icons.search_off, size: 64, color: AppTheme.onSurfaceVariant),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucun résultat pour "$query"',
-              style: TextStyle(color: Colors.grey[600]),
+              style: TextStyle(color: AppTheme.onSurface.withAlpha(179)),
             ),
           ],
         ),

@@ -152,7 +152,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
 
   Widget _buildContentTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -173,7 +173,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             maxLines: null,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Résumé
           TextFormField(
@@ -186,7 +186,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             maxLines: 3,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Contenu
           TextFormField(
@@ -207,14 +207,14 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             minLines: 10,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Catégories
           Text(
             'Catégories',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           if (_availableCategories.isEmpty)
             const Text('Aucune catégorie disponible')
           else
@@ -239,7 +239,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
               }).toList(),
             ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Tags
           TextFormField(
@@ -258,7 +258,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
 
   Widget _buildMediaTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -267,10 +267,10 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             'Image en vedette',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           _buildFeaturedImageSection(),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           // Images additionnelles
           Row(
@@ -287,7 +287,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           _buildAdditionalImagesSection(),
         ],
       ),
@@ -341,7 +341,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.add_photo_alternate, size: 48, color: AppTheme.grey500),
-                  SizedBox(height: 8),
+                  SizedBox(height: AppTheme.spaceSmall),
                   Text('Ajouter une image en vedette'),
                 ],
               ),
@@ -399,7 +399,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
               child: GestureDetector(
                 onTap: () => _removeAdditionalImage(index),
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                   decoration: const BoxDecoration(
                     color: AppTheme.redStandard,
                     shape: BoxShape.circle,
@@ -420,7 +420,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
 
   Widget _buildOptionsTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -429,7 +429,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             'Statut de publication',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           DropdownButtonFormField<BlogPostStatus>(
             value: _selectedStatus,
             decoration: const InputDecoration(border: OutlineInputBorder()),
@@ -444,7 +444,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             },
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Date de programmation
           if (_selectedStatus == BlogPostStatus.scheduled) ...[
@@ -452,7 +452,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
               'Date de publication',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             ListTile(
               title: Text(_scheduledDate != null 
                   ? 'Publier le ${_formatDate(_scheduledDate!)}'
@@ -464,7 +464,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                 side: BorderSide(color: AppTheme.grey300!),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
           
           // Options
@@ -488,7 +488,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
 
   Widget _buildSeoTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -496,7 +496,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             'Optimisation pour les moteurs de recherche',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Méta titre
           TextFormField(
@@ -510,7 +510,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             maxLength: 60,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Méta description
           TextFormField(
@@ -526,12 +526,12 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
             maxLength: 160,
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Aperçu SEO
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -539,18 +539,18 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
                     'Aperçu dans les résultats de recherche',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     _metaTitleController.text.isNotEmpty 
                         ? _metaTitleController.text 
                         : _titleController.text,
                     style: const TextStyle(
                       color: AppTheme.blueStandard,
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontMedium,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     _metaDescriptionController.text.isNotEmpty
                         ? _metaDescriptionController.text

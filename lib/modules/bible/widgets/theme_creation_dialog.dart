@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ThemeCreationDialog extends StatefulWidget {
   final BiblicalTheme? themeToEdit;
@@ -30,15 +31,15 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
     AppTheme.blueStandard,
     AppTheme.greenStandard,
     AppTheme.orangeStandard,
-    Colors.purple,
+    AppTheme.primaryColor,
     AppTheme.redStandard,
-    Colors.teal,
+    AppTheme.secondaryColor,
     AppTheme.pinkStandard,
-    Colors.indigo,
-    Colors.amber,
-    Colors.deepOrange,
-    Colors.cyan,
-    Colors.lime,
+    AppTheme.secondaryColor,
+    AppTheme.warningColor,
+    AppTheme.warningColor,
+    AppTheme.infoColor,
+    AppTheme.successColor,
   ];
 
   final List<IconData> _availableIcons = [
@@ -91,7 +92,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         constraints: const BoxConstraints(maxWidth: 500),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Form(
           key: _formKey,
           child: Column(
@@ -102,7 +103,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: _selectedColor.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -113,12 +114,12 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                       size: 24,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: Text(
                       isEditing ? 'Modifier le thème' : 'Nouveau thème',
                       style: GoogleFonts.inter(
-                        fontSize: 20,
+                        fontSize: AppTheme.fontSize20,
                         fontWeight: AppTheme.fontBold,
                         color: theme.colorScheme.onSurface,
                       ),
@@ -134,7 +135,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 ],
               ),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Nom du thème
               TextFormField(
@@ -155,7 +156,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 },
               ),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               
               // Description
               TextFormField(
@@ -177,18 +178,18 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 },
               ),
               
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Sélection de couleur
               Text(
                 'Couleur du thème',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -225,18 +226,18 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 }).toList(),
               ),
               
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Sélection d'icône
               Text(
                 'Icône du thème',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Container(
                 height: 120,
                 child: GridView.builder(
@@ -273,7 +274,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 ),
               ),
               
-              const SizedBox(height: 20),
+              const SizedBox(height: AppTheme.space20),
               
               // Thème public
               SwitchListTile(
@@ -286,7 +287,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 subtitle: Text(
                   'Visible par tous les utilisateurs',
                   style: GoogleFonts.inter(
-                    fontSize: 13,
+                    fontSize: AppTheme.fontSize13,
                     color: theme.colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
@@ -296,7 +297,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 contentPadding: EdgeInsets.zero,
               ),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Boutons d'action
               Row(
@@ -316,7 +317,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _saveTheme,
@@ -413,7 +414,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
             title: Row(
               children: [
                 Icon(Icons.error_outline, color: AppTheme.redStandard),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(errorMessage),
               ],
             ),
@@ -422,12 +423,12 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(actionMessage),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 const Text(
                   'Solutions possibles:',
                   style: TextStyle(fontWeight: AppTheme.fontBold),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 const Text('• Activez l\'authentification anonyme dans Firebase'),
                 const Text('• Connectez-vous avec un compte utilisateur'),
                 const Text('• Contactez l\'administrateur de l\'application'),

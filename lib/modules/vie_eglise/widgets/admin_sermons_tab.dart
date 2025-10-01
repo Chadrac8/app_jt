@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class AdminSermonsTab extends StatefulWidget {
   const AdminSermonsTab({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         boxShadow: [
@@ -60,30 +61,30 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
                 Icons.play_circle,
                 color: AppTheme.primaryColor,
                 size: 24),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Administration - Sermons locaux',
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontSemiBold,
                   color: AppTheme.textPrimaryColor)),
             ]),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text(
             'Gérez les sermons et prédications de votre église locale',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor)),
         ]));
   }
 
   Widget _buildSermonsList() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           _buildStatsCards(),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Expanded(
             child: _buildEmptyState()),
         ]));
@@ -98,14 +99,14 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             '0',
             Icons.public,
             AppTheme.greenStandard)),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             'Brouillons',
             '0',
             Icons.edit,
             AppTheme.orangeStandard)),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: _buildStatCard(
             'Total d\'écoutes',
@@ -117,7 +118,7 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -127,19 +128,19 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
       child: Column(
         children: [
           Icon(icon, color: color, size: 32),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold,
               color: color)),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             title,
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.textSecondaryColor)),
         ]));
   }
@@ -153,21 +154,21 @@ class _AdminSermonsTabState extends State<AdminSermonsTab> {
             Icons.library_music,
             size: 64,
             color: AppTheme.textTertiaryColor),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucun sermon ajouté',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Ajoutez des sermons de votre église\npour enrichir l\'expérience des membres',
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor)),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _showAddSermonDialog,
             icon: Icon(Icons.add, color: AppTheme.surfaceColor),

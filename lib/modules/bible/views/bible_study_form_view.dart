@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
+import '../../../theme.dart';
 
 class BibleStudyFormView extends StatefulWidget {
   final BibleStudy? study;
@@ -142,16 +143,16 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
 
   Widget _buildInfoTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Informations générales',
             style: GoogleFonts.inter(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Titre
           TextFormField(
@@ -168,7 +169,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               return null;
             }),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Description
           TextFormField(
@@ -186,7 +187,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               return null;
             }),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Auteur
           TextFormField(
@@ -203,7 +204,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               return null;
             }),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Catégorie et difficulté
           Row(
@@ -231,7 +232,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   onChanged: (value) {
                     setState(() => _selectedCategory = value!);
                   })),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: DropdownButtonFormField<String>(
                   value: _selectedDifficulty,
@@ -249,7 +250,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   })),
             ]),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Durée estimée
           TextFormField(
@@ -271,7 +272,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               return null;
             }),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // URL de l'image
           TextFormField(
@@ -282,7 +283,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium)))),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Tags
           Column(
@@ -291,9 +292,9 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               Text(
                 'Mots-clés',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold)),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 children: [
                   Expanded(
@@ -304,12 +305,12 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium))),
                       onSubmitted: _addTag)),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   IconButton(
                     onPressed: () => _addTag(_tagController.text),
                     icon: const Icon(Icons.add)),
                 ]),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Wrap(
                 spacing: 8,
                 runSpacing: 4,
@@ -321,15 +322,15 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                 }).toList()),
             ]),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Options
           Text(
             'Options',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           SwitchListTile(
             title: Text(
@@ -337,7 +338,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium)),
             subtitle: Text(
               'Mettre en avant cette étude',
-              style: GoogleFonts.inter(fontSize: 12)),
+              style: GoogleFonts.inter(fontSize: AppTheme.fontSize12)),
             value: _isPopular,
             onChanged: (value) {
               setState(() => _isPopular = value);
@@ -349,7 +350,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               style: GoogleFonts.inter(fontWeight: AppTheme.fontMedium)),
             subtitle: Text(
               'Rendre cette étude disponible aux utilisateurs',
-              style: GoogleFonts.inter(fontSize: 12)),
+              style: GoogleFonts.inter(fontSize: AppTheme.fontSize12)),
             value: _isActive,
             onChanged: (value) {
               setState(() => _isActive = value);
@@ -362,14 +363,14 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       children: [
         // En-tête
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           color: Theme.of(context).colorScheme.surface,
           child: Row(
             children: [
               Icon(
                 Icons.school,
                 color: Theme.of(context).colorScheme.primary),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 '${_lessons.length} leçon(s)',
                 style: GoogleFonts.inter(
@@ -387,7 +388,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
           child: _lessons.isEmpty
               ? _buildEmptyLessonsState()
               : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   itemCount: _lessons.length,
                   itemBuilder: (context, index) {
                     return _buildLessonCard(_lessons[index], index);
@@ -397,34 +398,34 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
 
   Widget _buildPreviewTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Aperçu de l\'étude',
             style: GoogleFonts.inter(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           _buildPreviewCard(),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           
           if (_lessons.isNotEmpty) ...[
             Text(
               'Leçons (${_lessons.length})',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold)),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             ..._lessons.take(3).map((lesson) => _buildPreviewLessonCard(lesson)),
             
             if (_lessons.length > 3)
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 margin: const EdgeInsets.only(top: 8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
@@ -442,7 +443,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
     final theme = Theme.of(context);
     
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
@@ -461,7 +462,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   Icons.school,
                   color: theme.colorScheme.primary,
                   size: 24)),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -469,13 +470,13 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                     Text(
                       _titleController.text.isEmpty ? 'Titre de l\'étude' : _titleController.text,
                       style: GoogleFonts.inter(
-                        fontSize: 18,
+                        fontSize: AppTheme.fontSize18,
                         fontWeight: AppTheme.fontBold,
                         color: theme.colorScheme.primary)),
                     Text(
                       'Par ${_authorController.text.isEmpty ? 'Auteur' : _authorController.text}',
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         color: theme.colorScheme.onSurface.withOpacity(0.7))),
                   ])),
               if (_isPopular)
@@ -487,34 +488,34 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   child: Text(
                     'POPULAIRE',
                     style: GoogleFonts.inter(
-                      fontSize: 10,
+                      fontSize: AppTheme.fontSize10,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.surfaceColor))),
             ]),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Text(
             _descriptionController.text.isEmpty 
                 ? 'Description de l\'étude' 
                 : _descriptionController.text,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               height: 1.4)),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           Row(
             children: [
               _buildInfoChip('${_lessons.length} leçons'),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               _buildInfoChip(_selectedCategory),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               _buildInfoChip(_getDifficultyDisplay()),
             ]),
           
           if (_tags.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Wrap(
               spacing: 6,
               runSpacing: 6,
@@ -527,7 +528,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                   child: Text(
                     '#$tag',
                     style: GoogleFonts.inter(
-                      fontSize: 11,
+                      fontSize: AppTheme.fontSize11,
                       color: theme.colorScheme.primary)));
               }).toList()),
           ],
@@ -545,7 +546,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       child: Text(
         label,
         style: GoogleFonts.inter(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: AppTheme.fontMedium)));
   }
 
@@ -554,7 +555,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
     
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
@@ -565,11 +566,11 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             'Leçon ${lesson.order}: ${lesson.title}',
             style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
           if (lesson.references.isNotEmpty) ...[
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               'Lectures: ${lesson.references.map((r) => r.displayText).join(', ')}',
               style: GoogleFonts.inter(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: theme.colorScheme.onSurface.withOpacity(0.7))),
           ],
         ]));
@@ -584,19 +585,19 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             Icons.school_outlined,
             size: 64,
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3)),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune leçon',
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Ajoutez des leçons pour construire votre étude',
             style: GoogleFonts.inter(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5))),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           ElevatedButton.icon(
             onPressed: _addLesson,
             icon: const Icon(Icons.add),
@@ -613,7 +614,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
           style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
         subtitle: Text(
           '${lesson.estimatedDuration}min • ${lesson.references.length} passage(s)',
-          style: GoogleFonts.inter(fontSize: 12)),
+          style: GoogleFonts.inter(fontSize: AppTheme.fontSize12)),
         trailing: PopupMenuButton<String>(
           onSelected: (action) => _handleLessonAction(action, index),
           itemBuilder: (context) => [
@@ -623,7 +624,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
           ]),
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -632,14 +633,14 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                     'Contenu:',
                     style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   Text(lesson.content),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                 ],
                 if (lesson.references.isNotEmpty) ...[
                   Text(
                     'Passages bibliques:',
                     style: GoogleFonts.inter(fontWeight: AppTheme.fontSemiBold)),
                   ...lesson.references.map((ref) => Text('• ${ref.displayText}')),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                 ],
                 if (lesson.questions.isNotEmpty) ...[
                   Text(
@@ -763,7 +764,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 TextField(
                   controller: contentController,
@@ -775,7 +776,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 TextField(
                   controller: durationController,

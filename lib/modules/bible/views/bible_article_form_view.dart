@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class BibleArticleFormView extends StatefulWidget {
   final BibleArticle? article;
@@ -114,18 +115,18 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
           : Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildBasicInfoSection(theme),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     _buildContentSection(theme),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     _buildBibleReferencesSection(theme),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     _buildMetadataSection(theme),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppTheme.spaceXLarge),
                     _buildPublishSection(theme),
                   ],
                 ),
@@ -137,19 +138,19 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
   Widget _buildBasicInfoSection(ThemeData theme) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Informations de base',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Titre
             TextFormField(
@@ -169,7 +170,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               },
               maxLines: 2,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Résumé
             TextFormField(
@@ -189,7 +190,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               },
               maxLines: 3,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Catégorie et Auteur
             Row(
@@ -212,7 +213,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                         .toList(),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: TextFormField(
                     controller: _authorController,
@@ -241,19 +242,19 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
   Widget _buildContentSection(ThemeData theme) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Contenu de l\'article',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             TextFormField(
               controller: _contentController,
@@ -283,7 +284,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
   Widget _buildBibleReferencesSection(ThemeData theme) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -293,7 +294,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                   child: Text(
                     'Références bibliques',
                     style: GoogleFonts.inter(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontBold,
                       color: theme.textTheme.titleLarge?.color,
                     ),
@@ -306,11 +307,11 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             if (_bibleReferences.isEmpty)
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: theme.hintColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -318,7 +319,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 child: Row(
                   children: [
                     Icon(Icons.info_outline, color: theme.hintColor),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Aucune référence biblique ajoutée',
                       style: GoogleFonts.inter(color: theme.hintColor),
@@ -331,11 +332,11 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _bibleReferences.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
+                separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceSmall),
                 itemBuilder: (context, index) {
                   final ref = _bibleReferences[index];
                   return Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: theme.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -350,7 +351,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                           color: theme.primaryColor,
                           size: 20,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Expanded(
                           child: Text(
                             ref.displayText,
@@ -379,19 +380,19 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
   Widget _buildMetadataSection(ThemeData theme) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Métadonnées',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Mots-clés
             TextFormField(
@@ -404,7 +405,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Temps de lecture et URL image
             Row(
@@ -431,7 +432,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     },
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   flex: 2,
                   child: TextFormField(
@@ -455,19 +456,19 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
   Widget _buildPublishSection(ThemeData theme) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Publication',
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: theme.textTheme.titleLarge?.color,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             SwitchListTile(
               value: _isPublished,
@@ -480,11 +481,11 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 _isPublished 
                     ? 'L\'article sera visible par tous les utilisateurs'
                     : 'L\'article restera en brouillon',
-                style: GoogleFonts.inter(fontSize: 13),
+                style: GoogleFonts.inter(fontSize: AppTheme.fontSize13),
               ),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             SizedBox(
               width: double.infinity,
@@ -501,7 +502,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 child: Text(
                   _isEditing ? 'Mettre à jour l\'article' : 'Créer l\'article',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
@@ -528,7 +529,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                 hintText: 'Ex: Matthieu, Genèse...',
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -540,7 +541,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: TextField(
                     controller: _refStartVerseController,
@@ -550,7 +551,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: TextField(
                     controller: _refEndVerseController,

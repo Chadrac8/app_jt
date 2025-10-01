@@ -52,7 +52,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                 Icons.family_restroom,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               const Text('Créer une famille'),
             ],
           ),
@@ -72,7 +72,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   ),
                   autofocus: true,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextField(
                   controller: addressController,
                   decoration: InputDecoration(
@@ -84,7 +84,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   ),
                   maxLines: 2,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextField(
                   controller: phoneController,
                   decoration: InputDecoration(
@@ -153,7 +153,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
               content: const Row(
                 children: [
                   Icon(Icons.check_circle, color: AppTheme.white100),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Famille créée avec succès'),
                 ],
               ),
@@ -194,7 +194,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   Icons.people,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text('Rejoindre une famille'),
               ],
             ),
@@ -205,7 +205,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.family_restroom, size: 64, color: AppTheme.grey500),
-                        SizedBox(height: 16),
+                        SizedBox(height: AppTheme.spaceMedium),
                         Text('Aucune famille disponible'),
                       ],
                     )
@@ -276,7 +276,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
           title: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: const Color(0x1A1976D2), // 10% opacity of primaryColor (#1976D2)
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -287,7 +287,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               const Text('Modifier la famille'),
             ],
           ),
@@ -305,7 +305,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                     prefixIcon: const Icon(Icons.home),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextField(
                   controller: addressController,
                   decoration: InputDecoration(
@@ -317,7 +317,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   ),
                   maxLines: 2,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 TextField(
                   controller: phoneController,
                   decoration: InputDecoration(
@@ -381,7 +381,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
               content: const Row(
                 children: [
                   Icon(Icons.check_circle, color: AppTheme.white100),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppTheme.spaceSmall),
                   Text('Famille modifiée avec succès'),
                 ],
               ),
@@ -463,7 +463,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: widget.person.familyId == null
             ? _buildNoFamilyState()
             : _buildFamilyDetails(),
@@ -477,7 +477,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(AppTheme.spaceXLarge),
             decoration: BoxDecoration(
               color: const Color(0x1A1976D2), // 10% opacity of primaryColor (#1976D2)
               shape: BoxShape.circle,
@@ -488,7 +488,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
               color: Theme.of(context).colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Aucune famille',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -496,7 +496,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Cette personne n\'appartient à aucune famille',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -504,7 +504,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppTheme.spaceXLarge),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -521,7 +521,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               OutlinedButton.icon(
                 onPressed: _joinFamily,
                 icon: const Icon(Icons.group_add),
@@ -561,7 +561,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
             children: [
               // Family Header
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppTheme.space20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -583,7 +583,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: const BoxDecoration(
                         color: AppTheme.white100,
                         shape: BoxShape.circle,
@@ -594,7 +594,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                         color: AppTheme.white100,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -606,7 +606,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                               fontWeight: AppTheme.fontBold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             '${family.memberIds.length} membre(s)',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -624,7 +624,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                           child: Row(
                             children: [
                               Icon(Icons.edit),
-                              SizedBox(width: 8),
+                              SizedBox(width: AppTheme.spaceSmall),
                               Text('Modifier'),
                             ],
                           ),
@@ -634,7 +634,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                           child: Row(
                             children: [
                               Icon(Icons.exit_to_app, color: Theme.of(context).colorScheme.error),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppTheme.spaceSmall),
                               Text(
                                 'Quitter la famille',
                                 style: TextStyle(color: Theme.of(context).colorScheme.error),
@@ -657,12 +657,12 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
 
               // Family Information
               if (family.address != null || family.homePhone != null) ...[
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppTheme.spaceMedium),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -680,7 +680,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                             color: Theme.of(context).colorScheme.primary,
                             size: 20,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Text(
                             'Informations familiales',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -690,7 +690,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       if (family.address != null) ...[
                         Row(
                           children: [
@@ -699,7 +699,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                               color: Theme.of(context).colorScheme.outline,
                               size: 18,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppTheme.space12),
                             Expanded(
                               child: Text(
                                 family.address!,
@@ -708,7 +708,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                             ),
                           ],
                         ),
-                        if (family.homePhone != null) const SizedBox(height: 12),
+                        if (family.homePhone != null) const SizedBox(height: AppTheme.space12),
                       ],
                       if (family.homePhone != null)
                         Row(
@@ -718,7 +718,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                               color: Theme.of(context).colorScheme.outline,
                               size: 18,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppTheme.space12),
                             Text(
                               family.homePhone!,
                               style: Theme.of(context).textTheme.bodyMedium,
@@ -728,7 +728,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
               ],
 
               // Family Members
@@ -738,7 +738,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               FutureBuilder<List<PersonModel>>(
                 future: FirebaseService.getFamilyMembers(family.id),
                 builder: (context, snapshot) {
@@ -748,7 +748,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
 
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(AppTheme.spaceLarge),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -763,14 +763,14 @@ class _FamilyWidgetState extends State<FamilyWidget>
                             size: 48,
                             color: Theme.of(context).colorScheme.outline,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           Text(
                             'Aucun membre trouvé',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               color: Theme.of(context).colorScheme.outline,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Text(
                             'Cette famille ne contient aucun membre.',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -795,7 +795,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                       
                       return Container(
                         margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(AppTheme.spaceMedium),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -826,7 +826,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: AppTheme.spaceMedium),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -840,7 +840,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                         ),
                                       ),
                                       if (isHead) ...[
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: AppTheme.spaceSmall),
                                         Container(
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 8,
@@ -855,7 +855,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                               color: AppTheme.white100,
                                               fontWeight: AppTheme.fontMedium,
-                                              fontSize: 10,
+                                              fontSize: AppTheme.fontSize10,
                                             ),
                                           ),
                                         ),
@@ -863,7 +863,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                     ],
                                   ),
                                   if (member.email.isNotEmpty) ...[
-                                    const SizedBox(height: 4),
+                                    const SizedBox(height: AppTheme.spaceXSmall),
                                     Text(
                                       member.email,
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(

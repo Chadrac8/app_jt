@@ -270,7 +270,7 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
 
   Widget _buildFilterSelector() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -349,15 +349,15 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   '${snapshot.error}',
                   style: TextStyle(color: AppTheme.textTertiaryColor),
@@ -375,7 +375,7 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: appointments.length,
           itemBuilder: (context, index) {
             return _buildAppointmentCard(appointments[index]);
@@ -395,20 +395,20 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
             size: 80,
             color: AppTheme.textTertiaryColor,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
           Text(
             'Aucun rendez-vous trouvé',
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Les rendez-vous correspondant à vos filtres apparaîtront ici',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.textSecondaryColor,
             ),
             textAlign: TextAlign.center,
@@ -467,12 +467,12 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             appointment.statutLabel,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontBold,
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import '../theme.dart';
 
 /// Constantes pour améliorer les performances
 class PerformanceConstants {
@@ -292,7 +293,7 @@ class _SmartImageCacheState extends State<SmartImageCache> {
       },
       errorBuilder: (context, error, stackTrace) {
         return widget.errorWidget ?? 
-               const Icon(Icons.error, color: Colors.red);
+               const Icon(Icons.error, color: AppTheme.errorColor);
       },
     );
   }
@@ -354,18 +355,18 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
             size: 64,
             color: Theme.of(context).colorScheme.error,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Une erreur est survenue',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _error.toString(),
             style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ElevatedButton(
             onPressed: _retry,
             child: const Text('Réessayer'),

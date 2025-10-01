@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/song_model.dart';
 import '../services/songs_firebase_service.dart';
 import '../../../widgets/song_card_perfect13.dart';
+import '../../../theme.dart';
 
 /// SearchDelegate Material Design 3 pour la recherche des cantiques
 class SongsSearchDelegate extends SearchDelegate<SongModel?> {
@@ -33,8 +34,8 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: GoogleFonts.inter(
           color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
+          fontSize: AppTheme.fontSize16,
+          fontWeight: AppTheme.fontRegular,
         ),
         border: InputBorder.none,
         enabledBorder: InputBorder.none,
@@ -43,8 +44,8 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
       textTheme: Theme.of(context).textTheme.copyWith(
         titleLarge: GoogleFonts.inter(
           color: Theme.of(context).colorScheme.onPrimary,
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
+          fontSize: AppTheme.fontSize18,
+          fontWeight: AppTheme.fontMedium,
         ),
       ),
     );
@@ -199,8 +200,8 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
               title: Text(
                 song.title,
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
+                  fontWeight: AppTheme.fontMedium,
+                  fontSize: AppTheme.fontSize16,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -208,7 +209,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
               subtitle: Text(
                 song.authors,
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                 ),
                 maxLines: 1,
@@ -245,20 +246,20 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
               size: 64,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontSize: AppTheme.fontSize18,
+                fontWeight: AppTheme.fontSemiBold,
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               subtitle,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
               ),
               textAlign: TextAlign.center,
@@ -271,7 +272,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
 
   Widget _buildRecentSuggestions(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -282,32 +283,32 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
                 color: Theme.of(context).colorScheme.primary,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Conseils de recherche',
                 style: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontSize: AppTheme.fontSize16,
+                  fontWeight: AppTheme.fontSemiBold,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           _buildSearchTip(
             context,
             'Par titre',
             'Rechercher "Amazing Grace", "Seigneur", etc.',
             Icons.title,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           _buildSearchTip(
             context,
             'Par auteur',
             'Rechercher "John Newton", "Chris Tomlin", etc.',
             Icons.person,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           _buildSearchTip(
             context,
             searchInLyrics ? 'Dans les paroles' : 'Changer le mode',
@@ -334,7 +335,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
           color: Theme.of(context).colorScheme.onSurfaceVariant,
           size: 16,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,15 +343,15 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
               Text(
                 title,
                 style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontSize: AppTheme.fontSize14,
+                  fontWeight: AppTheme.fontMedium,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               Text(
                 description,
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                 ),
               ),

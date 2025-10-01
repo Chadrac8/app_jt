@@ -25,7 +25,7 @@ class BlogPostMetadata extends StatelessWidget {
               : null,
         ),
         
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         
         // Informations auteur et article
         Expanded(
@@ -47,12 +47,12 @@ class BlogPostMetadata extends StatelessWidget {
                       color: AppTheme.grey600,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     '•',
                     style: TextStyle(color: AppTheme.grey600),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     '${post.readingTimeMinutes} min de lecture',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -70,20 +70,20 @@ class BlogPostMetadata extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.amber.withOpacity(0.1),
+              color: AppTheme.warningColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-              border: Border.all(color: Colors.amber),
+              border: Border.all(color: AppTheme.warningColor),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.star, size: 14, color: Colors.amber[700]),
-                const SizedBox(width: 4),
+                Icon(Icons.star, size: 14, color: AppTheme.warning),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   'EN VEDETTE',
                   style: TextStyle(
-                    color: Colors.amber[700],
-                    fontSize: 10,
+                    color: AppTheme.warning,
+                    fontSize: AppTheme.fontSize10,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),

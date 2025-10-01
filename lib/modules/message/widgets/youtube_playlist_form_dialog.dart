@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/youtube_playlist_model.dart';
+import '../../../theme.dart';
 
 class YouTubePlaylistFormDialog extends StatefulWidget {
   final YouTubePlaylist? playlist;
@@ -70,7 +71,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
         ),
         child: Container(
           width: MediaQuery.of(context).size.width * 0.8,
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,13 +83,13 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                     color: AppTheme.primaryColor,
                     size: 28,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Text(
                     widget.playlist == null 
                       ? 'Ajouter une playlist'
                       : 'Modifier la playlist',
                     style: GoogleFonts.openSans(
-                      fontSize: 24,
+                      fontSize: AppTheme.fontSize24,
                       fontWeight: AppTheme.fontBold,
                       color: AppTheme.textPrimaryColor,
                     ),
@@ -100,7 +101,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               Expanded(
                 child: SingleChildScrollView(
@@ -113,12 +114,12 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                         Text(
                           'Titre de la playlist',
                           style: GoogleFonts.openSans(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         TextFormField(
                           controller: _titleController,
                           decoration: InputDecoration(
@@ -139,18 +140,18 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: AppTheme.space20),
                         
                         // URL de la playlist
                         Text(
                           'URL de la playlist YouTube',
                           style: GoogleFonts.openSans(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         TextFormField(
                           controller: _urlController,
                           decoration: InputDecoration(
@@ -178,18 +179,18 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: AppTheme.space20),
                         
                         // Description
                         Text(
                           'Description (optionnelle)',
                           style: GoogleFonts.openSans(
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         TextFormField(
                           controller: _descriptionController,
                           maxLines: 3,
@@ -205,7 +206,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: AppTheme.space20),
                         
                         // Statut actif
                         Row(
@@ -222,14 +223,14 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                             Text(
                               'Playlist active',
                               style: GoogleFonts.openSans(
-                                fontSize: 16,
+                                fontSize: AppTheme.fontSize16,
                                 color: AppTheme.textPrimaryColor,
                               ),
                             ),
                           ],
                         ),
                         
-                        const SizedBox(height: 32),
+                        const SizedBox(height: AppTheme.spaceXLarge),
                         
                         // Boutons d'action
                         Row(
@@ -240,12 +241,12 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                               child: Text(
                                 'Annuler',
                                 style: GoogleFonts.openSans(
-                                  fontSize: 16,
+                                  fontSize: AppTheme.fontSize16,
                                   color: AppTheme.textSecondaryColor,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: AppTheme.spaceMedium),
                             ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
@@ -282,7 +283,7 @@ class _YouTubePlaylistFormDialogState extends State<YouTubePlaylistFormDialog> {
                               child: Text(
                                 'Enregistrer',
                                 style: GoogleFonts.openSans(
-                                  fontSize: 16,
+                                  fontSize: AppTheme.fontSize16,
                                   fontWeight: AppTheme.fontSemiBold,
                                 ),
                               ),

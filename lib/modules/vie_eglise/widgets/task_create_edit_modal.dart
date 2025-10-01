@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class TaskCreateEditModal extends StatefulWidget {
   final TaskModel? task;
@@ -66,28 +67,28 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
           _buildHeader(),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildTitleField(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     _buildDescriptionField(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     _buildPriorityField(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     _buildStatusField(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     _buildDueDateField(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     _buildCategoryField(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     _buildEstimatedHoursField(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     _buildLocationField(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppTheme.spaceLarge),
                     _buildActionButtons(),
                   ],
                 ),
@@ -101,7 +102,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -112,7 +113,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
             child: Text(
               widget.task == null ? 'Créer une tâche' : 'Modifier la tâche',
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.grey800,
               ),
@@ -167,11 +168,11 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
         Text(
           'Priorité',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           children: _priorities.map((priority) {
@@ -198,11 +199,11 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
         Text(
           'Statut',
           style: GoogleFonts.poppins(
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           children: _statuses.map((status) {
@@ -314,7 +315,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         Expanded(
           child: ElevatedButton(
             onPressed: _saveTask,

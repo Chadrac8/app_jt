@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ServiceFormPage extends StatefulWidget {
   final ServiceModel? service;
@@ -213,7 +214,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
         actions: [
           if (_isLoading)
             const Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(AppTheme.spaceMedium),
               child: SizedBox(
                 width: 20,
                 height: 20,
@@ -253,7 +254,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
       key: _formKey,
       child: SingleChildScrollView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -273,14 +274,14 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildTextField(
                   controller: _descriptionController,
                   label: 'Description (optionnel)',
                   icon: Icons.description,
                   maxLines: 3,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildDropdown(
                   value: _selectedType,
                   label: 'Type de service',
@@ -297,7 +298,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Date and Time
             _buildSection(
@@ -309,18 +310,18 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                     Expanded(
                       child: _buildDateField(),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppTheme.spaceMedium),
                     Expanded(
                       child: _buildTimeField(),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildDurationSelector(),
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Location
             _buildSection(
@@ -341,7 +342,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Status and Options
             _buildSection(
@@ -349,12 +350,12 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               icon: Icons.settings,
               children: [
                 _buildStatusSelector(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildRecurringSwitch(),
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
 
             // Notes
             _buildSection(
@@ -370,7 +371,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               ],
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: AppTheme.spaceXLarge),
 
             // Save Button
             SizedBox(
@@ -394,7 +395,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                     : Text(
                         widget.service == null ? 'Créer le Service' : 'Enregistrer les Modifications',
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                       ),
@@ -412,7 +413,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
     required List<Widget> children,
   }) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -433,7 +434,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -444,7 +445,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                   color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -454,7 +455,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ...children,
         ],
       ),
@@ -546,7 +547,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
     return InkWell(
       onTap: _selectDate,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           border: Border.all(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
@@ -560,7 +561,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               Icons.calendar_today,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -588,7 +589,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
     return InkWell(
       onTap: _selectTime,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           border: Border.all(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
@@ -602,7 +603,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               Icons.access_time,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -636,7 +637,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -675,7 +676,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<String>(
           value: _status,
           decoration: InputDecoration(

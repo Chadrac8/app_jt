@@ -173,9 +173,9 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
                 color: AppTheme.errorColor,
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text('Toutes vos données seront supprimées :'),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text('• Profil et informations personnelles'),
             Text('• Historique des événements'),
             Text('• Réponses aux formulaires'),
@@ -242,11 +242,11 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           children: [
             Text(
               'Jubilé Tabernacle',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text('Version: 1.0.0'),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Application officielle du Jubilé Tabernacle.\n\n'
               'Restez connecté avec votre communauté, accédez aux ressources '
@@ -271,7 +271,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
         title: const Row(
           children: [
             Icon(Icons.share, color: AppTheme.primaryColor),
-            SizedBox(width: 8),
+            SizedBox(width: AppTheme.spaceSmall),
             Text('Partager l\'application'),
           ],
         ),
@@ -283,31 +283,31 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
               'Aidez-nous à faire connaître Jubilé Tabernacle !',
               style: TextStyle(fontWeight: AppTheme.fontSemiBold),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Votre partage permet à d\'autres personnes de découvrir notre communauté spirituelle et de bénéficier de nos ressources.',
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Icon(Icons.group, size: 16, color: AppTheme.primaryColor),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Expanded(child: Text('Grandir en communauté')),
               ],
             ),
-            SizedBox(height: 4),
+            SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Icon(Icons.favorite, size: 16, color: AppTheme.primaryColor),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Expanded(child: Text('Partager la bénédiction')),
               ],
             ),
-            SizedBox(height: 4),
+            SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Icon(Icons.connect_without_contact, size: 16, color: AppTheme.primaryColor),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Expanded(child: Text('Connecter les cœurs')),
               ],
             ),
@@ -369,7 +369,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             content: Row(
               children: [
                 Icon(Icons.check_circle, color: AppTheme.white100),
-                SizedBox(width: 8),
+                SizedBox(width: AppTheme.spaceSmall),
                 Expanded(child: Text('✅ Merci de partager l\'application !')),
               ],
             ),
@@ -385,7 +385,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             content: Row(
               children: [
                 const Icon(Icons.error, color: AppTheme.white100),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(child: Text('❌ Erreur lors du partage: ${e.toString()}')),
               ],
             ),
@@ -498,16 +498,16 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
           : FadeTransition(
               opacity: _fadeAnimation,
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 children: [
                   _buildAccountSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildNotificationsSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildDisplaySection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildInfoSection(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   _buildDangerSection(),
                 ],
               ),
@@ -527,7 +527,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: (headerColor ?? AppTheme.primaryColor).withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
@@ -539,11 +539,11 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
                   color: headerColor ?? AppTheme.primaryColor,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                     color: headerColor ?? AppTheme.primaryColor,
                   ),
@@ -552,7 +552,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(children: children),
           ),
         ],
@@ -703,7 +703,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
         const Divider(),
         ListTile(
           leading: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -721,7 +721,7 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             _shareCount > 0 
               ? 'Partagez la bénédiction avec vos proches\nVous avez partagé $_shareCount fois - Merci ! 🙏'
               : 'Partagez la bénédiction avec vos proches\nAidez-nous à grandir en communauté',
-            style: const TextStyle(fontSize: 13),
+            style: const TextStyle(fontSize: AppTheme.fontSize13),
           ),
           trailing: const Icon(Icons.chevron_right),
           onTap: _shareApp,
@@ -821,7 +821,7 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _newPasswordController,
               obscureText: _obscureNewPassword,
@@ -842,7 +842,7 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _confirmPasswordController,
               obscureText: _obscureConfirmPassword,
@@ -926,7 +926,7 @@ class _ChangeEmailDialogState extends State<_ChangeEmailDialog> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextFormField(
               controller: _passwordController,
               obscureText: _obscurePassword,

@@ -28,7 +28,7 @@ class DashboardChartWidget extends StatelessWidget {
                 fontSize: compactView ? 14 : 16,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
               child: chart.data.isNotEmpty
                   ? _buildChart(context)
@@ -69,7 +69,7 @@ class DashboardChartWidget extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppTheme.spaceMedium),
         // Légende
         Expanded(
           flex: 3,
@@ -90,7 +90,7 @@ class DashboardChartWidget extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text(
                         item.label,
@@ -140,7 +140,7 @@ class DashboardChartWidget extends StatelessWidget {
                           fontSize: compactView ? 10 : 12,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       // Barre
                       Container(
                         height: height * (compactView ? 80 : 120),
@@ -156,7 +156,7 @@ class DashboardChartWidget extends StatelessWidget {
             }).toList(),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         // Labels des barres
         Row(
           children: chart.data.map((item) {
@@ -191,7 +191,7 @@ class DashboardChartWidget extends StatelessWidget {
             child: Container(),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         // Labels
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,7 +218,7 @@ class DashboardChartWidget extends StatelessWidget {
             size: compactView ? 32 : 48,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Aucune donnée disponible',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

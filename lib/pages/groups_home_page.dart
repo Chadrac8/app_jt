@@ -251,14 +251,14 @@ class _GroupsHomePageState extends State<GroupsHomePage>
             children: [
               // Header
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppTheme.space20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(AppTheme.space12),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
                             borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -269,7 +269,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                             size: 24,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppTheme.spaceMedium),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,7 +304,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                                 child: Row(
                                   children: [
                                     Icon(Icons.archive, size: 20),
-                                    SizedBox(width: 12),
+                                    SizedBox(width: AppTheme.space12),
                                     Text('Archiver'),
                                   ],
                                 ),
@@ -314,7 +314,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                                 child: Row(
                                   children: [
                                     Icon(Icons.download, size: 20),
-                                    SizedBox(width: 12),
+                                    SizedBox(width: AppTheme.space12),
                                     Text('Exporter'),
                                   ],
                                 ),
@@ -324,14 +324,14 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                                 child: Row(
                                   children: [
                                     Icon(Icons.delete, size: 20, color: AppTheme.redStandard),
-                                    SizedBox(width: 12),
+                                    SizedBox(width: AppTheme.space12),
                                     Text('Supprimer', style: TextStyle(color: AppTheme.redStandard)),
                                   ],
                                 ),
                               ),
                             ],
                             child: Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(AppTheme.spaceSmall),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
                                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -357,7 +357,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                       ],
                     ),
                     
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppTheme.space20),
                     
                     // Search and Filter Bar
                     GroupSearchFilterBar(
@@ -370,9 +370,9 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                     ),
                     
                     if (_isSelectionMode) ...[
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(AppTheme.space12),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primaryContainer,
                           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -384,7 +384,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                               color: Theme.of(context).colorScheme.onPrimaryContainer,
                               size: 20,
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppTheme.spaceSmall),
                             Text(
                               '${_selectedGroups.length} groupe(s) sélectionné(s)',
                               style: TextStyle(
@@ -420,12 +420,12 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                               size: 64,
                               color: Theme.of(context).colorScheme.error,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppTheme.spaceMedium),
                             Text(
                               'Erreur lors du chargement',
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               snapshot.error.toString(),
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -462,14 +462,14 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: AppTheme.spaceLarge),
                             Text(
                               'Aucun groupe trouvé',
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                 fontWeight: AppTheme.fontSemiBold,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppTheme.spaceSmall),
                             Text(
                               _searchQuery.isNotEmpty || _selectedTypeFilters.isNotEmpty || _selectedDayFilters.isNotEmpty
                                   ? 'Essayez de modifier vos critères de recherche'
@@ -479,7 +479,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: AppTheme.spaceLarge),
                             if (_searchQuery.isEmpty && _selectedTypeFilters.isEmpty && _selectedDayFilters.isEmpty)
                               ElevatedButton.icon(
                                 onPressed: _addNewGroup,
@@ -517,9 +517,9 @@ class _GroupsHomePageState extends State<GroupsHomePage>
   Widget _buildListView(List<GroupModel> groups) {
     return ListView.separated(
       controller: _scrollController,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       itemCount: groups.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 16),
+      separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spaceMedium),
       itemBuilder: (context, index) {
         final group = groups[index];
         return GroupCard(
@@ -538,7 +538,7 @@ class _GroupsHomePageState extends State<GroupsHomePage>
   Widget _buildGridView(List<GroupModel> groups) {
     return GridView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.8,

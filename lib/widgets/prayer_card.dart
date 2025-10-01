@@ -58,7 +58,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
       case PrayerType.testimony:
         return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
-        return Colors.purple;
+        return AppTheme.primaryColor;
     }
   }
 
@@ -167,10 +167,10 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(comment.content),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             _formatDate(comment.createdAt),
-                            style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
+                            style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
                           ),
                         ],
                       ),
@@ -275,7 +275,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
         onTap: widget.onTap,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -293,19 +293,19 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(_getTypeIcon(), size: 16, color: _getTypeColor()),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           widget.prayer.type.label,
                           style: TextStyle(
                             color: _getTypeColor(),
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontSemiBold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   if (widget.prayer.category.isNotEmpty)
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -316,7 +316,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       child: Text(
                         widget.prayer.category,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey500,
                         ),
                       ),
@@ -332,7 +332,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       child: const Text(
                         'En attente',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.orangeStandard,
                           fontWeight: AppTheme.fontSemiBold,
                         ),
@@ -341,37 +341,37 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                   Text(
                     _formatDate(widget.prayer.createdAt),
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey500,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
 
               // Titre
               Text(
                 widget.prayer.title,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontSemiBold,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
 
               // Contenu
               Text(
                 widget.prayer.content,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: AppTheme.grey500,
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
 
               // Auteur et actions
               Row(
@@ -388,25 +388,25 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                               widget.prayer.authorName.trim().isNotEmpty 
                                   ? widget.prayer.authorName.trim()[0].toUpperCase() 
                                   : '?',
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(fontSize: AppTheme.fontSize12),
                             )
                           : null,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       widget.prayer.authorName,
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ] else ...[
                     const Icon(Icons.person_outline, size: 16, color: AppTheme.grey500),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     const Text(
                       'Anonyme',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         color: AppTheme.grey500,
                         fontStyle: FontStyle.italic,
                       ),
@@ -426,9 +426,9 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                     if (widget.prayer.comments.isNotEmpty)
                       Text(
                         '${widget.prayer.comments.length}',
-                        style: const TextStyle(fontSize: 12, color: AppTheme.grey500),
+                        style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
                       ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
 
                     // Prière
                     AnimatedBuilder(
@@ -453,7 +453,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       Text(
                         '${widget.prayer.prayerCount}',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: hasPrayed ? AppTheme.primaryColor : AppTheme.grey500,
                           fontWeight: hasPrayed ? AppTheme.fontSemiBold : FontWeight.normal,
                         ),
@@ -462,7 +462,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
 
                   // Actions admin/auteur
                   if (widget.isAdminView || isAuthor) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     PopupMenuButton<String>(
                       icon: const Icon(Icons.more_vert, size: 20),
                       onSelected: (value) {
@@ -491,7 +491,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                             child: Row(
                               children: [
                                 Icon(Icons.edit, size: 16),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Modifier'),
                               ],
                             ),
@@ -501,7 +501,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                             child: Row(
                               children: [
                                 Icon(Icons.delete, size: 16, color: AppTheme.redStandard),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Supprimer'),
                               ],
                             ),
@@ -514,7 +514,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                               child: Row(
                                 children: [
                                   Icon(Icons.check, size: 16, color: AppTheme.greenStandard),
-                                  SizedBox(width: 8),
+                                  SizedBox(width: AppTheme.spaceSmall),
                                   Text('Approuver'),
                                 ],
                               ),
@@ -524,7 +524,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                             child: Row(
                               children: [
                                 Icon(Icons.close, size: 16, color: AppTheme.redStandard),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Rejeter'),
                               ],
                             ),
@@ -534,7 +534,7 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                             child: Row(
                               children: [
                                 Icon(Icons.archive, size: 16),
-                                SizedBox(width: 8),
+                                SizedBox(width: AppTheme.spaceSmall),
                                 Text('Archiver'),
                               ],
                             ),

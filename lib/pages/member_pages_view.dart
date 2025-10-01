@@ -148,7 +148,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Chargement des pages...',
               style: TextStyle(color: AppTheme.textSecondaryColor),
@@ -164,20 +164,20 @@ class _MemberPagesViewState extends State<MemberPagesView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.error_outline, size: 64, color: AppTheme.errorColor),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Erreur',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: AppTheme.errorColor,
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               _errorMessage!,
               style: TextStyle(color: AppTheme.textSecondaryColor),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 24),
+            SizedBox(height: AppTheme.spaceLarge),
             ElevatedButton.icon(
               onPressed: _refreshPages,
               icon: Icon(Icons.refresh),
@@ -198,14 +198,14 @@ class _MemberPagesViewState extends State<MemberPagesView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.web_asset_off, size: 64, color: AppTheme.textSecondaryColor),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Aucune page disponible',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Aucune page n\'a été publiée pour le moment.',
               style: TextStyle(color: AppTheme.textSecondaryColor),
@@ -225,7 +225,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
     return RefreshIndicator(
       onRefresh: _refreshPages,
       child: ListView.builder(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: _pages.length,
         itemBuilder: (context, index) {
           return _buildPageCard(_pages[index]);
@@ -293,7 +293,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
 
             // Contenu
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -310,7 +310,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
 
                   // Description
                   if (page.description.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       page.description,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -321,7 +321,7 @@ class _MemberPagesViewState extends State<MemberPagesView>
                     ),
                   ],
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
 
                   // Flèche de navigation
                   Row(
@@ -511,7 +511,7 @@ class _MemberPageDetailViewState extends State<MemberPageDetailView> {
 
           // Contenu principal
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -555,7 +555,7 @@ class _MemberPageDetailViewState extends State<MemberPageDetailView> {
   Widget _buildEmptyContent() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(AppTheme.spaceXLarge),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -564,14 +564,14 @@ class _MemberPageDetailViewState extends State<MemberPageDetailView> {
       child: Column(
         children: [
           Icon(Icons.web, size: 64, color: AppTheme.grey400),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Contenu à venir',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppTheme.grey600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Cette page sera bientôt mise à jour avec du contenu.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

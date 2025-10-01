@@ -312,7 +312,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
         Text(
           widget.song.title,
           style: GoogleFonts.inter(
-            fontSize: 24,
+            fontSize: AppTheme.fontSize24,
             fontWeight: AppTheme.fontBold,
             color: colorScheme.onSurface,
             letterSpacing: 0.0,
@@ -372,7 +372,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
                 Text(
                   'Transposé de ${widget.song.originalKey} vers $_currentKey',
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: colorScheme.onTertiaryContainer,
                     fontWeight: AppTheme.fontMedium,
                     letterSpacing: 0.4,
@@ -408,7 +408,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
           Text(
             text,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: colorScheme.onSecondaryContainer,
               fontWeight: AppTheme.fontMedium,
               letterSpacing: 0.4,
@@ -449,7 +449,7 @@ class _SongLyricsViewerState extends State<SongLyricsViewer>
               child: Text(
                 line.replaceAll('[', '').replaceAll(']', ''),
                 style: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                   color: colorScheme.onPrimaryContainer,
                   letterSpacing: 0.1,

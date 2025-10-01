@@ -125,7 +125,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         boxShadow: [
@@ -194,7 +194,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               // Bouton filtres
               IconButton(
                 icon: Badge(
@@ -270,7 +270,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
             ),
           // Panneau de filtres détaillés
           if (_showFilters) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildFiltersPanel(),
           ],
         ],
@@ -280,7 +280,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
 
   Widget _buildFiltersPanel() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: Color(0x0D1976D2), // 5% opacity of primaryColor (#1976D2)
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -295,7 +295,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Première ligne: Style et Tonalité
           Row(
@@ -329,7 +329,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                 ),
               ),
               
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               
               // Filtre par tonalité
               Expanded(
@@ -364,7 +364,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
           
           // Deuxième ligne: Statut (si affiché)
           if (widget.showStatusFilter) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(
                 labelText: 'Statut',
@@ -393,14 +393,14 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
           ],
           
           // Tags
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Tags',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: AppTheme.fontSemiBold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -426,7 +426,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
             }).toList(),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           
           // Boutons d'action
           Row(
@@ -436,7 +436,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                 onPressed: _clearFilters,
                 child: const Text('Effacer tout'),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               ElevatedButton(
                 onPressed: () {
                   setState(() {

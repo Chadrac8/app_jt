@@ -367,7 +367,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
 
   Widget _buildSearchAndFilters() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         boxShadow: [
@@ -394,7 +394,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
               fillColor: AppTheme.backgroundColor,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(
@@ -430,14 +430,14 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                   size: 64,
                   color: AppTheme.grey400,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppTheme.grey600,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Erreur: ${snapshot.error}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -468,14 +468,14 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                   size: 64,
                   color: AppTheme.grey400,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   _searchQuery.isNotEmpty ? 'Aucun rôle trouvé' : 'Aucun rôle',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppTheme.grey600,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   _searchQuery.isNotEmpty 
                       ? 'Aucun rôle ne correspond à votre recherche'
@@ -486,7 +486,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                   textAlign: TextAlign.center,
                 ),
                 if (_searchQuery.isEmpty && _hasManageRolesPermission) ...[
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   ElevatedButton.icon(
                     onPressed: _addNewRole,
                     icon: const Icon(Icons.add),
@@ -504,7 +504,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: roles.length,
           itemBuilder: (context, index) {
             final role = roles[index];
@@ -527,7 +527,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
     final permissionCategories = RolesFirebaseService.getPermissionCategories();
     
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: permissionCategories.length,
       itemBuilder: (context, index) {
         final category = permissionCategories.keys.elementAt(index);
@@ -571,7 +571,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
         final stats = snapshot.data!;
         
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -581,7 +581,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                 Icons.security,
                 AppTheme.primaryColor,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Row(
                 children: [
                   Expanded(
@@ -592,7 +592,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                       AppTheme.successColor,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: _buildStatCard(
                       'Rôles inactifs',
@@ -603,12 +603,12 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               Text(
                 'Utilisation des rôles',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               StreamBuilder<List<RoleModel>>(
                 stream: RolesFirebaseService.getRolesStream(),
                 builder: (context, roleSnapshot) {
@@ -651,11 +651,11 @@ class _RolesManagementPageState extends State<RolesManagementPage>
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             Icon(icon, color: color, size: 32),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(

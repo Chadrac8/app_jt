@@ -98,7 +98,7 @@ class MainMenuWithRoles extends StatelessWidget {
               'Menu Principal',
               style: TextStyle(
                 color: AppTheme.white100,
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
               ),
             ),
           ),

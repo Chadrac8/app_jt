@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // === MATERIAL DESIGN 3 - COULEURS PRINCIPALES (BASÉES SUR VOTRE LOGO) ===
+  // === MATERIAL DESIGN 3 - COULEURS PRINCIPALES (BASÉES SUR NOTRE LOGO) ===
   
   /// Primary Color - Rouge croix (#860505) du logo
   static const Color primaryColor = Color(0xFF860505); // Rouge croix principal
@@ -127,7 +127,8 @@ class AppTheme {
   static const double spaceLarge = 24.0;
   static const double spaceXLarge = 32.0;
   static const double spaceXXLarge = 48.0;
-  static const double spaceHuge = 64.0;
+  static const double spaceXXXLarge = 64.0;
+  static const double spaceHuge = 80.0;
   
   /// Elevations (conformes MD3)
   static const double elevation0 = 0.0;
@@ -136,6 +137,22 @@ class AppTheme {
   static const double elevation3 = 6.0;
   static const double elevation4 = 8.0;
   static const double elevation5 = 12.0;
+  static const double elevationSmall = 2.0;
+  static const double elevationMedium = 4.0;
+  static const double elevationLarge = 8.0;
+  static const double elevationXLarge = 16.0;
+  
+  /// Opacity levels
+  static const double opacityVeryLow = 0.1;
+  static const double opacityLow = 0.3;
+  static const double opacityMedium = 0.5;
+  static const double opacityHigh = 0.7;
+  static const double opacityVeryHigh = 0.9;
+  
+  /// Border widths
+  static const double borderWidth = 1.0;
+  static const double borderWidthThick = 2.0;
+  static const double borderWidthThicker = 3.0;
   
   /// Typography weights
   static const FontWeight fontLight = FontWeight.w300;
@@ -143,6 +160,64 @@ class AppTheme {
   static const FontWeight fontMedium = FontWeight.w500;
   static const FontWeight fontSemiBold = FontWeight.w600;
   static const FontWeight fontBold = FontWeight.w700;
+  
+  // === CONSTANTES SUPPLÉMENTAIRES POUR HARDCODED CLEANUP ===
+  
+  /// Espacements spécialisés supplémentaires
+  static const double space1 = 1.0;
+  static const double space2 = 2.0;
+  static const double space3 = 3.0;
+  static const double space4 = 4.0;
+  static const double space6 = 6.0;
+  static const double space10 = 10.0;
+  static const double space12 = 12.0;
+  static const double space14 = 14.0;
+  static const double space18 = 18.0;
+  static const double space20 = 20.0;
+  static const double space32 = 32.0;
+  static const double space40 = 40.0;
+  
+  /// Border radius spécialisés
+  static const double radius2 = 2.0;
+  static const double radius6 = 6.0;
+  static const double radius10 = 10.0;
+  static const double radius15 = 15.0;
+  static const double radius25 = 25.0;
+  static const double radiusNone = 0.0;
+  
+  /// Tailles de police spécialisées
+  static const double fontSize10 = 10.0;
+  static const double fontSize11 = 11.0;
+  static const double fontSize12 = 12.0;
+  static const double fontSize13 = 13.0;
+  static const double fontSize14 = 14.0;
+  static const double fontSize15 = 15.0;
+  static const double fontSize16 = 16.0;
+  static const double fontSize18 = 18.0;
+  static const double fontSize20 = 20.0;
+  static const double fontSize22 = 22.0;
+  static const double fontSize24 = 24.0;
+  static const double fontSize28 = 28.0;
+  static const double fontSize32 = 32.0;
+  static const double fontSize36 = 36.0;
+  static const double fontSize45 = 45.0;
+  static const double fontSize57 = 57.0;
+  
+  /// Couleurs spécialisées pour passages thématiques Bible
+  static const Color passageColor1 = Color(0xFFFFCDD2); // Rouge clair
+  static const Color passageColor2 = Color(0xFFBBDEFB); // Bleu clair  
+  static const Color passageColor3 = Color(0xFFC8E6C9); // Vert clair
+  static const Color passageColor4 = Color(0xFFFFE0B2); // Orange clair
+  static const Color passageColor5 = Color(0xFFE1BEE7); // Violet clair
+  
+  /// Couleurs spéciales
+  static const Color goldColor = Color(0xFFFFD700); // Or
+  static const Color darkModeBackground = Color(0xFF121212); // Dark mode
+  static const Color successColorBright = Color(0xFF00E676); // Vert succès vif
+  
+  /// Opacités spécialisées  
+  static const double opacity15 = 0.15;
+  static const double opacity25 = 0.25;
   static const FontWeight fontExtraBold = FontWeight.w800;
   
   // === MÉTHODES UTILITAIRES ===
@@ -158,6 +233,62 @@ class AppTheme {
   static Color colorWithOpacity(Color color, double opacity) {
     return color.withOpacity(opacity);
   }
+  
+  // === STYLES DE TEXTE ACCESSIBLES DIRECTEMENT ===
+  
+  static TextStyle get bodySmall => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize12,
+    fontWeight: fontRegular,
+    color: onSurfaceVariant,
+  );
+  
+  static TextStyle get bodyMedium => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize14,
+    fontWeight: fontRegular,
+    color: onSurface,
+  );
+  
+  static TextStyle get bodyLarge => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize16,
+    fontWeight: fontRegular,
+    color: onSurface,
+  );
+  
+  static TextStyle get titleSmall => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize14,
+    fontWeight: fontMedium,
+    color: onSurface,
+  );
+  
+  static TextStyle get titleMedium => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize16,
+    fontWeight: fontMedium,
+    color: onSurface,
+  );
+  
+  static TextStyle get titleLarge => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize22,
+    fontWeight: fontMedium,
+    color: onSurface,
+  );
+  
+  static TextStyle get headlineSmall => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize24,
+    fontWeight: fontRegular,
+    color: onSurface,
+  );
+  
+  static TextStyle get headlineMedium => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize28,
+    fontWeight: fontRegular,
+    color: onSurface,
+  );
+  
+  static TextStyle get headlineLarge => GoogleFonts.inter(
+    fontSize: AppTheme.fontSize32,
+    fontWeight: fontRegular,
+    color: onSurface,
+  );
   
   // === MATERIAL DESIGN 3 THEME ===
   
@@ -198,77 +329,77 @@ class AppTheme {
       // Typography (Google Fonts - Inter)
       textTheme: GoogleFonts.interTextTheme().copyWith(
         displayLarge: GoogleFonts.inter(
-          fontSize: 57,
+          fontSize: AppTheme.fontSize57,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         displayMedium: GoogleFonts.inter(
-          fontSize: 45,
+          fontSize: AppTheme.fontSize45,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         displaySmall: GoogleFonts.inter(
-          fontSize: 36,
+          fontSize: AppTheme.fontSize36,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         headlineLarge: GoogleFonts.inter(
-          fontSize: 32,
+          fontSize: AppTheme.fontSize32,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         headlineMedium: GoogleFonts.inter(
-          fontSize: 28,
+          fontSize: AppTheme.fontSize28,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         headlineSmall: GoogleFonts.inter(
-          fontSize: 24,
+          fontSize: AppTheme.fontSize24,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         titleLarge: GoogleFonts.inter(
-          fontSize: 22,
+          fontSize: AppTheme.fontSize22,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         titleMedium: GoogleFonts.inter(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         titleSmall: GoogleFonts.inter(
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         bodyLarge: GoogleFonts.inter(
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         bodyMedium: GoogleFonts.inter(
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         bodySmall: GoogleFonts.inter(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: fontRegular,
           color: onSurfaceVariant,
         ),
         labelLarge: GoogleFonts.inter(
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         labelMedium: GoogleFonts.inter(
-          fontSize: 12,
+          fontSize: AppTheme.fontSize12,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         labelSmall: GoogleFonts.inter(
-          fontSize: 11,
+          fontSize: AppTheme.fontSize11,
           fontWeight: fontMedium,
           color: onSurfaceVariant,
         ),
@@ -276,39 +407,50 @@ class AppTheme {
       
       // AppBar Theme - Material Design 3 Compliant
       appBarTheme: AppBarTheme(
-        backgroundColor: surface, // Couleur blanche/crème comme bottomNavigationBar
-        foregroundColor: onSurface, // Texte foncé sur fond clair
-        surfaceTintColor: surface, // MD3 Surface Tint
+        backgroundColor: primaryColor, // Couleur primary rouge
+        foregroundColor: onPrimaryColor, // Texte blanc sur fond rouge
+        surfaceTintColor: primaryColor, // MD3 Surface Tint
         elevation: elevation0, // MD3 standard: pas d'élévation
         scrolledUnderElevation: elevation2, // MD3: élévation au scroll (3.0)
         shadowColor: Colors.transparent, // MD3: pas d'ombre
         centerTitle: true,
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // Icônes foncées sur fond clair
-          statusBarBrightness: Brightness.light, // Fond clair
-          systemNavigationBarColor: surface, // MD3 consistent
-          systemNavigationBarIconBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.light, // Icônes claires sur fond primary foncé
+          statusBarBrightness: Brightness.dark, // Fond foncé
+          systemNavigationBarColor: primaryColor, // MD3 consistent avec AppBar
+          systemNavigationBarIconBrightness: Brightness.light,
         ),
         titleTextStyle: GoogleFonts.inter(
-          fontSize: 22, // MD3 headlineSmall
+          fontSize: AppTheme.fontSize22, // MD3 headlineSmall
           fontWeight: fontMedium,
-          color: onSurface, // Texte foncé sur fond clair
+          color: onPrimaryColor, // Texte blanc sur fond primary
           height: 1.2, // MD3 line height
           letterSpacing: 0, // MD3 letter spacing
         ),
         toolbarTextStyle: GoogleFonts.inter(
-          fontSize: 14, // MD3 bodyMedium
+          fontSize: AppTheme.fontSize14, // MD3 bodyMedium
           fontWeight: fontRegular,
-          color: onSurface, // Texte foncé sur fond clair
+          color: onPrimaryColor, // Texte blanc sur fond primary
         ),
         iconTheme: const IconThemeData(
-          color: onSurface, // Icônes foncées sur fond clair
+          color: Colors.white, // Forçage explicite des icônes blanches
           size: 24, // MD3 standard icon size
+          opacity: 1.0, // Opacité complète
         ),
         actionsIconTheme: const IconThemeData(
-          color: onSurface, // Icônes foncées sur fond clair
+          color: Colors.white, // Forçage explicite des icônes blanches
           size: 24, // MD3 standard icon size
+          opacity: 1.0, // Opacité complète
+        ),
+      ),
+      
+      // Configuration pour les boutons - force les icônes blanches globalement
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          foregroundColor: Colors.white, // Forçage explicite blanc
+          backgroundColor: Colors.transparent,
+          padding: EdgeInsets.all(spaceSmall),
         ),
       ),
       
@@ -323,7 +465,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(radiusMedium),
           ),
           textStyle: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: fontMedium,
           ),
         ),
@@ -339,7 +481,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(radiusMedium),
           ),
           textStyle: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: fontMedium,
           ),
         ),
@@ -354,7 +496,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(radiusSmall),
           ),
           textStyle: GoogleFonts.inter(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: fontMedium,
           ),
         ),
@@ -411,17 +553,20 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
       ),
       
-      // Tab Bar Theme
+      // Tab Bar Theme - Cohérent avec AppBar
       tabBarTheme: TabBarThemeData(
-        labelColor: primaryColor,
-        unselectedLabelColor: onSurfaceVariant,
-        indicatorColor: primaryColor,
+        labelColor: onPrimaryColor, // Texte blanc pour l'onglet sélectionné
+        unselectedLabelColor: onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent pour les onglets non sélectionnés
+        indicatorColor: onPrimaryColor, // Indicateur blanc
+        indicatorSize: TabBarIndicatorSize.tab, // Indicateur sur toute la largeur de l'onglet
+        dividerColor: Colors.transparent, // Pas de séparateur visible
+        overlayColor: WidgetStateProperty.all(onPrimaryColor.withOpacity(0.1)), // Effet de survol
         labelStyle: GoogleFonts.inter(
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
           fontWeight: fontMedium,
         ),
         unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
           fontWeight: fontRegular,
         ),
       ),
@@ -431,7 +576,7 @@ class AppTheme {
         backgroundColor: surfaceVariant,
         selectedColor: primaryContainer,
         labelStyle: GoogleFonts.inter(
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
           fontWeight: fontMedium,
           color: onSurfaceVariant,
         ),

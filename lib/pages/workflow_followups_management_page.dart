@@ -25,9 +25,9 @@ class WorkflowFollowupsManagementPage extends StatelessWidget {
           }
           final workflows = workflowSnapshot.data!;
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             itemCount: workflows.length,
-            separatorBuilder: (context, i) => const SizedBox(height: 24),
+            separatorBuilder: (context, i) => const SizedBox(height: AppTheme.spaceLarge),
             itemBuilder: (context, i) {
               final workflow = workflows[i];
               return _WorkflowCard(workflow: workflow);
@@ -49,21 +49,21 @@ class _WorkflowCard extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: Color(int.parse(workflow.color.replaceFirst('#', '0xFF'))),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Icon(_getIconData(workflow.icon), color: AppTheme.white100, size: 24),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,9 +97,9 @@ class _WorkflowCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text('Étapes : ${workflow.steps.length}', style: Theme.of(context).textTheme.bodySmall),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             _WorkflowPersonsList(workflowId: workflow.id, steps: workflow.steps),
           ],
         ),
@@ -183,7 +183,7 @@ class _WorkflowPersonTile extends StatelessWidget {
             children: [
               Text('${personWorkflow.completedSteps.length}/${steps.length} étapes complétées'),
               LinearProgressIndicator(value: progress, minHeight: 6),
-              Text('Statut: ${personWorkflow.status}', style: const TextStyle(fontSize: 12)),
+              Text('Statut: ${personWorkflow.status}', style: const TextStyle(fontSize: AppTheme.fontSize12)),
             ],
           ),
           trailing: IconButton(

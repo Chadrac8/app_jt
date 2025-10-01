@@ -344,7 +344,7 @@ class _PlaylistManagerPageState extends State<PlaylistManagerPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text('Ajouter un chant à la playlist'),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: AppTheme.spaceSmall),
                                     Wrap(
                                       spacing: 8,
                                       children: _allSongs

@@ -70,7 +70,7 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
         elevation: 0,
         leading: IconButton(
           icon: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: widget.color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -87,7 +87,7 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
           widget.donationType,
           style: GoogleFonts.poppins(
             color: AppTheme.textPrimaryColor,
-            fontSize: 18,
+            fontSize: AppTheme.fontSize18,
             fontWeight: AppTheme.fontSemiBold,
           ),
         ),
@@ -95,7 +95,7 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
         actions: [
           IconButton(
             icon: Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
                 color: AppTheme.blueStandard.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -108,7 +108,7 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
             ),
             onPressed: () => _controller.reload(),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
         ],
       ),
       body: Stack(
@@ -124,11 +124,11 @@ class _SimpleDonationWebViewPageState extends State<SimpleDonationWebViewPage> {
                     CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(widget.color),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Text(
                       'Chargement de ${widget.donationType}...',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                         color: AppTheme.textPrimaryColor,
                       ),
                     ),

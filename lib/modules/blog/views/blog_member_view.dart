@@ -6,6 +6,7 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Vue membre du module Blog
 class BlogMemberView extends StatefulWidget {
@@ -153,7 +154,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
 
   Widget _buildSearchAndFilters() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           // Champ de recherche
@@ -169,7 +170,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
             onChanged: _onSearchChanged,
           ),
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           
           // Filtre par catégorie
           if (_categories.isNotEmpty)
@@ -182,7 +183,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                     selected: _selectedCategory == null,
                     onSelected: (selected) => _onCategoryChanged(null),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   ..._categories.map((category) => Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: FilterChip(
@@ -208,7 +209,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.article_outlined, size: 64, color: AppTheme.grey500),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text('Aucun article trouvé', style: TextStyle(color: AppTheme.grey500)),
           ],
         ),
@@ -218,7 +219,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         itemCount: posts.length,
         itemBuilder: (context, index) {
           final post = posts[index];
@@ -259,7 +260,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
               ),
             
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -268,33 +269,33 @@ class _BlogMemberViewState extends State<BlogMemberView>
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(4),
+                        color: AppTheme.warningColor,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: const Text(
                         'À LA UNE',
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: AppTheme.fontSize10,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.white100,
                         ),
                       ),
                     ),
                   
-                  if (post.isFeatured) const SizedBox(height: 8),
+                  if (post.isFeatured) const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Titre
                   Text(
                     post.title,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: AppTheme.fontSize18,
                       fontWeight: AppTheme.fontBold,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Extrait
                   Text(
@@ -307,7 +308,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                     overflow: TextOverflow.ellipsis,
                   ),
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   // Métadonnées
                   Row(
@@ -321,7 +322,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                             ? Text(post.authorName.isNotEmpty ? post.authorName[0].toUpperCase() : 'A')
                             : null,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,14 +330,14 @@ class _BlogMemberViewState extends State<BlogMemberView>
                             Text(
                               post.authorName,
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 fontWeight: AppTheme.fontMedium,
                               ),
                             ),
                             Text(
                               _formatDate(post.publishedAt ?? post.createdAt),
                               style: TextStyle(
-                                fontSize: 11,
+                                fontSize: AppTheme.fontSize11,
                                 color: AppTheme.grey600,
                               ),
                             ),
@@ -344,21 +345,21 @@ class _BlogMemberViewState extends State<BlogMemberView>
                         ),
                       ),
                       Icon(Icons.visibility, size: 14, color: AppTheme.grey600),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         post.views.toString(),
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey600,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Icon(Icons.schedule, size: 14, color: AppTheme.grey600),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         '\${post.estimatedReadingTime} min',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: AppTheme.grey600,
                         ),
                       ),
@@ -367,7 +368,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                   
                   // Tags
                   if (post.tags.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Wrap(
                       spacing: 4,
                       runSpacing: 4,
@@ -380,7 +381,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
                         child: Text(
                           '#\$tag',
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: AppTheme.fontSize10,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
@@ -421,7 +422,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
               ),
               onChanged: _onSearchChanged,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Catégorie'),
               value: _selectedCategory,

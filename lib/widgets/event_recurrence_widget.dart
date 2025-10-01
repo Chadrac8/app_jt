@@ -87,27 +87,27 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Type de récurrence
             _buildRecurrenceTypeSelector(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Intervalle
             _buildIntervalSelector(),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Options spécifiques selon le type
             if (_type == RecurrenceType.weekly) _buildWeeklyOptions(),
             if (_type == RecurrenceType.monthly) _buildMonthlyOptions(),
             if (_type == RecurrenceType.yearly) _buildYearlyOptions(),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Fin de récurrence
             _buildEndOptions(),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Aperçu
             _buildPreview(),
@@ -125,7 +125,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           'Se répète',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<RecurrenceType>(
           value: _type,
           decoration: const InputDecoration(
@@ -188,7 +188,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           'Fréquence',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Row(
           children: [
             Expanded(
@@ -238,7 +238,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           'Jours de la semaine',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: days.map((day) {
@@ -288,7 +288,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           'Jour du mois',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<int>(
           value: _dayOfMonth,
           decoration: const InputDecoration(
@@ -326,7 +326,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           'Mois de l\'année',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -363,7 +363,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           'Fin de la récurrence',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         
         // Option: Jamais
         RadioListTile<String>(
@@ -482,7 +482,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
 
   Widget _buildPreview() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.blueStandard,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -494,7 +494,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           Row(
             children: [
               Icon(Icons.info_outline, color: AppTheme.blueStandard, size: 20),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 'Aperçu de la récurrence',
                 style: TextStyle(
@@ -504,7 +504,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             _getRecurrenceDescription(),
             style: TextStyle(color: AppTheme.blueStandard),

@@ -297,22 +297,22 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildStatusCard(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildDetailsCard(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildParticipantsCard(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               if (_currentAppointment!.notes?.isNotEmpty == true)
                 _buildNotesCard(),
               if (_currentAppointment!.notesPrivees?.isNotEmpty == true &&
                   _currentUser?.id == _currentAppointment!.responsableId)
                 _buildPrivateNotesCard(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               if (_canModify) _buildActionsCard(),
             ],
           ),
@@ -363,7 +363,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           color: statusColor.withOpacity(0.1),
@@ -371,17 +371,17 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
         child: Column(
           children: [
             Icon(statusIcon, size: 48, color: statusColor),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               statusText,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
                 color: statusColor,
               ),
             ),
             if (_currentAppointment!.raisonAnnulation?.isNotEmpty == true) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Raison: ${_currentAppointment!.raisonAnnulation}',
                 style: TextStyle(
@@ -402,24 +402,24 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.info, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Informations',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             _buildDetailRow(Icons.calendar_today, 'Date et heure', _formatDateTime(_currentAppointment!.dateTime)),
             _buildDetailRow(Icons.chat, 'Motif', _currentAppointment!.motif),
             _buildDetailRow(_getLocationIcon(_currentAppointment!.lieu), 'Modalité', _currentAppointment!.lieuLabel),
@@ -440,27 +440,27 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.people, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Participants',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (_responsable != null)
               _buildParticipantRow('Responsable', _responsable!),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             if (_membre != null)
               _buildParticipantRow('Membre', _membre!),
           ],
@@ -474,27 +474,27 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.note, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Notes du membre',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               _currentAppointment!.notes!,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: AppTheme.fontSize16),
             ),
           ],
         ),
@@ -507,27 +507,27 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.lock, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Notes privées',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               _currentAppointment!.notesPrivees!,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: AppTheme.fontSize16),
             ),
           ],
         ),
@@ -546,24 +546,24 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.settings, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 const Text(
                   'Actions',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             if (isResponsable) ...[
               if (isEnAttente) ...[
                 Row(
@@ -579,7 +579,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: _rejectAppointment,
@@ -610,7 +610,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
               ],
             ],
             if ((isEnAttente || isConfirme) && isAVenir) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -626,7 +626,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
             ],
             if (_currentAppointment!.lieu == 'appel_video' && 
                 _currentAppointment!.lienVideo?.isNotEmpty == true) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -641,7 +641,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
               ),
             ],
             if (_currentAppointment!.lieu == 'telephone') ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -670,7 +670,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(icon, size: 20, color: AppTheme.textTertiaryColor),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppTheme.space12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -678,7 +678,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   Text(
                     label,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       color: AppTheme.textTertiaryColor,
                       fontWeight: AppTheme.fontMedium,
                     ),
@@ -687,7 +687,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
                   Text(
                     value,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       color: AppTheme.textPrimaryColor,
                     ),
                   ),
@@ -716,7 +716,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -724,7 +724,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
               Text(
                 person.fullName,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontBold,
                   color: AppTheme.textPrimaryColor,
                 ),
@@ -732,7 +732,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage>
               Text(
                 role,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   color: AppTheme.textTertiaryColor,
                 ),
               ),

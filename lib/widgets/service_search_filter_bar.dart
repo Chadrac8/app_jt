@@ -164,7 +164,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
         children: [
           // Search Bar
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Expanded(
@@ -207,7 +207,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Container(
                   decoration: BoxDecoration(
                     color: _isFilterExpanded || _totalActiveFilters > 0
@@ -231,7 +231,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                           right: 4,
                           top: 4,
                           child: Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.error,
                               shape: BoxShape.circle,
@@ -244,7 +244,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               _totalActiveFilters.toString(),
                               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                 color: Theme.of(context).colorScheme.onError,
-                                fontSize: 10,
+                                fontSize: AppTheme.fontSize10,
                                 fontWeight: AppTheme.fontBold,
                               ),
                               textAlign: TextAlign.center,
@@ -291,7 +291,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: AppTheme.space12),
 
                           // Service Types
                           Text(
@@ -301,7 +301,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -323,7 +323,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               );
                             }).toList(),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
 
                           // Service Status
                           Text(
@@ -333,7 +333,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -355,7 +355,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               );
                             }).toList(),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
 
                           // Date Range
                           Text(
@@ -365,7 +365,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppTheme.spaceSmall),
                           Row(
                             children: [
                               Expanded(
@@ -390,7 +390,7 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                                 ),
                               ),
                               if (widget.startDate != null && widget.endDate != null) ...[
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppTheme.spaceSmall),
                                 IconButton(
                                   onPressed: () => _onDateRangeChanged(null, null),
                                   icon: const Icon(Icons.clear),

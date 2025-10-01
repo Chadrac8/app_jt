@@ -7,6 +7,7 @@ import '../services/services_service.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
+import '../../../theme.dart';
 
 /// Vue administrateur pour les services
 class ServicesAdminView extends StatefulWidget {
@@ -137,11 +138,11 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           
           // Conformité Material Design - Typography
           labelStyle: GoogleFonts.inter(
-            fontSize: 12, // Taille adaptée pour bottom tabs
+            fontSize: AppTheme.fontSize12, // Taille adaptée pour bottom tabs
             fontWeight: AppTheme.fontSemiBold,
           ),
           unselectedLabelStyle: GoogleFonts.inter(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             fontWeight: AppTheme.fontMedium,
           ),
           
@@ -172,7 +173,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
 
   Widget _buildSearchAndFilter() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         children: [
           TextField(
@@ -185,7 +186,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               setState(() => _searchQuery = value);
             },
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -197,7 +198,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                     setState(() => _selectedType = null);
                   },
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 ...ServiceType.values.map((type) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -242,16 +243,16 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.event_busy, size: 64, color: AppTheme.grey500),
-                        SizedBox(height: 16),
+                        SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Aucun service trouvé',
-                          style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                          style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                         ),
                       ],
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     itemCount: filteredServices.length,
                     itemBuilder: (context, index) {
                       final service = filteredServices[index];
@@ -268,7 +269,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
     if (_statistics.isEmpty) return const SizedBox.shrink();
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Row(
         children: [
           Expanded(
@@ -279,7 +280,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               AppTheme.blueStandard,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: _buildStatChip(
               'À venir',
@@ -288,7 +289,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               AppTheme.greenStandard,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: _buildStatChip(
               'Aujourd\'hui',
@@ -297,13 +298,13 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
               AppTheme.orangeStandard,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: _buildStatChip(
               'Cette semaine',
               _statistics['thisWeek']?.toString() ?? '0',
               Icons.date_range,
-              Colors.purple,
+              AppTheme.primaryColor,
             ),
           ),
         ],
@@ -313,7 +314,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
 
   Widget _buildStatChip(String label, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -322,11 +323,11 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
       child: Column(
         children: [
           Icon(icon, color: color, size: 20),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Text(
             value,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
@@ -334,7 +335,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           Text(
             label,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: AppTheme.fontSize10,
               color: color,
             ),
             textAlign: TextAlign.center,
@@ -367,7 +368,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
             Text(service.type.displayName),
             Text(
               '${_formatDateTime(service.startDate)} • ${service.location}',
-              style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+              style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
             ),
             Row(
               children: [
@@ -379,7 +380,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                   ),
                   child: Text(
                     service.statusDisplay,
-                    style: const TextStyle(color: AppTheme.white100, fontSize: 10),
+                    style: const TextStyle(color: AppTheme.white100, fontSize: AppTheme.fontSize10),
                   ),
                 ),
               ],
@@ -453,14 +454,14 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
     return RefreshIndicator(
       onRefresh: _loadData,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildOverallStats(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildServiceTypeStats(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             _buildLocationStats(),
           ],
         ),
@@ -471,15 +472,15 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
   Widget _buildOverallStats() {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Statistiques Générales',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               children: [
                 Expanded(
@@ -500,7 +501,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 Expanded(
@@ -529,8 +530,8 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
 
   Widget _buildStatItem(String label, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(AppTheme.space12),
+      margin: const EdgeInsets.all(AppTheme.spaceXSmall),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -538,11 +539,11 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
       child: Column(
         children: [
           Icon(icon, color: color, size: 24),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontBold,
               color: color,
             ),
@@ -550,7 +551,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               color: AppTheme.grey600,
             ),
             textAlign: TextAlign.center,
@@ -567,15 +568,15 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
 
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Répartition par Type',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...byType.entries.map((entry) {
               final total = _statistics['total'] as int? ?? 1;
               final percentage = (entry.value / total * 100).toInt();
@@ -595,7 +596,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                         backgroundColor: AppTheme.grey300,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text('${entry.value} ($percentage%)'),
                   ],
                 ),
@@ -614,15 +615,15 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
 
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Lieux les plus utilisés',
-              style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             ...byLocation.entries.take(5).map((entry) {
               return ListTile(
                 leading: const Icon(Icons.location_on),
@@ -650,13 +651,13 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 const Expanded(
                   child: Text(
                     'Modèles de Services',
-                    style: TextStyle(fontSize: 18, fontWeight: AppTheme.fontBold),
+                    style: TextStyle(fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontBold),
                   ),
                 ),
                 ElevatedButton.icon(
@@ -676,12 +677,12 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.description, size: 64, color: AppTheme.grey500),
-                        SizedBox(height: 16),
+                        SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           'Aucun modèle créé',
-                          style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                          style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: AppTheme.spaceSmall),
                         Text(
                           'Créez des modèles pour faciliter la création de services récurrents.',
                           textAlign: TextAlign.center,
@@ -727,7 +728,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
             Text(template.type.displayName),
             Text(
               '${template.formattedDuration} • ${template.location}',
-              style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+              style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
             ),
           ],
         ),
@@ -832,7 +833,7 @@ class _ServicesAdminViewState extends State<ServicesAdminView>
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('Êtes-vous sûr de vouloir annuler "${service.name}" ?'),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             TextField(
               decoration: const InputDecoration(
                 labelText: 'Raison de l\'annulation (optionnel)',

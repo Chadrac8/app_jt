@@ -179,8 +179,8 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
                     title: Text(data['title'] ?? 'No title'),
                     subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text('Status: ${data['status'] ?? 'unknown'} • Target: ${data['targetType'] ?? '-'}'),
-                      if (createdCount > 0) Text('Created: $createdCount • Sample: $sample', style: const TextStyle(fontSize: 12, color: AppTheme.black100)),
-                      if (sendResult != null) Text('SendResult: ${sendResult.totalSuccess ?? sendResult.successCount ?? '-'} success', style: const TextStyle(fontSize: 12, color: AppTheme.black100)),
+                      if (createdCount > 0) Text('Created: $createdCount • Sample: $sample', style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.black100)),
+                      if (sendResult != null) Text('SendResult: ${sendResult.totalSuccess ?? sendResult.successCount ?? '-'} success', style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.black100)),
                     ]),
                     trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                       TextButton(onPressed: () async {

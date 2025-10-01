@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../services/pour_vous_action_service.dart';
+import '../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -68,7 +69,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         boxShadow: [
@@ -90,12 +91,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                 color: AppTheme.primaryColor,
                 size: 24,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   'Gestion des actions "Pour vous"',
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
@@ -122,15 +123,15 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Configurez les actions disponibles pour les membres',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           // Barre de recherche
           TextField(
             controller: _searchController,
@@ -216,8 +217,8 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
     final inactiveCount = actions.length - activeCount;
 
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -275,11 +276,11 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: GoogleFonts.poppins(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontBold,
             color: color,
           ),
@@ -287,7 +288,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         Text(
           label,
           style: GoogleFonts.poppins(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: AppTheme.textSecondaryColor,
           ),
         ),
@@ -320,9 +321,9 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
+        contentPadding: const EdgeInsets.all(AppTheme.spaceMedium),
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -343,15 +344,15 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               action.description,
               style: GoogleFonts.poppins(
-                fontSize: 13,
+                fontSize: AppTheme.fontSize13,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Row(
               children: [
                 Container(
@@ -363,13 +364,13 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Text(
                     action.isActive ? 'Active' : 'Inactive',
                     style: GoogleFonts.poppins(
-                      fontSize: 11,
+                      fontSize: AppTheme.fontSize11,
                       fontWeight: AppTheme.fontSemiBold,
                       color: action.isActive ? AppTheme.greenStandard : AppTheme.orangeStandard,
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
@@ -379,7 +380,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Text(
                     action.actionType,
                     style: GoogleFonts.poppins(
-                      fontSize: 11,
+                      fontSize: AppTheme.fontSize11,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
@@ -426,7 +427,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Row(
                     children: [
                       const Icon(Icons.visibility, size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Prévisualiser', style: GoogleFonts.poppins()),
                     ],
                   ),
@@ -436,7 +437,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Row(
                     children: [
                       const Icon(Icons.copy, size: 20),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Dupliquer', style: GoogleFonts.poppins()),
                     ],
                   ),
@@ -447,7 +448,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                   child: Row(
                     children: [
                       const Icon(Icons.delete, size: 20, color: AppTheme.redStandard),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text('Supprimer', style: GoogleFonts.poppins(color: AppTheme.redStandard)),
                     ],
                   ),
@@ -470,20 +471,20 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             size: 64,
             color: AppTheme.redStandard.withOpacity(0.6),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Erreur de chargement',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             error,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor,
             ),
             textAlign: TextAlign.center,
@@ -503,24 +504,24 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             size: 64,
             color: AppTheme.textSecondaryColor.withOpacity(0.6),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Aucune action configurée',
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Ajoutez votre première action',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           ElevatedButton.icon(
             onPressed: () => _actionService.initializeDefaultActions(),
             icon: const Icon(Icons.refresh),
@@ -660,7 +661,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                       ),
                       style: GoogleFonts.poppins(),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Description
                     TextField(
@@ -673,7 +674,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                       ),
                       style: GoogleFonts.poppins(),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Type d'action
                     DropdownButtonFormField<String>(
@@ -695,7 +696,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                         });
                       },
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Module cible (si navigation)
                     if (selectedActionType == 'navigation') ...[
@@ -709,7 +710,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                         ),
                         style: GoogleFonts.poppins(),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                       
                       TextField(
                         controller: targetRouteController,
@@ -721,7 +722,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                         ),
                         style: GoogleFonts.poppins(),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppTheme.spaceMedium),
                     ],
                     
                     // Sélection d'icône
@@ -753,7 +754,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Couleur
                     TextField(
@@ -766,7 +767,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                       ),
                       style: GoogleFonts.poppins(),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     
                     // Status actif/inactif
                     Row(
@@ -1023,24 +1024,24 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             size: 80,
             color: AppTheme.grey500,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           Text(
             'Aucun résultat trouvé',
             style: GoogleFonts.poppins(
-              fontSize: 20,
+              fontSize: AppTheme.fontSize20,
               fontWeight: AppTheme.fontSemiBold,
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: AppTheme.space10),
           Text(
             'Essayez d\'autres mots-clés',
             style: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.textSecondaryColor,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           ElevatedButton(
             onPressed: () {
               _searchController.clear();
@@ -1064,11 +1065,11 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       child: Row(
         children: [
           Icon(Icons.search, color: AppTheme.primaryColor, size: 20),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             '$filteredCount résultat${filteredCount > 1 ? 's' : ''} sur $totalCount',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               color: AppTheme.textSecondaryColor,
             ),
           ),
@@ -1177,7 +1178,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         title: Row(
           children: [
             Icon(action.icon, color: AppTheme.primaryColor),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Text(
               'Prévisualisation',
               style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
@@ -1189,12 +1190,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildPreviewCard(action),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Informations techniques:',
               style: GoogleFonts.poppins(fontWeight: AppTheme.fontSemiBold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             _buildInfoRow('Type:', action.actionType),
             if (action.targetModule != null) _buildInfoRow('Module:', action.targetModule!),
             if (action.targetRoute != null) _buildInfoRow('Route:', action.targetRoute!),
@@ -1221,7 +1222,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
         : AppTheme.primaryColor;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1230,7 +1231,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: color.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),
@@ -1241,7 +1242,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
               size: 24,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1249,16 +1250,16 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                 Text(
                   action.title,
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                     color: AppTheme.textPrimaryColor,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   action.description,
                   style: GoogleFonts.poppins(
-                    fontSize: 13,
+                    fontSize: AppTheme.fontSize13,
                     color: AppTheme.textSecondaryColor,
                   ),
                   maxLines: 2,
@@ -1283,7 +1284,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             child: Text(
               label,
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 fontWeight: AppTheme.fontSemiBold,
                 color: AppTheme.textSecondaryColor,
               ),
@@ -1293,7 +1294,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
             child: Text(
               value,
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
                 color: AppTheme.textPrimaryColor,
               ),
             ),

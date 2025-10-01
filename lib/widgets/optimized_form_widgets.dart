@@ -92,7 +92,7 @@ class _LazyRoleChipsListState extends State<LazyRoleChipsList> {
         ),
         label: Text(
           role.name,
-          style: const TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: AppTheme.fontSize12),
         ),
         deleteIcon: const Icon(Icons.close, size: 16),
         onDeleted: () => widget.onRoleRemoved(roleId),
@@ -105,7 +105,7 @@ class _LazyRoleChipsListState extends State<LazyRoleChipsList> {
   Widget _buildErrorChip(String roleId) {
     return Chip(
       avatar: const Icon(Icons.error, size: 16, color: AppTheme.redStandard),
-      label: const Text('Erreur', style: TextStyle(fontSize: 12)),
+      label: const Text('Erreur', style: TextStyle(fontSize: AppTheme.fontSize12)),
       deleteIcon: const Icon(Icons.close, size: 16),
       onDeleted: () => widget.onRoleRemoved(roleId),
     );
@@ -270,7 +270,7 @@ class _OptimizedImagePickerState extends State<OptimizedImagePicker>
                 ? Theme.of(context).colorScheme.error
                 : Theme.of(context).colorScheme.primary,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             hasError ? 'Erreur' : 'Ajouter photo',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -356,7 +356,7 @@ class ResponsiveFormSection extends StatelessWidget {
             ),
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                 borderRadius: const BorderRadius.only(
@@ -368,7 +368,7 @@ class ResponsiveFormSection extends StatelessWidget {
                 children: [
                   if (icon != null) ...[
                     Icon(icon, color: Theme.of(context).colorScheme.primary),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppTheme.space12),
                   ],
                   Expanded(
                     child: Text(

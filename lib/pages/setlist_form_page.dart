@@ -131,12 +131,12 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
             // Formulaire
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 children: [
                   // Informations de base
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -144,7 +144,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                             'Informations générales',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: AppTheme.fontBold)),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Nom de la setlist
                           TextFormField(
@@ -159,7 +159,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               return null;
                             }),
                           
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Description
                           TextFormField(
@@ -169,7 +169,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               border: OutlineInputBorder()),
                             maxLines: 2),
                           
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Date du service
                           InkWell(
@@ -181,7 +181,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               child: Text(
                                 '${_serviceDate.day.toString().padLeft(2, '0')}/${_serviceDate.month.toString().padLeft(2, '0')}/${_serviceDate.year}'))),
                           
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Type de service
                           DropdownButtonFormField<String>(
@@ -204,7 +204,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                               });
                             }),
                           
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           // Notes
                           TextFormField(
@@ -215,12 +215,12 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                             maxLines: 3),
                         ]))),
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Liste des chants sélectionnés
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -237,12 +237,12 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                                 label: const Text('Ajouter')),
                             ]),
                           
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppTheme.spaceMedium),
                           
                           if (_selectedSongs.isEmpty) ...[
                             Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.all(32),
+                              padding: const EdgeInsets.all(AppTheme.spaceXLarge),
                               decoration: BoxDecoration(
                                 color: AppTheme.textTertiaryColor.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
@@ -252,12 +252,12 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                                     Icons.music_off,
                                     size: 48,
                                     color: AppTheme.textTertiaryColor),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: AppTheme.spaceSmall),
                                   const Text(
                                     'Aucun chant sélectionné',
                                     style: TextStyle(color: AppTheme.textTertiaryColor),
                                   ),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: AppTheme.spaceSmall),
                                   ElevatedButton(
                                     onPressed: _showSongSelection,
                                     child: const Text('Ajouter des chants')),
@@ -464,11 +464,11 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
               margin: const EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
                 color: Theme.of(context).dividerColor,
-                borderRadius: BorderRadius.circular(2))),
+                borderRadius: BorderRadius.circular(AppTheme.radius2))),
             
             // En-tête
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
                   Text(
@@ -495,7 +495,7 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
                   });
                 })),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Liste des chants
             Expanded(
@@ -523,14 +523,14 @@ class _SongSelectionBottomSheetState extends State<SongSelectionBottomSheet> {
             
             // Boutons d'action
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Row(
                 children: [
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Annuler'))),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {

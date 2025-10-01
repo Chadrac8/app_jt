@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/module_permission_model.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 class ModulePermissionsSelector extends StatefulWidget {
   final List<ModulePermissionModel> initialPermissions;
@@ -131,7 +132,7 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
                   value: _selectAllModules,
                   onChanged: (bool? value) => _toggleAllModules(value ?? false),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Sélectionner tous les modules',
                   style: Theme.of(context).textTheme.titleMedium,
@@ -140,7 +141,7 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppTheme.spaceMedium),
         
         // Liste des catégories
         Expanded(
@@ -210,7 +211,7 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
               value: hasAnyPermission,
               onChanged: (value) => _onModuleToggled(module.key, value ?? false),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +237,7 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
             ? Chip(
                 label: Text(
                   '${modulePermission.permissions.values.where((v) => v).length}/${module.availablePermissions.length}',
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: AppTheme.fontSize12),
                 ),
                 backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
               )
@@ -259,14 +260,14 @@ class _ModulePermissionsSelectorState extends State<ModulePermissionsSelector> {
                   title: Text(
                     permissionType.label,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: hasPermission ? AppTheme.fontMedium : FontWeight.normal,
                     ),
                   ),
                   subtitle: Text(
                     permissionType.description,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.grey600,
                     ),
                   ),
@@ -347,27 +348,27 @@ class PermissionsSummary extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             
             Row(
               children: [
                 Icon(Icons.apps, color: Theme.of(context).primaryColor, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text('${activeModules.length} module(s) avec permissions'),
               ],
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppTheme.spaceSmall),
             
             Row(
               children: [
                 Icon(Icons.security, color: Theme.of(context).primaryColor, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text('$totalPermissions permission(s) accordée(s)'),
               ],
             ),
             
             if (activeModules.isNotEmpty) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Wrap(
                 spacing: 8,
                 runSpacing: 4,
@@ -377,7 +378,7 @@ class PermissionsSummary extends StatelessWidget {
                     avatar: Icon(mp.module.icon, size: 16),
                     label: Text(
                       '${mp.module.name} ($permissionCount)',
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: AppTheme.fontSize12),
                     ),
                     backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
                   );

@@ -29,24 +29,24 @@ class _DebugPepitesPageState extends State<DebugPepitesPage> {
         title: const Text('Debug Pépites d\'Or'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Status
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 child: Text(
                   'Status: $_status',
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Boutons de test
             Wrap(
@@ -71,17 +71,17 @@ class _DebugPepitesPageState extends State<DebugPepitesPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             // Logs
             const Text(
               'Logs:',
-              style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontBold),
+              style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontBold),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   border: Border.all(color: AppTheme.grey500),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -95,7 +95,7 @@ class _DebugPepitesPageState extends State<DebugPepitesPage> {
                         _logs[index],
                         style: const TextStyle(
                           fontFamily: 'monospace',
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                         ),
                       ),
                     );

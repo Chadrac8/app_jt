@@ -83,7 +83,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
         // En-tête du calendrier
         Container(
           color: AppTheme.white100,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             children: [
               IconButton(
@@ -103,7 +103,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                 onPressed: _nextMonth,
                 icon: const Icon(Icons.chevron_right),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               TextButton(
                 onPressed: _goToToday,
                 child: const Text('Aujourd\'hui'),
@@ -151,7 +151,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
     final totalDays = ((daysInMonth + firstDayOfWeek - 1) / 7).ceil() * 7;
     
     return GridView.builder(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(AppTheme.spaceSmall),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
         childAspectRatio: 0.8,
@@ -205,7 +205,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(2),
+                padding: const EdgeInsets.all(AppTheme.space2),
                 child: events.isEmpty
                     ? const SizedBox.shrink()
                     : Column(
@@ -287,7 +287,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
               margin: const EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
                 color: AppTheme.textTertiaryColor,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppTheme.radius2),
               ),
             ),
             
@@ -320,7 +320,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 itemCount: events.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                separatorBuilder: (context, index) => const SizedBox(height: AppTheme.space12),
                 itemBuilder: (context, index) {
                   final event = events[index];
                   final isSelected = widget.selectedEvents.any((e) => e.id == event.id);
@@ -335,7 +335,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                       widget.onEventLongPress(event);
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
                       decoration: BoxDecoration(
                         color: AppTheme.backgroundColor,
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -351,11 +351,11 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                             height: 40,
                             decoration: BoxDecoration(
                               color: _getEventColor(event),
-                              borderRadius: BorderRadius.circular(2),
+                              borderRadius: BorderRadius.circular(AppTheme.radius2),
                             ),
                           ),
                           
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           
                           // Informations de l'événement
                           Expanded(
@@ -370,7 +370,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppTheme.spaceXSmall),
                                 Row(
                                   children: [
                                     Icon(
@@ -378,20 +378,20 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                                       size: 14,
                                       color: AppTheme.textSecondaryColor,
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: AppTheme.spaceXSmall),
                                     Text(
                                       _formatTime(event.startDate),
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: AppTheme.textSecondaryColor,
                                       ),
                                     ),
-                                    const SizedBox(width: 12),
+                                    const SizedBox(width: AppTheme.space12),
                                     Icon(
                                       Icons.location_on,
                                       size: 14,
                                       color: AppTheme.textSecondaryColor,
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: AppTheme.spaceXSmall),
                                     Expanded(
                                       child: Text(
                                         event.location,
@@ -419,7 +419,7 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                               event.statusLabel,
                               style: TextStyle(
                                 color: _getEventColor(event),
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                                 fontWeight: AppTheme.fontMedium,
                               ),
                             ),

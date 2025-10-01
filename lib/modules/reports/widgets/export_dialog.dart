@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/report.dart';
 import '../services/export_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Dialog pour l'export de rapports
 class ExportDialog extends StatefulWidget {
@@ -38,7 +39,7 @@ class _ExportDialogState extends State<ExportDialog> {
       title: const Row(
         children: [
           Icon(Icons.file_download, color: AppTheme.blueStandard),
-          SizedBox(width: 8),
+          SizedBox(width: AppTheme.spaceSmall),
           Text('Exporter le rapport'),
         ],
       ),
@@ -50,21 +51,21 @@ class _ExportDialogState extends State<ExportDialog> {
           children: [
             // Informations du rapport
             _buildReportInfo(),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             
             // Sélection du format
             _buildFormatSelection(),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             // Nom du fichier
             _buildFilenameInput(),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             // Options d'export
             _buildExportOptions(),
             
             // Aperçu des données
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             _buildDataPreview(),
           ],
         ),
@@ -90,7 +91,7 @@ class _ExportDialogState extends State<ExportDialog> {
   
   Widget _buildReportInfo() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppTheme.space12),
       decoration: BoxDecoration(
         color: AppTheme.blueStandard,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -102,32 +103,32 @@ class _ExportDialogState extends State<ExportDialog> {
             widget.reportName,
             style: const TextStyle(
               fontWeight: AppTheme.fontSemiBold,
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Row(
             children: [
               Icon(Icons.calendar_today, size: 16, color: AppTheme.grey500),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Text(
                 'Généré le ${_formatDate(widget.reportData.generatedAt)}',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.grey500,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppTheme.spaceXSmall),
           Row(
             children: [
               Icon(Icons.data_usage, size: 16, color: AppTheme.grey500),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Text(
                 '${widget.reportData.totalRows} lignes de données',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   color: AppTheme.grey500,
                 ),
               ),
@@ -148,10 +149,10 @@ class _ExportDialogState extends State<ExportDialog> {
           'Format d\'export',
           style: TextStyle(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         ...formats.map((format) => RadioListTile<String>(
           value: format.id,
           groupValue: _selectedFormat,
@@ -179,10 +180,10 @@ class _ExportDialogState extends State<ExportDialog> {
           'Nom du fichier',
           style: TextStyle(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         TextField(
           controller: TextEditingController(text: _customFilename),
           decoration: const InputDecoration(
@@ -206,10 +207,10 @@ class _ExportDialogState extends State<ExportDialog> {
           'Options',
           style: TextStyle(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         CheckboxListTile(
           title: const Text('Partager après l\'export'),
           subtitle: const Text('Ouvrir le menu de partage automatiquement'),
@@ -233,10 +234,10 @@ class _ExportDialogState extends State<ExportDialog> {
           'Aperçu des données',
           style: TextStyle(
             fontWeight: AppTheme.fontSemiBold,
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         Container(
           height: 120,
           decoration: BoxDecoration(
@@ -260,7 +261,7 @@ class _ExportDialogState extends State<ExportDialog> {
     final headers = previewRows.first.keys.toList();
     
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(AppTheme.spaceSmall),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -269,7 +270,7 @@ class _ExportDialogState extends State<ExportDialog> {
             headers.join(' | '),
             style: const TextStyle(
               fontWeight: AppTheme.fontSemiBold,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
             ),
           ),
           const Divider(height: 8),
@@ -281,7 +282,7 @@ class _ExportDialogState extends State<ExportDialog> {
               padding: const EdgeInsets.symmetric(vertical: 2),
               child: Text(
                 values.join(' | '),
-                style: const TextStyle(fontSize: 11),
+                style: const TextStyle(fontSize: AppTheme.fontSize11),
                 overflow: TextOverflow.ellipsis,
               ),
             );
@@ -294,7 +295,7 @@ class _ExportDialogState extends State<ExportDialog> {
               child: Text(
                 '... et ${widget.reportData.rows.length - 3} autres lignes',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: AppTheme.fontSize10,
                   color: AppTheme.grey500,
                   fontStyle: FontStyle.italic,
                 ),

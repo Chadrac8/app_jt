@@ -39,7 +39,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: GoogleFonts.inter(
           color: colorScheme.onSurfaceVariant,
-          fontSize: 16,
+          fontSize: AppTheme.fontSize16,
           fontWeight: AppTheme.fontRegular,
           letterSpacing: 0.1,
         ),
@@ -54,7 +54,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
       textTheme: Theme.of(context).textTheme.copyWith(
         titleLarge: GoogleFonts.inter(
           color: colorScheme.onSurface,
-          fontSize: 18,
+          fontSize: AppTheme.fontSize18,
           fontWeight: AppTheme.fontMedium,
           letterSpacing: -0.2,
         ),
@@ -109,7 +109,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
             }
           },
           child: Container(
-            margin: const EdgeInsets.all(4),
+            margin: const EdgeInsets.all(AppTheme.spaceXSmall),
             padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
               color: searchInLyrics 
@@ -247,7 +247,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
           Text(
             'Recherche en cours...',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               fontWeight: AppTheme.fontMedium,
               color: colorScheme.onSurfaceVariant,
               letterSpacing: 0.1,
@@ -340,7 +340,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
                             song.title,
                             style: GoogleFonts.inter(
                               fontWeight: AppTheme.fontMedium,
-                              fontSize: 16,
+                              fontSize: AppTheme.fontSize16,
                               color: colorScheme.onSurface,
                               letterSpacing: -0.1,
                             ),
@@ -352,7 +352,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
                             Text(
                               song.authors,
                               style: GoogleFonts.inter(
-                                fontSize: 14,
+                                fontSize: AppTheme.fontSize14,
                                 color: colorScheme.onSurfaceVariant,
                                 letterSpacing: 0.1,
                               ),
@@ -403,7 +403,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
             Text(
               title,
               style: GoogleFonts.inter(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
                 color: colorScheme.onSurfaceVariant,
                 letterSpacing: -0.2,
@@ -413,7 +413,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
             Text(
               subtitle,
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: colorScheme.onSurfaceVariant,
                 letterSpacing: 0.1,
                 height: 1.4,
@@ -460,7 +460,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
                 Text(
                   'Conseils de recherche',
                   style: GoogleFonts.inter(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
                     color: colorScheme.onSurface,
                     letterSpacing: -0.1,
@@ -533,7 +533,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
                 Text(
                   title,
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                     color: colorScheme.onSurface,
                     letterSpacing: 0.1,
@@ -543,7 +543,7 @@ class SongsSearchDelegate extends SearchDelegate<SongModel?> {
                 Text(
                   description,
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 0.1,
                     height: 1.3,

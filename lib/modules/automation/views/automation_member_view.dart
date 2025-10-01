@@ -4,6 +4,7 @@ import '../models/automation_execution.dart';
 import '../services/automation_service.dart';
 import '../../../../theme.dart';
 import '../../../widgets/custom_card.dart';
+import '../../../theme.dart';
 
 /// Vue membre pour les automatisations
 class AutomationMemberView extends StatefulWidget {
@@ -71,11 +72,11 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildSearchBar(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 _buildStatsCards(),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 _buildActiveAutomations(),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 _buildRecentActivity(),
               ],
             ),
@@ -123,7 +124,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               AppTheme.blueStandard,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: _buildStatCard(
               'Exécutions\nRéussies',
@@ -132,7 +133,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               AppTheme.greenStandard,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: _buildStatCard(
               'Échecs\nRécents',
@@ -149,25 +150,25 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return CustomCard(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
             Icon(icon, color: color, size: 32),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               value,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: AppTheme.fontSize24,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppTheme.grey600,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
             ),
           ],
@@ -189,7 +190,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                 const Text(
                   'Automatisations Actives',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: AppTheme.fontSize18,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -200,7 +201,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Expanded(
             child: _filteredAutomations.isEmpty
                 ? Center(
@@ -212,14 +213,14 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                           size: 64,
                           color: AppTheme.grey400,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppTheme.spaceMedium),
                         Text(
                           _searchQuery.isEmpty 
                               ? 'Aucune automatisation active'
                               : 'Aucun résultat pour "$_searchQuery"',
                           style: TextStyle(
                             color: AppTheme.grey600,
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                           ),
                         ),
                       ],
@@ -246,14 +247,14 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
         onTap: () => _showAutomationDetails(automation),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
                       color: _getTriggerColor(automation.trigger).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -264,7 +265,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppTheme.space12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,15 +274,15 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                           automation.name,
                           style: const TextStyle(
                             fontWeight: AppTheme.fontBold,
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           automation.description,
                           style: TextStyle(
                             color: AppTheme.grey600,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -299,7 +300,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                       automation.status.label,
                       style: const TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -307,7 +308,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                 ],
               ),
               if (automation.tags.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
@@ -320,33 +321,33 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                       ),
                       child: Text(
                         tag,
-                        style: const TextStyle(fontSize: 11),
+                        style: const TextStyle(fontSize: AppTheme.fontSize11),
                       ),
                     ),
                   ).toList(),
                 ),
               ],
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Icon(Icons.play_arrow, size: 16, color: AppTheme.grey600),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${automation.executionCount} exécutions',
-                    style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Icon(Icons.check_circle, size: 16, color: AppTheme.greenStandard),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${automation.successRate.toStringAsFixed(1)}% succès',
-                    style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
                   ),
                   const Spacer(),
                   if (automation.lastExecutedAt != null)
                     Text(
                       _formatLastExecution(automation.lastExecutedAt!),
-                      style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                      style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
                     ),
                 ],
               ),
@@ -366,12 +367,12 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
           child: Text(
             'Activité Récente',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontBold,
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppTheme.space12),
         SizedBox(
           height: 120,
           child: _recentExecutions.isEmpty
@@ -405,7 +406,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         child: Container(
           width: 200,
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -419,13 +420,13 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       execution.automationName,
                       style: const TextStyle(
                         fontWeight: AppTheme.fontSemiBold,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -433,12 +434,12 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 execution.statusMessage,
                 style: TextStyle(
                   color: AppTheme.grey600,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -448,7 +449,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
                 _formatDateTime(execution.triggeredAt),
                 style: TextStyle(
                   color: AppTheme.grey500,
-                  fontSize: 11,
+                  fontSize: AppTheme.fontSize11,
                 ),
               ),
             ],
@@ -469,7 +470,7 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(automation.description),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               _buildDetailRow('Déclencheur', automation.trigger.label),
               _buildDetailRow('Statut', automation.status.label),
               _buildDetailRow('Actions', '${automation.actions.length} action(s)'),
@@ -478,14 +479,14 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               if (automation.lastExecutedAt != null)
                 _buildDetailRow('Dernière exécution', _formatDateTime(automation.lastExecutedAt!)),
               if (automation.tags.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 const Text('Tags:', style: TextStyle(fontWeight: AppTheme.fontMedium)),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Wrap(
                   spacing: 6,
                   children: automation.tags.map((tag) =>
                     Chip(
-                      label: Text(tag, style: const TextStyle(fontSize: 12)),
+                      label: Text(tag, style: const TextStyle(fontSize: AppTheme.fontSize12)),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                   ).toList(),
@@ -527,10 +528,10 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
               if (execution.failedActionsCount > 0)
                 _buildDetailRow('Actions échouées', '${execution.failedActionsCount}'),
               if (execution.error != null) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 const Text('Erreur:', style: TextStyle(fontWeight: AppTheme.fontMedium, color: AppTheme.redStandard)),
-                const SizedBox(height: 4),
-                Text(execution.error!, style: const TextStyle(fontSize: 12)),
+                const SizedBox(height: AppTheme.spaceXSmall),
+                Text(execution.error!, style: const TextStyle(fontSize: AppTheme.fontSize12)),
               ],
             ],
           ),
@@ -573,9 +574,9 @@ class _AutomationMemberViewState extends State<AutomationMemberView> {
       case AutomationTrigger.eventRegistered:
         return AppTheme.orangeStandard;
       case AutomationTrigger.serviceAssigned:
-        return Colors.purple;
+        return AppTheme.primaryColor;
       case AutomationTrigger.dateScheduled:
-        return Colors.teal;
+        return AppTheme.secondaryColor;
       case AutomationTrigger.prayerRequest:
         return AppTheme.pinkStandard;
       default:

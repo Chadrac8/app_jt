@@ -431,12 +431,12 @@ class _EventsHomePageState extends State<EventsHomePage>
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur de chargement',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text('${snapshot.error}'),
               ],
             ),
@@ -566,12 +566,12 @@ class _EventsHomePageState extends State<EventsHomePage>
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur de chargement',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text('${snapshot.error}'),
               ],
             ),
@@ -616,14 +616,14 @@ class _EventsHomePageState extends State<EventsHomePage>
                     color: AppTheme.secondaryColor,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 Text(
                   emptyMessage,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Créez votre premier événement pour commencer',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -631,7 +631,7 @@ class _EventsHomePageState extends State<EventsHomePage>
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 ElevatedButton.icon(
                   onPressed: _addNewEvent,
                   icon: const Icon(Icons.add),
@@ -649,7 +649,7 @@ class _EventsHomePageState extends State<EventsHomePage>
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: events.length,
           itemBuilder: (context, index) {
             final event = events[index];

@@ -6,6 +6,7 @@ import '../../../widgets/song_card_perfect13.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 /// Page des chants pour les membres
 class MemberSongsPage extends StatefulWidget {
@@ -100,11 +101,11 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                 indicatorWeight: 3.0, // Poids standard Material Design
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 labelStyle: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontSemiBold,
                 ),
                 unselectedLabelStyle: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontMedium,
                 ),
                 tabs: const [
@@ -158,7 +159,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -175,10 +176,10 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.music_note, size: 64, color: AppTheme.grey500),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun chant trouvé',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
               ],
             ),
@@ -215,7 +216,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.error, size: 64, color: AppTheme.redStandard),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text('Erreur: ${snapshot.error}'),
               ],
             ),
@@ -232,12 +233,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.favorite_border, size: 64, color: AppTheme.grey500),
-                SizedBox(height: 16),
+                SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun chant favori trouvé',
-                  style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+                  style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Ajoutez des chants à vos favoris en touchant le cœur',
                   style: TextStyle(color: AppTheme.grey500),
@@ -291,7 +292,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                   margin: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
                     color: Theme.of(context).dividerColor,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(AppTheme.radius2),
                   ),
                 ),
                 
@@ -311,7 +312,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
                           maxLines: 2,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       
                       // Bouton favoris
                       StreamBuilder<List<String>>(
@@ -421,12 +422,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.playlist_play, size: 64, color: AppTheme.grey500),
-          SizedBox(height: 16),
+          SizedBox(height: AppTheme.spaceMedium),
           Text(
             'Setlists',
-            style: TextStyle(fontSize: 18, color: AppTheme.grey500),
+            style: TextStyle(fontSize: AppTheme.fontSize18, color: AppTheme.grey500),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: AppTheme.spaceSmall),
           Text(
             'Fonctionnalité en cours de développement',
             style: TextStyle(color: AppTheme.grey500),

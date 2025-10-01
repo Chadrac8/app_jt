@@ -102,7 +102,7 @@ class ComponentRenderer extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: Container(
           height: 120, // Hauteur fixe pour uniformité en grid
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           child: Center(
             child: Text(
               _parseMarkdown(content),
@@ -213,7 +213,7 @@ class ComponentRenderer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.error, size: 48, color: AppTheme.grey500),
-                      SizedBox(height: 8),
+                      SizedBox(height: AppTheme.spaceSmall),
                       Text(
                         'Erreur de chargement',
                         style: TextStyle(color: AppTheme.grey500),
@@ -270,11 +270,11 @@ class ComponentRenderer extends StatelessWidget {
                       size: 32,
                       color: _getButtonColor(style),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       text,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontSemiBold,
                         color: _getButtonColor(style),
                       ),
@@ -493,12 +493,12 @@ class ComponentRenderer extends StatelessWidget {
                       size: 14,
                       color: AppTheme.white100,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Text(
                       urlInfo.displayType,
                       style: const TextStyle(
                         color: AppTheme.white100,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -530,7 +530,7 @@ class ComponentRenderer extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => _handleVideoPlay(url, urlInfo),
                 child: Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppTheme.space20),
                   decoration: BoxDecoration(
                     color: Color(0xF2FFFFFF), // 0.95 opacity
                     shape: BoxShape.circle,
@@ -559,7 +559,7 @@ class ComponentRenderer extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -579,13 +579,13 @@ class ComponentRenderer extends StatelessWidget {
                         title,
                         style: const TextStyle(
                           color: AppTheme.white100,
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontSemiBold,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                     ],
                     
                     // Informations techniques
@@ -596,12 +596,12 @@ class ComponentRenderer extends StatelessWidget {
                           size: 14,
                             color: Color(0xCCFFFFFF), // 0.8 opacity
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           'Ouvrir sur YouTube',
                           style: TextStyle(
                           color: Color(0xCCFFFFFF), // 0.8 opacity
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                         const Spacer(),
@@ -610,7 +610,7 @@ class ComponentRenderer extends StatelessWidget {
                             'ID: ${urlInfo.videoId.substring(0, 8)}...',
                             style: TextStyle(
                               color: Color(0x99FFFFFF), // 0.6 opacity
-                              fontSize: 10,
+                              fontSize: AppTheme.fontSize10,
                               fontFamily: 'monospace',
                             ),
                           ),
@@ -638,12 +638,12 @@ class ComponentRenderer extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 12, color: AppTheme.white100),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: const TextStyle(
               color: AppTheme.white100,
-              fontSize: 10,
+              fontSize: AppTheme.fontSize10,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -677,19 +677,19 @@ class ComponentRenderer extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: Container(
           height: 120,
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Icon(Icons.list, size: 20, color: AppTheme.primaryColor),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       title.isNotEmpty ? title : 'Liste',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontSemiBold,
                         color: AppTheme.textPrimaryColor,
                       ),
@@ -699,14 +699,14 @@ class ComponentRenderer extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   items.isEmpty 
                     ? 'Liste vide' 
                     : '${items.length} élément${items.length > 1 ? 's' : ''}',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     color: AppTheme.grey600,
                   ),
                 ),
@@ -729,12 +729,12 @@ class ComponentRenderer extends StatelessWidget {
               color: AppTheme.textPrimaryColor,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
         ],
         
         if (items.isEmpty)
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: AppTheme.grey100,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -797,13 +797,13 @@ class ComponentRenderer extends StatelessWidget {
                     '${index + 1}',
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -816,12 +816,12 @@ class ComponentRenderer extends StatelessWidget {
                       ),
                     ),
                     if (description.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         description,
                         style: TextStyle(
                           color: AppTheme.textSecondaryColor,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ],
@@ -845,7 +845,7 @@ class ComponentRenderer extends StatelessWidget {
                   color: AppTheme.primaryColor,
                   size: 20,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -864,7 +864,7 @@ class ComponentRenderer extends StatelessWidget {
                           description,
                           style: TextStyle(
                             color: AppTheme.textSecondaryColor,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                       ],
@@ -897,7 +897,7 @@ class ComponentRenderer extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -914,7 +914,7 @@ class ComponentRenderer extends StatelessWidget {
                         description,
                         style: TextStyle(
                           color: AppTheme.textSecondaryColor,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ],
@@ -949,17 +949,17 @@ class ComponentRenderer extends StatelessWidget {
           margin: EdgeInsets.zero,
           child: Container(
             height: 120,
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.menu_book, size: 32, color: AppTheme.grey500),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Verset non configuré',
                   style: TextStyle(
                     color: AppTheme.grey500,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -974,7 +974,7 @@ class ComponentRenderer extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: Container(
           height: 120,
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -999,23 +999,23 @@ class ComponentRenderer extends StatelessWidget {
                     color: AppTheme.primaryColor,
                     size: 16,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'Verset',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   verse,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontStyle: FontStyle.italic,
                     color: AppTheme.textPrimaryColor,
                     height: 1.3,
@@ -1030,7 +1030,7 @@ class ComponentRenderer extends StatelessWidget {
                   child: Text(
                     reference,
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: AppTheme.fontSize10,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
@@ -1045,7 +1045,7 @@ class ComponentRenderer extends StatelessWidget {
     // Mode linéaire (par défaut)
     if (verse.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.grey100,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1059,7 +1059,7 @@ class ComponentRenderer extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -1081,7 +1081,7 @@ class ComponentRenderer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.all(AppTheme.space6),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
@@ -1092,7 +1092,7 @@ class ComponentRenderer extends StatelessWidget {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Text(
                   verse,
@@ -1106,7 +1106,7 @@ class ComponentRenderer extends StatelessWidget {
             ],
           ),
           if (reference.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -1118,7 +1118,7 @@ class ComponentRenderer extends StatelessWidget {
                   ),
                 ),
                 if (version != 'LSG') ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     '($version)',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1165,7 +1165,7 @@ class ComponentRenderer extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1176,19 +1176,19 @@ class ComponentRenderer extends StatelessWidget {
                       style: TextStyle(
                         color: textColor,
                         fontWeight: AppTheme.fontBold,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   if (subtitle.isNotEmpty) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Expanded(
                       child: Text(
                         subtitle,
                         style: TextStyle(
                           color: textColor.withOpacity(0.9),
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -1206,7 +1206,7 @@ class ComponentRenderer extends StatelessWidget {
       // Mode linéaire (par défaut)
       bannerWidget = Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: backgroundColor,
@@ -1233,7 +1233,7 @@ class ComponentRenderer extends StatelessWidget {
                     ),
                   ),
                 if (subtitle.isNotEmpty) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -1275,7 +1275,7 @@ class ComponentRenderer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.map, size: 48, color: AppTheme.grey500),
-              SizedBox(height: 8),
+              SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Carte non configurée',
                 style: TextStyle(color: AppTheme.grey500),
@@ -1309,9 +1309,9 @@ class ComponentRenderer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.map, size: 48, color: AppTheme.grey500),
-                    SizedBox(height: 8),
+                    SizedBox(height: AppTheme.spaceSmall),
                     Text('Carte interactive'),
-                    Text('(nécessite Google Maps)', style: TextStyle(fontSize: 12)),
+                    Text('(nécessite Google Maps)', style: TextStyle(fontSize: AppTheme.fontSize12)),
                   ],
                 ),
               ),
@@ -1323,7 +1323,7 @@ class ComponentRenderer extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -1341,13 +1341,13 @@ class ComponentRenderer extends StatelessWidget {
                       color: AppTheme.white100,
                       size: 16,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Expanded(
                       child: Text(
                         address,
                         style: const TextStyle(
                           color: AppTheme.white100,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -1423,7 +1423,7 @@ class ComponentRenderer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Album audio', style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             ...tracks,
           ],
         ),
@@ -1465,7 +1465,7 @@ class ComponentRenderer extends StatelessWidget {
 
   Widget _buildEmptyAudioComponent() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1474,7 +1474,7 @@ class ComponentRenderer extends StatelessWidget {
       child: const Row(
         children: [
           Icon(Icons.music_note, size: 48, color: AppTheme.grey500),
-          SizedBox(width: 16),
+          SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1490,7 +1490,7 @@ class ComponentRenderer extends StatelessWidget {
                   'Veuillez configurer une source audio',
                   style: TextStyle(
                     color: AppTheme.grey500,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
               ],
@@ -1513,7 +1513,7 @@ class ComponentRenderer extends StatelessWidget {
       children: [
         // En-tête avec informations SoundCloud
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
             color: AppTheme.grey50,
             borderRadius: const BorderRadius.only(
@@ -1526,7 +1526,7 @@ class ComponentRenderer extends StatelessWidget {
             children: [
               // Logo/icône SoundCloud
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1537,7 +1537,7 @@ class ComponentRenderer extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               
               // Informations principales
               Expanded(
@@ -1551,10 +1551,10 @@ class ComponentRenderer extends StatelessWidget {
                           style: TextStyle(
                             color: AppTheme.grey800,
                             fontWeight: AppTheme.fontSemiBold,
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
@@ -1565,14 +1565,14 @@ class ComponentRenderer extends StatelessWidget {
                             info.displayType,
                             style: TextStyle(
                               color: AppTheme.grey800,
-                              fontSize: 10,
+                              fontSize: AppTheme.fontSize10,
                               fontWeight: AppTheme.fontMedium,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       title.isNotEmpty ? title : info.userName,
                       style: TextStyle(
@@ -1588,7 +1588,7 @@ class ComponentRenderer extends StatelessWidget {
                         artist,
                         style: TextStyle(
                           color: AppTheme.grey700,
-                          fontSize: 13,
+                          fontSize: AppTheme.fontSize13,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -1613,12 +1613,12 @@ class ComponentRenderer extends StatelessWidget {
                         duration,
                         style: TextStyle(
                           color: AppTheme.grey800,
-                          fontSize: 11,
+                          fontSize: AppTheme.fontSize11,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
                     ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   IconButton(
                     onPressed: () => _launchUrl(url),
                     icon: Icon(
@@ -1654,7 +1654,7 @@ class ComponentRenderer extends StatelessWidget {
                   size: 64,
                   color: AppTheme.grey400,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Text(
                   'Lecteur SoundCloud',
                   style: TextStyle(
@@ -1662,12 +1662,12 @@ class ComponentRenderer extends StatelessWidget {
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   'Cliquez pour ouvrir sur SoundCloud',
                   style: TextStyle(
                     color: AppTheme.grey600,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
               ],
@@ -1677,9 +1677,9 @@ class ComponentRenderer extends StatelessWidget {
         
         // Description si présente
         if (description.isNotEmpty) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: AppTheme.grey50,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -1689,7 +1689,7 @@ class ComponentRenderer extends StatelessWidget {
               description,
               style: TextStyle(
                 color: AppTheme.grey700,
-                fontSize: 13,
+                fontSize: AppTheme.fontSize13,
               ),
             ),
           ),
@@ -1710,7 +1710,7 @@ class ComponentRenderer extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 // Bouton play/pause
@@ -1737,7 +1737,7 @@ class ComponentRenderer extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppTheme.spaceMedium),
                 
                 // Informations audio
                 Expanded(
@@ -1750,7 +1750,7 @@ class ComponentRenderer extends StatelessWidget {
                           style: const TextStyle(
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -1761,17 +1761,17 @@ class ComponentRenderer extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: AppTheme.fontMedium,
                             color: AppTheme.grey600,
-                            fontSize: 16,
+                            fontSize: AppTheme.fontSize16,
                           ),
                         ),
                       
                       if (artist.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           artist,
                           style: TextStyle(
                             color: AppTheme.textSecondaryColor,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -1779,7 +1779,7 @@ class ComponentRenderer extends StatelessWidget {
                       ],
                       
                       if (duration.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Row(
                           children: [
                             Icon(
@@ -1787,12 +1787,12 @@ class ComponentRenderer extends StatelessWidget {
                               size: 14,
                               color: AppTheme.textTertiaryColor,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               duration,
                               style: TextStyle(
                                 color: AppTheme.textTertiaryColor,
-                                fontSize: 12,
+                                fontSize: AppTheme.fontSize12,
                               ),
                             ),
                           ],
@@ -1834,7 +1834,7 @@ class ComponentRenderer extends StatelessWidget {
             height: 4,
             decoration: BoxDecoration(
               color: AppTheme.grey300,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(AppTheme.radius2),
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
@@ -1842,7 +1842,7 @@ class ComponentRenderer extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppTheme.radius2),
                 ),
               ),
             ),
@@ -1850,20 +1850,20 @@ class ComponentRenderer extends StatelessWidget {
           
           // Description si présente
           if (description.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 description,
                 style: TextStyle(
                   color: AppTheme.textSecondaryColor,
-                  fontSize: 13,
+                  fontSize: AppTheme.fontSize13,
                 ),
               ),
             ),
           ],
           
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
         ],
       ),
     );
@@ -1871,7 +1871,7 @@ class ComponentRenderer extends StatelessWidget {
 
   Widget _buildErrorAudioComponent(String error, String url) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -1884,7 +1884,7 @@ class ComponentRenderer extends StatelessWidget {
             color: AppTheme.grey600,
             size: 48,
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1896,21 +1896,21 @@ class ComponentRenderer extends StatelessWidget {
                     fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   error,
                   style: TextStyle(
                     color: AppTheme.grey700,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
                 if (url.isNotEmpty) ...[
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     url,
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 10,
+                      fontSize: AppTheme.fontSize10,
                       fontFamily: 'monospace',
                     ),
                     maxLines: 1,
@@ -1957,14 +1957,14 @@ class ComponentRenderer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.location_on, size: 48, color: AppTheme.grey500),
-              SizedBox(height: 8),
+              SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Google Map non configurée',
                 style: TextStyle(color: AppTheme.grey500),
               ),
               Text(
                 'Veuillez saisir une adresse',
-                style: TextStyle(color: AppTheme.grey500, fontSize: 12),
+                style: TextStyle(color: AppTheme.grey500, fontSize: AppTheme.fontSize12),
               ),
             ],
           ),
@@ -2005,9 +2005,9 @@ class ComponentRenderer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.map, size: 48, color: AppTheme.grey500),
-                    SizedBox(height: 8),
+                    SizedBox(height: AppTheme.spaceSmall),
                     Text('Google Maps'),
-                    Text('(Intégration nécessaire)', style: TextStyle(fontSize: 12)),
+                    Text('(Intégration nécessaire)', style: TextStyle(fontSize: AppTheme.fontSize12)),
                   ],
                 ),
               ),
@@ -2020,7 +2020,7 @@ class ComponentRenderer extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -2038,13 +2038,13 @@ class ComponentRenderer extends StatelessWidget {
                         color: AppTheme.white100,
                         size: 16,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Expanded(
                         child: Text(
                           address,
                           style: const TextStyle(
                             color: AppTheme.white100,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -2062,7 +2062,7 @@ class ComponentRenderer extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => _openInGoogleMaps(address, latitude, longitude),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.white100.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(6),
@@ -2094,7 +2094,7 @@ class ComponentRenderer extends StatelessWidget {
     
     if (htmlContent.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.grey100,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2102,7 +2102,7 @@ class ComponentRenderer extends StatelessWidget {
         child: const Row(
           children: [
             Icon(Icons.code, size: 48, color: AppTheme.grey500),
-            SizedBox(width: 16),
+            SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -2118,7 +2118,7 @@ class ComponentRenderer extends StatelessWidget {
                     'Veuillez saisir le code HTML',
                     style: TextStyle(
                       color: AppTheme.grey500,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ],
@@ -2131,7 +2131,7 @@ class ComponentRenderer extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2144,7 +2144,7 @@ class ComponentRenderer extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.code, color: AppTheme.primaryColor, size: 20),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   title,
                   style: const TextStyle(
@@ -2154,10 +2154,10 @@ class ComponentRenderer extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
           ],
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
               color: AppTheme.white100,
               borderRadius: BorderRadius.circular(6),
@@ -2170,24 +2170,24 @@ class ComponentRenderer extends StatelessWidget {
                   'Contenu HTML intégré',
                   style: TextStyle(
                     color: AppTheme.textSecondaryColor,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                     fontWeight: AppTheme.fontMedium,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Le contenu HTML sera rendu ici dans l\'application finale.',
                   style: TextStyle(
                     color: AppTheme.textTertiaryColor,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.grey100,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   ),
                   child: Text(
                     htmlContent.length > 100 
@@ -2195,7 +2195,7 @@ class ComponentRenderer extends StatelessWidget {
                         : htmlContent,
                     style: TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       color: AppTheme.black100.withOpacity(0.87),
                     ),
                   ),
@@ -2227,17 +2227,17 @@ class ComponentRenderer extends StatelessWidget {
           margin: EdgeInsets.zero,
           child: Container(
             height: 120,
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppTheme.space12),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.format_quote, size: 32, color: AppTheme.grey500),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Citation non configurée',
                   style: TextStyle(
                     color: AppTheme.grey500,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -2252,7 +2252,7 @@ class ComponentRenderer extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: Container(
           height: 120,
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2267,23 +2267,23 @@ class ComponentRenderer extends StatelessWidget {
                     color: AppTheme.primaryColor,
                     size: 16,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'Citation',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontSemiBold,
                       color: AppTheme.primaryColor,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Expanded(
                 child: Text(
                   quote,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontStyle: FontStyle.italic,
                     color: textColor,
                     height: 1.3,
@@ -2298,7 +2298,7 @@ class ComponentRenderer extends StatelessWidget {
                   child: Text(
                     '— $author',
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: AppTheme.fontSize10,
                       fontWeight: AppTheme.fontMedium,
                       color: textColor.withOpacity(0.7),
                     ),
@@ -2315,7 +2315,7 @@ class ComponentRenderer extends StatelessWidget {
     // Mode linéaire (par défaut)
     if (quote.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.grey100,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2323,7 +2323,7 @@ class ComponentRenderer extends StatelessWidget {
         child: const Row(
           children: [
             Icon(Icons.format_quote, size: 48, color: AppTheme.grey500),
-            SizedBox(width: 16),
+            SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -2339,7 +2339,7 @@ class ComponentRenderer extends StatelessWidget {
                     'Veuillez saisir le texte de la citation',
                     style: TextStyle(
                       color: AppTheme.grey500,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ],
@@ -2352,7 +2352,7 @@ class ComponentRenderer extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -2371,7 +2371,7 @@ class ComponentRenderer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.all(AppTheme.space6),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withAlpha(25), // 0.1 opacity
                   borderRadius: BorderRadius.circular(6),
@@ -2382,12 +2382,12 @@ class ComponentRenderer extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Text(
                   quote,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: AppTheme.fontSize16,
                     fontStyle: FontStyle.italic,
                     color: textColor,
                     height: 1.5,
@@ -2397,7 +2397,7 @@ class ComponentRenderer extends StatelessWidget {
             ],
           ),
           if (author.isNotEmpty || context.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -2411,16 +2411,16 @@ class ComponentRenderer extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.primaryColor,
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                           ),
                         ),
                       if (context.isNotEmpty) ...[
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           context,
                           style: TextStyle(
                             color: textColor.withOpacity(0.7),
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                           ),
                         ),
                       ],
@@ -2504,7 +2504,7 @@ class ComponentRenderer extends StatelessWidget {
     }).toList();
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -2512,7 +2512,7 @@ class ComponentRenderer extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
                 decoration: BoxDecoration(
                   color: accentColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2523,7 +2523,7 @@ class ComponentRenderer extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -2531,17 +2531,17 @@ class ComponentRenderer extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: AppTheme.fontSize20,
                         fontWeight: AppTheme.fontBold,
                       ),
                     ),
                     if (subtitle.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         subtitle,
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ],
@@ -2550,7 +2550,7 @@ class ComponentRenderer extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
 
           // Affichage des groupes selon le mode choisi
           if (displayMode == 'cards') 
@@ -2562,7 +2562,7 @@ class ComponentRenderer extends StatelessWidget {
 
           // Message si aucun groupe
           if (filteredGroups.isEmpty) ...[
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             Center(
               child: Column(
                 children: [
@@ -2571,21 +2571,21 @@ class ComponentRenderer extends StatelessWidget {
                     size: 48,
                     color: AppTheme.grey400,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Text(
                     'Aucun groupe trouvé',
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                     ),
                   ),
                   if (filterBy == 'category' && category.isNotEmpty) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'pour la catégorie "$category"',
                       style: TextStyle(
                         color: AppTheme.grey500,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -2602,7 +2602,7 @@ class ComponentRenderer extends StatelessWidget {
     return Column(
       children: groups.map((group) => Container(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: cardColor,
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -2627,16 +2627,16 @@ class ComponentRenderer extends StatelessWidget {
                       Text(
                         group['name'],
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         group['description'],
                         style: TextStyle(
                           color: AppTheme.grey600,
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                         ),
                       ),
                     ],
@@ -2653,7 +2653,7 @@ class ComponentRenderer extends StatelessWidget {
                       '${group['memberCount']} membres',
                       style: TextStyle(
                         color: accentColor,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -2661,7 +2661,7 @@ class ComponentRenderer extends StatelessWidget {
                 ],
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Row(
               children: [
                 Container(
@@ -2673,7 +2673,7 @@ class ComponentRenderer extends StatelessWidget {
                   child: Text(
                     group['category'],
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontMedium,
                     ),
                   ),
@@ -2693,42 +2693,42 @@ class ComponentRenderer extends StatelessWidget {
               ],
             ),
             if (showContact) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Divider(color: AppTheme.grey300),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Row(
                 children: [
                   Icon(Icons.person_outline, size: 16, color: AppTheme.grey600),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     'Responsable: ${group['leader']}',
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Row(
                 children: [
                   Icon(Icons.email_outlined, size: 16, color: AppTheme.grey600),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     group['email'],
                     style: TextStyle(
                       color: accentColor,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: AppTheme.spaceMedium),
                   Icon(Icons.phone_outlined, size: 16, color: AppTheme.grey600),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     group['phone'],
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                 ],
@@ -2754,7 +2754,7 @@ class ComponentRenderer extends StatelessWidget {
       itemBuilder: (context, index) {
         final group = groups[index];
         return Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: cardColor,
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -2772,18 +2772,18 @@ class ComponentRenderer extends StatelessWidget {
               Text(
                 group['name'],
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   fontWeight: AppTheme.fontBold,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 group['description'],
                 style: TextStyle(
                   color: AppTheme.grey600,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
@@ -2800,12 +2800,12 @@ class ComponentRenderer extends StatelessWidget {
                     '${group['memberCount']} membres',
                     style: TextStyle(
                       color: accentColor,
-                      fontSize: 10,
+                      fontSize: AppTheme.fontSize10,
                       fontWeight: AppTheme.fontMedium,
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
               ],
               if (allowDirectJoin && group['isJoinable']) ...[
                 SizedBox(
@@ -2817,7 +2817,7 @@ class ComponentRenderer extends StatelessWidget {
                       foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
-                    child: const Text('Rejoindre', style: TextStyle(fontSize: 12)),
+                    child: const Text('Rejoindre', style: TextStyle(fontSize: AppTheme.fontSize12)),
                   ),
                 ),
               ],
@@ -2832,7 +2832,7 @@ class ComponentRenderer extends StatelessWidget {
     return Column(
       children: groups.map((group) => Container(
         margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         decoration: BoxDecoration(
           color: cardColor,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2847,25 +2847,25 @@ class ComponentRenderer extends StatelessWidget {
                   Text(
                     group['name'],
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     group['description'],
                     style: TextStyle(
                       color: AppTheme.grey600,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                     ),
                   ),
                   if (showContact) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       'Responsable: ${group['leader']}',
                       style: TextStyle(
                         color: AppTheme.grey500,
-                        fontSize: 11,
+                        fontSize: AppTheme.fontSize11,
                       ),
                     ),
                   ],
@@ -2886,12 +2886,12 @@ class ComponentRenderer extends StatelessWidget {
                       '${group['memberCount']}',
                       style: TextStyle(
                         color: accentColor,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                 ],
                 if (allowDirectJoin && group['isJoinable']) ...[
                   ElevatedButton(
@@ -2901,7 +2901,7 @@ class ComponentRenderer extends StatelessWidget {
                       foregroundColor: AppTheme.white100,
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     ),
-                    child: const Text('Rejoindre', style: TextStyle(fontSize: 12)),
+                    child: const Text('Rejoindre', style: TextStyle(fontSize: AppTheme.fontSize12)),
                   ),
                 ],
               ],
@@ -2954,7 +2954,7 @@ class ComponentRenderer extends StatelessWidget {
     final textColor = _parseColor(component.data['textColor'] ?? '#FFFFFF');
 
     Widget cardWidget = Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -2979,35 +2979,35 @@ class ComponentRenderer extends StatelessWidget {
                     color: textColor,
                     size: 24,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       title,
                       style: TextStyle(
                         color: textColor,
                         fontWeight: AppTheme.fontBold,
-                        fontSize: 16,
+                        fontSize: AppTheme.fontSize16,
                       ),
                     ),
                   ),
                 ],
               ),
               if (subtitle.isNotEmpty) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(
                   subtitle,
                   style: TextStyle(
                     color: textColor.withOpacity(0.9),
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                 ),
               ],
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 description,
                 style: TextStyle(
                   color: textColor.withOpacity(0.8),
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
               ),
             ],
@@ -3037,7 +3037,7 @@ class ComponentRenderer extends StatelessWidget {
     final iconName = component.data['iconName'] ?? 'trending_up';
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -3061,7 +3061,7 @@ class ComponentRenderer extends StatelessWidget {
                 title,
                 style: TextStyle(
                   color: AppTheme.grey600,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                   fontWeight: AppTheme.fontMedium,
                 ),
               ),
@@ -3072,7 +3072,7 @@ class ComponentRenderer extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -3080,17 +3080,17 @@ class ComponentRenderer extends StatelessWidget {
                 value,
                 style: TextStyle(
                   color: color,
-                  fontSize: 24,
+                  fontSize: AppTheme.fontSize24,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
               if (unit.isNotEmpty) ...[
-                const SizedBox(width: 4),
+                const SizedBox(width: AppTheme.spaceXSmall),
                 Text(
                   unit,
                   style: TextStyle(
                     color: AppTheme.grey600,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                 ),
               ],
@@ -3109,7 +3109,7 @@ class ComponentRenderer extends StatelessWidget {
     final textAlign = component.data['textAlign'] ?? 'center';
 
     Widget gridWidget = Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -3135,7 +3135,7 @@ class ComponentRenderer extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
                 color: iconColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -3146,12 +3146,12 @@ class ComponentRenderer extends StatelessWidget {
                 size: 24,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             Text(
               title,
               style: const TextStyle(
                 fontWeight: AppTheme.fontBold,
-                fontSize: 16,
+                fontSize: AppTheme.fontSize16,
               ),
               textAlign: textAlign == 'center' 
                 ? TextAlign.center 
@@ -3159,12 +3159,12 @@ class ComponentRenderer extends StatelessWidget {
                   ? TextAlign.start 
                   : TextAlign.end,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               description,
               style: TextStyle(
                 color: AppTheme.grey600,
-                fontSize: 12,
+                fontSize: AppTheme.fontSize12,
               ),
               textAlign: textAlign == 'center' 
                 ? TextAlign.center 
@@ -3255,7 +3255,7 @@ class ComponentRenderer extends StatelessWidget {
                 ),
               ],
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppTheme.space12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -3263,15 +3263,15 @@ class ComponentRenderer extends StatelessWidget {
                       title,
                       style: const TextStyle(
                         fontWeight: AppTheme.fontBold,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       description,
                       style: TextStyle(
                         color: AppTheme.grey600,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                       ),
                     ),
                   ],
@@ -3303,7 +3303,7 @@ class ComponentRenderer extends StatelessWidget {
     final backgroundColor = _parseColor(component.data['backgroundColor'] ?? '#E3F2FD');
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -3327,7 +3327,7 @@ class ComponentRenderer extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   fontWeight: AppTheme.fontBold,
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                 ),
               ),
               if (showPercentage)
@@ -3336,17 +3336,17 @@ class ComponentRenderer extends StatelessWidget {
                   style: TextStyle(
                     color: color,
                     fontWeight: AppTheme.fontBold,
-                    fontSize: 14,
+                    fontSize: AppTheme.fontSize14,
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Container(
             height: 8,
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
@@ -3354,7 +3354,7 @@ class ComponentRenderer extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: color,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
               ),
             ),
@@ -3414,21 +3414,21 @@ class ComponentRenderer extends StatelessWidget {
                 size: 48,
                 color: AppTheme.grey500,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'Grid Container (${columns} colonnes)',
                 style: TextStyle(
                   color: AppTheme.grey500,
-                  fontSize: 14,
+                  fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontMedium,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 'Ajoutez des composants pour les voir ici',
                 style: TextStyle(
                   color: AppTheme.grey500,
-                  fontSize: 12,
+                  fontSize: AppTheme.fontSize12,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -3490,7 +3490,7 @@ class ComponentRenderer extends StatelessWidget {
 
   Widget _buildUnsupportedComponent() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -3499,7 +3499,7 @@ class ComponentRenderer extends StatelessWidget {
       child: Row(
         children: [
           Icon(Icons.error, color: AppTheme.grey700),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -3515,7 +3515,7 @@ class ComponentRenderer extends StatelessWidget {
                   'Type: ${component.type}',
                   style: TextStyle(
                     color: AppTheme.grey600,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                   ),
                 ),
               ],
@@ -3571,11 +3571,11 @@ class ComponentRenderer extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.event, color: primaryColor, size: 24),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: AppTheme.fontSize20,
                   fontWeight: AppTheme.fontBold,
                   color: primaryColor,
                 ),
@@ -3583,16 +3583,16 @@ class ComponentRenderer extends StatelessWidget {
             ],
           ),
           if (subtitle.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               subtitle,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
                 color: AppTheme.grey600,
               ),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           if (displayMode == 'cards')
             _buildEventsCards(events, showDates, allowRegistration, primaryColor)
           else if (displayMode == 'list')
@@ -3608,7 +3608,7 @@ class ComponentRenderer extends StatelessWidget {
     return Column(
       children: events.map((event) => Container(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
         decoration: BoxDecoration(
           color: AppTheme.white100,
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -3627,35 +3627,35 @@ class ComponentRenderer extends StatelessWidget {
             Text(
               event['title'],
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               event['description'],
               style: TextStyle(
                 color: AppTheme.grey600,
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
               ),
             ),
             if (showDates) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               Row(
                 children: [
                   Icon(Icons.access_time, size: 16, color: primaryColor),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     '${event['date']} à ${event['time']}',
                     style: TextStyle(color: primaryColor, fontWeight: AppTheme.fontMedium),
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Row(
                 children: [
                   Icon(Icons.location_on, size: 16, color: primaryColor),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppTheme.spaceXSmall),
                   Text(
                     event['location'],
                     style: TextStyle(color: AppTheme.grey600),
@@ -3664,7 +3664,7 @@ class ComponentRenderer extends StatelessWidget {
               ),
             ],
             if (allowRegistration && event['registrationOpen']) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -3684,7 +3684,7 @@ class ComponentRenderer extends StatelessWidget {
     return Column(
       children: events.map((event) => Container(
         margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         decoration: BoxDecoration(
           color: AppTheme.white100,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -3699,17 +3699,17 @@ class ComponentRenderer extends StatelessWidget {
                   Text(
                     event['title'],
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
                   if (showDates) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppTheme.spaceXSmall),
                     Text(
                       '${event['date']} à ${event['time']}',
                       style: TextStyle(
                         color: primaryColor,
-                        fontSize: 12,
+                        fontSize: AppTheme.fontSize12,
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -3725,7 +3725,7 @@ class ComponentRenderer extends StatelessWidget {
                   foregroundColor: AppTheme.white100,
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 ),
-                child: const Text('S\'inscrire', style: TextStyle(fontSize: 12)),
+                child: const Text('S\'inscrire', style: TextStyle(fontSize: AppTheme.fontSize12)),
               ),
           ],
         ),
@@ -3735,7 +3735,7 @@ class ComponentRenderer extends StatelessWidget {
 
   Widget _buildEventsCalendar(List<Map<String, dynamic>> events, bool showDates, bool allowRegistration, Color primaryColor) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -3749,7 +3749,7 @@ class ComponentRenderer extends StatelessWidget {
               fontWeight: AppTheme.fontMedium,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           ...events.map((event) => ListTile(
             leading: Icon(Icons.event, color: primaryColor),
             title: Text(event['title']),
@@ -3876,12 +3876,12 @@ class ComponentRenderer extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 16, color: AppTheme.grey600),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Text(
             '$label: ',
             style: TextStyle(
               color: AppTheme.grey600,
-              fontSize: 14,
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -3889,7 +3889,7 @@ class ComponentRenderer extends StatelessWidget {
             child: Text(
               value,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: AppTheme.fontSize14,
               ),
             ),
           ),
@@ -4044,17 +4044,17 @@ class ComponentRenderer extends StatelessWidget {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: AppTheme.fontSize24,
                         fontWeight: AppTheme.fontBold,
                         color: primaryColor,
                       ),
                     ),
                     if (subtitle.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spaceXSmall),
                       Text(
                         subtitle,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           color: AppTheme.grey600,
                         ),
                       ),
@@ -4074,18 +4074,18 @@ class ComponentRenderer extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppTheme.spaceLarge),
 
           // Filtres par catégorie
           if (showCategories) ...[
             _buildCategoryFilter(categories, primaryColor),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
 
           // Statistiques
           if (allowPrayerCount) ...[
             _buildPrayerStats(samplePrayers, prayerCountText, primaryColor),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
           ],
 
           // Liste des prières selon le mode d'affichage
@@ -4147,7 +4147,7 @@ class ComponentRenderer extends StatelessWidget {
     }).length;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: primaryColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -4198,11 +4198,11 @@ class ComponentRenderer extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           value,
           style: TextStyle(
-            fontSize: 20,
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontBold,
             color: color,
           ),
@@ -4210,7 +4210,7 @@ class ComponentRenderer extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: AppTheme.fontSize12,
             color: AppTheme.grey600,
           ),
           textAlign: TextAlign.center,
@@ -4303,7 +4303,7 @@ class ComponentRenderer extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppTheme.spaceMedium),
               // Contenu
               Expanded(
                 child: Padding(
@@ -4332,7 +4332,7 @@ class ComponentRenderer extends StatelessWidget {
       children: prayers.map((prayer) => 
         Container(
           margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppTheme.space12),
           decoration: BoxDecoration(
             color: AppTheme.white100,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -4348,13 +4348,13 @@ class ComponentRenderer extends StatelessWidget {
                     color: _getPrayerTypeColor(prayer['type'], primaryColor),
                     size: 16,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Expanded(
                     child: Text(
                       prayer['title'],
                       style: const TextStyle(
                         fontWeight: AppTheme.fontSemiBold,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -4362,33 +4362,33 @@ class ComponentRenderer extends StatelessWidget {
                   ),
                   if (allowPrayerCount) ...[
                     Icon(Icons.favorite, color: primaryColor, size: 14),
-                    const SizedBox(width: 4),
-                    Text('${prayer['prayerCount']}', style: TextStyle(fontSize: 12, color: primaryColor)),
+                    const SizedBox(width: AppTheme.spaceXSmall),
+                    Text('${prayer['prayerCount']}', style: TextStyle(fontSize: AppTheme.fontSize12, color: primaryColor)),
                   ],
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 prayer['content'],
-                style: TextStyle(color: AppTheme.grey600, fontSize: 12),
+                style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize12),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               if (showDates || showAuthors) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Row(
                   children: [
                     if (showAuthors) ...[
                       Text(
                         prayer['author'],
-                        style: TextStyle(fontSize: 11, color: AppTheme.grey500),
+                        style: TextStyle(fontSize: AppTheme.fontSize11, color: AppTheme.grey500),
                       ),
-                      if (showDates) const Text(' • ', style: TextStyle(fontSize: 11)),
+                      if (showDates) const Text(' • ', style: TextStyle(fontSize: AppTheme.fontSize11)),
                     ],
                     if (showDates)
                       Text(
                         _formatDate(prayer['date']),
-                        style: TextStyle(fontSize: 11, color: AppTheme.grey500),
+                        style: TextStyle(fontSize: AppTheme.fontSize11, color: AppTheme.grey500),
                       ),
                   ],
                 ),
@@ -4431,7 +4431,7 @@ class ComponentRenderer extends StatelessWidget {
         Expanded(
           child: Column(children: leftColumn),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space12),
         Expanded(
           child: Column(children: rightColumn),
         ),
@@ -4457,7 +4457,7 @@ class ComponentRenderer extends StatelessWidget {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -4478,11 +4478,11 @@ class ComponentRenderer extends StatelessWidget {
                           size: 14,
                           color: _getPrayerTypeColor(prayer['type'], primaryColor),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppTheme.spaceXSmall),
                         Text(
                           _getPrayerTypeLabel(prayer['type']),
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontMedium,
                             color: _getPrayerTypeColor(prayer['type'], primaryColor),
                           ),
@@ -4491,7 +4491,7 @@ class ComponentRenderer extends StatelessWidget {
                     ),
                   ),
                   if (showCategories && prayer['category'] != null) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
@@ -4501,7 +4501,7 @@ class ComponentRenderer extends StatelessWidget {
                       child: Text(
                         prayer['category'],
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppTheme.fontSize12,
                           color: primaryColor,
                         ),
                       ),
@@ -4509,28 +4509,28 @@ class ComponentRenderer extends StatelessWidget {
                   ],
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
 
               // Titre
               Text(
                 prayer['title'],
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
 
               // Contenu
               Text(
                 prayer['content'],
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppTheme.fontSize16,
                   color: AppTheme.grey700,
                   height: 1.4,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.space12),
 
               // Informations auteur et date
               if (showAuthors || showDates) ...[
@@ -4543,17 +4543,17 @@ class ComponentRenderer extends StatelessWidget {
                         child: Text(
                           prayer['author'][0].toUpperCase(),
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.fontSize12,
                             fontWeight: AppTheme.fontBold,
                             color: primaryColor,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         prayer['author'],
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -4562,25 +4562,25 @@ class ComponentRenderer extends StatelessWidget {
                         Text(
                           _formatDate(prayer['date']),
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: AppTheme.fontSize14,
                             color: AppTheme.grey600,
                           ),
                         ),
                       ],
                     ] else if (showDates) ...[
                       Icon(Icons.schedule, size: 16, color: AppTheme.grey600),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppTheme.spaceXSmall),
                       Text(
                         _formatDate(prayer['date']),
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: AppTheme.fontSize14,
                           color: AppTheme.grey600,
                         ),
                       ),
                     ],
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
               ],
 
               // Actions
@@ -4632,7 +4632,7 @@ class ComponentRenderer extends StatelessWidget {
 
   Widget _buildEmptyState(String emptyStateText, Color primaryColor) {
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(AppTheme.spaceXLarge),
       child: Column(
         children: [
           Icon(
@@ -4640,12 +4640,12 @@ class ComponentRenderer extends StatelessWidget {
             size: 64,
             color: AppTheme.grey400,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppTheme.spaceMedium),
           Text(
             emptyStateText,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppTheme.fontSize16,
               color: AppTheme.grey600,
               height: 1.4,
             ),
@@ -4715,7 +4715,7 @@ class ComponentRenderer extends StatelessWidget {
       case 'testimony':
         return AppTheme.greenStandard;
       case 'thanksgiving':
-        return Colors.purple;
+        return AppTheme.primaryColor;
       default:
         return primaryColor;
     }
@@ -4781,7 +4781,7 @@ class ComponentRenderer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('Formulaire de soumission de prière'),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('Cette fonctionnalité sera connectée à votre base de données.'),
             ],
           ),
@@ -4820,7 +4820,7 @@ class ComponentRenderer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('Système de commentaires'),
-              SizedBox(height: 16),
+              SizedBox(height: AppTheme.spaceMedium),
               Text('Les commentaires d\'encouragement seront affichés ici.'),
             ],
           ),
@@ -5153,24 +5153,24 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
         ),
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 64, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur d\'affichage WebView',
                   style: TextStyle(
                     color: AppTheme.grey700, 
-                    fontSize: 18, 
+                    fontSize: AppTheme.fontSize18, 
                     fontWeight: AppTheme.fontBold
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppTheme.space12),
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.white100,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -5178,11 +5178,11 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
                   ),
                   child: Text(
                     _errorMessage,
-                    style: TextStyle(color: AppTheme.grey600, fontSize: 14),
+                    style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize14),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space20),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -5216,9 +5216,9 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
                       ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.grey50,
                     borderRadius: BorderRadius.circular(6),
@@ -5228,11 +5228,11 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.info_outline, size: 16, color: AppTheme.grey600),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Flexible(
                         child: Text(
                           'URL testée: $url',
-                          style: TextStyle(color: AppTheme.grey700, fontSize: 12),
+                          style: TextStyle(color: AppTheme.grey700, fontSize: AppTheme.fontSize12),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -5264,24 +5264,24 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.web_outlined, size: 64, color: AppTheme.grey400),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 'Composant WebView',
                 style: TextStyle(
                   color: AppTheme.grey700, 
-                  fontSize: 18, 
+                  fontSize: AppTheme.fontSize18, 
                   fontWeight: AppTheme.fontSemiBold
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Text(
                 'URL non configurée',
-                style: TextStyle(color: AppTheme.grey600, fontSize: 16),
+                style: TextStyle(color: AppTheme.grey600, fontSize: AppTheme.fontSize16),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppTheme.spaceXSmall),
               Text(
                 'Veuillez modifier ce composant pour ajouter une URL',
-                style: TextStyle(color: AppTheme.grey500, fontSize: 14),
+                style: TextStyle(color: AppTheme.grey500, fontSize: AppTheme.fontSize14),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -5302,12 +5302,12 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const CircularProgressIndicator(),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
               Text(
                 _isLoading ? 'Initialisation WebView...' : 'Préparation...',
-                style: const TextStyle(color: AppTheme.grey500, fontSize: 16),
+                style: const TextStyle(color: AppTheme.grey500, fontSize: AppTheme.fontSize16),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppTheme.spaceSmall),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 decoration: BoxDecoration(
@@ -5316,7 +5316,7 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
                 ),
                 child: Text(
                   url,
-                  style: TextStyle(color: AppTheme.grey700, fontSize: 12),
+                  style: TextStyle(color: AppTheme.grey700, fontSize: AppTheme.fontSize12),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -5341,10 +5341,10 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(),
-                      SizedBox(height: 16),
+                      SizedBox(height: AppTheme.spaceMedium),
                       Text(
                         'Chargement de la page...',
-                        style: TextStyle(color: AppTheme.grey500, fontSize: 16),
+                        style: TextStyle(color: AppTheme.grey500, fontSize: AppTheme.fontSize16),
                       ),
                     ],
                   ),
@@ -5361,16 +5361,16 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline, size: 64, color: AppTheme.grey400),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur d\'initialisation WebView',
                   style: TextStyle(
                     color: AppTheme.grey700, 
-                    fontSize: 16, 
+                    fontSize: AppTheme.fontSize16, 
                     fontWeight: AppTheme.fontBold
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 ElevatedButton.icon(
                   onPressed: () {
                     setState(() {
@@ -5424,12 +5424,12 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
             child: Row(
               children: [
                 Icon(Icons.web, size: 20, color: AppTheme.grey600),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
                     title,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontMedium,
                       color: AppTheme.grey800,
                     ),

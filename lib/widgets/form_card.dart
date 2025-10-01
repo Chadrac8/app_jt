@@ -135,7 +135,7 @@ class _FormCardState extends State<FormCard>
           children: [
             // Header with status and actions
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
                 color: _statusColor.withOpacity(0.1),
                 borderRadius: const BorderRadius.only(
@@ -151,7 +151,7 @@ class _FormCardState extends State<FormCard>
                       onChanged: (value) => widget.onSelectionChanged(value ?? false),
                       activeColor: AppTheme.primaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                   ],
                   Expanded(
                     child: Row(
@@ -173,19 +173,19 @@ class _FormCardState extends State<FormCard>
                                 size: 14,
                                 color: AppTheme.white100,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 widget.form.statusLabel,
                                 style: const TextStyle(
                                   color: AppTheme.white100,
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppTheme.spaceSmall),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
@@ -203,12 +203,12 @@ class _FormCardState extends State<FormCard>
                                 size: 14,
                                 color: AppTheme.primaryColor,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppTheme.spaceXSmall),
                               Text(
                                 widget.form.accessibilityLabel,
                                 style: TextStyle(
                                   color: AppTheme.primaryColor,
-                                  fontSize: 12,
+                                  fontSize: AppTheme.fontSize12,
                                   fontWeight: AppTheme.fontMedium,
                                 ),
                               ),
@@ -277,7 +277,7 @@ class _FormCardState extends State<FormCard>
             
             // Form content
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -293,7 +293,7 @@ class _FormCardState extends State<FormCard>
                   ),
                   
                   if (widget.form.description.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       widget.form.description,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -304,7 +304,7 @@ class _FormCardState extends State<FormCard>
                     ),
                   ],
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Stats and info
                   Row(
@@ -314,7 +314,7 @@ class _FormCardState extends State<FormCard>
                         label: '${widget.form.fields.where((f) => f.isInputField).length} champs',
                         color: AppTheme.primaryColor,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       if (widget.form.hasSubmissionLimit)
                         _buildInfoChip(
                           icon: Icons.people,
@@ -333,7 +333,7 @@ class _FormCardState extends State<FormCard>
                   
                   // Publication dates
                   if (widget.form.publishDate != null || widget.form.closeDate != null) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppTheme.space12),
                     Wrap(
                       spacing: 8,
                       children: [
@@ -376,12 +376,12 @@ class _FormCardState extends State<FormCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: AppTheme.fontSize12,
               fontWeight: AppTheme.fontMedium,
             ),
           ),
@@ -405,12 +405,12 @@ class _FormCardState extends State<FormCard>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
+          const SizedBox(width: AppTheme.spaceXSmall),
           Text(
             label,
             style: TextStyle(
               color: color,
-              fontSize: 10,
+              fontSize: AppTheme.fontSize10,
               fontWeight: AppTheme.fontMedium,
             ),
           ),

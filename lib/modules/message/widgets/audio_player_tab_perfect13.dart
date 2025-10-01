@@ -6,6 +6,7 @@ import '../services/admin_branham_sermon_service.dart';
 import '../services/branham_audio_player_service.dart';
 import 'dart:async';
 import 'dart:math' as math;
+import '../../../theme.dart';
 
 // Primary color for the app theme
 const Color _primaryColor = Color(0xFF860505); // Rouge bordeaux pour s'harmoniser avec le thème
@@ -374,11 +375,11 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
           title: Row(
             children: [
               Icon(Icons.info_outline, color: _primaryColor, size: 24),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: Text(
                   'À propos du lecteur',
-                  style: TextStyle(color: AppTheme.textPrimaryColor, fontSize: 18, fontWeight: AppTheme.fontSemiBold)))
+                  style: TextStyle(color: AppTheme.textPrimaryColor, fontSize: AppTheme.fontSize18, fontWeight: AppTheme.fontSemiBold)))
             ]),
           content: SingleChildScrollView(
             child: Column(
@@ -387,7 +388,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
               children: [
                 // Description du lecteur
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: _primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -396,19 +397,19 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Lecteur Audio Avancé', 
-                        style: TextStyle(color: _primaryColor, fontSize: 16, fontWeight: AppTheme.fontSemiBold)),
-                      const SizedBox(height: 8),
+                        style: TextStyle(color: _primaryColor, fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontSemiBold)),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       const Text(
                         'Un lecteur moderne et sophistiqué pour écouter les prédications de William Marrion Branham avec une expérience immersive.',
-                        style: TextStyle(color: AppTheme.textSecondaryColor, fontSize: 13, height: 1.4)),
+                        style: TextStyle(color: AppTheme.textSecondaryColor, fontSize: AppTheme.fontSize13, height: 1.4)),
                     ])),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Fonctionnalités principales
                 const Text('Fonctionnalités disponibles:', 
-                  style: TextStyle(color: AppTheme.textPrimaryColor, fontSize: 15, fontWeight: AppTheme.fontSemiBold)),
-                const SizedBox(height: 12),
+                  style: TextStyle(color: AppTheme.textPrimaryColor, fontSize: AppTheme.fontSize15, fontWeight: AppTheme.fontSemiBold)),
+                const SizedBox(height: AppTheme.space12),
                 
                 _buildFeatureItem(
                   Icons.tune, 
@@ -435,11 +436,11 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                   'Lecture continue', 
                   'Lecture automatique de la prédication suivante, mémorisation de la position'),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Conseils d\'utilisation
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -450,16 +451,16 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       Row(
                         children: [
                           Icon(Icons.lightbulb_outline, color: AppTheme.primaryColor, size: 16),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           const Text('Conseils d\'utilisation:', 
-                            style: TextStyle(color: AppTheme.primaryColor, fontSize: 14, fontWeight: AppTheme.fontSemiBold)),
+                            style: TextStyle(color: AppTheme.primaryColor, fontSize: AppTheme.fontSize14, fontWeight: AppTheme.fontSemiBold)),
                         ]),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppTheme.spaceSmall),
                       const Text(
                         '• Utilisez l\'icône réglages pour accéder aux contrôles avancés\n'
                         '• Appuyez sur l\'icône playlist pour changer de prédication\n'
                         '• Les gestes de balayage permettent une navigation rapide',
-                        style: TextStyle(color: AppTheme.textSecondaryColor, fontSize: 12, height: 1.4)),
+                        style: TextStyle(color: AppTheme.textSecondaryColor, fontSize: AppTheme.fontSize12, height: 1.4)),
                     ])),
               ])),
           actions: [
@@ -477,21 +478,21 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(AppTheme.space6),
             decoration: BoxDecoration(
               color: _primaryColor.withOpacity(0.2),
               borderRadius: BorderRadius.circular(6)),
             child: Icon(icon, color: _primaryColor, size: 16)),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppTheme.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, 
-                  style: const TextStyle(color: AppTheme.textPrimaryColor, fontSize: 13, fontWeight: AppTheme.fontSemiBold)),
-                const SizedBox(height: 4),
+                  style: const TextStyle(color: AppTheme.textPrimaryColor, fontSize: AppTheme.fontSize13, fontWeight: AppTheme.fontSemiBold)),
+                const SizedBox(height: AppTheme.spaceXSmall),
                 Text(description, 
-                  style: TextStyle(color: AppTheme.grey400, fontSize: 12, height: 1.3)),
+                  style: TextStyle(color: AppTheme.grey400, fontSize: AppTheme.fontSize12, height: 1.3)),
               ])),
         ]));
   }
@@ -650,7 +651,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                         text: mainTitle,
                         style: GoogleFonts.inter(
                           color: AppTheme.textPrimaryColor,
-                          fontSize: 18,
+                          fontSize: AppTheme.fontSize18,
                           fontWeight: AppTheme.fontBold)),
                       textDirection: TextDirection.ltr);
                     textPainter.layout();
@@ -665,7 +666,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                           mainTitle,
                           style: GoogleFonts.inter(
                             color: AppTheme.textPrimaryColor,
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontBold),
                           textAlign: TextAlign.center));
                     }
@@ -677,7 +678,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                           fallbackTitle,
                           style: GoogleFonts.inter(
                             color: AppTheme.textPrimaryColor,
-                            fontSize: 18,
+                            fontSize: AppTheme.fontSize18,
                             fontWeight: AppTheme.fontBold),
                           textAlign: TextAlign.center));
                     }
@@ -695,7 +696,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                             mainTitle,
                             style: GoogleFonts.inter(
                               color: AppTheme.textPrimaryColor,
-                              fontSize: 18,
+                              fontSize: AppTheme.fontSize18,
                               fontWeight: AppTheme.fontBold),
                             maxLines: 1,
                             overflow: TextOverflow.visible))));
@@ -810,7 +811,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                   ]));
             }),
           
-          const SizedBox(height: 18),
+          const SizedBox(height: AppTheme.space18),
           
           // Informations de la prédication avec espacement réduit
           if (_currentSermon != null) ...[
@@ -827,7 +828,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis)),
             
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             
             // Informations date et lieu avec wrapping amélioré
             Wrap(
@@ -842,12 +843,12 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       Icons.calendar_today,
                       color: AppTheme.textSecondaryColor,
                       size: 14),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppTheme.space6),
                     Text(
                       _currentSermon!.date,
                       style: GoogleFonts.inter(
                         color: AppTheme.textSecondaryColor,
-                        fontSize: 13)),
+                        fontSize: AppTheme.fontSize13)),
                   ]),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -856,13 +857,13 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       Icons.location_on,
                       color: AppTheme.textSecondaryColor,
                       size: 14),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppTheme.space6),
                     Flexible(
                       child: Text(
                         _currentSermon!.location,
                         style: GoogleFonts.inter(
                           color: AppTheme.textSecondaryColor,
-                          fontSize: 13),
+                          fontSize: AppTheme.fontSize13),
                         overflow: TextOverflow.ellipsis)),
                   ]),
               ]),
@@ -873,10 +874,10 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                 'Aucune prédication sélectionnée',
                 style: GoogleFonts.inter(
                   color: AppTheme.white100.withOpacity(0.7),
-                  fontSize: 16),
+                  fontSize: AppTheme.fontSize16),
                 textAlign: TextAlign.center)),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             ElevatedButton(
               onPressed: _showSermonsBottomSheet,
@@ -889,13 +890,13 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.playlist_play, color: AppTheme.white100, size: 20),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Choisir une prédication',
                     style: GoogleFonts.inter(
                       color: AppTheme.white100,
                       fontWeight: AppTheme.fontSemiBold,
-                      fontSize: 14)),
+                      fontSize: AppTheme.fontSize14)),
                 ])),
           ],
         ]));
@@ -924,7 +925,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                   _formatDuration(_currentPosition),
                   style: GoogleFonts.inter(
                     color: AppTheme.textSecondaryColor,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium)),
                 Expanded(
                   child: Container(
@@ -952,11 +953,11 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                   _formatDuration(_totalDuration),
                   style: GoogleFonts.inter(
                     color: AppTheme.textSecondaryColor,
-                    fontSize: 12,
+                    fontSize: AppTheme.fontSize12,
                     fontWeight: AppTheme.fontMedium)),
               ])),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Boutons de contrôle principal avec animations
           AnimatedBuilder(
@@ -1038,7 +1039,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     onTap: _showSermonInfo,
                     child: Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       child: Icon(
                         Icons.info_outline,
                         color: AppTheme.primaryColor,
@@ -1062,7 +1063,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                           }));
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       child: Icon(
                         Icons.tune,
                         color: _primaryColor,
@@ -1077,7 +1078,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     onTap: _showSermonsBottomSheet,
                     child: Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(AppTheme.space12),
                       child: Icon(
                         Icons.playlist_play,
                         color: _primaryColor,
@@ -1119,7 +1120,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
         children: [
           // Header du bottom sheet
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               color: _primaryColor.withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
@@ -1130,15 +1131,15 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                   height: 4,
                   decoration: BoxDecoration(
                     color: AppTheme.grey500,
-                    borderRadius: BorderRadius.circular(2))),
-                const SizedBox(height: 16),
+                    borderRadius: BorderRadius.circular(AppTheme.radius2))),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Prédications Audio',
                   style: GoogleFonts.inter(
                     color: AppTheme.white100,
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold)),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 
                 // Barre de recherche
                 TextField(
@@ -1163,7 +1164,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
           // Liste des prédications
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               itemCount: _filteredSermons.length,
               itemBuilder: (context, index) {
                 final sermon = _filteredSermons[index];
@@ -1176,7 +1177,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: isSelected ? Border.all(color: _primaryColor, width: 1) : null),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.all(16),
+                    contentPadding: const EdgeInsets.all(AppTheme.spaceMedium),
                     leading: Container(
                       width: 50,
                       height: 50,
@@ -1192,34 +1193,34 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       style: GoogleFonts.inter(
                         color: AppTheme.white100,
                         fontWeight: AppTheme.fontSemiBold,
-                        fontSize: 14),
+                        fontSize: AppTheme.fontSize14),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Row(
                           children: [
                             Icon(Icons.calendar_today, color: AppTheme.white100.withOpacity(0.5), size: 12),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(
                               sermon.date,
                               style: GoogleFonts.inter(
                                 color: AppTheme.white100.withOpacity(0.7),
-                                fontSize: 12)),
+                                fontSize: AppTheme.fontSize12)),
                           ]),
                         const SizedBox(height: 2),
                         Row(
                           children: [
                             Icon(Icons.location_on, color: AppTheme.white100.withOpacity(0.5), size: 12),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Expanded(
                               child: Text(
                                 sermon.location,
                                 style: GoogleFonts.inter(
                                   color: AppTheme.white100.withOpacity(0.7),
-                                  fontSize: 12),
+                                  fontSize: AppTheme.fontSize12),
                                 overflow: TextOverflow.ellipsis)),
                           ]),
                       ]),
@@ -1242,7 +1243,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
         children: [
           // Header du bottom sheet
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               color: _primaryColor.withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -1254,15 +1255,15 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                   height: 4,
                   decoration: BoxDecoration(
                     color: AppTheme.grey500,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(AppTheme.radius2),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Contrôles Avancés',
                   style: GoogleFonts.inter(
                     color: AppTheme.white100,
-                    fontSize: 20,
+                    fontSize: AppTheme.fontSize20,
                     fontWeight: AppTheme.fontBold,
                   ),
                 ),
@@ -1273,7 +1274,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
           // Contrôles
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppTheme.space20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1282,11 +1283,11 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                     'Vitesse de lecture',
                     style: GoogleFonts.inter(
                       color: AppTheme.white100,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   Row(
                     children: [
@@ -1328,24 +1329,24 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       '${_playbackSpeed.toStringAsFixed(1)}x',
                       style: GoogleFonts.inter(
                         color: _primaryColor,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Volume
                   Text(
                     'Volume',
                     style: GoogleFonts.inter(
                       color: AppTheme.white100,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   Row(
                     children: [
@@ -1386,24 +1387,24 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       '${(_volume * 100).round()}%',
                       style: GoogleFonts.inter(
                         color: _primaryColor,
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Options de lecture
                   Text(
                     'Options de lecture',
                     style: GoogleFonts.inter(
                       color: AppTheme.white100,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   // Lecture en boucle
                   Container(
@@ -1430,7 +1431,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                     ),
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   
                   // Lecture aléatoire
                   Container(
@@ -1457,18 +1458,18 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                     ),
                   ),
                   
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.spaceLarge),
                   
                   // Minuterie de sommeil
                   Text(
                     'Minuterie de sommeil',
                     style: GoogleFonts.inter(
                       color: AppTheme.white100,
-                      fontSize: 16,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   
                   Wrap(
                     spacing: 8,

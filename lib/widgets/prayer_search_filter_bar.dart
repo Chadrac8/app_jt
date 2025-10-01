@@ -81,7 +81,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
       case PrayerType.testimony:
         return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
-        return Colors.purple;
+        return AppTheme.primaryColor;
     }
   }
 
@@ -107,14 +107,14 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
       child: Column(
         children: [
           // Barre de recherche principale
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Row(
               children: [
                 Expanded(
@@ -143,7 +143,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                     onChanged: widget.onSearchChanged,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 // Bouton filtres
                 Container(
                   decoration: BoxDecoration(
@@ -165,7 +165,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                   ),
                 ),
                 if (_hasActiveFilters && widget.onClearFilters != null) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Container(
                     decoration: BoxDecoration(
                       color: AppTheme.redStandard.withOpacity(0.1),
@@ -203,11 +203,11 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                   const Text(
                     'Type de prière',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -236,7 +236,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                                   ? _getTypeColor(type)
                                   : AppTheme.grey500,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppTheme.spaceXSmall),
                             Text(type.label),
                           ],
                         ),
@@ -249,18 +249,18 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                       )),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
 
                   // Filtres par catégorie
                   if (widget.availableCategories.isNotEmpty) ...[
                     const Text(
                       'Catégorie',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: AppTheme.fontSize14,
                         fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppTheme.spaceSmall),
                     DropdownButtonFormField<String>(
                       value: widget.selectedCategory,
                       decoration: InputDecoration(
@@ -287,18 +287,18 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                       ],
                       onChanged: widget.onCategoryChanged,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                   ],
 
                   // Options d'affichage
                   const Text(
                     'Options d\'affichage',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppTheme.fontSize14,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   CheckboxListTile(
                     title: const Text('Approuvées uniquement'),
                     subtitle: const Text('Afficher seulement les prières approuvées'),
@@ -349,7 +349,7 @@ class ActiveFiltersBar extends StatelessWidget {
       case PrayerType.testimony:
         return AppTheme.greenStandard;
       case PrayerType.thanksgiving:
-        return Colors.purple;
+        return AppTheme.primaryColor;
     }
   }
 

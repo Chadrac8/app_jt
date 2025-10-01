@@ -62,7 +62,7 @@ class _MemberNotificationsPageState extends State<MemberNotificationsPage> {
         return ListView.separated(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           itemCount: docs.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          separatorBuilder: (_, __) => const SizedBox(height: AppTheme.space12),
           itemBuilder: (context, index) {
             final d = docs[index];
             final data = d.data() as Map<String, dynamic>;
@@ -111,17 +111,17 @@ class _MemberNotificationsPageState extends State<MemberNotificationsPage> {
                         backgroundColor: isRead ? AppTheme.grey500 : Theme.of(context).colorScheme.primary.withAlpha((0.15 * 255).round()),
                         child: Text(title.isNotEmpty ? title[0].toUpperCase() : 'N', style: TextStyle(color: isRead ? AppTheme.grey500 : Theme.of(context).colorScheme.primary, fontWeight: AppTheme.fontBold)),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
-                          Expanded(child: Text(title, style: TextStyle(fontSize: 16, fontWeight: AppTheme.fontSemiBold, color: isRead ? AppTheme.grey800 : AppTheme.black100))),
-                          const SizedBox(width: 8),
-                          Text(_formatTimestamp(ts), style: TextStyle(fontSize: 12, color: AppTheme.grey600)),
+                          Expanded(child: Text(title, style: TextStyle(fontSize: AppTheme.fontSize16, fontWeight: AppTheme.fontSemiBold, color: isRead ? AppTheme.grey800 : AppTheme.black100))),
+                          const SizedBox(width: AppTheme.spaceSmall),
+                          Text(_formatTimestamp(ts), style: TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey600)),
                         ]),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: AppTheme.space6),
                         Text(body, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: isRead ? AppTheme.grey700 : AppTheme.grey800)),
-                        const SizedBox(height: 8),
-                        if (!isRead) Align(alignment: Alignment.centerLeft, child: Container(padding: const EdgeInsets.symmetric(horizontal:8, vertical:4), decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(6)), child: const Text('Nouveau', style: TextStyle(color: AppTheme.white100, fontSize: 12))))
+                        const SizedBox(height: AppTheme.spaceSmall),
+                        if (!isRead) Align(alignment: Alignment.centerLeft, child: Container(padding: const EdgeInsets.symmetric(horizontal:8, vertical:4), decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(6)), child: const Text('Nouveau', style: TextStyle(color: AppTheme.white100, fontSize: AppTheme.fontSize12))))
                       ])),
                     ]),
                   ),
@@ -186,9 +186,9 @@ class _MemberNotificationsPageState extends State<MemberNotificationsPage> {
         padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.notifications_none, size: 72, color: AppTheme.grey500),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Text('Aucune notification', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppTheme.grey700)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text('Vous êtes à jour. Les notifications importantes apparaîtront ici.', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.grey600)),
         ]),
       ),

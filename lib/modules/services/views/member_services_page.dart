@@ -4,6 +4,7 @@ import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../auth/auth_service.dart';
 import '../../../../theme.dart';
+import '../../../theme.dart';
 
 
 class MemberServicesPage extends StatefulWidget {
@@ -146,7 +147,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('Gestion des disponibilités'),
-            SizedBox(height: 16),
+            SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Cette fonctionnalité permet de définir vos créneaux de disponibilité pour les services.',
               style: TextStyle(color: AppTheme.textSecondaryColor),
@@ -237,7 +238,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                 children: [
                   Text(entry.value),
                   if (count > 0) ...[
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppTheme.spaceXSmall),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
@@ -248,7 +249,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                         '$count',
                         style: TextStyle(
                           color: isSelected ? AppTheme.primaryColor : AppTheme.white100,
-                          fontSize: 11,
+                          fontSize: AppTheme.fontSize11,
                           fontWeight: AppTheme.fontBold,
                         ),
                       ),
@@ -293,7 +294,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
               AppTheme.warningColor,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: _buildStatCard(
               'Acceptés',
@@ -302,7 +303,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
               AppTheme.successColor,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: _buildStatCard(
               'À venir',
@@ -321,7 +322,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusSmall)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppTheme.space12),
         child: Column(
           children: [
             Icon(
@@ -329,11 +330,11 @@ class _MemberServicesPageState extends State<MemberServicesPage>
               color: color,
               size: 20,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppTheme.spaceXSmall),
             Text(
               value,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
                 color: color,
               ),
@@ -341,7 +342,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
             Text(
               label,
               style: const TextStyle(
-                fontSize: 11,
+                fontSize: AppTheme.fontSize11,
                 color: AppTheme.textSecondaryColor,
               ),
               textAlign: TextAlign.center,
@@ -365,17 +366,17 @@ class _MemberServicesPageState extends State<MemberServicesPage>
               size: 64,
               color: AppTheme.textSecondaryColor.withOpacity(0.5),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               _selectedFilter == 'all' 
                   ? 'Aucune affectation de service'
                   : 'Aucune affectation avec ce statut',
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             const Text(
               'Vos affectations aux équipes de service apparaîtront ici',
               style: TextStyle(
@@ -389,7 +390,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       itemCount: assignments.length,
       itemBuilder: (context, index) {
         final assignment = assignments[index];
@@ -410,7 +411,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
         children: [
           // En-tête avec statut
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
               color: statusColor.withOpacity(0.1),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
@@ -418,7 +419,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: statusColor,
                     shape: BoxShape.circle,
@@ -429,7 +430,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,7 +438,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                       Text(
                         'Service ID: ${assignment.serviceId}', // TODO: Charger le nom du service
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: AppTheme.fontSize16,
                           fontWeight: AppTheme.fontBold,
                           color: AppTheme.textPrimaryColor,
                         ),
@@ -461,7 +462,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                     _getStatusLabel(assignment.status),
                     style: const TextStyle(
                       color: AppTheme.white100,
-                      fontSize: 12,
+                      fontSize: AppTheme.fontSize12,
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -472,7 +473,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
           
           // Contenu
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -484,7 +485,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                       size: 16,
                       color: AppTheme.textSecondaryColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppTheme.spaceSmall),
                     Text(
                       'Créé le ${_formatDate(assignment.createdAt)}',
                       style: const TextStyle(
@@ -495,7 +496,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                 ),
                 
                 if (assignment.respondedAt != null) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppTheme.spaceSmall),
                   Row(
                     children: [
                       Icon(
@@ -503,7 +504,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                         size: 16,
                         color: AppTheme.textSecondaryColor,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppTheme.spaceSmall),
                       Text(
                         'Répondu le ${_formatDate(assignment.respondedAt!)}',
                         style: const TextStyle(
@@ -515,9 +516,9 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                 ],
                 
                 if (assignment.notes != null && assignment.notes!.isNotEmpty) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppTheme.space12),
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(AppTheme.space12),
                     decoration: BoxDecoration(
                       color: AppTheme.grey100,
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -532,7 +533,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                             color: AppTheme.textPrimaryColor,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
                           assignment.notes!,
                           style: const TextStyle(
@@ -546,7 +547,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                 
                 // Actions
                 if (assignment.isPending && isUpcoming) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   Row(
                     children: [
                       Expanded(
@@ -559,7 +560,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppTheme.space12),
                       Expanded(
                         child: ElevatedButton.icon(
                           onPressed: () => _updateAssignmentStatus(assignment, 'accepted'),
@@ -575,7 +576,7 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                 ],
                 
                 if (assignment.isAccepted && isUpcoming) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(

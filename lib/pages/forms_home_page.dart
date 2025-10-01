@@ -377,7 +377,7 @@ class _FormsHomePageState extends State<FormsHomePage>
 
   Widget _buildSearchAndFilters() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: const BoxDecoration(
         color: AppTheme.white100,
         boxShadow: [
@@ -404,7 +404,7 @@ class _FormsHomePageState extends State<FormsHomePage>
               fillColor: AppTheme.backgroundColor,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppTheme.space12),
           Row(
             children: [
               Expanded(
@@ -426,7 +426,7 @@ class _FormsHomePageState extends State<FormsHomePage>
                   }).toList(),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: DropdownButtonFormField<String>(
                   value: _accessibilityFilter.isEmpty ? null : _accessibilityFilter,
@@ -471,12 +471,12 @@ class _FormsHomePageState extends State<FormsHomePage>
                   size: 64,
                   color: AppTheme.errorColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Erreur lors du chargement des formulaires',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   snapshot.error.toString(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -509,21 +509,21 @@ class _FormsHomePageState extends State<FormsHomePage>
                   size: 64,
                   color: AppTheme.textTertiaryColor,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppTheme.spaceMedium),
                 Text(
                   'Aucun formulaire trouvé',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 Text(
                   'Commencez par créer votre premier formulaire',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppTheme.textTertiaryColor,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 ElevatedButton.icon(
                   onPressed: _createNewForm,
                   icon: const Icon(Icons.add),
@@ -540,7 +540,7 @@ class _FormsHomePageState extends State<FormsHomePage>
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           itemCount: forms.length,
           itemBuilder: (context, index) {
             final form = forms[index];
@@ -584,18 +584,18 @@ class _FormsHomePageState extends State<FormsHomePage>
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               'Créer un formulaire',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             ListTile(
               leading: const Icon(Icons.add_circle_outline, color: AppTheme.primaryColor),
               title: const Text('Formulaire vierge'),
@@ -624,18 +624,18 @@ class _FormsHomePageState extends State<FormsHomePage>
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               '${_selectedForms.length} formulaire(s) sélectionné(s)',
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontBold,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppTheme.spaceLarge),
             ListTile(
               leading: const Icon(Icons.publish, color: AppTheme.successColor),
               title: const Text('Publier'),

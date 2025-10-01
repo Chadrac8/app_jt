@@ -60,7 +60,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
-          children: const [Icon(Icons.add, color: AppTheme.greenStandard), SizedBox(width: 8), Text('Filtre ajouté')],
+          children: const [Icon(Icons.add, color: AppTheme.greenStandard), SizedBox(width: AppTheme.spaceSmall), Text('Filtre ajouté')],
         ),
         duration: const Duration(seconds: 1),
         behavior: SnackBarBehavior.floating,
@@ -75,7 +75,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
-          children: const [Icon(Icons.remove, color: AppTheme.redStandard), SizedBox(width: 8), Text('Filtre supprimé')],
+          children: const [Icon(Icons.remove, color: AppTheme.redStandard), SizedBox(width: AppTheme.spaceSmall), Text('Filtre supprimé')],
         ),
         duration: const Duration(seconds: 1),
         behavior: SnackBarBehavior.floating,
@@ -100,7 +100,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
           content: Row(
             children: [
               Icon(isEdit ? Icons.check_circle : Icons.add, color: isEdit ? AppTheme.greenStandard : AppTheme.blueStandard),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppTheme.spaceSmall),
               Text(isEdit ? 'Liste modifiée' : 'Liste créée'),
             ],
           ),
@@ -158,7 +158,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Nom de la liste', style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppTheme.spaceSmall),
                         TextFormField(
                           initialValue: _name,
                           decoration: const InputDecoration(hintText: 'Ex: Membres actifs', border: OutlineInputBorder()),
@@ -169,9 +169,9 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.spaceLarge),
                 Text('Filtres', style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppTheme.spaceSmall),
                 ..._filters.asMap().entries.map((entry) {
                   final i = entry.key;
                   final filter = entry.value;
@@ -214,7 +214,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                               decoration: const InputDecoration(labelText: 'Champ'),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: DropdownButtonFormField<String>(
                               value: filter['operator'],
@@ -225,7 +225,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                               decoration: const InputDecoration(labelText: 'Opérateur'),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: fieldType == 'select' || fieldType == 'multiselect'
                                 ? Autocomplete<String>(
@@ -299,7 +299,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                   icon: const Icon(Icons.add),
                   label: const Text('Ajouter un filtre'),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppTheme.spaceXLarge),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

@@ -5,6 +5,7 @@ import '../../message/models/branham_sermon_model.dart';
 import '../../message/services/admin_branham_sermon_service.dart';
 import '../services/branham_audio_manager.dart';
 import 'dart:async';
+import '../../../theme.dart';
 
 // Primary color for the app theme
 const Color _primaryColor = Color(0xFF6B73FF);
@@ -250,14 +251,14 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
   // Header simple avec bouton pour accéder aux prédications
   Widget _buildSimpleHeader() {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppTheme.space20),
       child: Row(
         children: [
           Text(
             'Prédications Branham',
             style: GoogleFonts.inter(
               color: AppTheme.surfaceColor,
-              fontSize: 24,
+              fontSize: AppTheme.fontSize24,
               fontWeight: AppTheme.fontBold)),
           const Spacer(),
           Container(
@@ -300,7 +301,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               size: 100,
               color: AppTheme.surfaceColor.withOpacity(0.9))),
           
-          const SizedBox(height: 40),
+          const SizedBox(height: AppTheme.space40),
           
           // Informations de la prédication
           if (_currentSermon != null) ...[
@@ -308,13 +309,13 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               _currentSermon!.title,
               style: GoogleFonts.inter(
                 color: AppTheme.surfaceColor,
-                fontSize: 20,
+                fontSize: AppTheme.fontSize20,
                 fontWeight: AppTheme.fontSemiBold),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -323,24 +324,24 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   Icons.calendar_today,
                   color: AppTheme.surfaceColor.withOpacity(0.7),
                   size: 16),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   _currentSermon!.date,
                   style: GoogleFonts.inter(
                     color: AppTheme.surfaceColor.withOpacity(0.7),
-                    fontSize: 14)),
-                const SizedBox(width: 20),
+                    fontSize: AppTheme.fontSize14)),
+                const SizedBox(width: AppTheme.space20),
                 Icon(
                   Icons.location_on,
                   color: AppTheme.surfaceColor.withOpacity(0.7),
                   size: 16),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Flexible(
                   child: Text(
                     _currentSermon!.location,
                     style: GoogleFonts.inter(
                       color: AppTheme.surfaceColor.withOpacity(0.7),
-                      fontSize: 14),
+                      fontSize: AppTheme.fontSize14),
                     overflow: TextOverflow.ellipsis)),
               ]),
           ] else ...[
@@ -348,8 +349,8 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
               'Aucune prédication sélectionnée',
               style: GoogleFonts.inter(
                 color: AppTheme.surfaceColor.withOpacity(0.7),
-                fontSize: 16)),
-            const SizedBox(height: 12),
+                fontSize: AppTheme.fontSize16)),
+            const SizedBox(height: AppTheme.space12),
             ElevatedButton(
               onPressed: _showSermonsBottomSheet,
               style: ElevatedButton.styleFrom(
@@ -361,7 +362,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.info, color: AppTheme.surfaceColor,
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
                     'Choisir une prédication',
                     style: GoogleFonts.inter(
@@ -385,7 +386,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                 _formatDuration(_currentPosition),
                 style: GoogleFonts.inter(
                   color: AppTheme.surfaceColor.withOpacity(0.7),
-                  fontSize: 12)),
+                  fontSize: AppTheme.fontSize12)),
               Expanded(
                 child: Slider(
                   value: _totalDuration.inMilliseconds > 0
@@ -404,10 +405,10 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                 _formatDuration(_totalDuration),
                 style: GoogleFonts.inter(
                   color: AppTheme.surfaceColor.withOpacity(0.7),
-                  fontSize: 12)),
+                  fontSize: AppTheme.fontSize12)),
             ]),
           
-          const SizedBox(height: 20),
+          const SizedBox(height: AppTheme.space20),
           
           // Boutons de contrôle
           Row(
@@ -484,7 +485,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                     height: 4,
                     decoration: BoxDecoration(
                       color: AppTheme.surfaceColor.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(2))),
+                      borderRadius: BorderRadius.circular(AppTheme.radius2))),
                   
                   // Header
                   Padding(
@@ -495,18 +496,18 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                           Icons.library_music_rounded,
                           color: _primaryColor,
                           size: 28),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppTheme.spaceMedium),
                         Expanded(
                           child: Text(
                             'Prédications disponibles',
                             style: GoogleFonts.inter(
                               color: AppTheme.surfaceColor,
-                              fontSize: 24,
+                              fontSize: AppTheme.fontSize24,
                               fontWeight: AppTheme.fontBold))),
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
                           child: Container(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(AppTheme.spaceSmall),
                             decoration: BoxDecoration(
                               color: AppTheme.surfaceColor.withOpacity(0.1),
                               shape: BoxShape.circle),
@@ -548,7 +549,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                   
                   // Filtres par année
                   if (_availableYears.isNotEmpty) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppTheme.spaceMedium),
                     Container(
                       height: 50,
                       child: ListView(
@@ -559,7 +560,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                             'Toutes les années',
                             _selectedYear == null,
                             () => setState(() => _selectedYear = null)),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppTheme.space12),
                           ..._availableYears.map((year) => Padding(
                             padding: const EdgeInsets.only(right: 12),
                             child: _buildFilterChip(
@@ -569,7 +570,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                         ])),
                   ],
                   
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppTheme.spaceMedium),
                   
                   // Liste des prédications
                   Expanded(
@@ -611,7 +612,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
           label,
           style: GoogleFonts.inter(
             color: isSelected ? AppTheme.surfaceColor : AppTheme.surfaceColor.withOpacity(0.8),
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium))));
   }
 
@@ -663,7 +664,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
           sermon.title,
           style: GoogleFonts.inter(
             color: AppTheme.surfaceColor,
-            fontSize: 16,
+            fontSize: AppTheme.fontSize16,
             fontWeight: AppTheme.fontSemiBold),
           maxLines: 2,
           overflow: TextOverflow.ellipsis),
@@ -675,24 +676,24 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                 Icons.calendar_today_rounded,
                 color: AppTheme.surfaceColor.withOpacity(0.6),
                 size: 12),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Text(
                 sermon.date,
                 style: GoogleFonts.inter(
                   color: AppTheme.surfaceColor.withOpacity(0.7),
-                  fontSize: 12)),
-              const SizedBox(width: 12),
+                  fontSize: AppTheme.fontSize12)),
+              const SizedBox(width: AppTheme.space12),
               Icon(
                 Icons.location_on_rounded,
                 color: AppTheme.surfaceColor.withOpacity(0.6),
                 size: 12),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppTheme.spaceXSmall),
               Expanded(
                 child: Text(
                   sermon.location,
                   style: GoogleFonts.inter(
                     color: AppTheme.surfaceColor.withOpacity(0.7),
-                    fontSize: 12),
+                    fontSize: AppTheme.fontSize12),
                   overflow: TextOverflow.ellipsis)),
             ])),
         onTap: () {

@@ -80,14 +80,14 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
               size: 64,
               color: AppTheme.textTertiaryColor,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             Text(
               'Pas de statistiques',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.textSecondaryColor,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppTheme.spaceSmall),
             Text(
               'Les inscriptions ne sont pas activées pour cet événement',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -112,29 +112,29 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         onRefresh: _loadStatistics,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Column(
             children: [
               // Vue d'ensemble
               _buildOverviewSection(),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Graphique des inscriptions
               if (_statistics!.registrationsByDate.isNotEmpty)
                 _buildRegistrationsChart(),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Répartition par statut
               _buildStatusDistribution(),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Taux de remplissage et présence
               _buildRatesSection(),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.spaceLarge),
               
               // Analyse des réponses du formulaire
               if (_statistics!.formResponsesSummary.isNotEmpty)
@@ -161,14 +161,14 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -179,7 +179,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Vue d\'ensemble',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -188,7 +188,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             // Statistiques principales
             Row(
@@ -201,7 +201,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                     AppTheme.primaryColor,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: _buildStatCard(
                     'Confirmés',
@@ -213,7 +213,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
               ],
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: AppTheme.space12),
             
             Row(
               children: [
@@ -225,7 +225,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                     AppTheme.warningColor,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: _buildStatCard(
                     'Présents',
@@ -244,7 +244,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
 
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
         color: color.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -257,7 +257,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
             color: color,
             size: 28,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
             value,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -304,14 +304,14 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.secondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -322,7 +322,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Évolution des inscriptions',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -331,7 +331,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             SizedBox(
               height: 200,
@@ -429,7 +429,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         title: '${(_statistics!.confirmedRegistrations / total * 100).round()}%',
         radius: 60,
         titleStyle: const TextStyle(
-          fontSize: 14,
+          fontSize: AppTheme.fontSize14,
           fontWeight: AppTheme.fontBold,
           color: AppTheme.white100,
         ),
@@ -441,7 +441,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
           title: '${(_statistics!.waitingRegistrations / total * 100).round()}%',
           radius: 60,
           titleStyle: const TextStyle(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.white100,
           ),
@@ -453,7 +453,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
           title: '${(_statistics!.cancelledRegistrations / total * 100).round()}%',
           radius: 60,
           titleStyle: const TextStyle(
-            fontSize: 14,
+            fontSize: AppTheme.fontSize14,
             fontWeight: AppTheme.fontBold,
             color: AppTheme.white100,
           ),
@@ -474,14 +474,14 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.tertiaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -492,7 +492,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Répartition par statut',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -501,7 +501,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             Row(
               children: [
@@ -552,10 +552,10 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
             height: 12,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(AppTheme.radius2),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppTheme.spaceSmall),
           Expanded(
             child: Text(
               label,
@@ -588,14 +588,14 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.warningColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -606,7 +606,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Taux et performances',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -615,7 +615,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppTheme.space20),
             
             // Taux de remplissage
             if (widget.event.maxParticipants != null) ...[
@@ -625,7 +625,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 AppTheme.primaryColor,
                 '${_statistics!.confirmedRegistrations} / ${widget.event.maxParticipants}',
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.spaceMedium),
             ],
             
             // Taux de présence
@@ -663,14 +663,14 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppTheme.spaceXSmall),
         Text(
           subtitle,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppTheme.textSecondaryColor,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.spaceSmall),
         LinearProgressIndicator(
           value: value.clamp(0.0, 1.0),
           backgroundColor: color.withOpacity(0.2),
@@ -696,14 +696,14 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -714,7 +714,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppTheme.space12),
                 Text(
                   'Analyse des réponses',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -723,7 +723,7 @@ class _EventStatisticsViewState extends State<EventStatisticsView>
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppTheme.spaceMedium),
             
             Text(
               'Fonctionnalité en cours de développement',
