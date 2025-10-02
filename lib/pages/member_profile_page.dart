@@ -803,58 +803,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
            oldProfile.profileImageUrl != newProfile.profileImageUrl;
   }
 
-  /// Widget indicateur pour montrer que les données sont synchronisées avec le module Personnes
-  Widget _buildSyncIndicator() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTheme.spaceMedium,
-        vertical: AppTheme.spaceSmall,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.green.shade50,
-        border: Border.all(color: Colors.green.shade300, width: 1),
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.sync,
-            color: Colors.green.shade600,
-            size: 20,
-          ),
-          const SizedBox(width: AppTheme.spaceSmall),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Données synchronisées',
-                  style: TextStyle(
-                    color: Colors.green.shade800,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  'Les informations affichées proviennent du module Personnes',
-                  style: TextStyle(
-                    color: Colors.green.shade700,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Icon(
-            Icons.people_outline,
-            color: Colors.green.shade600,
-            size: 18,
-          ),
-        ],
-      ),
-    );
-  }
+
 
   void _initializeForm() {
     if (_currentPerson != null) {
@@ -1486,6 +1435,18 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                           delegate: _SliverAppBarDelegate(
                             TabBar(
                               controller: _tabController,
+                              labelColor: AppTheme.primaryColor,
+                              unselectedLabelColor: AppTheme.onSurfaceVariant,
+                              indicatorColor: AppTheme.primaryColor,
+                              indicatorWeight: 3,
+                              labelStyle: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                              unselectedLabelStyle: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                              ),
                               tabs: const [
                                 Tab(text: 'Informations'),
                                 Tab(text: 'Famille'),
@@ -1711,8 +1672,6 @@ class _MemberProfilePageState extends State<MemberProfilePage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 🎯 Indicateur de synchronisation avec le module Personnes
-          if (_peopleModulePerson != null) _buildSyncIndicator(),
           _buildInfoCard(
             title: 'Informations personnelles',
             icon: Icons.person,
@@ -2424,7 +2383,22 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: AppTheme.white100,
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: AppTheme.outline.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.outline.withOpacity(0.1),
+            offset: const Offset(0, 2),
+            blurRadius: 4,
+          ),
+        ],
+      ),
       child: _tabBar,
     );
   }

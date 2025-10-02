@@ -79,6 +79,13 @@ void main() async {
 
 /// Configurer le style de l'interface système
 void _setSystemUIOverlayStyle() {
+  // Forcer l'orientation portrait uniquement
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  
+  // Configurer l'interface système
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
