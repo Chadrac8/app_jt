@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../theme.dart';
 import '../services/person_import_export_service.dart';
-import '../../../models/person_module_model.dart';
+import '../../../models/person_model.dart';
 
 /// Page d'import et export des personnes
 class PersonImportExportPage extends StatefulWidget {
-  final List<Person>? selectedPeople;
+  final List<PersonModel>? selectedPeople;
   
   const PersonImportExportPage({
     Key? key,
@@ -38,6 +38,7 @@ class _PersonImportExportPageState extends State<PersonImportExportPage>
   bool _validatePhones = true;
   bool _allowDuplicateEmail = false;
   bool _updateExisting = false;
+  bool _createUserAccounts = false;
 
   @override
   void initState() {
@@ -486,6 +487,19 @@ class _PersonImportExportPageState extends State<PersonImportExportPage>
                       });
                     },
                   ),
+                  
+                  CheckboxListTile(
+                    title: const Text('Créer des comptes utilisateurs'),
+                    subtitle: const Text('Créer automatiquement des identifiants de connexion pour toutes les personnes importées (nécessite un email valide)'),
+                    value: _createUserAccounts,
+                    onChanged: (value) {
+                      print('🔄 CHECKBOX ÉTAT CHANGÉ: $_createUserAccounts -> $value');
+                      setState(() {
+                        _createUserAccounts = value!;
+                      });
+                      print('✅ CHECKBOX ÉTAT FINAL: $_createUserAccounts');
+                    },
+                  ),
                 ],
               ),
             ),
@@ -606,12 +620,22 @@ class _PersonImportExportPageState extends State<PersonImportExportPage>
     });
 
     try {
+      print('=== DEBUG IMPORT UI CONFIG ===');
+      print('_createUserAccounts (checkbox state): $_createUserAccounts');
+      print('_validateEmails: $_validateEmails');
+      print('_allowDuplicateEmail: $_allowDuplicateEmail');
+      print('_updateExisting: $_updateExisting');
+      
       final config = ImportExportConfig(
         validateEmails: _validateEmails,
         validatePhones: _validatePhones,
         allowDuplicateEmail: _allowDuplicateEmail,
         updateExisting: _updateExisting,
+        createUserAccounts: _createUserAccounts,
       );
+
+      print('Config object created - createUserAccounts: ${config.createUserAccounts}');
+      print('===============================');
 
       final result = await _importExportService.importFromFile(
         config: config,

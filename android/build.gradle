@@ -24,6 +24,10 @@ subprojects {
                 project.plugins.hasPlugin("com.android.library")) {
             project.android {
                 compileSdkVersion 34
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_11
+                    targetCompatibility JavaVersion.VERSION_11
+                }
             }
         }
         if (project.hasProperty('android')) {

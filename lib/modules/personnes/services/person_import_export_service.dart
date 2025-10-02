@@ -7,7 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../models/person_module_model.dart';
+import '../../../models/person_model.dart';
 import '../../../services/people_module_service.dart';
 import '../../../utils/share_utils.dart';
 
@@ -66,6 +66,7 @@ class ImportExportConfig {
   final bool validatePhones;
   final bool allowDuplicateEmail;
   final bool updateExisting;
+  final bool createUserAccounts; // Créer automatiquement des comptes utilisateurs
 
   const ImportExportConfig({
     this.includeInactive = false,
@@ -76,14 +77,40 @@ class ImportExportConfig {
     this.validatePhones = true,
     this.allowDuplicateEmail = false,
     this.updateExisting = false,
+    this.createUserAccounts = false, // Par défaut, ne pas créer de comptes
   });
 }
 
-/// Service pour l'import et l'export des personnes
+  /// Service pour l'import et l'export des personnes
 class PersonImportExportService {
   final PeopleModuleService _peopleService = PeopleModuleService();
-
-  /// Champs standard disponibles pour l'export
+  
+  /// Cache pour l'ID du rôle Membre
+  String? _memberRoleId;
+  
+  /// Obtenir l'ID du rôle "Membre" (avec cache)
+  Future<String?> _getMemberRoleId() async {
+    if (_memberRoleId != null) return _memberRoleId;
+    
+    try {
+      // Importer le service des rôles
+      final rolesSnapshot = await FirebaseFirestore.instance
+          .collection('roles')
+          .where('name', isEqualTo: 'Membre')
+          .where('isActive', isEqualTo: true)
+          .limit(1)
+          .get();
+      
+      if (rolesSnapshot.docs.isNotEmpty) {
+        _memberRoleId = rolesSnapshot.docs.first.id;
+        return _memberRoleId;
+      }
+    } catch (e) {
+      print('Erreur lors de la récupération du rôle Membre: $e');
+    }
+    
+    return null;
+  }  /// Champs standard disponibles pour l'export
   static const List<String> standardFields = [
     'firstName',
     'lastName',
@@ -169,7 +196,7 @@ class PersonImportExportService {
 
   /// Exporter des personnes sélectionnées
   Future<ExportResult> exportSelected({
-    required List<Person> people,
+    required List<PersonModel> people,
     ExportFormat format = ExportFormat.csv,
     ImportExportConfig config = const ImportExportConfig(),
     String filename = 'personnes_selectionnees',
@@ -202,7 +229,7 @@ class PersonImportExportService {
     ImportExportConfig config = const ImportExportConfig(),
   }) async {
     try {
-      List<Person> people = await _peopleService.getAll();
+      List<PersonModel> people = await _peopleService.getAll();
 
       // Filtrer par critères
       if (role != null) {
@@ -246,7 +273,7 @@ class PersonImportExportService {
 
   /// Export principal
   Future<ExportResult> _exportPeople({
-    required List<Person> people,
+    required List<PersonModel> people,
     required ExportFormat format,
     required ImportExportConfig config,
     required String filename,
@@ -271,7 +298,7 @@ class PersonImportExportService {
 
   /// Export vers CSV
   Future<ExportResult> _exportToCsv(
-    List<Person> people,
+    List<PersonModel> people,
     ImportExportConfig config,
     String filename,
   ) async {
@@ -312,7 +339,7 @@ class PersonImportExportService {
 
   /// Export vers JSON
   Future<ExportResult> _exportToJson(
-    List<Person> people,
+    List<PersonModel> people,
     ImportExportConfig config,
     String filename,
   ) async {
@@ -352,7 +379,7 @@ class PersonImportExportService {
 
   /// Export vers Excel (.xlsx)
   Future<ExportResult> _exportToExcel(
-    List<Person> people,
+    List<PersonModel> people,
     ImportExportConfig config,
     String filename,
   ) async {
@@ -518,6 +545,13 @@ class PersonImportExportService {
     String? templateName,
   ) async {
     try {
+      print('=== DEBUG IMPORT CSV CONFIG ===');
+      print('File: ${file.path}');
+      print('Config createUserAccounts: ${config.createUserAccounts}');
+      print('Config validateEmails: ${config.validateEmails}');
+      print('Config allowDuplicateEmail: ${config.allowDuplicateEmail}');
+      print('Config updateExisting: ${config.updateExisting}');
+      
       final content = await file.readAsString(encoding: utf8);
       final rows = const CsvToListConverter().convert(content);
       
@@ -610,7 +644,7 @@ class PersonImportExportService {
       for (int i = 0; i < peopleData.length; i++) {
         try {
           final personData = peopleData[i] as Map<String, dynamic>;
-          final person = _mapToPerson(personData, config);
+          final person = await _mapToPerson(personData, config);
           
           if (person != null) {
             final success = await _savePerson(person, config);
@@ -787,7 +821,7 @@ class PersonImportExportService {
   // ===========================
 
   /// Filtrer les personnes pour l'export
-  List<Person> _filterPeopleForExport(List<Person> people, ImportExportConfig config) {
+  List<PersonModel> _filterPeopleForExport(List<PersonModel> people, ImportExportConfig config) {
     if (!config.includeInactive) {
       people = people.where((p) => p.isActive).toList();
     }
@@ -812,7 +846,7 @@ class PersonImportExportService {
   }
 
   /// Convertir une personne en ligne de données
-  List<String> _personToRow(Person person, List<String> headers, ImportExportConfig config) {
+  List<String> _personToRow(PersonModel person, List<String> headers, ImportExportConfig config) {
     final row = <String>[];
     
     for (final header in headers) {
@@ -870,7 +904,7 @@ class PersonImportExportService {
           break;
         default:
           // Champ personnalisé
-          row.add(person.getCustomField<String>(header) ?? '');
+          row.add(person.customFields[header]?.toString() ?? '');
           break;
       }
     }
@@ -879,7 +913,7 @@ class PersonImportExportService {
   }
 
   /// Convertir une personne en Map pour export JSON avec gestion des Timestamps
-  Map<String, dynamic> _personToMap(Person person, ImportExportConfig config) {
+  Map<String, dynamic> _personToMap(PersonModel person, ImportExportConfig config) {
     final map = _safePersonToMap(person);
     
     if (config.includeFields.isNotEmpty) {
@@ -902,7 +936,7 @@ class PersonImportExportService {
   }
 
   /// Convertir Person en Map en gérant les types Firestore (Timestamp, etc.)
-  Map<String, dynamic> _safePersonToMap(Person person) {
+  Map<String, dynamic> _safePersonToMap(PersonModel person) {
     return {
       'id': person.id,
       'firstName': person.firstName,
@@ -1388,8 +1422,18 @@ class PersonImportExportService {
   }
   
   /// Construire un objet Person à partir des données traitées
-  Person _buildPersonFromData(Map<String, dynamic> data) {
-    return Person(
+  Future<PersonModel> _buildPersonFromData(Map<String, dynamic> data) async {
+    // Récupérer les rôles existants
+    List<String> roles = List<String>.from(data['roles'] ?? <String>[]);
+    
+    // Ajouter automatiquement le rôle "Membre" si pas déjà présent
+    final memberRoleId = await _getMemberRoleId();
+    if (memberRoleId != null && !roles.contains(memberRoleId)) {
+      roles.add(memberRoleId);
+      print('✅ Rôle "Membre" ajouté automatiquement à la personne ${data['firstName']} ${data['lastName']}');
+    }
+    
+    return PersonModel.fromImport(
       firstName: data['firstName'],
       lastName: data['lastName'],
       email: data['email'],
@@ -1402,14 +1446,14 @@ class PersonImportExportService {
       additionalAddress: data['additionalAddress'],
       zipCode: data['zipCode'],
       city: data['city'],
-      roles: data['roles'] ?? <String>[],
+      roles: roles,
       customFields: data['customFields'] ?? <String, dynamic>{},
       isActive: data['isActive'] ?? true,
     );
   }
 
   /// Convertir une ligne CSV en Person avec validation robuste
-  Future<Person?> _rowToPerson(
+  Future<PersonModel?> _rowToPerson(
     List<dynamic> row,
     List<String> headers,
     Map<String, String> mapping,
@@ -1473,7 +1517,7 @@ class PersonImportExportService {
         processedData['customFields'] = customFields;
       }
       
-      return _buildPersonFromData(processedData);
+      return await _buildPersonFromData(processedData);
     } catch (e) {
       print('Erreur lors de la conversion de ligne: $e');
       return null;
@@ -1481,7 +1525,7 @@ class PersonImportExportService {
   }
 
   /// Convertir une Map JSON en Person
-  Person? _mapToPerson(Map<String, dynamic> data, ImportExportConfig config) {
+  Future<PersonModel?> _mapToPerson(Map<String, dynamic> data, ImportExportConfig config) async {
     try {
       // Validation des champs requis
       if (data['firstName']?.toString().trim().isEmpty != false || 
@@ -1510,7 +1554,14 @@ class PersonImportExportService {
         roles = data['roles'].split(',').map((String r) => r.trim()).where((String r) => r.isNotEmpty).toList();
       }
       
-      return Person(
+      // Ajouter automatiquement le rôle "Membre" si pas déjà présent
+      final memberRoleId = await _getMemberRoleId();
+      if (memberRoleId != null && !roles.contains(memberRoleId)) {
+        roles.add(memberRoleId);
+        print('✅ Rôle "Membre" ajouté automatiquement à la personne ${data['firstName']} ${data['lastName']}');
+      }
+      
+      return PersonModel.fromImport(
         firstName: data['firstName'].toString().trim(),
         lastName: data['lastName'].toString().trim(),
         email: data['email']?.toString().trim(),
@@ -1528,25 +1579,38 @@ class PersonImportExportService {
   }
 
   /// Sauvegarder une personne
-  Future<bool> _savePerson(Person person, ImportExportConfig config) async {
+  Future<bool> _savePerson(PersonModel person, ImportExportConfig config) async {
     try {
-      // 🆕 Ajouter automatiquement le rôle "membre" aux personnes importées
-      final rolesWithMembre = Set<String>.from(person.roles);
-      rolesWithMembre.add('membre');
-      final personWithMembre = person.copyWith(roles: rolesWithMembre.toList());
-      
-      if (config.updateExisting && personWithMembre.email != null) {
-        final existing = await _peopleService.findByEmail(personWithMembre.email!);
+      if (config.updateExisting && person.email != null) {
+        final existing = await _peopleService.findByEmail(person.email!);
         if (existing != null) {
-          final updated = personWithMembre.copyWith(id: existing.id);
-          await _peopleService.update(existing.id!, updated);
-          print('✅ Personne mise à jour avec rôle membre: ${personWithMembre.fullName}');
+          final updated = person.copyWith(id: existing.id);
+          await _peopleService.update(existing.id, updated);
           return true;
         }
       }
       
-      await _peopleService.create(personWithMembre);
-      print('✅ Nouvelle personne créée avec rôle membre: ${personWithMembre.fullName}');
+      // Créer avec compte utilisateur si l'option est activée et un email valide est fourni
+      print('=== DEBUG CREATE USER ACCOUNTS ===');
+      print('config.createUserAccounts: ${config.createUserAccounts}');
+      print('person.email: ${person.email}');
+      print('email isNotEmpty: ${person.email != null && person.email!.isNotEmpty}');
+      print('_isValidEmail: ${person.email != null && person.email!.isNotEmpty ? _isValidEmail(person.email!) : 'N/A'}');
+      
+      if (config.createUserAccounts && person.email != null && person.email!.isNotEmpty && _isValidEmail(person.email!)) {
+        print('✅ Création de la personne avec compte utilisateur: ${person.email}');
+        await _peopleService.createWithAuthAccount(person);
+      } else {
+        print('❌ Création de la personne sans compte utilisateur: ${person.firstName} ${person.lastName}');
+        if (!config.createUserAccounts) {
+          print('   Raison: createUserAccounts = false');
+        } else if (person.email == null || person.email!.isEmpty) {
+          print('   Raison: email manquant ou vide');
+        } else if (!_isValidEmail(person.email!)) {
+          print('   Raison: email invalide');
+        }
+        await _peopleService.create(person);
+      }
       return true;
     } catch (e) {
       print('Erreur lors de la sauvegarde: $e');
@@ -1878,7 +1942,7 @@ class PersonImportExportService {
   }
   
   /// Rechercher une personne existante par email
-  Future<Person?> _findExistingPersonByEmail(String email) async {
+  Future<PersonModel?> _findExistingPersonByEmail(String email) async {
     try {
       final people = await _peopleService.getAll();
       for (final person in people) {

@@ -323,7 +323,7 @@ class _PersonCardState extends State<PersonCard>
                       const SizedBox(height: AppTheme.spaceXSmall),
                       
                       // Email and Phone
-                      if (widget.person.email.isNotEmpty) ...[
+                      if (widget.person.email != null && widget.person.email!.isNotEmpty) ...[
                         Row(
                           children: [
                             Icon(
@@ -334,7 +334,7 @@ class _PersonCardState extends State<PersonCard>
                             const SizedBox(width: AppTheme.space6),
                             Expanded(
                               child: Text(
-                                widget.person.email,
+                                                                    widget.person.email!,
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                                 ),
@@ -486,9 +486,9 @@ class _PersonCardState extends State<PersonCard>
               const SizedBox(height: AppTheme.spaceSmall),
               
               // Email
-              if (widget.person.email.isNotEmpty) ...[
+              if (widget.person.email != null && widget.person.email!.isNotEmpty) ...[
                 Text(
-                  widget.person.email,
+                  widget.person.email!,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                   ),

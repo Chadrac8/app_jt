@@ -45,7 +45,7 @@ import '../modules/reports/views/report_form_view.dart';
 
 // Auth
 import '../auth/login_page.dart';
-import '../pages/initial_profile_setup_page.dart';
+
 import '../../theme.dart';
 
 // Utils et diagnostic
@@ -74,7 +74,7 @@ class SimpleRoutes {
     // Routes principales
     '/': (context) => const MemberDashboardPage(),
     '/login': (context) => const LoginPage(),
-    '/profile-setup': (context) => const InitialProfileSetupPage(),
+    // Route supprimée : Configuration de profil non nécessaire
     
     // Routes raccourcies (redirigent vers membre par défaut)
     '/events': (context) => const MemberEventsPage(),

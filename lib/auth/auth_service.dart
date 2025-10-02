@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/user_profile_service.dart';
+import '../services/auth_person_sync_service.dart';
 import '../models/person_model.dart';
 
 class AuthService {
@@ -66,6 +67,10 @@ class AuthService {
         try {
           await UserProfileService.ensureUserProfile(result.user!);
           print('✅ Profil utilisateur créé pour ${result.user!.email}');
+          
+          // 🆕 Synchronisation automatique : Créer la personne dans le module Personnes
+          await AuthPersonSyncService.onUserRegistered(result.user!);
+          
         } catch (profileError) {
           print('⚠️ Erreur lors de la création du profil: $profileError');
           // Ne pas échouer l'authentification si le profil ne peut pas être créé
@@ -114,6 +119,46 @@ class AuthService {
   // Update current user profile
   static Future<void> updateCurrentUserProfile(PersonModel person) async {
     return await UserProfileService.updateCurrentUserProfile(person);
+  }
+
+  // Create user account for existing person
+  static Future<User?> createAccountForPerson({
+    required String email,
+    required String firstName,
+    required String lastName,
+    String? password,
+    Map<String, dynamic>? additionalData,
+  }) async {
+    try {
+      // Générer un mot de passe temporaire si non fourni
+      final userPassword = password ?? AuthPersonSyncService.generateTemporaryPassword();
+      
+      // Créer le compte
+      final result = await createUserWithEmailAndPassword(email, userPassword);
+      
+      if (result?.user != null) {
+        // Mettre à jour le nom d'affichage
+        await result!.user!.updateDisplayName('$firstName $lastName');
+        
+        // Envoyer email de réinitialisation si mot de passe temporaire
+        if (password == null) {
+          await resetPassword(email);
+        }
+        
+        // Synchroniser avec données additionnelles
+        await AuthPersonSyncService.onUserRegistered(
+          result.user!,
+          firstName: firstName,
+          lastName: lastName,
+          additionalData: additionalData,
+        );
+      }
+      
+      return result?.user;
+    } catch (e) {
+      print('Erreur lors de la création du compte pour la personne: $e');
+      return null;
+    }
   }
 
   // Check if current user can edit a profile

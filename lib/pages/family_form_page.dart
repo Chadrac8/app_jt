@@ -698,7 +698,7 @@ class _PersonSelectorDialogState extends State<_PersonSelectorDialog> {
     final filteredPersons = widget.availablePersons.where((person) {
       if (_searchTerm.isEmpty) return true;
       return person.fullName.toLowerCase().contains(_searchTerm.toLowerCase()) ||
-             person.email.toLowerCase().contains(_searchTerm.toLowerCase());
+                              (person.email?.toLowerCase().contains(_searchTerm.toLowerCase()) ?? false);
     }).toList();
 
     return AlertDialog(
@@ -741,7 +741,7 @@ class _PersonSelectorDialogState extends State<_PersonSelectorDialog> {
                       });
                     },
                     title: Text(person.fullName),
-                    subtitle: Text(person.email),
+                    subtitle: Text(person.email ?? ''),
                     secondary: CircleAvatar(
                       backgroundImage: person.profileImageUrl != null
                           ? NetworkImage(person.profileImageUrl!)

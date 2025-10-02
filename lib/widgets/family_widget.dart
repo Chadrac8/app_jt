@@ -862,10 +862,10 @@ class _FamilyWidgetState extends State<FamilyWidget>
                                       ],
                                     ],
                                   ),
-                                  if (member.email.isNotEmpty) ...[
+                                  if (member.email != null && member.email!.isNotEmpty) ...[
                                     const SizedBox(height: AppTheme.spaceXSmall),
                                     Text(
-                                      member.email,
+                                      member.email!,
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                                       ),

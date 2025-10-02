@@ -10,7 +10,9 @@ import '../models/role_model.dart';
 import '../services/firebase_service.dart';
 import '../services/user_profile_service.dart';
 import '../services/roles_firebase_service.dart';
+import '../services/people_module_service.dart';
 import '../auth/auth_service.dart';
+
 import '../../theme.dart';
 import '../widgets/custom_page_app_bar.dart';
 import '../widgets/admin_navigation_wrapper.dart';
@@ -38,11 +40,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
   late Animation<double> _fadeAnimation;
   
   PersonModel? _currentPerson;
+  PersonModel? _peopleModulePerson; // Données depuis le module Personnes
   FamilyModel? _family;
   List<PersonModel> _familyMembers = [];
   List<RoleModel> _roles = [];
   bool _isLoading = true;
   bool _isEditing = false;
+  
+  final PeopleModuleService _peopleService = PeopleModuleService();
 
   // Form controllers
   final _firstNameController = TextEditingController();
@@ -656,6 +661,10 @@ class _MemberProfilePageState extends State<MemberProfilePage>
 
       if (person != null) {
         print('✅ Profil chargé avec succès: ${person.firstName} ${person.lastName}');
+        
+        // 🎯 NOUVEAU: Synchroniser avec le module Personnes
+        await _synchronizeWithPeopleModule(person);
+        
         setState(() {
           _currentPerson = person;
           _initializeForm();
@@ -722,17 +731,181 @@ class _MemberProfilePageState extends State<MemberProfilePage>
     }
   }
 
+  /// Synchronise les données du profil utilisateur avec celles du module Personnes
+  /// Les données du module Personnes ont la priorité pour maintenir une source unique de vérité
+  Future<void> _synchronizeWithPeopleModule(PersonModel userProfile) async {
+    try {
+      print('🔄 Synchronisation avec le module Personnes...');
+      
+      // Rechercher la personne dans le module Personnes par email
+      final peopleModulePerson = userProfile.email != null ? await _peopleService.findByEmail(userProfile.email!) : null;
+      
+      if (peopleModulePerson != null) {
+        print('✅ Personne trouvée dans le module Personnes: ${peopleModulePerson.fullName}');
+        
+        setState(() {
+          _peopleModulePerson = peopleModulePerson;
+        });
+        
+        // Synchroniser les données depuis le module Personnes vers le profil utilisateur
+        // Les champs du module Personnes ont la priorité
+        final updatedProfile = userProfile.copyWith(
+          firstName: peopleModulePerson.firstName,
+          lastName: peopleModulePerson.lastName,
+          phone: peopleModulePerson.phone,
+          country: peopleModulePerson.country,
+          birthDate: peopleModulePerson.birthDate,
+          gender: peopleModulePerson.gender,
+          maritalStatus: peopleModulePerson.maritalStatus,
+          // Utiliser les champs séparés du module Personnes
+          address: peopleModulePerson.address,
+          additionalAddress: peopleModulePerson.additionalAddress,
+          zipCode: peopleModulePerson.zipCode,
+          city: peopleModulePerson.city,
+          profileImageUrl: peopleModulePerson.profileImageUrl ?? userProfile.profileImageUrl,
+        );
+        
+        // Mettre à jour le profil utilisateur si des changements sont détectés
+        if (_hasChanges(userProfile, updatedProfile)) {
+          print('🔄 Mise à jour du profil utilisateur avec les données du module Personnes...');
+          await FirebaseService.updatePerson(updatedProfile);
+          setState(() {
+            _currentPerson = updatedProfile;
+          });
+          print('✅ Profil utilisateur synchronisé');
+        } else {
+          print('ℹ️  Aucune synchronisation nécessaire');
+        }
+      } else {
+        print('⚠️  Personne non trouvée dans le module Personnes pour l\'email: ${userProfile.email}');
+        print('💡 Suggestion: Créer la personne dans le module Personnes pour activer la synchronisation');
+      }
+    } catch (e) {
+      print('❌ Erreur lors de la synchronisation avec le module Personnes: $e');
+      // Ne pas bloquer l'interface en cas d'erreur de synchronisation
+    }
+  }
+
+  /// Construit l'adresse complète à partir des champs séparés du module Personnes
+
+
+  /// Vérifie s'il y a des changements entre deux profils
+  bool _hasChanges(PersonModel oldProfile, PersonModel newProfile) {
+    return oldProfile.firstName != newProfile.firstName ||
+           oldProfile.lastName != newProfile.lastName ||
+           oldProfile.phone != newProfile.phone ||
+           oldProfile.country != newProfile.country ||
+           oldProfile.birthDate != newProfile.birthDate ||
+           oldProfile.gender != newProfile.gender ||
+           oldProfile.maritalStatus != newProfile.maritalStatus ||
+           oldProfile.address != newProfile.address ||
+           oldProfile.profileImageUrl != newProfile.profileImageUrl;
+  }
+
+  /// Widget indicateur pour montrer que les données sont synchronisées avec le module Personnes
+  Widget _buildSyncIndicator() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceMedium,
+        vertical: AppTheme.spaceSmall,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.green.shade50,
+        border: Border.all(color: Colors.green.shade300, width: 1),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.sync,
+            color: Colors.green.shade600,
+            size: 20,
+          ),
+          const SizedBox(width: AppTheme.spaceSmall),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Données synchronisées',
+                  style: TextStyle(
+                    color: Colors.green.shade800,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  'Les informations affichées proviennent du module Personnes',
+                  style: TextStyle(
+                    color: Colors.green.shade700,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            Icons.people_outline,
+            color: Colors.green.shade600,
+            size: 18,
+          ),
+        ],
+      ),
+    );
+  }
+
   void _initializeForm() {
     if (_currentPerson != null) {
-      _firstNameController.text = _currentPerson!.firstName;
-      _lastNameController.text = _currentPerson!.lastName;
-      _emailController.text = _currentPerson!.email;
-      _parseExistingPhone(_currentPerson!.phone);
-      _parseExistingAddress(_currentPerson!.address);
-      _birthDate = _currentPerson!.birthDate;
-      _gender = _currentPerson!.gender;
-      _maritalStatus = _currentPerson!.maritalStatus;
-      _profileImageUrl = _currentPerson!.profileImageUrl;
+      // Utiliser en priorité les données du module Personnes si disponibles
+      if (_peopleModulePerson != null) {
+        _firstNameController.text = _peopleModulePerson!.firstName;
+        _lastNameController.text = _peopleModulePerson!.lastName;
+      } else {
+        _firstNameController.text = _currentPerson!.firstName;
+        _lastNameController.text = _currentPerson!.lastName;
+      }
+      
+      _emailController.text = _currentPerson!.email ?? ''; // L'email vient toujours du profil utilisateur
+      
+      // Pour le téléphone et l'adresse, utiliser les données du module Personnes si disponibles
+      if (_peopleModulePerson != null) {
+        _parseExistingPhone(_peopleModulePerson!.phone);
+        _parseExistingAddressFromPeopleModule(_peopleModulePerson!);
+        _birthDate = _peopleModulePerson!.birthDate;
+        _gender = _peopleModulePerson!.gender;
+        _maritalStatus = _peopleModulePerson!.maritalStatus;
+        _profileImageUrl = _peopleModulePerson!.profileImageUrl ?? _currentPerson!.profileImageUrl;
+        _country = _peopleModulePerson!.country;
+      } else {
+        // Fallback sur les données du profil utilisateur
+        _parseExistingPhone(_currentPerson!.phone);
+        // Charger les champs d'adresse séparés
+        _addressController.text = _currentPerson!.address ?? '';
+        _addressComplementController.text = _currentPerson!.additionalAddress ?? '';  
+        _postalCodeController.text = _currentPerson!.zipCode ?? '';
+        _cityController.text = _currentPerson!.city ?? '';
+        _birthDate = _currentPerson!.birthDate;
+        _gender = _currentPerson!.gender;
+        _maritalStatus = _currentPerson!.maritalStatus;
+        _profileImageUrl = _currentPerson!.profileImageUrl;
+        _country = _currentPerson!.country ?? 'France';
+      }
+    }
+  }
+
+  /// Parse l'adresse depuis les champs séparés du module Personnes
+  void _parseExistingAddressFromPeopleModule(PersonModel person) {
+    _addressController.text = person.address ?? '';
+    _addressComplementController.text = person.additionalAddress ?? '';
+    _postalCodeController.text = person.zipCode ?? '';
+    _cityController.text = person.city ?? '';
+    _country = person.country ?? 'France';
+    
+    // Définir l'indicatif pays selon le pays
+    if (_country != null && _countryToCountryCode.containsKey(_country)) {
+      // Le téléphone du module Personnes peut déjà contenir l'indicatif, on le parse
+      _parseExistingPhone(person.phone);
     }
   }
 
@@ -766,50 +939,9 @@ class _MemberProfilePageState extends State<MemberProfilePage>
     }
   }
 
-  Future<void> _selectBirthDate() async {
-    final date = await showDatePicker(
-      context: context,
-      initialDate: _birthDate ?? DateTime.now().subtract(const Duration(days: 365 * 25)),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (date != null) {
-      setState(() {
-        _birthDate = date;
-      });
-    }
-  }
 
-  String? _buildFullAddress() {
-    final parts = <String>[];
-    
-    if (_addressController.text.trim().isNotEmpty) {
-      parts.add(_addressController.text.trim());
-    }
-    
-    if (_addressComplementController.text.trim().isNotEmpty) {
-      parts.add(_addressComplementController.text.trim());
-    }
-    
-    final cityParts = <String>[];
-    if (_postalCodeController.text.trim().isNotEmpty) {
-      cityParts.add(_postalCodeController.text.trim());
-    }
-    if (_cityController.text.trim().isNotEmpty) {
-      cityParts.add(_cityController.text.trim());
-    }
-    
-    if (cityParts.isNotEmpty) {
-      parts.add(cityParts.join(' '));
-    }
-    
-    // Ajouter le pays s'il est sélectionné
-    if (_country != null && _country!.isNotEmpty) {
-      parts.add(_country!);
-    }
-    
-    return parts.isEmpty ? null : parts.join(', ');
-  }
+
+
 
   String? _buildFullPhone() {
     if (_phoneController.text.trim().isEmpty) {
@@ -820,57 +952,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
     return '$countryCode${_phoneController.text.trim()}';
   }
 
-  void _parseAddress(String? fullAddress) {
-    if (fullAddress == null || fullAddress.isEmpty) {
-      _addressController.clear();
-      _addressComplementController.clear();
-      _postalCodeController.clear();
-      _cityController.clear();
-      return;
-    }
 
-    // Tentative de parsing intelligent de l'adresse
-    final parts = fullAddress.split(', ');
-    
-    if (parts.length >= 3) {
-      // Format attendu: "Adresse, Complément, Code Ville"
-      _addressController.text = parts[0].trim();
-      _addressComplementController.text = parts[1].trim();
-      
-      // Essayer de séparer code postal et ville du dernier élément
-      final lastPart = parts.last.trim();
-      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
-      
-      if (codeVilleMatch != null) {
-        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
-        _cityController.text = codeVilleMatch.group(2) ?? '';
-      } else {
-        _postalCodeController.clear();
-        _cityController.text = lastPart;
-      }
-    } else if (parts.length == 2) {
-      // Format: "Adresse, Code Ville"
-      _addressController.text = parts[0].trim();
-      _addressComplementController.clear();
-      
-      final lastPart = parts[1].trim();
-      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
-      
-      if (codeVilleMatch != null) {
-        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
-        _cityController.text = codeVilleMatch.group(2) ?? '';
-      } else {
-        _postalCodeController.clear();
-        _cityController.text = lastPart;
-      }
-    } else {
-      // Fallback: tout dans l'adresse principale
-      _addressController.text = fullAddress;
-      _addressComplementController.clear();
-      _postalCodeController.clear();
-      _cityController.clear();
-    }
-  }
 
   void _parseExistingPhone(String? fullPhone) {
     if (fullPhone == null || fullPhone.isEmpty) {
@@ -893,85 +975,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
     _phoneController.text = fullPhone;
   }
 
-  void _parseExistingAddress(String? fullAddress) {
-    if (fullAddress == null || fullAddress.isEmpty) {
-      _addressController.clear();
-      _addressComplementController.clear();
-      _postalCodeController.clear();
-      _cityController.clear();
-      _country = 'France'; // Défaut France
-      return;
-    }
 
-    // Essayer de détecter le pays à la fin de l'adresse
-    final parts = fullAddress.split(', ');
-    
-    // Vérifier si le dernier élément est un pays connu
-    if (parts.isNotEmpty) {
-      final lastPart = parts.last.trim();
-      if (_countries.contains(lastPart)) {
-        _country = lastPart;
-        // Retirer le pays de l'adresse pour parser le reste
-        final addressWithoutCountry = parts.sublist(0, parts.length - 1).join(', ');
-        _parseAddressComponents(addressWithoutCountry);
-        return;
-      }
-    }
-    
-    // Si pas de pays détecté, défaut France et parser toute l'adresse
-    _country = 'France';
-    _parseAddressComponents(fullAddress);
-  }
-
-  void _parseAddressComponents(String addressString) {
-    if (addressString.isEmpty) {
-      _addressController.clear();
-      _addressComplementController.clear();
-      _postalCodeController.clear();
-      _cityController.clear();
-      return;
-    }
-
-    final parts = addressString.split(', ');
-    
-    if (parts.length >= 3) {
-      // Format: "Adresse, Complément, Code Ville"
-      _addressController.text = parts[0].trim();
-      _addressComplementController.text = parts[1].trim();
-      
-      final lastPart = parts.last.trim();
-      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
-      
-      if (codeVilleMatch != null) {
-        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
-        _cityController.text = codeVilleMatch.group(2) ?? '';
-      } else {
-        _postalCodeController.clear();
-        _cityController.text = lastPart;
-      }
-    } else if (parts.length == 2) {
-      // Format: "Adresse, Code Ville"
-      _addressController.text = parts[0].trim();
-      _addressComplementController.clear();
-      
-      final lastPart = parts[1].trim();
-      final codeVilleMatch = RegExp(r'^(\d{5})\s+(.+)$').firstMatch(lastPart);
-      
-      if (codeVilleMatch != null) {
-        _postalCodeController.text = codeVilleMatch.group(1) ?? '';
-        _cityController.text = codeVilleMatch.group(2) ?? '';
-      } else {
-        _postalCodeController.clear();
-        _cityController.text = lastPart;
-      }
-    } else {
-      // Une seule partie, tout dans l'adresse
-      _addressController.text = addressString;
-      _addressComplementController.clear();
-      _postalCodeController.clear();
-      _cityController.clear();
-    }
-  }
 
   Future<void> _pickProfileImage() async {
     try {
@@ -1382,18 +1386,53 @@ class _MemberProfilePageState extends State<MemberProfilePage>
     if (_currentPerson == null) return;
 
     try {
+      // Mise à jour du profil utilisateur (champs restreints exclus de la modification)
       final updatedPerson = _currentPerson!.copyWith(
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
+        // firstName et lastName ne sont pas modifiés depuis le profil
         email: _emailController.text,
         phone: _buildFullPhone(),
-        address: _buildFullAddress(),
-        birthDate: _birthDate,
-        gender: _gender,
+        address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
+        additionalAddress: _addressComplementController.text.trim().isEmpty ? null : _addressComplementController.text.trim(),
+        zipCode: _postalCodeController.text.trim().isEmpty ? null : _postalCodeController.text.trim(),
+        city: _cityController.text.trim().isEmpty ? null : _cityController.text.trim(),
+        country: _country,
+        // birthDate et gender ne sont pas modifiés depuis le profil
         maritalStatus: _maritalStatus,
         profileImageUrl: _profileImageUrl,
         updatedAt: DateTime.now(),
       );
+
+      await AuthService.updateCurrentUserProfile(updatedPerson);
+      
+      // 🔄 Synchronisation inverse : mettre à jour la fiche dans le module Personnes
+      if (_peopleModulePerson != null) {
+        try {
+          print('🔄 Synchronisation des modifications vers le module Personnes...');
+          final updatedPeopleModulePerson = _peopleModulePerson!.copyWith(
+            // firstName et lastName préservés (non modifiables depuis le profil)
+            email: _emailController.text,
+            phone: _buildFullPhone(),
+            address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
+            additionalAddress: _addressComplementController.text.trim().isEmpty ? null : _addressComplementController.text.trim(),
+            zipCode: _postalCodeController.text.trim().isEmpty ? null : _postalCodeController.text.trim(),
+            city: _cityController.text.trim().isEmpty ? null : _cityController.text.trim(),
+            country: _country,
+            // birthDate et gender préservés (non modifiables depuis le profil)
+            maritalStatus: _maritalStatus,
+            profileImageUrl: _profileImageUrl,
+            updatedAt: DateTime.now(),
+          );
+          
+          await PeopleModuleService().update(_peopleModulePerson!.id, updatedPeopleModulePerson);
+          setState(() {
+            _peopleModulePerson = updatedPeopleModulePerson;
+          });
+          print('✅ Synchronisation vers le module Personnes réussie');
+        } catch (e) {
+          print('⚠️  Erreur lors de la synchronisation vers le module Personnes: $e');
+          // On n'interrompt pas le processus si la synchronisation échoue
+        }
+      }
 
       await AuthService.updateCurrentUserProfile(updatedPerson);
 
@@ -1588,7 +1627,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                     borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   ),
                   child: Text(
-                    _currentPerson!.email,
+                    _currentPerson!.email ?? '',
                     style: const TextStyle(
                       fontSize: AppTheme.fontSize14,
                       color: AppTheme.white100,
@@ -1667,6 +1706,8 @@ class _MemberProfilePageState extends State<MemberProfilePage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 🎯 Indicateur de synchronisation avec le module Personnes
+          if (_peopleModulePerson != null) _buildSyncIndicator(),
           _buildInfoCard(
             title: 'Informations personnelles',
             icon: Icons.person,
@@ -1675,14 +1716,14 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 controller: _firstNameController,
                 label: 'Prénom',
                 icon: Icons.person_outline,
-                enabled: _isEditing,
+                enabled: false, // Champ non modifiable
               ),
               const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
                 controller: _lastNameController,
                 label: 'Nom',
                 icon: Icons.person_outline,
-                enabled: _isEditing,
+                enabled: false, // Champ non modifiable
               ),
               const SizedBox(height: AppTheme.spaceMedium),
               _buildTextField(
@@ -1728,7 +1769,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 label: 'Genre',
                 icon: Icons.wc,
                 items: _genderOptions,
-                onChanged: _isEditing ? (value) => setState(() => _gender = value) : null,
+                onChanged: null, // Genre non modifiable
               ),
               const SizedBox(height: AppTheme.spaceMedium),
               _buildDropdown(
@@ -2091,7 +2132,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
 
   Widget _buildDateField() {
     return InkWell(
-      onTap: _isEditing ? _selectBirthDate : null,
+      onTap: null, // Date de naissance non modifiable
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: 'Date de naissance',

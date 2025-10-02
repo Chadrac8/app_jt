@@ -3,9 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import '../models/person_model.dart';
+
 import '../models/role_model.dart';
 import '../services/firebase_service.dart';
 import '../services/roles_firebase_service.dart';
+import '../services/people_module_service.dart';
 import '../widgets/custom_fields_widget.dart';
 
 import '../image_upload.dart';
@@ -53,6 +55,7 @@ class _PersonFormPageState extends State<PersonFormPage>
   Map<String, dynamic> _customFields = {};
   bool _isActive = true;
   bool _isLoading = false;
+  bool _createUserAccount = false;
   
   // Image handling
   String? _profileImageUrl;
@@ -199,7 +202,7 @@ class _PersonFormPageState extends State<PersonFormPage>
       final person = widget.person!;
       _firstNameController.text = person.firstName;
       _lastNameController.text = person.lastName;
-      _emailController.text = person.email;
+      _emailController.text = person.email ?? '';
       _parseExistingPhone(person.phone);
       
       // Initialiser les champs d'adresse séparément
@@ -207,6 +210,7 @@ class _PersonFormPageState extends State<PersonFormPage>
       _addressComplementController.text = person.additionalAddress ?? '';
       _postalCodeController.text = person.zipCode ?? '';
       _cityController.text = person.city ?? '';
+      _country = person.country ?? 'France';
       
       _privateNotesController.text = person.privateNotes ?? '';
       _birthDate = person.birthDate;
@@ -255,6 +259,9 @@ class _PersonFormPageState extends State<PersonFormPage>
     return _phoneController.text.trim().isNotEmpty ? _phoneController.text.trim() : null;
   }
 
+  /// Convertir PersonModel vers Person (module Personnes)
+
+
   void _parseExistingPhone(String? phone) {
     if (phone == null || phone.isEmpty) {
       _phoneController.clear();
@@ -265,11 +272,11 @@ class _PersonFormPageState extends State<PersonFormPage>
 
     // Rechercher un code de pays dans le numéro de téléphone
     for (var entry in _countryCodes.entries) {
-      if (phone.startsWith(entry.value)) {
-        _countryCode = entry.value;
-        _country = entry.key;
+      if (phone.startsWith(entry.key)) {
+        _countryCode = entry.key;
+        _country = entry.value;
         // Extraire le numéro sans le code pays
-        _phoneController.text = phone.substring(entry.value.length).trim();
+        _phoneController.text = phone.substring(entry.key.length).trim();
         return;
       }
     }
@@ -821,6 +828,7 @@ class _PersonFormPageState extends State<PersonFormPage>
           lastName: _lastNameController.text.trim(),
           email: _emailController.text.trim(),
           phone: _buildFullPhone(),
+          country: _country,
           birthDate: _birthDate,
           address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
           additionalAddress: _addressComplementController.text.trim().isEmpty ? null : _addressComplementController.text.trim(),
@@ -841,9 +849,16 @@ class _PersonFormPageState extends State<PersonFormPage>
           customFields: _customFields,
         );
         
-        print('Appel FirebaseService.createPerson...');
-        await FirebaseService.createPerson(newPerson);
-        print('Création réussie!');
+        if (_createUserAccount) {
+          print('Création avec compte utilisateur...');
+          final peopleService = PeopleModuleService();
+          await peopleService.createWithAuthAccount(newPerson);
+          print('Création avec compte utilisateur réussie!');
+        } else {
+          print('Appel FirebaseService.createPerson...');
+          await FirebaseService.createPerson(newPerson);
+          print('Création réussie!');
+        }
       } else {
         print('Mode: Modification de la personne ID: ${widget.person!.id}');
         
@@ -861,6 +876,7 @@ class _PersonFormPageState extends State<PersonFormPage>
           lastName: _lastNameController.text.trim(),
           email: _emailController.text.trim(),
           phone: _buildFullPhone(),
+          country: _country,
           birthDate: _birthDate,
           address: _addressController.text.trim().isEmpty ? null : _addressController.text.trim(),
           additionalAddress: _addressComplementController.text.trim().isEmpty ? null : _addressComplementController.text.trim(),
@@ -1394,6 +1410,20 @@ class _PersonFormPageState extends State<PersonFormPage>
                             },
                             activeColor: Theme.of(context).colorScheme.secondary,
                           ),
+                          if (widget.person == null) // Seulement lors de la création
+                            SwitchListTile(
+                              title: const Text('Créer un compte utilisateur'),
+                              subtitle: const Text(
+                                'Créer automatiquement des identifiants de connexion pour cette personne',
+                              ),
+                              value: _createUserAccount,
+                              onChanged: (value) {
+                                setState(() {
+                                  _createUserAccount = value;
+                                });
+                              },
+                              activeColor: Theme.of(context).colorScheme.secondary,
+                            ),
                         ],
                       ),
                       const SizedBox(height: 80), // Extra space for FAB

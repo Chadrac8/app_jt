@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../shared/widgets/base_list_page.dart';
 import '../shared/widgets/custom_card.dart';
-import '../models/person_module_model.dart';
+import '../models/person_model.dart';
 import '../services/people_module_service.dart';
 import '../modules/personnes/pages/person_import_export_page.dart';
 import '../modules/personnes/widgets/person_import_export_actions.dart';
@@ -19,11 +19,11 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
   final PeopleModuleService _peopleService = PeopleModuleService();
   String _searchQuery = '';
   bool _showInactive = false;
-  List<Person>? _searchResults;
+  List<PersonModel>? _searchResults;
 
   @override
   Widget build(BuildContext context) {
-    return BaseListPage<Person>(
+    return BaseListPage<PersonModel>(
       title: 'Gestion des Personnes (Module)',
       loadItems: () => _loadPeople(),
       buildItem: (person) => _buildPersonCard(person),
@@ -80,7 +80,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
     );
   }
 
-  Future<List<Person>> _loadPeople() async {
+  Future<List<PersonModel>> _loadPeople() async {
     if (_searchResults != null) {
       return _searchResults!;
     }
@@ -97,7 +97,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
     }
   }
 
-  Widget _buildPersonCard(Person person) {
+  Widget _buildPersonCard(PersonModel person) {
     return CustomCard(
       child: ListTile(
         leading: CircleAvatar(
@@ -327,7 +327,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
     }
   }
 
-  void _handlePersonAction(String action, Person person) {
+  void _handlePersonAction(String action, PersonModel person) {
     switch (action) {
       case 'view':
         Navigator.pushNamed(context, '/person/detail', arguments: person.id);
@@ -348,14 +348,14 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
     }
   }
 
-  void _togglePersonStatus(Person person) async {
+  void _togglePersonStatus(PersonModel person) async {
     final updatedPerson = person.copyWith(
       isActive: !person.isActive,
       updatedAt: DateTime.now(),
     );
 
     try {
-      await _peopleService.update(person.id!, updatedPerson);
+      await _peopleService.update(person.id, updatedPerson);
       if (!mounted) return;
 
       setState(() {});
@@ -370,7 +370,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
     }
   }
 
-  void _deletePerson(Person person) async {
+  void _deletePerson(PersonModel person) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -392,7 +392,7 @@ class _PeopleAdminModuleViewState extends State<PeopleAdminModuleView> {
 
     if (confirmed == true) {
       try {
-        await _peopleService.delete(person.id!);
+        await _peopleService.delete(person.id);
         if (!mounted) return;
 
         setState(() {});

@@ -786,7 +786,7 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                                 ),
                                 subtitle: isBirthdayList && person.birthDate != null
                                     ? Text('Né(e) le ${person.formattedBirthDate}', style: TextStyle(color: AppTheme.pinkStandard))
-                                    : Text(person.email),
+                                    : Text(person.email ?? ''),
                                 trailing: selected
                                     ? const SizedBox(
                                         width: 32,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../auth/auth_service.dart';
 import '../pages/admin/admin_dashboard_page.dart';
 import '../pages/people_home_page.dart';
 import '../pages/groups_home_page.dart';
@@ -28,7 +27,7 @@ import '../pages/prayers_home_page.dart';
 
 
 import '../pages/admin/modules_configuration_page.dart';
-import '../pages/initial_profile_setup_page.dart';
+
 
 import '../widgets/member_view_toggle_button.dart';
 import 'bottom_navigation_wrapper.dart';
@@ -50,37 +49,10 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
   String _currentRoute = 'dashboard';
   int _selectedIndex = 0;
 
-  // Méthode pour vérifier si le profil est complet (synchronized with AuthWrapper)
+  // Vérification de profil désactivée - accès direct autorisé
   Future<bool> _isProfileComplete() async {
-    try {
-      final profile = await AuthService.getCurrentUserProfile();
-      if (profile == null) return false;
-
-      // Required fields for profile completion (synchronized with AuthWrapper)
-      final hasFirstName = profile.firstName.isNotEmpty;
-      final hasLastName = profile.lastName.isNotEmpty;
-      final hasPhone = profile.phone != null && profile.phone!.isNotEmpty;
-      final hasAddress = profile.address != null && profile.address!.isNotEmpty;
-      final hasBirthDate = profile.birthDate != null;
-      final hasGender = profile.gender != null && profile.gender!.isNotEmpty;
-      
-      final isComplete = hasFirstName && hasLastName && hasPhone && hasAddress && hasBirthDate && hasGender;
-      
-      if (!isComplete) {
-        print('🔄 AdminNavigationWrapper: Profil incomplet détecté');
-        print('  - Prénom: ${hasFirstName ? "✅" : "❌"}');
-        print('  - Nom: ${hasLastName ? "✅" : "❌"}');
-        print('  - Téléphone: ${hasPhone ? "✅" : "❌"}');
-        print('  - Adresse: ${hasAddress ? "✅" : "❌"}');
-        print('  - Date de naissance: ${hasBirthDate ? "✅" : "❌"}');
-        print('  - Genre: ${hasGender ? "✅" : "❌"}');
-      }
-      
-      return isComplete;
-    } catch (e) {
-      print('❌ Erreur lors de la vérification du profil dans AdminNavigationWrapper: $e');
-      return false;
-    }
+    print('✅ AdminNavigationWrapper: Accès direct autorisé');
+    return true; // Accès direct autorisé
   }
 
   // Pages principales de l'admin
@@ -239,10 +211,8 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
           );
         }
         
-        // Si le profil n'est pas complet, rediriger vers la configuration
-        if (snapshot.hasData && !snapshot.data!) {
-          return const InitialProfileSetupPage();
-        }
+        // Accès direct autorisé
+        print('✅ AdminNavigationWrapper: Accès direct autorisé');
         
         // Si le profil est complet, afficher l'interface admin
         return Scaffold(

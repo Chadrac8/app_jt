@@ -809,7 +809,7 @@ class _ServiceAssignmentsPageState extends State<ServiceAssignmentsPage>
                         ),
                       ),
                       title: Text(person.fullName),
-                      subtitle: Text(person.email),
+                      subtitle: Text(person.email ?? ''),
                       onTap: () {
                         Navigator.pop(context);
                         _createAssignment(position.id, person.id);

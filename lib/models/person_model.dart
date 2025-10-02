@@ -180,7 +180,7 @@ class PersonModel {
   final String? uid; // Firebase Auth UID - null pour les personnes créées manuellement
   final String firstName;
   final String lastName;
-  final String email;
+  final String? email; // Nullable pour import/export
   final String? phone;
   final String? country;
   final DateTime? birthDate;
@@ -208,7 +208,7 @@ class PersonModel {
     this.uid,
     required this.firstName,
     required this.lastName,
-    required this.email,
+    this.email, // Nullable pour import/export
     this.phone,
     this.country,
     this.birthDate,
@@ -409,6 +409,87 @@ class PersonModel {
       customFields: customFields ?? this.customFields,
       lastModifiedBy: lastModifiedBy ?? this.lastModifiedBy,
     );
+  }
+
+  /// Constructeur factory pour l'import depuis un format simple (CSV/JSON)
+  factory PersonModel.fromImport({
+    String? id,
+    required String firstName,
+    required String lastName,
+    String? email,
+    String? phone,
+    String? country,
+    DateTime? birthDate,
+    String? gender,
+    String? maritalStatus,
+    String? address,
+    String? additionalAddress,
+    String? zipCode,
+    String? city,
+    String? profileImageUrl,
+    List<String>? roles,
+    Map<String, dynamic>? customFields,
+    bool isActive = true,
+  }) {
+    final now = DateTime.now();
+    return PersonModel(
+      id: id ?? '',
+      uid: null, // Pas d'UID pour les imports
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+      country: country,
+      birthDate: birthDate,
+      address: address,
+      additionalAddress: additionalAddress,
+      zipCode: zipCode,
+      city: city,
+      gender: gender,
+      maritalStatus: maritalStatus,
+      children: const [],
+      profileImageUrl: profileImageUrl,
+      privateNotes: null,
+      isActive: isActive,
+      createdAt: now,
+      updatedAt: now,
+      familyId: null,
+      familyRole: FamilyRole.other,
+      roles: roles ?? const [],
+      tags: const [],
+      customFields: customFields ?? const {},
+      lastModifiedBy: null,
+    );
+  }
+
+  /// Convertir vers un format simple pour l'export
+  Map<String, dynamic> toImportExportFormat() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phone': phone,
+      'country': country,
+      'birthDate': birthDate?.toIso8601String(),
+      'gender': gender,
+      'maritalStatus': maritalStatus,
+      'address': address,
+      'additionalAddress': additionalAddress,
+      'zipCode': zipCode,
+      'city': city,
+      'profileImageUrl': profileImageUrl,
+      'roles': roles,
+      'customFields': customFields,
+      'isActive': isActive,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+
+  /// Vérifier si la personne a un rôle spécifique (compatible avec Person)
+  bool hasRole(String role) {
+    return roles.contains(role);
   }
 }
 

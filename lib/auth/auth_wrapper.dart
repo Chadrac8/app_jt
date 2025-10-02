@@ -5,7 +5,7 @@ import 'auth_service.dart';
 import 'login_page.dart';
 import '../widgets/bottom_navigation_wrapper.dart';
 import '../models/person_model.dart';
-import '../pages/initial_profile_setup_page.dart';
+
 import '../modules/roles/providers/permission_provider.dart';
 import '../../theme.dart';
 
@@ -67,9 +67,9 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
   /// Build widget for authenticated users with profile loading (using Stream for real-time updates)
   Widget _buildAuthenticatedUserWidget(User user) {
-    // Skip profile configuration for anonymous users
+    // Accès direct pour utilisateurs anonymes
     if (user.isAnonymous) {
-      print('👤 AuthWrapper: Utilisateur anonyme détecté, accès direct sans configuration de profil');
+      print('👤 AuthWrapper: Utilisateur anonyme détecté, accès direct');
       return _buildAnonymousUserInterface();
     }
 
@@ -91,11 +91,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
         if (profileSnapshot.hasData && profileSnapshot.data != null) {
           final profile = profileSnapshot.data!;
           
-          // Check if profile is complete before allowing access
-          if (!_isProfileComplete(profile)) {
-            print('🔄 AuthWrapper: Profil incomplet, redirection vers configuration');
-            return _buildProfileCreationScreen();
-          }
+          // Accès direct autorisé - pas de vérification de profil requis
+          print('✅ AuthWrapper: Accès direct autorisé');
           
           return _buildUserInterface(profile);
         }
@@ -144,45 +141,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
   }
 
-  /// Check if user profile is complete with all required fields
+  /// Vérification de profil désactivée - accès direct autorisé
   bool _isProfileComplete(PersonModel profile) {
-    try {
-      print('🔍 AuthWrapper: Vérification du profil complet pour: ${profile.email}');
-      print('📊 Valeurs du profil:');
-      print('  - ID: "${profile.id}"');
-      print('  - Prénom: "${profile.firstName}"');
-      print('  - Nom: "${profile.lastName}"');
-      print('  - Email: "${profile.email}"');
-      print('  - Téléphone: "${profile.phone}"');
-      print('  - Adresse: "${profile.address}"');
-      print('  - Date de naissance: ${profile.birthDate}');
-      print('  - Genre: "${profile.gender}"');
-      
-      // Required fields for profile completion
-      final hasFirstName = profile.firstName.isNotEmpty;
-      final hasLastName = profile.lastName.isNotEmpty;
-      final hasPhone = profile.phone != null && profile.phone!.isNotEmpty;
-      final hasAddress = profile.address != null && profile.address!.isNotEmpty;
-      final hasBirthDate = profile.birthDate != null;
-      final hasGender = profile.gender != null && profile.gender!.isNotEmpty;
-      
-      // Check if all required fields are present
-      final isComplete = hasFirstName && hasLastName && hasPhone && hasAddress && hasBirthDate && hasGender;
-      
-      print('🔍 AuthWrapper: Résultats de vérification:');
-      print('  - Prénom: ${hasFirstName ? "✅" : "❌"} (valeur: "${profile.firstName}")');
-      print('  - Nom: ${hasLastName ? "✅" : "❌"} (valeur: "${profile.lastName}")');
-      print('  - Téléphone: ${hasPhone ? "✅" : "❌"} (valeur: "${profile.phone}")');
-      print('  - Adresse: ${hasAddress ? "✅" : "❌"} (valeur: "${profile.address}")');
-      print('  - Date de naissance: ${hasBirthDate ? "✅" : "❌"} (valeur: ${profile.birthDate})');
-      print('  - Genre: ${hasGender ? "✅" : "❌"} (valeur: "${profile.gender}")');
-      print('🎯 Profil complet: ${isComplete ? "✅ OUI" : "❌ NON"}');
-      
-      return isComplete;
-    } catch (e) {
-      print('❌ Error checking profile completion: $e');
-      return false; // If error, consider incomplete for safety
-    }
+    print('✅ AuthWrapper: Accès direct autorisé pour: ${profile.email}');
+    return true; // Accès direct autorisé
   }
 
   /// Build widget for unauthenticated users
@@ -393,13 +355,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
     );
   }
 
-  /// Build screen for profile creation
+  /// Build screen for profile creation (SUPPRIMÉ - Redirection vers l'app principale)
   Widget _buildProfileCreationScreen() {
-    print('AuthWrapper: Affichage de l ecran de configuration de profil');
+    print('AuthWrapper: Configuration de profil supprimée - redirection vers l\'application principale');
     
-    return const Scaffold(
-      body: InitialProfileSetupPage(),
-    );
+    // Configuration de profil supprimée - accès direct à l'application
+    return const BottomNavigationWrapper();
   }
 
   /// Build main error screen

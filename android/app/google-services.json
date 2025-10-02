@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:270094003281:android:3d061912930c6fc50c9c70",
         "android_client_info": {
-          "package_name": "com.mycompany.Personnes"
+          "package_name": "org.jubiletabernacle.app"
         }
       },
       "oauth_client": [],

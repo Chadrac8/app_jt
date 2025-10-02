@@ -1,21 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../shared/services/base_firebase_service.dart';
-import '../models/person_module_model.dart';
+import '../models/person_model.dart';
+import 'auth_person_sync_service.dart';
 
 /// Service pour la gestion des personnes
-class PeopleModuleService extends BaseFirebaseService<Person> {
+class PeopleModuleService extends BaseFirebaseService<PersonModel> {
   @override
   String get collectionName => 'persons';
 
   @override
-  Person fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Person.fromMap(data, doc.id);
+  PersonModel fromFirestore(DocumentSnapshot doc) {
+    return PersonModel.fromFirestore(doc);
   }
 
   @override
-  Map<String, dynamic> toFirestore(Person person) {
-    return person.toMap();
+  Map<String, dynamic> toFirestore(PersonModel person) {
+    return person.toFirestore();
   }
 
   /// Initialiser le service
@@ -30,9 +30,93 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
     print('Service People nettoyé');
   }
 
+  /// Créer une nouvelle personne avec validation d'email unique
+  @override
+  Future<String> create(PersonModel person) async {
+    try {
+      // Vérifier les doublons d'email
+      if (person.email != null && person.email!.trim().isNotEmpty) {
+        final existing = await findByEmail(person.email!);
+        if (existing != null) {
+          throw Exception('Une personne avec cet email existe déjà: ${person.email}');
+        }
+      }
+      
+      // Appeler la méthode parent pour créer
+      final personId = await super.create(person);
+      
+      // 🆕 Synchronisation automatique : Proposer la création d'un compte utilisateur
+      // (optionnel - peut être désactivé par défaut)
+      if (person.email != null && person.email!.trim().isNotEmpty) {
+        // Cette ligne peut être désactivée si vous ne voulez pas créer automatiquement des comptes
+        // await AuthPersonSyncService.onPersonCreated(person, createAuthAccount: true);
+        print('📝 Personne créée. Pour créer un compte utilisateur, appelez AuthPersonSyncService.onPersonCreated()');
+      }
+      
+      return personId;
+    } catch (e) {
+      throw Exception('Erreur lors de la création de la personne: $e');
+    }
+  }
+  
+  /// Créer une personne avec création automatique de compte utilisateur
+  Future<String> createWithAuthAccount(PersonModel person, {String? password}) async {
+    try {
+      print('🔄 PeopleModuleService.createWithAuthAccount appelée');
+      print('   Email: ${person.email}');
+      print('   Nom: ${person.firstName} ${person.lastName}');
+      
+      // Créer la personne
+      final personId = await create(person);
+      print('✅ Personne créée avec ID: $personId');
+      
+            // Créer le compte utilisateur
+      if (person.email != null && person.email!.trim().isNotEmpty) {
+        print('🔄 Appel AuthPersonSyncService.onPersonCreated...');
+        final user = await AuthPersonSyncService.onPersonCreated(
+          person, 
+          password: password, 
+          createAuthAccount: true,
+          personId: personId, // Passer l'ID de la personne créée
+        );
+        if (user != null) {
+          print('✅ Compte utilisateur créé avec succès pour: ${person.email}');
+        } else {
+          print('⚠️ Aucun compte utilisateur créé (peut-être existe déjà)');
+        }
+      } else {
+        print('❌ Pas d\'email valide, aucun compte utilisateur créé');
+      }
+      
+      return personId;
+    } catch (e) {
+      print('❌ Erreur dans createWithAuthAccount: $e');
+      throw Exception('Erreur lors de la création de la personne avec compte: $e');
+    }
+  }
+
+  /// Mettre à jour une personne avec validation d'email unique
+  @override
+  Future<void> update(String id, PersonModel person) async {
+    try {
+      // Vérifier les doublons d'email (exclure la personne actuelle)
+      if (person.email != null && person.email!.trim().isNotEmpty) {
+        final existing = await findByEmail(person.email!);
+        if (existing != null && existing.id != id) {
+          throw Exception('Une personne avec cet email existe déjà: ${person.email}');
+        }
+      }
+      
+      // Appeler la méthode parent pour mettre à jour
+      await super.update(id, person);
+    } catch (e) {
+      throw Exception('Erreur lors de la mise à jour de la personne: $e');
+    }
+  }
+
   /// Rechercher des personnes par nom
   @override
-  Future<List<Person>> search(String query) async {
+  Future<List<PersonModel>> search(String query) async {
     if (query.isEmpty) return [];
 
     try {
@@ -55,12 +139,12 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
           .toList();
 
       // Combiner et dédupliquer les résultats
-      final combined = <String, Person>{};
+      final combined = <String, PersonModel>{};
       for (final person in firstNameResults) {
-        if (person.id != null) combined[person.id!] = person;
+        combined[person.id] = person;
       }
       for (final person in lastNameResults) {
-        if (person.id != null) combined[person.id!] = person;
+        combined[person.id] = person;
       }
 
       return combined.values.toList();
@@ -71,7 +155,7 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
   }
 
   /// Rechercher par email
-  Future<Person?> findByEmail(String email) async {
+  Future<PersonModel?> findByEmail(String email) async {
     try {
       final querySnapshot = await collection
           .where('email', isEqualTo: email)
@@ -89,7 +173,7 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
   }
 
   /// Rechercher par téléphone
-  Future<Person?> findByPhone(String phone) async {
+  Future<PersonModel?> findByPhone(String phone) async {
     try {
       final querySnapshot = await collection
           .where('phone', isEqualTo: phone)
@@ -107,7 +191,7 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
   }
 
   /// Obtenir les personnes par rôle
-  Future<List<Person>> getByRole(String role) async {
+  Future<List<PersonModel>> getByRole(String role) async {
     try {
       final querySnapshot = await collection
           .where('roles', arrayContains: role)
@@ -124,7 +208,7 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
   }
 
   /// Obtenir les anniversaires du mois
-  Future<List<Person>> getBirthdaysThisMonth() async {
+  Future<List<PersonModel>> getBirthdaysThisMonth() async {
     try {
       final now = DateTime.now();
       final startOfMonth = DateTime(now.year, now.month, 1);
@@ -199,7 +283,7 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
     
     for (final data in peopleData) {
       try {
-        final person = Person(
+        final person = PersonModel.fromImport(
           firstName: data['firstName'] ?? '',
           lastName: data['lastName'] ?? '',
           email: data['email'],
@@ -210,8 +294,8 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
           customFields: Map<String, dynamic>.from(data['customFields'] ?? {}),
         );
 
-        final success = await create(person);
-        if (success != null) imported++;
+        final personId = await create(person);
+        if (personId.isNotEmpty) imported++;
       } catch (e) {
         print('Erreur lors de l importation d une personne: $e');
       }
@@ -224,7 +308,7 @@ class PeopleModuleService extends BaseFirebaseService<Person> {
   Future<List<Map<String, dynamic>>> exportPeople() async {
     try {
       final people = await getAll();
-      return people.map((person) => person.toMap()).toList();
+      return people.map((person) => person.toImportExportFormat()).toList();
     } catch (e) {
       print('Erreur lors de l exportation: $e');
       return [];

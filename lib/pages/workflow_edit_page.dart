@@ -704,7 +704,7 @@ class _PersonSelectionDialog extends StatelessWidget {
                     : null,
               ),
               title: Text(person.fullName),
-              subtitle: Text(person.email),
+              subtitle: Text(person.email ?? ''),
               onTap: () => Navigator.pop(context, person),
             );
           },

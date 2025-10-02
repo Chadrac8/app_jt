@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/app_config_model.dart';
 import '../widgets/user_avatar.dart';
-import '../pages/initial_profile_setup_page.dart';
 
 
 import '../models/person_model.dart';
@@ -77,37 +76,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   bool _searchInLyrics = false; // État pour le mode de recherche des cantiques
   VoidCallback? _toggleSearch; // Callback pour activer/désactiver la recherche
 
-  /// Check if user profile is complete with all required fields
-  bool _isProfileComplete(PersonModel? profile) {
-    if (profile == null) return false;
-    
-    try {
-      // Required fields for profile completion (synchronized with AuthWrapper)
-      final hasFirstName = profile.firstName.isNotEmpty;
-      final hasLastName = profile.lastName.isNotEmpty;
-      final hasPhone = profile.phone != null && profile.phone!.isNotEmpty;
-      final hasAddress = profile.address != null && profile.address!.isNotEmpty;
-      final hasBirthDate = profile.birthDate != null;
-      final hasGender = profile.gender != null && profile.gender!.isNotEmpty;
-      
-      final isComplete = hasFirstName && hasLastName && hasPhone && hasAddress && hasBirthDate && hasGender;
-      
-      if (!isComplete) {
-        print('🔄 BottomNavigationWrapper: Profil incomplet détecté');
-        print('  - Prénom: ${hasFirstName ? "✅" : "❌"}');
-        print('  - Nom: ${hasLastName ? "✅" : "❌"}');
-        print('  - Téléphone: ${hasPhone ? "✅" : "❌"}');
-        print('  - Adresse: ${hasAddress ? "✅" : "❌"}');
-        print('  - Date de naissance: ${hasBirthDate ? "✅" : "❌"}');
-        print('  - Genre: ${hasGender ? "✅" : "❌"}');
-      }
-      
-      return isComplete;
-    } catch (e) {
-      print('❌ Error checking profile completion in BottomNavigationWrapper: $e');
-      return false;
-    }
-  }
+
 
   @override
   void initState() {
@@ -863,15 +832,10 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    // Skip profile completion check for anonymous users
-    final currentFirebaseUser = AuthService.currentUser;
-    final isAnonymousUser = currentFirebaseUser?.isAnonymous ?? false;
+    // Accès direct pour tous les utilisateurs
     
-    // Check if profile is complete before showing main interface (skip for anonymous users)
-    if (!_isLoading && !isAnonymousUser && !_isProfileComplete(_currentUser)) {
-      print('🔄 BottomNavigationWrapper: Profil incomplet, redirection vers configuration');
-      return const InitialProfileSetupPage();
-    }
+    // Accès direct autorisé
+    print('✅ BottomNavigationWrapper: Accès direct autorisé');
     
     if (_isLoading) {
       return const Scaffold(

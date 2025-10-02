@@ -262,7 +262,7 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
       } else {
         _filteredPersons = _allPersons.where((person) {
           return person.fullName.toLowerCase().contains(searchTerm.toLowerCase()) ||
-                 person.email.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                 (person.email?.toLowerCase().contains(searchTerm.toLowerCase()) ?? false) ||
                  (person.phone?.toLowerCase().contains(searchTerm.toLowerCase()) ?? false);
         }).toList();
       }
@@ -387,8 +387,8 @@ class _PersonSelectorDialogState extends State<PersonSelectorDialog> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (person.email.isNotEmpty)
-                                    Text(person.email),
+                                                                        if (person.email != null && person.email!.isNotEmpty)
+                                                                            Text(person.email!),
                                   if (person.phone?.isNotEmpty == true)
                                     Text(person.phone!),
                                 ],

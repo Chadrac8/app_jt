@@ -612,7 +612,7 @@ class _MemberSelectionDialogState extends State<_MemberSelectionDialog> {
       if (_searchQuery.isEmpty) return true;
       final query = _searchQuery.toLowerCase();
       return person.fullName.toLowerCase().contains(query) ||
-             person.email.toLowerCase().contains(query);
+                              (person.email?.toLowerCase().contains(query) ?? false);
     }).toList();
 
     return AlertDialog(
@@ -641,7 +641,7 @@ class _MemberSelectionDialogState extends State<_MemberSelectionDialog> {
                   
                   return CheckboxListTile(
                     title: Text(person.fullName),
-                    subtitle: Text(person.email),
+                    subtitle: Text(person.email ?? ''),
                     value: isSelected,
                     onChanged: (selected) {
                       setState(() {

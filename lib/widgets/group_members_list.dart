@@ -605,7 +605,7 @@ class _AddMemberDialogState extends State<_AddMemberDialog> {
                   final person = filteredPersons[index];
                   return RadioListTile<PersonModel>(
                     title: Text(person.fullName),
-                    subtitle: Text(person.email),
+                    subtitle: Text(person.email ?? ''),
                     value: person,
                     groupValue: _selectedPerson,
                     onChanged: (value) => setState(() => _selectedPerson = value),

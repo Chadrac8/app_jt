@@ -447,12 +447,12 @@ class _PersonDetailPageState extends State<PersonDetailPage>
               title: 'Informations de Contact',
               icon: Icons.contact_phone,
               children: [
-                if (_currentPerson!.email.isNotEmpty)
+                if (_currentPerson!.email != null && _currentPerson!.email!.isNotEmpty)
                   _buildInfoRow(
                     icon: Icons.email,
                     label: 'Email',
-                    value: _currentPerson!.email,
-                    onTap: () => _launchEmail(_currentPerson!.email),
+                    value: _currentPerson!.email!,
+                    onTap: () => _launchEmail(_currentPerson!.email!),
                   ),
                 if (_currentPerson!.phone != null)
                   _buildInfoRow(

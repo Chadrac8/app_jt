@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../pages/person_import_export_page.dart';
-import '../../../models/person_module_model.dart';
+import '../../../models/person_model.dart';
 import '../../../theme.dart';
 
 /// Widget d'actions rapides pour l'import/export des personnes
 class PersonImportExportActions extends StatelessWidget {
-  final List<Person>? selectedPeople;
+  final List<PersonModel>? selectedPeople;
   final VoidCallback? onImportComplete;
   final VoidCallback? onExportComplete;
 

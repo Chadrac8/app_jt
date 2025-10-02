@@ -126,7 +126,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
             _currentUser = person;
             _nameController.text = person.lastName;
             _firstNameController.text = person.firstName;
-            _emailController.text = person.email;
+                            _emailController.text = person.email ?? '';
             _phoneController.text = person.phone ?? '';
           });
           

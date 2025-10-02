@@ -28,9 +28,62 @@ class FirebaseService {
   static const String activityLogsCollection = 'activity_logs';
 
 
+  // Email validation
+  static Future<PersonModel?> findPersonByEmail(String email) async {
+    try {
+      final cleanEmail = email.trim().toLowerCase();
+      if (cleanEmail.isEmpty) return null;
+      
+      final querySnapshot = await _firestore
+          .collection(personsCollection)
+          .where('email', isEqualTo: cleanEmail)
+          .limit(1)
+          .get();
+      
+      if (querySnapshot.docs.isNotEmpty) {
+        return PersonModel.fromFirestore(querySnapshot.docs.first);
+      }
+      
+      return null;
+    } catch (e) {
+      print('Erreur lors de la recherche par email: $e');
+      return null;
+    }
+  }
+
+  static Future<bool> isEmailAlreadyUsed(String email, {String? excludePersonId}) async {
+    try {
+      final cleanEmail = email.trim().toLowerCase();
+      if (cleanEmail.isEmpty) return false;
+      
+      final querySnapshot = await _firestore
+          .collection(personsCollection)
+          .where('email', isEqualTo: cleanEmail)
+          .get();
+      
+      if (excludePersonId != null) {
+        // Exclure la personne actuelle lors d'une mise à jour
+        return querySnapshot.docs.any((doc) => doc.id != excludePersonId);
+      }
+      
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print('Erreur lors de la vérification de l\'email: $e');
+      return false;
+    }
+  }
+
   // Person CRUD Operations
   static Future<String> createPerson(PersonModel person) async {
     try {
+      // Vérifier les doublons d'email
+      if (person.email != null && person.email!.isNotEmpty) {
+                    final emailExists = await isEmailAlreadyUsed(person.email!);
+        if (emailExists) {
+          throw Exception('Une personne avec cet email existe déjà: ${person.email}');
+        }
+      }
+      
       final docRef = await _firestore.collection(personsCollection).add(person.toFirestore());
       
       // Log activity
@@ -45,6 +98,14 @@ class FirebaseService {
   // Create person with specific document ID (for user profiles)
   static Future<void> createPersonWithId(String documentId, PersonModel person) async {
     try {
+      // Vérifier les doublons d'email
+      if (person.email != null && person.email!.isNotEmpty) {
+                    final emailExists = await isEmailAlreadyUsed(person.email!, excludePersonId: documentId);
+        if (emailExists) {
+          throw Exception('Une personne avec cet email existe déjà: ${person.email}');
+        }
+      }
+      
       await _firestore.collection(personsCollection).doc(documentId).set(person.toFirestore());
       
       // Log activity
@@ -67,6 +128,14 @@ class FirebaseService {
       if (!docSnapshot.exists) {
         print('ERREUR: Le document n\'existe pas!');
         throw Exception('Document with ID ${person.id} does not exist');
+      }
+      
+      // Vérifier les doublons d'email avant la mise à jour
+      if (person.email != null && person.email!.isNotEmpty) {
+        final emailExists = await isEmailAlreadyUsed(person.email!, excludePersonId: person.id);
+        if (emailExists) {
+          throw Exception('Une personne avec cet email existe déjà: ${person.email}');
+        }
       }
       
       print('Document trouvé, tentative de mise à jour...');
@@ -158,7 +227,7 @@ class FirebaseService {
         final lowercaseQuery = searchQuery.toLowerCase();
         persons = persons.where((person) {
           return person.fullName.toLowerCase().contains(lowercaseQuery) ||
-                 person.email.toLowerCase().contains(lowercaseQuery) ||
+                 (person.email?.toLowerCase().contains(lowercaseQuery) ?? false) ||
                  (person.phone?.toLowerCase().contains(lowercaseQuery) ?? false);
         }).toList();
       }
@@ -194,6 +263,38 @@ class FirebaseService {
     } catch (e) {
       throw Exception('Failed to get active persons: $e');
     }
+  }
+
+  /// Récupère une personne par son UID Firebase Auth
+  static Future<PersonModel?> getPersonByUid(String uid) async {
+    try {
+      final snapshot = await _firestore.collection(personsCollection)
+          .where('uid', isEqualTo: uid)
+          .limit(1)
+          .get();
+      
+      if (snapshot.docs.isNotEmpty) {
+        return PersonModel.fromFirestore(snapshot.docs.first);
+      }
+      return null;
+    } catch (e) {
+      print('Failed to get person by UID: $e');
+      return null;
+    }
+  }
+
+  /// Stream d'une personne par son UID Firebase Auth
+  static Stream<PersonModel?> getPersonStreamByUid(String uid) {
+    return _firestore.collection(personsCollection)
+        .where('uid', isEqualTo: uid)
+        .limit(1)
+        .snapshots()
+        .map((snapshot) {
+          if (snapshot.docs.isNotEmpty) {
+            return PersonModel.fromFirestore(snapshot.docs.first);
+          }
+          return null;
+        });
   }
 
   // Family CRUD Operations
@@ -698,7 +799,7 @@ class FirebaseService {
       final lowercaseQuery = query.toLowerCase();
       return persons.where((person) {
         return person.fullName.toLowerCase().contains(lowercaseQuery) ||
-               person.email.toLowerCase().contains(lowercaseQuery) ||
+               (person.email?.toLowerCase().contains(lowercaseQuery) ?? false) ||
                (person.phone?.toLowerCase().contains(lowercaseQuery) ?? false);
       }).toList();
     } catch (e) {

@@ -777,7 +777,7 @@ class _PersonSelectionDialogState extends State<_PersonSelectionDialog> {
   Widget build(BuildContext context) {
     final filteredPersons = widget.persons.where((person) {
       return person.fullName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-             person.email.toLowerCase().contains(_searchQuery.toLowerCase());
+             (person.email?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false);
     }).toList();
 
     return AlertDialog(
@@ -809,7 +809,7 @@ class _PersonSelectionDialogState extends State<_PersonSelectionDialog> {
                       radius: 20,
                     ),
                     title: Text(person.fullName),
-                    subtitle: Text(person.email),
+                    subtitle: Text(person.email ?? ''),
                     onTap: () {
                       Navigator.pop(context);
                       widget.onPersonSelected(person.id);
