@@ -1530,16 +1530,23 @@ class PersonImportExportService {
   /// Sauvegarder une personne
   Future<bool> _savePerson(Person person, ImportExportConfig config) async {
     try {
-      if (config.updateExisting && person.email != null) {
-        final existing = await _peopleService.findByEmail(person.email!);
+      // 🆕 Ajouter automatiquement le rôle "membre" aux personnes importées
+      final rolesWithMembre = Set<String>.from(person.roles);
+      rolesWithMembre.add('membre');
+      final personWithMembre = person.copyWith(roles: rolesWithMembre.toList());
+      
+      if (config.updateExisting && personWithMembre.email != null) {
+        final existing = await _peopleService.findByEmail(personWithMembre.email!);
         if (existing != null) {
-          final updated = person.copyWith(id: existing.id);
+          final updated = personWithMembre.copyWith(id: existing.id);
           await _peopleService.update(existing.id!, updated);
+          print('✅ Personne mise à jour avec rôle membre: ${personWithMembre.fullName}');
           return true;
         }
       }
       
-      await _peopleService.create(person);
+      await _peopleService.create(personWithMembre);
+      print('✅ Nouvelle personne créée avec rôle membre: ${personWithMembre.fullName}');
       return true;
     } catch (e) {
       print('Erreur lors de la sauvegarde: $e');
