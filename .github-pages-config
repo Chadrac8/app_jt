@@ -1,0 +1,20 @@
+# Configuration GitHub Pages pour Jubilé Tabernacle
+
+# Activé depuis la branche main
+# URL: https://chadrac8.github.io/app_jt/
+
+# Fichiers disponibles:
+# - index.html (page d'accueil)
+# - privacy_policy.html (politique de confidentialité)
+
+# Pour activer GitHub Pages:
+# 1. Aller sur https://github.com/Chadrac8/app_jt
+# 2. Settings → Pages
+# 3. Source: Deploy from a branch
+# 4. Branch: main
+# 5. Folder: / (root)
+# 6. Save
+
+# URLs finales:
+# https://chadrac8.github.io/app_jt/
+# https://chadrac8.github.io/app_jt/privacy_policy.html

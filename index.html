@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jubilé Tabernacle - Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #860505;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #860505;
+        }
+        
+        .card h3 {
+            color: #860505;
+            margin-top: 0;
+        }
+        
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .link-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(134, 5, 5, 0.2);
+            border-color: #860505;
+            text-decoration: none;
+        }
+        
+        .link-card h4 {
+            color: #860505;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        
+        .link-card p {
+            color: #666;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ Jubilé Tabernacle</h1>
+        <p class="subtitle">Documentation et Ressources de l'Application</p>
+        
+        <div class="card">
+            <h3><span class="emoji">📱</span>Application Mobile Communautaire</h3>
+            <p>Application dédiée à notre communauté spirituelle pour la gestion des membres, événements, groupes et ressources spirituelles.</p>
+            <p><span class="status active">Développement Actif</span></p>
+        </div>
+        
+        <div class="links">
+            <a href="privacy_policy.html" class="link-card">
+                <h4><span class="emoji">🔒</span>Politique de Confidentialité</h4>
+                <p>Informations sur la protection de vos données personnelles et vos droits RGPD</p>
+            </a>
+            
+            <a href="https://github.com/Chadrac8/app_jt" class="link-card" target="_blank">
+                <h4><span class="emoji">💻</span>Code Source</h4>
+                <p>Repository GitHub du projet avec documentation technique</p>
+            </a>
+            
+            <a href="https://jubile-tabernacle.fr" class="link-card" target="_blank">
+                <h4><span class="emoji">🌐</span>Site Web</h4>
+                <p>Site officiel de Jubilé Tabernacle France</p>
+            </a>
+        </div>
+        
+        <div class="card">
+            <h3><span class="emoji">📋</span>Fonctionnalités Principales</h3>
+            <ul>
+                <li>🧑‍🤝‍🧑 <strong>Gestion des Membres</strong> - Profils, rôles et responsabilités</li>
+                <li>👨‍👩‍👧‍👦 <strong>Gestion des Familles</strong> - Liens familiaux et contacts</li>
+                <li>📅 <strong>Événements</strong> - Calendrier communautaire et inscriptions</li>
+                <li>📋 <strong>Tâches et Services</strong> - Organisation des responsabilités</li>
+                <li>🔔 <strong>Notifications</strong> - Communication en temps réel</li>
+                <li>🍞 <strong>Pain Quotidien</strong> - Méditations spirituelles</li>
+                <li>🎵 <strong>Ressources</strong> - Cantiques et contenus spirituels</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h3><span class="emoji">🛡️</span>Sécurité et Confidentialité</h3>
+            <p>Notre application respecte les plus hauts standards de sécurité :</p>
+            <ul>
+                <li>🔐 <strong>Chiffrement</strong> de bout en bout</li>
+                <li>🇪🇺 <strong>Conformité RGPD</strong> européenne</li>
+                <li>🔒 <strong>Authentification sécurisée</strong> Firebase</li>
+                <li>🛡️ <strong>Hébergement sécurisé</strong> sur serveurs européens</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p><strong>© 2025 Jubilé Tabernacle. Tous droits réservés.</strong></p>
+            <p>Développé avec ❤️ pour notre communauté spirituelle</p>
+            <p><em>GitHub Pages activé - Dernière mise à jour : 2 octobre 2025</em></p>
+        </div>
+    </div>
+</body>
+</html>
