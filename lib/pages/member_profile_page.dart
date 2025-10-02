@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/firebase_service.dart';
@@ -985,8 +986,12 @@ class _MemberProfilePageState extends State<MemberProfilePage>
         // Sauvegarder l'ancienne URL pour la supprimer après upload réussi
         final oldImageUrl = _profileImageUrl;
         
-        // Obtenir l'ID de l'utilisateur actuel pour respecter les règles de sécurité Firebase
-        final userId = _currentPerson?.id ?? 'unknown';
+        // Obtenir l'UID Firebase Auth (pas l'ID PersonModel) pour respecter les règles de sécurité Firebase
+        final user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          throw Exception('Utilisateur non connecté');
+        }
+        final userId = user.uid; // UID Firebase Auth, pas PersonModel.id
         
         // Upload to Firebase Storage avec le bon chemin selon les règles de sécurité
         final imageUrl = await ImageStorage.ImageStorageService.uploadImage(
