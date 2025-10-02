@@ -927,25 +927,6 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
     print('✅ Validation du formulaire réussie');
     print('📋 Validation des champs supplémentaires...');
 
-      // 🆕 Validation obligatoire de la photo de profil
-      if (_profileImageUrl == null || _profileImageUrl!.isEmpty) {
-        print('❌ Photo de profil manquante');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('La photo de profil est obligatoire. Veuillez ajouter votre photo personnelle.'),
-            backgroundColor: AppTheme.redStandard,
-            duration: Duration(seconds: 4),
-          ),
-        );
-        // Scroll vers le haut pour montrer la section photo
-        _scrollController.animateTo(
-          0,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-        return;
-      }
-
       // Validation supplémentaire pour les champs requis non-textuels
       if (_birthDate == null) {
         print('❌ Date de naissance manquante');
@@ -979,6 +960,19 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
         );
         return;
       }
+
+      // 🆕 Validation obligatoire de la photo de profil
+      if (_profileImageUrl == null || _profileImageUrl!.isEmpty) {
+        print('❌ Photo de profil manquante');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Veuillez ajouter une photo de profil pour continuer'),
+            backgroundColor: AppTheme.redStandard,
+            duration: Duration(seconds: 4),
+          ),
+        );
+        return;
+      }
       
     print('✅ Validation des champs supplémentaires réussie');
     print('📊 Valeurs actuelles des champs:');
@@ -995,6 +989,7 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
     print('  - Date de naissance: $_birthDate');
     print('  - Genre: "$_gender"');
     print('  - État matrimonial: "$_maritalStatus"');
+    print('  - Photo de profil: "$_profileImageUrl"');
     
     print('🔄 Construction du téléphone complet: ${_buildFullPhone()}');
     print('🔄 Construction de l\'adresse complète: ${_buildFullAddress()}');
@@ -1301,84 +1296,96 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
 
   Widget _buildProfileImageSection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // 🆕 Message explicatif obligatoire
-        Container(
-          padding: const EdgeInsets.all(AppTheme.spaceMedium),
-          margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
-          decoration: BoxDecoration(
-            color: const Color(0xFF667EEA).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-            border: Border.all(
-              color: const Color(0xFF667EEA).withOpacity(0.3),
-              width: 1,
+        // 🆕 Titre avec indicateur obligatoire
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.photo_camera_outlined,
+              color: const Color(0xFF667EEA),
+              size: 20,
+            ),
+            const SizedBox(width: AppTheme.spaceSmall),
+            Text(
+              'Photo de profil',
+              style: TextStyle(
+                fontSize: AppTheme.fontSize18,
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.black100,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              '*',
+              style: TextStyle(
+                fontSize: AppTheme.fontSize18,
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.redStandard,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppTheme.spaceMedium),
+        
+        // Validation visuelle
+        if (_profileImageUrl == null || _profileImageUrl!.isEmpty)
+          Container(
+            margin: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 8.0,
+            ),
+            decoration: BoxDecoration(
+              color: AppTheme.redStandard.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              border: Border.all(
+                color: AppTheme.redStandard.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.warning_amber_outlined,
+                  color: AppTheme.redStandard,
+                  size: 16,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Text(
+                  'Photo de profil obligatoire',
+                  style: TextStyle(
+                    color: AppTheme.redStandard,
+                    fontSize: AppTheme.fontSize14,
+                    fontWeight: AppTheme.fontMedium,
+                  ),
+                ),
+              ],
             ),
           ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF667EEA),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                ),
-                child: const Icon(
-                  Icons.info_outline,
-                  color: AppTheme.white100,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: AppTheme.spaceMedium),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Photo de profil obligatoire *',
-                      style: TextStyle(
-                        fontSize: AppTheme.fontSize14,
-                        fontWeight: AppTheme.fontSemiBold,
-                        color: Color(0xFF667EEA),
-                      ),
-                    ),
-                    const SizedBox(height: AppTheme.spaceXSmall),
-                    Text(
-                      'Ajoutez votre photo personnelle (pas une image générique). Cette photo sera visible par les autres membres.',
-                      style: TextStyle(
-                        fontSize: AppTheme.fontSize12,
-                        color: AppTheme.grey500,
-                        height: 1.3,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        // Photo picker avec indicateur obligatoire
+        
         Center(
           child: Stack(
             children: [
               Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: (_profileImageUrl == null || _profileImageUrl!.isEmpty) 
-                        ? AppTheme.redStandard.withOpacity(0.5)
-                        : const Color(0xFF667EEA).withOpacity(0.3),
-                    width: 3,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.black100.withOpacity(0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: const Color(0xFF667EEA).withOpacity(0.3),
+                width: 3,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppTheme.black100.withOpacity(0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
                 ),
+              ],
+            ),
             child: ClipOval(
               child: _profileImageUrl != null && _profileImageUrl!.isNotEmpty
                   ? CachedNetworkImage(
@@ -1390,106 +1397,58 @@ class _InitialProfileSetupPageState extends State<InitialProfileSetupPage>
                           child: CircularProgressIndicator(),
                         ),
                       ),
-                        errorWidget: (context, url, error) => Container(
+                      errorWidget: (context, url, error) => Container(
+                        color: AppTheme.grey500,
+                        child: const Icon(
+                          Icons.person,
+                          size: 60,
                           color: AppTheme.grey500,
-                          child: const Icon(
-                            Icons.person,
-                            size: 60,
-                            color: AppTheme.grey500,
-                          ),
-                        ),
-                      )
-                    : Container(
-                        color: (_profileImageUrl == null || _profileImageUrl!.isEmpty) 
-                            ? AppTheme.redStandard.withOpacity(0.1)
-                            : AppTheme.grey500,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo,
-                              size: 40,
-                              color: (_profileImageUrl == null || _profileImageUrl!.isEmpty) 
-                                  ? AppTheme.redStandard
-                                  : AppTheme.grey500,
-                            ),
-                            const SizedBox(height: AppTheme.spaceXSmall),
-                            Text(
-                              'OBLIGATOIRE',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: AppTheme.fontBold,
-                                color: AppTheme.redStandard,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: GestureDetector(
-                onTap: _pickProfileImage,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: (_profileImageUrl == null || _profileImageUrl!.isEmpty) 
-                        ? AppTheme.redStandard
-                        : const Color(0xFF667EEA),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppTheme.white100,
-                      width: 3,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.black100.withOpacity(0.2),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
+                    )
+                  : Container(
+                      color: AppTheme.grey500,
+                      child: const Icon(
+                        Icons.person,
+                        size: 60,
+                        color: AppTheme.grey500,
                       ),
-                    ],
-                  ),
-                  child: Icon(
-                    (_profileImageUrl == null || _profileImageUrl!.isEmpty) 
-                        ? Icons.add_a_photo
-                        : Icons.edit,
-                    color: AppTheme.white100,
-                    size: 20,
-                  ),
-                ),
-              ),
+                    ),
             ),
-            // 🆕 Indicateur obligatoire
-            if (_profileImageUrl == null || _profileImageUrl!.isEmpty)
-              Positioned(
-                top: -5,
-                right: -5,
-                child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: AppTheme.redStandard,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppTheme.white100,
-                      width: 2,
-                    ),
-                  ),
-                  child: const Text(
-                    '*',
-                    style: TextStyle(
-                      color: AppTheme.white100,
-                      fontSize: 12,
-                      fontWeight: AppTheme.fontBold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: _pickProfileImage,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF667EEA),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppTheme.white100,
+                    width: 3,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.black100.withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.camera_alt,
+                  color: AppTheme.white100,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),),
       ],
     );
   }
