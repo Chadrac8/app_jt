@@ -3,14 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
 import '../services/event_recurrence_manager_service.dart';
-import '../services/recurring_calendar_service.dart';
 import '../widgets/event_card.dart';
 import '../widgets/event_search_filter_bar.dart';
 import '../widgets/event_calendar_view.dart';
-import '../widgets/recurring_event_card.dart';
 import 'event_detail_page.dart';
 import 'event_form_page.dart';
-import 'recurring_events_test_page.dart';
 import '../../theme.dart';
 
 
@@ -344,18 +341,6 @@ class _EventsHomePageState extends State<EventsHomePage>
                           IconButton(
                             onPressed: _toggleViewMode,
                             icon: Icon(_isCalendarView ? Icons.view_list : Icons.calendar_month),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RecurringEventsTestPage(),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.repeat),
-                            tooltip: 'Test événements récurrents',
                           ),
                         ],
                       ],

@@ -9,7 +9,7 @@ import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
 import '../widgets/event_recurrence_widget.dart';
 import '../widgets/person_selector_widget.dart';
-import 'firebase_storage_diagnostic_page.dart';
+
 
 class EventFormPage extends StatefulWidget {
   final EventModel? event;
@@ -234,17 +234,6 @@ class _EventFormPageState extends State<EventFormPage>
             content: Text('Erreur lors de la sélection de l\'image: $e'),
             backgroundColor: AppTheme.errorColor,
             duration: const Duration(seconds: 5),
-            action: SnackBarAction(
-              label: 'Diagnostic',
-              textColor: AppTheme.white100,
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const FirebaseStorageDiagnosticPage(),
-                  ),
-                );
-              },
-            ),
           ),
         );
       }

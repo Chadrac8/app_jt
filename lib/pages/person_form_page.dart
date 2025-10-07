@@ -12,7 +12,7 @@ import '../widgets/custom_fields_widget.dart';
 
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
-import 'firebase_storage_diagnostic_page.dart';
+
 import '../utils/performance_utils.dart';
 import '../../theme.dart';
 
@@ -335,17 +335,6 @@ class _PersonFormPageState extends State<PersonFormPage>
             content: Text('Erreur lors de la sélection d\'image: $e'),
             backgroundColor: Theme.of(context).colorScheme.error,
             duration: const Duration(seconds: 5),
-            action: SnackBarAction(
-              label: 'Diagnostic',
-              textColor: AppTheme.white100,
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const FirebaseStorageDiagnosticPage(),
-                  ),
-                );
-              },
-            ),
           ),
         );
       }
