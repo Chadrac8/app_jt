@@ -47,8 +47,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   int _readingStreak = 7; // Nombre de jours consécutifs de lecture
   int _readingTimeToday = 25; // Temps de lecture aujourd'hui en minutes
   
-  // Index de l'onglet actuel
-  int _currentTabIndex = 0;
+  // Index de l'onglet actuel (géré par TabController)
   
   // Variables pour l'onglet Notes - reproduction exacte de perfect 13
   String _currentFilter = 'all'; // 'all', 'notes', 'highlights'
@@ -61,9 +60,6 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(() {
-      setState(() {
-        _currentTabIndex = _tabController.index;
-      });
       
       // Forcer le rechargement des préférences quand on change d'onglet
       if (_tabController.index == 3) { // Onglet Notes (index 3)
@@ -201,7 +197,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
                     elevation: 1,
-                    color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                    color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                     child: ListTile(
                       leading: Container(
                         padding: const EdgeInsets.all(AppTheme.spaceSmall),
@@ -471,7 +467,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                           return Card(
                             margin: const EdgeInsets.only(bottom: 12),
                             elevation: 1,
-                            color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                             child: Padding(
                               padding: const EdgeInsets.all(AppTheme.spaceMedium),
                               child: Column(
@@ -777,7 +773,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         backgroundColor: theme.colorScheme.surface,
         body: Center(
           child: Shimmer.fromColors(
-            baseColor: theme.colorScheme.surfaceVariant,
+            baseColor: theme.colorScheme.surfaceContainerHighest,
             highlightColor: theme.colorScheme.primary.withValues(alpha: 0.12),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -827,7 +823,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             child: TabBar(
               controller: _tabController,
               labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
-              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
+              unselectedLabelColor: AppTheme.onPrimaryColor.withValues(alpha: 0.7), // Texte blanc semi-transparent
               indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
               indicatorSize: TabBarIndicatorSize.label,
               indicatorWeight: 3.0,
@@ -960,13 +956,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           end: Alignment.bottomRight,
           colors: [
             AppTheme.primaryColor,
-            AppTheme.primaryColor.withOpacity(0.8),
+            AppTheme.primaryColor.withValues(alpha: 0.8),
           ],
         ),
         borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primaryColor.withOpacity(0.3),
+            color: AppTheme.primaryColor.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -980,7 +976,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               Container(
                 padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
-                  color: AppTheme.white100.withOpacity(0.2),
+                  color: AppTheme.white100.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 ),
                 child: const Icon(
@@ -998,7 +994,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                       _getGreeting(),
                       style: GoogleFonts.inter(
                         fontSize: AppTheme.fontSize16,
-                        color: AppTheme.white100.withOpacity(0.9),
+                        color: AppTheme.white100.withValues(alpha: 0.9),
                         fontWeight: AppTheme.fontMedium,
                       ),
                     ),
@@ -1070,10 +1066,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     return Container(
       padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
-        color: AppTheme.white100.withOpacity(0.15),
+        color: AppTheme.white100.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
         border: Border.all(
-          color: AppTheme.white100.withOpacity(0.2),
+          color: AppTheme.white100.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -1081,7 +1077,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           Container(
             padding: const EdgeInsets.all(AppTheme.spaceSmall),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -1103,7 +1099,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             displayLabel,
             style: GoogleFonts.inter(
               fontSize: AppTheme.fontSize12,
-              color: AppTheme.white100.withOpacity(0.8),
+              color: AppTheme.white100.withValues(alpha: 0.8),
             ),
           ),
         ],
@@ -1208,7 +1204,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.black100.withOpacity(0.05),
+                    color: AppTheme.black100.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -1291,7 +1287,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   color: AppTheme.primaryColor,
                   onTap: () {
                     // Naviguer vers le dernier chapitre lu
-                    setState(() => _currentTabIndex = 1);
+                    _tabController.animateTo(1);
                   },
                 ),
               ),
@@ -1303,7 +1299,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   color: AppTheme.blueStandard,
                   onTap: () {
                     // Ouvrir la recherche
-                    setState(() => _currentTabIndex = 2);
+                    _tabController.animateTo(2);
                   },
                 ),
               ),
@@ -1350,10 +1346,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       child: Container(
         padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: Border.all(
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: 0.2),
           ),
         ),
         child: Column(
@@ -1365,7 +1361,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 boxShadow: [
                   BoxShadow(
-                    color: color.withOpacity(0.3),
+                    color: color.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -1663,7 +1659,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           end: Alignment.bottomCenter,
           colors: [
             AppTheme.white100,
-            AppTheme.grey500.withOpacity(0.03),
+            AppTheme.grey500.withValues(alpha: 0.03),
           ],
         ),
       ),
@@ -1695,12 +1691,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
           end: Alignment.bottomRight,
           colors: [
             AppTheme.white100,
-            AppTheme.grey500.withOpacity(0.05),
+            AppTheme.grey500.withValues(alpha: 0.05),
           ],
         ),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black100.withOpacity(0.05),
+            color: AppTheme.black100.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -1719,13 +1715,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     end: Alignment.bottomRight,
                     colors: [
                       AppTheme.primaryColor,
-                      AppTheme.primaryColor.withOpacity(0.8),
+                      AppTheme.primaryColor.withValues(alpha: 0.8),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   boxShadow: [
                     BoxShadow(
-                      color: AppTheme.primaryColor.withOpacity(0.2),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.2),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -1767,7 +1763,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 icon: Container(
                   padding: const EdgeInsets.all(AppTheme.space6),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withOpacity(0.1),
+                    color: AppTheme.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -1869,12 +1865,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: Border.all(
                       color: _selectedBook != null 
-                          ? AppTheme.primaryColor.withOpacity(0.3)
-                          : AppTheme.grey500.withOpacity(0.2),
+                          ? AppTheme.primaryColor.withValues(alpha: 0.3)
+                          : AppTheme.grey500.withValues(alpha: 0.2),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppTheme.black100.withOpacity(0.03),
+                        color: AppTheme.black100.withValues(alpha: 0.03),
                         blurRadius: 6,
                         offset: const Offset(0, 1),
                       ),
@@ -1949,16 +1945,16 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   decoration: BoxDecoration(
-                    color: _selectedBook != null ? AppTheme.white100 : AppTheme.grey500.withOpacity(0.1),
+                    color: _selectedBook != null ? AppTheme.white100 : AppTheme.grey500.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                     border: Border.all(
                       color: _selectedChapter != null 
-                          ? AppTheme.primaryColor.withOpacity(0.3)
-                          : AppTheme.grey500.withOpacity(0.2),
+                          ? AppTheme.primaryColor.withValues(alpha: 0.3)
+                          : AppTheme.grey500.withValues(alpha: 0.2),
                     ),
                     boxShadow: _selectedBook != null ? [
                       BoxShadow(
-                        color: AppTheme.black100.withOpacity(0.03),
+                        color: AppTheme.black100.withValues(alpha: 0.03),
                         blurRadius: 6,
                         offset: const Offset(0, 1),
                       ),
@@ -2007,7 +2003,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: AppTheme.primaryColor.withOpacity(0.1),
+                                      color: AppTheme.primaryColor.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
@@ -2057,8 +2053,8 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppTheme.primaryColor.withOpacity(0.1),
-                    AppTheme.primaryColor.withOpacity(0.05),
+                    AppTheme.primaryColor.withValues(alpha: 0.1),
+                    AppTheme.primaryColor.withValues(alpha: 0.05),
                   ],
                 ),
                 shape: BoxShape.circle,
@@ -2066,7 +2062,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               child: Icon(
                 Icons.menu_book_outlined,
                 size: 80,
-                color: AppTheme.primaryColor.withOpacity(0.7),
+                color: AppTheme.primaryColor.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: AppTheme.spaceXLarge),
@@ -2134,7 +2130,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         separatorBuilder: (_, __) => const SizedBox(height: AppTheme.space10),
         itemBuilder: (context, i) => Shimmer.fromColors(
           baseColor: theme.colorScheme.surface,
-          highlightColor: theme.colorScheme.primary.withOpacity(0.13),
+          highlightColor: theme.colorScheme.primary.withValues(alpha: 0.13),
           child: Container(
             height: 64,
             decoration: BoxDecoration(
@@ -2158,13 +2154,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppTheme.primaryColor.withOpacity(0.08),
-                AppTheme.primaryColor.withOpacity(0.03),
+                AppTheme.primaryColor.withValues(alpha: 0.08),
+                AppTheme.primaryColor.withValues(alpha: 0.03),
               ],
             ),
             borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             border: Border.all(
-              color: AppTheme.primaryColor.withOpacity(0.1),
+              color: AppTheme.primaryColor.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -2174,7 +2170,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   Container(
                     padding: const EdgeInsets.all(AppTheme.spaceSmall),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
@@ -2280,15 +2276,15 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                 child: Container(
                   decoration: BoxDecoration(
                     color: isHighlight
-                        ? AppTheme.primaryColor.withOpacity(0.08)
+                        ? AppTheme.primaryColor.withValues(alpha: 0.08)
                         : AppTheme.white100,
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     border: isHighlight 
-                        ? Border.all(color: AppTheme.primaryColor.withOpacity(0.3), width: 1.5)
-                        : Border.all(color: AppTheme.grey500.withOpacity(0.1)),
+                        ? Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3), width: 1.5)
+                        : Border.all(color: AppTheme.grey500.withValues(alpha: 0.1)),
                     boxShadow: [
                       BoxShadow(
-                        color: AppTheme.black100.withOpacity(0.03),
+                        color: AppTheme.black100.withValues(alpha: 0.03),
                         blurRadius: 8,
                         offset: const Offset(0, 1),
                       ),
@@ -2324,8 +2320,8 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: [
-                                          AppTheme.primaryColor.withOpacity(0.1),
-                                          AppTheme.primaryColor.withOpacity(0.05),
+                                          AppTheme.primaryColor.withValues(alpha: 0.1),
+                                          AppTheme.primaryColor.withValues(alpha: 0.05),
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -2443,7 +2439,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                                     Container(
                                       padding: const EdgeInsets.all(AppTheme.spaceXSmall),
                                       decoration: BoxDecoration(
-                                        color: AppTheme.blueStandard.withOpacity(0.1),
+                                        color: AppTheme.blueStandard.withValues(alpha: 0.1),
                                         shape: BoxShape.circle,
                                       ),
                                       child: Icon(
@@ -2465,10 +2461,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                               width: double.infinity,
                               padding: const EdgeInsets.all(AppTheme.space12),
                               decoration: BoxDecoration(
-                                color: AppTheme.blueStandard.withOpacity(0.05),
+                                color: AppTheme.blueStandard.withValues(alpha: 0.05),
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: AppTheme.blueStandard.withOpacity(0.2),
+                                  color: AppTheme.blueStandard.withValues(alpha: 0.2),
                                 ),
                               ),
                               child: Row(
@@ -2503,15 +2499,15 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                               curve: Curves.easeOutCubic,
                               padding: const EdgeInsets.all(AppTheme.space12),
                               decoration: BoxDecoration(
-                                color: AppTheme.primaryColor.withOpacity(0.08),
+                                color: AppTheme.primaryColor.withValues(alpha: 0.08),
                                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                                 border: Border.all(
-                                  color: AppTheme.primaryColor.withOpacity(0.2),
+                                  color: AppTheme.primaryColor.withValues(alpha: 0.2),
                                   width: 1,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppTheme.primaryColor.withOpacity(0.1),
+                                    color: AppTheme.primaryColor.withValues(alpha: 0.1),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),
@@ -2603,10 +2599,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? color.withOpacity(0.1) : Colors.transparent,
+          color: isActive ? color.withValues(alpha: 0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isActive ? color.withOpacity(0.3) : AppTheme.grey500.withOpacity(0.2),
+            color: isActive ? color.withValues(alpha: 0.3) : AppTheme.grey500.withValues(alpha: 0.2),
           ),
         ),
         child: Column(
@@ -2869,7 +2865,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
                     elevation: 1,
-                    color: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                    color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                     child: ListTile(
                       leading: Container(
                         padding: const EdgeInsets.all(AppTheme.spaceSmall),
@@ -3148,7 +3144,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black100.withOpacity(0.06),
+            color: AppTheme.black100.withValues(alpha: 0.06),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -3178,7 +3174,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 Container(
                   padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
-                    color: AppTheme.white100.withOpacity(0.2),
+                    color: AppTheme.white100.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: const Icon(
@@ -3204,7 +3200,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         'Explorez les Écritures',
                         style: GoogleFonts.inter(
                           fontSize: AppTheme.fontSize14,
-                          color: AppTheme.white100.withOpacity(0.9),
+                          color: AppTheme.white100.withValues(alpha: 0.9),
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -3215,7 +3211,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppTheme.white100.withOpacity(0.2),
+                      color: AppTheme.white100.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                     ),
                     child: Text(
@@ -3242,7 +3238,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     color: AppTheme.grey50,
                     borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                     border: Border.all(
-                      color: AppTheme.grey500.withOpacity(0.2),
+                      color: AppTheme.grey500.withValues(alpha: 0.2),
                     ),
                   ),
                   child: TextField(
@@ -3260,7 +3256,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         margin: const EdgeInsets.all(AppTheme.space12),
                         padding: const EdgeInsets.all(AppTheme.spaceSmall),
                         decoration: BoxDecoration(
-                          color: AppTheme.blueStandard.withOpacity(0.1),
+                          color: AppTheme.blueStandard.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                         child: Icon(
@@ -3325,7 +3321,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   color: AppTheme.white100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
-                    color: AppTheme.grey500.withOpacity(0.2),
+                    color: AppTheme.grey500.withValues(alpha: 0.2),
                   ),
                 ),
                 child: DropdownButton<String>(
@@ -3396,7 +3392,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.blueStandard.withOpacity(0.3),
+                    color: AppTheme.blueStandard.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -3470,10 +3466,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: (suggestion['color'] as Color).withOpacity(0.1),
+                color: (suggestion['color'] as Color).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 border: Border.all(
-                  color: (suggestion['color'] as Color).withOpacity(0.3),
+                  color: (suggestion['color'] as Color).withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -3510,7 +3506,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
           Container(
             padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
-              color: AppTheme.blueStandard.withOpacity(0.1),
+              color: AppTheme.blueStandard.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -3584,10 +3580,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
             child: Container(
               padding: const EdgeInsets.all(AppTheme.space20),
               decoration: BoxDecoration(
-                color: (search['color'] as Color).withOpacity(0.1),
+                color: (search['color'] as Color).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 border: Border.all(
-                  color: (search['color'] as Color).withOpacity(0.2),
+                  color: (search['color'] as Color).withValues(alpha: 0.2),
                 ),
               ),
               child: Column(
@@ -3657,7 +3653,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               ),
               borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               border: Border.all(
-                color: AppTheme.greenStandard.withOpacity(0.2),
+                color: AppTheme.greenStandard.withValues(alpha: 0.2),
               ),
             ),
             child: Row(
@@ -3748,15 +3744,15 @@ Partagé depuis l'app Jubilé Tabernacle''';
       child: Container(
         decoration: BoxDecoration(
           color: isHighlight
-              ? AppTheme.primaryColor.withOpacity(0.08)
+              ? AppTheme.primaryColor.withValues(alpha: 0.08)
               : AppTheme.white100,
           borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: isHighlight 
-              ? Border.all(color: AppTheme.primaryColor.withOpacity(0.3), width: 2)
-              : Border.all(color: AppTheme.grey500.withOpacity(0.1)),
+              ? Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3), width: 2)
+              : Border.all(color: AppTheme.grey500.withValues(alpha: 0.1)),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.black100.withOpacity(0.04),
+              color: AppTheme.black100.withValues(alpha: 0.04),
               blurRadius: 12,
               offset: const Offset(0, 2),
             ),
@@ -3789,7 +3785,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.blueStandard.withOpacity(0.3),
+                            color: AppTheme.blueStandard.withValues(alpha: 0.3),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -3836,7 +3832,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: AppTheme.blueStandard.withOpacity(0.1),
+                              color: AppTheme.blueStandard.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                             ),
                             child: Text(
@@ -3873,7 +3869,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           Container(
                             padding: const EdgeInsets.all(AppTheme.space6),
                             decoration: BoxDecoration(
-                              color: AppTheme.greenStandard.withOpacity(0.1),
+                              color: AppTheme.greenStandard.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -3895,10 +3891,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     width: double.infinity,
                     padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
-                      color: AppTheme.greenStandard.withOpacity(0.05),
+                      color: AppTheme.greenStandard.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
-                        color: AppTheme.greenStandard.withOpacity(0.2),
+                        color: AppTheme.greenStandard.withValues(alpha: 0.2),
                       ),
                     ),
                     child: Row(
@@ -3931,7 +3927,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   Container(
                     padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
-                      color: AppTheme.grey500.withOpacity(0.05),
+                      color: AppTheme.grey500.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     ),
                     child: Row(
@@ -3985,7 +3981,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
           Container(
             padding: const EdgeInsets.all(AppTheme.spaceLarge),
             decoration: BoxDecoration(
-              color: AppTheme.orangeStandard.withOpacity(0.1),
+              color: AppTheme.orangeStandard.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -4292,7 +4288,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
         borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.warningColor.withOpacity(0.3),
+            color: AppTheme.warningColor.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -4307,7 +4303,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 Container(
                   padding: const EdgeInsets.all(AppTheme.space12),
                   decoration: BoxDecoration(
-                    color: AppTheme.white100.withOpacity(0.2),
+                    color: AppTheme.white100.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   ),
                   child: const Icon(
@@ -4335,7 +4331,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                             : 'Collection de versets inspirants',
                         style: GoogleFonts.inter(
                           fontSize: AppTheme.fontSize14,
-                          color: AppTheme.white100.withOpacity(0.9),
+                          color: AppTheme.white100.withValues(alpha: 0.9),
                           fontWeight: AppTheme.fontMedium,
                         ),
                       ),
@@ -4346,7 +4342,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppTheme.white100.withOpacity(0.2),
+                      color: AppTheme.white100.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                     ),
                     child: Text(
@@ -4410,10 +4406,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: AppTheme.white100.withOpacity(0.15),
+          color: AppTheme.white100.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: Border.all(
-            color: AppTheme.white100.withOpacity(0.2),
+            color: AppTheme.white100.withValues(alpha: 0.2),
           ),
         ),
         child: Column(
@@ -4428,7 +4424,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               label,
               style: GoogleFonts.inter(
                 fontSize: AppTheme.fontSize11,
-                color: AppTheme.white100.withOpacity(0.9),
+                color: AppTheme.white100.withValues(alpha: 0.9),
                 fontWeight: AppTheme.fontMedium,
               ),
               textAlign: TextAlign.center,
@@ -4448,12 +4444,12 @@ Partagé depuis l'app Jubilé Tabernacle''';
             padding: const EdgeInsets.all(AppTheme.spaceXLarge),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppTheme.warning.withAlpha(51)!, AppTheme.grey100],
+                colors: [AppTheme.warning.withAlpha(51), AppTheme.grey100],
               ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.warningColor.withOpacity(0.2),
+                  color: AppTheme.warningColor.withValues(alpha: 0.2),
                   blurRadius: 20,
                   offset: const Offset(0, 4),
                 ),
@@ -4498,14 +4494,14 @@ Partagé depuis l'app Jubilé Tabernacle''';
         'description': 'Découvrez des versets\ninspirantes',
         'icon': Icons.explore,
         'color': AppTheme.blueStandard,
-        'onTap': () => setState(() => _currentTabIndex = 1),
+        'onTap': () => _tabController.animateTo(1),
       },
       {
         'title': 'Rechercher',
         'description': 'Trouvez des passages\npar thème',
         'icon': Icons.search,
         'color': AppTheme.greenStandard,
-        'onTap': () => setState(() => _currentTabIndex = 2),
+        'onTap': () => _tabController.animateTo(2),
       },
     ];
 
@@ -4520,14 +4516,14 @@ Partagé depuis l'app Jubilé Tabernacle''';
             child: Container(
               padding: const EdgeInsets.all(AppTheme.spaceLarge),
               decoration: BoxDecoration(
-                color: (discovery['color'] as Color).withOpacity(0.1),
+                color: (discovery['color'] as Color).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                 border: Border.all(
-                  color: (discovery['color'] as Color).withOpacity(0.2),
+                  color: (discovery['color'] as Color).withValues(alpha: 0.2),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: (discovery['color'] as Color).withOpacity(0.1),
+                    color: (discovery['color'] as Color).withValues(alpha: 0.1),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -4542,7 +4538,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                       boxShadow: [
                         BoxShadow(
-                          color: (discovery['color'] as Color).withOpacity(0.3),
+                          color: (discovery['color'] as Color).withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -4594,11 +4590,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
             padding: const EdgeInsets.all(AppTheme.space20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppTheme.warning.withAlpha(25)!, AppTheme.grey50],
+                colors: [AppTheme.warning.withAlpha(25), AppTheme.grey50],
               ),
               borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
               border: Border.all(
-                color: AppTheme.warningColor.withOpacity(0.2),
+                color: AppTheme.warningColor.withValues(alpha: 0.2),
               ),
             ),
             child: Row(
@@ -4696,11 +4692,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
           ),
           borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
           border: Border.all(
-            color: AppTheme.warningColor.withOpacity(0.2),
+            color: AppTheme.warningColor.withValues(alpha: 0.2),
           ),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.warningColor.withOpacity(0.1),
+              color: AppTheme.warningColor.withValues(alpha: 0.1),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -4733,7 +4729,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.warningColor.withOpacity(0.3),
+                            color: AppTheme.warningColor.withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -4752,7 +4748,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       decoration: BoxDecoration(
-                        color: AppTheme.warningColor.withOpacity(0.2),
+                        color: AppTheme.warningColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Text(
@@ -4774,7 +4770,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           Container(
                             padding: const EdgeInsets.all(AppTheme.space6),
                             decoration: BoxDecoration(
-                              color: AppTheme.primaryColor.withOpacity(0.1),
+                              color: AppTheme.primaryColor.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -4788,7 +4784,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           Container(
                             padding: const EdgeInsets.all(AppTheme.space6),
                             decoration: BoxDecoration(
-                              color: AppTheme.greenStandard.withOpacity(0.1),
+                              color: AppTheme.greenStandard.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -4812,7 +4808,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     color: AppTheme.white100,
                     borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     border: Border.all(
-                      color: AppTheme.warningColor.withOpacity(0.1),
+                      color: AppTheme.warningColor.withValues(alpha: 0.1),
                     ),
                   ),
                   child: Column(
@@ -4851,7 +4847,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [AppTheme.warning.withAlpha(51)!, AppTheme.grey100],
+                              colors: [AppTheme.warning.withAlpha(51), AppTheme.grey100],
                             ),
                             borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                           ),
@@ -4876,10 +4872,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     width: double.infinity,
                     padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
-                      color: AppTheme.greenStandard.withOpacity(0.05),
+                      color: AppTheme.greenStandard.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
-                        color: AppTheme.greenStandard.withOpacity(0.2),
+                        color: AppTheme.greenStandard.withValues(alpha: 0.2),
                       ),
                     ),
                     child: Row(
@@ -4927,7 +4923,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                     padding: const EdgeInsets.all(AppTheme.spaceMedium),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [AppTheme.warning.withAlpha(25)!, AppTheme.grey50],
+                        colors: [AppTheme.warning.withAlpha(25), AppTheme.grey50],
                       ),
                       borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                     ),
@@ -5183,7 +5179,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                         )
                       ]
                     : null,
-                backgroundColor: WidgetStateProperty.all(colorScheme.surfaceVariant.withValues(alpha: 0.3)),
+                backgroundColor: WidgetStateProperty.all(colorScheme.surfaceContainerHighest.withValues(alpha: 0.3)),
                 shadowColor: WidgetStateProperty.all(Colors.transparent),
                 elevation: WidgetStateProperty.all(0),
                 shape: WidgetStateProperty.all(
