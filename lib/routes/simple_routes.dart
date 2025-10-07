@@ -41,7 +41,7 @@ import '../pages/admin/admin_dashboard_page.dart';
 
 // Vues modulaires rapports
 // import '../modules/reports/views/report_detail_view.dart';
-import '../modules/reports/views/report_form_view.dart';
+// import '../modules/reports/views/report_form_view.dart';
 
 // Auth
 import '../auth/login_page.dart';
@@ -119,9 +119,6 @@ class SimpleRoutes {
     '/admin/message': (context) => const MessagePage(),
     // '/admin/automation': (context) => const AutomationHomePage(),
     // '/admin/reports': (context) => const ReportsHomePage(),
-    
-    // Routes modulaires rapports
-    '/reports/form': (context) => const ReportFormView(),
     
     // Diagnostic et utilitaires
     // '/diagnostic/indexes': (context) => const IndexDiagnosticPage(),

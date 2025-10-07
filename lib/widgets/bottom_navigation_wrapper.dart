@@ -185,11 +185,11 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
       // case 'automation':
       //   return const MemberAutomationPage();
-      case 'reports':
-        return Scaffold(
-          appBar: AppBar(title: const Text('Rapports')),
-          body: const Center(child: Text('Module Rapports - En cours de développement')),
-        );
+      // case 'reports':
+      //   return Scaffold(
+      //     appBar: AppBar(title: const Text('Rapports')),
+      //     body: const Center(child: Text('Module Rapports - En cours de développement')),
+      //   );
       case 'appointments':
         return const MemberAppointmentsPage();
       case 'prayers':
@@ -944,8 +944,8 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       case 'tasks':
         return 'Mes Tâches';
 
-      case 'automation':
-        return 'Automatisations';
+      // case 'automation':
+      //   return 'Automatisations';
 
       case 'calendar':
         return 'Calendrier';

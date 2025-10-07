@@ -349,17 +349,6 @@ class AppConfigFirebaseService {
         order: 3,
       ),
       ModuleConfig(
-        id: 'reports',
-        name: 'Rapports',
-        description: 'Analyses et statistiques',
-        iconName: 'bar_chart',
-        route: 'reports',
-        category: 'management',
-        isEnabledForMembers: true,
-        isPrimaryInBottomNav: true,
-        order: 4,
-      ),
-      ModuleConfig(
         id: 'blog',
         name: 'Blog',
         description: 'Articles et actualités',
