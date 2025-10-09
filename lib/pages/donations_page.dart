@@ -14,7 +14,6 @@ class DonationsPage extends StatefulWidget {
 }
 
 class _DonationsPageState extends State<DonationsPage> {
-  int _selectedDonationType = 0;
   bool _showRIB = false;
 
   final List<DonationType> _donationTypes = [
@@ -161,43 +160,41 @@ class _DonationsPageState extends State<DonationsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Types de dons',
+          'Payer par carte bancaire',
           style: textTheme.titleLarge?.copyWith(
             color: colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
+        const SizedBox(height: AppTheme.spaceSmall),
+        Text(
+          'Choisissez le type de don et payez en ligne de manière sécurisée',
+          style: textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
         const SizedBox(height: AppTheme.spaceMedium),
         ...List.generate(_donationTypes.length, (index) {
           final donation = _donationTypes[index];
-          final isSelected = _selectedDonationType == index;
           
           final cardContent = Container(
             padding: EdgeInsets.all(AppTheme.actionCardPadding), // Adaptatif: 16dp mobile, 20dp desktop
             decoration: BoxDecoration(
-              color: isSelected ? donation.color.withOpacity(0.12) : colorScheme.surface,
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(AppTheme.actionCardRadius), // Adaptatif: 12dp iOS, 16dp Android
               border: Border.all(
-                color: isSelected ? donation.color : colorScheme.outline.withOpacity(0.2),
-                width: isSelected ? 2 : AppTheme.actionCardBorderWidth, // Adaptatif: 0.5px iOS, 1px Android
+                color: colorScheme.outline.withOpacity(0.2),
+                width: AppTheme.actionCardBorderWidth, // Adaptatif: 0.5px iOS, 1px Android
               ),
               boxShadow: AppTheme.isApplePlatform
                   ? [] // iOS: pas de shadow
-                  : isSelected
-                      ? [
-                          BoxShadow(
-                            color: donation.color.withOpacity(0.18),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ]
-                      : [
-                          BoxShadow(
-                            color: colorScheme.shadow.withOpacity(0.05),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+                  : [
+                      BoxShadow(
+                        color: colorScheme.shadow.withOpacity(0.05),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
             ),
             child: Row(
               children: [
@@ -235,12 +232,11 @@ class _DonationsPageState extends State<DonationsPage> {
                     ],
                   ),
                 ),
-                if (isSelected)
-                  Icon(
-                    Icons.check_circle,
-                    color: donation.color,
-                    size: 24,
-                  ),
+                Icon(
+                  AppTheme.isApplePlatform ? Icons.chevron_right : Icons.arrow_forward_ios,
+                  color: donation.color,
+                  size: AppTheme.isApplePlatform ? 24 : 16,
+                ),
               ],
             ),
           );
@@ -264,10 +260,6 @@ class _DonationsPageState extends State<DonationsPage> {
                             ),
                           ),
                         );
-                      } else {
-                        setState(() {
-                          _selectedDonationType = index;
-                        });
                       }
                     },
                     onLongPress: () {
@@ -296,10 +288,6 @@ class _DonationsPageState extends State<DonationsPage> {
                             ),
                           ),
                         );
-                      } else {
-                        setState(() {
-                          _selectedDonationType = index;
-                        });
                       }
                     },
                     onLongPress: () {
@@ -617,15 +605,16 @@ class _DonationsPageState extends State<DonationsPage> {
   }
 
   void _shareRIB() {
-    final selectedDonation = _donationTypes[_selectedDonationType];
     final text = '''
-🏛️ Don pour: ${selectedDonation.title}
+🏛️ Informations bancaires
 Jubilé Tabernacle France
 
-💳 Informations bancaires:
+💳 Coordonnées bancaires:
 Titulaire: $_titulaire
 IBAN: $_iban
 BIC: $_bic
+
+💡 Précisez le type de don dans le libellé de votre virement
 
 📖 "${_getBiblicalVerse()}"
 2 Corinthiens 9:7
@@ -633,7 +622,7 @@ BIC: $_bic
 Merci pour votre générosité ! 🙏
 ''';
     
-    Share.share(text, subject: 'Informations de don - Jubilé Tabernacle France');
+    Share.share(text, subject: 'Informations bancaires - Jubilé Tabernacle France');
   }
 
   void _showCheckInstructions() {
@@ -670,7 +659,7 @@ Merci pour votre générosité ! 🙏
             ),
             const SizedBox(height: AppTheme.space20),
             _buildCheckInstruction('À l\'ordre de', _titulaire),
-            _buildCheckInstruction('Préciser au dos', _donationTypes[_selectedDonationType].title),
+            _buildCheckInstruction('Préciser au dos', 'Le type de don (Offrande, Dîme, etc.)'),
             _buildCheckInstruction('Envoyer à', 'Adresse de l\'église\n[À compléter avec l\'adresse réelle]'),
             const SizedBox(height: AppTheme.space20),
             SizedBox(
