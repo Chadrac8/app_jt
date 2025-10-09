@@ -330,6 +330,30 @@ class AppTheme {
   /// Rayon de bordure adaptatif (iOS préfère plus arrondi)
   static double get adaptiveBorderRadius => isApplePlatform ? 12.0 : 8.0;
   
+  // === DESIGN TOKENS POUR CARTES D'ACTION ===
+  
+  /// Rayon pour cartes d'action (12dp iOS, 16dp Android/Material)
+  static double get actionCardRadius => isApplePlatform ? 12.0 : radiusLarge;
+  
+  /// Épaisseur de bordure pour cartes (0.5px iOS, 1px Android)
+  static double get actionCardBorderWidth => isApplePlatform ? 0.5 : 1.0;
+  
+  /// Padding interne des cartes d'action
+  static double get actionCardPadding => isDesktop ? 20.0 : 16.0;
+  
+  /// Nombre de colonnes pour grille responsive
+  static int getGridColumns(double screenWidth) {
+    if (isDesktop && screenWidth >= 1200) return 4;
+    if (isDesktop || screenWidth >= 600) return 3;
+    return 2; // Mobile par défaut
+  }
+  
+  /// Espacement entre cartes dans la grille
+  static double get gridSpacing => isDesktop ? 16.0 : 12.0;
+  
+  /// Opacité pour interaction tactile (plus subtile sur iOS)
+  static double get interactionOpacity => isApplePlatform ? 0.08 : 0.12;
+  
   // === TAILLES DE POLICE ADAPTATIVES ===
   
   /// Typography Scale - Conforme Material Design 3 (2024)

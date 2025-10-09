@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import '../../theme.dart';
 import 'visit_us_page.dart';
@@ -943,9 +944,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                       ],
                     ),
                   ),
-                  // Bouton "Voir plus" amélioré
-                  GestureDetector(
-                    onTap: () {
+                  // Bouton "Voir plus" simple
+                  TextButton(
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -953,40 +954,11 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                         ),
                       );
                     },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppTheme.orangeStandard.withOpacity(0.15),
-                            AppTheme.passageColor4.withOpacity(0.15),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppTheme.orangeStandard.withOpacity(0.4),
-                          width: 1.5,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Voir plus',
-                            style: TextStyle(
-                              color: AppTheme.orangeStandard,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.3,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Icon(
-                            Icons.arrow_forward_rounded,
-                            color: AppTheme.orangeStandard,
-                            size: 16,
-                          ),
-                        ],
+                    child: Text(
+                      'Voir plus',
+                      style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontWeight: AppTheme.fontSemiBold,
                       ),
                     ),
                   ),
@@ -1276,7 +1248,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                             height: 1.4,
                             fontWeight: FontWeight.w500,
                           ),
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 10),
@@ -1352,31 +1324,38 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.surface, // MD3: Surface blanc/gris clair
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: AppTheme.grey300.withOpacity(0.5),
-          width: 1,
+        borderRadius: BorderRadius.circular(
+          AppTheme.isApplePlatform ? 20 : 28, // 20dp iOS, 28dp Android
         ),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.black100.withOpacity(0.08),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
-            spreadRadius: -4,
+        border: Border.all(
+          color: AppTheme.grey300.withOpacity(
+            AppTheme.isApplePlatform ? 1.0 : 0.5, // Bordure visible iOS
           ),
-          BoxShadow(
-            color: AppTheme.black100.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
+          width: AppTheme.isApplePlatform ? 0.5 : 1.0,
+        ),
+        boxShadow: AppTheme.isApplePlatform
+            ? [] // iOS: Flat design, pas d'ombre
+            : [
+                // Android: Élévation MD3
+                BoxShadow(
+                  color: AppTheme.black100.withOpacity(0.08),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                  spreadRadius: -4,
+                ),
+                BoxShadow(
+                  color: AppTheme.black100.withOpacity(0.04),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // En-tête avec gradient rouge élégant (bandeau du haut uniquement)
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(AppTheme.adaptivePadding),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -1386,9 +1365,13 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                   AppTheme.primaryColor.withOpacity(0.9),
                 ],
               ),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(27),
-                topRight: Radius.circular(27),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                  AppTheme.isApplePlatform ? 19.5 : 27,
+                ),
+                topRight: Radius.circular(
+                  AppTheme.isApplePlatform ? 19.5 : 27,
+                ),
               ),
             ),
             child: Row(
@@ -1398,16 +1381,20 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: AppTheme.white100.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(
+                      AppTheme.isApplePlatform ? 12 : 18,
+                    ),
                     border: Border.all(
-                      color: AppTheme.white100.withOpacity(0.35),
-                      width: 1.5,
+                      color: AppTheme.white100.withOpacity(
+                        AppTheme.isApplePlatform ? 0.5 : 0.35,
+                      ),
+                      width: AppTheme.isApplePlatform ? 0.5 : 1.5,
                     ),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.headset_mic_rounded,
                     color: AppTheme.white100,
-                    size: 28,
+                    size: AppTheme.isApplePlatform ? 26 : 28,
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -1420,8 +1407,8 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w700,
                           color: AppTheme.white100,
-                          fontSize: 22,
-                          letterSpacing: -0.3,
+                          fontSize: AppTheme.isApplePlatform ? 20 : 22,
+                          letterSpacing: AppTheme.isApplePlatform ? 0 : -0.3,
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -1429,7 +1416,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                         'Nous sommes à votre écoute',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppTheme.white100.withOpacity(0.92),
-                          fontSize: 14,
+                          fontSize: AppTheme.adaptiveBodyMedium,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -1442,7 +1429,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
           
           // Corps blanc avec les méthodes de contact
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(AppTheme.adaptivePadding),
             child: Column(
               children: [
                 // Email
@@ -1491,51 +1478,14 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                   ),
                 
                 if (config.contactWhatsApp?.isNotEmpty == true)
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                 
-                // Bouton d'action principal rouge
-                SizedBox(
-                  width: double.infinity,
-                  height: 54,
-                  child: FilledButton.icon(
-                    onPressed: () => _showContactForm(),
-                    icon: const Icon(Icons.send_rounded, size: 20),
-                    label: const Text(
-                      'Envoyer un message',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.1,
-                      ),
-                    ),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppTheme.primaryColor, // Rouge élégant
-                      foregroundColor: AppTheme.white100,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ).copyWith(
-                      overlayColor: WidgetStateProperty.resolveWith((states) {
-                        if (states.contains(WidgetState.hovered)) {
-                          return AppTheme.white100.withOpacity(0.12);
-                        }
-                        if (states.contains(WidgetState.pressed)) {
-                          return AppTheme.white100.withOpacity(0.20);
-                        }
-                        return null;
-                      }),
-                      elevation: WidgetStateProperty.resolveWith((states) {
-                        if (states.contains(WidgetState.hovered)) {
-                          return 2;
-                        }
-                        if (states.contains(WidgetState.pressed)) {
-                          return 1;
-                        }
-                        return 0;
-                      }),
-                    ),
-                  ),
+                // Message depuis l'application (même design que les autres)
+                _buildContactMethod(
+                  Icons.message_rounded,
+                  'Message depuis l\'application',
+                  'Contactez-nous directement',
+                  () => _showContactForm(),
                 ),
               ],
             ),
@@ -1546,6 +1496,82 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
   }
 
   Widget _buildContactMethod(IconData icon, String title, String subtitle, VoidCallback onTap) {
+    // Version iOS/macOS
+    if (AppTheme.isApplePlatform) {
+      return CupertinoButton(
+        onPressed: () {
+          HapticFeedback.lightImpact(); // Feedback tactile iOS
+          onTap();
+        },
+        padding: EdgeInsets.zero,
+        child: Container(
+          decoration: BoxDecoration(
+            color: CupertinoColors.systemGrey6.resolveFrom(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: CupertinoColors.separator.resolveFrom(context),
+              width: 0.5,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            child: Row(
+              children: [
+                // Icône iOS
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: AppTheme.primaryColor,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                // Texte
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: CupertinoColors.label.resolveFrom(context),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          color: CupertinoColors.secondaryLabel.resolveFrom(context),
+                          fontSize: 14,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                // Chevron iOS
+                Icon(
+                  CupertinoIcons.chevron_forward,
+                  color: CupertinoColors.tertiaryLabel.resolveFrom(context),
+                  size: 18,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Version Android/Web (Material)
     return Material(
       color: Colors.transparent,
       child: InkWell(

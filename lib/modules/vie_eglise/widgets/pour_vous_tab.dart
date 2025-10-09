@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../../../pages/form_public_page.dart';
 import '../../../pages/member_appointments_page.dart';
 import '../../../pages/special_song_reservation_page.dart';
 import '../../../services/forms_firebase_service.dart';
-import '../../../theme.dart';
+
+// Classe de données pour les actions
+class _ActionData {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ActionData({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+}
 
 class PourVousTab extends StatefulWidget {
   const PourVousTab({Key? key}) : super(key: key);
@@ -44,6 +61,7 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final screenWidth = MediaQuery.of(context).size.width;
     
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -51,12 +69,12 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
         opacity: _fadeAnimation,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(AppTheme.spaceMedium), // M3 standard padding
+          padding: EdgeInsets.all(AppTheme.adaptivePadding), // Padding adaptatif
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildActionsGrid(colorScheme),
-              const SizedBox(height: AppTheme.spaceMedium), // M3 spacing
+              _buildActionsGrid(colorScheme, screenWidth),
+              SizedBox(height: AppTheme.adaptivePadding),
             ],
           ),
         ),
@@ -64,202 +82,169 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
     );
   }
 
-  Widget _buildActionsGrid(ColorScheme colorScheme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionCard(
-                'Baptême d\'eau',
-                'Demander le baptême',
-                Icons.water_drop_rounded,
-                colorScheme.primary,
-                () => _handleBaptism(),
-                colorScheme,
-              ),
-            ),
-            const SizedBox(width: AppTheme.space12), // M3 grid spacing
-            Expanded(
-              child: _buildActionCard(
-                'Rejoindre une équipe',
-                'Servir dans l\'église',
-                Icons.group_rounded,
-                colorScheme.primary,
-                () => _handleJoinTeam(),
-                colorScheme,
-              ),
-            ),
-          ],
-        ),
-        
-        const SizedBox(height: AppTheme.spaceMedium), // M3 spacing between rows
-        
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionCard(
-                'Prendre rendez-vous',
-                'Rencontrer le pasteur',
-                Icons.calendar_today_rounded,
-                colorScheme.secondary,
-                () => _navigateToAppointments(),
-                colorScheme,
-              ),
-            ),
-            const SizedBox(width: AppTheme.space12), // M3 grid spacing
-            Expanded(
-              child: _buildActionCard(
-                'Poser une question',
-                'Demander conseil',
-                Icons.help_rounded,
-                colorScheme.secondary,
-                () => _handleAskQuestion(),
-                colorScheme,
-              ),
-            ),
-          ],
-        ),
-        
-        const SizedBox(height: AppTheme.spaceMedium), // M3 spacing between rows
-        
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionCard(
-                'Chant spécial',
-                'Réserver une date',
-                Icons.mic_rounded,
-                colorScheme.tertiary,
-                () => _handleActionTap('Chant spécial'),
-                colorScheme,
-              ),
-            ),
-            const SizedBox(width: AppTheme.space12), // M3 grid spacing
-            Expanded(
-              child: _buildActionCard(
-                'Partager un témoignage',
-                'Témoigner publiquement',
-                Icons.record_voice_over_rounded,
-                colorScheme.tertiary,
-                () => _handleTestimony(),
-                colorScheme,
-              ),
-            ),
-          ],
-        ),
-        
-        const SizedBox(height: AppTheme.spaceMedium), // M3 spacing between rows
-        
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionCard(
-                'Proposer une idée',
-                'Suggérer une amélioration',
-                Icons.lightbulb_outline_rounded,
-                colorScheme.error,
-                () => _handleSuggestion(),
-                colorScheme,
-              ),
-            ),
-            const SizedBox(width: AppTheme.space12), // M3 grid spacing
-            Expanded(
-              child: _buildActionCard(
-                'Signaler un problème',
-                'Rapporter un dysfonctionnement',
-                Icons.report_problem_rounded,
-                colorScheme.error,
-                () => _handleReportIssue(),
-                colorScheme,
-              ),
-            ),
-          ],
-        ),
-      ],
+  Widget _buildActionsGrid(ColorScheme colorScheme, double screenWidth) {
+    final crossAxisCount = AppTheme.getGridColumns(screenWidth);
+    final spacing = AppTheme.gridSpacing;
+    
+    final actions = [
+      _ActionData(
+        title: 'Baptême d\'eau',
+        subtitle: 'Demander le baptême',
+        icon: Icons.water_drop_rounded,
+        color: colorScheme.primary,
+        onTap: () => _handleBaptism(),
+      ),
+      _ActionData(
+        title: 'Rejoindre une équipe',
+        subtitle: 'Servir dans l\'église',
+        icon: Icons.group_rounded,
+        color: colorScheme.primary,
+        onTap: () => _handleJoinTeam(),
+      ),
+      _ActionData(
+        title: 'Prendre rendez-vous',
+        subtitle: 'Rencontrer le pasteur',
+        icon: Icons.calendar_today_rounded,
+        color: colorScheme.secondary,
+        onTap: () => _navigateToAppointments(),
+      ),
+      _ActionData(
+        title: 'Poser une question',
+        subtitle: 'Demander conseil',
+        icon: Icons.help_rounded,
+        color: colorScheme.secondary,
+        onTap: () => _handleAskQuestion(),
+      ),
+      _ActionData(
+        title: 'Chant spécial',
+        subtitle: 'Réserver une date',
+        icon: Icons.mic_rounded,
+        color: colorScheme.tertiary,
+        onTap: () => _handleActionTap('Chant spécial'),
+      ),
+      _ActionData(
+        title: 'Partager un témoignage',
+        subtitle: 'Témoigner publiquement',
+        icon: Icons.record_voice_over_rounded,
+        color: colorScheme.tertiary,
+        onTap: () => _handleTestimony(),
+      ),
+      _ActionData(
+        title: 'Proposer une idée',
+        subtitle: 'Suggérer une amélioration',
+        icon: Icons.lightbulb_outline_rounded,
+        color: colorScheme.error,
+        onTap: () => _handleSuggestion(),
+      ),
+      _ActionData(
+        title: 'Signaler un problème',
+        subtitle: 'Rapporter un dysfonctionnement',
+        icon: Icons.report_problem_rounded,
+        color: colorScheme.error,
+        onTap: () => _handleReportIssue(),
+      ),
+    ];
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: spacing,
+        mainAxisSpacing: spacing,
+        childAspectRatio: 1.0,
+      ),
+      itemCount: actions.length,
+      itemBuilder: (context, index) {
+        final action = actions[index];
+        return _buildActionCard(
+          action.title,
+          action.subtitle,
+          action.icon,
+          action.color,
+          action.onTap,
+          colorScheme,
+        );
+      },
     );
   }
 
-
-
   Widget _buildActionCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap, ColorScheme colorScheme) {
+    // Widget adaptatif selon la plateforme
+    final cardContent = Padding(
+      padding: EdgeInsets.all(AppTheme.actionCardPadding), // Padding adaptatif
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Icon container with proper M3 sizing and animation
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200), // M3 animation duration
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: AppTheme.interactionOpacity),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 24,
+            ),
+          ),
+          SizedBox(height: AppTheme.actionCardPadding), // Espacement adaptatif
+          // Title with M3 typography
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: colorScheme.onSurface,
+              fontWeight: AppTheme.fontSemiBold,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: AppTheme.spaceXSmall), // M3 tight spacing
+          // Subtitle with M3 typography
+          Text(
+            subtitle,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+
     return Card(
       elevation: 0, // M3 cards have no elevation by default
       color: colorScheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.radiusLarge), // M3 standard corner radius
+        borderRadius: BorderRadius.circular(AppTheme.actionCardRadius), // Radius adaptatif
         side: BorderSide(
           color: colorScheme.outlineVariant,
-          width: 1,
+          width: AppTheme.actionCardBorderWidth, // Épaisseur adaptative
         ),
       ),
       clipBehavior: Clip.hardEdge,
-      child: InkWell(
-        onTap: onTap,
-        splashColor: color.withValues(alpha: 0.12), // M3 interaction colors
-        highlightColor: color.withValues(alpha: 0.08),
-        hoverColor: color.withValues(alpha: 0.04), // M3 hover state
-        child: Padding(
-          padding: const EdgeInsets.all(AppTheme.spaceMedium), // M3 card padding
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Icon container with proper M3 sizing and animation
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200), // M3 animation duration
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                ),
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(height: AppTheme.spaceMedium), // M3 spacing
-              // Title with M3 typography
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: colorScheme.onSurface,
-                  fontWeight: AppTheme.fontSemiBold,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: AppTheme.spaceXSmall), // M3 tight spacing
-              // Subtitle with M3 typography
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ),
+      child: AppTheme.isApplePlatform
+          ? GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                onTap();
+              },
+              child: cardContent,
+            )
+          : InkWell(
+              onTap: onTap,
+              splashColor: color.withValues(alpha: AppTheme.interactionOpacity),
+              highlightColor: color.withValues(alpha: 0.08),
+              hoverColor: color.withValues(alpha: 0.04),
+              child: cardContent,
+            ),
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
   // Méthodes d'action individuelles
   void _handleBaptism() => _handleActionTap('Baptême d\'eau');
