@@ -1,75 +1,29 @@
+
 import 'package:flutter/material.dart';
+import '../theme.dart';
 import '../models/prayer_model.dart';
-import '../services/prayers_firebase_service.dart';
-import '../widgets/prayer_card.dart';
-import '../widgets/prayer_search_filter_bar.dart';
-import '../../theme.dart';
-import '../auth/auth_service.dart';
 import 'prayer_form_page.dart';
 import 'prayer_detail_page.dart';
+import '../widgets/prayer_search_filter_bar.dart';
+import '../widgets/prayer_card.dart';
+import '../auth/auth_service.dart';
+import '../services/prayers_firebase_service.dart';
 
 class MemberPrayerWallPage extends StatefulWidget {
-  const MemberPrayerWallPage({super.key});
+  const MemberPrayerWallPage({Key? key}) : super(key: key);
 
   @override
   State<MemberPrayerWallPage> createState() => _MemberPrayerWallPageState();
 }
 
-class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
-    with TickerProviderStateMixin {
+class _MemberPrayerWallPageState extends State<MemberPrayerWallPage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  
   String _searchQuery = '';
   PrayerType? _selectedType;
   String? _selectedCategory;
-  bool _showApprovedOnly = true; // Membres voient seulement les prières approuvées
-  bool _showActiveOnly = true;
-  String _selectedTab = 'all';
-  
-  late AnimationController _fabAnimationController;
-  late Animation<double> _fabAnimation;
-  late AnimationController _tabAnimationController;
-  late Animation<double> _tabAnimation;
-  
   List<String> _availableCategories = [];
   PrayerStats? _stats;
-
-  @override
-  void initState() {
-    super.initState();
-    _fabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _fabAnimation = CurvedAnimation(
-      parent: _fabAnimationController,
-      curve: Curves.easeInOut,
-    );
-    _fabAnimationController.forward();
-
-    _tabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _tabAnimation = CurvedAnimation(
-      parent: _tabAnimationController,
-      curve: Curves.easeInOut,
-    );
-    _tabAnimationController.forward();
-
-    _loadCategories();
-    _loadStats();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    _scrollController.dispose();
-    _fabAnimationController.dispose();
-    _tabAnimationController.dispose();
-    super.dispose();
-  }
 
   Future<void> _loadCategories() async {
     final categories = await PrayersFirebaseService.getUsedCategories();
@@ -84,17 +38,48 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
       _stats = stats;
     });
   }
+  bool _showApprovedOnly = false;
+  bool _showActiveOnly = true;
+  String _selectedTab = 'all';
+  late AnimationController _fabAnimationController;
+  late Animation<double> _fabAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _fabAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _fabAnimation = CurvedAnimation(
+      parent: _fabAnimationController,
+      curve: Curves.easeInOut,
+    );
+    _fabAnimationController.forward();
+    _loadCategories();
+    _loadStats();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _scrollController.dispose();
+    _fabAnimationController.dispose();
+    super.dispose();
+  }
 
   void _clearFilters() {
     setState(() {
       _searchQuery = '';
       _selectedType = null;
       _selectedCategory = null;
-      _showApprovedOnly = true;
+      _showApprovedOnly = false;
       _showActiveOnly = true;
     });
     _searchController.clear();
   }
+
+  // ... (all other methods and build function remain unchanged, inside this State class)
 
   void _navigateToPrayerForm([PrayerModel? prayer]) {
     Navigator.of(context).push(
@@ -346,9 +331,6 @@ class _MemberPrayerWallPageState extends State<MemberPrayerWallPage>
       ),
       body: Column(
         children: [
-          // Statistiques
-          _buildStatsHeader(),
-
           // Sélecteur d'onglets
           _buildTabSelector(),
 

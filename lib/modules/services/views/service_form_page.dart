@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/service_model.dart';
-import '../../../services/services_firebase_service.dart';
-import '../../../../theme.dart';
+import '../../../services/service_event_integration_service.dart';
 import '../../../theme.dart';
 
 class ServiceFormPage extends StatefulWidget {
@@ -146,7 +145,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
       );
 
       if (widget.service == null) {
-        // Create new service
+        // Create new service with event integration
         final service = ServiceModel(
           id: '',
           name: _nameController.text.trim(),
@@ -166,9 +165,9 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           updatedAt: DateTime.now(),
         );
 
-        await ServicesFirebaseService.createService(service);
+        await ServiceEventIntegrationService.createServiceWithEvent(service);
       } else {
-        // Update existing service
+        // Update existing service with event sync
         final updatedService = widget.service!.copyWith(
           name: _nameController.text.trim(),
           description: _descriptionController.text.trim().isEmpty 
@@ -186,7 +185,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           updatedAt: DateTime.now(),
         );
 
-        await ServicesFirebaseService.updateService(updatedService);
+        await ServiceEventIntegrationService.updateServiceWithEvent(updatedService);
       }
 
       Navigator.pop(context, true);

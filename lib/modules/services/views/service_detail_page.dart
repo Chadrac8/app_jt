@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../../theme.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
+import '../../../services/service_event_integration_service.dart';
 import '../../../widgets/service_sheet_editor.dart';
 import '../../../widgets/service_assignments_list.dart';
 import 'service_form_page.dart';
@@ -972,8 +972,8 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
         );
       }
 
-      // Supprimer le service
-      await ServicesFirebaseService.deleteService(_currentService!.id);
+      // Supprimer le service avec synchronisation des événements
+      await ServiceEventIntegrationService.deleteServiceWithEvent(_currentService!.id);
 
       // Afficher un message de succès et revenir à la liste
       if (mounted) {

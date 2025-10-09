@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart'; // Pour defaultTargetPlatform
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
@@ -291,6 +292,81 @@ class AppTheme {
   );
   
   // === MATERIAL DESIGN 3 THEME ===
+  // === CONFIGURATION MULTIPLATEFORME ADAPTATIVE ===
+  
+  /// Détermine si la plateforme actuelle suit les conventions iOS/macOS
+  static bool get isApplePlatform =>
+      defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.macOS;
+  
+  /// Détermine si la plateforme actuelle est un desktop
+  static bool get isDesktop =>
+      defaultTargetPlatform == TargetPlatform.macOS ||
+      defaultTargetPlatform == TargetPlatform.windows ||
+      defaultTargetPlatform == TargetPlatform.linux;
+  
+  /// Détermine si la plateforme actuelle est mobile
+  static bool get isMobile =>
+      defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.android;
+  
+  /// Détermine si la plateforme actuelle est web
+  static bool get isWeb => kIsWeb;
+  
+  // === DESIGN TOKENS ADAPTATIFS ===
+  
+  /// Padding adaptatif selon la plateforme
+  static double get adaptivePadding => isDesktop ? 24.0 : 16.0;
+  
+  /// Largeur maximale du contenu (plus large sur desktop)
+  static double get maxContentWidth => isDesktop ? 1200.0 : 800.0;
+  
+  /// Taille des icônes adaptative
+  static double get adaptiveIconSize => isDesktop ? 24.0 : 20.0;
+  
+  /// Espacement des éléments de navigation
+  static double get navigationSpacing => isDesktop ? 48.0 : 32.0;
+  
+  /// Rayon de bordure adaptatif (iOS préfère plus arrondi)
+  static double get adaptiveBorderRadius => isApplePlatform ? 12.0 : 8.0;
+  
+  // === TAILLES DE POLICE ADAPTATIVES ===
+  
+  /// Typography Scale - Conforme Material Design 3 (2024)
+  /// Base = Standard MD3 officiel | Desktop = Base + 2sp (bonus lisibilité)
+  /// iOS/macOS = Base × 1.05 (conventions Apple)
+  
+  // Display (Titres très grands)
+  static double get adaptiveDisplayLarge => isDesktop ? 59.0 : 57.0;   // MD3: 57sp
+  static double get adaptiveDisplayMedium => isDesktop ? 47.0 : 45.0;  // MD3: 45sp
+  static double get adaptiveDisplaySmall => isDesktop ? 38.0 : 36.0;   // MD3: 36sp
+  
+  // Headline (Titres)
+  static double get adaptiveHeadlineLarge => isDesktop ? 34.0 : 32.0;   // MD3: 32sp
+  static double get adaptiveHeadlineMedium => isDesktop ? 30.0 : 28.0;  // MD3: 28sp
+  static double get adaptiveHeadlineSmall => isDesktop ? 26.0 : 24.0;   // MD3: 24sp
+  
+  // Title (Sous-titres)
+  static double get adaptiveTitleLarge => isDesktop ? 24.0 : 22.0;   // MD3: 22sp
+  static double get adaptiveTitleMedium => isDesktop ? 18.0 : 16.0;  // MD3: 16sp
+  static double get adaptiveTitleSmall => isDesktop ? 16.0 : 14.0;   // MD3: 14sp
+  
+  // Body (Texte principal)
+  static double get adaptiveBodyLarge => isDesktop ? 18.0 : 16.0;  // MD3: 16sp
+  static double get adaptiveBodyMedium => isDesktop ? 16.0 : 14.0; // MD3: 14sp ⚠️ CORRIGÉ
+  static double get adaptiveBodySmall => isDesktop ? 14.0 : 12.0;  // MD3: 12sp
+  
+  // Label (Labels de boutons, etc.)
+  static double get adaptiveLabelLarge => isDesktop ? 16.0 : 14.0;  // MD3: 14sp
+  static double get adaptiveLabelMedium => isDesktop ? 14.0 : 12.0; // MD3: 12sp
+  static double get adaptiveLabelSmall => isDesktop ? 13.0 : 11.0;  // MD3: 11sp
+  
+  /// Multiplicateur de taille pour iOS/macOS (conventions Apple)
+  /// Body iOS: 14sp × 1.05 = 14.7sp (proche recommandation Apple ~17pt)
+  /// Usage: fontSize * fontSizeMultiplier
+  static double get fontSizeMultiplier => isApplePlatform ? 1.05 : 1.0;
+  
+  // === MATERIAL DESIGN 3 - COULEURS PRINCIPALES (BASÉES SUR NOTRE LOGO) ===
   
   static ThemeData get lightTheme {
     return ThemeData(
@@ -326,162 +402,202 @@ class AppTheme {
         surfaceTint: surfaceTint,
       ),
       
-      // Typography (Google Fonts - Inter)
+      // Typography (Google Fonts - Inter) - Adaptatif multiplateforme
+      // Desktop: tailles légèrement plus grandes (+2sp)
+      // iOS/macOS: multiplicateur 1.05x pour meilleure lisibilité
       textTheme: GoogleFonts.interTextTheme().copyWith(
         displayLarge: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize57,
+          fontSize: AppTheme.adaptiveDisplayLarge * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         displayMedium: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize45,
+          fontSize: AppTheme.adaptiveDisplayMedium * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         displaySmall: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize36,
+          fontSize: AppTheme.adaptiveDisplaySmall * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         headlineLarge: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize32,
+          fontSize: AppTheme.adaptiveHeadlineLarge * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         headlineMedium: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize28,
+          fontSize: AppTheme.adaptiveHeadlineMedium * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         headlineSmall: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize24,
+          fontSize: AppTheme.adaptiveHeadlineSmall * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         titleLarge: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize22,
+          fontSize: AppTheme.adaptiveTitleLarge * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         titleMedium: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize16,
+          fontSize: AppTheme.adaptiveTitleMedium * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         titleSmall: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize14,
+          fontSize: AppTheme.adaptiveTitleSmall * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         bodyLarge: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize16,
+          fontSize: AppTheme.adaptiveBodyLarge * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         bodyMedium: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize14,
+          fontSize: AppTheme.adaptiveBodyMedium * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurface,
         ),
         bodySmall: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize12,
+          fontSize: AppTheme.adaptiveBodySmall * AppTheme.fontSizeMultiplier,
           fontWeight: fontRegular,
           color: onSurfaceVariant,
         ),
         labelLarge: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize14,
+          fontSize: AppTheme.adaptiveLabelLarge * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         labelMedium: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize12,
+          fontSize: AppTheme.adaptiveLabelMedium * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurface,
         ),
         labelSmall: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize11,
+          fontSize: AppTheme.adaptiveLabelSmall * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurfaceVariant,
         ),
       ),
       
-      // AppBar Theme - Material Design 3 Compliant
+      // AppBar Theme - Material Design 3 (2024) - Surface Style
       appBarTheme: AppBarTheme(
-        backgroundColor: primaryColor, // Couleur primary rouge
-        foregroundColor: onPrimaryColor, // Texte blanc sur fond rouge
-        surfaceTintColor: primaryColor, // MD3 Surface Tint
+        backgroundColor: surface, // MD3: Surface claire (blanc/gris clair)
+        foregroundColor: onSurface, // Texte foncé sur fond clair
+        surfaceTintColor: primaryColor, // MD3: Teinte rouge subtile pour cohérence
         elevation: elevation0, // MD3 standard: pas d'élévation
-        scrolledUnderElevation: elevation2, // MD3: élévation au scroll (3.0)
-        shadowColor: Colors.transparent, // MD3: pas d'ombre
-        centerTitle: true,
+        scrolledUnderElevation: elevation2, // MD3: élévation au scroll pour profondeur
+        shadowColor: Colors.black.withOpacity(0.1), // MD3: ombre subtile si scrolled
+        // MD3 Multiplateforme: Adaptatif selon la plateforme
+        // iOS/macOS: centré (convention Apple) | Android/Web: à gauche (MD3)
+        centerTitle: defaultTargetPlatform == TargetPlatform.iOS || 
+                     defaultTargetPlatform == TargetPlatform.macOS,
+        titleSpacing: spaceMedium, // MD3: 16dp spacing standard
         systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light, // Icônes claires sur fond primary foncé
-          statusBarBrightness: Brightness.dark, // Fond foncé
-          systemNavigationBarColor: primaryColor, // MD3 consistent avec AppBar
-          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarColor: Colors.transparent, // MD3: status bar transparente
+          statusBarIconBrightness: Brightness.dark, // Icônes foncées sur fond clair
+          statusBarBrightness: Brightness.light, // Fond clair
+          systemNavigationBarColor: Colors.white, // MD3: navigation bar claire
+          systemNavigationBarIconBrightness: Brightness.dark, // Icônes foncées
         ),
         titleTextStyle: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize22, // MD3 headlineSmall
-          fontWeight: fontMedium,
-          color: onPrimaryColor, // Texte blanc sur fond primary
-          height: 1.2, // MD3 line height
+          fontSize: AppTheme.fontSize22, // MD3 headlineSmall (22sp)
+          fontWeight: fontMedium, // MD3: Medium weight (500)
+          color: onSurface, // Texte foncé sur fond clair
+          height: 1.27, // MD3 line height pour headlineSmall
           letterSpacing: 0, // MD3 letter spacing
         ),
         toolbarTextStyle: GoogleFonts.inter(
           fontSize: AppTheme.fontSize14, // MD3 bodyMedium
           fontWeight: fontRegular,
-          color: onPrimaryColor, // Texte blanc sur fond primary
+          color: onSurface, // Texte foncé sur fond clair
         ),
-        iconTheme: const IconThemeData(
-          color: Colors.white, // Forçage explicite des icônes blanches
+        iconTheme: IconThemeData(
+          color: onSurfaceVariant, // MD3: Icônes en onSurfaceVariant (gris foncé)
           size: 24, // MD3 standard icon size
-          opacity: 1.0, // Opacité complète
+          opacity: 1.0,
         ),
-        actionsIconTheme: const IconThemeData(
-          color: Colors.white, // Forçage explicite des icônes blanches
-          size: 24, // MD3 standard icon size
-          opacity: 1.0, // Opacité complète
+        actionsIconTheme: IconThemeData(
+          color: onSurfaceVariant, // MD3: Icônes actions en onSurfaceVariant
+          size: 24,
+          opacity: 1.0,
         ),
       ),
       
-      // Configuration pour les boutons - force les icônes blanches globalement
+      // Icon Button Theme - MD3 Style
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
-          foregroundColor: Colors.white, // Forçage explicite blanc
+          foregroundColor: onSurfaceVariant, // MD3: Couleur foncée pour icônes
           backgroundColor: Colors.transparent,
           padding: EdgeInsets.all(spaceSmall),
+          // MD3: Hover et pressed states
+        ).copyWith(
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return primaryColor; // Rouge au clic
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return primaryColor; // Rouge au survol
+            }
+            return onSurfaceVariant; // Gris foncé par défaut
+          }),
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return primaryColor.withOpacity(0.12); // MD3: 12% overlay
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return primaryColor.withOpacity(0.08); // MD3: 8% overlay
+            }
+            return null;
+          }),
         ),
       ),
       
-      // Elevated Button Theme
+      // Elevated Button Theme - Adaptatif
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
           foregroundColor: onPrimaryColor,
-          elevation: elevation1,
-          padding: const EdgeInsets.symmetric(horizontal: spaceLarge, vertical: spaceMedium),
+          // Elevation adaptative: plus prononcée sur Android, subtile sur iOS
+          elevation: isApplePlatform ? 0 : elevation1,
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop ? spaceLarge + 8 : spaceLarge,
+            vertical: isDesktop ? spaceMedium + 4 : spaceMedium,
+          ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusMedium),
+            borderRadius: BorderRadius.circular(
+              isApplePlatform ? 12.0 : radiusMedium, // iOS plus arrondi
+            ),
           ),
           textStyle: GoogleFonts.inter(
-            fontSize: AppTheme.fontSize14,
+            fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
             fontWeight: fontMedium,
           ),
         ),
       ),
       
-      // Outlined Button Theme
+      // Outlined Button Theme - Adaptatif
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: primaryColor,
-          side: const BorderSide(color: outline, width: 1),
-          padding: const EdgeInsets.symmetric(horizontal: spaceLarge, vertical: spaceMedium),
+          side: BorderSide(
+            color: outline,
+            width: isApplePlatform ? 1.5 : 1.0, // iOS lignes plus épaisses
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop ? spaceLarge + 8 : spaceLarge,
+            vertical: isDesktop ? spaceMedium + 4 : spaceMedium,
+          ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusMedium),
+            borderRadius: BorderRadius.circular(
+              isApplePlatform ? 12.0 : radiusMedium,
+            ),
           ),
           textStyle: GoogleFonts.inter(
-            fontSize: AppTheme.fontSize14,
+            fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
             fontWeight: fontMedium,
           ),
         ),
@@ -502,47 +618,77 @@ class AppTheme {
         ),
       ),
       
-      // Card Theme
-      cardTheme: const CardThemeData(
+      // Card Theme - Adaptatif
+      cardTheme: CardThemeData(
         color: surface,
-        elevation: elevation1,
+        // Elevation adaptative: iOS préfère flat, Android/Desktop préfère subtle shadow
+        elevation: isApplePlatform ? 0 : elevation1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(radiusMedium)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(isApplePlatform ? 16.0 : radiusMedium),
+          ),
+          // iOS ajoute une bordure subtile quand pas d'élévation
+          side: isApplePlatform
+              ? BorderSide(color: outline.withOpacity(0.2), width: 0.5)
+              : BorderSide.none,
         ),
-        margin: EdgeInsets.all(spaceSmall),
+        margin: EdgeInsets.all(isDesktop ? spaceMedium : spaceSmall),
       ),
       
-      // Input Decoration Theme
+      // Input Decoration Theme - Adaptatif
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: surfaceVariant,
+        fillColor: isApplePlatform ? grey50 : surfaceVariant,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusSmall),
-          borderSide: const BorderSide(color: outline),
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 12.0 : radiusSmall,
+          ),
+          borderSide: BorderSide(
+            color: outline,
+            width: isApplePlatform ? 0.5 : 1.0,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusSmall),
-          borderSide: const BorderSide(color: outline),
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 12.0 : radiusSmall,
+          ),
+          borderSide: BorderSide(
+            color: outline,
+            width: isApplePlatform ? 0.5 : 1.0,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusSmall),
-          borderSide: const BorderSide(color: primaryColor, width: 2),
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 12.0 : radiusSmall,
+          ),
+          borderSide: BorderSide(
+            color: primaryColor,
+            width: isApplePlatform ? 1.5 : 2.0,
+          ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radiusSmall),
-          borderSide: const BorderSide(color: error),
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 12.0 : radiusSmall,
+          ),
+          borderSide: BorderSide(color: error, width: isApplePlatform ? 1.5 : 1.0),
         ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: spaceMedium,
-          vertical: spaceMedium,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? spaceLarge : spaceMedium,
+          vertical: isDesktop ? spaceMedium + 4 : spaceMedium,
         ),
       ),
       
-      // Floating Action Button Theme
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      // Floating Action Button Theme - Adaptatif
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: primaryColor,
         foregroundColor: onPrimaryColor,
-        elevation: elevation3,
+        // iOS préfère moins d'élévation
+        elevation: isApplePlatform ? elevation1 : elevation3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 16.0 : radiusMedium,
+          ),
+        ),
       ),
       
       // Bottom Navigation Bar Theme
@@ -553,37 +699,616 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
       ),
       
-      // Tab Bar Theme - Cohérent avec AppBar
+      // Tab Bar Theme - Material Design 3 (Primary Tabs)
       tabBarTheme: TabBarThemeData(
-        labelColor: onPrimaryColor, // Texte blanc pour l'onglet sélectionné
-        unselectedLabelColor: onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent pour les onglets non sélectionnés
-        indicatorColor: onPrimaryColor, // Indicateur blanc
-        indicatorSize: TabBarIndicatorSize.tab, // Indicateur sur toute la largeur de l'onglet
-        dividerColor: Colors.transparent, // Pas de séparateur visible
-        overlayColor: WidgetStateProperty.all(onPrimaryColor.withOpacity(0.1)), // Effet de survol
+        // MD3: Primary tabs intégrées à l'AppBar Surface
+        labelColor: primaryColor, // MD3: Texte rouge (primary) pour tab active
+        unselectedLabelColor: onSurfaceVariant, // MD3: Texte gris pour tabs inactives
+        
+        // MD3: Indicateur de sélection style YouTube Studio (arrondi en haut, 3dp hauteur)
+        indicator: const UnderlineTabIndicator(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(3)),
+          borderSide: BorderSide(
+            color: primaryColor,
+            width: 3.0, // MD3: 3dp d'épaisseur
+          ),
+          insets: EdgeInsets.symmetric(horizontal: 16.0), // Padding horizontal
+        ),
+        indicatorSize: TabBarIndicatorSize.tab, // Largeur du tab (avec padding)
+        
+        dividerColor: Colors.transparent, // MD3: Pas de divider visible
+        dividerHeight: 0, // MD3: Hauteur du divider à 0
+        overlayColor: WidgetStateProperty.resolveWith((states) {
+          // MD3: États interactifs
+          if (states.contains(WidgetState.pressed)) {
+            return primaryColor.withOpacity(0.12); // 12% overlay au press
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return primaryColor.withOpacity(0.08); // 8% overlay au hover
+          }
+          return null;
+        }),
+        // MD3: Typographie pour tabs
         labelStyle: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize14,
-          fontWeight: fontMedium,
+          fontSize: 14, // MD3: titleSmall (14sp)
+          fontWeight: FontWeight.w600, // MD3: Semibold pour active
+          letterSpacing: 0.1, // MD3: Letter spacing
         ),
         unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize14,
-          fontWeight: fontRegular,
+          fontSize: 14, // MD3: titleSmall (14sp)
+          fontWeight: FontWeight.w500, // MD3: Medium pour inactive
+          letterSpacing: 0.1,
         ),
+        // MD3: Padding et spacing
+        labelPadding: const EdgeInsets.symmetric(horizontal: 16), // MD3: 16dp horizontal
+        splashFactory: InkRipple.splashFactory, // MD3: Ripple effect
       ),
       
-      // Chip Theme
+      // Chip Theme - Adaptatif
       chipTheme: ChipThemeData(
         backgroundColor: surfaceVariant,
         selectedColor: primaryContainer,
         labelStyle: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize14,
+          fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
           fontWeight: fontMedium,
           color: onSurfaceVariant,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: spaceSmall),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusSmall),
+        padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? spaceMedium : spaceSmall,
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? radiusMedium : radiusSmall,
+          ),
+        ),
+      ),
+      
+      // Dialog Theme - Adaptatif
+      dialogTheme: DialogThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation2 : elevation3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 20.0 : radiusMedium,
+          ),
+        ),
+        titleTextStyle: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize20,
+          fontWeight: fontMedium,
+          color: onSurface,
+        ),
+        contentTextStyle: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          fontWeight: fontRegular,
+          color: onSurface,
+        ),
+      ),
+      
+      // Bottom Sheet Theme - Adaptatif
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation2 : elevation3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(isApplePlatform ? 20.0 : radiusMedium),
+          ),
+        ),
+        modalBackgroundColor: surface,
+        modalElevation: isApplePlatform ? elevation2 : elevation3,
+      ),
+      
+      // Snackbar Theme - Adaptatif
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: onSurface,
+        contentTextStyle: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          color: surface,
+        ),
+        behavior: isDesktop ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
+        elevation: isApplePlatform ? elevation1 : elevation2,
+        shape: isDesktop
+            ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(radiusSmall),
+              )
+            : null,
+      ),
+      
+      // Scrollbar Theme - Visible sur desktop, auto-hidden sur mobile
+      scrollbarTheme: ScrollbarThemeData(
+        thumbVisibility: WidgetStateProperty.all(isDesktop),
+        thickness: WidgetStateProperty.all(isDesktop ? 8.0 : 4.0),
+        radius: const Radius.circular(4.0),
+        thumbColor: WidgetStateProperty.all(
+          onSurfaceVariant.withOpacity(isDesktop ? 0.3 : 0.2),
+        ),
+      ),
+      
+      // ListTile Theme - Adaptatif
+      listTileTheme: ListTileThemeData(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? spaceLarge : spaceMedium,
+          vertical: isDesktop ? spaceSmall : space4,
+        ),
+        minLeadingWidth: isDesktop ? 40 : 32,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? radiusMedium : radiusSmall,
+          ),
+        ),
+      ),
+      
+      // Switch Theme - Adaptatif
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return onPrimaryColor;
+          }
+          return isApplePlatform ? grey300 : surfaceVariant;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return primaryColor;
+          }
+          return isApplePlatform ? grey400 : outline;
+        }),
+        // iOS switch est plus large
+        splashRadius: isApplePlatform ? 20.0 : 16.0,
+      ),
+      
+      // Checkbox Theme - Adaptatif
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return primaryColor;
+          }
+          return Colors.transparent;
+        }),
+        checkColor: WidgetStateProperty.all(onPrimaryColor),
+        side: BorderSide(
+          color: outline,
+          width: isApplePlatform ? 1.5 : 2.0,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 4.0 : 2.0,
+          ),
+        ),
+      ),
+      
+      // Radio Theme - Adaptatif
+      radioTheme: RadioThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return primaryColor;
+          }
+          return outline;
+        }),
+        splashRadius: isDesktop ? 20.0 : 16.0,
+      ),
+      
+      // Slider Theme - Adaptatif
+      sliderTheme: SliderThemeData(
+        activeTrackColor: primaryColor,
+        inactiveTrackColor: isApplePlatform ? grey300 : primaryColor.withOpacity(0.24),
+        thumbColor: isApplePlatform ? white : primaryColor,
+        overlayColor: primaryColor.withOpacity(0.12),
+        // iOS slider a un thumb plus grand
+        thumbShape: RoundSliderThumbShape(
+          enabledThumbRadius: isApplePlatform ? 14.0 : 10.0,
+        ),
+        trackHeight: isApplePlatform ? 4.0 : 4.0,
+        overlayShape: RoundSliderOverlayShape(
+          overlayRadius: isDesktop ? 24.0 : 20.0,
+        ),
+      ),
+      
+      // Progress Indicator Theme - Adaptatif
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: primaryColor,
+        linearTrackColor: isApplePlatform ? grey200 : primaryColor.withOpacity(0.24),
+        circularTrackColor: isApplePlatform ? grey200 : primaryColor.withOpacity(0.24),
+        linearMinHeight: isApplePlatform ? 3.0 : 4.0,
+      ),
+      
+      // Divider Theme - Adaptatif
+      dividerTheme: DividerThemeData(
+        color: isApplePlatform ? grey300 : outline.withOpacity(0.2),
+        thickness: isApplePlatform ? 0.5 : 1.0,
+        space: isDesktop ? spaceLarge : spaceMedium,
+      ),
+      
+      // Drawer Theme - Adaptatif
+      drawerTheme: DrawerThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation1 : elevation2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(isApplePlatform ? 16.0 : 0.0),
+            bottomRight: Radius.circular(isApplePlatform ? 16.0 : 0.0),
+          ),
+        ),
+        width: isDesktop ? 304.0 : 280.0, // Desktop drawer plus large
+      ),
+      
+      // Navigation Drawer Theme - Adaptatif
+      navigationDrawerTheme: NavigationDrawerThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation1 : elevation2,
+        indicatorColor: primaryContainer,
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? radiusMedium : radiusSmall,
+          ),
+        ),
+        labelTextStyle: WidgetStateProperty.all(
+          GoogleFonts.inter(
+            fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
+            fontWeight: fontMedium,
+          ),
+        ),
+      ),
+      
+      // Navigation Rail Theme - Pour desktop
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation1 : elevation2,
+        selectedIconTheme: IconThemeData(
+          color: primaryColor,
+          size: isDesktop ? 28 : 24,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: onSurfaceVariant,
+          size: isDesktop ? 28 : 24,
+        ),
+        selectedLabelTextStyle: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          fontWeight: fontMedium,
+          color: primaryColor,
+        ),
+        unselectedLabelTextStyle: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          fontWeight: fontRegular,
+          color: onSurfaceVariant,
+        ),
+        indicatorColor: primaryContainer,
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radiusMedium),
+        ),
+      ),
+      
+      // Badge Theme - Adaptatif
+      badgeTheme: BadgeThemeData(
+        backgroundColor: error,
+        textColor: onError,
+        smallSize: isDesktop ? 8 : 6,
+        largeSize: isDesktop ? 20 : 16,
+        textStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? 11 : 10,
+          fontWeight: fontMedium,
+        ),
+      ),
+      
+      // Tooltip Theme - Adaptatif
+      tooltipTheme: TooltipThemeData(
+        height: isDesktop ? 32 : 24,
+        padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? spaceMedium : spaceSmall,
+          vertical: isDesktop ? spaceSmall : space4,
+        ),
+        margin: EdgeInsets.all(isDesktop ? spaceSmall : space4),
+        decoration: BoxDecoration(
+          color: onSurface.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 8.0 : 4.0,
+          ),
+        ),
+        textStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? 13 : 12,
+          fontWeight: fontRegular,
+          color: surface,
+        ),
+        waitDuration: isDesktop
+            ? const Duration(milliseconds: 500)
+            : const Duration(milliseconds: 700),
+      ),
+      
+      // Popup Menu Theme - Adaptatif
+      popupMenuTheme: PopupMenuThemeData(
+        color: surface,
+        elevation: isApplePlatform ? elevation2 : elevation3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 12.0 : radiusSmall,
+          ),
+        ),
+        textStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
+          fontWeight: fontRegular,
+          color: onSurface,
+        ),
+      ),
+      
+      // Menu Theme - Adaptatif (pour MenuBar, MenuAnchor)
+      menuTheme: MenuThemeData(
+        style: MenuStyle(
+          backgroundColor: WidgetStateProperty.all(surface),
+          elevation: WidgetStateProperty.all(
+            isApplePlatform ? elevation2 : elevation3,
+          ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                isApplePlatform ? 12.0 : radiusSmall,
+              ),
+            ),
+          ),
+          padding: WidgetStateProperty.all(
+            EdgeInsets.all(isDesktop ? spaceSmall : space4),
+          ),
+        ),
+      ),
+      
+      // Banner Theme - Adaptatif
+      bannerTheme: MaterialBannerThemeData(
+        backgroundColor: surfaceVariant,
+        contentTextStyle: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          color: onSurface,
+        ),
+        padding: EdgeInsets.all(isDesktop ? spaceLarge : spaceMedium),
+        elevation: isApplePlatform ? elevation1 : elevation2,
+      ),
+      
+      // Data Table Theme - Optimisé pour desktop
+      dataTableTheme: DataTableThemeData(
+        headingRowColor: WidgetStateProperty.all(surfaceVariant),
+        dataRowColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return primaryContainer.withOpacity(0.12);
+          }
+          return null;
+        }),
+        headingTextStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
+          fontWeight: fontMedium,
+          color: onSurface,
+        ),
+        dataTextStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
+          fontWeight: fontRegular,
+          color: onSurface,
+        ),
+        horizontalMargin: isDesktop ? spaceLarge : spaceMedium,
+        columnSpacing: isDesktop ? 56 : 48,
+        dataRowMinHeight: isDesktop ? 52 : 48,
+        dataRowMaxHeight: isDesktop ? 72 : 64,
+      ),
+      
+      // Time Picker Theme - Adaptatif
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation2 : elevation3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 20.0 : radiusMedium,
+          ),
+        ),
+        hourMinuteShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 12.0 : radiusSmall,
+          ),
+        ),
+        dayPeriodShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 12.0 : radiusSmall,
+          ),
+        ),
+      ),
+      
+      // Date Picker Theme - Adaptatif
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation2 : elevation3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? 20.0 : radiusMedium,
+          ),
+        ),
+        headerBackgroundColor: primaryContainer,
+        headerForegroundColor: onPrimaryContainer,
+        dayStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
+        ),
+        yearStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
+        ),
+      ),
+      
+      // ===== COMPOSANTS MANQUANTS - AJOUT FINAL =====
+      
+      // Expansion Tile Theme - Adaptatif
+      expansionTileTheme: ExpansionTileThemeData(
+        backgroundColor: Colors.transparent,
+        collapsedBackgroundColor: Colors.transparent,
+        tilePadding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? spaceLarge : spaceMedium,
+        ),
+        childrenPadding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? spaceLarge : spaceMedium,
+          vertical: spaceSmall,
+        ),
+        iconColor: onSurfaceVariant,
+        collapsedIconColor: onSurfaceVariant,
+        textColor: onSurface,
+        collapsedTextColor: onSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? radiusMedium : radiusSmall,
+          ),
+        ),
+      ),
+      
+      // Search Bar Theme - Adaptatif (Material 3)
+      searchBarTheme: SearchBarThemeData(
+        elevation: WidgetStateProperty.all(
+          isApplePlatform ? elevation1 : elevation2,
+        ),
+        backgroundColor: WidgetStateProperty.all(surfaceVariant),
+        padding: WidgetStateProperty.all(
+          EdgeInsets.symmetric(
+            horizontal: isDesktop ? spaceMedium : spaceSmall,
+          ),
+        ),
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              isApplePlatform ? radiusLarge : radiusMedium,
+            ),
+          ),
+        ),
+        textStyle: WidgetStateProperty.all(
+          GoogleFonts.inter(
+            fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
+            color: onSurface,
+          ),
+        ),
+        hintStyle: WidgetStateProperty.all(
+          GoogleFonts.inter(
+            fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
+            color: onSurfaceVariant,
+          ),
+        ),
+      ),
+      
+      // Search View Theme - Adaptatif (Material 3)
+      searchViewTheme: SearchViewThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation2 : elevation3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? radiusLarge : radiusMedium,
+          ),
+        ),
+        headerTextStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
+          color: onSurface,
+        ),
+        headerHintStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
+          color: onSurfaceVariant,
+        ),
+      ),
+      
+      // App Bar Theme pour Bottom AppBar - Adaptatif
+      bottomAppBarTheme: BottomAppBarThemeData(
+        color: surface,
+        elevation: isApplePlatform ? elevation1 : elevation2,
+        shape: const CircularNotchedRectangle(),
+        height: isDesktop ? 72 : 64,
+      ),
+      
+      // Segmented Button Theme - Adaptatif (Material 3)
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return primaryContainer;
+            }
+            return Colors.transparent;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return onPrimaryContainer;
+            }
+            return onSurface;
+          }),
+          textStyle: WidgetStateProperty.all(
+            GoogleFonts.inter(
+              fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
+              fontWeight: fontMedium,
+            ),
+          ),
+          padding: WidgetStateProperty.all(
+            EdgeInsets.symmetric(
+              horizontal: isDesktop ? spaceMedium : spaceSmall,
+              vertical: isDesktop ? spaceSmall : space4,
+            ),
+          ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                isApplePlatform ? radiusMedium : radiusSmall,
+              ),
+            ),
+          ),
+        ),
+      ),
+      
+      // Action Icon Theme - Adaptatif (Material 3)
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (context) => Icon(
+          isApplePlatform ? Icons.arrow_back_ios : Icons.arrow_back,
+          size: 24,
+        ),
+        closeButtonIconBuilder: (context) => Icon(
+          isApplePlatform ? Icons.close : Icons.close,
+          size: 24,
+        ),
+        drawerButtonIconBuilder: (context) => Icon(
+          Icons.menu,
+          size: 24,
+        ),
+        endDrawerButtonIconBuilder: (context) => Icon(
+          Icons.menu,
+          size: 24,
+        ),
+      ),
+      
+      // Toggle Buttons Theme - Adaptatif
+      toggleButtonsTheme: ToggleButtonsThemeData(
+        borderRadius: BorderRadius.circular(
+          isApplePlatform ? radiusMedium : radiusSmall,
+        ),
+        selectedColor: onPrimaryContainer,
+        fillColor: primaryContainer,
+        color: onSurface,
+        borderColor: outline,
+        selectedBorderColor: primaryColor,
+        textStyle: GoogleFonts.inter(
+          fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
+          fontWeight: fontMedium,
+        ),
+        constraints: BoxConstraints(
+          minHeight: isDesktop ? 48 : 40,
+          minWidth: isDesktop ? 72 : 64,
+        ),
+      ),
+      
+      // Bottom Navigation Bar Theme déjà fait mais améliorer
+      // Navigation Bar Theme (Material 3 style) - Adaptatif
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: surface,
+        elevation: isApplePlatform ? elevation1 : elevation2,
+        height: isDesktop ? 72 : 64,
+        indicatorColor: primaryContainer,
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? radiusLarge : radiusMedium,
+          ),
+        ),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          return GoogleFonts.inter(
+            fontSize: isDesktop ? AppTheme.fontSize13 : AppTheme.fontSize12,
+            fontWeight: states.contains(WidgetState.selected) ? fontMedium : fontRegular,
+            color: states.contains(WidgetState.selected) ? onSurface : onSurfaceVariant,
+          );
+        }),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          return IconThemeData(
+            size: isDesktop ? 28 : 24,
+            color: states.contains(WidgetState.selected) ? primaryColor : onSurfaceVariant,
+          );
+        }),
       ),
     );
   }

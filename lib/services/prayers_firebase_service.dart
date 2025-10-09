@@ -70,19 +70,28 @@ class PrayersFirebaseService {
     try {
       Query query = _collection;
 
-      // Appliquer seulement les filtres les plus sélectifs pour éviter les index composites
-      if (approvedOnly) {
-        query = query.where('isApproved', isEqualTo: true);
-      }
-      
-      if (activeOnly) {
-        query = query.where('isArchived', isEqualTo: false);
+      // Utiliser seulement un filtre à la fois pour éviter les index composites complexes
+      if (approvedOnly && activeOnly) {
+        // Utiliser l'index composite simple existant
+        query = query
+            .where('isApproved', isEqualTo: true)
+            .where('isArchived', isEqualTo: false)
+            .orderBy(orderBy, descending: descending);
+      } else if (approvedOnly) {
+        query = query
+            .where('isApproved', isEqualTo: true)
+            .orderBy(orderBy, descending: descending);
+      } else if (activeOnly) {
+        query = query
+            .where('isArchived', isEqualTo: false)
+            .orderBy(orderBy, descending: descending);
+      } else {
+        // Pas de filtre, juste tri
+        query = query.orderBy(orderBy, descending: descending);
       }
 
-      // Tri et limite
-      query = query.orderBy(orderBy, descending: descending);
       if (limit > 0) {
-        query = query.limit(limit * 2); // Récupérer plus pour filtrer ensuite
+        query = query.limit(limit * 3); // Récupérer plus pour filtrer ensuite
       }
 
       return query.snapshots().map((snapshot) {
@@ -90,12 +99,11 @@ class PrayersFirebaseService {
             .map((doc) => PrayerModel.fromMap(doc.data() as Map<String, dynamic>))
             .toList();
 
-        // Filtrage par type en mémoire
+        // Filtrage en mémoire pour éviter les index complexes
         if (type != null) {
           prayers = prayers.where((prayer) => prayer.type == type).toList();
         }
         
-        // Filtrage par catégorie en mémoire
         if (category != null && category.isNotEmpty) {
           prayers = prayers.where((prayer) => prayer.category == category).toList();
         }
@@ -392,6 +400,64 @@ class PrayersFirebaseService {
               .toList());
     } catch (e) {
       print('Erreur lors du stream simplifié des prières: $e');
+      return Stream.value([]);
+    }
+  }
+
+  // Stream pour l'administration (sans filtres complexes)
+  static Stream<List<PrayerModel>> getAdminPrayersStream({
+    bool? isApproved,
+    bool? isArchived,
+    int limit = 100,
+  }) {
+    try {
+      Query query = _collection;
+
+      // Appliquer un seul filtre à la fois pour éviter les index complexes
+      if (isApproved != null) {
+        query = query.where('isApproved', isEqualTo: isApproved);
+      } else if (isArchived != null) {
+        query = query.where('isArchived', isEqualTo: isArchived);
+      }
+
+      query = query.orderBy('createdAt', descending: true).limit(limit);
+
+      return query.snapshots().map((snapshot) {
+        final prayers = snapshot.docs
+            .map((doc) => PrayerModel.fromMap(doc.data() as Map<String, dynamic>))
+            .toList();
+
+        // Filtrer en mémoire si nécessaire
+        return prayers.where((prayer) {
+          if (isApproved != null && isArchived != null) {
+            return prayer.isApproved == isApproved && prayer.isArchived == isArchived;
+          } else if (isApproved != null) {
+            return prayer.isApproved == isApproved;
+          } else if (isArchived != null) {
+            return prayer.isArchived == isArchived;
+          }
+          return true;
+        }).toList();
+      });
+    } catch (e) {
+      print('Erreur lors du stream admin des prières: $e');
+      return Stream.value([]);
+    }
+  }
+
+  // Méthode pour les prières en attente de modération (admin)
+  static Stream<List<PrayerModel>> getPendingPrayersStream() {
+    try {
+      return _collection
+          .where('isApproved', isEqualTo: false)
+          .orderBy('createdAt', descending: true)
+          .limit(50)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => PrayerModel.fromMap(doc.data() as Map<String, dynamic>))
+              .toList());
+    } catch (e) {
+      print('Erreur lors du stream des prières en attente: $e');
       return Stream.value([]);
     }
   }

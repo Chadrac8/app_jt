@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
 import '../auth/auth_service.dart';
+import 'member_event_detail_page.dart';
 import '../../theme.dart';
 
 
@@ -611,7 +612,12 @@ class _MemberEventsPageState extends State<MemberEventsPage>
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () {
-                          // TODO: Voir détails de l'événement
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MemberEventDetailPage(event: event),
+                            ),
+                          );
                         },
                         icon: const Icon(Icons.info_outline, size: 18),
                         label: const Text('Détails'),

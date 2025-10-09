@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
+import '../pages/event_form_page.dart';
 import '../../theme.dart';
 
 
@@ -12,6 +13,8 @@ class EventCard extends StatefulWidget {
   final bool isSelectionMode;
   final bool isSelected;
   final ValueChanged<bool> onSelectionChanged;
+  final VoidCallback? onUpdate;
+  final VoidCallback? onDelete;
 
   const EventCard({
     super.key,
@@ -21,6 +24,8 @@ class EventCard extends StatefulWidget {
     this.isSelectionMode = false,
     this.isSelected = false,
     required this.onSelectionChanged,
+    this.onUpdate,
+    this.onDelete,
   });
 
   @override
@@ -446,7 +451,15 @@ class _EventCardState extends State<EventCard>
   void _handleAction(String action) async {
     switch (action) {
       case 'edit':
-        // TODO: Navigate to edit page
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EventFormPage(event: widget.event),
+          ),
+        );
+        if (result == true && widget.onUpdate != null) {
+          widget.onUpdate!();
+        }
         break;
       case 'more':
         _showActionMenu();
@@ -571,9 +584,54 @@ class _EventCardState extends State<EventCard>
             ListTile(
               leading: const Icon(Icons.delete, color: AppTheme.errorColor),
               title: const Text('Supprimer'),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                // TODO: Implement delete confirmation
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Supprimer l\'événement'),
+                    content: Text('Êtes-vous sûr de vouloir supprimer "${widget.event.title}" ?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text('Annuler'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.errorColor,
+                        ),
+                        child: const Text('Supprimer'),
+                      ),
+                    ],
+                  ),
+                );
+                
+                if (confirmed == true) {
+                  try {
+                    await EventsFirebaseService.deleteEvent(widget.event.id);
+                    if (widget.onDelete != null) {
+                      widget.onDelete!();
+                    }
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Événement supprimé avec succès'),
+                          backgroundColor: AppTheme.successColor,
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Erreur lors de la suppression: $e'),
+                          backgroundColor: AppTheme.errorColor,
+                        ),
+                      );
+                    }
+                  }
+                }
               },
             ),
           ],

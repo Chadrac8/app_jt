@@ -4,6 +4,7 @@ import '../models/event_model.dart';
 import '../models/event_recurrence_model.dart';
 import '../services/events_firebase_service.dart';
 import '../services/event_recurrence_service.dart';
+import '../auth/auth_service.dart';
 import '../../theme.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
@@ -292,8 +293,8 @@ class _EventFormPageState extends State<EventFormPage>
         recurrence: eventRecurrence,
         createdAt: widget.event?.createdAt ?? DateTime.now(),
         updatedAt: DateTime.now(),
-        createdBy: widget.event?.createdBy,
-        lastModifiedBy: 'current_user_id', // TODO: Get from auth
+        createdBy: widget.event?.createdBy ?? AuthService.currentUser?.uid,
+        lastModifiedBy: AuthService.currentUser?.uid ?? 'unknown',
       );
       
       if (widget.event == null) {

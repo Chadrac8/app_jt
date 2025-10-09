@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../core/module_manager.dart';
 import '../../config/app_modules.dart';
 import '../../shared/widgets/custom_card.dart';
+import '../../auth/auth_service.dart';
 import 'models/service.dart';
 import 'views/services_member_view.dart';
 import 'views/services_admin_view.dart';
@@ -204,10 +206,54 @@ class ServicesModule extends BaseModule {
     );
   }
 
-  void _navigateToModule(BuildContext context) {
-    // TODO: Déterminer le rôle de l'utilisateur et naviguer vers la vue appropriée
-    // Pour l'instant, on navigue vers la vue membre
-    Navigator.of(context).pushNamed('/member/services');
+  Future<void> _navigateToModule(BuildContext context) async {
+    try {
+      final user = AuthService.currentUser;
+      if (user == null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Veuillez vous connecter')),
+          );
+        }
+        return;
+      }
+      
+      // Récupérer le rôle depuis Firestore
+      try {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        
+        final role = userDoc.data()?['role'] ?? 'member';
+        
+        if (context.mounted) {
+          switch (role) {
+            case 'admin':
+            case 'leader':
+              Navigator.of(context).pushNamed('/admin/services');
+              break;
+            case 'coordinator':
+              Navigator.of(context).pushNamed('/coordinator/services');
+              break;
+            default:
+              Navigator.of(context).pushNamed('/member/services');
+          }
+        }
+      } catch (e) {
+        print('Erreur récupération rôle: $e');
+        // Fallback vers vue membre
+        if (context.mounted) {
+          Navigator.of(context).pushNamed('/member/services');
+        }
+      }
+    } catch (e) {
+      print('Erreur navigation: $e');
+      // Fallback vers vue membre
+      if (context.mounted) {
+        Navigator.of(context).pushNamed('/member/services');
+      }
+    }
   }
 
   Future<Map<String, dynamic>> _getQuickStats() async {

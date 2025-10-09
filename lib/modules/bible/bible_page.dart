@@ -17,7 +17,9 @@ import 'views/bible_home_view.dart';
 import '../message/widgets/audio_player_tab_perfect13.dart';
 
 class BiblePage extends StatefulWidget {
-  const BiblePage({Key? key}) : super(key: key);
+  final TabController? tabController; // MD3: TabController fourni par le wrapper
+  
+  const BiblePage({Key? key, this.tabController}) : super(key: key);
 
   @override
   State<BiblePage> createState() => _BiblePageState();
@@ -30,7 +32,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   int? _selectedChapter;
   String _searchQuery = '';
   List<BibleVerse> _searchResults = [];
-  late TabController _tabController;
+  TabController? _internalTabController; // TabController interne (si non fourni)
+  
+  // MD3: Getter pour obtenir le TabController (externe ou interne)
+  TabController get _tabController => 
+      widget.tabController ?? _internalTabController!;
+      
   Set<String> _favorites = {};
   Set<String> _highlights = {};
   double _fontSize = 16.0;
@@ -58,20 +65,31 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
-    _tabController.addListener(() {
+    // MD3: Créer un TabController interne seulement si non fourni par le wrapper
+    if (widget.tabController == null) {
+      _internalTabController = TabController(length: 4, vsync: this);
+    }
+    final tabController = _tabController; // Utiliser le getter
+    tabController.addListener(() {
       
       // Forcer le rechargement des préférences quand on change d'onglet
-      if (_tabController.index == 3) { // Onglet Notes (index 3)
+      if (tabController.index == 3) { // Onglet Notes (index 3)
         print('DEBUG: Changement vers onglet Notes, rechargement des préférences...');
         _forceReloadPrefs();
-      } else if (_tabController.index == 0) { // Onglet Lecture (index 0)
+      } else if (tabController.index == 0) { // Onglet Lecture (index 0)
         print('DEBUG: Changement vers onglet Lecture, rechargement des préférences...');
         _forceReloadPrefs();
       }
     });
     _loadBible();
     _loadPrefs();
+  }
+  
+  @override
+  void dispose() {
+    // MD3: Disposer uniquement le TabController interne (pas celui du wrapper)
+    _internalTabController?.dispose();
+    super.dispose();
   }
   
   // Méthodes utilitaires pour l'historique et les marque-pages
@@ -814,64 +832,51 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       backgroundColor: theme.colorScheme.surface,
       body: Theme(
         data: theme,
-        child: Column(
+        child: _buildBody(),
+      ),
+    );
+  }
+  
+  Widget _buildBody() {
+    // MD3: Si TabController fourni par wrapper, pas besoin de Scaffold
+    final body = Column(
         children: [
-          // TabBar - Style MD3 moderne avec couleur primaire cohérente
-          Material(
-            color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
-            elevation: 0,
-            child: TabBar(
-              controller: _tabController,
-              labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
-              unselectedLabelColor: AppTheme.onPrimaryColor.withValues(alpha: 0.7), // Texte blanc semi-transparent
-              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 3.0,
-              labelStyle: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize14,
-                fontWeight: AppTheme.fontSemiBold,
-                letterSpacing: 0.1,
+          // MD3: Afficher le TabBar seulement si non fourni par le wrapper
+          if (widget.tabController == null) ...[
+            // TabBar intégrée - Style MD3 avec fond Surface (clair)
+            Container(
+              color: AppTheme.surface, // MD3: Fond clair comme l'AppBar
+              child: TabBar(
+                controller: _tabController,
+                // Les couleurs sont héritées du TabBarTheme (primaryColor pour actif, gris pour inactif)
+                tabs: const [
+                  Tab(
+                    icon: Icon(Icons.menu_book_rounded),
+                    text: 'La Bible',
+                  ),
+                  Tab(
+                    icon: Icon(Icons.campaign_rounded),
+                    text: 'Le Message',
+                  ),
+                  Tab(
+                    icon: Icon(Icons.library_books_rounded),
+                    text: 'Ressources',
+                  ),
+                  Tab(
+                    icon: Icon(Icons.bookmark_rounded),
+                    text: 'Notes',
+                  ),
+                ],
               ),
-              unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize14,
-                fontWeight: AppTheme.fontMedium,
-                letterSpacing: 0.1,
-              ),
-              splashFactory: InkRipple.splashFactory,
-              overlayColor: WidgetStateProperty.resolveWith<Color?>(
-                (Set<WidgetState> states) {
-                  if (states.contains(WidgetState.pressed)) {
-                    return AppTheme.onPrimaryColor.withValues(alpha: 0.12); // Overlay blanc sur fond primaire
-                  }
-                  if (states.contains(WidgetState.hovered)) {
-                    return AppTheme.onPrimaryColor.withValues(alpha: 0.08); // Hover blanc sur fond primaire
-                  }
-                  return null;
-                },
-              ),
-              tabs: const [
-                Tab(
-                  text: 'La Bible',
-                ),
-                Tab(
-                  text: 'Le Message',
-                ),
-                Tab(
-                  text: 'Ressources',
-                ),
-                Tab(
-                  text: 'Notes',
-                ),
-              ],
             ),
-          ),
-          
-          // Divider subtil MD3
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: Theme.of(context).colorScheme.outlineVariant,
-          ),
+            
+            // Divider subtil MD3
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: AppTheme.grey300.withOpacity(0.5),
+            ),
+          ],
           // TabBarView - Style identique au module Vie de l'église
           Expanded(
             child: TabBarView(
@@ -885,9 +890,15 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             ),
           ),
         ],
-      ),
-    ),
-    );
+      );
+    
+    // MD3: Si dans le wrapper, retourner directement le body
+    if (widget.tabController != null) {
+      return body;
+    }
+    
+    // MD3: Si standalone, envelopper dans Scaffold (déjà fait au-dessus)
+    return body;
   }
 
   Widget _buildHomeTab() {

@@ -527,6 +527,21 @@ class _EventDetailPageState extends State<EventDetailPage>
       child: RecurringEventManagerWidget(
         eventId: _currentEvent!.id,
         parentEvent: _currentEvent!,
+        onEditInstance: (instance) async {
+          // Ouvre le formulaire d'édition pour cette occurrence (à personnaliser)
+          // Par exemple :
+          // await Navigator.push(context, MaterialPageRoute(builder: (_) => EditEventInstancePage(instance: instance)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Modifier l\'occurrence du ${instance.actualDate.day}/${instance.actualDate.month}/${instance.actualDate.year}')),
+          );
+        },
+        onCancelInstance: (instance) async {
+          // Annule l'occurrence (à personnaliser, ex: update Firestore)
+          // await EventRecurrenceService.cancelInstance(instance.id);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Occurrence du ${instance.actualDate.day}/${instance.actualDate.month}/${instance.actualDate.year} annulée')),
+          );
+        },
       ),
     );
   }
@@ -704,8 +719,60 @@ class _EventDetailPageState extends State<EventDetailPage>
         }
         break;
       case 'delete':
-        // TODO: Implement delete confirmation dialog
+        _confirmDeleteEvent();
         break;
+    }
+  }
+
+  Future<void> _confirmDeleteEvent() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Supprimer l\'événement'),
+        content: Text(
+          _currentEvent!.isRecurring 
+              ? 'Êtes-vous sûr de vouloir supprimer cet événement récurrent ? '
+                'Toutes les occurrences futures seront également supprimées.'
+              : 'Êtes-vous sûr de vouloir supprimer cet événement ?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.errorColor,
+            ),
+            child: const Text('Supprimer'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      try {
+        await EventsFirebaseService.deleteEvent(_currentEvent!.id);
+        if (mounted) {
+          Navigator.pop(context, true); // Retour à la liste
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Événement supprimé avec succès'),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur lors de la suppression: $e'),
+              backgroundColor: AppTheme.errorColor,
+            ),
+          );
+        }
+      }
     }
   }
 

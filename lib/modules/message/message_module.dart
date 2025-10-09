@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../theme.dart';
 import 'widgets/pepites_or_tab.dart';
 import 'widgets/audio_player_tab_perfect13.dart';
@@ -7,7 +6,9 @@ import 'widgets/read_message_tab.dart';
 
 /// Module principal "Le Message" avec 3 onglets
 class MessageModule extends StatefulWidget {
-  const MessageModule({Key? key}) : super(key: key);
+  final TabController? tabController; // MD3: TabController fourni par le wrapper
+  
+  const MessageModule({Key? key, this.tabController}) : super(key: key);
 
   @override
   State<MessageModule> createState() => _MessageModuleState();
@@ -15,77 +16,64 @@ class MessageModule extends StatefulWidget {
 
 class _MessageModuleState extends State<MessageModule>
     with TickerProviderStateMixin {
-  late TabController _tabController;
+  TabController? _internalTabController; // TabController interne (si non fourni)
+  
+  // MD3: Getter pour obtenir le TabController (externe ou interne)
+  TabController get _tabController => 
+      widget.tabController ?? _internalTabController!;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    // MD3: Créer un TabController interne seulement si non fourni par le wrapper
+    if (widget.tabController == null) {
+      _internalTabController = TabController(length: 3, vsync: this);
+    }
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    // MD3: Disposer uniquement le TabController interne (pas celui du wrapper)
+    _internalTabController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    // MD3: Construction du body
+    final body = Column(
       children: [
-        // TabBar - Style MD3 moderne avec couleur primaire cohérente
-        Material(
-          color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
-          elevation: 0,
-          child: TabBar(
-            controller: _tabController,
-            labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
-            unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
-            indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorWeight: 3.0,
-            labelStyle: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize14,
-              fontWeight: AppTheme.fontSemiBold,
-              letterSpacing: 0.1,
+        // MD3: Afficher le TabBar seulement si non fourni par le wrapper
+        if (widget.tabController == null) ...[
+          // TabBar intégrée - Style MD3 avec fond Surface (clair)
+          Container(
+            color: AppTheme.surface, // MD3: Fond clair comme l'AppBar
+            child: TabBar(
+              controller: _tabController,
+              // Les couleurs sont héritées du TabBarTheme (primaryColor pour actif, gris pour inactif)
+              tabs: const [
+                Tab(
+                  icon: Icon(Icons.headphones_rounded),
+                  text: 'Écouter',
+                ),
+                Tab(
+                  icon: Icon(Icons.menu_book_rounded),
+                  text: 'Lire',
+                ),
+                Tab(
+                  icon: Icon(Icons.auto_awesome_rounded),
+                  text: 'Pépites d\'Or',
+                ),
+              ],
             ),
-            unselectedLabelStyle: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize14,
-              fontWeight: AppTheme.fontMedium,
-              letterSpacing: 0.1,
-            ),
-            splashFactory: InkRipple.splashFactory,
-            overlayColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) {
-                if (states.contains(WidgetState.pressed)) {
-                  return AppTheme.primaryColor.withValues(alpha: 0.12); // Overlay rouge sur fond clair
-                }
-                if (states.contains(WidgetState.hovered)) {
-                  return AppTheme.primaryColor.withValues(alpha: 0.08); // Hover rouge sur fond clair
-                }
-                return null;
-              },
-            ),
-            tabs: const [
-              Tab(
-                text: 'Écouter',
-              ),
-              Tab(
-                text: 'Lire',
-              ),
-              Tab(
-                text: 'Pépites d\'Or',
-              ),
-            ],
           ),
-        ),
-        
-        // Divider subtil MD3
-        Divider(
-          height: 1,
-          thickness: 1,
-          color: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5),
-        ),
+          // Divider subtil MD3
+          Divider(
+            height: 1,
+            thickness: 1,
+            color: AppTheme.grey300.withOpacity(0.5),
+          ),
+        ],
         
         // TabBarView
         Expanded(
@@ -112,5 +100,8 @@ class _MessageModuleState extends State<MessageModule>
         ),
       ],
     );
+    
+    // MD3: Si dans le wrapper (TabController fourni), retourner directement le body
+    return body;
   }
 }

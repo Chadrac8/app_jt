@@ -504,6 +504,10 @@ class EventModel {
   final DateTime updatedAt;
   final String? createdBy;
   final String? lastModifiedBy;
+  
+  // Nouveaux champs pour l'intégration Services ↔ Events
+  final String? linkedServiceId;  // Référence vers ServiceModel
+  final bool isServiceEvent;      // Flag pour identifier les événements-services
 
   EventModel({
     required this.id,
@@ -530,6 +534,8 @@ class EventModel {
     required this.updatedAt,
     this.createdBy,
     this.lastModifiedBy,
+    this.linkedServiceId,
+    this.isServiceEvent = false,
   });
 
   String get typeLabel {
@@ -618,6 +624,8 @@ class EventModel {
       updatedAt: (data['updatedAt'] as Timestamp).toDate(),
       createdBy: data['createdBy'],
       lastModifiedBy: data['lastModifiedBy'],
+      linkedServiceId: data['linkedServiceId'],
+      isServiceEvent: data['isServiceEvent'] ?? false,
     );
   }
 
@@ -645,6 +653,8 @@ class EventModel {
       'updatedAt': Timestamp.fromDate(updatedAt),
       'createdBy': createdBy,
       'lastModifiedBy': lastModifiedBy,
+      'linkedServiceId': linkedServiceId,
+      'isServiceEvent': isServiceEvent,
     };
   }
 
@@ -669,6 +679,8 @@ class EventModel {
     Map<String, dynamic>? customFields,
     DateTime? updatedAt,
     String? lastModifiedBy,
+    String? linkedServiceId,
+    bool? isServiceEvent,
   }) {
     return EventModel(
       id: id,
@@ -694,6 +706,8 @@ class EventModel {
       updatedAt: updatedAt ?? this.updatedAt,
       createdBy: createdBy,
       lastModifiedBy: lastModifiedBy ?? this.lastModifiedBy,
+      linkedServiceId: linkedServiceId ?? this.linkedServiceId,
+      isServiceEvent: isServiceEvent ?? this.isServiceEvent,
     );
   }
 }

@@ -5,7 +5,7 @@ import '../services/services_service.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
-import '../../../../theme.dart';
+import '../../../auth/auth_service.dart';
 import '../../../theme.dart';
 
 
@@ -814,7 +814,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
         streamingUrl: _streamingUrlController.text.trim().isEmpty ? null : _streamingUrlController.text.trim(),
         createdAt: widget.service?.createdAt ?? DateTime.now(),
         updatedAt: DateTime.now(),
-        createdBy: widget.service?.createdBy ?? 'current_user', // TODO: Utiliser l'ID utilisateur réel
+        createdBy: widget.service?.createdBy ?? AuthService.currentUser?.uid ?? 'unknown',
       );
 
       if (widget.isEdit && widget.service?.id != null) {

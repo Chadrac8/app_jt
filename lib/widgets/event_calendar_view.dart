@@ -86,9 +86,16 @@ class _EventCalendarViewState extends State<EventCalendarView> {
           padding: const EdgeInsets.all(AppTheme.spaceMedium),
           child: Row(
             children: [
-              IconButton(
-                onPressed: _previousMonth,
-                icon: const Icon(Icons.chevron_left),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: _previousMonth,
+                  icon: const Icon(Icons.chevron_left, size: 32, color: Colors.black),
+                  tooltip: 'Mois précédent',
+                ),
               ),
               Expanded(
                 child: Text(
@@ -99,9 +106,16 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              IconButton(
-                onPressed: _nextMonth,
-                icon: const Icon(Icons.chevron_right),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: _nextMonth,
+                  icon: const Icon(Icons.chevron_right, size: 32, color: Colors.black),
+                  tooltip: 'Mois suivant',
+                ),
               ),
               const SizedBox(width: AppTheme.spaceSmall),
               TextButton(

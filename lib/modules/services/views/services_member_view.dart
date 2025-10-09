@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../theme.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../models/service.dart';
 import '../models/service_assignment.dart';
 import '../services/services_service.dart';
 import '../../../extensions/datetime_extensions.dart';
+import '../../../auth/auth_service.dart';
 import '../../../theme.dart';
 
 
@@ -50,8 +50,12 @@ class _ServicesMemberViewState extends State<ServicesMemberView>
     try {
       final upcoming = await _servicesService.getUpcomingServices(limit: 50);
       final past = await _servicesService.getPastServices(limit: 50);
-      // TODO: Remplacer par l'ID utilisateur actuel
-      final assignments = await _servicesService.getMemberAssignments('current_user_id');
+      
+      // Récupérer l'ID de l'utilisateur actuel
+      final userId = AuthService.currentUser?.uid;
+      final assignments = userId != null 
+          ? await _servicesService.getMemberAssignments(userId)
+          : <ServiceAssignment>[];
       
       setState(() {
         _upcomingServices = upcoming;

@@ -617,7 +617,26 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
                 ),
               )
             else
-              ..._quickActions.asMap().entries.map((entry) => _buildQuickActionCard(entry.key, entry.value)),
+              SizedBox(
+                height: 400,
+                child: ReorderableListView(
+                  onReorder: (oldIndex, newIndex) {
+                    setState(() {
+                      if (newIndex > oldIndex) newIndex--;
+                      final item = _quickActions.removeAt(oldIndex);
+                      _quickActions.insert(newIndex, item);
+                    });
+                  },
+                  children: [
+                    for (int i = 0; i < _quickActions.length; i++)
+                      Container(
+                        key: ValueKey('quick_action_$i'),
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        child: _buildQuickActionCard(i, _quickActions[i]),
+                      ),
+                  ],
+                ),
+              ),
           ],
         ],
       ),
@@ -1230,8 +1249,9 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
         upcomingEvents: _events,
         areEventsActive: _areEventsActive,
         
-        // Actions rapides (garder les valeurs par défaut)
-        areQuickActionsActive: _areQuickActionsActive,
+  // Actions rapides (sauvegarder la liste modifiée)
+  areQuickActionsActive: _areQuickActionsActive,
+  quickActions: _quickActions,
         
         // Contact
         contactEmail: _contactEmailController.text,

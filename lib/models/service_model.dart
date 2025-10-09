@@ -16,6 +16,7 @@ class ServiceModel {
   final bool isRecurring;
   final Map<String, dynamic>? recurrencePattern;
   final String? templateId;
+  final String? linkedEventId; // Lien vers EventModel pour intégration calendrier/récurrence
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? createdBy;
@@ -37,6 +38,7 @@ class ServiceModel {
     this.isRecurring = false,
     this.recurrencePattern,
     this.templateId,
+    this.linkedEventId,
     required this.createdAt,
     required this.updatedAt,
     this.createdBy,
@@ -86,6 +88,7 @@ class ServiceModel {
       isRecurring: data['isRecurring'] ?? false,
       recurrencePattern: data['recurrencePattern'],
       templateId: data['templateId'],
+      linkedEventId: data['linkedEventId'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: (data['updatedAt'] as Timestamp).toDate(),
       createdBy: data['createdBy'],
@@ -109,6 +112,7 @@ class ServiceModel {
       'isRecurring': isRecurring,
       'recurrencePattern': recurrencePattern,
       'templateId': templateId,
+      'linkedEventId': linkedEventId,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
       'createdBy': createdBy,
@@ -131,6 +135,7 @@ class ServiceModel {
     bool? isRecurring,
     Map<String, dynamic>? recurrencePattern,
     String? templateId,
+    String? linkedEventId,
     DateTime? updatedAt,
     String? lastModifiedBy,
   }) {
@@ -150,6 +155,7 @@ class ServiceModel {
       isRecurring: isRecurring ?? this.isRecurring,
       recurrencePattern: recurrencePattern ?? this.recurrencePattern,
       templateId: templateId ?? this.templateId,
+      linkedEventId: linkedEventId ?? this.linkedEventId,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       createdBy: createdBy,

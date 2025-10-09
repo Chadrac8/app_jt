@@ -17,13 +17,15 @@ class EventRecurrenceService {
     try {
       print('📝 Création récurrence avec isActive: ${recurrence.isActive}');
       final firestoreData = recurrence.toFirestore();
-      print('📄 Données Firestore isActive: ${firestoreData['isActive']}');
+      print('📄 Données Firestore: $firestoreData');
       
       final docRef = await _firestore
           .collection(recurrencesCollection)
           .add(firestoreData);
 
-      // Générer les premières instances (3 mois à l'avance)
+      print('✅ Récurrence créée avec ID: ${docRef.id}');
+      
+      // Générer les instances immédiatement (6 mois à l'avance)
       final recurrenceWithId = EventRecurrenceModel(
         id: docRef.id,
         parentEventId: recurrence.parentEventId,
@@ -41,32 +43,35 @@ class EventRecurrenceService {
         updatedAt: recurrence.updatedAt,
       );
       
-      print('✅ Récurrence créée avec ID: ${docRef.id}, isActive: ${recurrenceWithId.isActive}');
-      
-      await _generateInstances(
+      await _generateInstancesForRecurrence(
         recurrenceWithId,
-        until: DateTime.now().add(const Duration(days: 90)),
+        until: DateTime.now().add(const Duration(days: 180)),
       );
 
       return docRef.id;
     } catch (e) {
       print('❌ Erreur création récurrence: $e');
-      throw Exception('Erreur lors de la création de la récurrence: $e');
+      rethrow;
     }
   }
 
   /// Met à jour une règle de récurrence
   static Future<void> updateRecurrence(EventRecurrenceModel recurrence) async {
     try {
+      print('📝 Mise à jour récurrence ${recurrence.id}');
+      
       await _firestore
           .collection(recurrencesCollection)
           .doc(recurrence.id)
           .update(recurrence.toFirestore());
 
+      print('✅ Récurrence mise à jour');
+      
       // Regénérer les instances futures
       await _regenerateInstances(recurrence);
     } catch (e) {
-      throw Exception('Erreur lors de la mise à jour de la récurrence: $e');
+      print('❌ Erreur mise à jour récurrence: $e');
+      rethrow;
     }
   }
 
@@ -193,9 +198,15 @@ class EventRecurrenceService {
   /// Ajoute une exception à une date spécifique
   static Future<void> addException(String recurrenceId, DateTime date, {String? reason}) async {
     try {
+      print('🚫 Ajout exception pour récurrence $recurrenceId à ${date.day}/${date.month}/${date.year}');
+      
       final recurrence = await getRecurrence(recurrenceId);
-      if (recurrence == null) return;
+      if (recurrence == null) {
+        print('❌ Récurrence non trouvée');
+        return;
+      }
 
+      // Ajouter l'exception à la liste
       final updatedExceptions = List<DateTime>.from(recurrence.exceptions)..add(date);
       
       await updateRecurrence(recurrence.copyWith(
@@ -203,7 +214,7 @@ class EventRecurrenceService {
         updatedAt: DateTime.now(),
       ));
 
-      // Marquer l'instance comme annulée si elle existe
+      // Marquer les instances existantes comme annulées
       final instances = await getEventInstances(
         recurrenceId: recurrenceId,
         startDate: DateTime(date.year, date.month, date.day),
@@ -216,8 +227,56 @@ class EventRecurrenceService {
             .doc(instance.id)
             .update({'isCancelled': true});
       }
+      
+      print('✅ Exception ajoutée et instances mises à jour');
     } catch (e) {
-      throw Exception('Erreur lors de l\'ajout de l\'exception: $e');
+      print('❌ Erreur ajout exception: $e');
+      rethrow;
+    }
+  }
+
+  /// Supprime une exception (restaure une occurrence annulée)
+  static Future<void> removeException(
+    String recurrenceId,
+    DateTime date,
+  ) async {
+    try {
+      print('🔄 Suppression exception pour récurrence $recurrenceId à $date');
+      
+      final recurrence = await getRecurrence(recurrenceId);
+      if (recurrence == null) {
+        print('❌ Récurrence non trouvée');
+        return;
+      }
+
+      // Retirer la date des exceptions
+      final updatedExceptions = recurrence.exceptions
+          .where((d) => !_isSameDay(d, date))
+          .toList();
+
+      await updateRecurrence(recurrence.copyWith(
+        exceptions: updatedExceptions,
+        updatedAt: DateTime.now(),
+      ));
+
+      // Restaurer les instances annulées pour cette date
+      final instances = await getEventInstances(
+        recurrenceId: recurrenceId,
+        startDate: DateTime(date.year, date.month, date.day),
+        endDate: DateTime(date.year, date.month, date.day, 23, 59, 59),
+      );
+
+      for (final instance in instances) {
+        await _firestore
+            .collection(instancesCollection)
+            .doc(instance.id)
+            .update({'isCancelled': false});
+      }
+      
+      print('✅ Exception supprimée et instances restaurées');
+    } catch (e) {
+      print('❌ Erreur suppression exception: $e');
+      rethrow;
     }
   }
 
@@ -228,11 +287,17 @@ class EventRecurrenceService {
     RecurrenceOverride override,
   ) async {
     try {
+      print('✏️ Modification occurrence pour récurrence $recurrenceId');
+      
       final recurrence = await getRecurrence(recurrenceId);
-      if (recurrence == null) return;
+      if (recurrence == null) {
+        print('❌ Récurrence non trouvée');
+        return;
+      }
 
+      // Mettre à jour ou ajouter l'override
       final updatedOverrides = List<RecurrenceOverride>.from(recurrence.overrides)
-        ..removeWhere((o) => o.originalDate == originalDate)
+        ..removeWhere((o) => _isSameDay(o.originalDate, originalDate))
         ..add(override);
 
       await updateRecurrence(recurrence.copyWith(
@@ -253,92 +318,141 @@ class EventRecurrenceService {
             .doc(instance.id)
             .update({
               'isOverride': true,
+              'isCancelled': override.newDate == null,
               'actualDate': override.newDate != null 
                   ? Timestamp.fromDate(override.newDate!) 
-                  : instance.actualDate,
+                  : Timestamp.fromDate(instance.actualDate),
               'overrideData': override.toFirestore(),
             });
       }
+      
+      print('✅ Occurrence modifiée');
     } catch (e) {
-      throw Exception('Erreur lors de la modification de l\'occurrence: $e');
+      print('❌ Erreur modification occurrence: $e');
+      rethrow;
     }
   }
 
   /// Génère les instances d'événement pour une récurrence
-  static Future<void> _generateInstances(
+  static Future<void> _generateInstancesForRecurrence(
     EventRecurrenceModel recurrence,
     {DateTime? until}
   ) async {
     try {
+      print('🔄 Génération des instances pour récurrence ${recurrence.id}');
+      
       final parentEvent = await _getParentEvent(recurrence.parentEventId);
-      if (parentEvent == null) return;
+      if (parentEvent == null) {
+        print('❌ Événement parent non trouvé: ${recurrence.parentEventId}');
+        return;
+      }
 
+      print('📅 Événement parent trouvé: ${parentEvent.title}');
+      print('📅 Date de début: ${parentEvent.startDate}');
+
+      // Générer les dates d'occurrence
       final occurrences = recurrence.generateOccurrences(
         startDate: parentEvent.startDate,
-        until: until,
+        until: until ?? DateTime.now().add(const Duration(days: 180)),
       );
 
+      print('✅ ${occurrences.length} occurrences générées');
+
+      if (occurrences.isEmpty) {
+        print('⚠️ Aucune occurrence générée');
+        return;
+      }
+
+      // Créer les instances par batch
       final batch = _firestore.batch();
-      final now = DateTime.now();
+      int count = 0;
 
       for (final occurrence in occurrences) {
-        // Vérifier s'il y a un override pour cette date
+        // Vérifier si c'est une exception
+        final isException = recurrence.exceptions.any((ex) => _isSameDay(ex, occurrence));
+        if (isException) {
+          print('🚫 Date ${occurrence.day}/${occurrence.month} est une exception, ignorée');
+          continue;
+        }
+
+        // Chercher un override pour cette date
         final override = recurrence.overrides
             .where((o) => _isSameDay(o.originalDate, occurrence))
             .firstOrNull;
 
         final actualDate = override?.newDate ?? occurrence;
-        
+        final isCancelled = override != null && override.newDate == null;
+
         final instance = EventInstanceModel(
-          id: '', // Sera généré par Firestore
+          id: '',
           parentEventId: recurrence.parentEventId,
           recurrenceId: recurrence.id,
           originalDate: occurrence,
           actualDate: actualDate,
           isOverride: override != null,
-          isCancelled: override?.newDate == null,
+          isCancelled: isCancelled,
           overrideData: override?.toFirestore() ?? {},
-          createdAt: now,
+          createdAt: DateTime.now(),
         );
 
         final docRef = _firestore.collection(instancesCollection).doc();
         batch.set(docRef, instance.toFirestore());
+        count++;
+
+        // Commit par batch de 500 pour éviter les limites Firestore
+        if (count >= 500) {
+          await batch.commit();
+          count = 0;
+        }
       }
 
-      await batch.commit();
+      // Commit final
+      if (count > 0) {
+        await batch.commit();
+      }
+
+      print('✅ ${occurrences.length} instances créées dans Firestore');
     } catch (e) {
-      throw Exception('Erreur lors de la génération des instances: $e');
+      print('❌ Erreur génération instances: $e');
+      rethrow;
     }
   }
 
   /// Régénère les instances futures après modification d'une récurrence (optimisé)
   static Future<void> _regenerateInstances(EventRecurrenceModel recurrence) async {
     try {
+      print('🔄 Régénération des instances pour récurrence ${recurrence.id}');
       final now = DateTime.now();
 
-      // Supprimer les instances futures existantes avec requête optimisée
+      // Supprimer les instances futures existantes
       final existingInstances = await _firestore
           .collection(instancesCollection)
           .where('recurrenceId', isEqualTo: recurrence.id)
           .get();
 
       final batch = _firestore.batch();
+      int deletedCount = 0;
+      
       for (final doc in existingInstances.docs) {
         final data = doc.data();
         final actualDate = (data['actualDate'] as Timestamp).toDate();
         if (actualDate.isAfter(now)) {
           batch.delete(doc.reference);
+          deletedCount++;
         }
       }
+      
       await batch.commit();
+      print('🗑️ $deletedCount instances futures supprimées');
 
       // Regénérer les nouvelles instances
-      await _generateInstances(
+      await _generateInstancesForRecurrence(
         recurrence,
-        until: now.add(const Duration(days: 90)),
+        until: now.add(const Duration(days: 180)),
       );
     } catch (e) {
-      throw Exception('Erreur lors de la régénération des instances: $e');
+      print('❌ Erreur régénération: $e');
+      rethrow;
     }
   }
 

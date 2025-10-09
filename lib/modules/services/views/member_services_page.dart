@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../auth/auth_service.dart';
-import '../../../../theme.dart';
+import '../../../widgets/service_sheet_editor.dart';
 import '../../../theme.dart';
 
 
@@ -580,8 +580,45 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () {
-                        // TODO: Voir la feuille de service
+                      onPressed: () async {
+                        try {
+                          final service = await ServicesFirebaseService.getService(
+                            assignment.serviceId,
+                          );
+                          
+                          if (service == null) {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Service non trouvé'),
+                                  backgroundColor: AppTheme.errorColor,
+                                ),
+                              );
+                            }
+                            return;
+                          }
+                          
+                          if (mounted) {
+                            await showDialog(
+                              context: context,
+                              builder: (context) => Dialog(
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(maxWidth: 600),
+                                  child: ServiceSheetEditor(service: service),
+                                ),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Erreur: $e'),
+                                backgroundColor: AppTheme.errorColor,
+                              ),
+                            );
+                          }
+                        }
                       },
                       icon: const Icon(Icons.description, size: 18),
                       label: const Text('Voir la feuille de service'),

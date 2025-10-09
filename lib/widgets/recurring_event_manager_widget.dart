@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/event_model.dart';
+import 'edit_event_instance_form.dart';
 import '../models/event_recurrence_model.dart';
 import '../services/event_recurrence_service.dart';
 import '../../theme.dart';
@@ -9,11 +10,15 @@ import '../../theme.dart';
 class RecurringEventManagerWidget extends StatefulWidget {
   final String eventId;
   final EventModel parentEvent;
+  final void Function(EventInstanceModel)? onEditInstance;
+  final void Function(EventInstanceModel)? onCancelInstance;
 
   const RecurringEventManagerWidget({
     Key? key,
     required this.eventId,
     required this.parentEvent,
+    this.onEditInstance,
+    this.onCancelInstance,
   }) : super(key: key);
 
   @override
@@ -345,7 +350,38 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
                 : 'Occurrence normale',
       ),
       trailing: PopupMenuButton<String>(
-        onSelected: (action) => _handleInstanceAction(instance, action),
+        onSelected: (action) {
+          switch (action) {
+            case 'modify':
+              if (widget.onEditInstance != null) {
+                widget.onEditInstance!(instance);
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => EditEventInstanceForm(
+                      instance: instance,
+                      onSaved: _loadData,
+                    ),
+                  ),
+                );
+              }
+              break;
+            case 'cancel':
+              if (widget.onCancelInstance != null) {
+                widget.onCancelInstance!(instance);
+              } else {
+                _cancelInstance(instance);
+              }
+              break;
+            case 'restore':
+              // TODO: Restore logic
+              break;
+            case 'details':
+              // TODO: Details logic
+              break;
+          }
+        },
         itemBuilder: (context) => [
           if (!instance.isCancelled) ...[
             const PopupMenuItem(value: 'modify', child: Text('Modifier')),
@@ -654,17 +690,40 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
   }
 
   void _cancelInstance(EventInstanceModel instance) {
-    // TODO: Implémenter l'annulation d'instance
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité en cours de développement')),
-    );
+    // Persiste l'annulation dans Firestore
+    EventRecurrenceService.addException(instance.recurrenceId!, instance.originalDate).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Occurrence annulée et enregistrée')),
+      );
+      _loadData();
+    }).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de l\'annulation : $e')),
+      );
+    });
   }
 
-  void _restoreInstance(EventInstanceModel instance) {
-    // TODO: Implémenter la restauration d'instance
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité en cours de développement')),
-    );
+  void _restoreInstance(EventInstanceModel instance) async {
+    try {
+      await EventRecurrenceService.removeException(
+        instance.recurrenceId!,
+        instance.originalDate,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Occurrence restaurée avec succès'),
+          backgroundColor: AppTheme.successColor,
+        ),
+      );
+      _loadData(); // Recharger les données
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la restauration : $e'),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
+    }
   }
 
   void _showInstanceDetails(EventInstanceModel instance) {

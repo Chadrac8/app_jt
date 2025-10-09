@@ -380,12 +380,6 @@ class HomeConfigModel {
       areQuickActionsActive: true,
       quickActions: [
         {
-          'title': 'Donner sa vie à Jésus',
-          'description': 'Accepter Christ comme Sauveur',
-          'icon': 'favorite_rounded',
-          'color': 0xFFE57373
-        },
-        {
           'title': 'Étudier la Parole',
           'description': 'Lecture et méditation biblique',
           'icon': 'menu_book_rounded',
@@ -402,6 +396,12 @@ class HomeConfigModel {
           'description': 'Soutenir l\'œuvre de Dieu',
           'icon': 'card_giftcard_rounded',
           'color': 0xFFFFB74D
+        },
+        {
+          'title': 'Nous visiter',
+          'description': 'Infos, accès et accueil',
+          'icon': 'location_on_rounded',
+          'color': 0xFF64B5F6
         }
       ],
       contactEmail: 'contact@jubiletabernacle.org',

@@ -48,6 +48,38 @@ class EventsFirebaseService {
 
   static Future<void> deleteEvent(String eventId) async {
     try {
+      print('🗑️ Suppression de l\'événement $eventId');
+      
+      // Vérifier si l'événement est récurrent et supprimer ses récurrences/instances
+      try {
+        // Import dynamique pour éviter les dépendances circulaires
+        final recurrences = await _firestore
+            .collection('event_recurrences')
+            .where('parentEventId', isEqualTo: eventId)
+            .get();
+        
+        for (final recurrence in recurrences.docs) {
+          print('🗑️ Suppression récurrence ${recurrence.id}');
+          
+          // Supprimer les instances de cette récurrence
+          final instances = await _firestore
+              .collection('event_instances')
+              .where('recurrenceId', isEqualTo: recurrence.id)
+              .get();
+          
+          for (final instance in instances.docs) {
+            await instance.reference.delete();
+          }
+          
+          // Supprimer la récurrence
+          await recurrence.reference.delete();
+        }
+        
+        print('✅ Récurrences et instances supprimées');
+      } catch (e) {
+        print('⚠️ Erreur suppression récurrences: $e');
+      }
+      
       final batch = _firestore.batch();
       
       // Delete event
@@ -76,7 +108,10 @@ class EventsFirebaseService {
       await batch.commit();
       
       await _logEventActivity(eventId, 'event_deleted', {});
+      
+      print('✅ Événement supprimé avec succès');
     } catch (e) {
+      print('❌ Erreur lors de la suppression: $e');
       throw Exception('Erreur lors de la suppression de l\'événement: $e');
     }
   }

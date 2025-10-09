@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
+import '../../../services/service_event_integration_service.dart';
 import '../../../widgets/service_card.dart';
 import '../../../widgets/service_search_filter_bar.dart';
 import '../../../widgets/service_calendar_view.dart';
@@ -9,7 +10,6 @@ import 'service_detail_page.dart';
 import 'service_form_page.dart';
 import '../../../pages/teams_management_page.dart';
 import '../../../pages/assignments_overview_page.dart';
-import '../../../../theme.dart';
 import '../../../theme.dart';
 
 
@@ -300,7 +300,7 @@ class _ServicesHomePageState extends State<ServicesHomePage>
     if (confirmed == true) {
       try {
         for (final service in _selectedServices) {
-          await ServicesFirebaseService.deleteService(service.id);
+          await ServiceEventIntegrationService.deleteServiceWithEvent(service.id);
         }
         setState(() {
           _selectedServices.clear();

@@ -59,27 +59,35 @@ class _DonationsPageState extends State<DonationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppTheme.surfaceColor, // Material Design 3 background
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge), // 8px grid compliant
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        title: Text('Faire un don', style: textTheme.titleLarge?.copyWith(color: colorScheme.onSurface)),
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
+        foregroundColor: colorScheme.primary,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildBiblicalVerse(),
-            const SizedBox(height: AppTheme.spaceXLarge), // 8px grid
-            _buildDonationTypes(),
-            const SizedBox(height: AppTheme.spaceXLarge), // 8px grid
-            _buildPaymentMethods(),
-            const SizedBox(height: AppTheme.spaceLarge), // 8px grid
-            if (_showRIB) _buildRIBSection(),
+            _buildBiblicalVerse(colorScheme, textTheme),
+            const SizedBox(height: AppTheme.spaceXLarge),
+            _buildDonationTypes(colorScheme, textTheme),
+            const SizedBox(height: AppTheme.spaceXLarge),
+            _buildPaymentMethods(colorScheme, textTheme),
+            const SizedBox(height: AppTheme.spaceLarge),
+            if (_showRIB) _buildRIBSection(colorScheme, textTheme),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBiblicalVerse() {
+  Widget _buildBiblicalVerse(ColorScheme colorScheme, TextTheme textTheme) {
     return Container(
       padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
@@ -87,13 +95,13 @@ class _DonationsPageState extends State<DonationsPage> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppTheme.primaryColor.withOpacity(0.1),
-            const Color(0xFF6366F1).withOpacity(0.1),
+            colorScheme.primary.withOpacity(0.08),
+            colorScheme.secondary.withOpacity(0.08),
           ],
         ),
         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.2),
+          color: colorScheme.primary.withOpacity(0.18),
           width: 1,
         ),
       ),
@@ -105,12 +113,12 @@ class _DonationsPageState extends State<DonationsPage> {
               Container(
                 padding: const EdgeInsets.all(AppTheme.space12),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  color: colorScheme.primary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: Icon(
                   Icons.auto_stories,
-                  color: AppTheme.primaryColor,
+                  color: colorScheme.primary,
                   size: 24,
                 ),
               ),
@@ -118,10 +126,9 @@ class _DonationsPageState extends State<DonationsPage> {
               Expanded(
                 child: Text(
                   'Parole de Dieu',
-                  style: GoogleFonts.inter( // Material Design 3 typography
-                    fontSize: AppTheme.fontSize16, // titleMedium
-                    fontWeight: AppTheme.fontSemiBold,
-                    color: AppTheme.textPrimaryColor,
+                  style: textTheme.titleMedium?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -130,21 +137,18 @@ class _DonationsPageState extends State<DonationsPage> {
           const SizedBox(height: AppTheme.space20),
           Text(
             '"Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie."',
-            style: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize16,
-              height: 1.6,
+            style: textTheme.bodyLarge?.copyWith(
+              color: colorScheme.onSurface,
               fontStyle: FontStyle.italic,
-              color: AppTheme.textPrimaryColor,
-              fontWeight: AppTheme.fontMedium,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: AppTheme.space12),
           Text(
             '2 Corinthiens 9:7',
-            style: GoogleFonts.inter( // Material Design 3 typography
-              fontSize: AppTheme.fontSize14, // bodyLarge
-              fontWeight: AppTheme.fontSemiBold,
-              color: AppTheme.primaryColor,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.primary,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
@@ -152,32 +156,29 @@ class _DonationsPageState extends State<DonationsPage> {
     );
   }
 
-  Widget _buildDonationTypes() {
+  Widget _buildDonationTypes(ColorScheme colorScheme, TextTheme textTheme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Types de dons',
-          style: GoogleFonts.inter(
-            fontSize: AppTheme.fontSize20,
-            fontWeight: AppTheme.fontBold,
-            color: AppTheme.textPrimaryColor,
+          style: textTheme.titleLarge?.copyWith(
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         ...List.generate(_donationTypes.length, (index) {
           final donation = _donationTypes[index];
           final isSelected = _selectedDonationType == index;
-          
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: GestureDetector(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+              splashColor: donation.color.withOpacity(0.15),
               onTap: () {
-                final donation = _donationTypes[index];
                 final url = _donationUrls[index];
-                
                 if (url != null) {
-                  // Redirection directe vers HelloAsso pour tous les types
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -190,50 +191,48 @@ class _DonationsPageState extends State<DonationsPage> {
                     ),
                   );
                 } else {
-                  // Fallback pour les types sans URL
                   setState(() {
                     _selectedDonationType = index;
                   });
                 }
               },
               onLongPress: () {
-                final donation = _donationTypes[index];
                 final url = _donationUrls[index];
-                
                 if (url != null) {
-                  // Afficher les options de chargement
                   _showLoadingOptions(context, donation, url);
                 }
               },
               child: Container(
                 padding: const EdgeInsets.all(AppTheme.space20),
                 decoration: BoxDecoration(
-                  color: isSelected ? donation.color.withOpacity(0.1) : AppTheme.surfaceColor,
+                  color: isSelected ? donation.color.withOpacity(0.12) : colorScheme.surface,
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
-                    color: isSelected ? donation.color : AppTheme.grey500.withOpacity(0.2),
+                    color: isSelected ? donation.color : colorScheme.outline.withOpacity(0.2),
                     width: isSelected ? 2 : 1,
                   ),
-                  boxShadow: isSelected ? [
-                    BoxShadow(
-                      color: donation.color.withOpacity(0.2),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ] : [
-                    BoxShadow(
-                      color: AppTheme.black100.withOpacity(0.05),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: donation.color.withOpacity(0.18),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]
+                      : [
+                          BoxShadow(
+                            color: colorScheme.shadow.withOpacity(0.05),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                 ),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(AppTheme.space12),
                       decoration: BoxDecoration(
-                        color: donation.color.withOpacity(0.1),
+                        color: donation.color.withOpacity(0.13),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
                       child: Icon(
@@ -249,18 +248,16 @@ class _DonationsPageState extends State<DonationsPage> {
                         children: [
                           Text(
                             donation.title,
-                            style: GoogleFonts.inter(
-                              fontSize: AppTheme.fontSize16,
-                              fontWeight: AppTheme.fontSemiBold,
-                              color: AppTheme.textPrimaryColor,
+                            style: textTheme.titleMedium?.copyWith(
+                              color: colorScheme.onSurface,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(height: AppTheme.spaceXSmall),
                           Text(
                             donation.description,
-                            style: GoogleFonts.inter(
-                              fontSize: AppTheme.fontSize14,
-                              color: AppTheme.textSecondaryColor,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -282,16 +279,15 @@ class _DonationsPageState extends State<DonationsPage> {
     );
   }
 
-  Widget _buildPaymentMethods() {
+  Widget _buildPaymentMethods(ColorScheme colorScheme, TextTheme textTheme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Moyens de paiement',
-          style: GoogleFonts.inter(
-            fontSize: AppTheme.fontSize20,
-            fontWeight: AppTheme.fontBold,
-            color: AppTheme.textPrimaryColor,
+          style: textTheme.titleLarge?.copyWith(
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: AppTheme.spaceMedium),
@@ -304,6 +300,8 @@ class _DonationsPageState extends State<DonationsPage> {
               _showRIB = !_showRIB;
             });
           },
+          colorScheme: colorScheme,
+          textTheme: textTheme,
         ),
         const SizedBox(height: AppTheme.space12),
         _buildPaymentMethodCard(
@@ -311,6 +309,8 @@ class _DonationsPageState extends State<DonationsPage> {
           title: 'Chèque',
           description: 'À l\'ordre de l\'association',
           onTap: _showCheckInstructions,
+          colorScheme: colorScheme,
+          textTheme: textTheme,
         ),
       ],
     );
@@ -321,21 +321,25 @@ class _DonationsPageState extends State<DonationsPage> {
     required String title,
     required String description,
     required VoidCallback onTap,
+    required ColorScheme colorScheme,
+    required TextTheme textTheme,
   }) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+      splashColor: colorScheme.primary.withOpacity(0.12),
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(AppTheme.space20),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceColor,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: Border.all(
-            color: AppTheme.grey500.withOpacity(0.2),
+            color: colorScheme.outline.withOpacity(0.18),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.black100.withOpacity(0.05),
+              color: colorScheme.shadow.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -346,12 +350,12 @@ class _DonationsPageState extends State<DonationsPage> {
             Container(
               padding: const EdgeInsets.all(AppTheme.space12),
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withOpacity(0.1),
+                color: colorScheme.primary.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
               child: Icon(
                 icon,
-                color: AppTheme.primaryColor,
+                color: colorScheme.primary,
                 size: 24,
               ),
             ),
@@ -362,18 +366,16 @@ class _DonationsPageState extends State<DonationsPage> {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize16,
-                      fontWeight: AppTheme.fontSemiBold,
-                      color: AppTheme.textPrimaryColor,
+                    style: textTheme.titleMedium?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: AppTheme.spaceXSmall),
                   Text(
                     description,
-                    style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize14,
-                      color: AppTheme.textSecondaryColor,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -381,7 +383,7 @@ class _DonationsPageState extends State<DonationsPage> {
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: AppTheme.textSecondaryColor,
+              color: colorScheme.onSurfaceVariant,
               size: 16,
             ),
           ],
@@ -390,19 +392,19 @@ class _DonationsPageState extends State<DonationsPage> {
     );
   }
 
-  Widget _buildRIBSection() {
+  Widget _buildRIBSection(ColorScheme colorScheme, TextTheme textTheme) {
     return Container(
       padding: const EdgeInsets.all(AppTheme.spaceLarge),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
         border: Border.all(
-          color: AppTheme.primaryColor.withOpacity(0.2),
+          color: colorScheme.primary.withOpacity(0.18),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black100.withOpacity(0.08),
+            color: colorScheme.shadow.withOpacity(0.08),
             blurRadius: 15,
             offset: const Offset(0, 4),
           ),
@@ -415,24 +417,23 @@ class _DonationsPageState extends State<DonationsPage> {
             children: [
               Icon(
                 Icons.account_balance,
-                color: AppTheme.primaryColor,
+                color: colorScheme.primary,
                 size: 24,
               ),
               const SizedBox(width: AppTheme.space12),
               Text(
                 'Informations bancaires',
-                style: GoogleFonts.inter(
-                  fontSize: AppTheme.fontSize18,
-                  fontWeight: AppTheme.fontSemiBold,
-                  color: AppTheme.textPrimaryColor,
+                style: textTheme.titleMedium?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
           const SizedBox(height: AppTheme.space20),
-          _buildRIBField('Titulaire du compte', _titulaire),
-          _buildRIBField('IBAN', _iban),
-          _buildRIBField('BIC/SWIFT', _bic),
+          _buildRIBField('Titulaire du compte', _titulaire, colorScheme, textTheme),
+          _buildRIBField('IBAN', _iban, colorScheme, textTheme),
+          _buildRIBField('BIC/SWIFT', _bic, colorScheme, textTheme),
           const SizedBox(height: AppTheme.space20),
           Row(
             children: [
@@ -441,6 +442,8 @@ class _DonationsPageState extends State<DonationsPage> {
                   'Copier IBAN',
                   Icons.copy,
                   () => _copyToClipboard(_iban, 'IBAN copié'),
+                  colorScheme,
+                  textTheme,
                 ),
               ),
               const SizedBox(width: AppTheme.space12),
@@ -449,6 +452,8 @@ class _DonationsPageState extends State<DonationsPage> {
                   'Partager',
                   Icons.share,
                   _shareRIB,
+                  colorScheme,
+                  textTheme,
                 ),
               ),
             ],
@@ -457,10 +462,10 @@ class _DonationsPageState extends State<DonationsPage> {
           Container(
             padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
-              color: AppTheme.blueStandard.withOpacity(0.1),
+              color: colorScheme.secondary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(
-                color: AppTheme.blueStandard.withOpacity(0.2),
+                color: colorScheme.secondary.withOpacity(0.18),
                 width: 1,
               ),
             ),
@@ -468,17 +473,16 @@ class _DonationsPageState extends State<DonationsPage> {
               children: [
                 Icon(
                   Icons.info_outline,
-                  color: AppTheme.grey700,
+                  color: colorScheme.onSurfaceVariant,
                   size: 20,
                 ),
                 const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: Text(
                     'Précisez le type de don en commentaire du virement',
-                    style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize13,
-                      color: AppTheme.grey700,
-                      fontWeight: AppTheme.fontMedium,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -490,7 +494,7 @@ class _DonationsPageState extends State<DonationsPage> {
     );
   }
 
-  Widget _buildRIBField(String label, String value) {
+  Widget _buildRIBField(String label, String value, ColorScheme colorScheme, TextTheme textTheme) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -498,10 +502,9 @@ class _DonationsPageState extends State<DonationsPage> {
         children: [
           Text(
             label,
-            style: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize13,
-              fontWeight: AppTheme.fontMedium,
-              color: AppTheme.textSecondaryColor,
+            style: textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: AppTheme.space6),
@@ -509,19 +512,19 @@ class _DonationsPageState extends State<DonationsPage> {
             width: double.infinity,
             padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
-              color: AppTheme.grey500.withOpacity(0.1),
+              color: colorScheme.surfaceVariant,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               border: Border.all(
-                color: AppTheme.grey500.withOpacity(0.2),
+                color: colorScheme.outline.withOpacity(0.18),
                 width: 1,
               ),
             ),
             child: Text(
               value,
-              style: GoogleFonts.robotoMono(
-                fontSize: AppTheme.fontSize14,
-                color: AppTheme.textPrimaryColor,
-                fontWeight: AppTheme.fontMedium,
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'RobotoMono',
               ),
             ),
           ),
@@ -530,22 +533,21 @@ class _DonationsPageState extends State<DonationsPage> {
     );
   }
 
-  Widget _buildActionButton(String text, IconData icon, VoidCallback onPressed) {
+  Widget _buildActionButton(String text, IconData icon, VoidCallback onPressed, ColorScheme colorScheme, TextTheme textTheme) {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: Icon(icon, size: 16),
       label: Text(text),
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: AppTheme.white100,
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         elevation: 2,
-        textStyle: GoogleFonts.inter(
-          fontSize: AppTheme.fontSize13,
-          fontWeight: AppTheme.fontMedium,
+        textStyle: textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w500,
         ),
       ),
     );

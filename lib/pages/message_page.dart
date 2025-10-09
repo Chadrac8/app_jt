@@ -3,13 +3,15 @@ import '../modules/message/message_module.dart';
 
 /// Page d'accès au module "Le Message"
 class MessagePage extends StatelessWidget {
-  const MessagePage({Key? key}) : super(key: key);
+  final TabController? tabController; // MD3: TabController fourni par le wrapper
+  
+  const MessagePage({Key? key, this.tabController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
-        child: MessageModule(),
+        child: MessageModule(tabController: tabController),
       ),
     );
   }

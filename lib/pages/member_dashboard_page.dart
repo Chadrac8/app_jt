@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../../theme.dart';
-import '../models/home_widget_model.dart';
+import 'visit_us_page.dart';
 import '../models/home_config_model.dart';
-import '../services/home_widget_service.dart';
 import '../services/home_config_service.dart';
 import '../widgets/latest_sermon_widget.dart';
-import '../modules/offrandes/widgets/offrandes_widget.dart';
-import '../widgets/home_widget_renderer.dart';
 import 'donations_page.dart';
 import '../modules/pain_quotidien/widgets/daily_bread_preview_widget.dart';
-import '../pages/church_info_page.dart';
-import '../pages/prayer_wall_page.dart';
-import '../pages/new_member_form_page.dart';
-import '../pages/give_life_to_jesus_page.dart';
-import '../services/live_reminder_service.dart';
-import '../services/home_cover_config_service.dart';
-import '../models/home_cover_config_model.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 import '../services/contact_service.dart'; // Nouveau service pour les messages de contact
 import 'member_events_page.dart';
 import 'member_event_detail_page.dart';
+import 'member_prayer_wall_page.dart';
+import '../widgets/event_calendar_view.dart';
 
 class MemberDashboardPage extends StatefulWidget {
   const MemberDashboardPage({super.key});
@@ -33,8 +24,38 @@ class MemberDashboardPage extends StatefulWidget {
   State<MemberDashboardPage> createState() => _MemberDashboardPageState();
 }
 
-class _MemberDashboardPageState extends State<MemberDashboardPage>
-    with TickerProviderStateMixin {
+class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerProviderStateMixin {
+  void _openChurchCalendar() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text("Calendrier de l'église"),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          ),
+          body: StreamBuilder<List<EventModel>>(
+            stream: EventsFirebaseService.getEventsStream(limit: 200),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final events = snapshot.data ?? [];
+              return EventCalendarView(
+                events: events,
+                onEventTap: (event) {},
+                onEventLongPress: (event) {},
+                isSelectionMode: false,
+                selectedEvents: const [],
+                onSelectionChanged: (event, selected) {},
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
   late AnimationController _animationController;
   late AnimationController _liveAnimationController;
   late Animation<Offset> _slideAnimation;
@@ -696,14 +717,14 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Services essentiels',
+                    'Liens rapides',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: AppTheme.fontBold,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   Text(
-                    'Accès rapide aux ressources de la foi',
+                    'Accès rapide aux ressources',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),
@@ -749,6 +770,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
         break;
       case 'card_giftcard_rounded':
         icon = Icons.card_giftcard_rounded;
+        break;
+      case 'location_on_rounded':
+        icon = Icons.location_on_rounded;
         break;
       default:
         icon = Icons.help_outline;
@@ -857,24 +881,39 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // En-tête avec bouton "Voir plus" - Style moderne
+            // En-tête avec bouton "Voir plus" - Style moderne amélioré
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Row(
                 children: [
+                  // Icône avec dégradé
                   Container(
-                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          AppTheme.passageColor4,
+                          AppTheme.orangeStandard,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.orangeStandard.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.event_rounded,
-                      color: Theme.of(context).colorScheme.onTertiaryContainer,
-                      size: 20,
+                      color: Colors.white,
+                      size: 22,
                     ),
                   ),
-                  const SizedBox(width: AppTheme.space12),
+                  const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -882,22 +921,31 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                         Text(
                           'Événements à venir',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: AppTheme.fontBold,
-                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 20,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : const Color(0xFF1A1A1A),
+                            letterSpacing: -0.5,
                           ),
                         ),
+                        const SizedBox(height: 2),
                         Text(
-                          'Ne manquez aucun événement',
+                          'Ne manquez aucun moment important',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFFB0BEC5)
+                                : const Color(0xFF546E7A),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
                     ),
                   ),
+                  // Bouton "Voir plus" amélioré
                   GestureDetector(
                     onTap: () {
-                      // Navigation vers la page des événements pour les membres
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -906,13 +954,18 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
-                        color: AppTheme.orangeStandard.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+                        gradient: LinearGradient(
+                          colors: [
+                            AppTheme.orangeStandard.withOpacity(0.15),
+                            AppTheme.passageColor4.withOpacity(0.15),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppTheme.orangeStandard.withOpacity(0.3),
-                          width: 1,
+                          color: AppTheme.orangeStandard.withOpacity(0.4),
+                          width: 1.5,
                         ),
                       ),
                       child: Row(
@@ -922,15 +975,16 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                             'Voir plus',
                             style: TextStyle(
                               color: AppTheme.orangeStandard,
-                              fontSize: AppTheme.fontSize12,
-                              fontWeight: AppTheme.fontSemiBold,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.3,
                             ),
                           ),
-                          const SizedBox(width: AppTheme.spaceXSmall),
+                          const SizedBox(width: 6),
                           Icon(
-                            Icons.arrow_forward_ios,
+                            Icons.arrow_forward_rounded,
                             color: AppTheme.orangeStandard,
-                            size: 12,
+                            size: 16,
                           ),
                         ],
                       ),
@@ -964,28 +1018,57 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
               )
             else if (events.isEmpty)
               Container(
-                padding: const EdgeInsets.all(AppTheme.space20),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                      Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.1),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: AppTheme.orangeStandard.withOpacity(0.2),
-                    width: 1,
+                    width: 1.5,
                   ),
                 ),
-                child: Row(
+                child: Column(
                   children: [
-                    Icon(
-                      Icons.event,
-                      color: AppTheme.orangeStandard.withOpacity(0.6),
-                      size: 24,
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppTheme.orangeStandard.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.event_busy_rounded,
+                        color: AppTheme.orangeStandard,
+                        size: 40,
+                      ),
                     ),
-                    const SizedBox(width: AppTheme.space12),
+                    const SizedBox(height: 16),
                     Text(
                       'Aucun événement à venir',
                       style: TextStyle(
-                        color: AppTheme.white100.withOpacity(0.7),
-                        fontSize: AppTheme.fontSize16,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : const Color(0xFF1A1A1A),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Revenez bientôt pour découvrir nos prochains événements',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFFB0BEC5)
+                            : const Color(0xFF546E7A),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -1037,233 +1120,332 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
 
   Widget _buildEventCard(String day, String month, String title, String description, String time) {
     return Container(
-      padding: const EdgeInsets.all(AppTheme.space20),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        // Fond dégradé subtil pour plus de profondeur
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Theme.of(context).colorScheme.surface,
+            Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppTheme.orangeStandard.withOpacity(0.2),
-          width: 1,
+          color: AppTheme.orangeStandard.withOpacity(0.3),
+          width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black100.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: AppTheme.orangeStandard.withOpacity(0.15),
+            blurRadius: 20,
+            spreadRadius: 2,
+            offset: const Offset(0, 8),
+          ),
+          BoxShadow(
+            color: AppTheme.black100.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 68,
-            height: 68,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppTheme.passageColor4,
-                  Color(0xFFFF9800),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          children: [
+            // Accent de gauche coloré
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              child: Container(
+                width: 6,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppTheme.passageColor4,
+                      AppTheme.orangeStandard,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            
+            // Contenu principal
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  // Date bloc - Design amélioré avec ombre portée
+                  Container(
+                    width: 75,
+                    height: 85,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          AppTheme.passageColor4,
+                          AppTheme.orangeStandard,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.orangeStandard.withOpacity(0.4),
+                          blurRadius: 12,
+                          spreadRadius: 1,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          day,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                            fontSize: 28,
+                            height: 1.0,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black26,
+                                offset: Offset(0, 2),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            month.toUpperCase(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  const SizedBox(width: 18),
+                  
+                  // Contenu textuel amélioré
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Titre avec meilleur contraste
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : const Color(0xFF1A1A1A),
+                            fontSize: 17,
+                            height: 1.3,
+                            letterSpacing: -0.2,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 6),
+                        
+                        // Description avec meilleur contraste
+                        Text(
+                          description,
+                          style: TextStyle(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFFB0BEC5)
+                                : const Color(0xFF546E7A),
+                            fontSize: 14,
+                            height: 1.4,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 10),
+                        
+                        // Badge horaire avec design amélioré
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppTheme.orangeStandard.withOpacity(0.15),
+                                AppTheme.passageColor4.withOpacity(0.15),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: AppTheme.orangeStandard.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.access_time_rounded,
+                                size: 16,
+                                color: AppTheme.orangeStandard,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                time,
+                                style: TextStyle(
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? AppTheme.orangeStandard
+                                      : const Color(0xFFE65100),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  const SizedBox(width: 8),
+                  
+                  // Icône de navigation améliorée
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppTheme.orangeStandard.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppTheme.orangeStandard,
+                      size: 18,
+                    ),
+                  ),
                 ],
               ),
-              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.orangeStandard.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  day,
-                  style: const TextStyle(
-                    fontWeight: AppTheme.fontBold,
-                    color: AppTheme.white100,
-                    fontSize: AppTheme.fontSize20,
-                  ),
-                ),
-                Text(
-                  month,
-                  style: TextStyle(
-                    color: AppTheme.white100.withOpacity(0.9),
-                    fontSize: AppTheme.fontSize11,
-                    fontWeight: AppTheme.fontSemiBold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          const SizedBox(width: AppTheme.spaceMedium),
-          
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: AppTheme.fontSemiBold,
-                    color: AppTheme.white100,
-                    fontSize: AppTheme.fontSize16,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: AppTheme.spaceXSmall),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    color: Color(0xFFB0BEC5),
-                    fontSize: AppTheme.fontSize14,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: AppTheme.spaceSmall),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.access_time_rounded,
-                      size: 14,
-                      color: AppTheme.passageColor4,
-                    ),
-                    const SizedBox(width: AppTheme.spaceXSmall),
-                    Text(
-                      time,
-                      style: const TextStyle(
-                        color: AppTheme.passageColor4,
-                        fontWeight: AppTheme.fontMedium,
-                        fontSize: AppTheme.fontSize12,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          
-          Icon(
-            Icons.chevron_right_rounded,
-            color: AppTheme.white100.withOpacity(0.5),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildContactUsSection(HomeConfigModel config) {
     return Container(
-      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF1565C0),
-            Color(0xFF1976D2),
-            Color(0xFF42A5F5),
-          ],
-          stops: [0.0, 0.6, 1.0],
+        color: AppTheme.surface, // MD3: Surface blanc/gris clair
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: AppTheme.grey300.withOpacity(0.5),
+          width: 1,
         ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1976D2).withOpacity(0.4),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-            spreadRadius: 0,
+            color: AppTheme.black100.withOpacity(0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+            spreadRadius: -4,
           ),
           BoxShadow(
-            color: AppTheme.white100.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
-            spreadRadius: 0,
+            color: AppTheme.black100.withOpacity(0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                decoration: BoxDecoration(
-                  color: AppTheme.white100.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                  border: Border.all(
-                    color: AppTheme.white100.withOpacity(0.3),
-                    width: 1.5,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.black100.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.support_agent_rounded,
-                  color: AppTheme.white100,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: AppTheme.space20),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Nous contacter',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: AppTheme.fontBold,
-                        color: AppTheme.white100,
-                        fontSize: 26,
-                        shadows: [
-                          const Shadow(
-                            blurRadius: 8,
-                            color: AppTheme.black100,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppTheme.space6),
-                    Text(
-                      'Une question ? Nous sommes là pour vous',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppTheme.white100.withOpacity(0.95),
-                        fontSize: AppTheme.fontSize15,
-                        fontWeight: AppTheme.fontMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: AppTheme.spaceLarge),
-          
+          // En-tête avec gradient rouge élégant (bandeau du haut uniquement)
           Container(
-            padding: const EdgeInsets.all(AppTheme.space20),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppTheme.white100.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-              border: Border.all(
-                color: AppTheme.white100.withOpacity(0.2),
-                width: 1,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppTheme.primaryColor,
+                  AppTheme.primaryColor.withOpacity(0.9),
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(27),
+                topRight: Radius.circular(27),
               ),
             ),
+            child: Row(
+              children: [
+                // Icône professionnelle
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: AppTheme.white100.withOpacity(0.25),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: AppTheme.white100.withOpacity(0.35),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.headset_mic_rounded,
+                    color: AppTheme.white100,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Nous contacter',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.white100,
+                          fontSize: 22,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        'Nous sommes à votre écoute',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppTheme.white100.withOpacity(0.92),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Corps blanc avec les méthodes de contact
+          Padding(
+            padding: const EdgeInsets.all(24),
             child: Column(
               children: [
+                // Email
                 if (config.contactEmail?.isNotEmpty == true)
                   _buildContactMethod(
                     Icons.email_rounded,
@@ -1273,8 +1455,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactEmail?.isNotEmpty == true)
-                  const SizedBox(height: AppTheme.spaceMedium),
+                  const SizedBox(height: 12),
                 
+                // Adresse
                 if (config.contactAddress?.isNotEmpty == true)
                   _buildContactMethod(
                     Icons.location_on_rounded,
@@ -1284,8 +1467,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactAddress?.isNotEmpty == true)
-                  const SizedBox(height: AppTheme.spaceMedium),
+                  const SizedBox(height: 12),
                 
+                // Téléphone
                 if (config.contactPhone?.isNotEmpty == true)
                   _buildContactMethod(
                     Icons.phone_rounded,
@@ -1295,8 +1479,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactPhone?.isNotEmpty == true)
-                  const SizedBox(height: AppTheme.spaceMedium),
+                  const SizedBox(height: 12),
                 
+                // WhatsApp
                 if (config.contactWhatsApp?.isNotEmpty == true)
                   _buildContactMethod(
                     Icons.chat_rounded,
@@ -1306,22 +1491,49 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
                   ),
                 
                 if (config.contactWhatsApp?.isNotEmpty == true)
-                  const SizedBox(height: AppTheme.space20),
+                  const SizedBox(height: 20),
                 
+                // Bouton d'action principal rouge
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton.icon(
+                  height: 54,
+                  child: FilledButton.icon(
                     onPressed: () => _showContactForm(),
-                    icon: const Icon(Icons.message_rounded),
-                    label: const Text('Envoyer un message'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.white100,
-                      foregroundColor: const Color(0xFF1976D2),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    icon: const Icon(Icons.send_rounded, size: 20),
+                    label: const Text(
+                      'Envoyer un message',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.1,
                       ),
-                      elevation: 2,
+                    ),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppTheme.primaryColor, // Rouge élégant
+                      foregroundColor: AppTheme.white100,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ).copyWith(
+                      overlayColor: WidgetStateProperty.resolveWith((states) {
+                        if (states.contains(WidgetState.hovered)) {
+                          return AppTheme.white100.withOpacity(0.12);
+                        }
+                        if (states.contains(WidgetState.pressed)) {
+                          return AppTheme.white100.withOpacity(0.20);
+                        }
+                        return null;
+                      }),
+                      elevation: WidgetStateProperty.resolveWith((states) {
+                        if (states.contains(WidgetState.hovered)) {
+                          return 2;
+                        }
+                        if (states.contains(WidgetState.pressed)) {
+                          return 1;
+                        }
+                        return 0;
+                      }),
                     ),
                   ),
                 ),
@@ -1334,80 +1546,129 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
   }
 
   Widget _buildContactMethod(IconData icon, String title, String subtitle, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-      child: Container(
-        padding: const EdgeInsets.all(AppTheme.spaceMedium),
-        decoration: BoxDecoration(
-          color: AppTheme.white100.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-          border: Border.all(
-            color: AppTheme.white100.withOpacity(0.15),
-            width: 1,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        splashColor: AppTheme.primaryColor.withOpacity(0.1), // Splash rouge subtil
+        highlightColor: AppTheme.primaryColor.withOpacity(0.05),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: AppTheme.grey100, // Gris très clair, professionnel
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppTheme.grey300.withOpacity(0.6),
+              width: 1,
+            ),
           ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(AppTheme.spaceSmall),
-              decoration: BoxDecoration(
-                color: AppTheme.white100.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(
-                icon,
-                color: AppTheme.white100,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: AppTheme.spaceMedium),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppTheme.white100,
-                      fontWeight: AppTheme.fontSemiBold,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            child: Row(
+              children: [
+                // Icône avec accent rouge
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.1), // Fond rouge clair
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppTheme.primaryColor.withOpacity(0.2),
+                      width: 1,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.white100.withOpacity(0.8),
-                    ),
+                  child: Icon(
+                    icon,
+                    color: AppTheme.primaryColor, // Icône rouge
+                    size: 22,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 14),
+                // Texte
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: AppTheme.onSurface, // Texte foncé
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          letterSpacing: 0.1,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppTheme.grey600, // Gris moyen
+                          fontSize: 13,
+                          letterSpacing: 0.25,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                // Icône de navigation
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppTheme.grey200,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: AppTheme.grey700,
+                    size: 14,
+                  ),
+                ),
+              ],
             ),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppTheme.white100.withOpacity(0.7),
-              size: 16,
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   // Méthodes d'action
+  void _showVisitUs() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const VisitUsPage()),
+    );
+  }
+
   void _handleQuickAction(String actionTitle) {
+    final normalized = actionTitle
+      .toLowerCase()
+      .replaceAll(RegExp(r'[éèêë]'), 'e')
+      .replaceAll(RegExp(r'[àâä]'), 'a')
+      .replaceAll(RegExp(r'[îï]'), 'i')
+      .replaceAll(RegExp(r'[ôö]'), 'o')
+      .replaceAll(RegExp(r'[ùûü]'), 'u')
+      .replaceAll(RegExp(r'[^a-z0-9 ]'), '')
+      .trim();
+
+    if (normalized == 'nous visiter') {
+      _showVisitUs();
+      return;
+    }
     switch (actionTitle) {
-      case 'Donner sa vie à Jésus':
-        _showGiveLifeToJesus();
-        break;
       case 'Étudier la Parole':
         _showBibleStudy();
         break;
       case 'Requêtes de prière':
-        _showPrayerRequests();
+        _openPrayerWall();
         break;
       case 'Faire un don':
         _showDonations();
+        break;
+      case "Calendrier de l'église":
+        _openChurchCalendar();
         break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1440,11 +1701,6 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
     );
   }
 
-  void _showGiveLifeToJesus() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Donner sa vie à Jésus - Fonctionnalité bientôt disponible')),
-    );
-  }
 
   void _showBibleStudy() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -1452,9 +1708,13 @@ class _MemberDashboardPageState extends State<MemberDashboardPage>
     );
   }
 
-  void _showPrayerRequests() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Requêtes de prière - Fonctionnalité bientôt disponible')),
+
+  void _openPrayerWall() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MemberPrayerWallPage(),
+      ),
     );
   }
 

@@ -7,14 +7,18 @@ import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
 import '../../../widgets/setlist_card_perfect13.dart';
 import '../../../pages/setlist_detail_page.dart';
-import '../../../../theme.dart';
 import '../../../theme.dart';
 
 /// Page des chants pour les membres - Material Design 3
 class MemberSongsPage extends StatefulWidget {
+  final TabController? tabController; // MD3: TabController fourni par le wrapper
   final Function(VoidCallback)? onToggleSearchChanged;
 
-  const MemberSongsPage({super.key, this.onToggleSearchChanged});
+  const MemberSongsPage({
+    super.key, 
+    this.tabController, 
+    this.onToggleSearchChanged,
+  });
 
   @override
   State<MemberSongsPage> createState() => _MemberSongsPageState();
@@ -22,7 +26,12 @@ class MemberSongsPage extends StatefulWidget {
 
 class _MemberSongsPageState extends State<MemberSongsPage>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  TabController? _internalTabController; // TabController interne (si non fourni)
+  
+  // MD3: Getter pour obtenir le TabController (externe ou interne)
+  TabController get _tabController => 
+      widget.tabController ?? _internalTabController!;
+      
   String _searchQuery = '';
   bool _searchInLyrics = false;
   bool _isSearchVisible = false;
@@ -31,18 +40,29 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   // Variables pour les setlists
   String _setlistSearchQuery = '';
   bool _isSetlistSearchMode = false;
+  
+  // MD3: Cacher les futures/streams pour éviter les rechargements constants
+  late Future<List<SongModel>> _songsFuture;
+  late Stream<List<SongModel>> _favoritesStream;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    // MD3: Créer un TabController interne seulement si non fourni par le wrapper
+    if (widget.tabController == null) {
+      _internalTabController = TabController(length: 3, vsync: this);
+    }
+    // MD3: Initialiser le future et le stream UNE SEULE FOIS
+    _songsFuture = SongsFirebaseService.getAllSongs();
+    _favoritesStream = SongsFirebaseService.getFavoriteSongs();
     // Enregistrer le callback pour le bouton de recherche de l'AppBar
     widget.onToggleSearchChanged?.call(toggleSearch);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    // MD3: Disposer uniquement le TabController interne (pas celui du wrapper)
+    _internalTabController?.dispose();
     _searchController.dispose();
     super.dispose();
   }
@@ -71,51 +91,28 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      body: Column(
-        children: [
-          // TabBar - Style MD3 moderne avec couleur primaire cohérente
-          Material(
-            color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
-            elevation: 0,
+    // MD3: Si TabController fourni par wrapper, pas besoin de Scaffold
+    final body = Column(
+      children: [
+        // MD3: Afficher le TabBar seulement si non fourni par le wrapper
+        if (widget.tabController == null) ...[
+          // TabBar intégrée - Style MD3 avec fond Surface (clair)
+          Container(
+            color: AppTheme.surface, // MD3: Fond clair comme l'AppBar
             child: TabBar(
               controller: _tabController,
-              labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
-              unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
-              indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 3.0,
-              labelStyle: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize14,
-                fontWeight: AppTheme.fontSemiBold,
-                letterSpacing: 0.1,
-              ),
-              unselectedLabelStyle: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize14,
-                fontWeight: AppTheme.fontMedium,
-                letterSpacing: 0.1,
-              ),
-              splashFactory: InkRipple.splashFactory,
-              overlayColor: WidgetStateProperty.resolveWith<Color?>(
-                (Set<WidgetState> states) {
-                  if (states.contains(WidgetState.pressed)) {
-                    return AppTheme.onPrimaryColor.withOpacity(0.12); // Effet blanc sur fond primaire
-                  }
-                  if (states.contains(WidgetState.hovered)) {
-                    return AppTheme.onPrimaryColor.withOpacity(0.08); // Effet blanc sur fond primaire
-                  }
-                  return null;
-                },
-              ),
+              // Les couleurs sont héritées du TabBarTheme (primaryColor pour actif, gris pour inactif)
               tabs: const [
                 Tab(
+                  icon: Icon(Icons.library_music_rounded),
                   text: 'Cantiques',
                 ),
                 Tab(
+                  icon: Icon(Icons.favorite_rounded),
                   text: 'Favoris',
                 ),
                 Tab(
+                  icon: Icon(Icons.playlist_play_rounded),
                   text: 'Setlists',
                 ),
               ],
@@ -126,26 +123,37 @@ class _MemberSongsPageState extends State<MemberSongsPage>
           Divider(
             height: 1,
             thickness: 1,
-            color: colorScheme.outlineVariant,
-          ),
-          
-          // Barre de recherche locale (conditionnelle) - MD3
-          if (_isSearchVisible) _buildSearchBar(),
-          
-          // Contenu des onglets
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildSongsTab(),
-                _buildFavoritesTab(),
-                _buildSetlistsTab(),
-              ],
-            ),
+            color: AppTheme.grey300.withOpacity(0.5),
           ),
         ],
-      ),
+        
+        // Barre de recherche locale (conditionnelle) - MD3
+        if (_isSearchVisible) _buildSearchBar(),
+        
+        // Contenu des onglets
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              _buildSongsTab(),
+              _buildFavoritesTab(),
+              _buildSetlistsTab(),
+            ],
+          ),
+        ),
+      ],
     );
+    
+    // MD3: Scaffold seulement si utilisé standalone (sans wrapper)
+    if (widget.tabController == null) {
+      return Scaffold(
+        backgroundColor: colorScheme.surface,
+        body: body,
+      );
+    }
+    
+    // MD3: Si dans le wrapper, retourner directement le body
+    return body;
   }
 
   Widget _buildSearchBar() {
@@ -320,7 +328,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
 
   Widget _buildSongsTab() {
     return FutureBuilder<List<SongModel>>(
-      future: SongsFirebaseService.getAllSongs(),
+      future: _songsFuture, // MD3: Utiliser le future caché au lieu de rappeler le service
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -350,7 +358,12 @@ class _MemberSongsPageState extends State<MemberSongsPage>
 
         return RefreshIndicator(
           onRefresh: () async {
-            setState(() {});
+            // MD3: Recharger réellement les données en recréant le future
+            setState(() {
+              _songsFuture = SongsFirebaseService.getAllSongs();
+            });
+            // Attendre que les nouvelles données soient chargées
+            await _songsFuture;
           },
           color: Theme.of(context).colorScheme.primary,
           child: ListView.builder(
@@ -360,6 +373,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               top: AppTheme.spaceSmall,
               bottom: AppTheme.spaceXXLarge,
             ),
+            physics: const AlwaysScrollableScrollPhysics(),
             itemCount: filteredSongs.length,
             itemBuilder: (context, index) {
               final song = filteredSongs[index];
@@ -379,9 +393,11 @@ class _MemberSongsPageState extends State<MemberSongsPage>
   }
 
   Widget _buildFavoritesTab() {
+    // MD3: Charger allSongs UNE FOIS pour avoir les numéros
     return FutureBuilder<List<SongModel>>(
-      future: SongsFirebaseService.getAllSongs(),
+      future: _songsFuture,
       builder: (context, allSongsSnapshot) {
+        // Pendant le chargement de allSongs
         if (allSongsSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
@@ -392,8 +408,9 @@ class _MemberSongsPageState extends State<MemberSongsPage>
 
         final allSongs = allSongsSnapshot.data ?? [];
 
+        // Maintenant, StreamBuilder pour les favoris (temps réel)
         return StreamBuilder<List<SongModel>>(
-          stream: SongsFirebaseService.getFavoriteSongs(),
+          stream: _favoritesStream, // MD3: Stream caché - pas recréé à chaque build
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -423,16 +440,23 @@ class _MemberSongsPageState extends State<MemberSongsPage>
 
             return RefreshIndicator(
               onRefresh: () async {
-                setState(() {});
+                // MD3: Recréer le stream pour forcer le refresh
+                setState(() {
+                  _favoritesStream = SongsFirebaseService.getFavoriteSongs();
+                });
+                // Attendre un peu pour le refresh visuel
+                await Future.delayed(const Duration(milliseconds: 300));
               },
               color: Theme.of(context).colorScheme.primary,
               child: ListView.builder(
+                key: ValueKey('favorites_list_${favoriteSongs.length}'), // MD3: Key stable
                 padding: const EdgeInsets.only(
                   left: AppTheme.spaceMedium,
                   right: AppTheme.spaceMedium,
                   top: AppTheme.spaceSmall,
                   bottom: AppTheme.spaceXXLarge,
                 ),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: filteredSongs.length,
                 itemBuilder: (context, index) {
                   final song = filteredSongs[index];
@@ -485,7 +509,8 @@ class _MemberSongsPageState extends State<MemberSongsPage>
 
         return RefreshIndicator(
           onRefresh: () async {
-            setState(() {});
+            // Pour StreamBuilder, pas besoin de setState car il se met à jour automatiquement
+            await Future.delayed(const Duration(milliseconds: 500));
           },
           color: Theme.of(context).colorScheme.primary,
           child: ListView.builder(
@@ -495,6 +520,7 @@ class _MemberSongsPageState extends State<MemberSongsPage>
               top: AppTheme.spaceSmall,
               bottom: AppTheme.spaceXXLarge,
             ),
+            physics: const AlwaysScrollableScrollPhysics(),
             itemCount: filteredSetlists.length,
             itemBuilder: (context, index) {
               final setlist = filteredSetlists[index];

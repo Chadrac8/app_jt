@@ -29,7 +29,6 @@ import '../pages/member_appointments_page.dart';
 import '../pages/member_profile_page.dart';
 import '../pages/member_prayer_wall_page.dart';
 import '../modules/songs/views/member_songs_page.dart';
-import '../modules/songs/widgets/songs_search_delegate.dart';
 import '../pages/blog_home_page.dart';
 
 import '../pages/member_notifications_page.dart';
@@ -57,11 +56,18 @@ class BottomNavigationWrapper extends StatefulWidget {
   State<BottomNavigationWrapper> createState() => _BottomNavigationWrapperState();
 }
 
-class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
+class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with TickerProviderStateMixin {
   String _currentRoute = 'dashboard';
   AppConfigModel? _appConfig;
   List<dynamic> _overflowPrimaryItems = []; // Modules primaires qui ne peuvent pas être affichés
   int? _lastDebugLog; // Pour limiter les logs de debug
+  bool _isScrolled = false; // MD3: Suivre si on a scrollé pour appliquer scrolledUnderElevation
+
+  // MD3: TabControllers pour chaque module avec TabBar intégré
+  late TabController _vieEgliseTabController;
+  late TabController _messageTabController;
+  late TabController _bibleTabController;
+  late TabController _songsTabController;
 
   // Méthode publique pour permettre la navigation depuis les modules enfants
   void navigateToRoute(String route) {
@@ -73,7 +79,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   PersonModel? _currentUser;
   bool _isLoading = true;
   int _unreadNotificationsCount = 0;
-  bool _searchInLyrics = false; // État pour le mode de recherche des cantiques
   VoidCallback? _toggleSearch; // Callback pour activer/désactiver la recherche
 
 
@@ -83,11 +88,27 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     super.initState();
     _currentRoute = widget.initialRoute;
     
+    // MD3: Initialiser les TabControllers pour les modules
+    _vieEgliseTabController = TabController(length: 4, vsync: this);
+    _messageTabController = TabController(length: 3, vsync: this);
+    _bibleTabController = TabController(length: 4, vsync: this);
+    _songsTabController = TabController(length: 3, vsync: this);
+    
     // Optimisation : Reporter les tâches lourdes après le premier rendu
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadConfiguration();
       _subscribeToUnreadNotificationsCount();
     });
+  }
+
+  @override
+  void dispose() {
+    // MD3: Disposer les TabControllers
+    _vieEgliseTabController.dispose();
+    _messageTabController.dispose();
+    _bibleTabController.dispose();
+    _songsTabController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadConfiguration() async {
@@ -169,7 +190,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         return const MemberDashboardPage();
 
       case 'bible':
-        return const BibleModulePage();
+        return BibleModulePage(tabController: _bibleTabController);
 
       case 'groups':
         return const MemberGroupsPage();
@@ -196,6 +217,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         return const MemberPrayerWallPage();
       case 'songs':
         return MemberSongsPage(
+          tabController: _songsTabController,
           onToggleSearchChanged: (callback) => _toggleSearch = callback,
         );
       case 'blog':
@@ -215,9 +237,9 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
       case 'dynamic_lists':
         return const MemberDynamicListsPage();
       case 'message':
-        return const MessagePage();
+        return MessagePage(tabController: _messageTabController);
       case 'vie-eglise':
-        return const VieEgliseModule();
+        return VieEgliseModule(tabController: _vieEgliseTabController);
       default:
         // Check if it's a custom page route
         if (route.startsWith('custom_page/')) {
@@ -858,8 +880,23 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return RepaintBoundary(
       child: Scaffold(
         appBar: _buildAppBar(),
-        body: RepaintBoundary(
-          child: _getPageForRoute(_currentRoute),
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            // MD3: Détecter le scroll pour appliquer l'effet scrolledUnderElevation
+            // IMPORTANT: Ignorer les scrolls horizontaux (TabBarView) - uniquement les scrolls verticaux
+            if (scrollInfo.metrics.axis == Axis.vertical) {
+              final shouldBeScrolled = scrollInfo.metrics.pixels > 0;
+              if (shouldBeScrolled != _isScrolled) {
+                setState(() {
+                  _isScrolled = shouldBeScrolled;
+                });
+              }
+            }
+            return false; // Ne pas consommer la notification
+          },
+          child: RepaintBoundary(
+            child: _getPageForRoute(_currentRoute),
+          ),
         ),
         bottomNavigationBar: RepaintBoundary(
           child: _buildBottomNavigationBar(primaryModules),
@@ -869,54 +906,113 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   }
 
   AppBar _buildAppBar() {
+    // MD3: Déterminer si on doit afficher un TabBar dans l'AppBar
+    TabBar? bottomTabBar;
+    
+    switch (_currentRoute) {
+      case 'vie-eglise':
+        bottomTabBar = TabBar(
+          controller: _vieEgliseTabController,
+          tabs: const [
+            Tab(icon: Icon(Icons.auto_awesome_rounded), text: 'Pour vous'),
+            Tab(icon: Icon(Icons.mic_rounded), text: 'Sermons'),
+            Tab(icon: Icon(Icons.volunteer_activism_rounded), text: 'Offrandes'),
+            Tab(icon: Icon(Icons.diversity_3_rounded), text: 'Prières'),
+          ],
+        );
+        break;
+      case 'message':
+        bottomTabBar = TabBar(
+          controller: _messageTabController,
+          tabs: const [
+            Tab(icon: Icon(Icons.headphones_rounded), text: 'Écouter'),
+            Tab(icon: Icon(Icons.menu_book_rounded), text: 'Lire'),
+            Tab(icon: Icon(Icons.auto_awesome_rounded), text: 'Pépites d\'Or'),
+          ],
+        );
+        break;
+      case 'bible':
+        bottomTabBar = TabBar(
+          controller: _bibleTabController,
+          tabs: const [
+            Tab(icon: Icon(Icons.menu_book_rounded), text: 'La Bible'),
+            Tab(icon: Icon(Icons.campaign_rounded), text: 'Le Message'),
+            Tab(icon: Icon(Icons.library_books_rounded), text: 'Ressources'),
+            Tab(icon: Icon(Icons.bookmark_rounded), text: 'Notes'),
+          ],
+        );
+        break;
+      case 'songs':
+        bottomTabBar = TabBar(
+          controller: _songsTabController,
+          tabs: const [
+            Tab(icon: Icon(Icons.library_music_rounded), text: 'Cantiques'),
+            Tab(icon: Icon(Icons.favorite_rounded), text: 'Favoris'),
+            Tab(icon: Icon(Icons.playlist_play_rounded), text: 'Setlists'),
+          ],
+        );
+        break;
+    }
+    
     return AppBar(
-      // Toutes les propriétés viennent du thème appBarTheme
-      centerTitle: false, // MD3 conforme : titre aligné à gauche
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 4), // MD3 conforme : 16dp du bord gauche
-        child: Container(
-          width: 36, // Taille du container pour inclure le cadre
-          height: 36,
-          decoration: BoxDecoration(
-            color: Colors.white, // Fond blanc pour contraste
-            shape: BoxShape.circle, // Forme circulaire
-            border: Border.all(
-              color: Colors.white, // Bordure blanche
-              width: 2, // Épaisseur de la bordure
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(2), // Espacement interne
-            child: Image.asset(
-              'assets/logo_jt.png',
-              height: 28, // Logo légèrement réduit pour laisser place au cadre
-              width: 28,
-              fit: BoxFit.contain,
-            ),
+      // MD3: scrolledUnderElevation dynamique basé sur le scroll
+      elevation: _isScrolled ? 2 : 0,
+      // MD3 conforme : utilise les propriétés du thème
+      leading: _buildAppBarLeading(),
+      title: Text(_getPageTitle()), // Style vient du thème titleTextStyle
+      actions: _buildAppBarActions(),
+      // MD3: TabBar intégré dans l'AppBar (bottom)
+      bottom: bottomTabBar,
+      // Suppression de centerTitle car défini dans le thème
+    );
+  }
+
+  Widget _buildAppBarLeading() {
+    // MD3: Logo d'application = 40dp (taille maximale recommandée pour leading)
+    return Padding(
+      padding: const EdgeInsets.only(left: 12.0), // Padding pour centrage visuel
+      child: Center(
+        child: SizedBox(
+          width: 40, // MD3: Taille maximale pour logo d'application = 40dp
+          height: 40,
+          child: Image.asset(
+            'assets/logo_jt.png',
+            fit: BoxFit.contain,
           ),
         ),
       ),
-      title: Text(_getPageTitle()), // Style vient du thème titleTextStyle
-      actions: [
-        // Bouton de recherche pour les cantiques (visible uniquement sur la page cantiques)
-        if (_currentRoute == 'songs') _buildSongsSearchButton(),
-        // Bouton de bascule vers la vue admin (visible uniquement sur la page d'accueil)
-        if (_currentRoute == 'dashboard') const AdminViewToggleButton(),
-        // Notifications avec badge
-        _buildNotificationButton(),
-        // Icône Mon profil
-        Padding(
-          padding: const EdgeInsets.only(right: 16), // MD3 conforme : 16dp du bord droit
-          child: IconButton(
-            onPressed: _showProfileMenu,
-            icon: NavigationUserAvatar(
-              person: _currentUser,
-              onTap: _showProfileMenu,
-            ),
-          ),
-        ),
-      ],
     );
+  }
+
+  List<Widget> _buildAppBarActions() {
+    return [
+      // Bouton de recherche pour les cantiques (visible uniquement sur la page cantiques)
+      if (_currentRoute == 'songs') 
+        _buildSongsSearchButton(),
+      
+      // Bouton de bascule vers la vue admin (visible uniquement sur la page d'accueil)
+      if (_currentRoute == 'dashboard') 
+        const AdminViewToggleButton(),
+      
+      // Notifications avec badge
+      _buildNotificationButton(),
+      
+      // Espacement MD3 entre les actions
+      const SizedBox(width: AppTheme.spaceSmall),
+      
+      // Avatar utilisateur avec padding MD3
+      Padding(
+        padding: const EdgeInsets.only(right: AppTheme.spaceMedium), // MD3: 16dp du bord droit
+        child: IconButton(
+          onPressed: _showProfileMenu,
+          icon: NavigationUserAvatar(
+            person: _currentUser,
+            onTap: _showProfileMenu,
+          ),
+          tooltip: 'Mon profil',
+        ),
+      ),
+    ];
   }
 
   String _getPageTitle() {
@@ -1012,7 +1108,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     return Stack(
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications),
+          icon: const Icon(Icons.notifications_outlined), // MD3: outlined icons
           tooltip: 'Notifications',
           onPressed: () {
             setState(() {
@@ -1026,24 +1122,27 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
         ),
         if (_unreadNotificationsCount > 0)
           Positioned(
-            right: 8,
-            top: 8,
+            right: AppTheme.spaceSmall, // MD3: 8dp du bord
+            top: AppTheme.spaceSmall,
             child: Container(
-              padding: const EdgeInsets.all(AppTheme.space2),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.space6,
+                vertical: AppTheme.space2,
+              ),
               decoration: BoxDecoration(
-                color: AppTheme.redStandard,
-                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                color: AppTheme.error, // MD3: couleur error pour badges
+                borderRadius: BorderRadius.circular(AppTheme.radiusRound),
               ),
               constraints: const BoxConstraints(
-                minWidth: 16,
-                minHeight: 16,
+                minWidth: 20, // MD3: minimum size pour touch targets
+                minHeight: 20,
               ),
               child: Text(
                 _unreadNotificationsCount > 99 ? '99+' : _unreadNotificationsCount.toString(),
-                style: const TextStyle(
-                  color: AppTheme.white100,
-                  fontSize: AppTheme.fontSize10,
-                  fontWeight: AppTheme.fontBold,
+                style: GoogleFonts.inter(
+                  color: AppTheme.onError, // MD3: texte blanc sur error
+                  fontSize: AppTheme.fontSize11,
+                  fontWeight: AppTheme.fontMedium,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -1055,9 +1154,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
 
   Widget _buildSongsSearchButton() {
     return IconButton(
-      icon: const Icon(
-        Icons.search,
-      ),
+      icon: const Icon(Icons.search_outlined), // MD3: outlined icons
       tooltip: 'Rechercher des cantiques',
       onPressed: () {
         _toggleSearch?.call();
@@ -1065,12 +1162,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
     );
   }
 
-
-  void _handleSongSelected(dynamic song) {
-    // Cette méthode sera appelée quand un cantique est sélectionné depuis la recherche
-    // La navigation vers les détails du cantique sera gérée par le SearchDelegate
-    print('Cantique sélectionné: ${song.title}');
-  }
 
   Widget _buildBottomNavigationBar(List<ModuleConfig> primaryModules) {
     final primaryPages = _appConfig?.primaryBottomNavPages ?? [];

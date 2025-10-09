@@ -1,108 +1,109 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
+import '../../theme.dart';
 import 'widgets/pour_vous_tab.dart' as pour_vous;
-import 'widgets/prayer_wall_tab.dart';
 import 'widgets/sermons_tab.dart';
 import 'widgets/offrandes_tab.dart';
+import 'views/prayer_wall_view.dart';
 
 class VieEgliseModule extends StatefulWidget {
   final int initialTabIndex;
+  final TabController? tabController; // MD3: TabController fourni par le wrapper
   
-  const VieEgliseModule({Key? key, this.initialTabIndex = 0}) : super(key: key);
+  const VieEgliseModule({
+    Key? key, 
+    this.initialTabIndex = 0,
+    this.tabController, // MD3: Optionnel pour rétrocompatibilité
+  }) : super(key: key);
 
   @override
   State<VieEgliseModule> createState() => _VieEgliseModuleState();
 }
 
 class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderStateMixin {
-  late TabController _tabController;
+  TabController? _internalTabController; // TabController interne (si non fourni)
+  
+  // MD3: Getter pour obtenir le TabController (externe ou interne)
+  TabController get _tabController => 
+      widget.tabController ?? _internalTabController!;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(
-      length: 4, 
-      vsync: this,
-      initialIndex: widget.initialTabIndex);
+    // MD3: Créer un TabController interne seulement si non fourni par le wrapper
+    if (widget.tabController == null) {
+      _internalTabController = TabController(
+        length: 4, 
+        vsync: this,
+        initialIndex: widget.initialTabIndex,
+      );
+    }
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    // MD3: Disposer uniquement le TabController interne (pas celui du wrapper)
+    _internalTabController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      body: Column(
-        children: [
-          _buildTabBar(),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                const pour_vous.PourVousTab(),
-                SermonsTab(),
-                const OffrandesTab(),
-                PrayerWallTab(),
-              ],
-            ),
+    // MD3: Si TabController fourni par wrapper, pas besoin de Scaffold
+    final body = Column(
+      children: [
+        // MD3: Afficher le TabBar seulement si non fourni par le wrapper
+        if (widget.tabController == null) _buildTabBar(),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              const pour_vous.PourVousTab(),
+              SermonsTab(),
+              const OffrandesTab(),
+              const PrayerWallView(),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
+    
+    // MD3: Scaffold seulement si utilisé standalone (sans wrapper)
+    if (widget.tabController == null) {
+      return Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
+        body: body,
+      );
+    }
+    
+    // MD3: Si dans le wrapper, retourner directement le body
+    return body;
   }
 
   Widget _buildTabBar() {
     return Column(
       children: [
-        // TabBar - Style MD3 moderne avec couleur primaire cohérente
-        Material(
-          color: AppTheme.primaryColor, // Couleur primaire identique à l'AppBar
-          elevation: 0,
+        // TabBar intégrée - Style MD3 avec fond Surface (clair)
+        Container(
+          color: AppTheme.surface, // MD3: Fond clair comme l'AppBar
           child: TabBar(
             controller: _tabController,
-            labelColor: AppTheme.onPrimaryColor, // Texte blanc sur fond primaire
-            unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7), // Texte blanc semi-transparent
-            indicatorColor: AppTheme.onPrimaryColor, // Indicateur blanc sur fond primaire
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorWeight: 3.0,
-            labelStyle: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize14,
-              fontWeight: AppTheme.fontSemiBold,
-              letterSpacing: 0.1,
-            ),
-            unselectedLabelStyle: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize14,
-              fontWeight: AppTheme.fontMedium,
-              letterSpacing: 0.1,
-            ),
-            splashFactory: InkRipple.splashFactory,
-            overlayColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) {
-                if (states.contains(WidgetState.pressed)) {
-                  return AppTheme.primaryColor.withValues(alpha: 0.12); // Overlay rouge sur fond clair
-                }
-                if (states.contains(WidgetState.hovered)) {
-                  return AppTheme.primaryColor.withValues(alpha: 0.08); // Hover rouge sur fond clair
-                }
-                return null;
-              },
-            ),
+            // Les couleurs sont héritées du TabBarTheme (primaryColor pour actif, gris pour inactif)
             tabs: const [
               Tab(
+                icon: Icon(Icons.auto_awesome_rounded),
                 text: 'Pour vous',
               ),
               Tab(
+                icon: Icon(Icons.mic_rounded),
                 text: 'Sermons',
               ),
               Tab(
+                icon: Icon(Icons.volunteer_activism_rounded),
                 text: 'Offrandes',
               ),
               Tab(
+                icon: Icon(Icons.diversity_3_rounded),
                 text: 'Prières',
               ),
             ],
@@ -113,7 +114,7 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
         Divider(
           height: 1,
           thickness: 1,
-          color: Theme.of(context).colorScheme.outlineVariant,
+          color: AppTheme.grey300.withOpacity(0.5),
         ),
       ],
     );
