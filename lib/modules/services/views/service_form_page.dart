@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../models/service_model.dart';
+import '../../../models/event_recurrence_model.dart';
 import '../../../services/service_event_integration_service.dart';
+import '../../../widgets/event_recurrence_widget.dart';
 import '../../../theme.dart';
 
 class ServiceFormPage extends StatefulWidget {
@@ -34,6 +36,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
   int _durationMinutes = 90;
   String _status = 'brouillon';
   bool _isRecurring = false;
+  Map<String, dynamic>? _recurrencePattern; // Pattern de récurrence
   bool _isLoading = false;
 
   final List<Map<String, String>> _serviceTypes = [
@@ -87,6 +90,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
       _durationMinutes = service.durationMinutes;
       _status = service.status;
       _isRecurring = service.isRecurring;
+      _recurrencePattern = service.recurrencePattern; // Charger le pattern existant
     }
   }
 
@@ -161,6 +165,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               ? null 
               : _notesController.text.trim(),
           isRecurring: _isRecurring,
+          recurrencePattern: _isRecurring ? _recurrencePattern : null, // Ajouter le pattern
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         );
@@ -182,6 +187,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               ? null 
               : _notesController.text.trim(),
           isRecurring: _isRecurring,
+          recurrencePattern: _isRecurring ? _recurrencePattern : null, // Ajouter le pattern
           updatedAt: DateTime.now(),
         );
 
@@ -351,6 +357,10 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                 _buildStatusSelector(),
                 const SizedBox(height: AppTheme.spaceMedium),
                 _buildRecurringSwitch(),
+                if (_isRecurring) ...[
+                  const SizedBox(height: AppTheme.spaceMedium),
+                  _buildRecurrenceConfiguration(),
+                ],
               ],
             ),
 
@@ -710,6 +720,84 @@ class _ServiceFormPageState extends State<ServiceFormPage>
       onChanged: (value) => setState(() => _isRecurring = value),
       contentPadding: EdgeInsets.zero,
     );
+  }
+
+  Widget _buildRecurrenceConfiguration() {
+    // Convertir le pattern Map en EventRecurrenceModel pour le widget
+    EventRecurrenceModel? initialRecurrence;
+    if (_recurrencePattern != null) {
+      final pattern = _recurrencePattern!;
+      initialRecurrence = EventRecurrenceModel(
+        id: '',
+        parentEventId: '',
+        type: _mapStringToRecurrenceType(pattern['type'] ?? 'weekly'),
+        interval: pattern['interval'] ?? 1,
+        daysOfWeek: pattern['daysOfWeek'] != null 
+            ? List<int>.from(pattern['daysOfWeek']) 
+            : null,
+        dayOfMonth: pattern['dayOfMonth'],
+        monthsOfYear: pattern['monthsOfYear'] != null
+            ? List<int>.from(pattern['monthsOfYear'])
+            : null,
+        endDate: pattern['endDate'] != null
+            ? DateTime.parse(pattern['endDate'])
+            : null,
+        occurrenceCount: pattern['occurrenceCount'],
+        exceptions: [],
+        overrides: [],
+        isActive: true,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+        ),
+      ),
+      child: EventRecurrenceWidget(
+        initialRecurrence: initialRecurrence,
+        onRecurrenceChanged: (recurrence) {
+          setState(() {
+            // Convertir EventRecurrenceModel en Map pour stockage
+            _recurrencePattern = {
+              'type': recurrence.type.toString().split('.').last,
+              'interval': recurrence.interval,
+              if (recurrence.daysOfWeek != null)
+                'daysOfWeek': recurrence.daysOfWeek,
+              if (recurrence.dayOfMonth != null)
+                'dayOfMonth': recurrence.dayOfMonth,
+              if (recurrence.monthsOfYear != null)
+                'monthsOfYear': recurrence.monthsOfYear,
+              if (recurrence.endDate != null)
+                'endDate': recurrence.endDate!.toIso8601String(),
+              if (recurrence.occurrenceCount != null)
+                'occurrenceCount': recurrence.occurrenceCount,
+            };
+          });
+        },
+      ),
+    );
+  }
+
+  RecurrenceType _mapStringToRecurrenceType(String type) {
+    switch (type.toLowerCase()) {
+      case 'daily':
+        return RecurrenceType.daily;
+      case 'weekly':
+        return RecurrenceType.weekly;
+      case 'monthly':
+        return RecurrenceType.monthly;
+      case 'yearly':
+        return RecurrenceType.yearly;
+      default:
+        return RecurrenceType.weekly;
+    }
   }
 
   String _formatDate(DateTime date) {

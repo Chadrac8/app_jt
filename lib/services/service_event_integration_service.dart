@@ -1,80 +1,149 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/service_model.dart';
 import '../models/event_model.dart';
-import '../models/event_recurrence_model.dart';
 import 'events_firebase_service.dart';
-import 'event_recurrence_service.dart';
 import 'service_notification_service.dart';
+import 'event_series_service.dart'; // ✅ NOUVEAU: Pour gérer les séries d'événements récurrents
 
 /// Service d'intégration entre Services et Événements
 /// Inspiré de Planning Center Online où chaque service est un événement
+/// 
+/// SYSTÈME DE RÉCURRENCE:
+/// - Services simples → 1 événement dans Firestore
+/// - Services récurrents → N événements individuels (style Google Calendar)
+///   - Tous liés par un seriesId commun
+///   - Chaque occurrence = événement complet indépendant
 class ServiceEventIntegrationService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// Crée un service et son événement lié automatiquement
+  /// 
+  /// SYSTÈME DE RÉCURRENCE:
+  /// - Service simple → 1 événement dans Firestore
+  /// - Service récurrent → N événements individuels (EventSeriesService)
   static Future<String> createServiceWithEvent(ServiceModel service) async {
     try {
       print('🎯 Création service avec événement lié: ${service.name}');
       
-      // 1. Créer l'objet EventRecurrence si le service est récurrent
-      EventRecurrence? eventRecurrence;
       if (service.isRecurring && service.recurrencePattern != null) {
-        eventRecurrence = _convertServicePatternToEventRecurrence(
+        // ==========================================
+        // === SERVICE RÉCURRENT (NOUVEAU SYSTÈME) ===
+        // ==========================================
+        print('   Mode: Service récurrent (série d\'événements individuels)');
+        
+        // 1. Convertir le pattern de service en EventRecurrence
+        final eventRecurrence = _convertServicePatternToEventRecurrence(
           service.recurrencePattern!,
           service.dateTime,
         );
-      }
 
-      // 2. Créer l'événement associé avec la récurrence incluse
-      final event = EventModel(
-        id: '',
-        title: service.name,
-        description: service.description ?? '',
-        type: 'culte', // Type événement pour services
-        startDate: service.dateTime,
-        endDate: service.dateTime.add(Duration(minutes: service.durationMinutes)),
-        location: service.location,
-        visibility: 'publique',
-        responsibleIds: [],
-        visibilityTargets: [],
-        status: service.status,
-        isRegistrationEnabled: true, // ✅ ACTIVER LES INSCRIPTIONS
-        maxParticipants: null,
-        hasWaitingList: true, // ✅ ACTIVER LISTE D'ATTENTE
-        isRecurring: service.isRecurring,
-        recurrence: eventRecurrence, // ✅ AJOUTER LA RÉCURRENCE DIRECTEMENT
-        imageUrl: null,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        createdBy: service.createdBy,
-        isServiceEvent: true, // ✅ NOUVEAU: Marquer comme événement-service
-      );
-
-      final eventId = await EventsFirebaseService.createEvent(event);
-      print('✅ Événement créé: $eventId');
-
-      // 3. Si récurrent, créer AUSSI la règle de récurrence dans event_recurrences (pour compatibilité)
-      if (service.isRecurring && service.recurrencePattern != null) {
-        await _createRecurrenceFromServicePattern(
-          eventId,
-          service.recurrencePattern!,
-          service.dateTime,
+        // 2. Créer l'événement maître (template pour la série)
+        final masterEvent = EventModel(
+          id: '', // Sera généré par EventSeriesService
+          title: service.name,
+          description: service.description ?? '',
+          type: 'culte',
+          startDate: service.dateTime,
+          endDate: service.dateTime.add(Duration(minutes: service.durationMinutes)),
+          location: service.location,
+          visibility: 'publique',
+          responsibleIds: [],
+          visibilityTargets: [],
+          status: service.status,
+          isRegistrationEnabled: true,
+          maxParticipants: null,
+          hasWaitingList: true,
+          isRecurring: true,
+          recurrence: eventRecurrence,
+          imageUrl: null,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          createdBy: service.createdBy,
+          isServiceEvent: true,
         );
-      }
 
-      // 3. Créer le service avec le lien vers l'événement
-      final serviceWithEvent = service.copyWith(linkedEventId: eventId);
-      final serviceId = await _createService(serviceWithEvent);
-      
-      // 4. ✅ NOUVEAU: Mettre à jour l'événement avec le lien vers le service
-      await _updateEventWithServiceLink(eventId, serviceId);
-      
-      // 5. ✅ NOUVEAU: Envoyer notifications
-      await ServiceNotificationService.notifyNewService(serviceWithEvent);
-      await ServiceNotificationService.scheduleServiceReminder(serviceWithEvent);
-      
-      print('✅ Service créé avec succès: $serviceId (lié à événement $eventId)');
-      return serviceId;
+        // 3. ✅ NOUVEAU: Créer la série d'événements (N événements individuels)
+        print('   Génération de la série d\'événements...');
+        final eventIds = await EventSeriesService.createRecurringSeries(
+          masterEvent: masterEvent,
+          recurrence: eventRecurrence,
+          preGenerateMonths: 6, // 6 mois par défaut
+        );
+
+        if (eventIds.isEmpty) {
+          throw Exception('Échec de la création de la série d\'événements');
+        }
+
+        print('   ✅ ${eventIds.length} événements créés dans la série');
+
+        // 4. Lier le service au PREMIER événement (maître de la série)
+        final linkedEventId = eventIds.first;
+        final serviceWithEvent = service.copyWith(linkedEventId: linkedEventId);
+        final serviceId = await _createService(serviceWithEvent);
+
+        // 5. ✅ IMPORTANT: Mettre à jour TOUS les événements de la série avec le lien service
+        print('   Liaison des événements au service...');
+        for (final eventId in eventIds) {
+          await _updateEventWithServiceLink(eventId, serviceId);
+        }
+        print('   ✅ ${eventIds.length} événements liés au service');
+
+        // 6. Notifications
+        await ServiceNotificationService.notifyNewService(serviceWithEvent);
+        await ServiceNotificationService.scheduleServiceReminder(serviceWithEvent);
+
+        print('✅ Service récurrent créé avec succès: $serviceId');
+        print('   Événements dans la série: ${eventIds.length}');
+        print('   Événement maître: $linkedEventId');
+        return serviceId;
+
+      } else {
+        // ==========================================
+        // === SERVICE SIMPLE (NON RÉCURRENT) ===
+        // ==========================================
+        print('   Mode: Service simple (1 événement)');
+        
+        // Créer l'événement simple
+        final event = EventModel(
+          id: '',
+          title: service.name,
+          description: service.description ?? '',
+          type: 'culte',
+          startDate: service.dateTime,
+          endDate: service.dateTime.add(Duration(minutes: service.durationMinutes)),
+          location: service.location,
+          visibility: 'publique',
+          responsibleIds: [],
+          visibilityTargets: [],
+          status: service.status,
+          isRegistrationEnabled: true,
+          maxParticipants: null,
+          hasWaitingList: true,
+          isRecurring: false,
+          imageUrl: null,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          createdBy: service.createdBy,
+          isServiceEvent: true,
+        );
+
+        final eventId = await EventsFirebaseService.createEvent(event);
+        print('   ✅ Événement créé: $eventId');
+
+        // Créer le service avec le lien vers l'événement
+        final serviceWithEvent = service.copyWith(linkedEventId: eventId);
+        final serviceId = await _createService(serviceWithEvent);
+
+        // Mettre à jour l'événement avec le lien vers le service
+        await _updateEventWithServiceLink(eventId, serviceId);
+
+        // Notifications
+        await ServiceNotificationService.notifyNewService(serviceWithEvent);
+        await ServiceNotificationService.scheduleServiceReminder(serviceWithEvent);
+
+        print('✅ Service simple créé avec succès: $serviceId');
+        return serviceId;
+      }
     } catch (e) {
       print('❌ Erreur création service avec événement: $e');
       rethrow;
@@ -82,46 +151,83 @@ class ServiceEventIntegrationService {
   }
 
   /// Met à jour un service et synchronise avec son événement lié
+  /// 
+  /// GESTION RÉCURRENCE:
+  /// - Service simple → Met à jour 1 événement
+  /// - Service récurrent → Met à jour TOUTE LA SÉRIE (tous les événements futurs)
   static Future<void> updateServiceWithEvent(ServiceModel service) async {
     try {
-      print('🔄 Mise à jour service et événement: ${service.id}');
+      print('🔄 Mise à jour service et événements: ${service.id}');
       
       // 1. Mettre à jour le service
       await _updateService(service);
 
       // 2. Si lié à un événement, synchroniser
       if (service.linkedEventId != null) {
-        final event = await EventsFirebaseService.getEvent(service.linkedEventId!);
-        if (event != null) {
-          final updatedEvent = event.copyWith(
-            title: service.name,
-            description: service.description ?? '',
-            startDate: service.dateTime,
-            endDate: service.dateTime.add(Duration(minutes: service.durationMinutes)),
-            location: service.location,
-            status: service.status,
-            isRecurring: service.isRecurring, // ✅ Synchroniser flag récurrence
-            updatedAt: DateTime.now(),
-          );
-          await EventsFirebaseService.updateEvent(updatedEvent);
-          print('✅ Événement synchronisé');
+        final linkedEvent = await EventsFirebaseService.getEvent(service.linkedEventId!);
+        
+        if (linkedEvent != null) {
           
-          // ✅ NOUVEAU: Gérer les changements de récurrence
-          if (service.isRecurring && service.recurrencePattern != null) {
-            await _updateRecurrencePattern(
-              service.linkedEventId!,
-              service.recurrencePattern!,
-              service.dateTime,
+          if (linkedEvent.seriesId != null) {
+            // ==========================================
+            // === SERVICE RÉCURRENT: Mettre à jour TOUTE LA SÉRIE ===
+            // ==========================================
+            print('   Mode: Service récurrent - Mise à jour série');
+            
+            // Récupérer tous les événements de la série
+            final seriesEvents = await EventSeriesService.getSeriesEvents(linkedEvent.seriesId!);
+            print('   ${seriesEvents.length} événements dans la série');
+            
+            // Mettre à jour chaque événement de la série
+            int updatedCount = 0;
+            for (final event in seriesEvents) {
+              // Calculer la nouvelle date de fin en fonction de la durée
+              final duration = Duration(minutes: service.durationMinutes);
+              final newEndDate = event.startDate.add(duration);
+              
+              final updatedEvent = event.copyWith(
+                title: service.name,
+                description: service.description ?? '',
+                // Note: On ne change PAS startDate (chaque occurrence garde sa date)
+                endDate: newEndDate,
+                location: service.location,
+                status: service.status,
+                updatedAt: DateTime.now(),
+              );
+              
+              await EventsFirebaseService.updateEvent(updatedEvent);
+              updatedCount++;
+            }
+            
+            print('   ✅ $updatedCount événements de la série mis à jour');
+            
+          } else {
+            // ==========================================
+            // === SERVICE SIMPLE: Mettre à jour 1 événement ===
+            // ==========================================
+            print('   Mode: Service simple - Mise à jour 1 événement');
+            
+            final updatedEvent = linkedEvent.copyWith(
+              title: service.name,
+              description: service.description ?? '',
+              startDate: service.dateTime,
+              endDate: service.dateTime.add(Duration(minutes: service.durationMinutes)),
+              location: service.location,
+              status: service.status,
+              isRecurring: service.isRecurring,
+              updatedAt: DateTime.now(),
             );
-          } else if (!service.isRecurring) {
-            // Supprimer la récurrence si le service n'est plus récurrent
-            await _removeRecurrence(service.linkedEventId!);
+            
+            await EventsFirebaseService.updateEvent(updatedEvent);
+            print('   ✅ Événement simple mis à jour');
           }
           
-          // ✅ NOUVEAU: Notifier les changements
+          // Notification
           await ServiceNotificationService.notifyServiceUpdate(service);
         }
       }
+      
+      print('✅ Service et événements synchronisés');
     } catch (e) {
       print('❌ Erreur mise à jour service/événement: $e');
       rethrow;
@@ -129,25 +235,47 @@ class ServiceEventIntegrationService {
   }
 
   /// Supprime un service et son événement lié
+  /// 
+  /// GESTION RÉCURRENCE:
+  /// - Service simple → Supprime 1 événement
+  /// - Service récurrent → Supprime TOUTE LA SÉRIE (tous les événements)
   static Future<void> deleteServiceWithEvent(String serviceId) async {
     try {
-      print('🗑️ Suppression service et événement: $serviceId');
+      print('🗑️ Suppression service et événements: $serviceId');
       
       final service = await getService(serviceId);
       if (service == null) return;
 
-      // ✅ NOUVEAU: Notifier l'annulation si le service est publié
+      // Notifier l'annulation si le service est publié
       if (service.status == 'publie') {
         await ServiceNotificationService.notifyServiceCancellation(service);
       }
 
-      // 1. Supprimer l'événement lié (et ses récurrences/instances)
+      // Supprimer l'événement ou la série d'événements
       if (service.linkedEventId != null) {
-        await EventsFirebaseService.deleteEvent(service.linkedEventId!);
-        print('✅ Événement lié supprimé');
+        final linkedEvent = await EventsFirebaseService.getEvent(service.linkedEventId!);
+        
+        if (linkedEvent != null && linkedEvent.seriesId != null) {
+          // ==========================================
+          // === SERVICE RÉCURRENT: Supprimer TOUTE LA SÉRIE ===
+          // ==========================================
+          print('   Mode: Service récurrent - Suppression série');
+          
+          await EventSeriesService.deleteAllOccurrences(linkedEvent.seriesId!);
+          print('   ✅ Série d\'événements supprimée');
+          
+        } else if (service.linkedEventId != null) {
+          // ==========================================
+          // === SERVICE SIMPLE: Supprimer 1 événement ===
+          // ==========================================
+          print('   Mode: Service simple - Suppression 1 événement');
+          
+          await EventsFirebaseService.deleteEvent(service.linkedEventId!);
+          print('   ✅ Événement simple supprimé');
+        }
       }
 
-      // 2. Supprimer le service
+      // Supprimer le service
       await _firestore.collection('services').doc(serviceId).delete();
       print('✅ Service supprimé');
     } catch (e) {
@@ -167,61 +295,6 @@ class ServiceEventIntegrationService {
     } catch (e) {
       print('❌ Erreur récupération service: $e');
       return null;
-    }
-  }
-
-  /// Crée une règle de récurrence à partir du pattern de service
-  static Future<void> _createRecurrenceFromServicePattern(
-    String eventId,
-    Map<String, dynamic> pattern,
-    DateTime startDate,
-  ) async {
-    try {
-      // Convertir le pattern de service en EventRecurrenceModel
-      final recurrence = EventRecurrenceModel(
-        id: '',
-        parentEventId: eventId,
-        type: _mapPatternToRecurrenceType(pattern['type'] ?? 'weekly'),
-        interval: pattern['interval'] ?? 1,
-        daysOfWeek: pattern['daysOfWeek'] != null 
-            ? List<int>.from(pattern['daysOfWeek']) 
-            : null,
-        dayOfMonth: pattern['dayOfMonth'],
-        monthsOfYear: pattern['monthsOfYear'] != null
-            ? List<int>.from(pattern['monthsOfYear'])
-            : null,
-        endDate: pattern['endDate'] != null
-            ? DateTime.parse(pattern['endDate'])
-            : null,
-        occurrenceCount: pattern['occurrenceCount'],
-        exceptions: [],
-        overrides: [],
-        isActive: true,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      );
-
-      await EventRecurrenceService.createRecurrence(recurrence);
-      print('✅ Récurrence créée pour le service');
-    } catch (e) {
-      print('❌ Erreur création récurrence: $e');
-      rethrow;
-    }
-  }
-
-  /// Mappe le type de pattern de service vers RecurrenceType
-  static RecurrenceType _mapPatternToRecurrenceType(String type) {
-    switch (type.toLowerCase()) {
-      case 'daily':
-        return RecurrenceType.daily;
-      case 'weekly':
-        return RecurrenceType.weekly;
-      case 'monthly':
-        return RecurrenceType.monthly;
-      case 'yearly':
-        return RecurrenceType.yearly;
-      default:
-        return RecurrenceType.weekly;
     }
   }
 
@@ -346,60 +419,6 @@ class ServiceEventIntegrationService {
       }
     } catch (e) {
       print('❌ Erreur mise à jour lien événement→service: $e');
-    }
-  }
-
-  /// ✅ NOUVEAU: Met à jour le pattern de récurrence d'un événement
-  static Future<void> _updateRecurrencePattern(
-    String eventId,
-    Map<String, dynamic> pattern,
-    DateTime startDate,
-  ) async {
-    try {
-      // Récupérer la récurrence existante
-      final existingRecurrences = await EventRecurrenceService.getEventRecurrences(eventId);
-      
-      if (existingRecurrences.isNotEmpty) {
-        // Mettre à jour la récurrence existante
-        final existing = existingRecurrences.first;
-        final updated = existing.copyWith(
-          type: _mapPatternToRecurrenceType(pattern['type'] ?? 'weekly'),
-          interval: pattern['interval'] ?? 1,
-          daysOfWeek: pattern['daysOfWeek'] != null 
-              ? List<int>.from(pattern['daysOfWeek']) 
-              : null,
-          dayOfMonth: pattern['dayOfMonth'],
-          monthsOfYear: pattern['monthsOfYear'] != null
-              ? List<int>.from(pattern['monthsOfYear'])
-              : null,
-          endDate: pattern['endDate'] != null
-              ? DateTime.parse(pattern['endDate'])
-              : null,
-          occurrenceCount: pattern['occurrenceCount'],
-          updatedAt: DateTime.now(),
-        );
-        await EventRecurrenceService.updateRecurrence(updated);
-        print('✅ Récurrence mise à jour pour événement $eventId');
-      } else {
-        // Créer une nouvelle récurrence
-        await _createRecurrenceFromServicePattern(eventId, pattern, startDate);
-        print('✅ Nouvelle récurrence créée pour événement $eventId');
-      }
-    } catch (e) {
-      print('❌ Erreur mise à jour récurrence: $e');
-    }
-  }
-
-  /// ✅ NOUVEAU: Supprime la récurrence d'un événement
-  static Future<void> _removeRecurrence(String eventId) async {
-    try {
-      final recurrences = await EventRecurrenceService.getEventRecurrences(eventId);
-      for (final recurrence in recurrences) {
-        await EventRecurrenceService.deleteRecurrence(recurrence.id);
-      }
-      print('✅ Récurrence supprimée pour événement $eventId');
-    } catch (e) {
-      print('❌ Erreur suppression récurrence: $e');
     }
   }
 
