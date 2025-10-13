@@ -8,6 +8,7 @@ import '../../../widgets/service_search_filter_bar.dart';
 import '../../../widgets/service_calendar_view.dart';
 import 'service_detail_page.dart';
 import 'service_form_page.dart';
+import 'services_planning_view.dart';
 import '../../../pages/teams_management_page.dart';
 import '../../../pages/assignments_overview_page.dart';
 import '../../../theme.dart';
@@ -416,6 +417,19 @@ class _ServicesHomePageState extends State<ServicesHomePage>
                       onPressed: _toggleViewMode,
                       icon: Icon(_isCalendarView ? Icons.view_list : Icons.calendar_month),
                       tooltip: _isCalendarView ? 'Vue liste' : 'Vue calendrier',
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        // Naviguer vers la vue Planning Center Style
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ServicesPlanningView(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.view_week),
+                      tooltip: 'Vue Planning',
                     ),
                     IconButton(
                       onPressed: _toggleSelectionMode,

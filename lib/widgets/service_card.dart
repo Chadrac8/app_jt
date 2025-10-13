@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/service_model.dart';
 import '../services/services_firebase_service.dart';
+import '../services/events_firebase_service.dart';
+import '../widgets/service_occurrences_dialog.dart';
 import '../theme.dart';
 
 
@@ -32,6 +34,7 @@ class _ServiceCardState extends State<ServiceCard>
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  int? _occurrencesCount;
 
   @override
   void initState() {
@@ -45,6 +48,34 @@ class _ServiceCardState extends State<ServiceCard>
     );
     _fadeAnimation = Tween<double>(begin: 1.0, end: 0.8).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    
+    // Load occurrences count if recurring
+    if (widget.service.isRecurring) {
+      _loadOccurrencesCount();
+    }
+  }
+  
+  Future<void> _loadOccurrencesCount() async {
+    try {
+      final events = await EventsFirebaseService.getEventsByService(widget.service.id);
+      if (mounted) {
+        setState(() {
+          _occurrencesCount = events.length;
+        });
+      }
+    } catch (e) {
+      // Silently fail - badge won't show
+      debugPrint('Error loading occurrences count: $e');
+    }
+  }
+  
+  void _showOccurrencesDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => ServiceOccurrencesDialog(
+        service: widget.service,
+      ),
     );
   }
 
@@ -268,6 +299,45 @@ class _ServiceCardState extends State<ServiceCard>
                     ),
                   ),
                 ),
+                
+                // Recurring badge with occurrences count
+                if (widget.service.isRecurring && _occurrencesCount != null)
+                  Positioned(
+                    bottom: 8,
+                    right: 8,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: _showOccurrencesDialog,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.repeat,
+                                size: 12,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '$_occurrencesCount',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  fontWeight: AppTheme.fontBold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
 

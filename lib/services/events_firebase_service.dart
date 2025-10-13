@@ -127,6 +127,24 @@ class EventsFirebaseService {
       throw Exception('Erreur lors de la récupération de l\'événement: $e');
     }
   }
+  
+  /// Get all events linked to a specific service
+  static Future<List<EventModel>> getEventsByService(String serviceId) async {
+    try {
+      final snapshot = await _firestore
+          .collection(eventsCollection)
+          .where('linkedServiceId', isEqualTo: serviceId)
+          .orderBy('startDate', descending: false)
+          .get();
+      
+      return snapshot.docs
+          .map((doc) => EventModel.fromFirestore(doc))
+          .where((event) => event.deletedAt == null)
+          .toList();
+    } catch (e) {
+      throw Exception('Erreur lors de la récupération des événements du service: $e');
+    }
+  }
 
   static Stream<List<EventModel>> getEventsStream({
     String? searchQuery,
