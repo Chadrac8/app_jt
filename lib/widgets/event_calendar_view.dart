@@ -60,6 +60,9 @@ class _EventCalendarViewState extends State<EventCalendarView> {
 
   List<EventModel> _getEventsForDate(DateTime date) {
     return widget.events.where((event) {
+      // Filtrer les événements supprimés (soft delete)
+      if (event.deletedAt != null) return false;
+      
       final eventDate = DateTime(event.startDate.year, event.startDate.month, event.startDate.day);
       final targetDate = DateTime(date.year, date.month, date.day);
       return eventDate == targetDate;
@@ -376,13 +379,50 @@ class _EventCalendarViewState extends State<EventCalendarView> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  event.title,
-                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontWeight: AppTheme.fontSemiBold,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        event.title,
+                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                          fontWeight: AppTheme.fontSemiBold,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    // Icône récurrence si l'événement fait partie d'une série
+                                    if (event.seriesId != null) ...[
+                                      const SizedBox(width: 4),
+                                      Tooltip(
+                                        message: 'Événement récurrent',
+                                        child: Icon(
+                                          Icons.repeat,
+                                          size: 16,
+                                          color: AppTheme.blueStandard,
+                                        ),
+                                      ),
+                                    ],
+                                    // Badge "Modifié" si l'occurrence a été modifiée
+                                    if (event.isModifiedOccurrence) ...[
+                                      const SizedBox(width: 4),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.orangeStandard,
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Text(
+                                          'Modifié',
+                                          style: TextStyle(
+                                            fontSize: 9,
+                                            color: Colors.white,
+                                            fontWeight: AppTheme.fontSemiBold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ],
                                 ),
                                 const SizedBox(height: AppTheme.spaceXSmall),
                                 Row(

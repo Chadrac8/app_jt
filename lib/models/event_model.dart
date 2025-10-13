@@ -508,6 +508,14 @@ class EventModel {
   // Nouveaux champs pour l'intégration Services ↔ Events
   final String? linkedServiceId;  // Référence vers ServiceModel
   final bool isServiceEvent;      // Flag pour identifier les événements-services
+  
+  // Nouveaux champs pour les séries d'événements récurrents (Style Google Calendar)
+  final String? seriesId;              // ID unique pour grouper toutes les occurrences
+  final bool isSeriesMaster;           // true = événement maître (premier de la série)
+  final bool isModifiedOccurrence;     // true = cette occurrence a été modifiée individuellement
+  final DateTime? originalStartDate;   // Date de début originale (avant modification)
+  final DateTime? deletedAt;           // Pour soft-delete (occurrence annulée)
+  final int? occurrenceIndex;          // Index de l'occurrence (0, 1, 2...)
 
   EventModel({
     required this.id,
@@ -536,6 +544,12 @@ class EventModel {
     this.lastModifiedBy,
     this.linkedServiceId,
     this.isServiceEvent = false,
+    this.seriesId,
+    this.isSeriesMaster = false,
+    this.isModifiedOccurrence = false,
+    this.originalStartDate,
+    this.deletedAt,
+    this.occurrenceIndex,
   });
 
   String get typeLabel {
@@ -626,6 +640,16 @@ class EventModel {
       lastModifiedBy: data['lastModifiedBy'],
       linkedServiceId: data['linkedServiceId'],
       isServiceEvent: data['isServiceEvent'] ?? false,
+      seriesId: data['seriesId'],
+      isSeriesMaster: data['isSeriesMaster'] ?? false,
+      isModifiedOccurrence: data['isModifiedOccurrence'] ?? false,
+      originalStartDate: data['originalStartDate'] != null 
+          ? (data['originalStartDate'] as Timestamp).toDate() 
+          : null,
+      deletedAt: data['deletedAt'] != null 
+          ? (data['deletedAt'] as Timestamp).toDate() 
+          : null,
+      occurrenceIndex: data['occurrenceIndex'],
     );
   }
 
@@ -655,6 +679,16 @@ class EventModel {
       'lastModifiedBy': lastModifiedBy,
       'linkedServiceId': linkedServiceId,
       'isServiceEvent': isServiceEvent,
+      'seriesId': seriesId,
+      'isSeriesMaster': isSeriesMaster,
+      'isModifiedOccurrence': isModifiedOccurrence,
+      'originalStartDate': originalStartDate != null 
+          ? Timestamp.fromDate(originalStartDate!) 
+          : null,
+      'deletedAt': deletedAt != null 
+          ? Timestamp.fromDate(deletedAt!) 
+          : null,
+      'occurrenceIndex': occurrenceIndex,
     };
   }
 
@@ -681,6 +715,12 @@ class EventModel {
     String? lastModifiedBy,
     String? linkedServiceId,
     bool? isServiceEvent,
+    String? seriesId,
+    bool? isSeriesMaster,
+    bool? isModifiedOccurrence,
+    DateTime? originalStartDate,
+    DateTime? deletedAt,
+    int? occurrenceIndex,
   }) {
     return EventModel(
       id: id,
@@ -708,6 +748,12 @@ class EventModel {
       lastModifiedBy: lastModifiedBy ?? this.lastModifiedBy,
       linkedServiceId: linkedServiceId ?? this.linkedServiceId,
       isServiceEvent: isServiceEvent ?? this.isServiceEvent,
+      seriesId: seriesId ?? this.seriesId,
+      isSeriesMaster: isSeriesMaster ?? this.isSeriesMaster,
+      isModifiedOccurrence: isModifiedOccurrence ?? this.isModifiedOccurrence,
+      originalStartDate: originalStartDate ?? this.originalStartDate,
+      deletedAt: deletedAt ?? this.deletedAt,
+      occurrenceIndex: occurrenceIndex ?? this.occurrenceIndex,
     );
   }
 }

@@ -4,6 +4,7 @@ import '../models/event_model.dart';
 import '../models/event_recurrence_model.dart';
 import '../services/events_firebase_service.dart';
 import '../services/event_recurrence_service.dart';
+import '../services/event_series_service.dart'; // NOUVEAU
 import '../auth/auth_service.dart';
 import '../../theme.dart';
 import '../image_upload.dart';
@@ -298,75 +299,52 @@ class _EventFormPageState extends State<EventFormPage>
       );
       
       if (widget.event == null) {
-        final eventId = await EventsFirebaseService.createEvent(event);
-        
-        // Si l'événement est récurrent, créer la règle de récurrence
-        if (_isRecurring && _recurrenceModel != null) {
+        // **NOUVEAU SYSTÈME** : Créer une série d'événements individuels
+        if (_isRecurring && _recurrenceModel != null && eventRecurrence != null) {
           try {
-            final recurrence = _recurrenceModel!.copyWith(
-              parentEventId: eventId,
+            print('🔄 Création série récurrente...');
+            
+            // Créer la série (génère automatiquement N événements)
+            await EventSeriesService.createRecurringSeries(
+              masterEvent: event,
+              recurrence: eventRecurrence,
+              preGenerateMonths: 6, // Générer 6 mois à l'avance par défaut
             );
-            await EventRecurrenceService.createRecurrence(recurrence);
+            
+            print('✅ Série créée avec succès');
           } catch (e) {
-            print('Erreur lors de la création de la récurrence: $e');
-            // Afficher un warning mais ne pas faire échouer la création de l'événement
+            print('❌ Erreur création série: $e');
+            // Afficher une erreur claire
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Événement créé mais erreur dans la récurrence: $e'),
-                  backgroundColor: AppTheme.orangeStandard,
+                  content: Text('Erreur lors de la création de la série: $e'),
+                  backgroundColor: Colors.red,
                 ),
               );
             }
+            return; // Ne pas continuer si la série n'a pas pu être créée
           }
+        } else {
+          // Événement simple (non récurrent)
+          await EventsFirebaseService.createEvent(event);
         }
       } else {
+        // Modification d'un événement existant
+        // Note : La modification d'une occurrence récurrente est gérée 
+        // dans event_detail_page.dart avec les dialogs de choix
         await EventsFirebaseService.updateEvent(event);
         
-        // Gérer la récurrence pour les modifications
-        if (_isRecurring && _recurrenceModel != null) {
+        // Si l'événement devient récurrent après coup, créer la série
+        if (_isRecurring && _recurrenceModel != null && eventRecurrence != null && event.seriesId == null) {
           try {
-            // Vérifier s'il existe déjà une récurrence
-            final existingRecurrences = await EventRecurrenceService.getEventRecurrences(widget.event!.id);
-            
-            if (existingRecurrences.isNotEmpty) {
-              // Mettre à jour la récurrence existante
-              final updatedRecurrence = EventRecurrenceModel(
-                id: existingRecurrences.first.id,
-                parentEventId: widget.event!.id,
-                type: _recurrenceModel!.type,
-                interval: _recurrenceModel!.interval,
-                daysOfWeek: _recurrenceModel!.daysOfWeek,
-                dayOfMonth: _recurrenceModel!.dayOfMonth,
-                monthsOfYear: _recurrenceModel!.monthsOfYear,
-                endDate: _recurrenceModel!.endDate,
-                occurrenceCount: _recurrenceModel!.occurrenceCount,
-                exceptions: _recurrenceModel!.exceptions,
-                overrides: _recurrenceModel!.overrides,
-                isActive: _recurrenceModel!.isActive,
-                createdAt: existingRecurrences.first.createdAt,
-                updatedAt: DateTime.now(),
-              );
-              await EventRecurrenceService.updateRecurrence(updatedRecurrence);
-            } else {
-              // Créer une nouvelle récurrence
-              final recurrence = _recurrenceModel!.copyWith(
-                parentEventId: widget.event!.id,
-              );
-              await EventRecurrenceService.createRecurrence(recurrence);
-            }
+            await EventSeriesService.createRecurringSeries(
+              masterEvent: event,
+              recurrence: eventRecurrence,
+              preGenerateMonths: 6,
+            );
           } catch (e) {
-            print('Erreur lors de la mise à jour de la récurrence: $e');
-          }
-        } else if (!_isRecurring) {
-          // Si la récurrence a été désactivée, supprimer les récurrences existantes
-          try {
-            final existingRecurrences = await EventRecurrenceService.getEventRecurrences(widget.event!.id);
-            for (final recurrence in existingRecurrences) {
-              await EventRecurrenceService.deleteRecurrence(recurrence.id);
-            }
-          } catch (e) {
-            print('Erreur lors de la suppression de la récurrence: $e');
+            print('Erreur création série: $e');
           }
         }
       }
