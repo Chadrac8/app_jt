@@ -26,12 +26,18 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
   List<int> _selectedMonths = [];
   DateTime? _endDate;
   int? _occurrenceCount;
-  bool _hasEndDate = false;
+  bool _hasEndDate = true; // Par défaut, date de fin activée
   bool _hasOccurrenceLimit = false;
 
   @override
   void initState() {
     super.initState();
+    
+    // Définir une date de fin par défaut à 6 mois
+    if (_endDate == null) {
+      _endDate = DateTime.now().add(const Duration(days: 180)); // 6 mois
+    }
+    
     if (widget.initialRecurrence != null) {
       _loadFromExisting(widget.initialRecurrence!);
     }
@@ -387,21 +393,19 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
         RadioListTile<String>(
           title: Row(
             children: [
-              const Text('Le '),
-              if (_hasEndDate && _endDate != null)
-                Text(
-                  '${_endDate!.day}/${_endDate!.month}/${_endDate!.year}',
-                  style: const TextStyle(fontWeight: AppTheme.fontBold),
-                ),
-              const Spacer(),
+              const Text('Jusqu\'au '),
+              const SizedBox(width: 8),
               if (_hasEndDate)
-                TextButton(
-                  onPressed: () async {
+                InkWell(
+                  onTap: () async {
                     final date = await showDatePicker(
                       context: context,
-                      initialDate: _endDate ?? DateTime.now().add(const Duration(days: 30)),
+                      initialDate: _endDate ?? DateTime.now().add(const Duration(days: 180)),
                       firstDate: DateTime.now(),
                       lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+                      helpText: 'Choisir la date de fin',
+                      cancelText: 'Annuler',
+                      confirmText: 'OK',
                     );
                     if (date != null) {
                       setState(() {
@@ -410,7 +414,30 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
                       });
                     }
                   },
-                  child: const Text('Choisir'),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppTheme.blueStandard.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppTheme.blueStandard),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.calendar_today, size: 16, color: AppTheme.blueStandard),
+                        const SizedBox(width: 6),
+                        Text(
+                          _endDate != null
+                              ? '${_endDate!.day.toString().padLeft(2, '0')}/${_endDate!.month.toString().padLeft(2, '0')}/${_endDate!.year}'
+                              : 'Choisir',
+                          style: TextStyle(
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.blueStandard,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
             ],
           ),
@@ -425,7 +452,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
               _hasEndDate = true;
               _hasOccurrenceLimit = false;
               if (_endDate == null) {
-                _endDate = DateTime.now().add(const Duration(days: 30));
+                _endDate = DateTime.now().add(const Duration(days: 180));
               }
               _updateRecurrence();
             });
@@ -437,25 +464,74 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
           title: Row(
             children: [
               const Text('Après '),
+              const SizedBox(width: 8),
               if (_hasOccurrenceLimit)
-                SizedBox(
-                  width: 60,
-                  child: TextFormField(
-                    initialValue: _occurrenceCount?.toString() ?? '10',
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    ),
-                    onChanged: (value) {
+                InkWell(
+                  onTap: () async {
+                    final controller = TextEditingController(
+                      text: _occurrenceCount?.toString() ?? '10'
+                    );
+                    final result = await showDialog<int>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Nombre d\'occurrences'),
+                        content: TextField(
+                          controller: controller,
+                          keyboardType: TextInputType.number,
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Nombre d\'occurrences',
+                            hintText: '10',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Annuler'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              final value = int.tryParse(controller.text);
+                              Navigator.pop(context, value);
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (result != null && result > 0) {
                       setState(() {
-                        _occurrenceCount = int.tryParse(value) ?? 10;
+                        _occurrenceCount = result;
                         _updateRecurrence();
                       });
-                    },
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppTheme.blueStandard.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppTheme.blueStandard),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.numbers, size: 16, color: AppTheme.blueStandard),
+                        const SizedBox(width: 6),
+                        Text(
+                          '${_occurrenceCount ?? 10}',
+                          style: TextStyle(
+                            fontWeight: AppTheme.fontBold,
+                            color: AppTheme.blueStandard,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+              const SizedBox(width: 4),
               const Text(' occurrences'),
             ],
           ),

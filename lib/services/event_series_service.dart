@@ -20,7 +20,12 @@ class EventSeriesService {
   /// 
   /// [masterEvent] : L'événement maître contenant toutes les informations de base
   /// [recurrence] : La règle de récurrence pour générer les occurrences
-  /// [preGenerateMonths] : Nombre de mois à générer à l'avance (par défaut 6)
+  /// [preGenerateMonths] : Nombre de mois à générer à l'avance (par défaut 6) - utilisé uniquement si endType = never
+  /// 
+  /// Priorité de fin de récurrence :
+  /// 1. endDate (si endType = onDate) ← Date choisie par l'utilisateur
+  /// 2. occurrences (si endType = afterOccurrences) ← Nombre d'occurrences
+  /// 3. preGenerateMonths (si endType = never) ← 6 mois par défaut
   /// 
   /// Retourne la liste des IDs des événements créés
   static Future<List<String>> createRecurringSeries({
@@ -31,13 +36,33 @@ class EventSeriesService {
     try {
       print('📅 Création série récurrente: ${masterEvent.title}');
       print('   Règle: ${recurrence.description}');
-      print('   Pré-génération: $preGenerateMonths mois');
       
       // Générer un ID unique pour la série
       final seriesId = 'series_${DateTime.now().millisecondsSinceEpoch}_${masterEvent.title.hashCode}';
       
-      // Calculer les dates d'occurrences
-      final until = DateTime.now().add(Duration(days: 30 * preGenerateMonths));
+      // Calculer les dates d'occurrences selon le type de fin
+      // Priorité : endDate > occurrences > preGenerateMonths
+      final DateTime until;
+      
+      if (recurrence.endType == RecurrenceEndType.onDate && recurrence.endDate != null) {
+        // Cas 1 : Date de fin spécifique
+        until = recurrence.endDate!;
+        print('   Mode: Date de fin définie');
+        print('   Date de fin: ${until.toString().split(' ')[0]}');
+      } else if (recurrence.endType == RecurrenceEndType.afterOccurrences && recurrence.occurrences != null) {
+        // Cas 2 : Nombre d'occurrences spécifique
+        // On génère suffisamment loin pour être sûr d'avoir assez d'occurrences
+        // La méthode generateOccurrences s'arrêtera au bon nombre
+        until = DateTime.now().add(const Duration(days: 365 * 10)); // 10 ans max
+        print('   Mode: Nombre d\'occurrences limité');
+        print('   Nombre d\'occurrences: ${recurrence.occurrences}');
+      } else {
+        // Cas 3 : Jamais (utilise preGenerateMonths)
+        until = DateTime.now().add(Duration(days: 30 * preGenerateMonths));
+        print('   Mode: Génération automatique');
+        print('   Pré-génération: $preGenerateMonths mois (jusqu\'au ${until.toString().split(' ')[0]})');
+      }
+      
       final occurrenceDates = recurrence.generateOccurrences(
         masterEvent.startDate,
         masterEvent.startDate,
