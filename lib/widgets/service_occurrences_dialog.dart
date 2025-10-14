@@ -5,7 +5,9 @@ import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
 import '../modules/services/views/service_detail_page.dart';
 import '../modules/services/views/services_planning_view.dart';
+import '../pages/event_detail_page.dart';
 import '../theme.dart';
+import 'recurring_service_edit_dialog.dart';
 
 /// Modal affichant toutes les occurrences d'un service récurrent
 /// 
@@ -123,13 +125,51 @@ class _ServiceOccurrencesDialogState extends State<ServiceOccurrencesDialog> {
     return DateFormat('HH:mm', 'fr_FR').format(date);
   }
 
-  void _openOccurrenceDetail(EventModel event) {
-    Navigator.of(context).pop(); // Fermer le dialog
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ServiceDetailPage(service: widget.service),
-      ),
+  /// Ouvre le détail d'une occurrence avec choix de portée d'édition
+  /// 
+  /// Affiche d'abord un dialog demandant à l'utilisateur s'il veut modifier :
+  /// - Cette occurrence uniquement → EventDetailPage
+  /// - Toutes les occurrences → ServiceDetailPage
+  Future<void> _openOccurrenceDetail(EventModel event) async {
+    // Afficher le dialog de choix
+    final scope = await RecurringServiceEditDialog.show(
+      context,
+      serviceTitle: widget.service.name, // C'est 'name' pas 'title'
+      occurrenceDate: event.startDate,
     );
+    
+    // Si l'utilisateur annule, on ne fait rien
+    if (scope == null) return;
+    
+    if (!mounted) return;
+    
+    // Fermer le modal d'occurrences
+    Navigator.of(context).pop();
+    
+    // Naviguer vers la bonne page selon le choix
+    switch (scope) {
+      case RecurringEditScope.thisOnly:
+        // Modifier uniquement cette occurrence
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => EventDetailPage(
+              event: event, // EventDetailPage attend un 'event' pas 'eventId'
+            ),
+          ),
+        );
+        break;
+        
+      case RecurringEditScope.all:
+        // Modifier toutes les occurrences
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ServiceDetailPage(
+              service: widget.service,
+            ),
+          ),
+        );
+        break;
+    }
   }
 
   void _openPlanningView() {

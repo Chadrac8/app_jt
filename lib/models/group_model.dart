@@ -18,6 +18,15 @@ class GroupModel {
   final Map<String, dynamic> customFields;
   final bool isActive;
   final String? groupImageUrl; // Photo du groupe en base64
+  
+  // 🆕 INTÉGRATION ÉVÉNEMENTS (Planning Center Groups style)
+  final bool generateEvents;        // Créer automatiquement des événements
+  final String? linkedEventSeriesId; // ID de la série d'événements générés
+  final Map<String, dynamic>? recurrenceConfig; // Configuration récurrence
+  final DateTime? recurrenceStartDate; // Date début génération
+  final DateTime? recurrenceEndDate;   // Date fin génération (optionnel)
+  final int? maxOccurrences;           // Nombre max d'occurrences (optionnel)
+  
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? lastModifiedBy;
@@ -39,6 +48,12 @@ class GroupModel {
     this.customFields = const {},
     this.isActive = true,
     this.groupImageUrl,
+    this.generateEvents = false,
+    this.linkedEventSeriesId,
+    this.recurrenceConfig,
+    this.recurrenceStartDate,
+    this.recurrenceEndDate,
+    this.maxOccurrences,
     required this.createdAt,
     required this.updatedAt,
     this.lastModifiedBy,
@@ -70,6 +85,18 @@ class GroupModel {
       customFields: Map<String, dynamic>.from(data['customFields'] ?? {}),
       isActive: data['isActive'] ?? true,
       groupImageUrl: data['groupImageUrl'],
+      generateEvents: data['generateEvents'] ?? false,
+      linkedEventSeriesId: data['linkedEventSeriesId'],
+      recurrenceConfig: data['recurrenceConfig'] != null 
+          ? Map<String, dynamic>.from(data['recurrenceConfig'])
+          : null,
+      recurrenceStartDate: data['recurrenceStartDate'] != null
+          ? (data['recurrenceStartDate'] as Timestamp).toDate()
+          : null,
+      recurrenceEndDate: data['recurrenceEndDate'] != null
+          ? (data['recurrenceEndDate'] as Timestamp).toDate()
+          : null,
+      maxOccurrences: data['maxOccurrences'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: (data['updatedAt'] as Timestamp).toDate(),
       lastModifiedBy: data['lastModifiedBy'],
@@ -93,6 +120,16 @@ class GroupModel {
       'customFields': customFields,
       'isActive': isActive,
       'groupImageUrl': groupImageUrl,
+      'generateEvents': generateEvents,
+      'linkedEventSeriesId': linkedEventSeriesId,
+      'recurrenceConfig': recurrenceConfig,
+      'recurrenceStartDate': recurrenceStartDate != null
+          ? Timestamp.fromDate(recurrenceStartDate!)
+          : null,
+      'recurrenceEndDate': recurrenceEndDate != null
+          ? Timestamp.fromDate(recurrenceEndDate!)
+          : null,
+      'maxOccurrences': maxOccurrences,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
       'lastModifiedBy': lastModifiedBy,
@@ -115,6 +152,12 @@ class GroupModel {
     Map<String, dynamic>? customFields,
     bool? isActive,
     String? groupImageUrl,
+    bool? generateEvents,
+    String? linkedEventSeriesId,
+    Map<String, dynamic>? recurrenceConfig,
+    DateTime? recurrenceStartDate,
+    DateTime? recurrenceEndDate,
+    int? maxOccurrences,
     DateTime? updatedAt,
     String? lastModifiedBy,
   }) {
@@ -135,6 +178,12 @@ class GroupModel {
       customFields: customFields ?? this.customFields,
       isActive: isActive ?? this.isActive,
       groupImageUrl: groupImageUrl ?? this.groupImageUrl,
+      generateEvents: generateEvents ?? this.generateEvents,
+      linkedEventSeriesId: linkedEventSeriesId ?? this.linkedEventSeriesId,
+      recurrenceConfig: recurrenceConfig ?? this.recurrenceConfig,
+      recurrenceStartDate: recurrenceStartDate ?? this.recurrenceStartDate,
+      recurrenceEndDate: recurrenceEndDate ?? this.recurrenceEndDate,
+      maxOccurrences: maxOccurrences ?? this.maxOccurrences,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       lastModifiedBy: lastModifiedBy ?? this.lastModifiedBy,
@@ -213,6 +262,13 @@ class GroupMeetingModel {
   final List<String> presentMemberIds;
   final List<String> absentMemberIds;
   final bool isCompleted;
+  
+  // 🆕 INTÉGRATION ÉVÉNEMENTS
+  final String? linkedEventId;  // ID de l'événement correspondant
+  final bool isRecurring;       // Fait partie d'une série récurrente
+  final String? seriesId;       // ID de la série (groupé avec linkedEventSeriesId)
+  final bool isModified;        // Occurrence modifiée individuellement
+  
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? createdBy;
@@ -229,6 +285,10 @@ class GroupMeetingModel {
     this.presentMemberIds = const [],
     this.absentMemberIds = const [],
     this.isCompleted = false,
+    this.linkedEventId,
+    this.isRecurring = false,
+    this.seriesId,
+    this.isModified = false,
     required this.createdAt,
     required this.updatedAt,
     this.createdBy,
@@ -251,6 +311,10 @@ class GroupMeetingModel {
       presentMemberIds: List<String>.from(data['presentMemberIds'] ?? []),
       absentMemberIds: List<String>.from(data['absentMemberIds'] ?? []),
       isCompleted: data['isCompleted'] ?? false,
+      linkedEventId: data['linkedEventId'],
+      isRecurring: data['isRecurring'] ?? false,
+      seriesId: data['seriesId'],
+      isModified: data['isModified'] ?? false,
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: (data['updatedAt'] as Timestamp).toDate(),
       createdBy: data['createdBy'],
@@ -269,6 +333,10 @@ class GroupMeetingModel {
       'presentMemberIds': presentMemberIds,
       'absentMemberIds': absentMemberIds,
       'isCompleted': isCompleted,
+      'linkedEventId': linkedEventId,
+      'isRecurring': isRecurring,
+      'seriesId': seriesId,
+      'isModified': isModified,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
       'createdBy': createdBy,
@@ -285,6 +353,10 @@ class GroupMeetingModel {
     List<String>? presentMemberIds,
     List<String>? absentMemberIds,
     bool? isCompleted,
+    String? linkedEventId,
+    bool? isRecurring,
+    String? seriesId,
+    bool? isModified,
     DateTime? updatedAt,
     String? createdBy,
   }) {
@@ -300,6 +372,10 @@ class GroupMeetingModel {
       presentMemberIds: presentMemberIds ?? this.presentMemberIds,
       absentMemberIds: absentMemberIds ?? this.absentMemberIds,
       isCompleted: isCompleted ?? this.isCompleted,
+      linkedEventId: linkedEventId ?? this.linkedEventId,
+      isRecurring: isRecurring ?? this.isRecurring,
+      seriesId: seriesId ?? this.seriesId,
+      isModified: isModified ?? this.isModified,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       createdBy: createdBy ?? this.createdBy,

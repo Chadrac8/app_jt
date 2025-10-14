@@ -5,12 +5,15 @@ import 'dart:convert';
 import '../models/group_model.dart';
 // import '../models/person_model.dart';
 import '../services/groups_firebase_service.dart';
+import '../services/events_firebase_service.dart';
 // import '../services/firebase_service.dart';
 import '../widgets/group_members_list.dart';
-import '../widgets/group_meetings_list.dart';
+import '../widgets/group_events_summary_card.dart';
+import '../widgets/group_meetings_timeline.dart';
 import 'group_form_page.dart';
 import 'group_meeting_page.dart';
 import 'group_attendance_stats_page.dart';
+import 'event_detail_page.dart';
 import '../../theme.dart';
 
 
@@ -561,6 +564,26 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
           
           const SizedBox(height: AppTheme.spaceXLarge),
           
+          // 🆕 Événements automatiques (si activés)
+          if (_currentGroup!.generateEvents == true)
+            Column(
+              children: [
+                GroupEventsSummaryCard(
+                  groupId: _currentGroup!.id,
+                  onViewAll: () {
+                    // TODO: Navigate to EventsPage with filter
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Navigation vers EventsPage avec filtre à implémenter'),
+                      ),
+                    );
+                  },
+                  onDisable: _disableGroupEvents,
+                ),
+                const SizedBox(height: AppTheme.spaceMedium),
+              ],
+            ),
+          
           // Description
           if (_currentGroup!.description.isNotEmpty)
             _buildInfoCard(
@@ -660,7 +683,127 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
   }
 
   Widget _buildMeetingsTab() {
-    return GroupMeetingsList(group: _currentGroup!);
+    return StreamBuilder<List<GroupMeetingModel>>(
+      stream: GroupsFirebaseService.getGroupMeetingsStream(_currentGroup!.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const SizedBox(height: 16),
+                Text('Erreur: ${snapshot.error}'),
+              ],
+            ),
+          );
+        }
+
+        final meetings = snapshot.data ?? [];
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(AppTheme.space20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header avec bouton créer réunion
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Réunions',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: AppTheme.fontBold,
+                          color: _groupColor,
+                        ),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      final result = await showDialog<GroupMeetingModel>(
+                        context: context,
+                        builder: (context) => _CreateMeetingDialog(group: _currentGroup!),
+                      );
+
+                      if (result != null) {
+                        try {
+                          await GroupsFirebaseService.createMeeting(result);
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Réunion créée avec succès'),
+                                backgroundColor: AppTheme.greenStandard,
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Erreur: $e'),
+                                backgroundColor: AppTheme.redStandard,
+                              ),
+                            );
+                          }
+                        }
+                      }
+                    },
+                    icon: const Icon(Icons.add, size: 18),
+                    label: const Text('Nouvelle'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _groupColor,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppTheme.spaceLarge),
+
+              // 🆕 Timeline réunions
+              GroupMeetingsTimeline(
+                meetings: meetings,
+                onMeetingTap: (meeting) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => GroupMeetingPage(
+                        group: _currentGroup!,
+                        meeting: meeting,
+                      ),
+                    ),
+                  );
+                },
+                onEventTap: (eventId) async {
+                  // Charger l'événement depuis Firestore
+                  try {
+                    final eventDoc = await EventsFirebaseService.getEvent(eventId);
+                    if (eventDoc != null && mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EventDetailPage(event: eventDoc),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Erreur chargement événement: $e')),
+                      );
+                    }
+                  }
+                },
+                showPastMeetings: true,
+              ),
+              const SizedBox(height: 100), // Space for FAB
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildResourcesTab() {
@@ -979,6 +1122,70 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
         ],
       ),
     );
+  }
+
+  /// 🆕 Désactiver événements automatiques pour ce groupe
+  Future<void> _disableGroupEvents() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Désactiver événements automatiques ?'),
+        content: const Text(
+          'Les événements existants seront supprimés. '
+          'Cette action est irréversible.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.redStandard,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Désactiver'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      try {
+        // TODO Phase 5b: Utiliser GroupsEventsFacade.disableEventsForGroup()
+        // await GroupsEventsFacade.disableEventsForGroup(
+        //   groupId: _currentGroup!.id,
+        //   deleteExisting: true,
+        // );
+        
+        // Pour l'instant, simple mise à jour Firestore
+        final updatedGroup = _currentGroup!.copyWith(generateEvents: false);
+        await GroupsFirebaseService.updateGroup(updatedGroup);
+
+        if (mounted) {
+          setState(() {
+            _currentGroup = updatedGroup;
+          });
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Événements automatiques désactivés'),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur: $e'),
+              backgroundColor: AppTheme.redStandard,
+            ),
+          );
+        }
+      }
+    }
   }
 
   String _getResourceTypeLabel(String type) {

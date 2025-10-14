@@ -3,13 +3,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
 import '../services/event_series_service.dart';
+import '../services/groups_firebase_service.dart';
 import '../widgets/event_form_builder.dart';
 import '../widgets/event_registrations_list.dart';
 import '../widgets/event_statistics_view.dart';
 import '../widgets/recurring_event_manager_widget.dart';
 import '../widgets/recurring_event_edit_dialog.dart';
 import '../widgets/recurring_event_delete_dialog.dart';
+import '../widgets/meeting_event_link_badge.dart';
 import 'event_form_page.dart';
+import 'group_detail_page.dart';
 import '../../theme.dart';
 
 
@@ -403,6 +406,37 @@ class _EventDetailPageState extends State<EventDetailPage>
         padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           children: [
+            // 🆕 Badge lien groupe (si événement généré depuis groupe)
+            if (_currentEvent!.linkedGroupId != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
+                child: EventGroupLinkBadge(
+                  linkedGroupId: _currentEvent!.linkedGroupId!,
+                  onTap: () async {
+                    // Charger groupe depuis Firestore
+                    try {
+                      final groupDoc = await GroupsFirebaseService.getGroup(
+                        _currentEvent!.linkedGroupId!,
+                      );
+                      if (groupDoc != null && mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => GroupDetailPage(group: groupDoc),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Erreur chargement groupe: $e')),
+                        );
+                      }
+                    }
+                  },
+                ),
+              ),
+
             // Statut et visibilité
             _buildInfoCard(
               title: 'Statut et visibilité',

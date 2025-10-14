@@ -13,6 +13,7 @@ import 'dashboard_configuration_page.dart';
 import 'home_config_admin_page.dart';
 import 'outbox_notifications_page.dart';
 import '../../../theme.dart';
+import '../../temp_cleanup.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -103,6 +104,150 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     }
   }
 
+  Future<void> _cleanupOrphanEvents() async {
+    // Afficher un dialog de confirmation
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.cleaning_services, color: Colors.orange),
+            SizedBox(width: 8),
+            Text('Nettoyer les événements orphelins'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Cette action va rechercher et supprimer tous les événements '
+              'du calendrier dont les réunions de groupe ont été supprimées.',
+              style: TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.orange),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.info_outline, color: Colors.orange, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Événements concernés :',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Text('• Événements sans réunion liée'),
+                  Text('• Réunions supprimées manuellement'),
+                  Text('• Événements orphelins dans le calendrier'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Cette action est irréversible. Continuer ?',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+            ),
+            child: const Text('Nettoyer'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    // Afficher un spinner pendant le nettoyage
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: Card(
+          child: Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('Nettoyage en cours...'),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    try {
+      // Lancer le nettoyage
+      await runCleanup();
+
+      if (mounted) {
+        Navigator.pop(context); // Fermer le spinner
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text('✅ Nettoyage terminé avec succès'),
+                ),
+              ],
+            ),
+            backgroundColor: AppTheme.greenStandard,
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        Navigator.pop(context); // Fermer le spinner
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error, color: Colors.white),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text('❌ Erreur: $e'),
+                ),
+              ],
+            ),
+            backgroundColor: AppTheme.redStandard,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,6 +288,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                   )
                 : const Icon(Icons.refresh),
             tooltip: 'Actualiser',
+          ),
+          // Bouton de nettoyage des événements orphelins
+          IconButton(
+            onPressed: _cleanupOrphanEvents,
+            icon: const Icon(Icons.cleaning_services),
+            tooltip: 'Nettoyer les événements orphelins',
           ),
           // Bouton de configuration
           IconButton(

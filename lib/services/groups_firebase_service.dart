@@ -3,10 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/group_model.dart';
 import '../models/person_model.dart';
+import 'group_event_integration_service.dart';
 
 
 
 class GroupsFirebaseService {
+  // 🔄 Service d'intégration Groupes ↔ Événements
+  static final GroupEventIntegrationService _integrationService = 
+      GroupEventIntegrationService();
   // === CRUD pour les ressources de groupe ===
   static Future<void> updateGroupResource(String groupId, String resourceId, Map<String, dynamic> resourceData) async {
     await _firestore.collection(groupsCollection)
@@ -80,6 +84,24 @@ class GroupsFirebaseService {
   // Group CRUD Operations
   static Future<String> createGroup(GroupModel group) async {
     try {
+      // 🔄 Si génération événements activée, utiliser service intégration
+      if (group.generateEvents) {
+        final userId = _auth.currentUser?.uid ?? 'system';
+        final groupId = await _integrationService.createGroupWithEvents(
+          group: group,
+          createdBy: userId,
+        );
+        await _logGroupActivity(groupId, 'create_with_events', {
+          'name': group.name,
+          'generateEvents': true,
+          'recurrenceFrequency': group.recurrenceConfig != null 
+              ? (group.recurrenceConfig!['frequency'] as String?) 
+              : null,
+        });
+        return groupId;
+      }
+      
+      // Création simple (sans événements)
       final docRef = await _firestore.collection(groupsCollection).add(group.toFirestore());
       await _logGroupActivity(docRef.id, 'create', {'name': group.name});
       return docRef.id;
@@ -99,32 +121,71 @@ class GroupsFirebaseService {
 
   static Future<void> deleteGroup(String groupId) async {
     try {
+      print('🗑️ Début suppression du groupe: $groupId');
+      
+      // 🔄 Vérifier si groupe a événements liés
+      final group = await getGroup(groupId);
+      
+      if (group == null) {
+        print('⚠️ Groupe non trouvé: $groupId');
+        throw Exception('Groupe non trouvé');
+      }
+      
+      // Log AVANT la suppression (car après le groupe n'existera plus)
+      await _logGroupActivity(groupId, group.generateEvents ? 'delete_with_events' : 'delete', {
+        'groupName': group.name,
+        'hadEvents': group.generateEvents,
+        'linkedEventSeriesId': group.linkedEventSeriesId,
+      });
+      
+      // Si le groupe a des événements, utiliser la méthode complète
+      if (group.generateEvents) {
+        final userId = _auth.currentUser?.uid ?? 'system';
+        print('   🔗 Groupe avec événements détecté, suppression complète...');
+        await _integrationService.deleteGroupWithEvents(
+          groupId: groupId,
+          userId: userId,
+        );
+        print('✅ Groupe avec événements supprimé');
+        return;
+      }
+      
+      // Suppression simple (sans événements)
+      print('   📝 Suppression simple du groupe...');
       final batch = _firestore.batch();
       
-      // Mark group as inactive instead of deleting
-      batch.update(
-        _firestore.collection(groupsCollection).doc(groupId),
-        {'isActive': false, 'updatedAt': FieldValue.serverTimestamp()}
-      );
+      // Supprimer le groupe définitivement
+      final groupRef = _firestore.collection(groupsCollection).doc(groupId);
+      batch.delete(groupRef);
       
-      // Remove all active members
+      // Supprimer tous les membres du groupe
       final membersQuery = await _firestore
           .collection(groupMembersCollection)
           .where('groupId', isEqualTo: groupId)
-          .where('status', isEqualTo: 'active')
           .get();
       
+      print('   👥 ${membersQuery.docs.length} membres à supprimer');
+      
       for (final doc in membersQuery.docs) {
-        batch.update(doc.reference, {
-          'status': 'removed',
-          'leftAt': FieldValue.serverTimestamp(),
-          'updatedAt': FieldValue.serverTimestamp(),
-        });
+        batch.delete(doc.reference);
+      }
+      
+      // Supprimer toutes les réunions du groupe (si existantes)
+      final meetingsQuery = await _firestore
+          .collection(groupMeetingsCollection)
+          .where('groupId', isEqualTo: groupId)
+          .get();
+      
+      print('   📅 ${meetingsQuery.docs.length} réunions à supprimer');
+      
+      for (final doc in meetingsQuery.docs) {
+        batch.delete(doc.reference);
       }
       
       await batch.commit();
-      await _logGroupActivity(groupId, 'delete', {});
+      print('✅ Groupe supprimé avec succès: $groupId');
     } catch (e) {
+      print('❌ Erreur lors de la suppression du groupe: $e');
       throw Exception('Erreur lors de la suppression du groupe: $e');
     }
   }
@@ -260,17 +321,26 @@ class GroupsFirebaseService {
 
   static Future<List<PersonModel>> getGroupMembersWithPersonData(String groupId) async {
     try {
+      print('🔍 Recherche membres pour groupe: $groupId');
+      
       final membersSnapshot = await _firestore
           .collection(groupMembersCollection)
           .where('groupId', isEqualTo: groupId)
           .where('status', isEqualTo: 'active')
           .get();
       
-      if (membersSnapshot.docs.isEmpty) return [];
+      print('📊 Membres trouvés: ${membersSnapshot.docs.length}');
+      
+      if (membersSnapshot.docs.isEmpty) {
+        print('⚠️ Aucun membre actif trouvé pour le groupe $groupId');
+        return [];
+      }
       
       final personIds = membersSnapshot.docs
           .map((doc) => doc.data()['personId'] as String)
           .toList();
+      
+      print('👥 IDs des personnes: $personIds');
       
       List<PersonModel> allPersons = [];
       
@@ -282,6 +352,8 @@ class GroupsFirebaseService {
             .where(FieldPath.documentId, whereIn: batch)
             .get();
         
+        print('📦 Batch ${i ~/ 10 + 1}: ${personsSnapshot.docs.length} personnes récupérées');
+        
         final batchPersons = personsSnapshot.docs
             .map((doc) => PersonModel.fromFirestore(doc))
             .toList();
@@ -289,9 +361,10 @@ class GroupsFirebaseService {
         allPersons.addAll(batchPersons);
       }
       
+      print('✅ Total personnes chargées: ${allPersons.length}');
       return allPersons;
     } catch (e) {
-      print('Erreur dans getGroupMembersWithPersonData: $e');
+      print('❌ Erreur dans getGroupMembersWithPersonData: $e');
       throw Exception('Erreur lors de la récupération des membres: $e');
     }
   }
@@ -313,6 +386,181 @@ class GroupsFirebaseService {
       await _logGroupActivity(meeting.groupId, 'meeting_updated', {'title': meeting.title});
     } catch (e) {
       throw Exception('Erreur lors de la mise à jour de la réunion: $e');
+    }
+  }
+
+  /// Supprime une réunion de groupe
+  /// 
+  /// Paramètres:
+  /// - [meetingId]: ID de la réunion à supprimer
+  /// 
+  /// Note: Si la réunion est liée à un événement (linkedEventId),
+  /// cette méthode supprime uniquement la réunion.
+  /// Utilisez [deleteMeetingWithEvent] pour supprimer aussi l'événement.
+  static Future<void> deleteMeeting(String meetingId) async {
+    try {
+      final meetingDoc = await _firestore
+          .collection(groupMeetingsCollection)
+          .doc(meetingId)
+          .get();
+      
+      if (!meetingDoc.exists) {
+        throw Exception('Réunion non trouvée: $meetingId');
+      }
+      
+      final meetingData = meetingDoc.data() as Map<String, dynamic>;
+      final groupId = meetingData['groupId'] as String;
+      final title = meetingData['title'] as String?;
+      
+      // Supprimer la réunion
+      await _firestore.collection(groupMeetingsCollection).doc(meetingId).delete();
+      
+      // Log de l'activité
+      await _logGroupActivity(groupId, 'meeting_deleted', {
+        'meetingId': meetingId,
+        'title': title ?? 'Sans titre',
+      });
+      
+      print('✅ Réunion supprimée: $meetingId');
+    } catch (e) {
+      throw Exception('Erreur lors de la suppression de la réunion: $e');
+    }
+  }
+
+  /// Supprime une réunion ET son événement lié (si existant)
+  /// 
+  /// Paramètres:
+  /// - [meetingId]: ID de la réunion
+  /// 
+  /// Utile pour les réunions générées automatiquement avec événements.
+  /// Si la réunion n'a pas d'événement lié, seule la réunion est supprimée.
+  static Future<void> deleteMeetingWithEvent(String meetingId) async {
+    try {
+      final meetingDoc = await _firestore
+          .collection(groupMeetingsCollection)
+          .doc(meetingId)
+          .get();
+      
+      if (!meetingDoc.exists) {
+        throw Exception('Réunion non trouvée: $meetingId');
+      }
+      
+      final meetingData = meetingDoc.data() as Map<String, dynamic>;
+      final linkedEventId = meetingData['linkedEventId'] as String?;
+      final groupId = meetingData['groupId'] as String;
+      final title = meetingData['title'] as String?;
+      
+      final batch = _firestore.batch();
+      
+      // Supprimer la réunion
+      batch.delete(meetingDoc.reference);
+      
+      // Supprimer l'événement lié s'il existe
+      if (linkedEventId != null) {
+        final eventRef = _firestore.collection('events').doc(linkedEventId);
+        batch.delete(eventRef);
+        print('   🔗 Événement lié supprimé: $linkedEventId');
+      }
+      
+      await batch.commit();
+      
+      await _logGroupActivity(groupId, 'meeting_with_event_deleted', {
+        'meetingId': meetingId,
+        'linkedEventId': linkedEventId,
+        'title': title ?? 'Sans titre',
+      });
+      
+      print('✅ Réunion ${linkedEventId != null ? '+ événement' : ''} supprimée: $meetingId');
+    } catch (e) {
+      throw Exception('Erreur lors de la suppression: $e');
+    }
+  }
+
+  /// Supprime TOUTES les réunions d'un groupe
+  /// 
+  /// Paramètres:
+  /// - [groupId]: ID du groupe
+  /// - [includeEvents]: Si true, supprime aussi les événements liés (défaut: false)
+  /// 
+  /// Retourne: Nombre de réunions supprimées
+  /// 
+  /// Note: Utilise des batches pour gérer de grandes quantités (>500 réunions).
+  /// Cette opération est irréversible - créez un backup si nécessaire.
+  static Future<int> deleteAllGroupMeetings(
+    String groupId, {
+    bool includeEvents = false,
+  }) async {
+    try {
+      print('🗑️ Suppression de toutes les réunions du groupe $groupId');
+      if (includeEvents) {
+        print('   🔗 Les événements liés seront aussi supprimés');
+      }
+      
+      // Récupérer toutes les réunions du groupe
+      final meetingsSnapshot = await _firestore
+          .collection(groupMeetingsCollection)
+          .where('groupId', isEqualTo: groupId)
+          .get();
+      
+      final meetingCount = meetingsSnapshot.docs.length;
+      print('   📊 $meetingCount réunions trouvées');
+      
+      if (meetingCount == 0) {
+        print('   ⚠️ Aucune réunion à supprimer');
+        return 0;
+      }
+      
+      // Utiliser plusieurs batches si nécessaire (max 500 opérations par batch)
+      final batches = <WriteBatch>[];
+      var currentBatch = _firestore.batch();
+      var operationCount = 0;
+      
+      for (final meetingDoc in meetingsSnapshot.docs) {
+        // Supprimer la réunion
+        currentBatch.delete(meetingDoc.reference);
+        operationCount++;
+        
+        // Si includeEvents, supprimer l'événement lié
+        if (includeEvents) {
+          final meetingData = meetingDoc.data();
+          final linkedEventId = meetingData['linkedEventId'] as String?;
+          
+          if (linkedEventId != null) {
+            final eventRef = _firestore.collection('events').doc(linkedEventId);
+            currentBatch.delete(eventRef);
+            operationCount++;
+          }
+        }
+        
+        // Nouveau batch si limite atteinte
+        if (operationCount >= 500) {
+          batches.add(currentBatch);
+          currentBatch = _firestore.batch();
+          operationCount = 0;
+        }
+      }
+      
+      // Ajouter le dernier batch
+      if (operationCount > 0) {
+        batches.add(currentBatch);
+      }
+      
+      // Commit tous les batches
+      print('   💾 Commit de ${batches.length} batch(es)...');
+      for (int i = 0; i < batches.length; i++) {
+        await batches[i].commit();
+        print('      ✅ Batch ${i + 1}/${batches.length} committed');
+      }
+      
+      await _logGroupActivity(groupId, 'all_meetings_deleted', {
+        'count': meetingCount,
+        'includeEvents': includeEvents,
+      });
+      
+      print('✅ $meetingCount réunions supprimées avec succès');
+      return meetingCount;
+    } catch (e) {
+      throw Exception('Erreur lors de la suppression des réunions: $e');
     }
   }
 

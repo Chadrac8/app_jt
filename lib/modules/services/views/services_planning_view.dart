@@ -420,10 +420,14 @@ class _ServicesPlanningViewState extends State<ServicesPlanningView> {
     final isSelected = _selectedEventIds.contains(event.id);
     
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
+        print('👆 Tap détecté sur event: ${event.title}');
         if (_isSelectionMode) {
+          print('   Mode sélection actif');
           _toggleEventSelection(event.id);
         } else {
+          print('   Mode normal - Navigation vers détails');
           // Naviguer vers détails
           _navigateToEventDetail(event);
         }
@@ -577,13 +581,19 @@ class _ServicesPlanningViewState extends State<ServicesPlanningView> {
                             ),
                             const Spacer(),
                             if (!_isSelectionMode) ...[
-                              IconButton(
-                                onPressed: () => _showQuickAssignDialog(event),
-                                icon: const Icon(Icons.person_add),
-                                iconSize: 18,
-                                tooltip: 'Assigner des bénévoles',
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
+                              GestureDetector(
+                                onTap: () {
+                                  print('👆 Bouton assigner cliqué');
+                                  _showQuickAssignDialog(event);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Icon(
+                                    Icons.person_add,
+                                    size: 18,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
                               ),
                             ],
                           ],
@@ -726,12 +736,32 @@ class _ServicesPlanningViewState extends State<ServicesPlanningView> {
   }
 
   Future<void> _navigateToEventDetail(EventModel event) async {
+    print('🔍 Navigation vers détail du service - Event ID: ${event.id}');
+    print('   Event title: ${event.title}');
+    print('   linkedServiceId: ${event.linkedServiceId}');
+    
     // Récupérer le service lié
     if (event.linkedServiceId != null) {
+      print('   Récupération du service ${event.linkedServiceId}...');
       final service = await ServicesFirebaseService.getService(
         event.linkedServiceId!,
       );
-      if (service != null && mounted) {
+      
+      if (service == null) {
+        print('   ⚠️ Service non trouvé !');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Service non trouvé'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
+      
+      print('   ✅ Service trouvé: ${service.name}');
+      if (mounted) {
         await Navigator.push(
           context,
           MaterialPageRoute(
@@ -739,6 +769,16 @@ class _ServicesPlanningViewState extends State<ServicesPlanningView> {
           ),
         );
         setState(() {}); // Rafraîchir après retour
+      }
+    } else {
+      print('   ⚠️ Aucun linkedServiceId sur cet événement !');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Cet événement n\'est pas lié à un service'),
+            backgroundColor: Colors.orange,
+          ),
+        );
       }
     }
   }

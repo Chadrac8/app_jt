@@ -4,10 +4,13 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/group_model.dart';
 import '../models/person_model.dart';
+import '../models/recurrence_config.dart';
 import '../services/groups_firebase_service.dart';
 import '../services/firebase_service.dart';
+import '../services/group_event_integration_service.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
+import '../widgets/group_recurrence_config_widget.dart';
 import '../../theme.dart';
 
 
@@ -46,6 +49,13 @@ class _GroupFormPageState extends State<GroupFormPage>
   List<String> _tags = [];
   bool _isActive = true;
   bool _isLoading = false;
+  
+  // 🆕 Génération événements
+  bool _generateEvents = false;
+  RecurrenceConfig? _recurrenceConfig;
+  DateTime? _recurrenceStartDate;
+  DateTime? _recurrenceEndDate;
+  int? _maxOccurrences;
   
   // Image handling
   String? _groupImageUrl;
@@ -148,6 +158,15 @@ class _GroupFormPageState extends State<GroupFormPage>
       _tags = List.from(group.tags);
       _groupImageUrl = group.groupImageUrl;
       _isActive = group.isActive;
+      
+      // 🆕 Initialiser génération événements
+      _generateEvents = group.generateEvents;
+      if (group.recurrenceConfig != null) {
+        _recurrenceConfig = RecurrenceConfig.fromMap(group.recurrenceConfig!);
+      }
+      _recurrenceStartDate = group.recurrenceStartDate;
+      _recurrenceEndDate = group.recurrenceEndDate;
+      _maxOccurrences = group.maxOccurrences;
     }
   }
 
@@ -291,14 +310,61 @@ class _GroupFormPageState extends State<GroupFormPage>
         tags: _tags,
         isActive: _isActive,
         groupImageUrl: _groupImageUrl,
+        // 🆕 Génération événements
+        generateEvents: _generateEvents,
+        recurrenceConfig: _recurrenceConfig?.toMap(),
+        recurrenceStartDate: _recurrenceStartDate,
+        recurrenceEndDate: _recurrenceEndDate,
+        maxOccurrences: _maxOccurrences,
         createdAt: widget.group?.createdAt ?? now,
         updatedAt: now,
       );
 
+      String savedGroupId;
+      
       if (widget.group == null) {
-        await GroupsFirebaseService.createGroup(group);
+        // Création nouveau groupe
+        savedGroupId = await GroupsFirebaseService.createGroup(group);
       } else {
+        // Mise à jour groupe existant
         await GroupsFirebaseService.updateGroup(group);
+        savedGroupId = group.id;
+      }
+
+      // 🆕 Générer les événements si activé
+      if (_generateEvents && _recurrenceConfig != null) {
+        try {
+          final integrationService = GroupEventIntegrationService();
+          
+          await integrationService.enableEventsForGroup(
+            groupId: savedGroupId,
+            recurrenceConfig: _recurrenceConfig!,
+            startDate: _recurrenceStartDate ?? DateTime.now(),
+            endDate: _recurrenceEndDate,
+            maxOccurrences: _maxOccurrences,
+            userId: 'current_user', // TODO: Récupérer l'ID utilisateur réel
+          );
+          
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Groupe créé avec succès ! ${_maxOccurrences ?? 'Plusieurs'} événements générés.',
+                ),
+                backgroundColor: AppTheme.greenStandard,
+              ),
+            );
+          }
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Groupe créé mais erreur génération événements: $e'),
+                backgroundColor: AppTheme.orangeStandard,
+              ),
+            );
+          }
+        }
       }
 
       if (mounted) {
@@ -633,6 +699,119 @@ class _GroupFormPageState extends State<GroupFormPage>
                 icon: const Icon(Icons.add),
                 label: const Text('Ajouter un tag'),
               ),
+            ],
+          ),
+
+          const SizedBox(height: AppTheme.spaceLarge),
+
+          // Generation evenements automatique
+          _buildSection(
+            title: 'Generation evenements',
+            icon: Icons.event_repeat,
+            children: [
+              SwitchListTile(
+                value: _generateEvents,
+                onChanged: (value) {
+                  setState(() {
+                    _generateEvents = value;
+                    if (value && _recurrenceConfig == null) {
+                      // Initialiser avec config par défaut
+                      _recurrenceConfig = RecurrenceConfig(
+                        frequency: RecurrenceFrequency.weekly,
+                        interval: 1,
+                        dayOfWeek: _selectedDayOfWeek,
+                        time: _timeController.text.isNotEmpty ? _timeController.text : '19:00',
+                        durationMinutes: 120,
+                        startDate: DateTime.now(),
+                      );
+                      _recurrenceStartDate = DateTime.now();
+                    }
+                  });
+                },
+                title: const Text('Générer des événements automatiquement'),
+                subtitle: Text(
+                  'Créer automatiquement des événements dans le calendrier pour chaque réunion de groupe',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withAlpha(179),
+                      ),
+                ),
+                contentPadding: EdgeInsets.zero,
+              ),
+              
+              if (_generateEvents) ...[
+                const SizedBox(height: AppTheme.spaceMedium),
+                const Divider(),
+                const SizedBox(height: AppTheme.spaceMedium),
+                
+                // Widget de configuration récurrence
+                GroupRecurrenceConfigWidget(
+                  initialConfig: _recurrenceConfig,
+                  startDate: _recurrenceStartDate,
+                  endDate: _recurrenceEndDate,
+                  onConfigChanged: (config) {
+                    setState(() {
+                      _recurrenceConfig = config;
+                      _recurrenceStartDate = config.startDate;
+                      _recurrenceEndDate = config.endDate;
+                    });
+                  },
+                ),
+                
+                const SizedBox(height: AppTheme.spaceMedium),
+                
+                // Max occurrences (optionnel)
+                TextFormField(
+                  initialValue: _maxOccurrences?.toString() ?? '',
+                  decoration: InputDecoration(
+                    labelText: 'Nombre maximum d\'occurrences (optionnel)',
+                    hintText: 'Ex: 20',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                    ),
+                    helperText: 'Limiter le nombre d\'événements générés',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      _maxOccurrences = value.isEmpty ? null : int.tryParse(value);
+                    });
+                  },
+                ),
+                
+                const SizedBox(height: AppTheme.spaceSmall),
+                
+                // Info box
+                Container(
+                  padding: const EdgeInsets.all(AppTheme.space12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer.withAlpha(128),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary.withAlpha(77),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        size: 20,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: AppTheme.spaceSmall),
+                      Expanded(
+                        child: Text(
+                          _recurrenceConfig != null 
+                              ? 'Configuration : ${_recurrenceConfig!.description}'
+                              : 'Configurez la récurrence pour générer les événements',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ],
           ),
 

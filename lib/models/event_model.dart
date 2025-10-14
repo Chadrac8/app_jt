@@ -509,6 +509,11 @@ class EventModel {
   final String? linkedServiceId;  // Référence vers ServiceModel
   final bool isServiceEvent;      // Flag pour identifier les événements-services
   
+  // 🆕 Intégration Groupes ↔ Events (Planning Center Groups style)
+  final String? linkedGroupId;    // Référence vers GroupModel
+  final String? linkedMeetingId;  // Référence vers GroupMeetingModel
+  final bool isGroupEvent;        // Flag pour identifier les événements-groupes
+  
   // Nouveaux champs pour les séries d'événements récurrents (Style Google Calendar)
   final String? seriesId;              // ID unique pour grouper toutes les occurrences
   final bool isSeriesMaster;           // true = événement maître (premier de la série)
@@ -544,6 +549,9 @@ class EventModel {
     this.lastModifiedBy,
     this.linkedServiceId,
     this.isServiceEvent = false,
+    this.linkedGroupId,
+    this.linkedMeetingId,
+    this.isGroupEvent = false,
     this.seriesId,
     this.isSeriesMaster = false,
     this.isModifiedOccurrence = false,
@@ -640,6 +648,9 @@ class EventModel {
       lastModifiedBy: data['lastModifiedBy'],
       linkedServiceId: data['linkedServiceId'],
       isServiceEvent: data['isServiceEvent'] ?? false,
+      linkedGroupId: data['linkedGroupId'],
+      linkedMeetingId: data['linkedMeetingId'],
+      isGroupEvent: data['isGroupEvent'] ?? false,
       seriesId: data['seriesId'],
       isSeriesMaster: data['isSeriesMaster'] ?? false,
       isModifiedOccurrence: data['isModifiedOccurrence'] ?? false,
@@ -679,6 +690,9 @@ class EventModel {
       'lastModifiedBy': lastModifiedBy,
       'linkedServiceId': linkedServiceId,
       'isServiceEvent': isServiceEvent,
+      'linkedGroupId': linkedGroupId,
+      'linkedMeetingId': linkedMeetingId,
+      'isGroupEvent': isGroupEvent,
       'seriesId': seriesId,
       'isSeriesMaster': isSeriesMaster,
       'isModifiedOccurrence': isModifiedOccurrence,
@@ -721,6 +735,9 @@ class EventModel {
     DateTime? originalStartDate,
     DateTime? deletedAt,
     int? occurrenceIndex,
+    String? linkedGroupId,
+    String? linkedMeetingId,
+    bool? isGroupEvent,
   }) {
     return EventModel(
       id: id,
@@ -754,6 +771,9 @@ class EventModel {
       originalStartDate: originalStartDate ?? this.originalStartDate,
       deletedAt: deletedAt ?? this.deletedAt,
       occurrenceIndex: occurrenceIndex ?? this.occurrenceIndex,
+      linkedGroupId: linkedGroupId ?? this.linkedGroupId,
+      linkedMeetingId: linkedMeetingId ?? this.linkedMeetingId,
+      isGroupEvent: isGroupEvent ?? this.isGroupEvent,
     );
   }
 }
