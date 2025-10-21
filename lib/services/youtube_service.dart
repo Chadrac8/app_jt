@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class YouTubeService {
   // Clé API YouTube (à remplacer par une vraie clé pour la production)

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../../models/service_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../services/service_event_integration_service.dart';

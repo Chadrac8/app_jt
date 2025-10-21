@@ -5,7 +5,6 @@ import '../../../../theme.dart';
 import '../models/branham_sermon_model.dart';
 import '../services/admin_branham_sermon_service.dart';
 import '../services/branham_audio_player_service.dart';
-import '../../../theme.dart';
 
 /// Onglet "Écouter Le Message" - Interface moderne de prédications audio
 class AudioPlayerTabModern extends StatefulWidget {

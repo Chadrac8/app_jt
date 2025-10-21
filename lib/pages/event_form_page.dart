@@ -746,7 +746,7 @@ class _EventFormPageState extends State<EventFormPage>
     String? Function(String?)? validator,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
@@ -924,7 +924,7 @@ class _EventFormPageState extends State<EventFormPage>
         if (widget.event == null) ...[
           const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<String>(
-            value: _status,
+            initialValue: _status,
             decoration: InputDecoration(
               labelText: 'Statut initial',
               prefixIcon: const Icon(Icons.flag),

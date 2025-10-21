@@ -337,7 +337,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                         decoration: BoxDecoration(
                           color: AppTheme.warning.withAlpha(51),
                           borderRadius: BorderRadius.circular(25),
-                          border: Border.all(color: AppTheme.warning!, width: 2),
+                          border: Border.all(color: AppTheme.warning, width: 2),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -495,7 +495,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
     final colorScheme = theme.colorScheme;
     
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(
           'Réservation Chant Spécial',
@@ -582,7 +582,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
             child: Card(
               elevation: AppTheme.elevation1,
               surfaceTintColor: colorScheme.surfaceTint,
-              color: colorScheme.surfaceVariant,
+              color: colorScheme.surfaceContainerHighest,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               ),

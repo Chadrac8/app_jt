@@ -177,7 +177,7 @@ class _FormResponsesListState extends State<FormResponsesList>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _statusFilter.isEmpty ? null : _statusFilter,
+                  initialValue: _statusFilter.isEmpty ? null : _statusFilter,
                   onChanged: (value) => setState(() => _statusFilter = value ?? ''),
                   decoration: InputDecoration(
                     labelText: 'Statut',

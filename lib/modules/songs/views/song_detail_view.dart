@@ -8,7 +8,6 @@ import '../models/song.dart';
 import '../services/songs_service.dart';
 import '../../../auth/auth_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Vue de détail d'un chant
 class SongDetailView extends StatefulWidget {

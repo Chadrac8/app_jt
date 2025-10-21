@@ -288,7 +288,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
               children: [
                 // Family type filter
                 DropdownButtonFormField<String>(
-                  value: _selectedFamilyType,
+                  initialValue: _selectedFamilyType,
                   decoration: const InputDecoration(labelText: 'Type de famille'),
                   items: ['All', 'Nuclear', 'Extended', 'Single', 'Blended', 'Other']
                       .map((type) => DropdownMenuItem(value: type, child: Text(type)))
@@ -299,7 +299,7 @@ class _FamiliesManagementEnhancedPageState extends State<FamiliesManagementEnhan
                 
                 // City filter
                 DropdownButtonFormField<String>(
-                  value: _selectedCity,
+                  initialValue: _selectedCity,
                   decoration: const InputDecoration(labelText: 'Ville'),
                   items: ['All', ..._getCities()]
                       .map((city) => DropdownMenuItem(value: city, child: Text(city)))

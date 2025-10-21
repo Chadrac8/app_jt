@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class BibleArticleFormView extends StatefulWidget {
   final BibleArticle? article;
@@ -197,7 +196,7 @@ class _BibleArticleFormViewState extends State<BibleArticleFormView> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedCategory,
+                    initialValue: _selectedCategory,
                     onChanged: (value) => setState(() => _selectedCategory = value!),
                     decoration: InputDecoration(
                       labelText: 'Catégorie',

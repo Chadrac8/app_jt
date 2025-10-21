@@ -242,7 +242,7 @@ class _TaskCalendarViewState extends State<TaskCalendarView> {
           border: Border.all(
             color: isToday 
                 ? AppTheme.primaryColor 
-                : AppTheme.grey200!,
+                : AppTheme.grey200,
             width: isToday ? 2 : 1,
           ),
         ),

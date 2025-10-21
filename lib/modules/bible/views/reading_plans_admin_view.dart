@@ -8,7 +8,6 @@ import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import 'reading_plan_form_view.dart';
 import 'reading_plan_detail_view.dart';
-import '../../../theme.dart';
 
 class ReadingPlansAdminView extends StatefulWidget {
   const ReadingPlansAdminView({Key? key}) : super(key: key);

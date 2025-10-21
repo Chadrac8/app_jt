@@ -337,7 +337,7 @@ class _EventFormBuilderState extends State<EventFormBuilder> {
                       ),
                     ],
                   ),
-                  if (_eventForm?.description?.isNotEmpty == true) ...[
+                  if (_eventForm?.description.isNotEmpty == true) ...[
                     const SizedBox(height: AppTheme.spaceSmall),
                     Text(
                       _eventForm!.description,
@@ -607,7 +607,7 @@ class _AddFieldDialogState extends State<_AddFieldDialog> {
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
-              value: _selectedType,
+              initialValue: _selectedType,
               decoration: const InputDecoration(
                 labelText: 'Type de champ',
                 border: OutlineInputBorder(),
@@ -716,7 +716,7 @@ class _EditFieldDialogState extends State<_EditFieldDialog> {
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
-              value: _selectedType,
+              initialValue: _selectedType,
               decoration: const InputDecoration(
                 labelText: 'Type de champ',
                 border: OutlineInputBorder(),

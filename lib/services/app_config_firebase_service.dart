@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/app_config_model.dart';
-import '../models/page_model.dart';
 import 'pages_firebase_service.dart';
 
 class AppConfigFirebaseService {

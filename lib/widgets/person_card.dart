@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/person_model.dart';
 import '../models/role_model.dart';
-import '../services/firebase_service.dart';
 import '../services/roles_firebase_service.dart';
 import '../../theme.dart';
 
@@ -97,7 +96,7 @@ class _PersonCardState extends State<PersonCard>
         }
         
         final allRoles = snapshot.data!;
-        final personRoles = allRoles.where((role) => role != null && widget.person.roles.contains(role!.id)).take(2).toList();
+        final personRoles = allRoles.where((role) => widget.person.roles.contains(role.id)).take(2).toList();
         
         if (personRoles.isEmpty) return const SizedBox.shrink();
         

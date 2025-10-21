@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class ThemeCreationDialog extends StatefulWidget {
   final BiblicalTheme? themeToEdit;
@@ -293,7 +292,7 @@ class _ThemeCreationDialogState extends State<ThemeCreationDialog> {
                 ),
                 value: _isPublic,
                 onChanged: (value) => setState(() => _isPublic = value),
-                activeColor: _selectedColor,
+                activeThumbColor: _selectedColor,
                 contentPadding: EdgeInsets.zero,
               ),
               

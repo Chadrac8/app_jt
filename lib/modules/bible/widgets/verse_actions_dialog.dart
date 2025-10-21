@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/bible_verse.dart';
-import '../../../theme.dart';
 
 class VerseActionsDialog extends StatefulWidget {
   final BibleVerse verse;

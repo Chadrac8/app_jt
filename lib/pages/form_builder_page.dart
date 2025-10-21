@@ -437,7 +437,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _status,
+                    initialValue: _status,
                     decoration: const InputDecoration(
                       labelText: 'Statut',
                       border: OutlineInputBorder(),
@@ -458,7 +458,7 @@ class _FormBuilderPageState extends State<FormBuilderPage>
                 const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _accessibility,
+                    initialValue: _accessibility,
                     decoration: const InputDecoration(
                       labelText: 'Accessibilité',
                       border: OutlineInputBorder(),

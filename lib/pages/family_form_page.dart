@@ -167,7 +167,7 @@ class _FamilyFormPageState extends State<FamilyFormPage> {
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<FamilyStatus>(
-              value: _selectedStatus,
+              initialValue: _selectedStatus,
               decoration: const InputDecoration(
                 labelText: 'Statut',
                 prefixIcon: Icon(Icons.info),

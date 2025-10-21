@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class TaskSearchFilterBar extends StatefulWidget {
   final TextEditingController searchController;
@@ -45,11 +44,11 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
                   prefixIcon: Icon(Icons.search, color: AppTheme.grey500),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    borderSide: BorderSide(color: AppTheme.grey300!),
+                    borderSide: BorderSide(color: AppTheme.grey300),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    borderSide: BorderSide(color: AppTheme.grey300!),
+                    borderSide: BorderSide(color: AppTheme.grey300),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -92,7 +91,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar> {
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -512,7 +512,7 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               onChanged: (value) => setState(() => _selectedCategory = value!),
               decoration: const InputDecoration(
                 labelText: 'Catégorie',

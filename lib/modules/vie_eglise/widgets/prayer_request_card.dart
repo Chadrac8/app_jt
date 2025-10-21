@@ -22,33 +22,71 @@ class PrayerRequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+    
     return Card(
-      elevation: AppTheme.elevation1,
-      color: AppTheme.surface,
-      surfaceTintColor: AppTheme.surfaceTint,
+      elevation: isIOS ? 0 : AppTheme.elevation2,
+      shadowColor: isIOS ? null : Colors.black.withOpacity(0.15),
+      color: _getCardBackgroundColor(isIOS),
+      surfaceTintColor: isIOS ? null : AppTheme.surfaceTint,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+        borderRadius: BorderRadius.circular(isIOS ? 12 : AppTheme.radiusLarge),
         side: BorderSide(
-          color: AppTheme.outline.withOpacity(0.2),
-          width: 1,
+          color: isIOS 
+              ? AppTheme.outline.withOpacity(0.2)
+              : AppTheme.outline.withOpacity(0.12),
+          width: isIOS ? 1 : 0.5,
         ),
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-        child: Padding(
-          padding: const EdgeInsets.all(AppTheme.spaceLarge),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              const SizedBox(height: AppTheme.spaceMedium),
-              _buildContent(),
-              if (showActions) ...[
-                const SizedBox(height: AppTheme.spaceLarge),
-                _buildActions(context),
+      margin: EdgeInsets.zero, // Important pour contrôler l'espacement depuis le parent
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(isIOS ? 12 : AppTheme.radiusLarge),
+          // Border gauche coloré pour distinction visuelle selon le type
+          border: isIOS ? Border(
+            left: BorderSide(
+              color: _getTypeColor(),
+              width: 3,
+            ),
+          ) : Border(
+            left: BorderSide(
+              color: _getTypeColor(),
+              width: 4,
+            ),
+          ),
+          // Ombres pour iOS
+          boxShadow: isIOS ? [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              offset: const Offset(0, 1),
+              blurRadius: 3,
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              offset: const Offset(0, 0),
+              blurRadius: 1,
+              spreadRadius: 0,
+            ),
+          ] : null,
+        ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(isIOS ? 12 : AppTheme.radiusLarge),
+          child: Padding(
+            padding: EdgeInsets.all(isIOS ? 16 : AppTheme.spaceLarge),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                SizedBox(height: isIOS ? 12 : AppTheme.spaceMedium),
+                _buildContent(),
+                if (showActions) ...[
+                  SizedBox(height: isIOS ? 16 : AppTheme.spaceLarge),
+                  _buildActions(context),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -56,108 +94,117 @@ class PrayerRequestCard extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    return Row(
-      children: [
-        // Avatar ou icône de type
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: _getTypeColor().withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            _getTypeIcon(),
-            color: _getTypeColor(),
-            size: 20,
-          ),
-        ),
-        const SizedBox(width: AppTheme.spaceMedium),
+    return Builder(
+      builder: (context) {
+        final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
         
-        // Informations principales
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                prayer.authorName,
-                style: GoogleFonts.inter(
-                  fontSize: AppTheme.fontSize14,
-                  fontWeight: AppTheme.fontSemiBold,
-                  color: AppTheme.onSurface,
-                ),
+        return Row(
+          children: [
+            // Avatar ou icône de type
+            Container(
+              width: isIOS ? 36 : 40,
+              height: isIOS ? 36 : 40,
+              decoration: BoxDecoration(
+                color: _getTypeColor().withOpacity(isIOS ? 0.15 : 0.12),
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: 2),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppTheme.spaceSmall,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _getTypeColor().withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                    ),
-                    child: Text(
-                      _getTypeLabel(),
-                      style: GoogleFonts.inter(
-                        fontSize: AppTheme.fontSize12,
-                        fontWeight: AppTheme.fontMedium,
-                        color: _getTypeColor(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.spaceSmall),
-                  Text(
-                    _formatDate(prayer.createdAt),
-                    style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize12,
-                      color: AppTheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
+              child: Icon(
+                _getTypeIcon(),
+                color: _getTypeColor(),
+                size: isIOS ? 18 : 20,
               ),
-            ],
-          ),
-        ),
-        
-        // Menu contextuel
-        PopupMenuButton<String>(
-          icon: Icon(
-            Icons.more_vert,
-            color: AppTheme.onSurfaceVariant,
-            size: 20,
-          ),
-          color: AppTheme.surface,
-          surfaceTintColor: AppTheme.surfaceTint,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-          ),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 'report',
-              child: Row(
+            ),
+            SizedBox(width: isIOS ? 12 : AppTheme.spaceMedium),
+            
+            // Informations principales
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.flag_outlined,
-                    size: 18,
-                    color: AppTheme.onSurface,
-                  ),
-                  const SizedBox(width: AppTheme.spaceSmall),
                   Text(
-                    'Signaler',
+                    prayer.authorName,
                     style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize14,
+                      fontSize: isIOS ? 15 : AppTheme.fontSize14,
+                      fontWeight: isIOS ? FontWeight.w600 : AppTheme.fontSemiBold,
                       color: AppTheme.onSurface,
+                      letterSpacing: isIOS ? -0.3 : 0,
                     ),
+                  ),
+                  SizedBox(height: isIOS ? 3 : 2),
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isIOS ? 6 : AppTheme.spaceSmall,
+                          vertical: isIOS ? 3 : 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getTypeColor().withOpacity(isIOS ? 0.15 : 0.12),
+                          borderRadius: BorderRadius.circular(isIOS ? 6 : AppTheme.radiusSmall),
+                        ),
+                        child: Text(
+                          _getTypeLabel(),
+                          style: GoogleFonts.inter(
+                            fontSize: isIOS ? 11 : AppTheme.fontSize12,
+                            fontWeight: isIOS ? FontWeight.w600 : AppTheme.fontMedium,
+                            color: _getTypeColor(),
+                            letterSpacing: isIOS ? -0.2 : 0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: isIOS ? 6 : AppTheme.spaceSmall),
+                      Text(
+                        _formatDate(prayer.createdAt),
+                        style: GoogleFonts.inter(
+                          fontSize: isIOS ? 11 : AppTheme.fontSize12,
+                          color: AppTheme.onSurfaceVariant,
+                          letterSpacing: isIOS ? -0.2 : 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
+            
+            // Menu contextuel
+            PopupMenuButton<String>(
+              icon: Icon(
+                Icons.more_vert,
+                color: AppTheme.onSurfaceVariant,
+                size: 20,
+              ),
+              color: AppTheme.surface,
+              surfaceTintColor: AppTheme.surfaceTint,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+              ),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'report',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.flag_outlined,
+                        size: 18,
+                        color: AppTheme.onSurface,
+                      ),
+                      const SizedBox(width: AppTheme.spaceSmall),
+                      Text(
+                        'Signaler',
+                        style: GoogleFonts.inter(
+                          fontSize: AppTheme.fontSize14,
+                          color: AppTheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -328,6 +375,31 @@ class PrayerRequestCard extends StatelessWidget {
         return AppTheme.secondaryColor;
       case PrayerType.testimony:
         return AppTheme.tertiaryColor;
+    }
+  }
+
+  /// Couleur de fond de la carte selon le type et la plateforme
+  Color _getCardBackgroundColor(bool isIOS) {
+    if (isIOS) {
+      // iOS : fond très subtil pour distinction
+      switch (prayer.type) {
+        case PrayerType.request:
+          return AppTheme.surface;
+        case PrayerType.thanksgiving:
+          return AppTheme.secondaryContainer.withOpacity(0.02);
+        case PrayerType.testimony:
+          return AppTheme.tertiaryContainer.withOpacity(0.02);
+      }
+    } else {
+      // Android : fond légèrement teinté pour MD3
+      switch (prayer.type) {
+        case PrayerType.request:
+          return AppTheme.surface;
+        case PrayerType.thanksgiving:
+          return AppTheme.secondaryContainer.withOpacity(0.05);
+        case PrayerType.testimony:
+          return AppTheme.tertiaryContainer.withOpacity(0.05);
+      }
     }
   }
 

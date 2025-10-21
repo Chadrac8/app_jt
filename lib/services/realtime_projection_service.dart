@@ -10,7 +10,7 @@ class RealtimeProjectionService {
   Stream<Map<String, dynamic>> get onStateChanged => _sessionRef.onValue.map((event) {
         final data = event.snapshot.value;
         if (data is Map) {
-          return Map<String, dynamic>.from(data as Map);
+          return Map<String, dynamic>.from(data);
         }
         return {};
       });

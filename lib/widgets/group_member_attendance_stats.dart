@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../models/group_model.dart';
 import '../models/group_statistics.dart';
 import '../../theme.dart';
 
@@ -213,7 +212,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _sortBy,
+                  initialValue: _sortBy,
                   decoration: const InputDecoration(
                     labelText: 'Trier par',
                     prefixIcon: Icon(Icons.sort),
@@ -249,7 +248,7 @@ class _GroupMemberAttendanceStatsState extends State<GroupMemberAttendanceStats>
           ),
           const SizedBox(height: AppTheme.space12),
           DropdownButtonFormField<String>(
-            value: _filterBy,
+            initialValue: _filterBy,
             decoration: const InputDecoration(
               labelText: 'Filtrer par',
               prefixIcon: Icon(Icons.filter_list),

@@ -7,7 +7,6 @@ import '../services/services_service.dart';
 import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
-import '../../../theme.dart';
 
 /// Vue administrateur pour les services
 class ServicesAdminView extends StatefulWidget {

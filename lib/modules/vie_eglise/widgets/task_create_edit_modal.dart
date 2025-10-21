@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class TaskCreateEditModal extends StatefulWidget {
   final TaskModel? task;
@@ -249,7 +248,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
 
   Widget _buildCategoryField() {
     return DropdownButtonFormField<String>(
-      value: (_categories.contains(_selectedCategory)) ? _selectedCategory : null,
+      initialValue: (_categories.contains(_selectedCategory)) ? _selectedCategory : null,
       decoration: InputDecoration(
         labelText: 'Catégorie',
         labelStyle: GoogleFonts.poppins(),

@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
 import '../views/thematic_passages_view.dart';
-import '../../../theme.dart';
 
 class ThematicPassagesHomeWidget extends StatelessWidget {
   const ThematicPassagesHomeWidget({Key? key}) : super(key: key);

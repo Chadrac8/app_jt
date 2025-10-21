@@ -6,7 +6,6 @@ import '../../../../theme.dart';
 import '../../../models/pepite_or_model.dart';
 import '../../../services/pepite_or_firebase_service.dart';
 import '../../../pages/admin/pepite_or_detail_page.dart';
-import '../../../theme.dart';
 
 /// Onglet "Pépites d'Or" - Citations spirituelles organisées par thème
 class PepitesOrTab extends StatefulWidget {

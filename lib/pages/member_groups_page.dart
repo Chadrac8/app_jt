@@ -856,7 +856,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
               ),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppTheme.grey700,
-                side: BorderSide(color: AppTheme.grey400!),
+                side: BorderSide(color: AppTheme.grey400),
                 padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                 minimumSize: Size(0, 32),
                 shape: RoundedRectangleBorder(
@@ -1102,7 +1102,7 @@ class _MemberGroupsPageState extends State<MemberGroupsPage>
                       onPressed: () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16),
-                        side: BorderSide(color: AppTheme.grey400!),
+                        side: BorderSide(color: AppTheme.grey400),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         ),

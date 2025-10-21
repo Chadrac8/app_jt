@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../theme.dart';
 import '../../../models/prayer_model.dart';
@@ -129,15 +131,25 @@ class _PrayerWallViewState extends State<PrayerWallView>
     _applyFilters();
   }
 
+  /// Affiche une erreur avec style adaptatif selon la plateforme
   void _showErrorSnackBar(String message) {
+    // Feedback haptique d'erreur
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      HapticFeedback.heavyImpact();
+    } else {
+      HapticFeedback.vibrate();
+    }
+
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
             Icon(
-              Icons.error_outline,
+              isIOS ? CupertinoIcons.exclamationmark_circle : Icons.error_outline_rounded,
               color: AppTheme.onError,
-              size: 20,
+              size: isIOS ? 18 : 20,
             ),
             const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
@@ -147,6 +159,7 @@ class _PrayerWallViewState extends State<PrayerWallView>
                   color: AppTheme.onError,
                   fontSize: AppTheme.fontSize14,
                   fontWeight: AppTheme.fontMedium,
+                  letterSpacing: isIOS ? -0.3 : 0,
                 ),
               ),
             ),
@@ -158,6 +171,7 @@ class _PrayerWallViewState extends State<PrayerWallView>
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         margin: const EdgeInsets.all(AppTheme.spaceMedium),
+        duration: const Duration(seconds: 4),
       ),
     );
   }
@@ -183,10 +197,88 @@ class _PrayerWallViewState extends State<PrayerWallView>
   }
 
   void _scrollToTop() {
+    // Feedback haptique selon la plateforme
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      HapticFeedback.lightImpact();
+    } else {
+      HapticFeedback.selectionClick();
+    }
+    
     _scrollController.animateTo(
       0,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
+    );
+  }
+
+  /// Construit le bouton de retour en haut adaptatif selon la plateforme
+  Widget _buildScrollToTopButton() {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return FloatingActionButton(
+        heroTag: "scroll_to_top",
+        onPressed: _scrollToTop,
+        backgroundColor: AppTheme.surface.withOpacity(0.9),
+        foregroundColor: AppTheme.onSurface,
+        elevation: 0,
+        child: const Icon(CupertinoIcons.arrow_up, size: 20),
+      );
+    }
+
+    return FloatingActionButton(
+      heroTag: "scroll_to_top",
+      onPressed: _scrollToTop,
+      backgroundColor: AppTheme.surface,
+      foregroundColor: AppTheme.onSurface,
+      elevation: AppTheme.elevation2,
+      child: const Icon(Icons.keyboard_arrow_up_rounded, size: 24),
+    );
+  }
+
+  /// Construit le bouton d'ajout de prière adaptatif selon la plateforme
+  Widget _buildAddPrayerButton() {
+    void onPressed() {
+      // Feedback haptique selon la plateforme
+      if (Theme.of(context).platform == TargetPlatform.iOS) {
+        HapticFeedback.mediumImpact();
+      } else {
+        HapticFeedback.selectionClick();
+      }
+      _navigateToForm();
+    }
+
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return FloatingActionButton.extended(
+        heroTag: "add_prayer",
+        onPressed: onPressed,
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: AppTheme.onPrimaryColor,
+        elevation: 0,
+        icon: const Icon(CupertinoIcons.add, size: 20),
+        label: Text(
+          'Nouvelle demande',
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontSemiBold,
+            letterSpacing: -0.3,
+          ),
+        ),
+      );
+    }
+
+    return FloatingActionButton.extended(
+      heroTag: "add_prayer",
+      onPressed: onPressed,
+      backgroundColor: AppTheme.primaryColor,
+      foregroundColor: AppTheme.onPrimaryColor,
+      elevation: AppTheme.elevation3,
+      icon: const Icon(Icons.add_rounded, size: 24),
+      label: Text(
+        'Nouvelle demande',
+        style: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          fontWeight: AppTheme.fontSemiBold,
+        ),
+      ),
     );
   }
 
@@ -214,33 +306,12 @@ class _PrayerWallViewState extends State<PrayerWallView>
         children: [
           // Bouton de retour en haut (quand on a scrollé)
           if (!_showFab) ...[
-            FloatingActionButton(
-              heroTag: "scroll_to_top",
-              onPressed: _scrollToTop,
-              backgroundColor: AppTheme.surface,
-              foregroundColor: AppTheme.onSurface,
-              elevation: AppTheme.elevation2,
-              child: const Icon(Icons.search, size: 20),
-            ),
+            _buildScrollToTopButton(),
             const SizedBox(height: AppTheme.spaceSmall),
           ],
           
-          // Bouton principal d'ajout
-          FloatingActionButton.extended(
-            heroTag: "add_prayer",
-            onPressed: _navigateToForm,
-            backgroundColor: AppTheme.primaryColor,
-            foregroundColor: AppTheme.onPrimaryColor,
-            elevation: AppTheme.elevation3,
-            icon: const Icon(Icons.add, size: 24),
-            label: Text(
-              'Nouvelle demande',
-              style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize14,
-                fontWeight: AppTheme.fontSemiBold,
-              ),
-            ),
-          ),
+          // Bouton principal d'ajout - Adaptatif selon la plateforme
+          _buildAddPrayerButton(),
         ],
       ),
     );
@@ -267,7 +338,10 @@ class _PrayerWallViewState extends State<PrayerWallView>
                 children: [
                   // Barre de recherche et filtres
                   Padding(
-                    padding: const EdgeInsets.all(AppTheme.spaceLarge),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Theme.of(context).platform == TargetPlatform.iOS ? 20 : AppTheme.spaceLarge,
+                      vertical: Theme.of(context).platform == TargetPlatform.iOS ? 16 : AppTheme.spaceLarge,
+                    ),
                     child: Column(
                       children: [
                         // Barre de recherche
@@ -284,31 +358,42 @@ class _PrayerWallViewState extends State<PrayerWallView>
                             controller: _searchController,
                             onChanged: _onSearchChanged,
                             style: GoogleFonts.inter(
-                              fontSize: AppTheme.fontSize16,
+                              fontSize: Theme.of(context).platform == TargetPlatform.iOS ? 17 : AppTheme.fontSize16,
                               color: AppTheme.onSurface,
+                              letterSpacing: Theme.of(context).platform == TargetPlatform.iOS ? -0.4 : 0,
                             ),
                             decoration: InputDecoration(
                               hintText: 'Rechercher une prière...',
                               hintStyle: GoogleFonts.inter(
                                 color: AppTheme.onSurfaceVariant,
-                                fontSize: AppTheme.fontSize16,
+                                fontSize: Theme.of(context).platform == TargetPlatform.iOS ? 17 : AppTheme.fontSize16,
+                                letterSpacing: Theme.of(context).platform == TargetPlatform.iOS ? -0.4 : 0,
                               ),
                               prefixIcon: Icon(
-                                Icons.search,
+                                Theme.of(context).platform == TargetPlatform.iOS
+                                    ? CupertinoIcons.search
+                                    : Icons.search_rounded,
                                 color: AppTheme.onSurfaceVariant,
-                                size: 24,
+                                size: Theme.of(context).platform == TargetPlatform.iOS ? 20 : 24,
                               ),
                               suffixIcon: _searchQuery.isNotEmpty
                                   ? IconButton(
                                       onPressed: () {
+                                        // Feedback haptique selon la plateforme
+                                        if (Theme.of(context).platform == TargetPlatform.iOS) {
+                                          HapticFeedback.lightImpact();
+                                        }
                                         _searchController.clear();
                                         _onSearchChanged('');
                                       },
                                       icon: Icon(
-                                        Icons.close,
+                                        Theme.of(context).platform == TargetPlatform.iOS
+                                            ? CupertinoIcons.clear_circled_solid
+                                            : Icons.clear_rounded,
                                         color: AppTheme.onSurfaceVariant,
                                         size: 20,
                                       ),
+                                      tooltip: 'Effacer la recherche',
                                     )
                                   : null,
                               border: InputBorder.none,
@@ -351,7 +436,10 @@ class _PrayerWallViewState extends State<PrayerWallView>
             )
           else
             SliverPadding(
-              padding: const EdgeInsets.all(AppTheme.spaceLarge),
+              padding: EdgeInsets.symmetric(
+                horizontal: Theme.of(context).platform == TargetPlatform.iOS ? 20 : AppTheme.spaceLarge,
+                vertical: Theme.of(context).platform == TargetPlatform.iOS ? 12 : AppTheme.spaceMedium,
+              ),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -359,8 +447,8 @@ class _PrayerWallViewState extends State<PrayerWallView>
                     return Padding(
                       padding: EdgeInsets.only(
                         bottom: index == _filteredPrayers.length - 1
-                            ? 80 // Space for FAB
-                            : AppTheme.spaceMedium,
+                            ? (Theme.of(context).platform == TargetPlatform.iOS ? 100 : 80) // Space for FAB
+                            : (Theme.of(context).platform == TargetPlatform.iOS ? 16 : 20), // Espacement amélioré entre cartes
                       ),
                       child: PrayerRequestCard(
                         prayer: prayer,
@@ -377,7 +465,30 @@ class _PrayerWallViewState extends State<PrayerWallView>
     );
   }
 
+  /// État de chargement adaptatif selon la plateforme
   Widget _buildLoadingState() {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CupertinoActivityIndicator(
+              radius: 16,
+            ),
+            const SizedBox(height: AppTheme.spaceLarge),
+            Text(
+              'Chargement des prières...',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize16,
+                color: AppTheme.onSurfaceVariant,
+                letterSpacing: -0.3,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -416,8 +527,14 @@ class _PrayerWallViewState extends State<PrayerWallView>
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                hasSearch ? Icons.search_off : Icons.volunteer_activism,
-                size: 56,
+                hasSearch 
+                    ? (Theme.of(context).platform == TargetPlatform.iOS 
+                        ? CupertinoIcons.search_circle 
+                        : Icons.search_off_rounded)
+                    : (Theme.of(context).platform == TargetPlatform.iOS 
+                        ? CupertinoIcons.heart_circle 
+                        : Icons.volunteer_activism_rounded),
+                size: Theme.of(context).platform == TargetPlatform.iOS ? 48 : 56,
                 color: AppTheme.onPrimaryContainer,
               ),
             ),
@@ -427,50 +544,94 @@ class _PrayerWallViewState extends State<PrayerWallView>
                   ? 'Aucune prière trouvée'
                   : 'Aucune prière pour le moment',
               style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize20,
-                fontWeight: AppTheme.fontSemiBold,
+                fontSize: Theme.of(context).platform == TargetPlatform.iOS ? 19 : AppTheme.fontSize20,
+                fontWeight: Theme.of(context).platform == TargetPlatform.iOS ? AppTheme.fontSemiBold : FontWeight.w600,
                 color: AppTheme.onSurface,
+                letterSpacing: Theme.of(context).platform == TargetPlatform.iOS ? -0.4 : 0,
+                height: Theme.of(context).platform == TargetPlatform.iOS ? 1.2 : 1.3,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppTheme.spaceSmall),
+            SizedBox(height: Theme.of(context).platform == TargetPlatform.iOS ? 8 : AppTheme.spaceSmall),
             Text(
               hasSearch
                   ? 'Essayez de modifier vos critères de recherche'
                   : 'Soyez le premier à partager une demande de prière',
               style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize16,
+                fontSize: Theme.of(context).platform == TargetPlatform.iOS ? 15 : AppTheme.fontSize16,
                 color: AppTheme.onSurfaceVariant,
-                height: 1.4,
+                height: Theme.of(context).platform == TargetPlatform.iOS ? 1.3 : 1.4,
+                letterSpacing: Theme.of(context).platform == TargetPlatform.iOS ? -0.3 : 0,
               ),
               textAlign: TextAlign.center,
             ),
             if (!hasSearch) ...[
               const SizedBox(height: AppTheme.spaceLarge),
-              FilledButton.icon(
-                onPressed: _navigateToForm,
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: AppTheme.onPrimaryColor,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppTheme.spaceLarge,
-                    vertical: AppTheme.spaceMedium,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusRound),
-                  ),
-                ),
-                icon: const Icon(Icons.add, size: 20),
-                label: Text(
-                  'Ajouter une prière',
-                  style: GoogleFonts.inter(
-                    fontSize: AppTheme.fontSize16,
-                    fontWeight: AppTheme.fontSemiBold,
-                  ),
-                ),
-              ),
+              _buildEmptyStateButton(),
             ],
           ],
+        ),
+      ),
+    );
+  }
+
+  /// Bouton adaptatif pour l'état vide
+  Widget _buildEmptyStateButton() {
+    void onPressed() {
+      // Feedback haptique selon la plateforme
+      if (Theme.of(context).platform == TargetPlatform.iOS) {
+        HapticFeedback.mediumImpact();
+      } else {
+        HapticFeedback.selectionClick();
+      }
+      _navigateToForm();
+    }
+
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return CupertinoButton.filled(
+        onPressed: onPressed,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.spaceLarge,
+          vertical: AppTheme.spaceMedium,
+        ),
+        borderRadius: BorderRadius.circular(AppTheme.radiusRound),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(CupertinoIcons.add, size: 18),
+            const SizedBox(width: AppTheme.spaceSmall),
+            Text(
+              'Ajouter une prière',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize16,
+                fontWeight: AppTheme.fontSemiBold,
+                letterSpacing: -0.3,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return FilledButton.icon(
+      onPressed: onPressed,
+      style: FilledButton.styleFrom(
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: AppTheme.onPrimaryColor,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.spaceLarge,
+          vertical: AppTheme.spaceMedium,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusRound),
+        ),
+      ),
+      icon: const Icon(Icons.add_rounded, size: 20),
+      label: Text(
+        'Ajouter une prière',
+        style: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize16,
+          fontWeight: AppTheme.fontSemiBold,
         ),
       ),
     );

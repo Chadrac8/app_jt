@@ -4,7 +4,6 @@ import '../../../../theme.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import 'bible_study_detail_view.dart';
-import '../../../theme.dart';
 
 class BibleStudiesListView extends StatefulWidget {
   final String? initialCategory;
@@ -141,7 +140,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
                 borderSide: BorderSide(color: theme.colorScheme.primary),
               ),
               filled: true,
-              fillColor: theme.colorScheme.background,
+              fillColor: theme.colorScheme.surface,
             ),
             onChanged: (value) {
               setState(() {
@@ -226,7 +225,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
           Icon(
             Icons.search_off,
             size: 64,
-            color: theme.colorScheme.onBackground.withOpacity(0.4),
+            color: theme.colorScheme.onSurface.withOpacity(0.4),
           ),
           const SizedBox(height: AppTheme.spaceMedium),
           Text(
@@ -234,7 +233,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
             style: GoogleFonts.inter(
               fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
-              color: theme.colorScheme.onBackground.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
           const SizedBox(height: AppTheme.spaceSmall),
@@ -242,7 +241,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
             'Essayez de modifier vos critères de recherche',
             style: GoogleFonts.inter(
               fontSize: AppTheme.fontSize14,
-              color: theme.colorScheme.onBackground.withOpacity(0.5),
+              color: theme.colorScheme.onSurface.withOpacity(0.5),
             ),
             textAlign: TextAlign.center,
           ),
@@ -449,7 +448,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: theme.colorScheme.background,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         border: Border.all(
           color: theme.colorScheme.outline.withOpacity(0.2),
@@ -461,7 +460,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
           Icon(
             icon,
             size: 12,
-            color: theme.colorScheme.onBackground.withOpacity(0.6),
+            color: theme.colorScheme.onSurface.withOpacity(0.6),
           ),
           const SizedBox(width: AppTheme.spaceXSmall),
           Text(
@@ -469,7 +468,7 @@ class _BibleStudiesListViewState extends State<BibleStudiesListView> {
             style: GoogleFonts.inter(
               fontSize: AppTheme.fontSize11,
               fontWeight: AppTheme.fontMedium,
-              color: theme.colorScheme.onBackground.withOpacity(0.7),
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
         ],

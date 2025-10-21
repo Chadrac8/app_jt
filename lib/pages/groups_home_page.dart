@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../models/group_model.dart';
 import '../services/groups_firebase_service.dart';
 import '../widgets/group_card.dart';

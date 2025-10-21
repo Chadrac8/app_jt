@@ -4,7 +4,6 @@ import '../../../../theme.dart';
 import '../models/admin_branham_sermon_model.dart';
 import '../services/admin_branham_sermon_service.dart';
 import '../../../auth/auth_service.dart';
-import '../../../theme.dart';
 
 /// Dialogue pour ajouter/modifier une prédication
 class SermonFormDialog extends StatefulWidget {
@@ -327,7 +326,7 @@ class _SermonFormDialogState extends State<SermonFormDialog> {
                           const SizedBox(width: AppTheme.spaceMedium),
                           Expanded(
                             child: DropdownButtonFormField<String>(
-                              value: _language,
+                              initialValue: _language,
                               decoration: const InputDecoration(
                                 labelText: 'Langue',
                                 prefixIcon: Icon(Icons.language),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/person_model.dart';
 import '../services/family_service.dart';
 import '../../theme.dart';
@@ -622,7 +621,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
           const SizedBox(height: AppTheme.spaceMedium),
           
           DropdownButtonFormField<String>(
-            value: _selectedFamilyType,
+            initialValue: _selectedFamilyType,
             decoration: const InputDecoration(
               labelText: 'Type de famille',
               prefixIcon: Icon(Icons.category),
@@ -637,7 +636,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
           const SizedBox(height: AppTheme.spaceMedium),
           
           DropdownButtonFormField<String>(
-            value: _selectedLanguage,
+            initialValue: _selectedLanguage,
             decoration: const InputDecoration(
               labelText: 'Langue principale',
               prefixIcon: Icon(Icons.language),
@@ -879,7 +878,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
           const SizedBox(height: AppTheme.spaceMedium),
           
           DropdownButtonFormField<String>(
-            value: _preferredContactMethod,
+            initialValue: _preferredContactMethod,
             decoration: const InputDecoration(
               labelText: 'Méthode de contact préférée',
               border: OutlineInputBorder(),
@@ -1178,7 +1177,7 @@ class _FamilyFormEnhancedPageState extends State<FamilyFormEnhancedPage> {
                 // Family head selection
                 if (_selectedMemberIds.isNotEmpty) ...[
                   DropdownButtonFormField<String>(
-                    value: _familyHeadId,
+                    initialValue: _familyHeadId,
                     decoration: const InputDecoration(
                       labelText: 'Chef de famille *',
                       border: OutlineInputBorder(),

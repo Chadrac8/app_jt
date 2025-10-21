@@ -11,7 +11,6 @@ import '../models/pour_vous_action.dart';
 import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
 import '../services/action_group_service.dart';
-import '../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -1545,7 +1544,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
             
             // Type d'action
             DropdownButtonFormField<String>(
-              value: _selectedActionType,
+              initialValue: _selectedActionType,
               decoration: const InputDecoration(
                 labelText: 'Type d\'action *',
                 border: OutlineInputBorder(),
@@ -1608,7 +1607,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
             
             // Catégorie
             DropdownButtonFormField<String>(
-              value: (['general','spiritual','community','service','events','resources'].contains(_selectedCategory)) ? _selectedCategory : null,
+              initialValue: (['general','spiritual','community','service','events','resources'].contains(_selectedCategory)) ? _selectedCategory : null,
               decoration: const InputDecoration(
                 labelText: 'Catégorie',
                 border: OutlineInputBorder(),
@@ -1629,7 +1628,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
             
             // Groupe
             DropdownButtonFormField<String>(
-              value: (_groups.any((g) => g.id == _selectedGroup?.id)) ? _selectedGroup?.id : null,
+              initialValue: (_groups.any((g) => g.id == _selectedGroup?.id)) ? _selectedGroup?.id : null,
               decoration: const InputDecoration(
                 labelText: 'Groupe',
                 border: OutlineInputBorder(),

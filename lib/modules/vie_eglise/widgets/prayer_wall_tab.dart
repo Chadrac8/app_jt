@@ -6,7 +6,6 @@ import '../../../models/prayer_model.dart';
 import '../../../services/prayers_firebase_service.dart';
 import '../../../pages/prayer_form_page.dart';
 import '../../../pages/prayer_detail_page.dart';
-import '../../../theme.dart';
 
 /// Onglet "Prières" moderne du module Vie de l'église
 /// Design inspiré des meilleures applications d'église

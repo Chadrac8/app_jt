@@ -5,7 +5,6 @@ import '../models/permission_model.dart';
 import '../providers/role_template_provider.dart';
 import '../providers/permission_provider.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Dialog de création/édition de template de rôle
 class RoleTemplateFormDialog extends StatefulWidget {
@@ -208,7 +207,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
             
             // Catégorie
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               decoration: const InputDecoration(
                 labelText: 'Catégorie *',
                 helperText: 'Catégorie principale du template',
@@ -520,7 +519,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
           Container(
             padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
-              border: Border.all(color: AppTheme.grey300!),
+              border: Border.all(color: AppTheme.grey300),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: const Text(
@@ -773,7 +772,7 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
-          top: BorderSide(color: AppTheme.grey300!),
+          top: BorderSide(color: AppTheme.grey300),
         ),
       ),
       child: Row(

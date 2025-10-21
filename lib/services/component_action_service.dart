@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/component_action_model.dart';
@@ -455,49 +454,47 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
       
       // Configuration de navigation sécurisée
       final currentController = controller;
-      if (currentController != null) {
-        try {
-          await currentController.setNavigationDelegate(
-            NavigationDelegate(
-              onPageStarted: (String url) {
-                if (mounted) {
-                  setState(() {
-                    _isLoading = true;
-                    _hasError = false;
-                  });
-                }
-              },
-              onPageFinished: (String url) {
-                if (mounted) {
-                  setState(() {
-                    _isLoading = false;
-                  });
-                }
-              },
-              onWebResourceError: (WebResourceError error) {
-                if (mounted) {
-                  setState(() {
-                    _isLoading = false;
-                    _hasError = true;
-                    _errorMessage = 'Erreur de chargement: ${error.description}';
-                  });
-                }
-              },
-            ),
-          );
-          
-          await currentController.loadRequest(uri);
-        } catch (e) {
-          if (mounted) {
-            setState(() {
-              _isLoading = false;
-              _hasError = true;
-              _errorMessage = 'Erreur lors du chargement de l\'URL:\n${e.toString()}';
-            });
-          }
+      try {
+        await currentController.setNavigationDelegate(
+          NavigationDelegate(
+            onPageStarted: (String url) {
+              if (mounted) {
+                setState(() {
+                  _isLoading = true;
+                  _hasError = false;
+                });
+              }
+            },
+            onPageFinished: (String url) {
+              if (mounted) {
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+            },
+            onWebResourceError: (WebResourceError error) {
+              if (mounted) {
+                setState(() {
+                  _isLoading = false;
+                  _hasError = true;
+                  _errorMessage = 'Erreur de chargement: ${error.description}';
+                });
+              }
+            },
+          ),
+        );
+        
+        await currentController.loadRequest(uri);
+      } catch (e) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _hasError = true;
+            _errorMessage = 'Erreur lors du chargement de l\'URL:\n${e.toString()}';
+          });
         }
       }
-    } catch (e) {
+        } catch (e) {
       if (mounted) {
         setState(() {
           _isLoading = false;

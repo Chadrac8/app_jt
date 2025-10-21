@@ -5,7 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../theme.dart';
 import '../models/church_resource.dart';
 import '../services/church_resource_service.dart';
-import '../../../theme.dart';
 
 class ChurchResourcesTab extends StatefulWidget {
   const ChurchResourcesTab({Key? key}) : super(key: key);

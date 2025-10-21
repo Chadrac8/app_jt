@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Widget pour l'assignation de rôles aux utilisateurs
 class UserRoleAssignmentWidget extends StatefulWidget {
@@ -130,7 +129,7 @@ class _UserRoleAssignmentWidgetState extends State<UserRoleAssignmentWidget> {
                   builder: (context, provider, child) {
                     final roles = provider.roles;
                     return DropdownButtonFormField<String>(
-                      value: _selectedRoleFilter,
+                      initialValue: _selectedRoleFilter,
                       decoration: InputDecoration(
                         labelText: 'Filtrer par rôle',
                         border: OutlineInputBorder(
@@ -558,7 +557,7 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
                     }
 
                     return DropdownButtonFormField<String>(
-                      value: _selectedRoleId,
+                      initialValue: _selectedRoleId,
                       hint: const Text('Choisir un rôle...'),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),

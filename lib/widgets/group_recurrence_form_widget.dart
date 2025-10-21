@@ -249,7 +249,7 @@ class _GroupRecurrenceFormWidgetState extends State<GroupRecurrenceFormWidget> {
             SizedBox(
               width: 80,
               child: DropdownButtonFormField<int>(
-                value: _interval,
+                initialValue: _interval,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -356,7 +356,7 @@ class _GroupRecurrenceFormWidgetState extends State<GroupRecurrenceFormWidget> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<int>(
-          value: _durationMinutes,
+          initialValue: _durationMinutes,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             prefixIcon: Icon(Icons.timer),

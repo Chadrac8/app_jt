@@ -6,7 +6,6 @@ import '../../../widgets/song_card_perfect13.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Page des chants pour les membres
 class MemberSongsPage extends StatefulWidget {

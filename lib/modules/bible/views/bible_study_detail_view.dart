@@ -4,7 +4,6 @@ import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import 'bible_study_lesson_view.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class BibleStudyDetailView extends StatefulWidget {
   final BibleStudy study;
@@ -40,7 +39,7 @@ class _BibleStudyDetailViewState extends State<BibleStudyDetailView> {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: CustomScrollView(
         slivers: [
           _buildAppBar(theme),

@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class BibleStudyLessonView extends StatefulWidget {
   final BibleStudy study;
@@ -145,7 +144,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: CustomScrollView(
         slivers: [
           _buildAppBar(theme),
@@ -236,7 +235,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
               style: GoogleFonts.inter(
                 fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
-                color: theme.colorScheme.onBackground,
+                color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: AppTheme.space12),
@@ -256,7 +255,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                       objective,
                       style: GoogleFonts.inter(
                         fontSize: AppTheme.fontSize14,
-                        color: theme.colorScheme.onBackground.withOpacity(0.8),
+                        color: theme.colorScheme.onSurface.withOpacity(0.8),
                       ),
                     ),
                   ),
@@ -272,7 +271,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
             style: GoogleFonts.inter(
               fontSize: AppTheme.fontSize18,
               fontWeight: AppTheme.fontSemiBold,
-              color: theme.colorScheme.onBackground,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: AppTheme.space12),
@@ -291,7 +290,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
               style: GoogleFonts.inter(
                 fontSize: AppTheme.fontSize15,
                 height: 1.6,
-                color: theme.colorScheme.onBackground,
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -304,7 +303,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
               style: GoogleFonts.inter(
                 fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
-                color: theme.colorScheme.onBackground,
+                color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: AppTheme.space12),
@@ -336,7 +335,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                     style: GoogleFonts.inter(
                       fontSize: AppTheme.fontSize14,
                       fontStyle: FontStyle.italic,
-                      color: theme.colorScheme.onBackground.withOpacity(0.8),
+                      color: theme.colorScheme.onSurface.withOpacity(0.8),
                     ),
                   ),
                   if (ref.commentary.isNotEmpty) ...[
@@ -345,7 +344,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                       ref.commentary,
                       style: GoogleFonts.inter(
                         fontSize: AppTheme.fontSize14,
-                        color: theme.colorScheme.onBackground.withOpacity(0.7),
+                        color: theme.colorScheme.onSurface.withOpacity(0.7),
                       ),
                     ),
                   ],
@@ -362,7 +361,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
               style: GoogleFonts.inter(
                 fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
-                color: theme.colorScheme.onBackground,
+                color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: AppTheme.space12),
@@ -411,7 +410,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                             style: GoogleFonts.inter(
                               fontSize: AppTheme.fontSize15,
                               fontWeight: AppTheme.fontMedium,
-                              color: theme.colorScheme.onBackground,
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
                         ),
@@ -452,7 +451,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                             '• $hint',
                             style: GoogleFonts.inter(
                               fontSize: AppTheme.fontSize13,
-                              color: theme.colorScheme.onBackground.withOpacity(0.7),
+                              color: theme.colorScheme.onSurface.withOpacity(0.7),
                             ),
                           ),
                         )).toList(),
@@ -503,7 +502,7 @@ class _BibleStudyLessonViewState extends State<BibleStudyLessonView> {
                   style: GoogleFonts.inter(
                     fontSize: AppTheme.fontSize14,
                     height: 1.5,
-                    color: theme.colorScheme.onBackground.withOpacity(0.8),
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
                   ),
                 ),
               ],

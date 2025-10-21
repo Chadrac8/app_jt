@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/thematic_passage_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class ThematicPassagesInitializer extends StatefulWidget {
   final Widget child;
@@ -71,7 +70,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +93,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
               style: GoogleFonts.inter(
                 fontSize: AppTheme.fontSize18,
                 fontWeight: AppTheme.fontSemiBold,
-                color: theme.colorScheme.onBackground,
+                color: theme.colorScheme.onSurface,
               ),
               textAlign: TextAlign.center,
             ),
@@ -103,7 +102,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
               'Préparation des thèmes bibliques par défaut...',
               style: GoogleFonts.inter(
                 fontSize: AppTheme.fontSize14,
-                color: theme.colorScheme.onBackground.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
               ),
               textAlign: TextAlign.center,
             ),
@@ -121,7 +120,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(AppTheme.spaceXLarge),
@@ -139,7 +138,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
                 style: GoogleFonts.inter(
                   fontSize: AppTheme.fontSize20,
                   fontWeight: AppTheme.fontSemiBold,
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -148,7 +147,7 @@ class _ThematicPassagesInitializerState extends State<ThematicPassagesInitialize
                 'Impossible d\'initialiser les passages thématiques.',
                 style: GoogleFonts.inter(
                   fontSize: AppTheme.fontSize14,
-                  color: theme.colorScheme.onBackground.withOpacity(0.7),
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
                 ),
                 textAlign: TextAlign.center,
               ),

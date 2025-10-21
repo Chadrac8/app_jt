@@ -108,7 +108,7 @@ class BlogPostPreviewDialog extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppTheme.grey100,
                           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                          border: Border.all(color: AppTheme.grey300!),
+                          border: Border.all(color: AppTheme.grey300),
                         ),
                         child: Text(
                           post.excerpt,

@@ -3,7 +3,6 @@ import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/thematic_passage_service.dart';
 import '../bible_service.dart';
-import '../../../theme.dart';
 
 class AddPassageDialog extends StatefulWidget {
   final String themeId;
@@ -141,7 +140,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
                           Expanded(
                             flex: 2,
                             child: DropdownButtonFormField<String>(
-                              value: _bookController.text.isEmpty ? null : _bookController.text,
+                              initialValue: _bookController.text.isEmpty ? null : _bookController.text,
                               decoration: InputDecoration(
                                 labelText: 'Livre',
                                 border: OutlineInputBorder(

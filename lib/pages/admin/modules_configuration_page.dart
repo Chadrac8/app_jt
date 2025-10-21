@@ -920,7 +920,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         color: module.isEnabledForMembers
             ? AppTheme.primaryColor.withOpacity(0.05)
@@ -1111,7 +1111,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
               Container(
                 padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.grey300!),
+                  border: Border.all(color: AppTheme.grey300),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                   color: AppTheme.grey50,
                 ),
@@ -1190,7 +1190,7 @@ class _ModulesConfigurationPageState extends State<ModulesConfigurationPage> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         color: page.isEnabledForMembers
             ? AppTheme.primaryColor.withOpacity(0.05)

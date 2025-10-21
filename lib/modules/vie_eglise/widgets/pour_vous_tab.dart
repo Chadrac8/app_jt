@@ -24,6 +24,17 @@ class _ActionData {
   });
 }
 
+// Classe de données pour les sections avec titres
+class _ActionSection {
+  final String title;
+  final List<_ActionData> actions;
+
+  const _ActionSection({
+    required this.title,
+    required this.actions,
+  });
+}
+
 class PourVousTab extends StatefulWidget {
   const PourVousTab({Key? key}) : super(key: key);
 
@@ -63,22 +74,22 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
     final colorScheme = Theme.of(context).colorScheme;
     final screenWidth = MediaQuery.of(context).size.width;
     
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      body: FadeTransition(
-        opacity: _fadeAnimation,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.all(AppTheme.adaptivePadding), // Padding adaptatif
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildActionsGrid(colorScheme, screenWidth),
-              SizedBox(height: AppTheme.adaptivePadding),
-            ],
+    return CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppTheme.adaptivePadding,
+            vertical: AppTheme.isApplePlatform ? AppTheme.spaceMedium : AppTheme.spaceSmall,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: _buildActionsGrid(colorScheme, screenWidth),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -86,165 +97,205 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
     final crossAxisCount = AppTheme.getGridColumns(screenWidth);
     final spacing = AppTheme.gridSpacing;
     
-    final actions = [
-      _ActionData(
-        title: 'Baptême d\'eau',
-        subtitle: 'Demander le baptême',
-        icon: Icons.water_drop_rounded,
-        color: colorScheme.primary,
-        onTap: () => _handleBaptism(),
+    // Organisation des actions par sections professionnelles
+    final sections = [
+      _ActionSection(
+        title: 'Relation avec Le Seigneur',
+        actions: [
+          _ActionData(
+            title: 'Baptême d\'eau',
+            subtitle: 'Demander le baptême',
+            icon: Icons.water_drop_rounded,
+            color: colorScheme.primary,
+            onTap: () => _handleBaptism(),
+          ),
+          _ActionData(
+            title: 'Rejoindre une équipe',
+            subtitle: 'Servir dans l\'église',
+            icon: Icons.group_rounded,
+            color: colorScheme.primary,
+            onTap: () => _handleJoinTeam(),
+          ),
+        ],
       ),
-      _ActionData(
-        title: 'Rejoindre une équipe',
-        subtitle: 'Servir dans l\'église',
-        icon: Icons.group_rounded,
-        color: colorScheme.primary,
-        onTap: () => _handleJoinTeam(),
+      _ActionSection(
+        title: 'Relation avec le pasteur',
+        actions: [
+          _ActionData(
+            title: 'Prendre rendez-vous',
+            subtitle: 'Rencontrer le pasteur',
+            icon: Icons.calendar_today_rounded,
+            color: colorScheme.secondary,
+            onTap: () => _navigateToAppointments(),
+          ),
+          _ActionData(
+            title: 'Poser une question',
+            subtitle: 'Demander conseil',
+            icon: Icons.help_rounded,
+            color: colorScheme.secondary,
+            onTap: () => _handleAskQuestion(),
+          ),
+        ],
       ),
-      _ActionData(
-        title: 'Prendre rendez-vous',
-        subtitle: 'Rencontrer le pasteur',
-        icon: Icons.calendar_today_rounded,
-        color: colorScheme.secondary,
-        onTap: () => _navigateToAppointments(),
+      _ActionSection(
+        title: 'Participer au culte',
+        actions: [
+          _ActionData(
+            title: 'Chant spécial',
+            subtitle: 'Réserver une date',
+            icon: Icons.mic_rounded,
+            color: colorScheme.tertiary,
+            onTap: () => _handleActionTap('Chant spécial'),
+          ),
+          _ActionData(
+            title: 'Partager un témoignage',
+            subtitle: 'Témoigner publiquement',
+            icon: Icons.record_voice_over_rounded,
+            color: colorScheme.tertiary,
+            onTap: () => _handleTestimony(),
+          ),
+        ],
       ),
-      _ActionData(
-        title: 'Poser une question',
-        subtitle: 'Demander conseil',
-        icon: Icons.help_rounded,
-        color: colorScheme.secondary,
-        onTap: () => _handleAskQuestion(),
-      ),
-      _ActionData(
-        title: 'Chant spécial',
-        subtitle: 'Réserver une date',
-        icon: Icons.mic_rounded,
-        color: colorScheme.tertiary,
-        onTap: () => _handleActionTap('Chant spécial'),
-      ),
-      _ActionData(
-        title: 'Partager un témoignage',
-        subtitle: 'Témoigner publiquement',
-        icon: Icons.record_voice_over_rounded,
-        color: colorScheme.tertiary,
-        onTap: () => _handleTestimony(),
-      ),
-      _ActionData(
-        title: 'Proposer une idée',
-        subtitle: 'Suggérer une amélioration',
-        icon: Icons.lightbulb_outline_rounded,
-        color: colorScheme.error,
-        onTap: () => _handleSuggestion(),
-      ),
-      _ActionData(
-        title: 'Signaler un problème',
-        subtitle: 'Rapporter un dysfonctionnement',
-        icon: Icons.report_problem_rounded,
-        color: colorScheme.error,
-        onTap: () => _handleReportIssue(),
+      _ActionSection(
+        title: 'Amélioration',
+        actions: [
+          _ActionData(
+            title: 'Proposer une idée',
+            subtitle: 'Suggérer une amélioration',
+            icon: Icons.lightbulb_outline_rounded,
+            color: colorScheme.error,
+            onTap: () => _handleSuggestion(),
+          ),
+          _ActionData(
+            title: 'Signaler un problème',
+            subtitle: 'Rapporter un dysfonctionnement',
+            icon: Icons.report_problem_rounded,
+            color: colorScheme.error,
+            onTap: () => _handleReportIssue(),
+          ),
+        ],
       ),
     ];
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: spacing,
-        mainAxisSpacing: spacing,
-        childAspectRatio: 1.0,
-      ),
-      itemCount: actions.length,
-      itemBuilder: (context, index) {
-        final action = actions[index];
-        return _buildActionCard(
-          action.title,
-          action.subtitle,
-          action.icon,
-          action.color,
-          action.onTap,
-          colorScheme,
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: sections.map((section) => _buildSection(
+        section,
+        colorScheme,
+        crossAxisCount,
+        spacing,
+      )).toList(),
     );
   }
 
-  Widget _buildActionCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap, ColorScheme colorScheme) {
-    // Widget adaptatif selon la plateforme
-    final cardContent = Padding(
-      padding: EdgeInsets.all(AppTheme.actionCardPadding), // Padding adaptatif
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildSection(_ActionSection section, ColorScheme colorScheme, int crossAxisCount, double spacing) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Titre de section professionnel
+        _buildSectionTitle(section.title, colorScheme),
+        
+        // Espacement avant les cartes
+        SizedBox(height: AppTheme.isApplePlatform ? 12.0 : 8.0),
+        
+        // Grille des cartes de la section
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: spacing,
+            mainAxisSpacing: spacing,
+            childAspectRatio: AppTheme.isDesktop ? 1.1 : (AppTheme.isApplePlatform ? 1.05 : 1.0),
+          ),
+          itemCount: section.actions.length,
+          itemBuilder: (context, index) {
+            final action = section.actions[index];
+            return AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                final animationDelay = index * 0.1;
+                final animation = Tween<double>(
+                  begin: 0.0,
+                  end: 1.0,
+                ).animate(CurvedAnimation(
+                  parent: _animationController,
+                  curve: Interval(
+                    animationDelay,
+                    (animationDelay + 0.3).clamp(0.0, 1.0),
+                    curve: Curves.easeOutCubic,
+                  ),
+                ));
+                
+                return Transform.scale(
+                  scale: animation.value,
+                  child: Opacity(
+                    opacity: animation.value,
+                    child: _ProfessionalActionCard(
+                      title: action.title,
+                      subtitle: action.subtitle,
+                      icon: action.icon,
+                      color: action.color,
+                      onTap: action.onTap,
+                      colorScheme: colorScheme,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        
+        // Espacement après chaque section
+        SizedBox(height: AppTheme.isApplePlatform ? 32.0 : 24.0),
+      ],
+    );
+  }
+
+  Widget _buildSectionTitle(String title, ColorScheme colorScheme) {
+    return Container(
+      margin: EdgeInsets.only(
+        left: AppTheme.isApplePlatform ? 4.0 : 2.0,
+        bottom: AppTheme.isApplePlatform ? 4.0 : 2.0,
+      ),
+      child: Row(
         children: [
-          // Icon container with proper M3 sizing and animation
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200), // M3 animation duration
-            width: 48,
-            height: 48,
+          // Accent visuel subtil - petit indicateur coloré
+          Container(
+            width: 4.0,
+            height: AppTheme.isApplePlatform ? 20.0 : 18.0,
             decoration: BoxDecoration(
-              color: color.withValues(alpha: AppTheme.interactionOpacity),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-            ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 24,
+              color: colorScheme.primary.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(2.0),
             ),
           ),
-          SizedBox(height: AppTheme.actionCardPadding), // Espacement adaptatif
-          // Title with M3 typography
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: colorScheme.onSurface,
-              fontWeight: AppTheme.fontSemiBold,
+          
+          // Espacement entre l'accent et le texte
+          SizedBox(width: AppTheme.isApplePlatform ? 12.0 : 10.0),
+          
+          // Titre de section
+          Expanded(
+            child: Text(
+              title,
+              style: AppTheme.isApplePlatform
+                  ? Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: AppTheme.fontSemiBold,
+                      letterSpacing: -0.5,
+                      height: 1.2,
+                    )
+                  : Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: AppTheme.fontSemiBold,
+                      height: 1.2,
+                    ),
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: AppTheme.spaceXSmall), // M3 tight spacing
-          // Subtitle with M3 typography
-          Text(
-            subtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
-
-    return Card(
-      elevation: 0, // M3 cards have no elevation by default
-      color: colorScheme.surfaceContainerLow,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.actionCardRadius), // Radius adaptatif
-        side: BorderSide(
-          color: colorScheme.outlineVariant,
-          width: AppTheme.actionCardBorderWidth, // Épaisseur adaptative
-        ),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: AppTheme.isApplePlatform
-          ? GestureDetector(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                onTap();
-              },
-              child: cardContent,
-            )
-          : InkWell(
-              onTap: onTap,
-              splashColor: color.withValues(alpha: AppTheme.interactionOpacity),
-              highlightColor: color.withValues(alpha: 0.08),
-              hoverColor: color.withValues(alpha: 0.04),
-              child: cardContent,
-            ),
-    );
   }
+
 
   // Méthodes d'action individuelles
   void _handleBaptism() => _handleActionTap('Baptême d\'eau');
@@ -430,6 +481,259 @@ class _PourVousTabState extends State<PourVousTab> with SingleTickerProviderStat
         backgroundColor: AppTheme.primaryColor,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 4),
+      ),
+    );
+  }
+}
+
+// Widget de carte professionnel avec interactions améliorées
+class _ProfessionalActionCard extends StatefulWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+  final ColorScheme colorScheme;
+
+  const _ProfessionalActionCard({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+    required this.colorScheme,
+  });
+
+  @override
+  State<_ProfessionalActionCard> createState() => _ProfessionalActionCardState();
+}
+
+class _ProfessionalActionCardState extends State<_ProfessionalActionCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _hoverController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  bool _isPressed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _hoverController = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.98,
+    ).animate(CurvedAnimation(
+      parent: _hoverController,
+      curve: Curves.easeOut,
+    ));
+    
+    _elevationAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.2,
+    ).animate(CurvedAnimation(
+      parent: _hoverController,
+      curve: Curves.easeOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _hoverController.dispose();
+    super.dispose();
+  }
+
+  void _handleTapDown(TapDownDetails details) {
+    setState(() => _isPressed = true);
+    _hoverController.forward();
+    if (AppTheme.isApplePlatform) {
+      HapticFeedback.lightImpact();
+    }
+  }
+
+  void _handleTapUp(TapUpDetails details) {
+    setState(() => _isPressed = false);
+    _hoverController.reverse();
+    widget.onTap();
+  }
+
+  void _handleTapCancel() {
+    setState(() => _isPressed = false);
+    _hoverController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Enhanced surface colors with subtle gradients
+    final surfaceColor = AppTheme.isApplePlatform 
+        ? widget.colorScheme.surface
+        : widget.colorScheme.surfaceContainerLow;
+    
+    // Professional border with context-aware styling
+    final borderColor = AppTheme.isApplePlatform
+        ? widget.colorScheme.outline.withValues(alpha: 0.15)
+        : widget.colorScheme.outlineVariant.withValues(alpha: 0.8);
+    
+    // Enhanced spacing for better visual hierarchy
+    final contentPadding = AppTheme.isDesktop 
+        ? EdgeInsets.all(20.0)
+        : EdgeInsets.all(18.0);
+
+    return AnimatedBuilder(
+      animation: _hoverController,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: Container(
+            decoration: BoxDecoration(
+              color: surfaceColor,
+              borderRadius: BorderRadius.circular(
+                AppTheme.isApplePlatform ? 20.0 : 18.0,
+              ),
+              border: Border.all(
+                color: _isPressed 
+                    ? widget.color.withValues(alpha: 0.3)
+                    : borderColor,
+                width: AppTheme.isApplePlatform ? 0.8 : 1.0,
+              ),
+              // Enhanced shadows for professional depth
+              boxShadow: AppTheme.isApplePlatform ? [
+                // Primary shadow for depth
+                BoxShadow(
+                  color: widget.colorScheme.shadow.withValues(alpha: 0.08 * _elevationAnimation.value),
+                  offset: Offset(0, 2 * _elevationAnimation.value),
+                  blurRadius: 8 * _elevationAnimation.value,
+                  spreadRadius: 0,
+                ),
+                // Secondary shadow for softness
+                BoxShadow(
+                  color: widget.colorScheme.shadow.withValues(alpha: 0.04 * _elevationAnimation.value),
+                  offset: Offset(0, 1 * _elevationAnimation.value),
+                  blurRadius: 3 * _elevationAnimation.value,
+                  spreadRadius: 0,
+                ),
+              ] : [
+                // Material Design 3 elevation shadow
+                BoxShadow(
+                  color: widget.colorScheme.shadow.withValues(alpha: 0.06 * _elevationAnimation.value),
+                  offset: Offset(0, 1 * _elevationAnimation.value),
+                  blurRadius: 4 * _elevationAnimation.value,
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(
+                AppTheme.isApplePlatform ? 20.0 : 18.0,
+              ),
+              child: AppTheme.isApplePlatform
+                  ? GestureDetector(
+                      onTapDown: _handleTapDown,
+                      onTapUp: _handleTapUp,
+                      onTapCancel: _handleTapCancel,
+                      child: _buildCardContent(contentPadding),
+                    )
+                  : InkWell(
+                      onTap: widget.onTap,
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.isApplePlatform ? 20.0 : 18.0,
+                      ),
+                      splashColor: widget.color.withValues(alpha: 0.12),
+                      highlightColor: widget.color.withValues(alpha: 0.08),
+                      hoverColor: widget.color.withValues(alpha: 0.04),
+                      child: _buildCardContent(contentPadding),
+                    ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCardContent(EdgeInsets contentPadding) {
+    return Container(
+      padding: contentPadding,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Enhanced icon container with gradient background
+          Container(
+            width: AppTheme.isDesktop ? 64 : 56,
+            height: AppTheme.isDesktop ? 64 : 56,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  widget.color.withValues(alpha: _isPressed ? 0.25 : 0.15),
+                  widget.color.withValues(alpha: _isPressed ? 0.15 : 0.08),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(
+                AppTheme.isApplePlatform ? 18.0 : 16.0,
+              ),
+              border: Border.all(
+                color: widget.color.withValues(alpha: _isPressed ? 0.3 : 0.2),
+                width: 1.0,
+              ),
+            ),
+            child: Icon(
+              widget.icon,
+              color: widget.color,
+              size: AppTheme.isDesktop ? 32 : 28,
+            ),
+          ),
+          
+          // Enhanced spacing for visual breathing room
+          SizedBox(height: AppTheme.isApplePlatform ? 16.0 : 14.0),
+          
+          // Professional title with enhanced typography
+          Text(
+            widget.title,
+            style: AppTheme.isApplePlatform 
+                ? Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: widget.colorScheme.onSurface,
+                    fontWeight: AppTheme.fontSemiBold,
+                    letterSpacing: -0.3,
+                    height: 1.2,
+                  )
+                : Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: widget.colorScheme.onSurface,
+                    fontWeight: AppTheme.fontSemiBold,
+                    height: 1.2,
+                  ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          
+          // Optimal spacing between title and subtitle
+          SizedBox(height: 6.0),
+          
+          // Enhanced subtitle with professional opacity
+          Text(
+            widget.subtitle,
+            style: AppTheme.isApplePlatform
+                ? Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: widget.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                    letterSpacing: -0.2,
+                    height: 1.3,
+                  )
+                : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: widget.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                    height: 1.3,
+                  ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          
+          // Spacer to push content up for better balance
+          SizedBox(height: 4.0),
+        ],
       ),
     );
   }

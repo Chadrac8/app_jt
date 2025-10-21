@@ -272,7 +272,7 @@ class _RecurringServiceEditDialogState extends State<RecurringServiceEditDialog>
               decoration: BoxDecoration(
                 color: isSelected
                     ? colorScheme.primary.withOpacity(0.1)
-                    : colorScheme.surfaceVariant,
+                    : colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/bible_book.dart';
-import '../../../theme.dart';
 
 class BookChapterSelector extends StatefulWidget {
   final List<BibleBook> books;
@@ -259,7 +258,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
                               border: Border.all(
                                 color: isChapterSelected 
                                     ? AppTheme.primaryColor 
-                                    : AppTheme.grey300!,
+                                    : AppTheme.grey300,
                               ),
                             ),
                             child: Center(

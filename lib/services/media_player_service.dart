@@ -436,7 +436,7 @@ class _AudioFilePlayerWidgetState extends State<AudioFilePlayerWidget> {
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
         boxShadow: [
           BoxShadow(
             color: AppTheme.black100.withOpacity(0.05),

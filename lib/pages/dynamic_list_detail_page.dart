@@ -679,7 +679,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
-              value: _sortField.isEmpty ? null : _sortField,
+              initialValue: _sortField.isEmpty ? null : _sortField,
               decoration: const InputDecoration(
                 labelText: 'Champ',
                 border: OutlineInputBorder(),
@@ -696,7 +696,7 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
-              value: _sortDirection,
+              initialValue: _sortDirection,
               decoration: const InputDecoration(
                 labelText: 'Ordre',
                 border: OutlineInputBorder(),

@@ -262,7 +262,7 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                     ),
                     const SizedBox(height: AppTheme.spaceSmall),
                     DropdownButtonFormField<String>(
-                      value: widget.selectedCategory,
+                      initialValue: widget.selectedCategory,
                       decoration: InputDecoration(
                         hintText: 'Sélectionner une catégorie',
                         border: OutlineInputBorder(

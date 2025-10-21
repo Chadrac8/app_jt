@@ -20,7 +20,6 @@ import 'modules/roles/providers/permission_provider.dart';
 import 'modules/roles/providers/role_provider.dart';
 import 'utils/date_formatter.dart';
 import 'config/locale_config.dart';
-import 'config/performance_config.dart';
 import 'churchflow_splash.dart';
 import 'modules/roles/roles_module.dart';
 import 'modules/pain_quotidien/services/daily_bread_scheduler.dart';

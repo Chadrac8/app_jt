@@ -151,7 +151,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       children: [
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            value: _selectedKey,
+                            initialValue: _selectedKey,
                             decoration: const InputDecoration(
                               labelText: 'Tonalité',
                               border: OutlineInputBorder()),
@@ -335,7 +335,7 @@ class _SongFormPageState extends State<SongFormPage> {
                       children: [
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            value: _selectedStatus,
+                            initialValue: _selectedStatus,
                             decoration: const InputDecoration(
                               labelText: 'Statut',
                               border: OutlineInputBorder()),
@@ -355,7 +355,7 @@ class _SongFormPageState extends State<SongFormPage> {
                         
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            value: _selectedVisibility,
+                            initialValue: _selectedVisibility,
                             decoration: const InputDecoration(
                               labelText: 'Visibilité',
                               border: OutlineInputBorder()),

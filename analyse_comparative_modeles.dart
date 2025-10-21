@@ -1,6 +1,5 @@
 #!/usr/bin/env dart
 
-import 'dart:io';
 
 void main() {
   print('⚖️  Analyse Comparative des Modèles de Personnes');

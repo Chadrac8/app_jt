@@ -319,7 +319,7 @@ class _TaskListCardState extends State<TaskListCard>
       decoration: BoxDecoration(
         color: AppTheme.backgroundColor,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

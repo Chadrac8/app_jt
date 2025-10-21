@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
-import '../services/workflow_initialization_service.dart';
 import '../../theme.dart';
 
 
@@ -411,7 +410,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
                     
                     // Catégorie
                     DropdownButtonFormField<String>(
-                      value: _selectedCategory,
+                      initialValue: _selectedCategory,
                       decoration: const InputDecoration(
                         labelText: 'Catégorie',
                         border: OutlineInputBorder(),

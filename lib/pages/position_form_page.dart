@@ -240,11 +240,11 @@ class _PositionFormPageState extends State<PositionFormPage> {
                       height: 200,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
+                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
                         child: const Center(child: CircularProgressIndicator()),
                       ),
                       errorWidget: (context, url, error) => Container(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
+                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
                         child: Icon(
                           Icons.assignment_ind,
                           size: 64,
@@ -436,7 +436,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                               onChanged: (value) {
                                 setState(() => _isLeaderPosition = value);
                               },
-                              activeColor: teamColor,
+                              activeThumbColor: teamColor,
                             ),
                           ],
                         ),
@@ -602,7 +602,7 @@ class _PositionFormPageState extends State<PositionFormPage> {
                               onChanged: (value) {
                                 setState(() => _isActive = value);
                               },
-                              activeColor: teamColor,
+                              activeThumbColor: teamColor,
                             ),
                           ],
                         ),

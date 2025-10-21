@@ -226,7 +226,7 @@ class _TeamAssignmentsPageState extends State<TeamAssignmentsPage> {
           margin: const EdgeInsets.all(AppTheme.spaceMedium),
           padding: const EdgeInsets.all(AppTheme.spaceMedium),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
           child: Row(

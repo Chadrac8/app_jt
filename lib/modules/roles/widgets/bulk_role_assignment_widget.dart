@@ -4,7 +4,6 @@ import '../models/permission_model.dart';
 import '../dialogs/assign_role_to_persons_dialog.dart';
 import '../dialogs/assign_roles_to_person_dialog.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Widget pour l'assignation en masse de rôles
 class BulkRoleAssignmentWidget extends StatefulWidget {

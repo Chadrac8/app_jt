@@ -1397,7 +1397,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                 _isActive = value;
                               });
                             },
-                            activeColor: Theme.of(context).colorScheme.secondary,
+                            activeThumbColor: Theme.of(context).colorScheme.secondary,
                           ),
                           if (widget.person == null) // Seulement lors de la création
                             SwitchListTile(
@@ -1411,7 +1411,7 @@ class _PersonFormPageState extends State<PersonFormPage>
                                   _createUserAccount = value;
                                 });
                               },
-                              activeColor: Theme.of(context).colorScheme.secondary,
+                              activeThumbColor: Theme.of(context).colorScheme.secondary,
                             ),
                         ],
                       ),
@@ -1632,7 +1632,7 @@ class _PersonFormPageState extends State<PersonFormPage>
     required ValueChanged<String?> onChanged,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       onChanged: onChanged,
       items: items.map((item) {
         return DropdownMenuItem(

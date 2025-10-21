@@ -133,7 +133,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
         ),
         const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<RecurrenceType>(
-          value: _type,
+          initialValue: _type,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -296,7 +296,7 @@ class _EventRecurrenceWidgetState extends State<EventRecurrenceWidget> {
         ),
         const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<int>(
-          value: _dayOfMonth,
+          initialValue: _dayOfMonth,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),

@@ -4,7 +4,6 @@ import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import 'daily_reading_view.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class ActiveReadingPlanView extends StatefulWidget {
   final ReadingPlan plan;
@@ -245,7 +244,7 @@ class _ActiveReadingPlanViewState extends State<ActiveReadingPlanView> {
           Container(
             padding: const EdgeInsets.all(AppTheme.space12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.background,
+              color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
             child: Column(

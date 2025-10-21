@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../theme.dart';
 import '../models/church_life_item.dart';
 import '../services/church_life_service.dart';
-import '../../../theme.dart';
 
 class ChurchLifeTab extends StatefulWidget {
   const ChurchLifeTab({Key? key}) : super(key: key);

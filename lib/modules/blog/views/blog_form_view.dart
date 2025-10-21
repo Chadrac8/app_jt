@@ -6,7 +6,6 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Vue de formulaire pour créer/modifier un article de blog
 class BlogFormView extends StatefulWidget {
@@ -509,7 +508,7 @@ class _BlogFormViewState extends State<BlogFormView>
                     decoration: BoxDecoration(
                       color: AppTheme.grey200,
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                      border: Border.all(color: AppTheme.grey300!),
+                      border: Border.all(color: AppTheme.grey300),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -606,7 +605,7 @@ class _BlogFormViewState extends State<BlogFormView>
           
           // Statut
           DropdownButtonFormField<BlogPostStatus>(
-            value: _status,
+            initialValue: _status,
             decoration: const InputDecoration(
               labelText: 'Statut',
               border: OutlineInputBorder(),

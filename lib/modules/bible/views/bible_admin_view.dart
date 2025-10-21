@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import './bible_reading_view.dart';
-import '../../../theme.dart';
 
 class BibleAdminView extends StatefulWidget {
   const BibleAdminView({Key? key}) : super(key: key);

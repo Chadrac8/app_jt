@@ -917,7 +917,7 @@ class _ServiceDetailPageState extends State<ServiceDetailPage>
             Container(
               padding: const EdgeInsets.all(AppTheme.spaceSmall),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Text(

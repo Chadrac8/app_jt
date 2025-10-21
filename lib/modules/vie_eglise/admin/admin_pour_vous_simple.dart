@@ -4,7 +4,6 @@ import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
 import '../services/action_group_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -626,7 +625,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                 ),
                 const SizedBox(height: AppTheme.spaceMedium),
                 DropdownButtonFormField<String>(
-                  value: _actionType,
+                  initialValue: _actionType,
                   decoration: const InputDecoration(
                     labelText: 'Type d\'action',
                     border: OutlineInputBorder(),
@@ -644,7 +643,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                 ),
                 const SizedBox(height: AppTheme.spaceMedium),
                 DropdownButtonFormField<String>(
-                  value: (['rendez_vous','groupes','mur_priere','bible','message','benevolat'].contains(_targetModule)) ? _targetModule : null,
+                  initialValue: (['rendez_vous','groupes','mur_priere','bible','message','benevolat'].contains(_targetModule)) ? _targetModule : null,
                   decoration: const InputDecoration(
                     labelText: 'Module cible',
                     border: OutlineInputBorder(),
@@ -674,7 +673,7 @@ class _ActionFormDialogState extends State<_ActionFormDialog> {
                 ),
                 const SizedBox(height: AppTheme.spaceMedium),
                 DropdownButtonFormField<String?>(
-                  value: (widget.groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
+                  initialValue: (widget.groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
                   decoration: const InputDecoration(
                     labelText: 'Groupe',
                     border: OutlineInputBorder(),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../views/role_assignment_screen.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Widget de navigation pour le module des rôles et permissions
 class RoleModuleMenuWidget extends StatelessWidget {

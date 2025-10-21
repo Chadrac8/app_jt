@@ -6,8 +6,6 @@ import 'views/songs_member_view.dart';
 import 'views/songs_admin_view.dart';
 import 'views/song_detail_view.dart';
 import 'views/song_form_view.dart';
-import 'views/songs_home_page.dart';
-import 'views/member_songs_page.dart';
 import 'services/songs_service.dart';
 import '../../../theme.dart';
 
@@ -266,9 +264,6 @@ class SongsModule extends BaseModule {
   Future<bool> verifyModuleIntegrity() async {
     try {
       // Vérifier que le service est initialisé
-      if (_songsService == null) return false;
-      
-      // Vérifier les catégories par défaut
       final categories = await _songsService.categories.getActiveCategories();
       if (categories.isEmpty) {
         print('⚠️  Aucune catégorie trouvée, réinitialisation...');

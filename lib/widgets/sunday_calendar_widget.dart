@@ -273,9 +273,9 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
     String status;
 
     if (isPast) {
-      backgroundColor = AppTheme.grey100!;
-      borderColor = AppTheme.grey300!;
-      textColor = AppTheme.grey600!;
+      backgroundColor = AppTheme.grey100;
+      borderColor = AppTheme.grey300;
+      textColor = AppTheme.grey600;
       icon = Icons.history;
       status = 'Passé';
     } else if (isReserved) {
@@ -299,9 +299,9 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
       icon = Icons.check_circle_outline;
       status = 'Disponible';
     } else {
-      backgroundColor = AppTheme.grey100!;
-      borderColor = AppTheme.grey300!;
-      textColor = AppTheme.grey600!;
+      backgroundColor = AppTheme.grey100;
+      borderColor = AppTheme.grey300;
+      textColor = AppTheme.grey600;
       icon = Icons.block;
       status = 'Indisponible';
     }
@@ -495,7 +495,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
               decoration: BoxDecoration(
                 color: AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                border: Border.all(color: AppTheme.grey200!),
+                border: Border.all(color: AppTheme.grey200),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

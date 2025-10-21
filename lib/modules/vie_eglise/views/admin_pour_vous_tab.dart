@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../services/pour_vous_action_service.dart';
-import '../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);
@@ -678,7 +677,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                     
                     // Type d'action
                     DropdownButtonFormField<String>(
-                      value: selectedActionType,
+                      initialValue: selectedActionType,
                       decoration: InputDecoration(
                         labelText: 'Type d\'action',
                         labelStyle: GoogleFonts.poppins(),
@@ -780,7 +779,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab> {
                               isActive = value;
                             });
                           },
-                          activeColor: AppTheme.primaryColor,
+                          activeThumbColor: AppTheme.primaryColor,
                         ),
                         Text(
                           isActive ? 'Active' : 'Inactive',

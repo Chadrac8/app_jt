@@ -4,7 +4,6 @@ import '../models/reading_plan.dart';
 import '../bible_service.dart';
 import '../bible_model.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class DailyReadingView extends StatefulWidget {
   final ReadingPlan plan;
@@ -142,7 +141,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,

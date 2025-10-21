@@ -253,7 +253,7 @@ class _SpecialSongAdminPageState extends State<SpecialSongAdminPage>
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
-          color: isPast ? AppTheme.grey300! : AppTheme.primaryColor.withOpacity(0.3),
+          color: isPast ? AppTheme.grey300 : AppTheme.primaryColor.withOpacity(0.3),
         ),
         boxShadow: [
           BoxShadow(

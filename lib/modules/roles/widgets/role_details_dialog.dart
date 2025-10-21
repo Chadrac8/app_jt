@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/role.dart';
 import '../dialogs/create_edit_role_dialog.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class RoleDetailsDialog extends StatelessWidget {
   final Role role;
@@ -92,7 +91,7 @@ class RoleDetailsDialog extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: _parseColor(role.color),
                           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                          border: Border.all(color: AppTheme.grey300!),
+                          border: Border.all(color: AppTheme.grey300),
                         ),
                       ),
                     ),

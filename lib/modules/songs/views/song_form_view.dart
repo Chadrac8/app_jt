@@ -6,7 +6,6 @@ import '../models/song.dart';
 import '../models/song_category.dart';
 import '../services/songs_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Vue de formulaire pour créer/modifier un chant
 class SongFormView extends StatefulWidget {

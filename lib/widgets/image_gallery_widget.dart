@@ -223,7 +223,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
               border: Border.all(
                 color: isSelected 
                     ? AppTheme.primaryColor 
-                    : AppTheme.grey300!,
+                    : AppTheme.grey300,
                 width: isSelected ? 3 : 1,
               ),
             ),

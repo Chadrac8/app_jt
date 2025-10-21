@@ -188,7 +188,7 @@ class QuickPropertyPage extends StatelessWidget {
           '🏛️ Fondateur',
           '1000€ et plus',
           'Vision à long terme de l\'église',
-          AppTheme.primaryColor.withAlpha(51)!,
+          AppTheme.primaryColor.withAlpha(51),
           AppTheme.primaryColor,
         ),
       ],

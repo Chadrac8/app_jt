@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import '../models/blog_model.dart';
 import '../services/blog_firebase_service.dart';
 
@@ -299,7 +298,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
       width: double.infinity,
       height: 200,
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
         color: AppTheme.grey50,
       ),
@@ -355,7 +354,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
         width: double.infinity,
         height: 100,
         decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.grey300!),
+          border: Border.all(color: AppTheme.grey300),
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           color: AppTheme.grey50,
         ),
@@ -431,7 +430,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
           ),
           const SizedBox(height: AppTheme.spaceSmall),
           DropdownButtonFormField<BlogPostStatus>(
-            value: _selectedStatus,
+            initialValue: _selectedStatus,
             decoration: const InputDecoration(border: OutlineInputBorder()),
             items: BlogPostStatus.values.map((status) {
               return DropdownMenuItem(
@@ -461,7 +460,7 @@ class _BlogPostFormPageState extends State<BlogPostFormPage> with TickerProvider
               onTap: _selectScheduledDate,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                side: BorderSide(color: AppTheme.grey300!),
+                side: BorderSide(color: AppTheme.grey300),
               ),
             ),
             const SizedBox(height: AppTheme.spaceMedium),

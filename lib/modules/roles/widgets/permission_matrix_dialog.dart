@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class PermissionMatrixDialog extends StatefulWidget {
   const PermissionMatrixDialog({super.key});
@@ -84,7 +83,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedModule.isEmpty ? null : _selectedModule,
+                    initialValue: _selectedModule.isEmpty ? null : _selectedModule,
                     decoration: const InputDecoration(
                       labelText: 'Filtrer par module',
                       border: OutlineInputBorder(),
@@ -336,7 +335,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                                 border: Border.all(
                                   color: hasPermission
                                       ? AppTheme.grey400
-                                      : AppTheme.grey300!,
+                                      : AppTheme.grey300,
                                 ),
                               ),
                               child: Icon(
@@ -569,7 +568,7 @@ class _PermissionMatrixDialogState extends State<PermissionMatrixDialog> {
                 padding: const EdgeInsets.all(AppTheme.spaceMedium),
                 decoration: BoxDecoration(
                   color: AppTheme.grey50,
-                  border: Border.all(color: AppTheme.grey300!),
+                  border: Border.all(color: AppTheme.grey300),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: SelectableText(

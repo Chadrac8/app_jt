@@ -14,7 +14,6 @@ class DonationsPage extends StatefulWidget {
 }
 
 class _DonationsPageState extends State<DonationsPage> {
-  bool _showRIB = false;
 
   final List<DonationType> _donationTypes = [
     DonationType(
@@ -78,8 +77,6 @@ class _DonationsPageState extends State<DonationsPage> {
             _buildDonationTypes(colorScheme, textTheme),
             const SizedBox(height: AppTheme.spaceXLarge),
             _buildPaymentMethods(colorScheme, textTheme),
-            const SizedBox(height: AppTheme.spaceLarge),
-            if (_showRIB) _buildRIBSection(colorScheme, textTheme),
           ],
         ),
       ),
@@ -320,11 +317,7 @@ class _DonationsPageState extends State<DonationsPage> {
           icon: Icons.account_balance,
           title: 'Virement bancaire',
           description: 'Virement SEPA gratuit',
-          onTap: () {
-            setState(() {
-              _showRIB = !_showRIB;
-            });
-          },
+          onTap: _showRIBBottomSheet,
           colorScheme: colorScheme,
           textTheme: textTheme,
         ),
@@ -429,168 +422,9 @@ class _DonationsPageState extends State<DonationsPage> {
           );
   }
 
-  Widget _buildRIBSection(ColorScheme colorScheme, TextTheme textTheme) {
-    return Container(
-      padding: EdgeInsets.all(AppTheme.adaptivePadding), // Adaptatif
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppTheme.actionCardRadius), // Adaptatif
-        border: Border.all(
-          color: colorScheme.primary.withOpacity(0.18),
-          width: AppTheme.actionCardBorderWidth, // Adaptatif
-        ),
-        boxShadow: AppTheme.isApplePlatform
-            ? [] // iOS: pas de shadow
-            : [
-                BoxShadow(
-                  color: colorScheme.shadow.withOpacity(0.08),
-                  blurRadius: 15,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.account_balance,
-                color: colorScheme.primary,
-                size: 24,
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Text(
-                'Informations bancaires',
-                style: textTheme.titleMedium?.copyWith(
-                  color: colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppTheme.space20),
-          _buildRIBField('Titulaire du compte', _titulaire, colorScheme, textTheme),
-          _buildRIBField('IBAN', _iban, colorScheme, textTheme),
-          _buildRIBField('BIC/SWIFT', _bic, colorScheme, textTheme),
-          const SizedBox(height: AppTheme.space20),
-          Row(
-            children: [
-              Expanded(
-                child: _buildActionButton(
-                  'Copier IBAN',
-                  Icons.copy,
-                  () => _copyToClipboard(_iban, 'IBAN copié'),
-                  colorScheme,
-                  textTheme,
-                ),
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Expanded(
-                child: _buildActionButton(
-                  'Partager',
-                  Icons.share,
-                  _shareRIB,
-                  colorScheme,
-                  textTheme,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppTheme.spaceMedium),
-          Container(
-            padding: const EdgeInsets.all(AppTheme.spaceMedium),
-            decoration: BoxDecoration(
-              color: colorScheme.secondary.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-              border: Border.all(
-                color: colorScheme.secondary.withOpacity(0.18),
-                width: 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.info_outline,
-                  color: colorScheme.onSurfaceVariant,
-                  size: 20,
-                ),
-                const SizedBox(width: AppTheme.space12),
-                Expanded(
-                  child: Text(
-                    'Précisez le type de don en commentaire du virement',
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildRIBField(String label, String value, ColorScheme colorScheme, TextTheme textTheme) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: AppTheme.space6),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(AppTheme.space12),
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceVariant,
-              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-              border: Border.all(
-                color: colorScheme.outline.withOpacity(0.18),
-                width: 1,
-              ),
-            ),
-            child: Text(
-              value,
-              style: textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurface,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'RobotoMono',
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildActionButton(String text, IconData icon, VoidCallback onPressed, ColorScheme colorScheme, TextTheme textTheme) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, size: 16),
-      label: Text(text),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 2,
-        textStyle: textTheme.bodyMedium?.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
+
 
   void _copyToClipboard(String text, String message) {
     Clipboard.setData(ClipboardData(text: text));
@@ -623,6 +457,191 @@ Merci pour votre générosité ! 🙏
 ''';
     
     Share.share(text, subject: 'Informations bancaires - Jubilé Tabernacle France');
+  }
+
+  Widget _buildRIBFieldBottomSheet(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: AppTheme.fontSize12,
+              fontWeight: AppTheme.fontMedium,
+              color: AppTheme.textSecondaryColor,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppTheme.white100.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: AppTheme.textSecondaryColor.withOpacity(0.18),
+                width: 1,
+              ),
+            ),
+            child: Text(
+              value,
+              style: GoogleFonts.robotoMono(
+                fontSize: AppTheme.fontSize14,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.textPrimaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtonBottomSheet(String text, IconData icon, VoidCallback onPressed) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 16),
+      label: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: AppTheme.white100,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 2,
+        textStyle: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          fontWeight: AppTheme.fontMedium,
+        ),
+      ),
+    );
+  }
+
+  void _showRIBBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
+        decoration: const BoxDecoration(
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Handle bar
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppTheme.textSecondaryColor.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            
+            // Header
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.account_balance,
+                    color: AppTheme.primaryColor,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  'Informations bancaires',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize20,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.textPrimaryColor,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            
+            // RIB fields
+            _buildRIBFieldBottomSheet('Titulaire du compte', _titulaire),
+            _buildRIBFieldBottomSheet('IBAN', _iban),
+            _buildRIBFieldBottomSheet('BIC/SWIFT', _bic),
+            
+            // Action buttons
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionButtonBottomSheet(
+                    'Copier IBAN',
+                    Icons.copy,
+                    () => _copyToClipboard(_iban, 'IBAN copié'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildActionButtonBottomSheet(
+                    'Partager',
+                    Icons.share,
+                    _shareRIB,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Info notice
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.secondaryColor.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppTheme.secondaryColor.withOpacity(0.18),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: AppTheme.textSecondaryColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Précisez le type de don en commentaire du virement',
+                      style: GoogleFonts.inter(
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontMedium,
+                        color: AppTheme.textSecondaryColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            // Bottom padding for safe area
+            SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showCheckInstructions() {

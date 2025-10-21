@@ -467,7 +467,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                   decoration: BoxDecoration(
                     color: AppTheme.white100,
                     borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                    border: Border.all(color: AppTheme.grey300!),
+                    border: Border.all(color: AppTheme.grey300),
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
@@ -814,7 +814,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                 ? AppTheme.grey300 
                 : isDueSoon 
                     ? AppTheme.grey300 
-                    : AppTheme.grey200!,
+                    : AppTheme.grey200,
             width: isOverdue || isDueSoon ? 2 : 1,
           ),
         ),
@@ -978,7 +978,7 @@ class _MemberTasksPageState extends State<MemberTasksPage>
       case 'low':
         return AppTheme.grey600;
       default:
-        return AppTheme.grey600!;
+        return AppTheme.grey600;
     }
   }
 

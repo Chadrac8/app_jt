@@ -6,7 +6,6 @@ import '../services/thematic_passage_service.dart';
 import '../bible_service.dart';
 import '../widgets/theme_creation_dialog.dart';
 import '../widgets/add_passage_dialog.dart';
-import '../../../theme.dart';
 
 class ThematicPassagesView extends StatefulWidget {
   final String? selectedThemeId;
@@ -714,7 +713,7 @@ class _PassageCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
-        color: theme.colorScheme.background,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
           color: theme.colorScheme.outline.withOpacity(0.2),

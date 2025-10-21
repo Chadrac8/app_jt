@@ -421,7 +421,7 @@ class _WorkflowEditPageState extends State<WorkflowEditPage> {
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
-              value: _selectedStatus,
+              initialValue: _selectedStatus,
               decoration: const InputDecoration(
                 labelText: 'Statut',
                 border: OutlineInputBorder(),

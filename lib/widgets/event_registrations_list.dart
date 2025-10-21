@@ -254,7 +254,7 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
                     // Filtre par statut
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: _statusFilter,
+                        initialValue: _statusFilter,
                         decoration: InputDecoration(
                           labelText: 'Statut',
                           border: OutlineInputBorder(

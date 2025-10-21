@@ -4,7 +4,6 @@ import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import 'bible_article_form_view.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class BibleArticleDetailView extends StatefulWidget {
   final BibleArticle article;

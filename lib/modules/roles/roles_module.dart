@@ -2,8 +2,6 @@
 library roles_module;
 
 import 'package:flutter/material.dart';
-import 'models/permission.dart';
-import 'models/role.dart';
 import 'models/user_role.dart';
 import 'services/role_service.dart';
 import 'providers/role_provider.dart';

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/permission_model.dart';
 import '../services/current_user_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Dialogue pour assigner un rôle à plusieurs personnes existantes
 class AssignRoleToPersonsDialog extends StatefulWidget {

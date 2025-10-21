@@ -88,7 +88,7 @@ class _MediaPlayerConfigWidgetState extends State<MediaPlayerConfigWidget> {
   Widget _buildPlaybackModeSelector() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: Column(

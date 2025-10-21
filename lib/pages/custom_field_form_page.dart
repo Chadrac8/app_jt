@@ -201,7 +201,7 @@ class _CustomFieldFormPageState extends State<CustomFieldFormPage> {
 
               // Field Type
               DropdownButtonFormField<CustomFieldType>(
-                value: _selectedType,
+                initialValue: _selectedType,
                 decoration: const InputDecoration(
                   labelText: 'Type de champ *',
                   border: OutlineInputBorder(),

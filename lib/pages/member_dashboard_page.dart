@@ -976,7 +976,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
               Container(
                 padding: const EdgeInsets.all(AppTheme.space20),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                   border: Border.all(
                     color: AppTheme.redStandard.withOpacity(0.2),
@@ -996,8 +996,8 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
-                      Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.1),
+                      Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                      Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(20),
@@ -1099,7 +1099,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
           end: Alignment.bottomRight,
           colors: [
             Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+            Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5),
           ],
         ),
         borderRadius: BorderRadius.circular(20),

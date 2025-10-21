@@ -1,9 +1,4 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/person_model.dart';
@@ -15,8 +10,6 @@ import '../services/people_module_service.dart';
 import '../auth/auth_service.dart';
 
 import '../../theme.dart';
-import '../widgets/custom_page_app_bar.dart';
-import '../widgets/admin_navigation_wrapper.dart';
 import '../widgets/user_avatar.dart';
 import '../widgets/family_info_widget.dart';
 import '../extensions/datetime_extensions.dart';
@@ -1974,7 +1967,7 @@ class _MemberProfilePageState extends State<MemberProfilePage>
     }
     
     return DropdownButtonFormField<String>(
-      value: validValue,
+      initialValue: validValue,
       onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,

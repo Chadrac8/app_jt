@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../theme.dart';
 
 class PeopleCustomListsPage extends StatelessWidget {
   const PeopleCustomListsPage({super.key});

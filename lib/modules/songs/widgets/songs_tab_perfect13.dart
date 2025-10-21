@@ -4,7 +4,6 @@ import '../services/songs_firebase_service.dart';
 import '../../../widgets/song_lyrics_viewer.dart';
 import '../../../pages/song_projection_page.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Onglet Chants - Reproduction exacte de Perfect 13
 class SongsTabPerfect13 extends StatefulWidget {

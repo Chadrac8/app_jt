@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../auth/auth_service.dart';
 import 'bottom_navigation_wrapper.dart';
 import '../../theme.dart';
 

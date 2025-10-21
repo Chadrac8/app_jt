@@ -5,7 +5,6 @@ import '../services/reading_plan_service.dart';
 import 'reading_plan_detail_view.dart';
 import 'active_reading_plan_view.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class ReadingPlansHomePage extends StatefulWidget {
   const ReadingPlansHomePage({Key? key}) : super(key: key);
@@ -87,7 +86,7 @@ class _ReadingPlansHomePageState extends State<ReadingPlansHomePage>
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,

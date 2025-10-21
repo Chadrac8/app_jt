@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import '../models/role.dart';
-import '../models/permission.dart';
 
 /// Service avancé simplifié pour la gestion des rôles et permissions
 class AdvancedRolesPermissionsService {

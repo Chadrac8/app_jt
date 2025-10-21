@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/current_user_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Dialogue pour assigner plusieurs rôles à une personne existante
 class AssignRolesToPersonDialog extends StatefulWidget {

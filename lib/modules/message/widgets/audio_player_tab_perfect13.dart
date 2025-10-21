@@ -6,7 +6,6 @@ import '../services/admin_branham_sermon_service.dart';
 import '../services/branham_audio_player_service.dart';
 import 'dart:async';
 import 'dart:math' as math;
-import '../../../theme.dart';
 
 // Primary color for the app theme
 const Color _primaryColor = Color(0xFF860505); // Rouge bordeaux pour s'harmoniser avec le thème
@@ -1423,7 +1422,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       ),
                       trailing: Switch(
                         value: _isLoopEnabled,
-                        activeColor: _primaryColor,
+                        activeThumbColor: _primaryColor,
                         onChanged: (value) {
                           _toggleLoop(setModalState);
                         },
@@ -1450,7 +1449,7 @@ class _AudioPlayerTabPerfect13State extends State<AudioPlayerTabPerfect13>
                       ),
                       trailing: Switch(
                         value: _isShuffleEnabled,
-                        activeColor: _primaryColor,
+                        activeThumbColor: _primaryColor,
                         onChanged: (value) {
                           _toggleShuffle(setModalState);
                         },

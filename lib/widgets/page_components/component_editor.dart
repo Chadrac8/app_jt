@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../models/page_model.dart';
 import '../../models/image_action_model.dart';
 import '../../models/component_action_model.dart';
-import '../../services/image_action_service.dart';
 import '../../services/component_action_service.dart';
 import '../../services/youtube_service.dart';
 import '../../services/soundcloud_service.dart';
@@ -198,7 +197,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             Container(
               padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: AppTheme.grey300!)),
+                border: Border(top: BorderSide(color: AppTheme.grey300)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -312,7 +311,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           children: [
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _data['textAlign'] ?? 'left',
+                initialValue: _data['textAlign'] ?? 'left',
                 decoration: const InputDecoration(
                   labelText: 'Alignement',
                   border: OutlineInputBorder(),
@@ -398,7 +397,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _data['fit'] ?? 'cover',
+                initialValue: _data['fit'] ?? 'cover',
                 decoration: const InputDecoration(
                   labelText: 'Ajustement',
                   border: OutlineInputBorder(),
@@ -454,7 +453,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         if (hasAction) ...[
           const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<String>(
-            value: action?.type ?? 'url',
+            initialValue: action?.type ?? 'url',
             decoration: const InputDecoration(
               labelText: 'Type d\'action',
               border: OutlineInputBorder(),
@@ -509,7 +508,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownButtonFormField<String>(
-          value: action.memberPage,
+          initialValue: action.memberPage,
           decoration: const InputDecoration(
             labelText: 'Page membre',
             border: OutlineInputBorder(),
@@ -697,7 +696,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           children: [
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _data['style'] ?? 'primary',
+                initialValue: _data['style'] ?? 'primary',
                 decoration: const InputDecoration(
                   labelText: 'Style',
                   border: OutlineInputBorder(),
@@ -714,7 +713,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _data['size'] ?? 'medium',
+                initialValue: _data['size'] ?? 'medium',
                 decoration: const InputDecoration(
                   labelText: 'Taille',
                   border: OutlineInputBorder(),
@@ -949,7 +948,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
-          value: _data['listType'] ?? 'simple',
+          initialValue: _data['listType'] ?? 'simple',
           decoration: const InputDecoration(
             labelText: 'Type de liste',
             border: OutlineInputBorder(),
@@ -1215,7 +1214,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
           children: [
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _data['tabPosition'] ?? 'top',
+                initialValue: _data['tabPosition'] ?? 'top',
                 decoration: const InputDecoration(
                   labelText: 'Position des onglets',
                   border: OutlineInputBorder(),
@@ -1291,7 +1290,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _data['version'] ?? 'LSG',
+                initialValue: _data['version'] ?? 'LSG',
                 decoration: const InputDecoration(
                   labelText: 'Version',
                   border: OutlineInputBorder(),
@@ -1592,7 +1591,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withAlpha(25),
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-              border: Border.all(color: AppTheme.primaryColor.withAlpha(102)!),
+              border: Border.all(color: AppTheme.primaryColor.withAlpha(102)),
             ),
             child: Row(
               children: [
@@ -1786,7 +1785,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2159,7 +2158,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
             const SizedBox(width: AppTheme.spaceMedium),
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _data['mapType'] ?? 'roadmap',
+                initialValue: _data['mapType'] ?? 'roadmap',
                 decoration: const InputDecoration(
                   labelText: 'Type de carte',
                   border: OutlineInputBorder(),
@@ -2358,7 +2357,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
-          value: _data['displayMode'] ?? 'cards',
+          initialValue: _data['displayMode'] ?? 'cards',
           decoration: const InputDecoration(
             labelText: 'Mode d\'affichage',
             border: OutlineInputBorder(),
@@ -2391,7 +2390,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
-          value: _data['filterBy'] ?? 'all',
+          initialValue: _data['filterBy'] ?? 'all',
           decoration: const InputDecoration(
             labelText: 'Filtrer les groupes',
             border: OutlineInputBorder(),
@@ -2513,7 +2512,7 @@ class _ComponentEditorState extends State<ComponentEditor> {
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
-          value: _data['displayMode'] ?? 'cards',
+          initialValue: _data['displayMode'] ?? 'cards',
           decoration: const InputDecoration(
             labelText: 'Mode d\'affichage',
             border: OutlineInputBorder(),

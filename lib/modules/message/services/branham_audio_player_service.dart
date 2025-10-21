@@ -1,8 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 import '../models/branham_sermon_model.dart';
 
-import 'package:just_audio/just_audio.dart';
-import '../models/branham_sermon_model.dart';
 
 /// Service audio Flutter pour les prédications de Branham
 class BranhamAudioPlayerService {

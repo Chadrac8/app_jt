@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../image_upload.dart';
@@ -326,7 +325,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-              border: Border.all(color: AppTheme.grey300!),
+              border: Border.all(color: AppTheme.grey300),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),

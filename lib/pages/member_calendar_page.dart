@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/event_model.dart';
-import '../models/group_model.dart';
-import '../models/service_model.dart';
 import '../../theme.dart';
 
 class MemberCalendarPage extends StatefulWidget {

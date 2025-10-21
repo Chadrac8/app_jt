@@ -603,7 +603,7 @@ class _GroupCardState extends State<GroupCard>
                         return const SizedBox(height: AppTheme.spaceMedium);
                       }
                       
-                      final members = snapshot.data! as List;
+                      final members = snapshot.data!;
                       return Row(
                         children: [
                           Icon(

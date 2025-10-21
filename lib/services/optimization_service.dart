@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'dart:typed_data';
 import '../theme.dart';
 
 /// Service d'optimisation des images et assets

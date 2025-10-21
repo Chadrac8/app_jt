@@ -1,6 +1,5 @@
 /// Helper pour suggestions de champs standards et personnalisés
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/custom_field_model.dart';
 import '../services/custom_fields_firebase_service.dart';
 
 class FieldsSuggestionHelper {

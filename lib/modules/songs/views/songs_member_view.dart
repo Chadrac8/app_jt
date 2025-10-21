@@ -7,7 +7,6 @@ import '../../../auth/auth_service.dart';
 import '../models/song.dart';
 import '../models/song_category.dart';
 import 'song_detail_view.dart';
-import '../../../theme.dart';
 
 /// Vue membre pour la gestion des chants
 class SongsMemberView extends StatefulWidget {

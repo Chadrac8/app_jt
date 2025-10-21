@@ -6,7 +6,6 @@ import '../providers/role_provider.dart';
 import '../services/current_user_service.dart';
 import '../widgets/module_permissions_selector.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class CreateEditRoleDialog extends StatefulWidget {
   final Role? existingRole;

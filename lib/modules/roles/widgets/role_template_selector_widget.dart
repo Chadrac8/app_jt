@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../models/role_template_model.dart';
 import '../providers/role_template_provider.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Widget de sélection de template de rôle
 class RoleTemplateSelectorWidget extends StatefulWidget {
@@ -142,7 +141,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
             const SizedBox(width: AppTheme.space12),
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _selectedCategory.isEmpty ? null : _selectedCategory,
+                initialValue: _selectedCategory.isEmpty ? null : _selectedCategory,
                 decoration: const InputDecoration(
                   labelText: 'Catégorie',
                   border: OutlineInputBorder(),
@@ -211,7 +210,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
       return Container(
         height: 200,
         decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.grey300!),
+          border: Border.all(color: AppTheme.grey300),
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         ),
         child: const Center(
@@ -237,7 +236,7 @@ class _RoleTemplateSelectorWidgetState extends State<RoleTemplateSelectorWidget>
     return Container(
       height: 300,
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: ListView.builder(

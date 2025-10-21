@@ -1016,7 +1016,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               icon: Icons.visibility,
               children: [
                 DropdownButtonFormField<String>(
-                  value: _visibility,
+                  initialValue: _visibility,
                   decoration: const InputDecoration(
                     labelText: 'Qui peut voir cette page ?',
                     border: OutlineInputBorder(),
@@ -1044,7 +1044,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                   Container(
                     height: 100,
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppTheme.grey300!),
+                      border: Border.all(color: AppTheme.grey300),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: const Center(
@@ -1068,7 +1068,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               children: [
                 // Type de disposition
                 DropdownButtonFormField<String>(
-                  value: _layoutType,
+                  initialValue: _layoutType,
                   decoration: const InputDecoration(
                     labelText: 'Type de disposition',
                     border: OutlineInputBorder(),
@@ -1309,7 +1309,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               icon: Icons.wallpaper,
               children: [
                 DropdownButtonFormField<String>(
-                  value: _backgroundType,
+                  initialValue: _backgroundType,
                   decoration: const InputDecoration(
                     labelText: 'Type d\'arrière-plan',
                     border: OutlineInputBorder(),
@@ -1358,7 +1358,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                         int.parse(_backgroundColor.replaceFirst('#', '0xFF'))
                       ),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                      border: Border.all(color: AppTheme.grey300!),
+                      border: Border.all(color: AppTheme.grey300),
                     ),
                     child: const Center(
                       child: Text(
@@ -1406,7 +1406,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                        border: Border.all(color: AppTheme.grey300!),
+                        border: Border.all(color: AppTheme.grey300),
                         image: DecorationImage(
                           image: NetworkImage(_backgroundImageUrl),
                           fit: BoxFit.cover,
@@ -1471,7 +1471,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
               icon: Icons.publish,
               children: [
                 DropdownButtonFormField<String>(
-                  value: _status,
+                  initialValue: _status,
                   decoration: const InputDecoration(
                     labelText: 'Statut',
                     border: OutlineInputBorder(),
@@ -1628,7 +1628,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 icon: Icons.visibility,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: _visibility,
+                    initialValue: _visibility,
                     decoration: const InputDecoration(
                       labelText: 'Qui peut voir cette page ?',
                       border: OutlineInputBorder(),
@@ -1656,7 +1656,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     Container(
                       height: 100,
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppTheme.grey300!),
+                        border: Border.all(color: AppTheme.grey300),
                         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                       ),
                       child: const Center(
@@ -1679,7 +1679,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 icon: Icons.publish,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: _status,
+                    initialValue: _status,
                     decoration: const InputDecoration(
                       labelText: 'Statut',
                       border: OutlineInputBorder(),
@@ -1728,7 +1728,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                   ),
                   const SizedBox(height: AppTheme.spaceMedium),
                   DropdownButtonFormField<String>(
-                    value: _layoutType,
+                    initialValue: _layoutType,
                     decoration: const InputDecoration(
                       labelText: 'Type de disposition',
                       border: OutlineInputBorder(),
@@ -1860,7 +1860,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                     decoration: BoxDecoration(
                       color: AppTheme.grey50,
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                      border: Border.all(color: AppTheme.grey300!),
+                      border: Border.all(color: AppTheme.grey300),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1933,7 +1933,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 icon: Icons.palette,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: _backgroundType,
+                    initialValue: _backgroundType,
                     decoration: const InputDecoration(
                       labelText: 'Type d\'arrière-plan',
                       border: OutlineInputBorder(),
@@ -2224,7 +2224,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
       ),
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -2355,7 +2355,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                 height: 180,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                  border: Border.all(color: AppTheme.grey300!),
+                  border: Border.all(color: AppTheme.grey300),
                   boxShadow: [
                     BoxShadow(
                       color: AppTheme.black100.withOpacity(0.1),
@@ -2684,7 +2684,7 @@ class _PageBuilderPageState extends State<PageBuilderPage>
                                 width: 80,
                                 padding: const EdgeInsets.all(AppTheme.spaceSmall),
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: AppTheme.grey300!),
+                                  border: Border.all(color: AppTheme.grey300),
                                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                                 ),
                                 child: Column(

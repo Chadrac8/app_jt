@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Classe contenant les thèmes prédéfinis avec leurs passages bibliques
 class PredefinedThemes {

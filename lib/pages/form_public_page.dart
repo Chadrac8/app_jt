@@ -667,7 +667,7 @@ class _FormPublicPageState extends State<FormPublicPage>
 
   Widget _buildSelectInput(CustomFormField field) {
     return DropdownButtonFormField<String>(
-      value: _responses[field.id],
+      initialValue: _responses[field.id],
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),

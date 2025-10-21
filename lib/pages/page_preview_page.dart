@@ -385,7 +385,7 @@ class _PagePreviewPageState extends State<PagePreviewPage>
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
       ),
       child: Column(
         children: [

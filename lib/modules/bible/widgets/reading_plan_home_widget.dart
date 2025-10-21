@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import '../views/reading_plans_home_page.dart';
-import '../../../theme.dart';
 
 class ReadingPlanHomeWidget extends StatefulWidget {
   const ReadingPlanHomeWidget({Key? key}) : super(key: key);

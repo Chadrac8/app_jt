@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/group_model.dart';
-import '../models/person_model.dart';
 import '../models/recurrence_config.dart';
 import '../services/groups_firebase_service.dart';
-import '../services/firebase_service.dart';
 import '../services/group_event_integration_service.dart';
 import '../image_upload.dart';
 import '../services/image_storage_service.dart' as ImageStorage;
@@ -610,7 +607,7 @@ class _GroupFormPageState extends State<GroupFormPage>
                     Switch(
                       value: _isPublic,
                       onChanged: (value) => setState(() => _isPublic = value),
-                      activeColor: Theme.of(context).colorScheme.primary,
+                      activeThumbColor: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),
@@ -918,7 +915,7 @@ class _GroupFormPageState extends State<GroupFormPage>
     String? Function(String?)? validator,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       onChanged: onChanged,
       validator: validator,
       decoration: InputDecoration(
@@ -953,7 +950,7 @@ class _GroupFormPageState extends State<GroupFormPage>
           width: 2,
           style: BorderStyle.solid,
         ),
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
       ),
       child: Stack(
         children: [

@@ -5,7 +5,6 @@ import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/reading_plan.dart';
-import '../../../theme.dart';
 
 class ReadingPlanFormView extends StatefulWidget {
   final ReadingPlan? plan;
@@ -200,7 +199,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _selectedCategory,
+                  initialValue: _selectedCategory,
                   decoration: InputDecoration(
                     labelText: 'Catégorie',
                     border: OutlineInputBorder(
@@ -224,7 +223,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _selectedDifficulty,
+                  initialValue: _selectedDifficulty,
                   decoration: InputDecoration(
                     labelText: 'Difficulté',
                     border: OutlineInputBorder(
@@ -694,7 +693,7 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<String>(
-                  value: book,
+                  initialValue: book,
                   decoration: const InputDecoration(labelText: 'Livre'),
                   items: [
                     'Genèse', 'Exode', 'Lévitique', 'Nombres', 'Deutéronome',

@@ -409,7 +409,7 @@ class _FormsHomePageState extends State<FormsHomePage>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _statusFilter.isEmpty ? null : _statusFilter,
+                  initialValue: _statusFilter.isEmpty ? null : _statusFilter,
                   onChanged: _onStatusFilterChanged,
                   decoration: InputDecoration(
                     labelText: 'Statut',
@@ -429,7 +429,7 @@ class _FormsHomePageState extends State<FormsHomePage>
               const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _accessibilityFilter.isEmpty ? null : _accessibilityFilter,
+                  initialValue: _accessibilityFilter.isEmpty ? null : _accessibilityFilter,
                   onChanged: _onAccessibilityFilterChanged,
                   decoration: InputDecoration(
                     labelText: 'Visibilité',

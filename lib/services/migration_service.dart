@@ -74,7 +74,7 @@ class MigrationService {
       final emailMap = <String, List<DocumentSnapshot>>{};
       
       for (final doc in querySnapshot.docs) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data();
         final email = data['email'] as String?;
         
         if (email != null && email.isNotEmpty) {

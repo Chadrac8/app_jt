@@ -166,7 +166,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
 
           // Type d'événement
           DropdownButtonFormField<String>(
-            value: _selectedType,
+            initialValue: _selectedType,
             decoration: const InputDecoration(
               labelText: 'Type d\'événement *',
               prefixIcon: Icon(Icons.category),
@@ -768,7 +768,7 @@ class _RecurringEventFormWidgetState extends State<RecurringEventFormWidget>
                   ),
                   const SizedBox(height: AppTheme.spaceSmall),
                   DropdownButtonFormField<String>(
-                    value: _visibility,
+                    initialValue: _visibility,
                     items: const [
                       DropdownMenuItem(value: 'publique', child: Text('Publique')),
                       DropdownMenuItem(value: 'privee', child: Text('Privée')),

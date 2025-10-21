@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import '../models/appointment_model.dart';
 import '../models/person_model.dart';
 import '../services/appointments_firebase_service.dart';
-import '../services/firebase_service.dart';
 import '../auth/auth_service.dart';
 import '../../theme.dart';
 import '../widgets/appointment_card.dart';
 import '../widgets/availability_editor.dart';
 import '../widgets/appointment_statistics_widget.dart';
 import 'appointment_detail_page.dart';
-import 'availability_management_page.dart';
 
 class AppointmentsAdminPage extends StatefulWidget {
   const AppointmentsAdminPage({super.key});
@@ -303,7 +301,7 @@ class _AppointmentsAdminPageState extends State<AppointmentsAdminPage>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: DropdownButtonFormField<String>(
-        value: _selectedResponsable,
+        initialValue: _selectedResponsable,
         decoration: InputDecoration(
           labelText: 'Filtrer par responsable',
           border: OutlineInputBorder(

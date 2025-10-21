@@ -619,7 +619,7 @@ class _TaskFormPageState extends State<TaskFormPage>
 
   Widget _buildStatusSelector() {
     return DropdownButtonFormField<String>(
-      value: _status,
+      initialValue: _status,
       decoration: const InputDecoration(
         labelText: 'Statut',
         prefixIcon: Icon(Icons.flag),
@@ -798,7 +798,7 @@ class _TaskFormPageState extends State<TaskFormPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownButtonFormField<String>(
-          value: _linkedToType,
+          initialValue: _linkedToType,
           decoration: const InputDecoration(
             labelText: 'Lier à',
             prefixIcon: Icon(Icons.link),

@@ -351,7 +351,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                     Text('Position des onglets', style: Theme.of(context).textTheme.bodyMedium),
                     const SizedBox(height: AppTheme.spaceSmall),
                     DropdownButtonFormField<String>(
-                      value: _componentData['tabPosition'],
+                      initialValue: _componentData['tabPosition'],
                       items: const [
                         DropdownMenuItem(value: 'top', child: Text('En haut')),
                         DropdownMenuItem(value: 'bottom', child: Text('En bas')),
@@ -373,7 +373,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
                     Text('Style des onglets', style: Theme.of(context).textTheme.bodyMedium),
                     const SizedBox(height: AppTheme.spaceSmall),
                     DropdownButtonFormField<String>(
-                      value: _componentData['tabStyle'],
+                      initialValue: _componentData['tabStyle'],
                       items: const [
                         DropdownMenuItem(value: 'material', child: Text('Material')),
                         DropdownMenuItem(value: 'cupertino', child: Text('Cupertino')),
@@ -551,7 +551,7 @@ class _TabPageBuilderState extends State<TabPageBuilder>
               const SizedBox(width: AppTheme.spaceMedium),
               Expanded(
                 child: DropdownButtonFormField<int>(
-                  value: _selectedTabIndex,
+                  initialValue: _selectedTabIndex,
                   items: _tabs.asMap().entries.map((entry) {
                     return DropdownMenuItem<int>(
                       value: entry.key,

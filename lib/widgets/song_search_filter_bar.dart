@@ -307,7 +307,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                     labelText: 'Style',
                     border: OutlineInputBorder(),
                   ),
-                  value: _selectedStyle,
+                  initialValue: _selectedStyle,
                   items: [
                     const DropdownMenuItem<String>(
                       value: null,
@@ -338,7 +338,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                     labelText: 'Tonalité',
                     border: OutlineInputBorder(),
                   ),
-                  value: _selectedKey,
+                  initialValue: _selectedKey,
                   items: [
                     const DropdownMenuItem<String>(
                       value: null,
@@ -370,7 +370,7 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                 labelText: 'Statut',
                 border: OutlineInputBorder(),
               ),
-              value: _selectedStatus,
+              initialValue: _selectedStatus,
               items: [
                 const DropdownMenuItem<String>(
                   value: null,

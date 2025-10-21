@@ -9,7 +9,6 @@ import '../../../pages/setlist_form_page.dart';
 import '../../../pages/songs_import_export_page.dart';
 import '../../../pages/setlist_statistics_page.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Page d'administration des chants
 class SongsHomePage extends StatefulWidget {

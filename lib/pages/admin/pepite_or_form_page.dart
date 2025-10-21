@@ -380,7 +380,7 @@ class _PepiteOrFormPageState extends State<PepiteOrFormPage> {
                   _estPubliee = value;
                 });
               },
-              activeColor: const Color(0xFF8B4513),
+              activeThumbColor: const Color(0xFF8B4513),
             ),
           ],
         ),

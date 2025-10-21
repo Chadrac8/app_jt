@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class TaskDetailView extends StatelessWidget {
   final TaskModel task;

@@ -1,12 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/dashboard_widget_model.dart';
 import '../models/person_model.dart';
-import 'firebase_service.dart';
-import 'groups_firebase_service.dart';
-import 'events_firebase_service.dart';
-import 'tasks_firebase_service.dart';
-import 'appointments_firebase_service.dart';
-import 'blog_firebase_service.dart';
 
 class StatisticsService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;

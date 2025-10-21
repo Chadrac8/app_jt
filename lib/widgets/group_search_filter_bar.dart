@@ -326,7 +326,7 @@ class _GroupSearchFilterBarState extends State<GroupSearchFilterBar>
                           Switch(
                             value: widget.showActiveOnly,
                             onChanged: _onActiveFilterChanged,
-                            activeColor: Theme.of(context).colorScheme.primary,
+                            activeThumbColor: Theme.of(context).colorScheme.primary,
                           ),
                         ],
                       ),

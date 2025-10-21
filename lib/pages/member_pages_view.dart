@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/page_model.dart';
 import '../services/pages_firebase_service.dart';
 import '../widgets/page_components/component_renderer.dart';
-import '../widgets/custom_page_app_bar.dart';
 import '../../theme.dart';
 
 class MemberPagesView extends StatefulWidget {
@@ -559,7 +558,7 @@ class _MemberPageDetailViewState extends State<MemberPageDetailView> {
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
       ),
       child: Column(
         children: [

@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../models/branham_message.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final BranhamMessage message;

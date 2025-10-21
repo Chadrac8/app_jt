@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/person_model.dart';
 import '../services/people_lists_firebase_service.dart';
 import 'people_list_create_page.dart';
 import 'people_list_detail_page.dart';

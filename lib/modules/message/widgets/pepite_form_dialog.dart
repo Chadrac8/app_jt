@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../models/pepite_or_model.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class PepiteFormDialog extends StatefulWidget {
   final PepiteOrModel? pepite; // null = création, non-null = édition
@@ -356,7 +355,7 @@ class _PepiteFormDialogState extends State<PepiteFormDialog> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
       ),
       child: Column(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../widgets/thematic_passages_home_widget.dart';
 import '../views/thematic_passages_view.dart';
 import '../widgets/theme_creation_dialog.dart';
@@ -7,7 +6,6 @@ import '../widgets/add_passage_dialog.dart';
 import '../services/thematic_passage_service.dart';
 import '../services/predefined_themes.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Fichier de démonstration des passages thématiques
 /// 
@@ -239,7 +237,7 @@ class DemoHomePage extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppTheme.grey50,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-            border: Border.all(color: AppTheme.grey300!),
+            border: Border.all(color: AppTheme.grey300),
           ),
           child: Row(
             children: [

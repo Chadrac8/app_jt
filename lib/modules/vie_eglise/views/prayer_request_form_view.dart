@@ -501,7 +501,7 @@ class _PrayerRequestFormViewState extends State<PrayerRequestFormView> {
           Switch(
             value: _isAnonymous,
             onChanged: (value) => setState(() => _isAnonymous = value),
-            activeColor: AppTheme.primaryColor,
+            activeThumbColor: AppTheme.primaryColor,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ],

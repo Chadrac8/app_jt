@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Modèle représentant une catégorie de chant
 class SongCategory {

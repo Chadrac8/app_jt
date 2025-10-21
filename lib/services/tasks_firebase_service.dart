@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:typed_data';
 import '../models/task_model.dart';
-import '../models/person_model.dart';
 
 class TasksFirebaseService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;

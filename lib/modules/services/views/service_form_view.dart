@@ -192,7 +192,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                   const SizedBox(height: AppTheme.spaceMedium),
                   
                   DropdownButtonFormField<ServiceType>(
-                    value: _selectedType,
+                    initialValue: _selectedType,
                     decoration: const InputDecoration(
                       labelText: 'Type de service *',
                       border: OutlineInputBorder(),
@@ -508,7 +508,7 @@ class _ServiceFormViewState extends State<ServiceFormView>
                     height: 120,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppTheme.grey300!),
+                      border: Border.all(color: AppTheme.grey300),
                       borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                     ),
                     child: widget.service?.imageUrl != null

@@ -4,7 +4,6 @@ import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../services/advanced_roles_permissions_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Widget avancé pour la gestion des permissions et assignations en masse
 class BulkPermissionManagementWidget extends StatefulWidget {
@@ -183,7 +182,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 // Filtre par module
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedModule.isEmpty ? null : _selectedModule,
+                    initialValue: _selectedModule.isEmpty ? null : _selectedModule,
                     decoration: const InputDecoration(
                       labelText: 'Module',
                       border: OutlineInputBorder(),
@@ -213,7 +212,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 // Filtre par niveau de permission
                 Expanded(
                   child: DropdownButtonFormField<PermissionLevel>(
-                    value: _selectedLevel,
+                    initialValue: _selectedLevel,
                     decoration: const InputDecoration(
                       labelText: 'Niveau',
                       border: OutlineInputBorder(),
@@ -495,7 +494,7 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
               Container(
                 padding: const EdgeInsets.all(AppTheme.spaceLarge),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.grey300!),
+                  border: Border.all(color: AppTheme.grey300),
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                 ),
                 child: const Center(

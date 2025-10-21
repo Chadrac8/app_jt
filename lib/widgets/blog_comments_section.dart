@@ -105,7 +105,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,7 +252,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
         color: isReply ? AppTheme.grey50 : AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         border: Border.all(
-          color: isReply ? AppTheme.grey200! : AppTheme.grey300!,
+          color: isReply ? AppTheme.grey200 : AppTheme.grey300,
         ),
       ),
       child: Column(

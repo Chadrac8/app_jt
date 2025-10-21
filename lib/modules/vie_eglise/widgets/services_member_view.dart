@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class ServicesMemberView extends StatelessWidget {
   const ServicesMemberView({super.key});
@@ -124,7 +123,7 @@ class ServicesMemberView extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
         boxShadow: [
           BoxShadow(
             color: AppTheme.black100.withOpacity(0.05),

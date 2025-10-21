@@ -4,7 +4,6 @@ import '../../../../theme.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import 'bible_study_detail_view.dart';
-import '../../../theme.dart';
 
 class BibleStudiesHomeView extends StatefulWidget {
   const BibleStudiesHomeView({Key? key}) : super(key: key);
@@ -163,7 +162,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: theme.colorScheme.background,
+                  fillColor: theme.colorScheme.surface,
                 ),
                 onChanged: (value) {
                   _searchQuery = value;
@@ -201,7 +200,7 @@ class _BibleStudiesHomeViewState extends State<BibleStudiesHomeView>
                               ? AppTheme.white100 
                               : theme.colorScheme.onSurface,
                         ),
-                        backgroundColor: theme.colorScheme.background,
+                        backgroundColor: theme.colorScheme.surface,
                         selectedColor: theme.colorScheme.primary,
                       ),
                     );

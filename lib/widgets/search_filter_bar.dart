@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/person_model.dart';
 import '../models/role_model.dart';
-import '../services/firebase_service.dart';
 import '../services/roles_firebase_service.dart';
 import '../../theme.dart';
 
@@ -380,7 +378,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                       spacing: 8,
                                       runSpacing: 8,
                                       children: roles.where((role) => role != null).map((role) {
-                                        final isSelected = widget.selectedRoleFilters.contains(role!.id);
+                                        final isSelected = widget.selectedRoleFilters.contains(role.id);
                                         return FilterChip(
                                           label: Text(role.name),
                                           selected: isSelected,

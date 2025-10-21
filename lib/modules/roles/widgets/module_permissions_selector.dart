@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/module_permission_model.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class ModulePermissionsSelector extends StatefulWidget {
   final List<ModulePermissionModel> initialPermissions;

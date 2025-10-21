@@ -161,7 +161,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
             side: BorderSide(
               color: isCurrentUser 
                   ? AppTheme.primaryColor.withOpacity(0.3)
-                  : AppTheme.grey300!,
+                  : AppTheme.grey300,
             ),
           ),
           child: Padding(
@@ -233,7 +233,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
       decoration: BoxDecoration(
         color: AppTheme.white100,
         border: Border(
-          top: BorderSide(color: AppTheme.grey300!),
+          top: BorderSide(color: AppTheme.grey300),
         ),
       ),
       child: SafeArea(
@@ -246,7 +246,7 @@ class _TaskCommentsWidgetState extends State<TaskCommentsWidget> {
                   hintText: 'Ajouter un commentaire...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
-                    borderSide: BorderSide(color: AppTheme.grey300!),
+                    borderSide: BorderSide(color: AppTheme.grey300),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppTheme.radiusCircular),

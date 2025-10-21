@@ -8,7 +8,6 @@ import '../models/song.dart';
 import '../models/song_category.dart';
 import 'song_detail_view.dart';
 import 'song_form_view.dart';
-import '../../../theme.dart';
 
 /// Vue admin pour la gestion des chants
 class SongsAdminView extends StatefulWidget {
@@ -669,7 +668,7 @@ class _SongsAdminViewState extends State<SongsAdminView>
             onTap: () => _navigateToSongDetail(song),
           ),
           const Divider(height: 1),
-          ButtonBar(
+          OverflowBar(
             children: [
               TextButton.icon(
                 icon: const Icon(Icons.close, color: AppTheme.redStandard),

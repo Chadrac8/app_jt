@@ -1787,7 +1787,7 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
             Switch(
               value: value,
               onChanged: (_) => onTap(),
-              activeColor: _primaryColor,
+              activeThumbColor: _primaryColor,
               inactiveThumbColor: AppTheme.surfaceColor.withValues(alpha: 0.7),
               inactiveTrackColor: AppTheme.surfaceColor.withValues(alpha: 0.2)),
           ])));

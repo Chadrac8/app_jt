@@ -205,7 +205,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                             ),
                           Expanded(
                             child: DropdownButtonFormField<String>(
-                              value: filter['field'].toString().isNotEmpty ? filter['field'] : null,
+                              initialValue: filter['field'].toString().isNotEmpty ? filter['field'] : null,
                               items: _fieldSuggestions.map((f) => DropdownMenuItem<String>(
                                 value: f['name']?.toString() ?? '',
                                 child: Text(f['label']?.toString() ?? f['name']?.toString() ?? ''),
@@ -217,7 +217,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                           const SizedBox(width: AppTheme.spaceSmall),
                           Expanded(
                             child: DropdownButtonFormField<String>(
-                              value: filter['operator'],
+                              initialValue: filter['operator'],
                               items: _getOperatorsForType(fieldType)
                                   .map((o) => DropdownMenuItem<String>(value: o, child: Text(o)))
                                   .toList(),
@@ -254,7 +254,7 @@ class _PeopleListCreatePageState extends State<PeopleListCreatePage> {
                                   )
                                 : fieldType == 'boolean'
                                     ? DropdownButtonFormField<String>(
-                                        value: filter['value'],
+                                        initialValue: filter['value'],
                                         items: const [
                                           DropdownMenuItem(value: 'true', child: Text('Oui')),
                                           DropdownMenuItem(value: 'false', child: Text('Non')),

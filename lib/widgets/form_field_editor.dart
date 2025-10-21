@@ -281,7 +281,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
         
         // Type de champ
         DropdownButtonFormField<String>(
-          value: _selectedType,
+          initialValue: _selectedType,
           decoration: const InputDecoration(
             labelText: 'Type de champ',
             border: OutlineInputBorder(),
@@ -461,7 +461,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
         const SizedBox(height: AppTheme.spaceMedium),
         
         DropdownButtonFormField<String>(
-          value: _personField['field'],
+          initialValue: _personField['field'],
           decoration: const InputDecoration(
             labelText: 'Champ à pré-remplir',
             border: OutlineInputBorder(),

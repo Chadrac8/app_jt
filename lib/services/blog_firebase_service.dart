@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/blog_model.dart';
-import '../auth/auth_service.dart';
 
 class BlogFirebaseService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;

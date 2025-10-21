@@ -319,7 +319,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                     const SizedBox(height: AppTheme.spaceMedium),
                     
                     DropdownButtonFormField<String>(
-                      value: _selectedSourceModule,
+                      initialValue: _selectedSourceModule,
                       decoration: const InputDecoration(
                         labelText: 'Source des données',
                         border: OutlineInputBorder(),
@@ -340,7 +340,7 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
                     const SizedBox(height: AppTheme.spaceMedium),
                     
                     DropdownButtonFormField<String>(
-                      value: _selectedCategory,
+                      initialValue: _selectedCategory,
                       decoration: const InputDecoration(
                         labelText: 'Catégorie',
                         border: OutlineInputBorder(),

@@ -553,7 +553,7 @@ class _GroupMeetingPageState extends State<GroupMeetingPage>
         decoration: BoxDecoration(
           color: isPresent 
               ? _groupColor.withOpacity(0.1)
-              : Theme.of(context).colorScheme.surfaceVariant,
+              : Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           border: Border.all(
             color: isPresent 

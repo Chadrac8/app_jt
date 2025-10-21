@@ -195,7 +195,7 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                         border: Border.all(
-                          color: _isFilterExpanded ? AppTheme.primaryColor : AppTheme.grey300!,
+                          color: _isFilterExpanded ? AppTheme.primaryColor : AppTheme.grey300,
                         ),
                       ),
                       child: Stack(

@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/action_group.dart';
 import '../services/action_group_service.dart';
-import '../../../theme.dart';
 
 class GroupFormDialog extends StatefulWidget {
   final ActionGroup? group;
@@ -394,7 +393,7 @@ class _GroupFormDialogState extends State<GroupFormDialog> {
                     _isActive = value;
                   });
                 },
-                activeColor: AppTheme.primaryColor,
+                activeThumbColor: AppTheme.primaryColor,
               ),
             ),
           ],

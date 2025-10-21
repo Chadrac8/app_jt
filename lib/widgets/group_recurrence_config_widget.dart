@@ -290,7 +290,7 @@ class _GroupRecurrenceConfigWidgetState extends State<GroupRecurrenceConfigWidge
         ),
         const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<int>(
-          value: _durationMinutes,
+          initialValue: _durationMinutes,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),

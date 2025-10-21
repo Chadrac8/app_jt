@@ -769,7 +769,7 @@ class _CreneauDialogState extends State<_CreneauDialog> {
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<int>(
-              value: _duree,
+              initialValue: _duree,
               decoration: const InputDecoration(
                 labelText: 'Durée par rendez-vous',
                 border: OutlineInputBorder(),

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../../../models/pepite_or_model.dart';
-import '../../../theme.dart';
 
 /// Page de détail d'une pépite d'or avec ses citations de William Branham
 class PepiteDetailPage extends StatelessWidget {
@@ -170,7 +169,7 @@ class PepiteDetailPage extends StatelessWidget {
                       ),
                     ],
                     border: Border.all(
-                      color: AppTheme.grey200!,
+                      color: AppTheme.grey200,
                       width: 1,
                     ),
                   ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../models/event_recurrence_model.dart';
-import '../../evenements/services/events_service.dart';
-import '../../evenements/services/events_firebase_service.dart';
 import '../../../theme.dart';
 
 /// Widget pour gérer et afficher les occurrences d'un événement récurrent

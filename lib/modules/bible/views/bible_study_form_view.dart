@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
-import '../../../theme.dart';
 
 class BibleStudyFormView extends StatefulWidget {
   final BibleStudy? study;
@@ -211,7 +210,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _selectedCategory,
+                  initialValue: _selectedCategory,
                   decoration: InputDecoration(
                     labelText: 'Catégorie',
                     border: OutlineInputBorder(
@@ -235,7 +234,7 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
               const SizedBox(width: AppTheme.space12),
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _selectedDifficulty,
+                  initialValue: _selectedDifficulty,
                   decoration: InputDecoration(
                     labelText: 'Difficulté',
                     border: OutlineInputBorder(

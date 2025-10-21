@@ -4,7 +4,6 @@ import '../models/reading_plan.dart';
 import '../services/reading_plan_service.dart';
 import '../bible_page.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class ReadingPlanDetailView extends StatefulWidget {
   final ReadingPlan plan;
@@ -44,7 +43,7 @@ class _ReadingPlanDetailViewState extends State<ReadingPlanDetailView> {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

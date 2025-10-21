@@ -8,7 +8,6 @@ import '../../../pages/song_projection_page.dart';
 import '../../../widgets/setlist_card_perfect13.dart';
 import '../../../pages/setlist_detail_page.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Page des chants pour les membres - Material Design 3
 class MemberSongsPageMD3 extends StatefulWidget {

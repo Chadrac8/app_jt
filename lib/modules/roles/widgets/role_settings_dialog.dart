@@ -147,7 +147,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                                   borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
                                   border: isSelected
                                       ? Border.all(color: AppTheme.black100, width: 3)
-                                      : Border.all(color: AppTheme.grey300!),
+                                      : Border.all(color: AppTheme.grey300),
                                 ),
                                 child: isSelected
                                     ? const Icon(Icons.check, color: AppTheme.white100)

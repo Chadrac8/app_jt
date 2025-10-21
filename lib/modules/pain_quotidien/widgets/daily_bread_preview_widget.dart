@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../../theme.dart';
 import '../services/branham_scraping_service.dart';
 import '../views/daily_bread_page.dart';
-import '../../../theme.dart';
 
 /// Widget d'aperçu du pain quotidien pour la page d'accueil
 class DailyBreadPreviewWidget extends StatefulWidget {

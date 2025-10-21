@@ -5,7 +5,6 @@ import '../models/bible_study.dart';
 import '../services/bible_study_service.dart';
 import '../views/bible_study_detail_view.dart';
 import '../views/bible_studies_list_view.dart';
-import '../../../theme.dart';
 
 class BibleStudyHomeWidget extends StatefulWidget {
   const BibleStudyHomeWidget({Key? key}) : super(key: key);

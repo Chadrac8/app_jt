@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../widgets/admin_pour_vous_tab.dart';
 import '../widgets/admin_sermons_tab.dart';
-import '../../../theme.dart';
 
 class VieEgliseAdminView extends StatefulWidget {
   const VieEgliseAdminView({Key? key}) : super(key: key);

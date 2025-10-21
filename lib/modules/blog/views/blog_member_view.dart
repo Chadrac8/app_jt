@@ -6,7 +6,6 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Vue membre du module Blog
 class BlogMemberView extends StatefulWidget {
@@ -425,7 +424,7 @@ class _BlogMemberViewState extends State<BlogMemberView>
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Catégorie'),
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               items: [
                 const DropdownMenuItem(
                   value: null,

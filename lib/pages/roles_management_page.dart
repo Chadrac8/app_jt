@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/roles_firebase_service.dart';
 import '../widgets/role_card.dart';
@@ -402,7 +401,7 @@ class _RolesManagementPageState extends State<RolesManagementPage>
                   title: const Text('Rôles actifs uniquement'),
                   value: _showActiveOnly,
                   onChanged: _onActiveFilterChanged,
-                  activeColor: AppTheme.primaryColor,
+                  activeThumbColor: AppTheme.primaryColor,
                   dense: true,
                 ),
               ),

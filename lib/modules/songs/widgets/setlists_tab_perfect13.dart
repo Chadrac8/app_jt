@@ -674,7 +674,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
     
     if (diff > 7) {
       label = 'Planifiée';
-      backgroundColor = colorScheme.surfaceVariant;
+      backgroundColor = colorScheme.surfaceContainerHighest;
       textColor = colorScheme.onSurfaceVariant;
       icon = Icons.schedule_rounded;
     } else if (diff >= 0) {
@@ -861,7 +861,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        backgroundColor: colorScheme.surfaceVariant,
+        backgroundColor: colorScheme.surfaceContainerHighest,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -882,7 +882,7 @@ class _SetlistsTabMD3State extends State<SetlistsTabMD3>
             fontWeight: AppTheme.fontMedium,
           ),
         ),
-        backgroundColor: colorScheme.surfaceVariant,
+        backgroundColor: colorScheme.surfaceContainerHighest,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),

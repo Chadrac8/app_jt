@@ -6,7 +6,6 @@ import '../../../shared/widgets/base_page.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../extensions/datetime_extensions.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Vue de détail d'un service
 class ServiceDetailView extends StatefulWidget {

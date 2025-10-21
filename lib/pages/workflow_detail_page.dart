@@ -352,7 +352,7 @@ class _WorkflowDetailPageState extends State<WorkflowDetailPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: CustomScrollView(

@@ -5,7 +5,6 @@ import '../models/pour_vous_action.dart';
 import '../models/action_group.dart';
 import '../services/pour_vous_action_service.dart';
 import '../services/action_group_service.dart';
-import '../../../theme.dart';
 
 class ActionFormDialog extends StatefulWidget {
   final PourVousAction? action;
@@ -267,7 +266,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         DropdownButtonFormField<String>(
-          value: (_groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
+          initialValue: (_groups.any((g) => g.id == _selectedGroupId)) ? _selectedGroupId : null,
           decoration: InputDecoration(
             labelText: 'Groupe',
             labelStyle: GoogleFonts.poppins(),
@@ -432,7 +431,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         ),
         const SizedBox(height: AppTheme.space12),
         DropdownButtonFormField<String>(
-          value: _selectedActionType,
+          initialValue: _selectedActionType,
           decoration: InputDecoration(
             labelText: 'Type d\'action *',
             labelStyle: GoogleFonts.poppins(),
@@ -460,7 +459,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
         if (_selectedActionType == 'navigation') ...[
           const SizedBox(height: AppTheme.spaceMedium),
           DropdownButtonFormField<String>(
-            value: (_targetModules.contains(_selectedTargetModule)) ? _selectedTargetModule : null,
+            initialValue: (_targetModules.contains(_selectedTargetModule)) ? _selectedTargetModule : null,
             decoration: InputDecoration(
               labelText: 'Module cible',
               labelStyle: GoogleFonts.poppins(),
@@ -487,7 +486,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           if (_selectedTargetModule != null) ...[
             const SizedBox(height: AppTheme.spaceMedium),
             DropdownButtonFormField<String>(
-              value: ((_moduleRoutes[_selectedTargetModule] ?? []).contains(_selectedTargetRoute)) ? _selectedTargetRoute : null,
+              initialValue: ((_moduleRoutes[_selectedTargetModule] ?? []).contains(_selectedTargetRoute)) ? _selectedTargetRoute : null,
               decoration: InputDecoration(
                 labelText: 'Route cible',
                 labelStyle: GoogleFonts.poppins(),
@@ -566,7 +565,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
                     _isActive = value;
                   });
                 },
-                activeColor: AppTheme.primaryColor,
+                activeThumbColor: AppTheme.primaryColor,
               ),
             ),
           ],

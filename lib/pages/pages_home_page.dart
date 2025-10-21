@@ -399,7 +399,7 @@ Row(
 children: [
 Expanded(
 child: DropdownButtonFormField<String>(
-value: _statusFilter.isEmpty ? null : _statusFilter,
+initialValue: _statusFilter.isEmpty ? null : _statusFilter,
 decoration: InputDecoration(
 labelText: 'Statut',
 border: OutlineInputBorder(
@@ -419,7 +419,7 @@ onChanged: _onStatusFilterChanged,
 const SizedBox(width: AppTheme.spaceMedium),
 Expanded(
 child: DropdownButtonFormField<String>(
-value: _visibilityFilter.isEmpty ? null : _visibilityFilter,
+initialValue: _visibilityFilter.isEmpty ? null : _visibilityFilter,
 decoration: InputDecoration(
 labelText: 'Visibilité',
 border: OutlineInputBorder(

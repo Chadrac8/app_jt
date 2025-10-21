@@ -6,7 +6,6 @@ import '../services/pour_vous_action_service.dart';
 import '../dialogs/action_form_dialog.dart';
 import '../dialogs/group_management_dialog.dart';
 import '../dialogs/action_templates_dialog.dart';
-import '../../../theme.dart';
 
 class AdminPourVousTab extends StatefulWidget {
   const AdminPourVousTab({Key? key}) : super(key: key);

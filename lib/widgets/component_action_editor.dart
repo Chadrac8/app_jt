@@ -114,7 +114,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
             
             // Type d'action
             DropdownButtonFormField<ComponentActionType>(
-              value: _currentAction.type,
+              initialValue: _currentAction.type,
               decoration: const InputDecoration(
                 labelText: 'Type d\'action',
                 border: OutlineInputBorder(),
@@ -207,7 +207,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
       case ComponentActionType.memberPage:
         return [
           DropdownButtonFormField<MemberPageType>(
-            value: _currentAction.memberPageType,
+            initialValue: _currentAction.memberPageType,
             decoration: const InputDecoration(
               labelText: 'Page destination',
               border: OutlineInputBorder(),
@@ -241,7 +241,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
             )
           else
             DropdownButtonFormField<String>(
-              value: _currentAction.customPageId,
+              initialValue: _currentAction.customPageId,
               decoration: const InputDecoration(
                 labelText: 'Page personnalisée',
                 border: OutlineInputBorder(),
@@ -289,7 +289,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
             )
           else
             DropdownButtonFormField<String>(
-              value: _currentAction.blogCategory,
+              initialValue: _currentAction.blogCategory,
               decoration: const InputDecoration(
                 labelText: 'Catégorie de blog',
                 border: OutlineInputBorder(),
@@ -323,7 +323,7 @@ class _ComponentActionEditorState extends State<ComponentActionEditor> {
             )
           else
             DropdownButtonFormField<String>(
-              value: _currentAction.formId,
+              initialValue: _currentAction.formId,
               decoration: const InputDecoration(
                 labelText: 'Formulaire',
                 border: OutlineInputBorder(),

@@ -415,7 +415,7 @@ class _CustomFieldsWidgetState extends State<CustomFieldsWidget> {
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           ),
-          value: _values[field.name] as String?,
+          initialValue: _values[field.name] as String?,
           items: [
             if (!field.isRequired) const DropdownMenuItem(value: null, child: Text('-- Aucun --')),
             ...field.options.map((option) => DropdownMenuItem(

@@ -6,7 +6,6 @@ import '../services/admin_branham_sermon_service.dart';
 import '../widgets/sermon_form_dialog.dart';
 import '../widgets/admin_branham_messages_screen.dart';
 import '../widgets/admin_tab.dart';
-import '../../../theme.dart';
 
 /// Vue admin pour gérer les prédications de William Marrion Branham
 class MessageAdminView extends StatefulWidget {
@@ -281,7 +280,7 @@ class _MessageAdminViewState extends State<MessageAdminView>
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<String>(
-                      value: _sortBy,
+                      initialValue: _sortBy,
                       decoration: InputDecoration(
                         labelText: 'Trier par',
                         border: OutlineInputBorder(

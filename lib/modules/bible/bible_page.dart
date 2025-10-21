@@ -2762,7 +2762,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
                   ),
                 ),
                 value: _isDarkMode,
-                activeColor: colorScheme.primary,
+                activeThumbColor: colorScheme.primary,
                 onChanged: (value) {
                   setState(() {
                     _isDarkMode = value;
@@ -4119,7 +4119,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
                 ),
                 const SizedBox(height: AppTheme.spaceSmall),
                 DropdownButtonFormField<String>(
-                  value: selectedBook,
+                  initialValue: selectedBook,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppTheme.radiusMedium),

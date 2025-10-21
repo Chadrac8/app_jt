@@ -162,7 +162,7 @@ class _IconSelectorState extends State<IconSelector> {
                             border: Border.all(
                               color: isSelected 
                                   ? AppTheme.primaryColor 
-                                  : AppTheme.grey300!,
+                                  : AppTheme.grey300,
                               width: isSelected ? 2 : 1,
                             ),
                           ),

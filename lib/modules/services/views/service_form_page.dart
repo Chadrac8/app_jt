@@ -501,7 +501,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           ),
         ),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
       ),
       validator: validator,
       keyboardType: keyboardType,
@@ -518,7 +518,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
     String? Function(String?)? validator,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
@@ -539,7 +539,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           ),
         ),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
       ),
       items: items.map((item) {
         return DropdownMenuItem<String>(
@@ -562,7 +562,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-          color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
         ),
         child: Row(
           children: [
@@ -604,7 +604,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
             color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           ),
           borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-          color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
         ),
         child: Row(
           children: [
@@ -660,7 +660,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                   setState(() => _durationMinutes = duration);
                 }
               },
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
               selectedColor: Theme.of(context).colorScheme.primaryContainer,
               labelStyle: TextStyle(
                 color: isSelected
@@ -687,7 +687,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
         ),
         const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<String>(
-          value: _status,
+          initialValue: _status,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.flag),
             border: OutlineInputBorder(
@@ -700,7 +700,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
               ),
             ),
             filled: true,
-            fillColor: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+            fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
           ),
           items: const [
             DropdownMenuItem(value: 'brouillon', child: Text('Brouillon')),

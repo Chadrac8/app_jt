@@ -46,7 +46,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 color: currentMode == 'integrated' ? AppTheme.grey50 : AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 border: Border.all(
-                  color: currentMode == 'integrated' ? AppTheme.greenStandard : AppTheme.grey300!,
+                  color: currentMode == 'integrated' ? AppTheme.greenStandard : AppTheme.grey300,
                   width: currentMode == 'integrated' ? 2 : 1,
                 ),
               ),
@@ -86,7 +86,7 @@ class MediaPlayerModeToggle extends StatelessWidget {
                 color: currentMode == 'external' ? AppTheme.grey50 : AppTheme.grey50,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 border: Border.all(
-                  color: currentMode == 'external' ? AppTheme.blueStandard : AppTheme.grey300!,
+                  color: currentMode == 'external' ? AppTheme.blueStandard : AppTheme.grey300,
                   width: currentMode == 'external' ? 2 : 1,
                 ),
               ),

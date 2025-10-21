@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/event_model.dart';
-import '../models/person_model.dart';
 
 class EventsFirebaseService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;

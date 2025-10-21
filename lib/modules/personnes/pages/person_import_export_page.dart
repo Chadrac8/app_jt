@@ -396,7 +396,7 @@ class _PersonImportExportPageState extends State<PersonImportExportPage>
                       labelText: 'Template',
                       border: OutlineInputBorder(),
                     ),
-                    value: _selectedTemplate,
+                    initialValue: _selectedTemplate,
                     items: PersonImportExportService.importTemplates.keys
                         .map((template) => DropdownMenuItem(
                               value: template,

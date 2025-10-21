@@ -139,7 +139,7 @@ class _OutboxNotificationsPageState extends State<OutboxNotificationsPage> {
               if (_sendToSegment) Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedSegmentId,
+                  initialValue: _selectedSegmentId,
                   items: _segments.map((s) => DropdownMenuItem(value: s['id'], child: Text(s['name'] ?? s['id']!))).toList(),
                   onChanged: (v) => setState(() => _selectedSegmentId = v),
                   decoration: const InputDecoration(labelText: 'Select segment'),

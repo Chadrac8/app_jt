@@ -255,13 +255,13 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               DropdownButtonFormField<String>(
-                value: selectedField,
+                initialValue: selectedField,
                 items: _allFields.map((f) => DropdownMenuItem(value: f, child: Text(f))).toList(),
                 onChanged: (v) => selectedField = v ?? '',
                 decoration: const InputDecoration(labelText: 'Champ'),
               ),
               DropdownButtonFormField<String>(
-                value: selectedOperator,
+                initialValue: selectedOperator,
                 items: _operators.map((o) => DropdownMenuItem(value: o, child: Text(o))).toList(),
                 onChanged: (v) => selectedOperator = v ?? '==',
                 decoration: const InputDecoration(labelText: 'Opérateur'),
@@ -639,7 +639,7 @@ class _PeopleListDetailPageState extends State<PeopleListDetailPage> {
                   const SizedBox(height: AppTheme.spaceSmall),
                   if (filteredPersons.isEmpty)
                     Card(
-                      color: isBirthdayList ? AppTheme.pinkStandard.withOpacity(0.08) : Theme.of(context).colorScheme.surfaceVariant,
+                      color: isBirthdayList ? AppTheme.pinkStandard.withOpacity(0.08) : Theme.of(context).colorScheme.surfaceContainerHighest,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
                       child: Padding(
                         padding: const EdgeInsets.all(24.0),

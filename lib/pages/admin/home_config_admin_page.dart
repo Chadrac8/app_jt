@@ -262,7 +262,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             ),
             value: _useVideo,
             onChanged: (value) => setState(() => _useVideo = value),
-            activeColor: AppTheme.blueStandard,
+            activeThumbColor: AppTheme.blueStandard,
           ),
           const SizedBox(height: AppTheme.spaceMedium),
           
@@ -340,7 +340,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             ),
             value: _isLiveActive,
             onChanged: (value) => setState(() => _isLiveActive = value),
-            activeColor: AppTheme.blueStandard,
+            activeThumbColor: AppTheme.blueStandard,
           ),
           
           if (_isLiveActive) ...[
@@ -397,7 +397,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             ),
             value: _isDailyBreadActive,
             onChanged: (value) => setState(() => _isDailyBreadActive = value),
-            activeColor: AppTheme.blueStandard,
+            activeThumbColor: AppTheme.blueStandard,
           ),
           
           if (_isDailyBreadActive) ...[
@@ -445,7 +445,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             ),
             value: _isLastSermonActive,
             onChanged: (value) => setState(() => _isLastSermonActive = value),
-            activeColor: AppTheme.blueStandard,
+            activeThumbColor: AppTheme.blueStandard,
           ),
           
           if (_isLastSermonActive) ...[
@@ -506,7 +506,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             ),
             value: _areEventsActive,
             onChanged: (value) => setState(() => _areEventsActive = value),
-            activeColor: AppTheme.blueStandard,
+            activeThumbColor: AppTheme.blueStandard,
           ),
           
           if (_areEventsActive) ...[
@@ -573,7 +573,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             ),
             value: _areQuickActionsActive,
             onChanged: (value) => setState(() => _areQuickActionsActive = value),
-            activeColor: AppTheme.blueStandard,
+            activeThumbColor: AppTheme.blueStandard,
           ),
           
           if (_areQuickActionsActive) ...[
@@ -659,7 +659,7 @@ class _HomeConfigAdminPageState extends State<HomeConfigAdminPage>
             ),
             value: _isContactActive,
             onChanged: (value) => setState(() => _isContactActive = value),
-            activeColor: AppTheme.blueStandard,
+            activeThumbColor: AppTheme.blueStandard,
           ),
           
           if (_isContactActive) ...[

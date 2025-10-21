@@ -415,11 +415,9 @@ class AppTheme {
         onError: onError,
         errorContainer: errorContainer,
         onErrorContainer: onErrorContainer,
-        background: background,
-        onBackground: onBackground,
         surface: surface,
         onSurface: onSurface,
-        surfaceVariant: surfaceVariant,
+        surfaceContainerHighest: surfaceVariant,
         onSurfaceVariant: onSurfaceVariant,
         outline: outline,
         outlineVariant: outlineVariant,
@@ -1014,8 +1012,7 @@ class AppTheme {
       
       // Tooltip Theme - Adaptatif
       tooltipTheme: TooltipThemeData(
-        height: isDesktop ? 32 : 24,
-        padding: EdgeInsets.symmetric(
+        constraints: BoxConstraints(minHeight: isDesktop ? 32 : 24), padding: EdgeInsets.symmetric(
           horizontal: isDesktop ? spaceMedium : spaceSmall,
           vertical: isDesktop ? spaceSmall : space4,
         ),
@@ -1361,11 +1358,9 @@ class AppTheme {
         onError: Color(0xFF690005),
         errorContainer: Color(0xFF93000A),
         onErrorContainer: Color(0xFFFFDAD6),
-        background: Color(0xFF1A110F),
-        onBackground: Color(0xFFF1DDD9),
         surface: Color(0xFF1A110F),
         onSurface: Color(0xFFF1DDD9),
-        surfaceVariant: Color(0xFF534340),
+        surfaceContainerHighest: Color(0xFF534340),
         onSurfaceVariant: Color(0xFFD8C2BC),
         outline: Color(0xFFA08C87),
         outlineVariant: Color(0xFF534340),

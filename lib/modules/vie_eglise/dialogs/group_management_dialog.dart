@@ -4,7 +4,6 @@ import '../../../../theme.dart';
 import '../models/action_group.dart';
 import '../services/action_group_service.dart';
 import 'group_form_dialog.dart';
-import '../../../theme.dart';
 
 class GroupManagementDialog extends StatefulWidget {
   const GroupManagementDialog({Key? key}) : super(key: key);

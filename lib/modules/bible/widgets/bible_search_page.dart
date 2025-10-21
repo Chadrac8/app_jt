@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/bible_verse.dart';
 import '../services/bible_service.dart';
-import '../../../theme.dart';
 
 class BibleSearchPage extends StatefulWidget {
   final BibleService bibleService;

@@ -5,7 +5,6 @@ import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import '../views/bible_articles_list_view.dart';
 import '../views/bible_article_detail_view.dart';
-import '../../../theme.dart';
 
 class BibleArticleHomeWidget extends StatefulWidget {
   final bool isAdmin;

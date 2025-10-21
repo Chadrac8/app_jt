@@ -185,7 +185,7 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
                           
                           // Type de service
                           DropdownButtonFormField<String>(
-                            value: _serviceType,
+                            initialValue: _serviceType,
                             decoration: const InputDecoration(
                               labelText: 'Type de service',
                               border: OutlineInputBorder()),

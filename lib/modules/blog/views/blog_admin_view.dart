@@ -6,7 +6,6 @@ import '../models/blog_comment.dart';
 import '../models/blog_category.dart';
 import '../services/blog_service.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Vue admin du module Blog
 class BlogAdminView extends StatefulWidget {
@@ -240,7 +239,7 @@ class _BlogAdminViewState extends State<BlogAdminView>
                         labelText: 'Statut',
                         border: OutlineInputBorder(),
                       ),
-                      value: _selectedStatus,
+                      initialValue: _selectedStatus,
                       items: [
                         const DropdownMenuItem(
                           value: null,

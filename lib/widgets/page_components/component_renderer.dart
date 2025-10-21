@@ -1469,7 +1469,7 @@ class ComponentRenderer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.grey100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
       ),
       child: const Row(
         children: [
@@ -1683,7 +1683,7 @@ class ComponentRenderer extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppTheme.grey50,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-              border: Border.all(color: AppTheme.grey200!),
+              border: Border.all(color: AppTheme.grey200),
             ),
             child: Text(
               description,
@@ -2135,7 +2135,7 @@ class ComponentRenderer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.grey50,
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2161,7 +2161,7 @@ class ComponentRenderer extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppTheme.white100,
               borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppTheme.grey200!),
+              border: Border.all(color: AppTheme.grey200),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2836,7 +2836,7 @@ class ComponentRenderer extends StatelessWidget {
         decoration: BoxDecoration(
           color: cardColor,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-          border: Border.all(color: AppTheme.grey200!),
+          border: Border.all(color: AppTheme.grey200),
         ),
         child: Row(
           children: [
@@ -3113,7 +3113,7 @@ class ComponentRenderer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
         boxShadow: [
           BoxShadow(
             color: AppTheme.black100.withOpacity(0.05),
@@ -3307,7 +3307,7 @@ class ComponentRenderer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(color: AppTheme.grey200!),
+        border: Border.all(color: AppTheme.grey200),
         boxShadow: [
           BoxShadow(
             color: AppTheme.black100.withOpacity(0.05),
@@ -3688,7 +3688,7 @@ class ComponentRenderer extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppTheme.white100,
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-          border: Border.all(color: AppTheme.grey200!),
+          border: Border.all(color: AppTheme.grey200),
         ),
         child: Row(
           children: [
@@ -4336,7 +4336,7 @@ class ComponentRenderer extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppTheme.white100,
             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-            border: Border.all(color: AppTheme.grey200!),
+            border: Border.all(color: AppTheme.grey200),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -5007,7 +5007,7 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
               });
               
               // Exécution du JavaScript initial si spécifié
-              if (initialJavaScript.isNotEmpty && currentController != null) {
+              if (initialJavaScript.isNotEmpty) {
                 try {
                   await currentController.runJavaScript(initialJavaScript);
                 } catch (e) {
@@ -5251,12 +5251,12 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
       return Container(
         height: height,
         decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.grey300!),
+          border: Border.all(color: AppTheme.grey300),
           borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppTheme.grey50!, AppTheme.grey100!],
+            colors: [AppTheme.grey50, AppTheme.grey100],
           ),
         ),
         child: Center(
@@ -5397,7 +5397,7 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
     Widget webViewWidget = Container(
       height: height,
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.grey300!),
+        border: Border.all(color: AppTheme.grey300),
         borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
       ),
       child: ClipRRect(
@@ -5419,7 +5419,7 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8),
               ),
-              border: Border.all(color: AppTheme.grey300!),
+              border: Border.all(color: AppTheme.grey300),
             ),
             child: Row(
               children: [
@@ -5503,9 +5503,9 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
             height: height - 60, // Soustraire la hauteur de l'app bar
             decoration: BoxDecoration(
               border: Border(
-                left: BorderSide(color: AppTheme.grey300!),
-                right: BorderSide(color: AppTheme.grey300!),
-                bottom: BorderSide(color: AppTheme.grey300!),
+                left: BorderSide(color: AppTheme.grey300),
+                right: BorderSide(color: AppTheme.grey300),
+                bottom: BorderSide(color: AppTheme.grey300),
               ),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8),

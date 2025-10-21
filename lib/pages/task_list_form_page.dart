@@ -448,7 +448,7 @@ class _TaskListFormPageState extends State<TaskListFormPage>
         const Text('Icône de la liste'),
         const SizedBox(height: AppTheme.space12),
         DropdownButtonFormField<String>(
-          value: _iconName,
+          initialValue: _iconName,
           decoration: const InputDecoration(
             labelText: 'Icône',
             prefixIcon: Icon(Icons.category),

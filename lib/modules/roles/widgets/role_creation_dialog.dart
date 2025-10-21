@@ -4,7 +4,6 @@ import '../models/role.dart';
 import '../models/permission.dart';
 import '../providers/role_provider.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class RoleCreationDialog extends StatefulWidget {
   final Role? role; // null pour création, non-null pour édition
@@ -238,7 +237,7 @@ class _RoleCreationDialogState extends State<RoleCreationDialog>
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: AppTheme.grey300!),
+                border: Border.all(color: AppTheme.grey300),
                 borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
               child: Consumer<RoleProvider>(

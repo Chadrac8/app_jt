@@ -311,7 +311,7 @@ class _ContactMessagesAdminPageState extends State<ContactMessagesAdminPage>
                 decoration: BoxDecoration(
                   color: AppTheme.grey50,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                  border: Border.all(color: AppTheme.grey300!),
+                  border: Border.all(color: AppTheme.grey300),
                 ),
                 child: Text(
                   message.message,

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../models/role_template_model.dart';
 import '../providers/role_template_provider.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 /// Écran de gestion des templates de rôles
 class RoleTemplateManagementScreen extends StatefulWidget {
@@ -152,7 +151,7 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
                 const SizedBox(width: AppTheme.space12),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: provider.selectedCategory.isEmpty ? null : provider.selectedCategory,
+                    initialValue: provider.selectedCategory.isEmpty ? null : provider.selectedCategory,
                     decoration: const InputDecoration(
                       labelText: 'Catégorie',
                       border: OutlineInputBorder(),

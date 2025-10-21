@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../../../theme.dart';
 import '../models/sermon.dart';
-import '../../../theme.dart';
 
 class SermonNotesView extends StatelessWidget {
   final Sermon sermon;

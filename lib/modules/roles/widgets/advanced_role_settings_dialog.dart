@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../theme.dart';
-import '../../../theme.dart';
 
 class RoleSettingsDialog extends StatefulWidget {
   const RoleSettingsDialog({super.key});
@@ -417,7 +416,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
                             borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                             border: isSelected
                                 ? Border.all(color: Theme.of(context).primaryColor, width: 3)
-                                : Border.all(color: AppTheme.grey300!, width: 1),
+                                : Border.all(color: AppTheme.grey300, width: 1),
                           ),
                           child: isSelected
                               ? const Icon(Icons.check, color: Colors.white, size: 20)

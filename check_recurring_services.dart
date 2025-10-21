@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Script pour vérifier les services récurrents et leurs événements liés
 /// 

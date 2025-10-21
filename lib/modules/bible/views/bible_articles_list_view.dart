@@ -5,7 +5,6 @@ import '../models/bible_article.dart';
 import '../services/bible_article_service.dart';
 import 'bible_article_detail_view.dart';
 import 'bible_article_form_view.dart';
-import '../../../theme.dart';
 
 class BibleArticlesListView extends StatefulWidget {
   final bool isAdmin;
@@ -180,7 +179,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
               // Catégorie
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _selectedCategory,
+                  initialValue: _selectedCategory,
                   onChanged: (value) {
                     setState(() => _selectedCategory = value!);
                     _applyFilters();
@@ -205,7 +204,7 @@ class _BibleArticlesListViewState extends State<BibleArticlesListView> {
               // Tri
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _sortBy,
+                  initialValue: _sortBy,
                   onChanged: (value) {
                     setState(() => _sortBy = value!);
                     _applyFilters();

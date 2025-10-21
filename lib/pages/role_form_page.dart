@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/roles_firebase_service.dart';
 import '../../theme.dart';
@@ -338,7 +337,7 @@ class _RoleFormPageState extends State<RoleFormPage>
         ),
         const SizedBox(height: AppTheme.space12),
         DropdownButtonFormField<String>(
-          value: _selectedIcon,
+          initialValue: _selectedIcon,
           decoration: const InputDecoration(
             labelText: 'Choisir une icône',
             prefixIcon: Icon(Icons.image),
@@ -480,7 +479,7 @@ class _RoleFormPageState extends State<RoleFormPage>
               : 'Ce rôle est désactivé et ne peut pas être assigné'),
           value: _isActive,
           onChanged: (value) => setState(() => _isActive = value),
-          activeColor: AppTheme.primaryColor,
+          activeThumbColor: AppTheme.primaryColor,
         ),
       ],
     );

@@ -261,7 +261,7 @@ class _TokenCleanupWidgetState extends State<TokenCleanupWidget> {
                 decoration: BoxDecoration(
                   color: AppTheme.grey100,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                  border: Border.all(color: AppTheme.grey300!),
+                  border: Border.all(color: AppTheme.grey300),
                 ),
                 child: _isLoading 
                     ? const Center(child: CircularProgressIndicator())

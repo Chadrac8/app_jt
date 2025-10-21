@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme.dart';
 
 class OffrandesAdminView extends StatefulWidget {
   const OffrandesAdminView({super.key});
@@ -322,7 +321,7 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
         ),
         const SizedBox(height: AppTheme.spaceSmall),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           onChanged: onChanged,
           decoration: InputDecoration(
             border: OutlineInputBorder(

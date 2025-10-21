@@ -618,7 +618,7 @@ class _AddMemberDialogState extends State<_AddMemberDialog> {
             
             // Role Selection
             DropdownButtonFormField<String>(
-              value: _selectedRole,
+              initialValue: _selectedRole,
               onChanged: (value) => setState(() => _selectedRole = value!),
               decoration: const InputDecoration(
                 labelText: 'Rôle',

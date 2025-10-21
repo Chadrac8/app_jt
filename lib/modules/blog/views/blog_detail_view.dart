@@ -7,7 +7,6 @@ import '../../../theme.dart';
 import '../models/blog_post.dart';
 import '../models/blog_comment.dart';
 import '../services/blog_service.dart';
-import '../../../../theme.dart';
 
 /// Vue détaillée d'un article de blog
 class BlogDetailView extends StatefulWidget {
