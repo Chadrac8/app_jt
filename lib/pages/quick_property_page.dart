@@ -2,9 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme.dart';
 import 'donation_webview_page.dart';
+import '../auth/auth_service.dart';
+import '../models/person_model.dart';
+import '../utils/donation_url_helper.dart';
 
-class QuickPropertyPage extends StatelessWidget {
+class QuickPropertyPage extends StatefulWidget {
   const QuickPropertyPage({Key? key}) : super(key: key);
+
+  @override
+  State<QuickPropertyPage> createState() => _QuickPropertyPageState();
+}
+
+class _QuickPropertyPageState extends State<QuickPropertyPage> {
+  PersonModel? _currentUser;
+  bool _isLoadingUser = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      setState(() => _isLoadingUser = true);
+      
+      final user = AuthService.currentUser;
+      if (user != null) {
+        final person = await AuthService.getCurrentUserProfile();
+        if (person != null && mounted) {
+          setState(() {
+            _currentUser = person;
+          });
+        }
+      }
+    } catch (e) {
+      print('Erreur lors du chargement des données utilisateur: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoadingUser = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -300,14 +339,18 @@ class QuickPropertyPage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () {
+                final baseUrl = 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/5';
+                final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, 'Achat du local');
+                
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DonationWebViewPage(
+                    builder: (context) => DonationWebViewPage(
                       donationType: 'Achat du local',
-                      url: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/5',
+                      url: prefilledUrl,
                       icon: Icons.business,
                       color: AppTheme.greenStandard,
+                      user: _currentUser,
                     ),
                   ),
                 );

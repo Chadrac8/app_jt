@@ -2,9 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme.dart';
 import 'donation_webview_page.dart';
+import '../auth/auth_service.dart';
+import '../models/person_model.dart';
+import '../utils/donation_url_helper.dart';
 
-class QuickRentPage extends StatelessWidget {
+class QuickRentPage extends StatefulWidget {
   const QuickRentPage({Key? key}) : super(key: key);
+
+  @override
+  State<QuickRentPage> createState() => _QuickRentPageState();
+}
+
+class _QuickRentPageState extends State<QuickRentPage> {
+  PersonModel? _currentUser;
+  bool _isLoadingUser = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      setState(() => _isLoadingUser = true);
+      
+      final user = AuthService.currentUser;
+      if (user != null) {
+        final person = await AuthService.getCurrentUserProfile();
+        if (person != null && mounted) {
+          setState(() {
+            _currentUser = person;
+          });
+        }
+      }
+    } catch (e) {
+      print('Erreur lors du chargement des données utilisateur: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoadingUser = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,14 +241,18 @@ class QuickRentPage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () {
+                final baseUrl = 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/6';
+                final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, 'Loyer de l\'église');
+                
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DonationWebViewPage(
+                    builder: (context) => DonationWebViewPage(
                       donationType: 'Loyer de l\'église',
-                      url: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/6',
+                      url: prefilledUrl,
                       icon: Icons.home_filled,
                       color: AppTheme.blueStandard,
+                      user: _currentUser,
                     ),
                   ),
                 );

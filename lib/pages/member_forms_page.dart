@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -66,7 +67,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
       await for (final forms in formsStream.take(1)) {
         if (mounted) {
           setState(() {
-            _availableForms = forms ?? [];
+            _availableForms = forms;
           });
         }
         break;
@@ -76,7 +77,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
       final submissions = await FormsFirebaseService.getUserSubmissions(user.uid);
       if (mounted) {
         setState(() {
-          _mySubmissions = submissions ?? [];
+          _mySubmissions = submissions;
           _isLoading = false;
         });
       }
@@ -111,44 +112,126 @@ class _MemberFormsPageState extends State<MemberFormsPage>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        title: const Text('Formulaires'),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: AppTheme.textPrimaryColor,
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                children: [
-                  _buildTabSelector(),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: _loadFormsData,
-                      child: _selectedTab == 'available'
-                          ? _buildAvailableFormsList()
-                          : _buildMySubmissionsList(),
+      backgroundColor: colorScheme.surface,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar.large(
+              expandedHeight: 200,
+              floating: false,
+              pinned: true,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  'Mes Formulaires',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                  ),
+                ),
+                titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
+                background: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.primary.withOpacity(0.8),
+                      ],
                     ),
                   ),
-                ],
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: -50,
+                        top: -50,
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: colorScheme.onPrimary.withOpacity(0.1),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 20,
+                        bottom: 80,
+                        child: Icon(
+                          Icons.assignment_outlined,
+                          size: 80,
+                          color: colorScheme.onPrimary.withOpacity(0.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
+          ];
+        },
+        body: _isLoading
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                        strokeWidth: 3,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Chargement des formulaires...',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : FadeTransition(
+                opacity: _fadeAnimation,
+                child: Column(
+                  children: [
+                    _buildTabSelector(),
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: _loadFormsData,
+                        child: _selectedTab == 'available'
+                            ? _buildAvailableFormsList()
+                            : _buildMySubmissionsList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+      ),
     );
   }
 
   Widget _buildTabSelector() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Container(
-      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        color: colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black100.withOpacity(0.1),
+            color: colorScheme.shadow.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -160,16 +243,18 @@ class _MemberFormsPageState extends State<MemberFormsPage>
             child: _buildTabButton(
               'available',
               'Disponibles',
-              Icons.assignment,
+              Icons.assignment_outlined,
               _availableForms.length,
+              colorScheme,
             ),
           ),
           Expanded(
             child: _buildTabButton(
               'submitted',
               'Mes Réponses',
-              Icons.assignment_turned_in,
+              Icons.assignment_turned_in_outlined,
               _mySubmissions.length,
+              colorScheme,
             ),
           ),
         ],
@@ -177,81 +262,101 @@ class _MemberFormsPageState extends State<MemberFormsPage>
     );
   }
 
-  Widget _buildTabButton(String tabId, String title, IconData icon, int count) {
+  Widget _buildTabButton(String tabId, String title, IconData icon, int count, ColorScheme colorScheme) {
     final isSelected = _selectedTab == tabId;
     
-    return GestureDetector(
-      onTap: () => setState(() => _selectedTab = tabId),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? AppTheme.white100 : AppTheme.textSecondaryColor,
-              size: 20,
-            ),
-            const SizedBox(width: AppTheme.spaceSmall),
-            Text(
-              title,
-              style: TextStyle(
-                color: isSelected ? AppTheme.white100 : AppTheme.textSecondaryColor,
-                fontWeight: isSelected ? AppTheme.fontBold : FontWeight.normal,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => setState(() => _selectedTab = tabId),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+          decoration: BoxDecoration(
+            color: isSelected ? colorScheme.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+                size: 20,
               ),
-            ),
-            if (count > 0) ...[
-              const SizedBox(width: AppTheme.spaceXSmall),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.white100.withOpacity(0.3) : AppTheme.primaryColor,
-                  borderRadius: BorderRadius.circular(10),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  color: isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                  fontSize: 14,
                 ),
-                child: Text(
-                  '$count',
-                  style: TextStyle(
-                    color: isSelected ? AppTheme.white100 : AppTheme.white100,
-                    fontSize: AppTheme.fontSize12,
-                    fontWeight: AppTheme.fontBold,
+              ),
+              if (count > 0) ...[
+                const SizedBox(width: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: isSelected 
+                        ? colorScheme.onPrimary.withOpacity(0.2) 
+                        : colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    '$count',
+                    style: GoogleFonts.poppins(
+                      color: isSelected 
+                          ? colorScheme.onPrimary 
+                          : colorScheme.onPrimaryContainer,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildAvailableFormsList() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     if (_availableForms.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.assignment_outlined,
-              size: 64,
-              color: AppTheme.textSecondaryColor,
-            ),
-            SizedBox(height: AppTheme.spaceMedium),
-            Text(
-              'Aucun formulaire disponible',
-              style: TextStyle(
-                fontSize: AppTheme.fontSize18,
-                color: AppTheme.textSecondaryColor,
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceVariant.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Icon(
+                Icons.assignment_outlined,
+                size: 48,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
-            SizedBox(height: AppTheme.spaceSmall),
+            const SizedBox(height: 24),
+            Text(
+              'Aucun formulaire disponible',
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
             Text(
               'Les formulaires à remplir apparaîtront ici',
-              style: TextStyle(
-                color: AppTheme.textSecondaryColor,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: colorScheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
             ),
@@ -261,7 +366,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(16),
       itemCount: _availableForms.length,
       itemBuilder: (context, index) {
         final form = _availableForms[index];
@@ -272,29 +377,40 @@ class _MemberFormsPageState extends State<MemberFormsPage>
   }
 
   Widget _buildMySubmissionsList() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     if (_mySubmissions.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.assignment_turned_in_outlined,
-              size: 64,
-              color: AppTheme.textSecondaryColor,
-            ),
-            SizedBox(height: AppTheme.spaceMedium),
-            Text(
-              'Aucune réponse soumise',
-              style: TextStyle(
-                fontSize: AppTheme.fontSize18,
-                color: AppTheme.textSecondaryColor,
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceVariant.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Icon(
+                Icons.assignment_turned_in_outlined,
+                size: 48,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
-            SizedBox(height: AppTheme.spaceSmall),
+            const SizedBox(height: 24),
+            Text(
+              'Aucune réponse soumise',
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
             Text(
               'Vos réponses aux formulaires apparaîtront ici',
-              style: TextStyle(
-                color: AppTheme.textSecondaryColor,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: colorScheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
             ),
@@ -304,7 +420,7 @@ class _MemberFormsPageState extends State<MemberFormsPage>
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(16),
       itemCount: _mySubmissions.length,
       itemBuilder: (context, index) {
         final submission = _mySubmissions[index];
@@ -314,279 +430,345 @@ class _MemberFormsPageState extends State<MemberFormsPage>
   }
 
   Widget _buildAvailableFormCard(FormModel form, bool hasSubmitted) {
+    final colorScheme = Theme.of(context).colorScheme;
     final isOpen = form.isOpen;
     final canSubmit = isOpen && (!hasSubmitted || form.settings.allowMultipleSubmissions);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceMedium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: _getFormColor(form.accessibility).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                  ),
-                  child: Icon(
-                    _getFormIcon(form.accessibility),
-                    color: _getFormColor(form.accessibility),
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        form.title,
-                        style: const TextStyle(
-                          fontSize: AppTheme.fontSize18,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.textPrimaryColor,
-                        ),
-                      ),
-                      Text(
-                        form.accessibilityLabel,
-                        style: TextStyle(
-                          color: _getFormColor(form.accessibility),
-                          fontWeight: AppTheme.fontMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (hasSubmitted)
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: colorScheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: canSubmit ? () => _fillForm(form) : null,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
-                      color: AppTheme.successColor,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      color: _getFormColor(form.accessibility).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Text(
-                      'Rempli',
-                      style: TextStyle(
-                        color: AppTheme.white100,
-                        fontSize: AppTheme.fontSize12,
-                        fontWeight: AppTheme.fontBold,
+                    child: Icon(
+                      _getFormIcon(form.accessibility),
+                      color: _getFormColor(form.accessibility),
+                      size: 28,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          form.title,
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: _getFormColor(form.accessibility).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            form.accessibilityLabel,
+                            style: GoogleFonts.poppins(
+                              color: _getFormColor(form.accessibility),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (hasSubmitted)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'Rempli',
+                        style: GoogleFonts.poppins(
+                          color: colorScheme.onPrimary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-            
-            if (form.description.isNotEmpty) ...[
-              const SizedBox(height: AppTheme.space12),
-              Text(
-                form.description,
-                style: const TextStyle(
-                  color: AppTheme.textSecondaryColor,
-                  height: 1.4,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-            
-            const SizedBox(height: AppTheme.space12),
-            
-            // Informations du formulaire
-            Row(
-              children: [
-                Icon(
-                  Icons.quiz,
-                  size: 16,
-                  color: AppTheme.textSecondaryColor,
-                ),
-                const SizedBox(width: AppTheme.spaceSmall),
-                Text(
-                  '${form.fields.length} questions',
-                  style: const TextStyle(
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                if (form.closeDate != null) ...[
-                  Icon(
-                    Icons.schedule,
-                    size: 16,
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                  const SizedBox(width: AppTheme.spaceSmall),
-                  Text(
-                    'Ferme le ${_formatDate(form.closeDate!)}',
-                    style: const TextStyle(
-                      color: AppTheme.textSecondaryColor,
-                    ),
-                  ),
                 ],
+              ),
+              
+              if (form.description.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Text(
+                  form.description,
+                  style: GoogleFonts.poppins(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.5,
+                    fontSize: 14,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
-            ),
-            
-            if (form.hasSubmissionLimit) ...[
-              const SizedBox(height: AppTheme.spaceSmall),
+              
+              const SizedBox(height: 16),
+              
               Row(
                 children: [
                   Icon(
-                    Icons.people,
+                    Icons.quiz_outlined,
                     size: 16,
-                    color: AppTheme.textSecondaryColor,
+                    color: colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: AppTheme.spaceSmall),
+                  const SizedBox(width: 6),
                   Text(
-                    'Limité à ${form.submissionLimit} réponses',
-                    style: const TextStyle(
-                      color: AppTheme.textSecondaryColor,
+                    '${form.fields.length} questions',
+                    style: GoogleFonts.poppins(
+                      color: colorScheme.onSurfaceVariant,
+                      fontSize: 13,
                     ),
                   ),
+                  if (form.closeDate != null) ...[
+                    const SizedBox(width: 16),
+                    Icon(
+                      Icons.schedule_outlined,
+                      size: 16,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Ferme le ${_formatDate(form.closeDate!)}',
+                      style: GoogleFonts.poppins(
+                        color: colorScheme.onSurfaceVariant,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
                 ],
               ),
-            ],
-            
-            const SizedBox(height: AppTheme.spaceMedium),
-            
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: canSubmit
-                    ? () => _fillForm(form)
-                    : null,
-                icon: Icon(
-                  canSubmit ? Icons.edit : Icons.lock,
-                  size: 18,
+              
+              if (form.hasSubmissionLimit) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.people_outline,
+                      size: 16,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Limité à ${form.submissionLimit} réponses',
+                      style: GoogleFonts.poppins(
+                        color: colorScheme.onSurfaceVariant,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
                 ),
-                label: Text(
-                  canSubmit
-                      ? hasSubmitted ? 'Remplir à nouveau' : 'Remplir le formulaire'
-                      : isOpen ? 'Déjà rempli' : 'Formulaire fermé',
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: canSubmit 
-                      ? _getFormColor(form.accessibility) 
-                      : AppTheme.textSecondaryColor,
+              ],
+              
+              const SizedBox(height: 20),
+              
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: canSubmit ? () => _fillForm(form) : null,
+                  icon: Icon(
+                    canSubmit ? Icons.edit_outlined : Icons.lock_outline,
+                    size: 18,
+                  ),
+                  label: Text(
+                    canSubmit
+                        ? hasSubmitted ? 'Remplir à nouveau' : 'Remplir le formulaire'
+                        : isOpen ? 'Déjà rempli' : 'Formulaire fermé',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: canSubmit 
+                        ? _getFormColor(form.accessibility) 
+                        : colorScheme.surfaceVariant,
+                    foregroundColor: canSubmit 
+                        ? Colors.white 
+                        : colorScheme.onSurfaceVariant,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildSubmissionCard(FormSubmissionModel submission) {
+    final colorScheme = Theme.of(context).colorScheme;
     final statusColor = _getSubmissionStatusColor(submission.status);
     
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusMedium)),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceMedium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                  decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    _getSubmissionStatusIcon(submission.status),
-                    color: statusColor,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.space12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Formulaire ID: ${submission.formId}', // TODO: Charger le titre du formulaire
-                        style: const TextStyle(
-                          fontSize: AppTheme.fontSize16,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.textPrimaryColor,
-                        ),
-                      ),
-                      Text(
-                        'Soumis le ${_formatDateTime(submission.submittedAt)}',
-                        style: const TextStyle(
-                          color: AppTheme.textSecondaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                  ),
-                  child: Text(
-                    _getSubmissionStatusLabel(submission.status),
-                    style: const TextStyle(
-                      color: AppTheme.white100,
-                      fontSize: AppTheme.fontSize12,
-                      fontWeight: AppTheme.fontBold,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: colorScheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          // TODO: Implémenter la vue des détails de soumission
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      _getSubmissionStatusIcon(submission.status),
+                      color: statusColor,
+                      size: 24,
                     ),
                   ),
-                ),
-              ],
-            ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Formulaire ID: ${submission.formId}', // TODO: Charger le titre du formulaire
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Soumis le ${_formatDateTime(submission.submittedAt)}',
+                          style: GoogleFonts.poppins(
+                            color: colorScheme.onSurfaceVariant,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: statusColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      _getSubmissionStatusLabel(submission.status),
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             
-            const SizedBox(height: AppTheme.space12),
+            const SizedBox(height: 16),
             
             // Aperçu des réponses
             if (submission.responses.isNotEmpty) ...[
               Container(
-                padding: const EdgeInsets.all(AppTheme.space12),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.grey100,
-                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  color: colorScheme.surfaceVariant.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Aperçu des réponses :',
-                      style: TextStyle(
-                        fontWeight: AppTheme.fontMedium,
-                        color: AppTheme.textPrimaryColor,
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
+                        fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: AppTheme.spaceSmall),
+                    const SizedBox(height: 12),
                     ...submission.responses.entries.take(3).map((entry) => 
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Text(
-                          '• ${entry.key}: ${_truncateText(entry.value.toString(), 50)}',
-                          style: const TextStyle(
-                            fontSize: AppTheme.fontSize12,
-                            color: AppTheme.textSecondaryColor,
-                          ),
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 4,
+                              height: 4,
+                              margin: const EdgeInsets.only(top: 8, right: 8),
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                '${entry.key}: ${_truncateText(entry.value.toString(), 50)}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 13,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     if (submission.responses.length > 3)
-                      Text(
-                        '... et ${submission.responses.length - 3} autres réponses',
-                        style: const TextStyle(
-                          fontSize: AppTheme.fontSize12,
-                          color: AppTheme.textSecondaryColor,
-                          fontStyle: FontStyle.italic,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          '... et ${submission.responses.length - 3} autres réponses',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: colorScheme.onSurfaceVariant,
+                            fontStyle: FontStyle.italic,
+                          ),
                         ),
                       ),
                   ],
@@ -595,38 +777,39 @@ class _MemberFormsPageState extends State<MemberFormsPage>
             ],
             
             if (submission.isTestSubmission) ...[
-              const SizedBox(height: AppTheme.spaceSmall),
+              const SizedBox(height: 12),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: AppTheme.warningColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  color: Colors.orange.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: AppTheme.warningColor.withOpacity(0.3),
+                    color: Colors.orange.withOpacity(0.3),
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      Icons.science,
-                      size: 14,
-                      color: AppTheme.warningColor,
+                      Icons.science_outlined,
+                      size: 16,
+                      color: Colors.orange.shade700,
                     ),
-                    const SizedBox(width: AppTheme.spaceXSmall),
+                    const SizedBox(width: 8),
                     Text(
-                      'Soumission',
-                      style: TextStyle(
-                        fontSize: AppTheme.fontSize12,
-                        color: AppTheme.warningColor,
-                        fontWeight: AppTheme.fontMedium,
+                      'Soumission de test',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: Colors.orange.shade700,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
               ),
             ],
-          ],
+            ],
+          ),
         ),
       ),
     );

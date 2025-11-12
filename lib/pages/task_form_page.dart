@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:io';
 import '../models/task_model.dart';
 import '../models/person_model.dart';
 import '../services/tasks_firebase_service.dart';
@@ -58,13 +62,7 @@ class _TaskFormPageState extends State<TaskFormPage>
     {'value': 'cancelled', 'label': 'Annulé'},
   ];
 
-  final List<Map<String, String>> _linkTypes = [
-    {'value': 'group', 'label': 'Groupe'},
-    {'value': 'event', 'label': 'Événement'},
-    {'value': 'person', 'label': 'Personne'},
-    {'value': 'service', 'label': 'Service'},
-    {'value': 'form', 'label': 'Formulaire'},
-  ];
+
 
   @override
   void initState() {
@@ -376,74 +374,200 @@ class _TaskFormPageState extends State<TaskFormPage>
     }
   }
 
-  DateTime? get _combinedDueDateTime {
-    if (_dueDate == null) return null;
-    if (_dueTime == null) return _dueDate;
-    
-    return DateTime(
-      _dueDate!.year,
-      _dueDate!.month,
-      _dueDate!.day,
-      _dueTime!.hour,
-      _dueTime!.minute,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.task == null ? 'Nouvelle tâche' : 'Modifier la tâche'),
-        elevation: 0,
-        actions: [
-          if (_isLoading)
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+    final bool isApple = Platform.isIOS || Platform.isMacOS;
+    
+    return Theme(
+      data: Theme.of(context).copyWith(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppTheme.primaryColor,
+          brightness: Brightness.light,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: AppTheme.background,
+        body: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            // App bar moderne avec Material Design 3
+            SliverAppBar.large(
+              backgroundColor: AppTheme.surface,
+              foregroundColor: AppTheme.onSurface,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              surfaceTintColor: AppTheme.surfaceTint,
+              pinned: true,
+              stretch: true,
+              title: AnimatedBuilder(
+                animation: _fadeAnimation,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Text(
+                      widget.task == null ? 'Nouvelle tâche' : 'Modifier la tâche',
+                      style: GoogleFonts.inter(
+                        fontSize: AppTheme.fontSize24,
+                        fontWeight: AppTheme.fontSemiBold,
+                        color: AppTheme.onSurface,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              leading: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Icon(
+                  isApple ? CupertinoIcons.back : Icons.arrow_back_rounded,
+                  color: AppTheme.onSurface,
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor: AppTheme.surfaceVariant.withOpacity(0.6),
+                  foregroundColor: AppTheme.onSurfaceVariant,
                 ),
               ),
-            )
-          else
-            TextButton(
-              onPressed: _saveTask,
-              child: const Text('Sauvegarder'),
+              actions: [
+                AnimatedBuilder(
+                  animation: _fadeAnimation,
+                  builder: (context, child) {
+                    return FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: _buildSaveButton(isApple),
+                    );
+                  },
+                ),
+              ],
             ),
-        ],
-      ),
-      body: AnimatedBuilder(
-        animation: _fadeAnimation,
-        builder: (context, child) {
-          return Opacity(
-            opacity: _fadeAnimation.value,
-            child: Transform.translate(
-              offset: Offset(0, 50 * _slideAnimation.value),
-              child: _buildForm(),
+            
+            // Contenu principal avec animation
+            SliverToBoxAdapter(
+              child: AnimatedBuilder(
+                animation: _fadeAnimation,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Transform.translate(
+                      offset: Offset(0, 30 * _slideAnimation.value),
+                      child: _buildModernForm(isApple),
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
+          ],
+        ),
+        floatingActionButton: AnimatedBuilder(
+          animation: _fadeAnimation,
+          builder: (context, child) {
+            return ScaleTransition(
+              scale: _fadeAnimation,
+              child: _buildModernFAB(isApple),
+            );
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
 
-  Widget _buildForm() {
+  Widget _buildSaveButton(bool isApple) {
+    return Container(
+      margin: const EdgeInsets.only(right: AppTheme.spaceMedium),
+      child: _isLoading
+          ? SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppTheme.primaryColor,
+              ),
+            )
+          : Material(
+              color: AppTheme.primaryColor,
+              borderRadius: BorderRadius.circular(8),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _saveTask();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.spaceMedium,
+                    vertical: AppTheme.spaceSmall,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        isApple ? CupertinoIcons.checkmark : Icons.save_rounded,
+                        color: AppTheme.white100,
+                        size: 18,
+                      ),
+                      const SizedBox(width: AppTheme.spaceSmall),
+                      Text(
+                        'Sauvegarder',
+                        style: GoogleFonts.inter(
+                          fontSize: AppTheme.fontSize14,
+                          fontWeight: AppTheme.fontMedium,
+                          color: AppTheme.white100,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+
+  Widget _buildModernFAB(bool isApple) {
+    return FloatingActionButton.extended(
+      onPressed: _isLoading ? null : () {
+        HapticFeedback.mediumImpact();
+        _saveTask();
+      },
+      backgroundColor: AppTheme.primaryColor,
+      foregroundColor: AppTheme.white100,
+      elevation: 6,
+      icon: _isLoading
+          ? SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppTheme.white100,
+              ),
+            )
+          : Icon(isApple ? CupertinoIcons.checkmark : Icons.save_rounded),
+      label: Text(
+        _isLoading ? 'Sauvegarde...' : 'Sauvegarder',
+        style: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize14,
+          fontWeight: AppTheme.fontMedium,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernForm(bool isApple) {
     return Form(
       key: _formKey,
-      child: ListView(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      child: Column(
         children: [
-          _buildSection(
+          // Section Informations générales
+          _buildModernSection(
             title: 'Informations générales',
-            icon: Icons.info_outline,
+            icon: isApple ? CupertinoIcons.info : Icons.info_outline_rounded,
+            isApple: isApple,
             children: [
-              _buildTextField(
+              _buildModernTextField(
                 controller: _titleController,
                 label: 'Titre de la tâche',
-                icon: Icons.title,
+                hint: 'Entrez le titre de la tâche',
+                icon: isApple ? CupertinoIcons.textformat : Icons.title_rounded,
+                isApple: isApple,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Le titre est requis';
@@ -451,116 +575,144 @@ class _TaskFormPageState extends State<TaskFormPage>
                   return null;
                 },
               ),
-              const SizedBox(height: AppTheme.spaceMedium),
-              _buildTextField(
+              const SizedBox(height: AppTheme.spaceLarge),
+              _buildModernTextField(
                 controller: _descriptionController,
                 label: 'Description',
-                icon: Icons.description,
+                hint: 'Décrivez la tâche en détail',
+                icon: isApple ? CupertinoIcons.doc_text : Icons.description_rounded,
+                isApple: isApple,
                 maxLines: 3,
               ),
             ],
           ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          _buildSection(
+          
+          // Section Priorité et statut
+          _buildModernSection(
             title: 'Priorité et statut',
-            icon: Icons.flag_outlined,
+            icon: isApple ? CupertinoIcons.flag : Icons.flag_outlined,
+            isApple: isApple,
             children: [
-              _buildPrioritySelector(),
-              const SizedBox(height: AppTheme.spaceMedium),
-              _buildStatusSelector(),
+              _buildModernPrioritySelector(isApple),
+              const SizedBox(height: AppTheme.spaceLarge),
+              _buildModernStatusSelector(isApple),
             ],
           ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          _buildSection(
+          
+          // Section Échéance
+          _buildModernSection(
             title: 'Échéance',
-            icon: Icons.schedule,
+            icon: isApple ? CupertinoIcons.clock : Icons.schedule_rounded,
+            isApple: isApple,
             children: [
               Row(
                 children: [
                   Expanded(
-                    child: _buildDateField('Date d\'échéance', _dueDate, _selectDueDate),
+                    child: _buildModernDateField('Date d\'échéance', _dueDate, _selectDueDate, isApple),
                   ),
                   const SizedBox(width: AppTheme.spaceMedium),
                   Expanded(
-                    child: _buildTimeField('Heure', _dueTime, _selectDueTime),
+                    child: _buildModernTimeField('Heure', _dueTime, _selectDueTime, isApple),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          _buildSection(
+          
+          // Section Assignation
+          _buildModernSection(
             title: 'Assignation',
-            icon: Icons.people_outline,
+            icon: isApple ? CupertinoIcons.person_2 : Icons.people_outline_rounded,
+            isApple: isApple,
             children: [
-              _buildAssigneeSelector(),
+              _buildModernAssigneeSelector(isApple),
             ],
           ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          _buildSection(
+          
+          // Section Organisation
+          _buildModernSection(
             title: 'Organisation',
-            icon: Icons.folder_outlined,
+            icon: isApple ? CupertinoIcons.folder : Icons.folder_outlined,
+            isApple: isApple,
             children: [
-              _buildTaskListSelector(),
-              const SizedBox(height: AppTheme.spaceMedium),
-              _buildTagsSection(),
+              _buildModernTaskListSelector(isApple),
+              const SizedBox(height: AppTheme.spaceLarge),
+              _buildModernTagsSection(isApple),
             ],
           ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          _buildSection(
+          
+          // Section Pièces jointes
+          _buildModernSection(
             title: 'Pièces jointes',
-            icon: Icons.attach_file,
+            icon: isApple ? CupertinoIcons.paperclip : Icons.attach_file_rounded,
+            isApple: isApple,
             children: [
-              _buildAttachmentsSection(),
+              _buildModernAttachmentsSection(isApple),
             ],
           ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          _buildSection(
-            title: 'Liaison',
-            icon: Icons.link,
-            children: [
-              _buildLinkSection(),
-            ],
-          ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          _buildSection(
-            title: 'Récurrence',
-            icon: Icons.repeat,
-            children: [
-              _buildRecurrenceSection(),
-            ],
-          ),
-          const SizedBox(height: AppTheme.spaceXLarge),
+          
+          // Espacement final
+          const SizedBox(height: 100), // Pour le FAB
         ],
       ),
     );
   }
 
-  Widget _buildSection({
+  Widget _buildModernSection({
     required String title,
     required IconData icon,
+    required bool isApple,
     required List<Widget> children,
   }) {
-    return Card(
+    return Container(
+      margin: const EdgeInsets.fromLTRB(
+        AppTheme.space20,
+        AppTheme.space20,
+        AppTheme.space20,
+        0,
+      ),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceMedium),
+        padding: const EdgeInsets.all(AppTheme.space20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(icon, color: AppTheme.primaryColor),
-                const SizedBox(width: AppTheme.spaceSmall),
+                Container(
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: AppTheme.primaryColor,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: AppTheme.spaceMedium),
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontSemiBold,
-                    color: AppTheme.primaryColor,
+                    color: AppTheme.onSurface,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: AppTheme.spaceMedium),
+            const SizedBox(height: AppTheme.spaceLarge),
             ...children,
           ],
         ),
@@ -568,296 +720,729 @@ class _TaskFormPageState extends State<TaskFormPage>
     );
   }
 
-  Widget _buildTextField({
+  Widget _buildModernTextField({
     required TextEditingController controller,
     required String label,
+    required String hint,
     required IconData icon,
+    required bool isApple,
     String? Function(String?)? validator,
+    int maxLines = 1,
     TextInputType? keyboardType,
-    int? maxLines,
   }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: const OutlineInputBorder(),
-      ),
-      validator: validator,
-      keyboardType: keyboardType,
-      maxLines: maxLines ?? 1,
-    );
-  }
-
-  Widget _buildPrioritySelector() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Priorité'),
-        const SizedBox(height: AppTheme.spaceSmall),
-        Wrap(
-          spacing: 8,
-          children: _priorityOptions.map((priority) {
-            final isSelected = _priority == priority['value'];
-            final color = Color(int.parse('0xFF${priority['color']}'));
-            
-            return FilterChip(
-              label: Text(priority['label']!),
-              selected: isSelected,
-              onSelected: (selected) {
-                setState(() => _priority = priority['value']!);
-              },
-              backgroundColor: color.withOpacity(0.1),
-              selectedColor: color.withOpacity(0.3),
-              checkmarkColor: color,
-            );
-          }).toList(),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
         ),
-      ],
-    );
-  }
-
-  Widget _buildStatusSelector() {
-    return DropdownButtonFormField<String>(
-      initialValue: _status,
-      decoration: const InputDecoration(
-        labelText: 'Statut',
-        prefixIcon: Icon(Icons.flag),
-        border: OutlineInputBorder(),
       ),
-      items: _statusOptions.map((status) {
-        return DropdownMenuItem(
-          value: status['value'],
-          child: Text(status['label']!),
-        );
-      }).toList(),
-      onChanged: (value) {
-        if (value != null) {
-          setState(() => _status = value);
-        }
-      },
-    );
-  }
-
-  Widget _buildDateField(String label, DateTime? date, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: InputDecorator(
+      child: TextFormField(
+        controller: controller,
+        validator: validator,
+        maxLines: maxLines,
+        keyboardType: keyboardType,
+        style: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize16,
+          fontWeight: AppTheme.fontMedium,
+          color: AppTheme.onSurface,
+        ),
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: const Icon(Icons.calendar_today),
-          border: const OutlineInputBorder(),
-        ),
-        child: Text(
-          date != null ? DateFormat('dd/MM/yyyy').format(date) : 'Sélectionner',
-          style: TextStyle(
-            color: date != null ? null : AppTheme.grey600,
+          hintText: hint,
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Icon(icon, size: 20, color: AppTheme.onSurfaceVariant),
           ),
+          labelStyle: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontMedium,
+            color: AppTheme.onSurfaceVariant,
+          ),
+          hintStyle: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontRegular,
+            color: AppTheme.onSurfaceVariant.withOpacity(0.6),
+          ),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spaceMedium,
+            vertical: AppTheme.spaceMedium,
+          ),
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
         ),
+        onTap: () => HapticFeedback.selectionClick(),
       ),
     );
   }
 
-  Widget _buildTimeField(String label, TimeOfDay? time, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: const Icon(Icons.access_time),
-          border: const OutlineInputBorder(),
-        ),
-        child: Text(
-          time != null ? time.format(context) : 'Sélectionner',
-          style: TextStyle(
-            color: time != null ? null : AppTheme.grey600,
-          ),
+  Widget _buildModernPrioritySelector(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
         ),
       ),
-    );
-  }
-
-  Widget _buildAssigneeSelector() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Expanded(child: Text('Responsables')),
-            TextButton.icon(
-              onPressed: _selectAssignees,
-              icon: const Icon(Icons.person_add, size: 20),
-              label: const Text('Assigner'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: Row(
+              children: [
+                Icon(
+                  isApple ? CupertinoIcons.flag : Icons.flag_outlined,
+                  size: 20,
+                  color: AppTheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Text(
+                  'Priorité',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize14,
+                    fontWeight: AppTheme.fontMedium,
+                    color: AppTheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        if (_assigneeIds.isNotEmpty) ...[
-          const SizedBox(height: AppTheme.spaceSmall),
-          Wrap(
-            spacing: 8,
-            children: _assigneeIds.map((id) {
-              return Chip(
-                label: Text('Personne $id'), // TODO: Load actual person name
-                onDeleted: () {
-                  setState(() => _assigneeIds.remove(id));
-                },
-              );
-            }).toList(),
           ),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildTaskListSelector() {
-    return InkWell(
-      onTap: _selectTaskList,
-      child: InputDecorator(
-        decoration: const InputDecoration(
-          labelText: 'Liste de tâches',
-          prefixIcon: Icon(Icons.list_alt),
-          border: OutlineInputBorder(),
-        ),
-        child: Text(
-          _taskListId != null ? 'Liste sélectionnée' : 'Aucune liste',
-          style: TextStyle(
-            color: _taskListId != null ? null : AppTheme.grey600,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTagsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Expanded(child: Text('Tags')),
-            TextButton.icon(
-              onPressed: _addTag,
-              icon: const Icon(Icons.add, size: 20),
-              label: const Text('Ajouter'),
-            ),
-          ],
-        ),
-        if (_tags.isNotEmpty) ...[
-          const SizedBox(height: AppTheme.spaceSmall),
-          Wrap(
-            spacing: 8,
-            children: _tags.map((tag) {
-              return Chip(
-                label: Text(tag),
-                onDeleted: () {
-                  setState(() => _tags.remove(tag));
+          ...(_priorityOptions.map((option) => 
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => _priority = option['value']!);
                 },
-              );
-            }).toList(),
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildAttachmentsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Expanded(child: Text('Fichiers joints')),
-            TextButton.icon(
-              onPressed: _pickAttachment,
-              icon: const Icon(Icons.attach_file, size: 20),
-              label: const Text('Ajouter'),
-            ),
-          ],
-        ),
-        if (_attachmentUrls.isNotEmpty) ...[
-          const SizedBox(height: AppTheme.spaceSmall),
-          ...(_attachmentUrls.map((url) {
-            return ListTile(
-              leading: const Icon(Icons.insert_drive_file),
-              title: Text('Fichier joint'),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  setState(() => _attachmentUrls.remove(url));
-                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.spaceMedium,
+                    vertical: AppTheme.spaceSmall,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 20,
+                        margin: const EdgeInsets.only(right: AppTheme.spaceMedium),
+                        decoration: BoxDecoration(
+                          color: Color(int.parse('FF${option['color']}', radix: 16)),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          option['label']!,
+                          style: GoogleFonts.inter(
+                            fontSize: AppTheme.fontSize16,
+                            fontWeight: _priority == option['value'] 
+                                ? AppTheme.fontSemiBold 
+                                : AppTheme.fontMedium,
+                            color: AppTheme.onSurface,
+                          ),
+                        ),
+                      ),
+                      if (_priority == option['value'])
+                        Icon(
+                          isApple ? CupertinoIcons.checkmark : Icons.check_rounded,
+                          color: AppTheme.primaryColor,
+                          size: 20,
+                        ),
+                    ],
+                  ),
+                ),
               ),
-            );
-          }).toList()),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildLinkSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DropdownButtonFormField<String>(
-          initialValue: _linkedToType,
-          decoration: const InputDecoration(
-            labelText: 'Lier à',
-            prefixIcon: Icon(Icons.link),
-            border: OutlineInputBorder(),
-          ),
-          items: [
-            const DropdownMenuItem(value: null, child: Text('Aucune liaison')),
-            ..._linkTypes.map((type) {
-              return DropdownMenuItem(
-                value: type['value'],
-                child: Text(type['label']!),
-              );
-            }).toList(),
-          ],
-          onChanged: (value) {
-            setState(() {
-              _linkedToType = value;
-              _linkedToId = null;
-            });
-          },
-        ),
-        if (_linkedToType != null) ...[
-          const SizedBox(height: AppTheme.spaceMedium),
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'ID de l\'élément',
-              hintText: 'Saisir l\'ID de ${_linkedToType}',
-              border: const OutlineInputBorder(),
             ),
-            onChanged: (value) => _linkedToId = value.isEmpty ? null : value,
-          ),
+          ).toList()),
         ],
-      ],
+      ),
     );
   }
 
-  Widget _buildRecurrenceSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SwitchListTile(
-          title: const Text('Tâche récurrente'),
-          subtitle: const Text('Créer automatiquement une nouvelle tâche'),
-          value: _isRecurring,
-          onChanged: (value) {
-            setState(() => _isRecurring = value);
-            if (!value) {
-              _recurrencePattern = null;
-            }
-          },
+  Widget _buildModernStatusSelector(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
         ),
-        if (_isRecurring) ...[
-          const SizedBox(height: AppTheme.spaceMedium),
-          // TODO: Add recurrence pattern configuration
-          const Text('Configuration de la récurrence à implémenter'),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: Row(
+              children: [
+                Icon(
+                  isApple ? CupertinoIcons.checkmark_circle : Icons.task_alt_rounded,
+                  size: 20,
+                  color: AppTheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Text(
+                  'Statut',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize14,
+                    fontWeight: AppTheme.fontMedium,
+                    color: AppTheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ...(_statusOptions.map((option) => 
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => _status = option['value']!);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.spaceMedium,
+                    vertical: AppTheme.spaceSmall,
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 32), // Align with priority icons
+                      Expanded(
+                        child: Text(
+                          option['label']!,
+                          style: GoogleFonts.inter(
+                            fontSize: AppTheme.fontSize16,
+                            fontWeight: _status == option['value'] 
+                                ? AppTheme.fontSemiBold 
+                                : AppTheme.fontMedium,
+                            color: AppTheme.onSurface,
+                          ),
+                        ),
+                      ),
+                      if (_status == option['value'])
+                        Icon(
+                          isApple ? CupertinoIcons.checkmark : Icons.check_rounded,
+                          color: AppTheme.primaryColor,
+                          size: 20,
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ).toList()),
         ],
-      ],
+      ),
     );
   }
+
+  Widget _buildModernDateField(String label, DateTime? date, VoidCallback onTap, bool isApple) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        onTap();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceVariant.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.outline.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
+        child: Row(
+          children: [
+            Icon(
+              isApple ? CupertinoIcons.calendar : Icons.calendar_today_rounded,
+              size: 20,
+              color: AppTheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: AppTheme.spaceMedium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize12,
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    date != null 
+                        ? DateFormat('dd MMM yyyy', 'fr_FR').format(date)
+                        : 'Aucune date',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize16,
+                      fontWeight: AppTheme.fontMedium,
+                      color: date != null ? AppTheme.onSurface : AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+              color: AppTheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernTimeField(String label, TimeOfDay? time, VoidCallback onTap, bool isApple) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        onTap();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceVariant.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.outline.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
+        child: Row(
+          children: [
+            Icon(
+              isApple ? CupertinoIcons.clock : Icons.access_time_rounded,
+              size: 20,
+              color: AppTheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: AppTheme.spaceMedium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize12,
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    time != null 
+                        ? time.format(context)
+                        : 'Aucune heure',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize16,
+                      fontWeight: AppTheme.fontMedium,
+                      color: time != null ? AppTheme.onSurface : AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+              color: AppTheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernAssigneeSelector(bool isApple) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        _selectAssignees();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceVariant.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.outline.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
+        child: Row(
+          children: [
+            Icon(
+              isApple ? CupertinoIcons.person_2 : Icons.people_outline_rounded,
+              size: 20,
+              color: AppTheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: AppTheme.spaceMedium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Assignés',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize12,
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _assigneeIds.isEmpty 
+                        ? 'Aucune personne assignée'
+                        : '${_assigneeIds.length} personne(s) assignée(s)',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize16,
+                      fontWeight: AppTheme.fontMedium,
+                      color: _assigneeIds.isNotEmpty ? AppTheme.onSurface : AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+              color: AppTheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernTaskListSelector(bool isApple) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        _selectTaskList();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceVariant.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.outline.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
+        child: Row(
+          children: [
+            Icon(
+              isApple ? CupertinoIcons.list_bullet : Icons.list_alt_rounded,
+              size: 20,
+              color: AppTheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: AppTheme.spaceMedium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Liste de tâches',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize12,
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _taskListId != null ? 'Liste sélectionnée' : 'Aucune liste',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize16,
+                      fontWeight: AppTheme.fontMedium,
+                      color: _taskListId != null ? AppTheme.onSurface : AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+              color: AppTheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernTagsSection(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      isApple ? CupertinoIcons.tag : Icons.label_outline_rounded,
+                      size: 20,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: AppTheme.spaceSmall),
+                    Text(
+                      'Tags',
+                      style: GoogleFonts.inter(
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontMedium,
+                        color: AppTheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+                Material(
+                  color: AppTheme.primaryColor,
+                  borderRadius: BorderRadius.circular(6),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(6),
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      _addTag();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Icon(
+                        isApple ? CupertinoIcons.add : Icons.add_rounded,
+                        color: AppTheme.white100,
+                        size: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (_tags.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppTheme.spaceMedium,
+                0,
+                AppTheme.spaceMedium,
+                AppTheme.spaceMedium,
+              ),
+              child: Wrap(
+                spacing: AppTheme.spaceSmall,
+                runSpacing: AppTheme.spaceSmall,
+                children: _tags.map((tag) => 
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.spaceSmall,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          tag,
+                          style: GoogleFonts.inter(
+                            fontSize: AppTheme.fontSize12,
+                            fontWeight: AppTheme.fontMedium,
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        GestureDetector(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            setState(() => _tags.remove(tag));
+                          },
+                          child: Icon(
+                            isApple ? CupertinoIcons.xmark : Icons.close_rounded,
+                            size: 14,
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ).toList(),
+              ),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppTheme.spaceMedium,
+                0,
+                AppTheme.spaceMedium,
+                AppTheme.spaceMedium,
+              ),
+              child: Text(
+                'Aucun tag ajouté',
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.fontSize14,
+                  fontWeight: AppTheme.fontMedium,
+                  color: AppTheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernAttachmentsSection(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      isApple ? CupertinoIcons.paperclip : Icons.attach_file_rounded,
+                      size: 20,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: AppTheme.spaceSmall),
+                    Text(
+                      'Pièces jointes',
+                      style: GoogleFonts.inter(
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontMedium,
+                        color: AppTheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+                Material(
+                  color: AppTheme.primaryColor,
+                  borderRadius: BorderRadius.circular(6),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(6),
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      _pickAttachment();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Icon(
+                        isApple ? CupertinoIcons.add : Icons.add_rounded,
+                        color: AppTheme.white100,
+                        size: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppTheme.spaceMedium,
+              0,
+              AppTheme.spaceMedium,
+              AppTheme.spaceMedium,
+            ),
+            child: _attachmentUrls.isNotEmpty
+                ? Column(
+                    children: _attachmentUrls.map((url) => 
+                      Container(
+                        margin: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
+                        decoration: BoxDecoration(
+                          color: AppTheme.surface,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: AppTheme.outline.withOpacity(0.2),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              isApple ? CupertinoIcons.doc : Icons.insert_drive_file_rounded,
+                              size: 20,
+                              color: AppTheme.onSurfaceVariant,
+                            ),
+                            const SizedBox(width: AppTheme.spaceSmall),
+                            Expanded(
+                              child: Text(
+                                'Pièce jointe',
+                                style: GoogleFonts.inter(
+                                  fontSize: AppTheme.fontSize14,
+                                  fontWeight: AppTheme.fontMedium,
+                                  color: AppTheme.onSurface,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                setState(() => _attachmentUrls.remove(url));
+                              },
+                              child: Icon(
+                                isApple ? CupertinoIcons.trash : Icons.delete_outline_rounded,
+                                size: 20,
+                                color: AppTheme.errorColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ).toList(),
+                  )
+                : Text(
+                    'Aucune pièce jointe',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize14,
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
 
 class _AssigneeSelectionDialog extends StatefulWidget {

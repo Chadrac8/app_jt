@@ -13,31 +13,64 @@ class BibleService {
     return _instance!;
   }
 
-  // Cache pour les livres
-  List<BibleBook>? _cachedBooks;
-  bool _isLoading = false;
+  // Versions disponibles
+  static const Map<String, String> availableVersions = {
+    'LSG1910': 'Louis Segond 1910',
+    'LSG21': 'Louis Segond 21',
+    'NBS': 'Nouvelle Bible Segond',
+    'TOB': 'Traduction Œcuménique de la Bible',
+    'BFC': 'Bible en Français Courant',
+    'PDV': 'Parole de Vie',
+    'MARTIN': 'Bible Martin 1744',
+    'OSTERVALD': 'Bible Ostervald 1996',
+  };
+
+  // Version actuelle (par défaut LSG1910)
+  String _currentVersion = 'LSG1910';
   
-  Future<List<BibleBook>> getBooks() async {
-    if (_cachedBooks != null) {
-      return _cachedBooks!;
+  // Cache pour les livres par version
+  Map<String, List<BibleBook>> _cachedBooksByVersion = {};
+  Map<String, bool> _loadingStates = {};
+  
+  // Getters pour la version actuelle
+  String get currentVersion => _currentVersion;
+  String get currentVersionName => availableVersions[_currentVersion] ?? _currentVersion;
+  
+  // Changer de version
+  Future<void> setVersion(String version) async {
+    if (availableVersions.containsKey(version) && version != _currentVersion) {
+      _currentVersion = version;
+      // Recharger les livres pour la nouvelle version
+      await getBooks();
+    }
+  }
+  
+  Future<List<BibleBook>> getBooks([String? version]) async {
+    final targetVersion = version ?? _currentVersion;
+    
+    if (_cachedBooksByVersion.containsKey(targetVersion)) {
+      return _cachedBooksByVersion[targetVersion]!;
     }
     
-    if (_isLoading) {
+    if (_loadingStates[targetVersion] == true) {
       // Attendre que le chargement en cours se termine
-      while (_isLoading) {
+      while (_loadingStates[targetVersion] == true) {
         await Future.delayed(const Duration(milliseconds: 100));
       }
-      return _cachedBooks ?? [];
+      return _cachedBooksByVersion[targetVersion] ?? [];
     }
     
-    _isLoading = true;
+    _loadingStates[targetVersion] = true;
     
     try {
+      // Déterminer le fichier à charger
+      String fileName = _getVersionFileName(targetVersion);
+      
       // Charger les vraies données bibliques depuis le fichier JSON
-      final String data = await rootBundle.loadString('assets/bible/lsg1910.json');
+      final String data = await rootBundle.loadString('assets/bible/$fileName');
       final List<dynamic> jsonData = json.decode(data);
       
-      _cachedBooks = jsonData.asMap().entries.map((entry) {
+      _cachedBooksByVersion[targetVersion] = jsonData.asMap().entries.map((entry) {
         int index = entry.key;
         Map<String, dynamic> bookData = entry.value;
         
@@ -55,16 +88,39 @@ class BibleService {
       }).toList();
       
     } catch (e) {
-      print('Erreur lors du chargement de la Bible: $e');
-      _cachedBooks = [];
+      print('Erreur lors du chargement de la Bible ($targetVersion): $e');
+      _cachedBooksByVersion[targetVersion] = [];
     } finally {
-      _isLoading = false;
+      _loadingStates[targetVersion] = false;
     }
     
-    return _cachedBooks!;
+    return _cachedBooksByVersion[targetVersion]!;
   }
 
-  List<BibleBook> get books => _cachedBooks ?? [];
+  List<BibleBook> get books => _cachedBooksByVersion[_currentVersion] ?? [];
+  
+  String _getVersionFileName(String version) {
+    switch (version) {
+      case 'LSG1910':
+        return 'lsg1910.json';
+      case 'LSG21':
+        return 'lsg21.json';
+      case 'NBS':
+        return 'nbs.json';
+      case 'TOB':
+        return 'tob.json';
+      case 'BFC':
+        return 'bfc.json';
+      case 'PDV':
+        return 'pdv.json';
+      case 'MARTIN':
+        return 'martin.json';
+      case 'OSTERVALD':
+        return 'ostervald.json';
+      default:
+        return 'lsg1910.json'; // Fallback vers LSG1910
+    }
+  }
 
   Future<BibleVerse?> getVerse(String bookName, int chapter, int verse) async {
     final books = await getBooks();
@@ -165,12 +221,14 @@ class BibleService {
     String query, {
     String? bookFilter,
     int limit = 100,
+    bool caseSensitive = false,
+    bool wholeWords = false,
+    bool useRegex = false,
   }) async {
     if (query.trim().isEmpty) return [];
     
     final books = await getBooks();
     final List<BibleVerse> results = [];
-    final searchTerm = query.toLowerCase();
     
     // Filtrer les livres si un filtre est spécifié
     List<BibleBook> filteredBooks = books;
@@ -186,7 +244,29 @@ class BibleService {
         final chapter = book.chapters[chapterIndex];
         for (int verseIndex = 0; verseIndex < chapter.length; verseIndex++) {
           final verseText = chapter[verseIndex];
-          if (verseText.toLowerCase().contains(searchTerm)) {
+          
+          bool matches = false;
+          
+          if (useRegex) {
+            try {
+              final regex = RegExp(query, caseSensitive: caseSensitive);
+              matches = regex.hasMatch(verseText);
+            } catch (e) {
+              // Ignore regex errors and continue
+              continue;
+            }
+          } else if (wholeWords) {
+            final searchTerm = caseSensitive ? query : query.toLowerCase();
+            final text = caseSensitive ? verseText : verseText.toLowerCase();
+            final regex = RegExp('\\b$searchTerm\\b', caseSensitive: caseSensitive);
+            matches = regex.hasMatch(text);
+          } else {
+            final searchTerm = caseSensitive ? query : query.toLowerCase();
+            final text = caseSensitive ? verseText : verseText.toLowerCase();
+            matches = text.contains(searchTerm);
+          }
+          
+          if (matches) {
             results.add(BibleVerse(
               book: book.name,
               chapter: chapterIndex + 1,
@@ -201,6 +281,72 @@ class BibleService {
           }
         }
       }
+    }
+    
+    return results;
+  }
+
+  // Recherche avec statistiques
+  Future<Map<String, dynamic>> searchWithStats(String query) async {
+    final results = await search(query);
+    final Map<String, int> bookStats = {};
+    
+    for (final verse in results) {
+      bookStats[verse.book] = (bookStats[verse.book] ?? 0) + 1;
+    }
+    
+    return {
+      'results': results,
+      'totalCount': results.length,
+      'bookStats': bookStats,
+      'query': query,
+    };
+  }
+
+  // Recherche de versets similaires
+  Future<List<BibleVerse>> findSimilarVerses(String referenceVerse, {int limit = 10}) async {
+    final books = await getBooks();
+    final List<BibleVerse> results = [];
+    
+    // Extraire les mots-clés du verset de référence
+    final words = referenceVerse.toLowerCase()
+        .replaceAll(RegExp(r'[^\w\s]'), '')
+        .split(' ')
+        .where((word) => word.length > 3) // Ignorer les mots courts
+        .toList();
+    
+    if (words.isEmpty) return results;
+    
+    for (final book in books) {
+      for (int chapterIndex = 0; chapterIndex < book.chapters.length; chapterIndex++) {
+        final chapter = book.chapters[chapterIndex];
+        for (int verseIndex = 0; verseIndex < chapter.length; verseIndex++) {
+          final verseText = chapter[verseIndex];
+          final lowerText = verseText.toLowerCase();
+          
+          // Calculer le score de similarité
+          int matchCount = 0;
+          for (final word in words) {
+            if (lowerText.contains(word)) {
+              matchCount++;
+            }
+          }
+          
+          // Si au moins 2 mots correspondent, ajouter aux résultats
+          if (matchCount >= 2) {
+            results.add(BibleVerse(
+              book: book.name,
+              chapter: chapterIndex + 1,
+              verse: verseIndex + 1,
+              text: verseText,
+            ));
+          }
+          
+          if (results.length >= limit) break;
+        }
+        if (results.length >= limit) break;
+      }
+      if (results.length >= limit) break;
     }
     
     return results;

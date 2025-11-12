@@ -1152,14 +1152,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Color(group.color).withOpacity(0.2),
+                    color: _getGroupColor(group).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
                   child: Text(
                     group.name,
                     style: TextStyle(
                       fontSize: AppTheme.fontSize12,
-                      color: Color(group.color),
+                      color: _getGroupColor(group),
                       fontWeight: AppTheme.fontBold,
                     ),
                   ),
@@ -1194,6 +1194,12 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                   case 'edit':
                     _showForm(action: action);
                     break;
+                  case 'test':
+                    _testAction(action);
+                    break;
+                  case 'preview':
+                    _previewAction(action);
+                    break;
                   case 'duplicate':
                     _duplicateAction(action);
                     break;
@@ -1206,6 +1212,27 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                 }
               },
               itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'test',
+                  child: Row(
+                    children: [
+                      Icon(Icons.play_arrow, color: AppTheme.greenStandard),
+                      SizedBox(width: AppTheme.spaceSmall),
+                      Text('Tester l\'action'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'preview',
+                  child: Row(
+                    children: [
+                      Icon(Icons.visibility, color: AppTheme.info),
+                      SizedBox(width: AppTheme.spaceSmall),
+                      Text('Prévisualiser'),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(),
                 const PopupMenuItem(
                   value: 'edit',
                   child: Row(
@@ -1236,6 +1263,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                     ],
                   ),
                 ),
+                const PopupMenuDivider(),
                 const PopupMenuItem(
                   value: 'delete',
                   child: Row(
@@ -1261,7 +1289,9 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
         id: '',
         name: 'Aucun groupe',
         description: '',
-        color: AppTheme.grey500.value,
+        icon: Icons.help,
+        iconCodePoint: Icons.help.codePoint.toString(),
+        color: AppTheme.grey500.value.toRadixString(16),
         order: 0,
         isActive: true,
         createdAt: DateTime.now(),
@@ -1286,8 +1316,8 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                       ? null
                       : LinearGradient(
                           colors: [
-                            Color(group.color).withOpacity(0.7),
-                            Color(group.color),
+                            _getGroupColor(group).withOpacity(0.7),
+                            _getGroupColor(group),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -1333,14 +1363,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                     Center(
                       child: CircleAvatar(
                         radius: 24,
-                        backgroundImage: action.imageUrl != null
-                            ? NetworkImage(action.imageUrl!)
+                        backgroundImage: action.actionData?['imageUrl'] != null
+                            ? NetworkImage(action.actionData!['imageUrl'])
                             : null,
                         backgroundColor: AppTheme.white100.withOpacity(0.9),
-                        child: action.imageUrl == null
+                        child: action.actionData?['imageUrl'] == null
                             ? Icon(
                                 _getActionTypeIcon(action.actionType),
-                                color: Color(group.color),
+                                color: _getGroupColor(group),
                               )
                             : null,
                       ),
@@ -1379,14 +1409,14 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Color(group.color).withOpacity(0.2),
+                            color: _getGroupColor(group).withOpacity(0.2),
                             borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
                           child: Text(
                             group.name,
                             style: TextStyle(
                               fontSize: AppTheme.fontSize10,
-                              color: Color(group.color),
+                              color: _getGroupColor(group),
                               fontWeight: AppTheme.fontBold,
                             ),
                           ),
@@ -1420,7 +1450,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
           margin: const EdgeInsets.only(bottom: 12),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: Color(group.color),
+              backgroundColor: _getGroupColor(group),
               child: Text(
                 group.name.isNotEmpty ? group.name[0].toUpperCase() : 'G',
                 style: const TextStyle(
@@ -1809,7 +1839,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
   Future<void> _toggleActionStatus(PourVousAction action) async {
     try {
       final updatedAction = action.copyWith(isActive: !action.isActive);
-      final success = await _actionService.updateAction(updatedAction);
+      final success = await _actionService.updateAction(action.id, updatedAction);
       if (success) {
         _showSuccessSnackBar('Statut mis à jour');
         await _loadData();
@@ -1824,7 +1854,7 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
   // Méthodes utilitaires pour les groupes
   Future<void> _toggleGroupStatus(ActionGroup group) async {
     try {
-      final success = await _groupService.toggleGroupStatus(group.id);
+      final success = await _groupService.toggleGroupStatus(group.id, !group.isActive);
       if (success) {
         _showSuccessSnackBar('Statut du groupe mis à jour');
         await _loadData();
@@ -1860,6 +1890,293 @@ class _AdminPourVousTabState extends State<AdminPourVousTab>
   void _showGroupForm({ActionGroup? group}) {
     // TODO: Implémenter le formulaire de groupe
     _showErrorSnackBar('Formulaire de groupe pas encore implémenté');
+  }
+
+  /// Teste l'exécution d'une action configurée
+  Future<void> _testAction(PourVousAction action) async {
+    try {
+      _showSuccessSnackBar('Test de l\'action "${action.title}" en cours...');
+      
+      // Exécuter l'action en fonction de son type
+      await _executeAction(action, isTest: true);
+      
+    } catch (e) {
+      _showErrorSnackBar('Erreur lors du test: $e');
+    }
+  }
+
+  /// Prévisualise une action dans une boîte de dialogue
+  void _previewAction(PourVousAction action) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              _getActionTypeIcon(action.actionType),
+              color: AppTheme.primaryColor,
+            ),
+            const SizedBox(width: AppTheme.spaceSmall),
+            Expanded(
+              child: Text(
+                'Prévisualisation: ${action.title}',
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.fontSize16,
+                  fontWeight: AppTheme.fontSemiBold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Description
+              Text(
+                'Description:',
+                style: GoogleFonts.inter(
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.primaryColor,
+                ),
+              ),
+              const SizedBox(height: AppTheme.spaceSmall),
+              Text(action.description),
+              const SizedBox(height: AppTheme.spaceMedium),
+              
+              // Type d'action
+              Text(
+                'Type d\'action:',
+                style: GoogleFonts.inter(
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.primaryColor,
+                ),
+              ),
+              const SizedBox(height: AppTheme.spaceSmall),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spaceSmall,
+                  vertical: AppTheme.spaceXSmall,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                ),
+                child: Text(
+                  _getActionTypeLabel(action.actionType),
+                  style: GoogleFonts.inter(
+                    color: AppTheme.primaryColor,
+                    fontWeight: AppTheme.fontMedium,
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppTheme.spaceMedium),
+              
+              // Configuration spécifique
+              Text(
+                'Configuration:',
+                style: GoogleFonts.inter(
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.primaryColor,
+                ),
+              ),
+              const SizedBox(height: AppTheme.spaceSmall),
+              _buildActionConfigPreview(action),
+              const SizedBox(height: AppTheme.spaceMedium),
+              
+              // Statut
+              Row(
+                children: [
+                  Text(
+                    'Statut:',
+                    style: GoogleFonts.inter(
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: AppTheme.primaryColor,
+                    ),
+                  ),
+                  const SizedBox(width: AppTheme.spaceSmall),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.spaceSmall,
+                      vertical: AppTheme.spaceXSmall,
+                    ),
+                    decoration: BoxDecoration(
+                      color: action.isActive 
+                          ? AppTheme.greenStandard.withOpacity(0.1)
+                          : AppTheme.grey500.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                    ),
+                    child: Text(
+                      action.isActive ? 'Actif' : 'Inactif',
+                      style: GoogleFonts.inter(
+                        color: action.isActive ? AppTheme.greenStandard : AppTheme.grey500,
+                        fontWeight: AppTheme.fontMedium,
+                        fontSize: AppTheme.fontSize12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _testAction(action);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              foregroundColor: AppTheme.white100,
+            ),
+            child: const Text('Tester'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Construit l'aperçu de la configuration d'une action
+  Widget _buildActionConfigPreview(PourVousAction action) {
+    switch (action.actionType) {
+      case 'navigate_page':
+        return _buildConfigItem(
+          'Page cible',
+          action.targetRoute ?? 'Non définie',
+          Icons.web,
+        );
+      
+      case 'navigate_module':
+        return _buildConfigItem(
+          'Module cible',
+          action.targetModule ?? 'Non défini',
+          Icons.apps,
+        );
+      
+      case 'external_url':
+        final url = action.actionData?['externalUrl'] ?? 'Non définie';
+        return _buildConfigItem(
+          'URL externe',
+          url,
+          Icons.link,
+        );
+      
+      case 'action_custom':
+        return _buildConfigItem(
+          'Action personnalisée',
+          'Configuration personnalisée',
+          Icons.settings,
+        );
+      
+      default:
+        return const Text('Configuration non définie');
+    }
+  }
+
+  /// Widget helper pour afficher un élément de configuration
+  Widget _buildConfigItem(String label, String value, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.all(AppTheme.space12),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: AppTheme.primaryColor,
+          ),
+          const SizedBox(width: AppTheme.spaceSmall),
+          Text(
+            '$label: ',
+            style: GoogleFonts.inter(
+              fontWeight: AppTheme.fontMedium,
+              fontSize: AppTheme.fontSize14,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize14,
+                color: AppTheme.grey600,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Exécute une action configurée
+  Future<void> _executeAction(PourVousAction action, {bool isTest = false}) async {
+    final prefix = isTest ? '[TEST] ' : '';
+    
+    switch (action.actionType) {
+      case 'navigate_page':
+        if (action.targetRoute != null && action.targetRoute!.isNotEmpty) {
+          _showSuccessSnackBar('${prefix}Navigation vers: ${action.targetRoute}');
+          
+          if (!isTest) {
+            // TODO: Implémenter la navigation réelle vers la page
+            // Navigator.pushNamed(context, action.targetRoute!);
+          }
+        } else {
+          throw Exception('Page cible non définie');
+        }
+        break;
+      
+      case 'navigate_module':
+        if (action.targetModule != null && action.targetModule!.isNotEmpty) {
+          _showSuccessSnackBar('${prefix}Navigation vers le module: ${action.targetModule}');
+          
+          if (!isTest) {
+            // TODO: Implémenter la navigation réelle vers le module
+            // await _navigateToModule(action.targetModule!);
+          }
+        } else {
+          throw Exception('Module cible non défini');
+        }
+        break;
+      
+      case 'external_url':
+        final url = action.actionData?['externalUrl'];
+        if (url != null && url.isNotEmpty) {
+          _showSuccessSnackBar('${prefix}Ouverture de l\'URL: $url');
+          
+          if (!isTest) {
+            // TODO: Implémenter l'ouverture d'URL réelle
+            // await launchUrl(Uri.parse(url));
+          }
+        } else {
+          throw Exception('URL externe non définie');
+        }
+        break;
+      
+      case 'action_custom':
+        _showSuccessSnackBar('${prefix}Exécution de l\'action personnalisée: ${action.title}');
+        
+        if (!isTest) {
+          // TODO: Implémenter l'action personnalisée
+          // await _executeCustomAction(action);
+        }
+        break;
+      
+      default:
+        throw Exception('Type d\'action non supporté: ${action.actionType}');
+    }
   }
 
   // Utilitaires pour l'interface

@@ -2,9 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme.dart';
 import 'donation_webview_page.dart';
+import '../auth/auth_service.dart';
+import '../models/person_model.dart';
+import '../utils/donation_url_helper.dart';
 
-class QuickTithePage extends StatelessWidget {
+class QuickTithePage extends StatefulWidget {
   const QuickTithePage({Key? key}) : super(key: key);
+
+  @override
+  State<QuickTithePage> createState() => _QuickTithePageState();
+}
+
+class _QuickTithePageState extends State<QuickTithePage> {
+  PersonModel? _currentUser;
+  bool _isLoadingUser = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      setState(() => _isLoadingUser = true);
+      
+      final user = AuthService.currentUser;
+      if (user != null) {
+        final person = await AuthService.getCurrentUserProfile();
+        if (person != null && mounted) {
+          setState(() {
+            _currentUser = person;
+          });
+        }
+      }
+    } catch (e) {
+      print('Erreur lors du chargement des données utilisateur: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoadingUser = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -282,14 +321,18 @@ class QuickTithePage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () {
+                final baseUrl = 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/4';
+                final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, 'Dîme');
+                
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DonationWebViewPage(
+                    builder: (context) => DonationWebViewPage(
                       donationType: 'Dîme',
-                      url: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/4',
+                      url: prefilledUrl,
                       icon: Icons.percent,
                       color: AppTheme.orangeStandard,
+                      user: _currentUser,
                     ),
                   ),
                 );

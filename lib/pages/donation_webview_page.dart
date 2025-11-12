@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme.dart';
+import '../models/person_model.dart';
+import '../utils/donation_url_helper.dart';
 
 class DonationWebViewPage extends StatefulWidget {
   final String donationType;
   final String url;
   final IconData icon;
   final Color color;
+  final PersonModel? user;
 
   const DonationWebViewPage({
     Key? key,
@@ -15,6 +18,7 @@ class DonationWebViewPage extends StatefulWidget {
     required this.url,
     required this.icon,
     required this.color,
+    this.user,
   }) : super(key: key);
 
   @override
@@ -113,6 +117,12 @@ class _DonationWebViewPageState extends State<DonationWebViewPage> {
                   });
                 }, 2000);
               ''');
+              
+              // Injecter le script de préremplissage si on a les informations utilisateur
+              final prefillScript = DonationUrlHelper.generatePrefillScript(widget.user);
+              if (prefillScript.isNotEmpty) {
+                _controller.runJavaScript(prefillScript);
+              }
             }
           },
           onWebResourceError: (WebResourceError error) {

@@ -190,8 +190,8 @@ class _TaskKanbanViewState extends State<TaskKanbanView> {
           // Tasks list
           Expanded(
             child: DragTarget<TaskModel>(
-              onWillAcceptWithDetails: (task) => task.status != status,
-              onAcceptWithDetails: (task) => _moveTask(task, status),
+              onWillAcceptWithDetails: (details) => details.data.status != status,
+              onAcceptWithDetails: (details) => _moveTask(details.data, status),
               builder: (context, candidateData, rejectedData) {
                 return Container(
                   decoration: BoxDecoration(

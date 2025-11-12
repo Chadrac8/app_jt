@@ -4866,9 +4866,24 @@ class ComponentRenderer extends StatelessWidget {
   }
 
   void _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+    try {
+      final uri = Uri.parse(url);
+      
+      // Vérification et nettoyage de l'URL avant de l'ouvrir
+      if (!uri.hasScheme) {
+        debugPrint('URL invalide: $url');
+        return;
+      }
+      
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication,
+          webOnlyWindowName: '_blank',
+        );
+      }
+    } catch (e) {
+      debugPrint('Erreur lors de l\'ouverture de l\'URL: $e');
     }
   }
 }
@@ -5119,9 +5134,24 @@ class _WebViewComponentWidgetState extends State<_WebViewComponentWidget> {
   }
 
   void _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+    try {
+      final uri = Uri.parse(url);
+      
+      // Vérification et nettoyage de l'URL avant de l'ouvrir
+      if (!uri.hasScheme) {
+        debugPrint('URL invalide: $url');
+        return;
+      }
+      
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication,
+          webOnlyWindowName: '_blank',
+        );
+      }
+    } catch (e) {
+      debugPrint('Erreur lors de l\'ouverture de l\'URL: $e');
     }
   }
 

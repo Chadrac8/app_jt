@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../theme.dart';
-import 'widgets/pour_vous_tab.dart' as pour_vous;
+import 'widgets/pour_vous_tab_dynamic.dart' as pour_vous;
 import 'widgets/sermons_tab.dart';
 import 'widgets/offrandes_tab.dart';
 import 'views/prayer_wall_view.dart';
@@ -58,7 +58,7 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
           child: TabBarView(
             controller: _tabController,
             children: [
-              const pour_vous.PourVousTab(),
+              const pour_vous.PourVousTabDynamic(),
               SermonsTab(),
               const OffrandesTab(),
               const PrayerWallView(),

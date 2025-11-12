@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -167,132 +170,241 @@ class _MemberTasksPageState extends State<MemberTasksPage>
   @override
   Widget build(BuildContext context) {
     final userId = AuthService.currentUser?.uid;
+    final isApple = AppTheme.isApplePlatform;
+    
     if (userId == null) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.person_off,
-                size: 64,
-                color: AppTheme.grey400,
-              ),
-              const SizedBox(height: AppTheme.spaceMedium),
-              Text(
-                'Connexion requise',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: AppTheme.grey600,
-                ),
-              ),
-              const SizedBox(height: AppTheme.spaceSmall),
-              Text(
-                'Vous devez être connecté pour voir vos tâches',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.grey500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      return _buildNotConnectedState(isApple);
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.grey50,
-      appBar: _buildAppBar(),
-      body: SlideTransition(
-        position: _slideAnimation,
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: Column(
-            children: [
-              _buildStatsSection(),
-              if (_reminders.isNotEmpty) _buildRemindersSection(),
-              _buildFilterSection(),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildTasksList(),
-                    _buildCalendarView(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: _buildFloatingActionButton(),
+      backgroundColor: AppTheme.surface,
+      appBar: _buildModernAppBar(isApple),
+      body: _buildModernBody(isApple),
+      floatingActionButton: _buildModernFAB(isApple),
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      title: const Text(
-        'Mes Tâches',
-        style: TextStyle(fontWeight: AppTheme.fontSemiBold),
-      ),
-      backgroundColor: AppTheme.primaryColor,
-      foregroundColor: AppTheme.white100,
-      elevation: 0,
-      bottom: TabBar(
-        controller: _tabController,
-        indicatorColor: AppTheme.white100,
-        indicatorWeight: 3,
-        labelColor: AppTheme.white100,
-        unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
-        labelStyle: const TextStyle(fontWeight: AppTheme.fontSemiBold),
-        tabs: const [
-          Tab(
-            icon: Icon(Icons.list_alt),
-            text: 'Liste',
-          ),
-          Tab(
-            icon: Icon(Icons.calendar_month),
-            text: 'Calendrier',
-          ),
-        ],
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: _loadData,
-          tooltip: 'Actualiser',
-        ),
-        PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert),
-          onSelected: (value) {
-            // Handle menu selections
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'settings',
-              child: Row(
-                children: [
-                  Icon(Icons.settings),
-                  SizedBox(width: AppTheme.spaceSmall),
-                  Text('Paramètres'),
-                ],
+  Widget _buildNotConnectedState(bool isApple) {
+    return Scaffold(
+      backgroundColor: AppTheme.surface,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppTheme.spaceLarge),
+              decoration: BoxDecoration(
+                color: AppTheme.errorContainer,
+                borderRadius: AppTheme.borderRadiusLarge,
+              ),
+              child: Icon(
+                isApple ? CupertinoIcons.person_crop_circle_badge_xmark : Icons.person_off_rounded,
+                size: 64,
+                color: AppTheme.onErrorContainer,
               ),
             ),
-            const PopupMenuItem(
-              value: 'export',
-              child: Row(
-                children: [
-                  Icon(Icons.download),
-                  SizedBox(width: AppTheme.spaceSmall),
-                  Text('Exporter'),
-                ],
+            const SizedBox(height: AppTheme.spaceLarge),
+            Text(
+              'Connexion requise',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize24,
+                fontWeight: AppTheme.fontBold,
+                color: AppTheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spaceSmall),
+            Text(
+              'Vous devez être connecté pour voir vos tâches',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize16,
+                fontWeight: AppTheme.fontRegular,
+                color: AppTheme.onSurfaceVariant,
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildModernAppBar(bool isApple) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      title: Text(
+        'Mes Tâches',
+        style: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize22,
+          fontWeight: AppTheme.fontBold,
+          color: AppTheme.onSurface,
+        ),
+      ),
+      centerTitle: isApple,
+      actions: [
+        IconButton(
+          icon: Icon(
+            isApple ? CupertinoIcons.bell : Icons.notifications_rounded,
+            color: AppTheme.onSurface,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            _showNotificationsPanel();
+          },
+          tooltip: 'Notifications',
+        ),
+        PopupMenuButton<String>(
+          icon: Icon(
+            isApple ? CupertinoIcons.ellipsis : Icons.more_vert_rounded,
+            color: AppTheme.onSurface,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: AppTheme.borderRadiusMedium,
+          ),
+          elevation: 8,
+          shadowColor: AppTheme.primaryColor.withOpacity(0.2),
+          itemBuilder: (context) => [
+            _buildPopupMenuItem(
+              'statistics',
+              isApple ? CupertinoIcons.chart_bar : Icons.analytics_rounded,
+              'Statistiques',
+              isApple,
+            ),
+            _buildPopupMenuItem(
+              'settings',
+              isApple ? CupertinoIcons.settings : Icons.settings_rounded,
+              'Paramètres',
+              isApple,
+            ),
+          ],
+          onSelected: (value) {
+            HapticFeedback.lightImpact();
+            switch (value) {
+              case 'statistics':
+                _showStatistics();
+                break;
+              case 'settings':
+                _showSettings();
+                break;
+            }
+          },
+        ),
+      ],
+      bottom: _buildModernTabBar(isApple),
+    );
+  }
+
+  PopupMenuItem<String> _buildPopupMenuItem(
+    String value,
+    IconData icon,
+    String title,
+    bool isApple,
+  ) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(
+          icon,
+          color: AppTheme.onSurface,
+          size: 20.0,
+        ),
+        title: Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontMedium,
+            color: AppTheme.onSurface,
+          ),
+        ),
+        minLeadingWidth: 20.0 + AppTheme.spaceSmall,
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildModernTabBar(bool isApple) {
+    return TabBar(
+      controller: _tabController,
+      indicator: BoxDecoration(
+        color: AppTheme.primaryContainer,
+        borderRadius: AppTheme.borderRadiusMedium,
+      ),
+      indicatorSize: TabBarIndicatorSize.tab,
+      dividerColor: Colors.transparent,
+      labelColor: AppTheme.onPrimaryContainer,
+      unselectedLabelColor: AppTheme.onSurfaceVariant,
+      labelStyle: GoogleFonts.inter(
+        fontWeight: AppTheme.fontSemiBold,
+        fontSize: AppTheme.fontSize14,
+      ),
+      unselectedLabelStyle: GoogleFonts.inter(
+        fontWeight: AppTheme.fontMedium,
+        fontSize: AppTheme.fontSize14,
+      ),
+      tabs: [
+        Tab(
+          icon: Icon(
+            isApple ? CupertinoIcons.list_bullet : Icons.view_list_rounded,
+            size: 20,
+          ),
+          text: 'Liste',
+        ),
+        Tab(
+          icon: Icon(
+            isApple ? CupertinoIcons.calendar : Icons.calendar_today_rounded,
+            size: 20,
+          ),
+          text: 'Calendrier',
         ),
       ],
     );
   }
 
-  Widget _buildStatsSection() {
+  Widget _buildModernBody(bool isApple) {
+    return SlideTransition(
+      position: _slideAnimation,
+      child: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Column(
+          children: [
+            _buildModernStatsSection(isApple),
+            if (_reminders.isNotEmpty) _buildModernRemindersSection(isApple),
+            _buildModernFilterSection(isApple),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildTasksList(),
+                  _buildCalendarView(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernFAB(bool isApple) {
+    return FloatingActionButton(
+      onPressed: () {
+        HapticFeedback.lightImpact();
+        _showCreateTaskDialog();
+      },
+      backgroundColor: AppTheme.primaryColor,
+      foregroundColor: AppTheme.onPrimaryColor,
+      elevation: 6,
+      child: Icon(
+        isApple ? CupertinoIcons.add : Icons.add_rounded,
+      ),
+    );
+  }
+
+
+
+  Widget _buildModernStatsSection(bool isApple) {
     return StreamBuilder<List<TaskModel>>(
       stream: TasksFirebaseService.getTasksStream(
         assigneeIds: [AuthService.currentUser!.uid],
@@ -300,20 +412,25 @@ class _MemberTasksPageState extends State<MemberTasksPage>
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container(
-            height: 120,
+            height: 140,
             margin: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
-              color: AppTheme.white100,
-              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+              color: AppTheme.surface,
+              borderRadius: AppTheme.borderRadiusLarge,
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.black100.withOpacity(0.05),
-                  blurRadius: 10,
+                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
-            child: const Center(child: CircularProgressIndicator()),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: AppTheme.primaryColor,
+                strokeWidth: 3,
+              ),
+            ),
           );
         }
 
@@ -322,58 +439,90 @@ class _MemberTasksPageState extends State<MemberTasksPage>
 
         return Container(
           margin: const EdgeInsets.all(AppTheme.spaceMedium),
-          padding: const EdgeInsets.all(AppTheme.space20),
+          padding: const EdgeInsets.all(AppTheme.spaceLarge),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppTheme.primaryColor, AppTheme.primaryColor.withOpacity(0.8)],
+              colors: [
+                AppTheme.primaryColor,
+                AppTheme.primaryColor.withOpacity(0.85),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+            borderRadius: AppTheme.borderRadiusLarge,
             boxShadow: [
               BoxShadow(
                 color: AppTheme.primaryColor.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: Row(
+          child: Column(
             children: [
-              Expanded(
-                child: _buildStatItem(
-                  'Total',
-                  _totalTasks.toString(),
-                  Icons.assignment,
-                  AppTheme.white100,
+              Text(
+                'Aperçu de mes tâches',
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.fontSize16,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.onPrimaryColor,
                 ),
               ),
-              Container(width: 1, height: 40, color: AppTheme.white100),
-              Expanded(
-                child: _buildStatItem(
-                  'Terminées',
-                  _completedTasks.toString(),
-                  Icons.check_circle,
-                  AppTheme.grey300,
-                ),
-              ),
-              Container(width: 1, height: 40, color: AppTheme.white100),
-              Expanded(
-                child: _buildStatItem(
-                  'En retard',
-                  _overdueTasks.toString(),
-                  Icons.warning,
-                  AppTheme.grey300,
-                ),
-              ),
-              Container(width: 1, height: 40, color: AppTheme.white100),
-              Expanded(
-                child: _buildStatItem(
-                  'À venir',
-                  _dueSoonTasks.toString(),
-                  Icons.schedule,
-                  AppTheme.grey300,
-                ),
+              const SizedBox(height: AppTheme.spaceMedium),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildModernStatItem(
+                      'Total',
+                      _totalTasks.toString(),
+                      isApple ? CupertinoIcons.doc_text : Icons.assignment_rounded,
+                      AppTheme.onPrimaryColor,
+                      isApple,
+                    ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 50,
+                    color: AppTheme.onPrimaryColor.withOpacity(0.3),
+                  ),
+                  Expanded(
+                    child: _buildModernStatItem(
+                      'Terminées',
+                      _completedTasks.toString(),
+                      isApple ? CupertinoIcons.checkmark_circle : Icons.check_circle_rounded,
+                      AppTheme.onPrimaryColor,
+                      isApple,
+                    ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 50,
+                    color: AppTheme.onPrimaryColor.withOpacity(0.3),
+                  ),
+                  Expanded(
+                    child: _buildModernStatItem(
+                      'En retard',
+                      _overdueTasks.toString(),
+                      isApple ? CupertinoIcons.exclamationmark_triangle : Icons.warning_rounded,
+                      AppTheme.onPrimaryColor,
+                      isApple,
+                    ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 50,
+                    color: AppTheme.onPrimaryColor.withOpacity(0.3),
+                  ),
+                  Expanded(
+                    child: _buildModernStatItem(
+                      'À venir',
+                      _dueSoonTasks.toString(),
+                      isApple ? CupertinoIcons.clock : Icons.schedule_rounded,
+                      AppTheme.onPrimaryColor,
+                      isApple,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -382,45 +531,85 @@ class _MemberTasksPageState extends State<MemberTasksPage>
     );
   }
 
-  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
+  Widget _buildModernStatItem(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+    bool isApple,
+  ) {
     return Column(
       children: [
-        Icon(icon, color: color, size: 24),
+        Container(
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: AppTheme.borderRadiusSmall,
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 24,
+          ),
+        ),
         const SizedBox(height: AppTheme.spaceSmall),
         Text(
           value,
-          style: const TextStyle(
-            color: AppTheme.white100,
-            fontSize: AppTheme.fontSize24,
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize20,
             fontWeight: AppTheme.fontBold,
+            color: color,
           ),
         ),
         Text(
           label,
-          style: TextStyle(
-            color: AppTheme.white100.withOpacity(0.70),
+          style: GoogleFonts.inter(
             fontSize: AppTheme.fontSize12,
             fontWeight: AppTheme.fontMedium,
+            color: color.withOpacity(0.85),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildFilterSection() {
+  Widget _buildModernFilterSection(bool isApple) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant,
+        borderRadius: AppTheme.borderRadiusMedium,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Filtres',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: AppTheme.fontSemiBold,
-              color: AppTheme.grey700,
-            ),
+          Row(
+            children: [
+              Icon(
+                isApple ? CupertinoIcons.slider_horizontal_3 : Icons.filter_list_rounded,
+                color: AppTheme.onSurfaceVariant,
+                size: 20,
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Text(
+                'Filtres',
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.fontSize16,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: AppTheme.space12),
+          const SizedBox(height: AppTheme.spaceMedium),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -428,117 +617,139 @@ class _MemberTasksPageState extends State<MemberTasksPage>
                 ..._filterLabels.entries.map((entry) {
                   final isSelected = _selectedFilter == entry.key;
                   return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FilterChip(
-                      label: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            _filterIcons[entry.key]!,
-                            size: 16,
-                            color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
-                          ),
-                          const SizedBox(width: AppTheme.spaceXSmall),
-                          Text(entry.value),
-                        ],
-                      ),
-                      selected: isSelected,
-                      onSelected: (selected) {
-                        setState(() {
-                          _selectedFilter = entry.key;
-                        });
-                      },
-                      selectedColor: AppTheme.primaryColor,
-                      backgroundColor: AppTheme.white100,
-                      checkmarkColor: AppTheme.white100,
-                      labelStyle: TextStyle(
-                        color: isSelected ? AppTheme.white100 : AppTheme.primaryColor,
-                        fontWeight: AppTheme.fontMedium,
-                      ),
-                      elevation: isSelected ? 4 : 1,
-                      shadowColor: AppTheme.primaryColor.withOpacity(0.3),
+                    padding: const EdgeInsets.only(right: AppTheme.spaceSmall),
+                    child: _buildModernFilterChip(
+                      entry.key,
+                      entry.value,
+                      _filterIcons[entry.key]!,
+                      isSelected,
+                      isApple,
                     ),
                   );
                 }),
-                // Priorité filter
-                Container(
-                  margin: const EdgeInsets.only(left: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppTheme.white100,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                    border: Border.all(color: AppTheme.grey300),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: _selectedPriority,
-                      isDense: true,
-                      icon: const Icon(Icons.arrow_drop_down, size: 16),
-                      items: _priorityLabels.entries.map((entry) {
-                        return DropdownMenuItem(
-                          value: entry.key,
-                          child: Text(
-                            entry.value,
-                            style: const TextStyle(fontSize: AppTheme.fontSize14),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() {
-                            _selectedPriority = value;
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                _buildModernPriorityDropdown(isApple),
               ],
             ),
           ),
-          const SizedBox(height: AppTheme.spaceMedium),
         ],
       ),
     );
   }
 
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton.extended(
-      onPressed: () {
-        // Navigate to create new task
+  Widget _buildModernFilterChip(
+    String key,
+    String label,
+    IconData icon,
+    bool isSelected,
+    bool isApple,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        setState(() {
+          _selectedFilter = key;
+        });
       },
-      backgroundColor: AppTheme.primaryColor,
-      foregroundColor: AppTheme.white100,
-      elevation: 8,
-      icon: const Icon(Icons.add),
-      label: const Text(
-        'Nouvelle tâche',
-        style: TextStyle(fontWeight: AppTheme.fontSemiBold),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.spaceMedium,
+          vertical: AppTheme.spaceSmall,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.primaryContainer : AppTheme.surface,
+          borderRadius: AppTheme.borderRadiusLarge,
+          border: Border.all(
+            color: isSelected ? AppTheme.primaryColor : AppTheme.outline,
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: isSelected ? AppTheme.onPrimaryContainer : AppTheme.onSurface,
+            ),
+            const SizedBox(width: AppTheme.spaceXSmall),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize14,
+                fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
+                color: isSelected ? AppTheme.onPrimaryContainer : AppTheme.onSurface,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildRemindersSection() {
+  Widget _buildModernPriorityDropdown(bool isApple) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceMedium,
+        vertical: AppTheme.spaceXSmall,
+      ),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(color: AppTheme.outline),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedPriority,
+          isDense: true,
+          icon: Icon(
+            isApple ? CupertinoIcons.chevron_down : Icons.keyboard_arrow_down_rounded,
+            size: 16,
+            color: AppTheme.onSurface,
+          ),
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontMedium,
+            color: AppTheme.onSurface,
+          ),
+          items: _priorityLabels.entries.map((entry) {
+            return DropdownMenuItem(
+              value: entry.key,
+              child: Text(entry.value),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value != null) {
+              HapticFeedback.lightImpact();
+              setState(() {
+                _selectedPriority = value;
+              });
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildModernRemindersSection(bool isApple) {
     if (_reminders.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppTheme.grey50,
-            AppTheme.grey100.withOpacity(0.3),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        color: AppTheme.warningContainer,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: AppTheme.warning.withOpacity(0.2),
+          width: 1,
         ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-        border: Border.all(color: AppTheme.grey200),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.orangeStandard.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+            color: AppTheme.warning.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -548,40 +759,43 @@ class _MemberTasksPageState extends State<MemberTasksPage>
           Container(
             padding: const EdgeInsets.all(AppTheme.spaceMedium),
             decoration: BoxDecoration(
-              color: AppTheme.grey600,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
+              color: AppTheme.warning,
+              borderRadius: BorderRadius.only(
+                topLeft: AppTheme.borderRadiusMedium.topLeft,
+                topRight: AppTheme.borderRadiusMedium.topRight,
               ),
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.notifications_active,
-                  color: AppTheme.white100,
+                Icon(
+                  isApple ? CupertinoIcons.bell_fill : Icons.notifications_active_rounded,
+                  color: AppTheme.onWarning,
                   size: 24,
                 ),
-                const SizedBox(width: AppTheme.space12),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Expanded(
                   child: Text(
-                    'Rappels urgents (${_reminders.length})',
-                    style: const TextStyle(
-                      color: AppTheme.white100,
+                    'Rappels urgents',
+                    style: GoogleFonts.inter(
+                      color: AppTheme.onWarning,
                       fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
                     ),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.spaceSmall,
+                    vertical: AppTheme.spaceXSmall,
+                  ),
                   decoration: BoxDecoration(
-                    color: AppTheme.white100.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    color: AppTheme.onWarning.withOpacity(0.2),
+                    borderRadius: AppTheme.borderRadiusSmall,
                   ),
                   child: Text(
                     '${_reminders.length}',
-                    style: const TextStyle(
-                      color: AppTheme.white100,
+                    style: GoogleFonts.inter(
+                      color: AppTheme.onWarning,
                       fontWeight: AppTheme.fontBold,
                       fontSize: AppTheme.fontSize12,
                     ),
@@ -591,94 +805,108 @@ class _MemberTasksPageState extends State<MemberTasksPage>
             ),
           ),
           ...(_reminders.take(3).map((reminder) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              padding: const EdgeInsets.all(AppTheme.space12),
-              decoration: BoxDecoration(
-                color: AppTheme.white100,
-                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppTheme.black100.withOpacity(0.05),
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                    decoration: BoxDecoration(
-                      color: AppTheme.grey100,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                    ),
-                    child: Icon(
-                      _getReminderIcon(reminder.type),
-                      color: AppTheme.grey700,
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.space12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _getReminderTitle(reminder.type),
-                          style: const TextStyle(
-                            fontWeight: AppTheme.fontSemiBold,
-                            fontSize: AppTheme.fontSize14,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          _formatReminderDate(reminder.reminderDate),
-                          style: TextStyle(
-                            color: AppTheme.grey600,
-                            fontSize: AppTheme.fontSize12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: AppTheme.grey400,
-                    ),
-                    onPressed: () async {
-                      await TasksFirebaseService.markReminderAsRead(reminder.id);
-                      // Navigate to related task
-                    },
-                  ),
-                ],
-              ),
-            );
+            return _buildModernReminderItem(reminder, isApple);
           }).toList()),
           if (_reminders.length > 3)
             Padding(
               padding: const EdgeInsets.all(AppTheme.spaceMedium),
               child: SizedBox(
                 width: double.infinity,
-                child: TextButton.icon(
+                child: FilledButton.tonalIcon(
                   onPressed: () {
+                    HapticFeedback.lightImpact();
                     // Navigate to full reminders list
                   },
-                  icon: const Icon(Icons.visibility),
-                  label: Text('Voir tous les rappels (${_reminders.length})'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppTheme.grey700,
-                    backgroundColor: AppTheme.white100,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                  icon: Icon(
+                    isApple ? CupertinoIcons.eye_fill : Icons.visibility_rounded,
+                    size: 20,
+                  ),
+                  label: Text(
+                    'Voir tous les rappels (${_reminders.length})',
+                    style: GoogleFonts.inter(
+                      fontWeight: AppTheme.fontMedium,
                     ),
+                  ),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: AppTheme.spaceSmall),
                   ),
                 ),
               ),
             ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernReminderItem(dynamic reminder, bool isApple) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceMedium,
+        vertical: AppTheme.spaceSmall,
+      ),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: AppTheme.borderRadiusSmall,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.black.withOpacity(0.08),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
+            decoration: BoxDecoration(
+              color: AppTheme.warningContainer,
+              borderRadius: AppTheme.borderRadiusSmall,
+            ),
+            child: Icon(
+              _getReminderIcon(reminder.type),
+              color: AppTheme.onWarningContainer,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: AppTheme.spaceSmall),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _getReminderTitle(reminder.type),
+                  style: GoogleFonts.inter(
+                    fontWeight: AppTheme.fontSemiBold,
+                    fontSize: AppTheme.fontSize14,
+                    color: AppTheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  _formatReminderDate(reminder.reminderDate),
+                  style: GoogleFonts.inter(
+                    color: AppTheme.onSurfaceVariant,
+                    fontSize: AppTheme.fontSize12,
+                    fontWeight: AppTheme.fontMedium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+              size: 20,
+              color: AppTheme.onSurfaceVariant,
+            ),
+            onPressed: () async {
+              HapticFeedback.lightImpact();
+              await TasksFirebaseService.markReminderAsRead(reminder.id);
+              // Navigate to related task
+            },
+          ),
         ],
       ),
     );
@@ -1164,6 +1392,87 @@ class _MemberTasksPageState extends State<MemberTasksPage>
     } else {
       return 'À l\'instant';
     }
+  }
+
+  void _showNotificationsPanel() {
+    // TODO: Implement notifications panel
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Notifications'),
+        content: const Text('Panel de notifications à implémenter'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showStatistics() {
+    // TODO: Implement statistics dialog
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Statistiques'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Tâches totales: $_totalTasks'),
+            Text('Tâches complétées: $_completedTasks'),
+            Text('Tâches en retard: $_overdueTasks'),
+            Text('Tâches à échéance proche: $_dueSoonTasks'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSettings() {
+    // TODO: Implement settings dialog
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Paramètres'),
+        content: const Text('Panel de paramètres à implémenter'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCreateTaskDialog() {
+    // TODO: Implement create task dialog
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Créer une tâche'),
+        content: const Text('Dialog de création de tâche à implémenter'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Créer'),
+          ),
+        ],
+      ),
+    );
   }
 
 }

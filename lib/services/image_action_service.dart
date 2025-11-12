@@ -41,10 +41,18 @@ class ImageActionService {
 
     try {
       final uri = Uri.parse(url);
+      
+      // Vérification et nettoyage de l'URL avant de l'ouvrir
+      if (!uri.hasScheme) {
+        debugPrint('URL invalide: $url');
+        return;
+      }
+      
       if (await canLaunchUrl(uri)) {
         await launchUrl(
           uri,
           mode: LaunchMode.externalApplication,
+          webOnlyWindowName: '_blank',
         );
       } else {
         debugPrint('Impossible d\'ouvrir l\'URL: $url');

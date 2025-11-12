@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../theme.dart';
+import '../services/bible_service.dart';
 
 class ReadingSettingsDialog extends StatefulWidget {
   final double fontSize;
@@ -794,10 +795,14 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> with Tick
 
   Widget _buildTranslationSelector() {
     final translations = [
-      {'name': 'Louis Segond 1910', 'value': 'LSG'},
-      {'name': 'Nouvelle Edition de Genève', 'value': 'NEG'},
-      {'name': 'Bible du Semeur', 'value': 'BDS'},
-      {'name': 'Traduction Œcuménique', 'value': 'TOB'},
+      {'name': 'Louis Segond 1910', 'value': 'LSG1910'},
+      {'name': 'Louis Segond 21', 'value': 'LSG21'},
+      {'name': 'Nouvelle Bible Segond', 'value': 'NBS'},
+      {'name': 'Traduction Œcuménique de la Bible', 'value': 'TOB'},
+      {'name': 'Bible en Français Courant', 'value': 'BFC'},
+      {'name': 'Parole de Vie', 'value': 'PDV'},
+      {'name': 'Bible Martin 1744', 'value': 'MARTIN'},
+      {'name': 'Bible Ostervald 1996', 'value': 'OSTERVALD'},
       {'name': 'Nouvelle Bible Segond', 'value': 'NBS'},
     ];
 
@@ -824,12 +829,27 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> with Tick
             return RadioListTile<String>(
               value: translation['value']!,
               groupValue: _defaultTranslation,
-              onChanged: (value) {
+              onChanged: (value) async {
                 setState(() {
                   _defaultTranslation = value!;
                 });
+                
+                // Changer de version dans le BibleService
+                final bibleService = BibleService();
+                await bibleService.setVersion(value!);
+                
                 _applySettings();
                 _triggerHaptic();
+                
+                // Afficher un message de confirmation
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Version changée vers ${translation['name']}'),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
               },
               title: Text(
                 translation['name']!,
@@ -1117,7 +1137,7 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> with Tick
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: colorScheme.primary,
+            activeThumbColor: colorScheme.primary,
           ),
         ],
       ),

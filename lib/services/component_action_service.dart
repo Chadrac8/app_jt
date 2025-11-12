@@ -57,10 +57,18 @@ class ComponentActionService {
     
     try {
       final uri = Uri.parse(url);
+      
+      // Vérification et nettoyage de l'URL avant de l'ouvrir
+      if (!uri.hasScheme) {
+        print('Invalid URL: $url');
+        return;
+      }
+      
       if (await canLaunchUrl(uri)) {
         await launchUrl(
           uri,
           mode: LaunchMode.externalApplication,
+          webOnlyWindowName: '_blank',
         );
       } else {
         print('Could not launch $url');
@@ -532,8 +540,16 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
             onPressed: () async {
               try {
                 final uri = Uri.parse(widget.url);
+                if (!uri.hasScheme) {
+                  debugPrint('Invalid URL: ${widget.url}');
+                  return;
+                }
                 if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  await launchUrl(
+                    uri, 
+                    mode: LaunchMode.externalApplication,
+                    webOnlyWindowName: '_blank',
+                  );
                 }
               } catch (e) {
                 debugPrint('Erreur lors de l\'ouverture dans le navigateur: $e');
@@ -601,8 +617,16 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
               onPressed: () async {
                 try {
                   final uri = Uri.parse(widget.url);
+                  if (!uri.hasScheme) {
+                    debugPrint('Invalid URL: ${widget.url}');
+                    return;
+                  }
                   if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    await launchUrl(
+                      uri, 
+                      mode: LaunchMode.externalApplication,
+                      webOnlyWindowName: '_blank',
+                    );
                   }
                 } catch (e) {
                   debugPrint('Erreur lors de l\'ouverture: $e');
@@ -653,8 +677,16 @@ class _InternalWebViewPageState extends State<_InternalWebViewPage> {
               onPressed: () async {
                 try {
                   final uri = Uri.parse(widget.url);
+                  if (!uri.hasScheme) {
+                    debugPrint('Invalid URL: ${widget.url}');
+                    return;
+                  }
                   if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    await launchUrl(
+                      uri, 
+                      mode: LaunchMode.externalApplication,
+                      webOnlyWindowName: '_blank',
+                    );
                   }
                 } catch (e) {
                   debugPrint('Erreur lors de l\'ouverture dans le navigateur: $e');

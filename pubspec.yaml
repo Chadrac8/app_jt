@@ -39,10 +39,12 @@ dependencies:
   file_picker: ^8.0.0
   pdf: ^3.10.0
   youtube_player_flutter: ^9.0.3
+  video_player: ^2.8.0
   just_audio: ^0.10.4
   audio_video_progress_bar: ^2.0.3
   webview_flutter: ^4.8.0
   flutter_colorpicker: ^1.0.3
+  wakelock_plus: ^1.2.8
   # Pour le module Bible
 
   flutter_svg: ^2.0.10 # Pour illustrations SVG premium
@@ -69,6 +71,13 @@ flutter:
     - assets/branham.jpg
     - assets/table.png
     - assets/bible/lsg1910.json
+    - assets/bible/lsg21.json
+    - assets/bible/nbs.json
+    - assets/bible/tob.json
+    - assets/bible/bfc.json
+    - assets/bible/pdv.json
+    - assets/bible/martin.json
+    - assets/bible/ostervald.json
     - assets/bible/reading_plans.json
 
 flutter_launcher_icons:

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/task_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../widgets/task_card.dart';
@@ -80,15 +83,39 @@ class _TasksHomePageState extends State<TasksHomePage>
   }
 
   void _changeView(String view) {
-    setState(() {
-      _currentView = view;
-      _isSelectionMode = false;
-      _selectedTasks.clear();
-      _selectedTaskLists.clear();
+    if (_currentView == view) return;
+    
+    HapticFeedback.selectionClick();
+    
+    // Animation de transition fluide
+    _fabAnimationController.reverse().then((_) {
+      setState(() {
+        _currentView = view;
+        _isSelectionMode = false;
+        _selectedTasks.clear();
+        _selectedTaskLists.clear();
+      });
+      _fabAnimationController.forward();
     });
+    
+    // Afficher le SnackBar moderne pour la confirmation du changement de vue
+    final viewNames = {
+      'lists': 'Listes de tâches',
+      'tasks': 'Vue tâches',
+      'kanban': 'Tableau Kanban',
+      'calendar': 'Vue calendrier',
+    };
+    
+    _showModernSnackBar(
+      'Basculé vers ${viewNames[view] ?? view}',
+      AppTheme.info,
+      AppTheme.isApplePlatform ? CupertinoIcons.checkmark : Icons.check_rounded,
+    );
   }
 
   void _toggleSelectionMode() {
+    HapticFeedback.mediumImpact();
+    
     setState(() {
       _isSelectionMode = !_isSelectionMode;
       if (!_isSelectionMode) {
@@ -96,9 +123,15 @@ class _TasksHomePageState extends State<TasksHomePage>
         _selectedTaskLists.clear();
       }
     });
+    
+    // Animation du FAB avec transition fluide
+    _fabAnimationController.reset();
+    _fabAnimationController.forward();
   }
 
   void _onTaskSelected(TaskModel task, bool isSelected) {
+    HapticFeedback.lightImpact();
+    
     setState(() {
       if (isSelected) {
         _selectedTasks.add(task);
@@ -106,9 +139,16 @@ class _TasksHomePageState extends State<TasksHomePage>
         _selectedTasks.remove(task);
       }
     });
+    
+    // Si plus aucun élément sélectionné, quitter le mode sélection
+    if (_selectedTasks.isEmpty && _selectedTaskLists.isEmpty && _isSelectionMode) {
+      _toggleSelectionMode();
+    }
   }
 
   void _onTaskListSelected(TaskListModel taskList, bool isSelected) {
+    HapticFeedback.lightImpact();
+    
     setState(() {
       if (isSelected) {
         _selectedTaskLists.add(taskList);
@@ -116,25 +156,50 @@ class _TasksHomePageState extends State<TasksHomePage>
         _selectedTaskLists.remove(taskList);
       }
     });
+    
+    // Si plus aucun élément sélectionné, quitter le mode sélection
+    if (_selectedTasks.isEmpty && _selectedTaskLists.isEmpty && _isSelectionMode) {
+      _toggleSelectionMode();
+    }
   }
 
   Future<void> _createNewTask() async {
+    HapticFeedback.lightImpact();
+    
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const TaskFormPage()),
+      MaterialPageRoute(
+        builder: (context) => const TaskFormPage(),
+        settings: const RouteSettings(name: '/task-form'),
+      ),
     );
-    if (result == true) {
-      // Refresh handled by streams
+    
+    if (result == true && mounted) {
+      _showModernSnackBar(
+        'Tâche créée avec succès',
+        AppTheme.success,
+        AppTheme.isApplePlatform ? CupertinoIcons.checkmark_circle : Icons.check_circle_rounded,
+      );
     }
   }
 
   Future<void> _createNewTaskList() async {
+    HapticFeedback.lightImpact();
+    
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const TaskListFormPage()),
+      MaterialPageRoute(
+        builder: (context) => const TaskListFormPage(),
+        settings: const RouteSettings(name: '/task-list-form'),
+      ),
     );
-    if (result == true) {
-      // Refresh handled by streams
+    
+    if (result == true && mounted) {
+      _showModernSnackBar(
+        'Liste de tâches créée avec succès',
+        AppTheme.success,
+        AppTheme.isApplePlatform ? CupertinoIcons.checkmark_circle : Icons.check_circle_rounded,
+      );
     }
   }
 
@@ -160,11 +225,10 @@ class _TasksHomePageState extends State<TasksHomePage>
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erreur: $e'),
-            backgroundColor: AppTheme.errorColor,
-          ),
+        _showModernSnackBar(
+          'Erreur: $e',
+          AppTheme.error,
+          AppTheme.isApplePlatform ? CupertinoIcons.exclamationmark_triangle : Icons.error_rounded,
         );
       }
     }
@@ -176,11 +240,10 @@ class _TasksHomePageState extends State<TasksHomePage>
     }
     _toggleSelectionMode();
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Tâches marquées comme terminées'),
-          backgroundColor: AppTheme.successColor,
-        ),
+      _showModernSnackBar(
+        'Tâches marquées comme terminées',
+        AppTheme.success,
+        AppTheme.isApplePlatform ? CupertinoIcons.checkmark_circle : Icons.check_circle_rounded,
       );
     }
   }
@@ -218,11 +281,10 @@ class _TasksHomePageState extends State<TasksHomePage>
       }
       _toggleSelectionMode();
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Éléments supprimés'),
-            backgroundColor: AppTheme.successColor,
-          ),
+        _showModernSnackBar(
+          'Éléments supprimés',
+          AppTheme.success,
+          AppTheme.isApplePlatform ? CupertinoIcons.trash : Icons.delete_rounded,
         );
       }
     }
@@ -231,15 +293,19 @@ class _TasksHomePageState extends State<TasksHomePage>
   Future<void> _showAssignmentDialog() async {
     // Implementation would show user selection dialog
     // For now, just show a placeholder
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité d\'assignation à implémenter')),
+    _showModernSnackBar(
+      'Fonctionnalité d\'assignation à implémenter',
+      AppTheme.info,
+      AppTheme.isApplePlatform ? CupertinoIcons.person_add : Icons.person_add_rounded,
     );
   }
 
   Future<void> _showMoveToListDialog() async {
     // Implementation would show task list selection dialog
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité de déplacement à implémenter')),
+    _showModernSnackBar(
+      'Fonctionnalité de déplacement à implémenter',
+      AppTheme.info,
+      AppTheme.isApplePlatform ? CupertinoIcons.tray_arrow_down : Icons.move_to_inbox_rounded,
     );
   }
 
@@ -256,107 +322,285 @@ class _TasksHomePageState extends State<TasksHomePage>
 
   @override
   Widget build(BuildContext context) {
+    final isApple = AppTheme.isApplePlatform;
+    
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tâches'),
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(_currentView == 'lists' ? Icons.view_list : 
-                      _currentView == 'tasks' ? Icons.view_agenda :
-                      _currentView == 'kanban' ? Icons.view_kanban :
-                      Icons.calendar_today),
-            onPressed: _showViewSelector,
+      backgroundColor: AppTheme.surface,
+      appBar: _buildModernAppBar(context, isApple),
+      body: _buildModernBody(context),
+      floatingActionButton: _buildModernFAB(context, isApple),
+    );
+  }
+
+  PreferredSizeWidget _buildModernAppBar(BuildContext context, bool isApple) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      title: Text(
+        'Mes Tâches',
+        style: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize22,
+          fontWeight: AppTheme.fontBold,
+          color: AppTheme.onSurface,
+        ),
+      ),
+      centerTitle: isApple,
+      actions: [
+        _buildViewSelectorButton(isApple),
+        if (_isSelectionMode) 
+          _buildSelectionModeActions(isApple)
+        else 
+          _buildNormalModeActions(isApple),
+      ],
+    );
+  }
+
+  Widget _buildViewSelectorButton(bool isApple) {
+    final viewIcons = {
+      'lists': isApple ? CupertinoIcons.list_bullet : Icons.view_list_rounded,
+      'tasks': isApple ? CupertinoIcons.doc_text : Icons.view_agenda_rounded,
+      'kanban': isApple ? CupertinoIcons.square_grid_2x2 : Icons.view_kanban_rounded,
+      'calendar': isApple ? CupertinoIcons.calendar : Icons.calendar_today_rounded,
+    };
+    
+    return Container(
+      margin: const EdgeInsets.only(right: AppTheme.spaceSmall),
+      decoration: BoxDecoration(
+        color: AppTheme.primaryContainer,
+        borderRadius: AppTheme.borderRadiusMedium,
+      ),
+      child: IconButton(
+        icon: Icon(
+          viewIcons[_currentView] ?? viewIcons['lists']!,
+          color: AppTheme.onPrimaryContainer,
+        ),
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          _showModernViewSelector();
+        },
+        tooltip: 'Changer de vue',
+      ),
+    );
+  }
+
+  Widget _buildSelectionModeActions(bool isApple) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(right: AppTheme.spaceXSmall),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spaceSmall,
+            vertical: AppTheme.spaceXSmall,
           ),
-          if (_isSelectionMode) ...[
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: _showBulkActionsMenu,
+          decoration: BoxDecoration(
+            color: AppTheme.primaryContainer,
+            borderRadius: AppTheme.borderRadiusLarge,
+          ),
+          child: Text(
+            '${_selectedTasks.length + _selectedTaskLists.length}',
+            style: GoogleFonts.inter(
+              fontSize: AppTheme.fontSize14,
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.onPrimaryContainer,
             ),
-          ] else ...[
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // Toggle search bar
-              },
+          ),
+        ),
+        IconButton(
+          icon: Icon(
+            isApple ? CupertinoIcons.ellipsis : Icons.more_vert_rounded,
+            color: AppTheme.onSurface,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            _showModernBulkActionsMenu();
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            isApple ? CupertinoIcons.xmark : Icons.close_rounded,
+            color: AppTheme.error,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            _toggleSelectionMode();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNormalModeActions(bool isApple) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(
+            isApple ? CupertinoIcons.search : Icons.search_rounded,
+            color: AppTheme.onSurface,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            // Toggle search functionality
+          },
+          tooltip: 'Rechercher',
+        ),
+        PopupMenuButton<String>(
+          icon: Icon(
+            isApple ? CupertinoIcons.ellipsis : Icons.more_vert_rounded,
+            color: AppTheme.onSurface,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: AppTheme.borderRadiusMedium,
+          ),
+          elevation: 8,
+          shadowColor: AppTheme.primaryColor.withOpacity(0.2),
+          itemBuilder: (context) => [
+            _buildPopupMenuItem(
+              'template',
+              isApple ? CupertinoIcons.doc_on_clipboard : Icons.content_copy_rounded,
+              'Créer depuis modèle',
+              isApple,
             ),
-            PopupMenuButton(
-              icon: const Icon(Icons.more_vert),
-              itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: 'template',
-                  child: ListTile(
-                    leading: Icon(Icons.library_add),
-                    title: Text('Créer depuis modèle'),
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'statistics',
-                  child: ListTile(
-                    leading: Icon(Icons.analytics),
-                    title: Text('Statistiques'),
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'settings',
-                  child: ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Paramètres'),
-                  ),
-                ),
-              ],
-              onSelected: (value) {
-                switch (value) {
-                  case 'template':
-                    _createFromTemplate();
-                    break;
-                  case 'statistics':
-                    _showStatistics();
-                    break;
-                  case 'settings':
-                    _showSettings();
-                    break;
-                }
-              },
+            _buildPopupMenuItem(
+              'statistics',
+              isApple ? CupertinoIcons.chart_bar : Icons.analytics_rounded,
+              'Statistiques',
+              isApple,
+            ),
+            _buildPopupMenuItem(
+              'settings',
+              isApple ? CupertinoIcons.settings : Icons.settings_rounded,
+              'Paramètres',
+              isApple,
             ),
           ],
+          onSelected: (value) {
+            HapticFeedback.lightImpact();
+            switch (value) {
+              case 'template':
+                _createFromTemplate();
+                break;
+              case 'statistics':
+                _showStatistics();
+                break;
+              case 'settings':
+                _showSettings();
+                break;
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  PopupMenuItem<String> _buildPopupMenuItem(
+    String value,
+    IconData icon,
+    String title,
+    bool isApple,
+  ) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(
+          icon,
+          color: AppTheme.onSurface,
+          size: 20.0,
+        ),
+        title: Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontMedium,
+            color: AppTheme.onSurface,
+          ),
+        ),
+        minLeadingWidth: 20.0 + AppTheme.spaceSmall,
+      ),
+    );
+  }
+
+  Widget _buildModernBody(BuildContext context) {
+    return Column(
+      children: [
+        _buildModernSearchAndFilters(),
+        Expanded(
+          child: _buildCurrentView(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildModernSearchAndFilters() {
+    return Container(
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant,
+        borderRadius: AppTheme.borderRadiusMedium,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
         ],
       ),
-      body: Column(
-        children: [
-          TaskSearchFilterBar(
-            searchController: _searchController,
-            onSearchChanged: _onSearchChanged,
-            onFiltersChanged: _onFiltersChanged,
-            selectedStatusFilters: _selectedStatusFilters,
-            selectedPriorityFilters: _selectedPriorityFilters,
-            dueBefore: _dueBefore,
-            dueAfter: _dueAfter,
-          ),
-          Expanded(
-            child: _buildCurrentView(),
-          ),
-        ],
+      child: TaskSearchFilterBar(
+        searchController: _searchController,
+        onSearchChanged: _onSearchChanged,
+        onFiltersChanged: _onFiltersChanged,
+        selectedStatusFilters: _selectedStatusFilters,
+        selectedPriorityFilters: _selectedPriorityFilters,
+        dueBefore: _dueBefore,
+        dueAfter: _dueAfter,
       ),
-      floatingActionButton: AnimatedBuilder(
-        animation: _fabAnimation,
-        builder: (context, child) {
-          return Transform.scale(
-            scale: _fabAnimation.value,
-            child: _isSelectionMode
-                ? FloatingActionButton(
-                    onPressed: _toggleSelectionMode,
-                    backgroundColor: AppTheme.errorColor,
-                    child: const Icon(Icons.close),
-                  )
-                : FloatingActionButton.extended(
-                    onPressed: _showCreateMenu,
-                    label: const Text('Créer'),
-                    icon: const Icon(Icons.add),
+    );
+  }
+
+  Widget _buildModernFAB(BuildContext context, bool isApple) {
+    return AnimatedBuilder(
+      animation: _fabAnimation,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _fabAnimation.value,
+          child: _isSelectionMode
+              ? FloatingActionButton(
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    _toggleSelectionMode();
+                  },
+                  backgroundColor: AppTheme.error,
+                  foregroundColor: AppTheme.onError,
+                  elevation: 6,
+                  child: Icon(
+                    isApple ? CupertinoIcons.xmark : Icons.close_rounded,
                   ),
-          );
-        },
-      ),
+                )
+              : FloatingActionButton.extended(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    _showModernCreateMenu();
+                  },
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: AppTheme.onPrimaryColor,
+                  elevation: 6,
+                  icon: Icon(
+                    isApple ? CupertinoIcons.add : Icons.add_rounded,
+                  ),
+                  label: Text(
+                    'Créer',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize16,
+                      fontWeight: AppTheme.fontSemiBold,
+                    ),
+                  ),
+                ),
+        );
+      },
     );
   }
 
@@ -592,152 +836,474 @@ class _TasksHomePageState extends State<TasksHomePage>
     }
   }
 
-  void _showViewSelector() {
+  void _showModernViewSelector() {
+    final isApple = AppTheme.isApplePlatform;
+    
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppTheme.radiusLarge),
+          ),
+        ),
         padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              leading: Icon(Icons.view_list, color: _currentView == 'lists' ? AppTheme.primaryColor : null),
-              title: const Text('Listes'),
-              onTap: () {
-                Navigator.pop(context);
-                _changeView('lists');
-              },
+            // Handle indicator
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
+              decoration: BoxDecoration(
+                color: AppTheme.outline,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.view_agenda, color: _currentView == 'tasks' ? AppTheme.primaryColor : null),
-              title: const Text('Tâches'),
-              onTap: () {
-                Navigator.pop(context);
-                _changeView('tasks');
-              },
+            
+            Text(
+              'Changer de vue',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize18,
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.onSurface,
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.view_kanban, color: _currentView == 'kanban' ? AppTheme.primaryColor : null),
-              title: const Text('Kanban'),
-              onTap: () {
-                Navigator.pop(context);
-                _changeView('kanban');
-              },
+            
+            const SizedBox(height: AppTheme.spaceMedium),
+            
+            _buildViewSelectorTile(
+              'lists',
+              'Listes de tâches',
+              isApple ? CupertinoIcons.list_bullet : Icons.view_list_rounded,
+              isApple,
             ),
-            ListTile(
-              leading: Icon(Icons.calendar_today, color: _currentView == 'calendar' ? AppTheme.primaryColor : null),
-              title: const Text('Calendrier'),
-              onTap: () {
-                Navigator.pop(context);
-                _changeView('calendar');
-              },
+            _buildViewSelectorTile(
+              'tasks',
+              'Vue tâches',
+              isApple ? CupertinoIcons.doc_text : Icons.view_agenda_rounded,
+              isApple,
             ),
+            _buildViewSelectorTile(
+              'kanban',
+              'Tableau Kanban',
+              isApple ? CupertinoIcons.square_grid_2x2 : Icons.view_kanban_rounded,
+              isApple,
+            ),
+            _buildViewSelectorTile(
+              'calendar',
+              'Vue calendrier',
+              isApple ? CupertinoIcons.calendar : Icons.calendar_today_rounded,
+              isApple,
+            ),
+            
+            const SizedBox(height: AppTheme.spaceSmall),
           ],
         ),
       ),
     );
   }
 
-  void _showCreateMenu() {
+  Widget _buildViewSelectorTile(String viewKey, String title, IconData icon, bool isApple) {
+    final isSelected = _currentView == viewKey;
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+      decoration: BoxDecoration(
+        color: isSelected ? AppTheme.primaryContainer : Colors.transparent,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: isSelected ? AppTheme.primaryColor : AppTheme.outline,
+          width: isSelected ? 2 : 1,
+        ),
+      ),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: isSelected ? AppTheme.onPrimaryContainer : AppTheme.onSurface,
+          size: 24,
+        ),
+        title: Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize16,
+            fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
+            color: isSelected ? AppTheme.onPrimaryContainer : AppTheme.onSurface,
+          ),
+        ),
+        trailing: isSelected
+            ? Icon(
+                isApple ? CupertinoIcons.checkmark : Icons.check_rounded,
+                color: AppTheme.onPrimaryContainer,
+                size: 20,
+              )
+            : null,
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Navigator.pop(context);
+          _changeView(viewKey);
+        },
+      ),
+    );
+  }
+
+  void _showModernCreateMenu() {
+    final isApple = AppTheme.isApplePlatform;
+    
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppTheme.radiusLarge),
+          ),
+        ),
         padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              leading: const Icon(Icons.task_alt),
-              title: const Text('Nouvelle tâche'),
-              subtitle: const Text('Créer une tâche individuelle'),
-              onTap: () {
-                Navigator.pop(context);
-                _createNewTask();
-              },
+            // Handle indicator
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
+              decoration: BoxDecoration(
+                color: AppTheme.outline,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-            ListTile(
-              leading: const Icon(Icons.list_alt),
-              title: const Text('Nouvelle liste'),
-              subtitle: const Text('Créer une liste de tâches'),
-              onTap: () {
-                Navigator.pop(context);
-                _createNewTaskList();
-              },
+            
+            Text(
+              'Créer nouveau',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize18,
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.onSurface,
+              ),
             ),
-            ListTile(
-              leading: const Icon(Icons.library_add),
-              title: const Text('Depuis un modèle'),
-              subtitle: const Text('Utiliser un modèle prédéfini'),
-              onTap: () {
-                Navigator.pop(context);
-                _createFromTemplate();
-              },
+            
+            const SizedBox(height: AppTheme.spaceMedium),
+            
+            _buildCreateMenuItem(
+              'Nouvelle tâche',
+              'Créer une tâche individuelle',
+              isApple ? CupertinoIcons.doc_text : Icons.task_alt_rounded,
+              AppTheme.primaryColor,
+              () => _createNewTask(),
+              isApple,
             ),
+            
+            _buildCreateMenuItem(
+              'Nouvelle liste',
+              'Créer une liste de tâches',
+              isApple ? CupertinoIcons.list_bullet : Icons.list_alt_rounded,
+              AppTheme.secondaryColor,
+              () => _createNewTaskList(),
+              isApple,
+            ),
+            
+            _buildCreateMenuItem(
+              'Depuis un modèle',
+              'Utiliser un modèle prédéfini',
+              isApple ? CupertinoIcons.doc_on_clipboard : Icons.content_copy_rounded,
+              AppTheme.tertiaryColor,
+              () => _createFromTemplate(),
+              isApple,
+            ),
+            
+            const SizedBox(height: AppTheme.spaceSmall),
           ],
         ),
       ),
     );
   }
 
-  void _showBulkActionsMenu() {
+  Widget _buildCreateMenuItem(
+    String title,
+    String subtitle,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+    bool isApple,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceVariant,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(color: AppTheme.outline),
+      ),
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: AppTheme.borderRadiusSmall,
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 24,
+          ),
+        ),
+        title: Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize16,
+            fontWeight: AppTheme.fontSemiBold,
+            color: AppTheme.onSurface,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontRegular,
+            color: AppTheme.onSurfaceVariant,
+          ),
+        ),
+        trailing: Icon(
+          isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+          color: AppTheme.onSurfaceVariant,
+          size: 20,
+        ),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Navigator.pop(context);
+          onTap();
+        },
+      ),
+    );
+  }
+
+  void _showModernBulkActionsMenu() {
+    final isApple = AppTheme.isApplePlatform;
+    final selectedCount = _selectedTasks.length + _selectedTaskLists.length;
+    
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppTheme.radiusLarge),
+          ),
+        ),
         padding: const EdgeInsets.all(AppTheme.spaceMedium),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Handle indicator
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
+              decoration: BoxDecoration(
+                color: AppTheme.outline,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            
+            Text(
+              '$selectedCount élément${selectedCount > 1 ? 's' : ''} sélectionné${selectedCount > 1 ? 's' : ''}',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize18,
+                fontWeight: AppTheme.fontSemiBold,
+                color: AppTheme.onSurface,
+              ),
+            ),
+            
+            const SizedBox(height: AppTheme.spaceMedium),
+            
             if (_selectedTasks.isNotEmpty) ...[
-              ListTile(
-                leading: const Icon(Icons.check_circle, color: AppTheme.successColor),
-                title: const Text('Marquer comme terminé'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _performBulkAction('complete');
-                },
+              _buildBulkActionTile(
+                'Marquer comme terminé',
+                isApple ? CupertinoIcons.checkmark_circle : Icons.check_circle_rounded,
+                AppTheme.success,
+                () => _performBulkAction('complete'),
+                isApple,
               ),
-              ListTile(
-                leading: const Icon(Icons.person_add),
-                title: const Text('Assigner'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _performBulkAction('assign');
-                },
+              _buildBulkActionTile(
+                'Assigner à quelqu\'un',
+                isApple ? CupertinoIcons.person_add : Icons.person_add_rounded,
+                AppTheme.info,
+                () => _performBulkAction('assign'),
+                isApple,
               ),
-              ListTile(
-                leading: const Icon(Icons.move_to_inbox),
-                title: const Text('Déplacer vers une liste'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _performBulkAction('move');
-                },
+              _buildBulkActionTile(
+                'Déplacer vers une liste',
+                isApple ? CupertinoIcons.tray_arrow_down : Icons.move_to_inbox_rounded,
+                AppTheme.warning,
+                () => _performBulkAction('move'),
+                isApple,
               ),
             ],
-            ListTile(
-              leading: const Icon(Icons.delete, color: AppTheme.errorColor),
-              title: const Text('Supprimer'),
-              onTap: () {
-                Navigator.pop(context);
-                _performBulkAction('delete');
-              },
+            
+            _buildBulkActionTile(
+              'Supprimer définitivement',
+              isApple ? CupertinoIcons.trash : Icons.delete_rounded,
+              AppTheme.error,
+              () => _performBulkAction('delete'),
+              isApple,
+              isDestructive: true,
             ),
+            
+            const SizedBox(height: AppTheme.spaceSmall),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildBulkActionTile(
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+    bool isApple, {
+    bool isDestructive = false,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+      decoration: BoxDecoration(
+        color: isDestructive ? AppTheme.errorContainer.withOpacity(0.3) : AppTheme.surfaceVariant,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: isDestructive ? AppTheme.error.withOpacity(0.3) : AppTheme.outline,
+        ),
+      ),
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(AppTheme.spaceSmall),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: AppTheme.borderRadiusSmall,
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 24,
+          ),
+        ),
+        title: Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize16,
+            fontWeight: AppTheme.fontSemiBold,
+            color: isDestructive ? AppTheme.error : AppTheme.onSurface,
+          ),
+        ),
+        trailing: Icon(
+          isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+          color: isDestructive ? AppTheme.error : AppTheme.onSurfaceVariant,
+          size: 20,
+        ),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Navigator.pop(context);
+          onTap();
+        },
       ),
     );
   }
 
   void _showStatistics() {
-    // Implementation for statistics view
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Statistiques à implémenter')),
+    _showModernSnackBar(
+      'Statistiques à implémenter',
+      AppTheme.info,
+      AppTheme.isApplePlatform ? CupertinoIcons.chart_bar : Icons.analytics_rounded,
     );
   }
 
   void _showSettings() {
-    // Implementation for settings
+    _showModernSnackBar(
+      'Paramètres à implémenter',
+      AppTheme.info,
+      AppTheme.isApplePlatform ? CupertinoIcons.settings : Icons.settings_rounded,
+    );
+  }
+
+  void _showModernSnackBar(String message, Color backgroundColor, IconData icon) {
+    HapticFeedback.lightImpact();
+    
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Paramètres à implémenter')),
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(
+              icon,
+              color: AppTheme.onPrimaryColor,
+              size: 20,
+            ),
+            const SizedBox(width: AppTheme.spaceSmall),
+            Expanded(
+              child: Text(
+                message,
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.fontSize14,
+                  fontWeight: AppTheme.fontMedium,
+                  color: AppTheme.onPrimaryColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: backgroundColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppTheme.borderRadiusMedium,
+        ),
+        margin: const EdgeInsets.all(AppTheme.spaceMedium),
+        duration: const Duration(seconds: 3),
+        elevation: 6,
+      ),
+    );
+  }
+
+  // Méthode statique pour afficher des SnackBars modernes depuis d'autres widgets
+  static void _showModernSnackBarStatic(BuildContext context, String message, Color backgroundColor, IconData icon) {
+    HapticFeedback.lightImpact();
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(
+              icon,
+              color: AppTheme.onPrimaryColor,
+              size: 20,
+            ),
+            const SizedBox(width: AppTheme.spaceSmall),
+            Expanded(
+              child: Text(
+                message,
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.fontSize14,
+                  fontWeight: AppTheme.fontMedium,
+                  color: AppTheme.onPrimaryColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: backgroundColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppTheme.borderRadiusMedium,
+        ),
+        margin: const EdgeInsets.all(AppTheme.spaceMedium),
+        duration: const Duration(seconds: 3),
+        elevation: 6,
+      ),
     );
   }
 }
@@ -787,20 +1353,20 @@ class _TemplateSelectionDialog extends StatelessWidget {
       await TasksFirebaseService.createFromTemplate(template.id, {});
       
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${template.name} créé avec succès'),
-            backgroundColor: AppTheme.successColor,
-          ),
+        _TasksHomePageState._showModernSnackBarStatic(
+          context,
+          '${template.name} créé avec succès',
+          AppTheme.success,
+          AppTheme.isApplePlatform ? CupertinoIcons.checkmark_circle : Icons.check_circle_rounded,
         );
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erreur: $e'),
-            backgroundColor: AppTheme.errorColor,
-          ),
+        _TasksHomePageState._showModernSnackBarStatic(
+          context,
+          'Erreur: $e',
+          AppTheme.error,
+          AppTheme.isApplePlatform ? CupertinoIcons.exclamationmark_triangle : Icons.error_rounded,
         );
       }
     }

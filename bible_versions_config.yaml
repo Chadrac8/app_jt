@@ -1,0 +1,145 @@
+# Configuration des versions de la Bible
+
+# ⚖️ IMPORTANT: Respect des droits d'auteur
+# Avant d'utiliser une version, vérifiez les permissions et licences
+
+versions:
+  lsg1910:
+    name: "Louis Segond 1910"
+    copyright: "Domaine public"
+    status: "libre"
+    api_sources:
+      - "https://bible.api.bible (ID: de4e12af7f28f599-02)"
+      - "https://www.bible.com/api"
+    file_size_estimated: "4.2 MB"
+    
+  lsg21:
+    name: "Louis Segond 21"
+    copyright: "© Société Biblique de Genève"
+    status: "sous_licence"
+    api_sources:
+      - "Bible Gateway API"
+      - "YouVersion (avec permission)"
+    file_size_estimated: "4.5 MB"
+    permission_required: true
+    contact: "Société Biblique de Genève"
+    
+  nbs:
+    name: "Nouvelle Bible Segond"
+    copyright: "© Société Biblique Française"
+    status: "sous_licence"
+    api_sources:
+      - "Bible Gateway API"
+      - "AELF API"
+    file_size_estimated: "4.3 MB"
+    permission_required: true
+    contact: "Société Biblique Française"
+    
+  tob:
+    name: "Traduction Œcuménique de la Bible"
+    copyright: "© Société Biblique Française & Éditions du Cerf"
+    status: "sous_licence"
+    api_sources:
+      - "Bible Gateway API"
+      - "Site officiel TOB"
+    file_size_estimated: "4.6 MB"
+    permission_required: true
+    contact: "Éditions du Cerf"
+    
+  bfc:
+    name: "Bible en Français Courant"
+    copyright: "© Société Biblique Française"
+    status: "sous_licence"
+    api_sources:
+      - "Bible Gateway API"
+      - "Alliance Biblique Universelle"
+    file_size_estimated: "3.8 MB"
+    permission_required: true
+    contact: "Société Biblique Française"
+    
+  pdv:
+    name: "Parole de Vie"
+    copyright: "© Société Biblique Française"
+    status: "sous_licence"
+    api_sources:
+      - "Bible Gateway API"
+      - "Site Parole de Vie"
+    file_size_estimated: "3.5 MB"
+    permission_required: true
+    contact: "Société Biblique Française"
+
+# Sources d'APIs disponibles
+api_providers:
+  bible_api:
+    url: "https://api.bible.api.bible/v1"
+    free_tier: true
+    registration_required: true
+    rate_limit: "1000 requests/day"
+    french_versions:
+      - "LSG 1910"
+      - "LSG 21"
+    
+  bible_gateway:
+    url: "https://www.biblegateway.com/api"
+    free_tier: limited
+    registration_required: true
+    french_versions:
+      - "LSG21"
+      - "NBS" 
+      - "TOB"
+      - "BFC"
+      - "PDV"
+    
+  aelf:
+    url: "https://api.aelf.org"
+    free_tier: true
+    registration_required: false
+    french_versions:
+      - "AELF officielle"
+      - "NBS"
+
+# Alternatives légales
+legal_alternatives:
+  public_domain:
+    - "Louis Segond 1910"
+    - "Martin 1744" 
+    - "Ostervald 1996"
+    
+  creative_commons:
+    - "World English Bible (français)"
+    
+  free_with_permission:
+    - "Bible du Semeur (avec permission Biblica)"
+
+# Étapes recommandées pour l'implémentation
+implementation_steps:
+  1: "Identifier les versions légalement utilisables"
+  2: "Obtenir les clés API nécessaires"
+  3: "Implémenter le script de récupération"
+  4: "Tester avec un petit échantillon"
+  5: "Valider la structure JSON"
+  6: "Déployer progressivement"
+  7: "Mettre en place la gestion d'erreurs"
+  8: "Optimiser les performances"
+
+# Performance et optimisation
+optimization:
+  file_compression: "Utiliser gzip pour les assets"
+  lazy_loading: "Charger les livres à la demande"
+  caching: "Cache intelligent par version"
+  indexing: "Index SQLite pour les recherches"
+  
+# Structure de données recommandée
+data_structure:
+  format: "JSON"
+  encoding: "UTF-8"
+  structure: |
+    [
+      {
+        "name": "Nom du livre",
+        "chapters": [
+          ["verset 1", "verset 2", ...],
+          ["verset 1 ch2", "verset 2 ch2", ...]
+        ]
+      }
+    ]

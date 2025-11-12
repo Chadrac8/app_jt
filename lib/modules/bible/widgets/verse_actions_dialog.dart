@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/bible_verse.dart';
@@ -7,16 +8,24 @@ class VerseActionsDialog extends StatefulWidget {
   final BibleVerse verse;
   final Function(Color color) onHighlight;
   final VoidCallback onFavorite;
+  final VoidCallback? onRemoveHighlight;
   final Function(String note) onNote;
   final VoidCallback onShare;
+  final String? existingNote;
+  final bool isHighlighted;
+  final bool isFavorite;
 
   const VerseActionsDialog({
     Key? key,
     required this.verse,
     required this.onHighlight,
     required this.onFavorite,
+    this.onRemoveHighlight,
     required this.onNote,
     required this.onShare,
+    this.existingNote,
+    this.isHighlighted = false,
+    this.isFavorite = false,
   }) : super(key: key);
 
   @override
@@ -26,6 +35,16 @@ class VerseActionsDialog extends StatefulWidget {
 class _VerseActionsDialogState extends State<VerseActionsDialog> {
   final TextEditingController _noteController = TextEditingController();
   bool _showNoteInput = false;
+  bool _showHighlightPalette = false;
+  
+  @override
+  void initState() {
+    super.initState();
+    // Charger la note existante si elle existe
+    if (widget.existingNote != null && widget.existingNote!.isNotEmpty) {
+      _noteController.text = widget.existingNote!;
+    }
+  }
 
   @override
   void dispose() {
@@ -36,6 +55,9 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.9,
+      ),
       decoration: const BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -100,53 +122,99 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                     Icons.highlight,
                     _buildHighlightColors(),
                   ),
+                  // Bouton pour retirer le surlignement si le verset est déjà surligné
+                  if (widget.isHighlighted) ...[
+                    const SizedBox(height: AppTheme.spaceSmall),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          if (widget.onRemoveHighlight != null) {
+                            widget.onRemoveHighlight!();
+                          }
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.remove_circle_outline,
+                          color: AppTheme.grey700,
+                          size: 18,
+                        ),
+                        label: Text(
+                          'Retirer le surlignement',
+                          style: GoogleFonts.inter(
+                            fontSize: AppTheme.fontSize12,
+                            color: AppTheme.grey700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                   
                   const SizedBox(height: AppTheme.spaceMedium),
                   
-                  // Actions rapides
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildActionButton(
-                          'Favori',
-                          Icons.favorite_border,
-                          AppTheme.redStandard,
-                          widget.onFavorite,
+                  // Actions rapides style YouVersion
+                  if (_showHighlightPalette)
+                    _buildYouVersionHighlightPalette()
+                  else
+                    _buildYouVersionActions(),
+                  
+                  // Prévisualisation de la note existante
+                  if (widget.existingNote != null && widget.existingNote!.isNotEmpty) ...[
+                    const SizedBox(height: AppTheme.spaceMedium),
+                    Container(
+                      padding: const EdgeInsets.all(AppTheme.space12),
+                      decoration: BoxDecoration(
+                        color: AppTheme.orangeStandard.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                        border: Border.all(
+                          color: AppTheme.orangeStandard.withOpacity(0.3),
                         ),
                       ),
-                      const SizedBox(width: AppTheme.space12),
-                      Expanded(
-                        child: _buildActionButton(
-                          'Note',
-                          Icons.note_add,
-                          AppTheme.orangeStandard,
-                          () {
-                            setState(() {
-                              _showNoteInput = true;
-                            });
-                          },
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.note,
+                                size: 16,
+                                color: AppTheme.orangeStandard,
+                              ),
+                              const SizedBox(width: AppTheme.spaceXSmall),
+                              Text(
+                                'Note existante :',
+                                style: GoogleFonts.inter(
+                                  fontSize: AppTheme.fontSize12,
+                                  fontWeight: AppTheme.fontSemiBold,
+                                  color: AppTheme.orangeStandard,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppTheme.spaceXSmall),
+                          Text(
+                            widget.existingNote!.length > 100 
+                                ? '${widget.existingNote!.substring(0, 100)}...'
+                                : widget.existingNote!,
+                            style: GoogleFonts.inter(
+                              fontSize: AppTheme.fontSize14,
+                              color: AppTheme.black100.withOpacity(0.8),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: AppTheme.space12),
-                      Expanded(
-                        child: _buildActionButton(
-                          'Partager',
-                          Icons.share,
-                          AppTheme.blueStandard,
-                          () {
-                            widget.onShare();
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ],
               ),
             ),
           ] else ...[
             // Interface d'ajout de note
-            _buildNoteInput(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: _buildNoteInput(),
+              ),
+            ),
           ],
           
           const SizedBox(height: AppTheme.spaceMedium),
@@ -180,73 +248,334 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
   }
 
   Widget _buildHighlightColors() {
-    final colors = [
-      Colors.yellow,
-      AppTheme.greenStandard,
-      AppTheme.blueStandard,
-      AppTheme.orangeStandard,
-      AppTheme.pinkStandard,
-      AppTheme.primaryColor,
+    // Couleurs exactes de YouVersion avec noms descriptifs
+    final highlightColors = [
+      {'color': const Color(0xFFFFE066), 'name': 'Jaune', 'description': 'Classique'}, // Jaune YouVersion signature
+      {'color': const Color(0xFF81C784), 'name': 'Vert', 'description': 'Espoir'}, // Vert YouVersion  
+      {'color': const Color(0xFF90CAF9), 'name': 'Bleu', 'description': 'Paix'}, // Bleu YouVersion
+      {'color': const Color(0xFFFFB74D), 'name': 'Orange', 'description': 'Joie'}, // Orange YouVersion
+      {'color': const Color(0xFFF8BBD9), 'name': 'Rose', 'description': 'Amour'}, // Rose YouVersion
+      {'color': const Color(0xFFCE93D8), 'name': 'Violet', 'description': 'Sagesse'}, // Violet YouVersion
+      {'color': const Color(0xFFEF5350), 'name': 'Rouge', 'description': 'Important'}, // Rouge YouVersion
     ];
 
-    return Row(
-      children: colors.map((color) {
-        return Expanded(
-          child: GestureDetector(
-            onTap: () {
-              widget.onHighlight(color);
-              Navigator.pop(context);
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              height: 40,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                border: Border.all(
-                  color: color,
-                  width: 2,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Choisir une couleur',
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: highlightColors.map((colorData) {
+            final color = colorData['color'] as Color;
+            final name = colorData['name'] as String;
+            
+            return Expanded(
+              child: Tooltip(
+                message: name,
+                child: GestureDetector(
+                  onTap: () {
+                    // Feedback haptique comme YouVersion
+                    widget.onHighlight(color);
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    height: 48,
+                    decoration: BoxDecoration(
+                      // Effet de surlignement YouVersion parfaitement reproduit
+                      color: color.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(10),
+                      // Bordure plus marquée comme YouVersion
+                      border: Border.all(
+                        color: color.withOpacity(0.7),
+                        width: 2,
+                      ),
+                      // Ombre réaliste YouVersion
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.withOpacity(0.25),
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        // Effet de brillance comme YouVersion
+                        Positioned(
+                          top: 4,
+                          left: 4,
+                          right: 4,
+                          height: 12,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withOpacity(0.3),
+                                  Colors.white.withOpacity(0.1),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                        ),
+                        // Icône centrée
+                        Center(
+                          child: Icon(
+                            Icons.brush,
+                            color: color.withOpacity(0.9),
+                            size: 22,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              child: Icon(
-                Icons.palette,
-                color: color.withOpacity(0.8),
-                size: 20,
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 6),
+        // Légendes des couleurs comme YouVersion
+        Row(
+          children: highlightColors.map((colorData) {
+            final name = colorData['name'] as String;
+            
+            return Expanded(
+              child: Text(
+                name,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.7),
+                ),
               ),
-            ),
-          ),
-        );
-      }).toList(),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
-  Widget _buildActionButton(
+  Widget _buildYouVersionActionButton(
     String label,
     IconData icon,
     Color color,
-    VoidCallback onTap,
-  ) {
+    VoidCallback onTap, {
+    bool isActive = false,
+    bool showBadge = false,
+  }) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        height: 64,
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          color: isActive 
+            ? color.withOpacity(0.1) 
+            : Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: color.withOpacity(0.3),
+            color: isActive 
+              ? color.withOpacity(0.4) 
+              : Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            width: 1.5,
           ),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: color, size: 24),
-            const SizedBox(height: AppTheme.spaceXSmall),
+            Stack(
+              children: [
+                Icon(
+                  icon, 
+                  color: isActive 
+                    ? color 
+                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                  size: 22,
+                ),
+                if (showBadge)
+                  Positioned(
+                    right: -2,
+                    top: -2,
+                    child: Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.surface,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 6),
             Text(
               label,
               style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize12,
-                fontWeight: AppTheme.fontMedium,
-                color: color,
+                fontSize: 12,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+                color: isActive 
+                  ? color
+                  : Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildYouVersionActions() {
+    return Column(
+      children: [
+        // Actions principales
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          child: GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 4,
+            childAspectRatio: 1,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            children: [
+              _buildYouVersionActionButton(
+                'Surligner',
+                Icons.format_color_text,
+                const Color(0xFFFFE066),
+                () => _showHighlightOptions(),
+                isActive: widget.isHighlighted,
+              ),
+              _buildYouVersionActionButton(
+                'Note',
+                Icons.note_add_outlined,
+                const Color(0xFF81C784),
+                () {
+                  setState(() {
+                    _showNoteInput = true;
+                    if (widget.existingNote?.isNotEmpty ?? false) {
+                      _noteController.text = widget.existingNote!;
+                    }
+                  });
+                },
+                showBadge: widget.existingNote?.isNotEmpty ?? false,
+              ),
+              _buildYouVersionActionButton(
+                'Favoris',
+                widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+                const Color(0xFFEF5350),
+                () => widget.onFavorite(),
+                isActive: widget.isFavorite,
+              ),
+              _buildYouVersionActionButton(
+                'Partager',
+                Icons.share_outlined,
+                const Color(0xFF90CAF9),
+                () => widget.onShare(),
+              ),
+            ],
+          ),
+        ),
+        
+        // Actions secondaires
+        if (widget.isHighlighted || (widget.existingNote?.isNotEmpty ?? false))
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+            child: Column(
+              children: [
+                Container(
+                  height: 1,
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                  margin: const EdgeInsets.only(bottom: 16),
+                ),
+                Row(
+                  children: [
+                    if (widget.isHighlighted)
+                      Expanded(
+                        child: _buildSecondaryAction(
+                          'Supprimer le surlignement',
+                          Icons.format_color_reset,
+                          () {
+                            if (widget.onRemoveHighlight != null) {
+                              widget.onRemoveHighlight!();
+                            }
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    if (widget.isHighlighted && (widget.existingNote?.isNotEmpty ?? false))
+                      const SizedBox(width: 12),
+                    if (widget.existingNote?.isNotEmpty ?? false)
+                      Expanded(
+                        child: _buildSecondaryAction(
+                          'Supprimer la note',
+                          Icons.delete_outline,
+                          () {
+                            widget.onNote('');
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSecondaryAction(String label, IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
+      child: Container(
+        height: 44,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.errorContainer.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.error.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: Theme.of(context).colorScheme.error,
+              size: 18,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.error,
               ),
             ),
           ],
@@ -254,6 +583,146 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
       ),
     );
   }
+
+  Widget _buildYouVersionHighlightPalette() {
+    final highlightColors = [
+      {'color': const Color(0xFFFFE066), 'name': 'Jaune'},
+      {'color': const Color(0xFF81C784), 'name': 'Vert'},
+      {'color': const Color(0xFF90CAF9), 'name': 'Bleu'},
+      {'color': const Color(0xFFFFB74D), 'name': 'Orange'},
+      {'color': const Color(0xFFF8BBD9), 'name': 'Rose'},
+      {'color': const Color(0xFFCE93D8), 'name': 'Violet'},
+      {'color': const Color(0xFFEF5350), 'name': 'Rouge'},
+      {'color': const Color(0xFFE0E0E0), 'name': 'Gris'},
+    ];
+
+    return Column(
+      children: [
+        // Header avec bouton retour
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _showHighlightPalette = false;
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.arrow_back,
+                    size: 20,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                'Choisir une couleur',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // Palette de couleurs
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: 1,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: highlightColors.length,
+            itemBuilder: (context, index) {
+              final colorData = highlightColors[index];
+              final color = colorData['color'] as Color;
+              final name = colorData['name'] as String;
+              
+              return GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  widget.onHighlight(color);
+                  Navigator.of(context).pop();
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: color.computeLuminance() > 0.5 
+                            ? Colors.black.withOpacity(0.1)
+                            : Colors.white.withOpacity(0.2),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: color.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.format_color_text,
+                          color: color.computeLuminance() > 0.5 
+                            ? Colors.black.withOpacity(0.7)
+                            : Colors.white.withOpacity(0.9),
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      name,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  void _showHighlightOptions() {
+    setState(() {
+      _showNoteInput = false;
+      _showHighlightPalette = true;
+    });
+  }
+
+
 
   Widget _buildNoteInput() {
     return Padding(
@@ -273,7 +742,9 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                 },
               ),
               Text(
-                'Ajouter une note',
+                widget.existingNote != null && widget.existingNote!.isNotEmpty 
+                    ? 'Modifier la note' 
+                    : 'Ajouter une note',
                 style: GoogleFonts.inter(
                   fontSize: AppTheme.fontSize18,
                   fontWeight: AppTheme.fontBold,
@@ -310,26 +781,47 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                   onPressed: () {
                     setState(() {
                       _showNoteInput = false;
-                      _noteController.clear();
+                      if (widget.existingNote == null || widget.existingNote!.isEmpty) {
+                        _noteController.clear();
+                      }
                     });
                   },
                   child: const Text('Annuler'),
                 ),
               ),
               const SizedBox(width: AppTheme.space12),
+              // Bouton supprimer si une note existe
+              if (widget.existingNote != null && widget.existingNote!.isNotEmpty) ...[
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      widget.onNote(''); // Passer une chaîne vide pour supprimer
+                      Navigator.pop(context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppTheme.redStandard,
+                      side: BorderSide(color: AppTheme.redStandard),
+                    ),
+                    child: const Text('Supprimer'),
+                  ),
+                ),
+                const SizedBox(width: AppTheme.space12),
+              ],
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_noteController.text.trim().isNotEmpty) {
-                      widget.onNote(_noteController.text.trim());
-                      Navigator.pop(context);
-                    }
+                    widget.onNote(_noteController.text.trim());
+                    Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
                     foregroundColor: AppTheme.white100,
                   ),
-                  child: const Text('Enregistrer'),
+                  child: Text(
+                    widget.existingNote != null && widget.existingNote!.isNotEmpty 
+                        ? 'Modifier' 
+                        : 'Enregistrer'
+                  ),
                 ),
               ),
             ],

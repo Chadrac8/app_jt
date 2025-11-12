@@ -101,27 +101,40 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
 
   @override
   void dispose() {
+    // Arrêter les animations en cours
+    _animationController.stop();
+    _pulseController.stop();
+    _instructionsController.stop();
+    
+    // Disposer les contrôleurs d'animation
     _animationController.dispose();
-    _pulseController.dispose(); // Nettoyer le contrôleur de pulsation
-    _instructionsController.dispose(); // Nettoyer le contrôleur d'instructions
+    _pulseController.dispose();
+    _instructionsController.dispose();
+    
+    // Disposer les contrôleurs de texte
     _nameController.dispose();
     _firstNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _songTitleController.dispose();
     _musicianLinkController.dispose();
+    
+    // Disposer le contrôleur de scroll
     _scrollController.dispose();
+    
     super.dispose();
   }
 
   Future<void> _loadUserData() async {
     try {
-      setState(() => _isLoading = true);
+      if (mounted) {
+        setState(() => _isLoading = true);
+      }
       
       final user = AuthService.currentUser;
       if (user != null) {
         final person = await FirebaseService.getPerson(user.uid);
-        if (person != null) {
+        if (person != null && mounted) {
           setState(() {
             _currentUser = person;
             _nameController.text = person.lastName;
@@ -132,16 +145,22 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
           
           // Vérifier si l'utilisateur peut réserver
           final canReserve = await SpecialSongReservationService.canPersonReserve(person.id);
-          setState(() => _canUserReserve = canReserve);
+          if (mounted) {
+            setState(() => _canUserReserve = canReserve);
+          }
         }
       }
       
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'Erreur lors du chargement des données utilisateur: $e';
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = 'Erreur lors du chargement des données utilisateur: $e';
+        });
+      }
     }
   }
 
@@ -152,17 +171,41 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
       return;
     }
     
-    setState(() {
-      _selectedSunday = sunday;
-      _errorMessage = null;
-    });
+    if (mounted) {
+      setState(() {
+        _selectedSunday = sunday;
+        _errorMessage = null;
+      });
+      
+      // Attendre que le widget soit reconstruit avec le formulaire
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _scrollController.hasClients) {
+          _scrollToReservationForm();
+        }
+      });
+    }
+  }
+
+  void _scrollToReservationForm() {
+    if (!mounted || !_scrollController.hasClients) return;
     
-    // Scroll vers le formulaire
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
+    // Attendre un petit délai pour que le formulaire soit complètement rendu
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (!mounted || !_scrollController.hasClients) return;
+      
+      // Calculer la position du formulaire
+      // Instructions card ≈ 200px + Calendar section ≈ 400px + espacements ≈ 100px
+      const double approximateFormPosition = 700.0;
+      
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final targetPosition = approximateFormPosition.clamp(0.0, maxScroll);
+      
+      _scrollController.animateTo(
+        targetPosition,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOutCubic,
+      );
+    });
   }
 
   void _showLimitReachedDialog() {
@@ -476,10 +519,12 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
   }
 
   void _resetForm() {
-    setState(() {
-      _selectedSunday = null;
-      _errorMessage = null;
-    });
+    if (mounted) {
+      setState(() {
+        _selectedSunday = null;
+        _errorMessage = null;
+      });
+    }
     
     // Réinitialiser uniquement les champs non liés au profil
     _songTitleController.clear();
@@ -487,6 +532,211 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
     
     // Recharger les données utilisateur
     _loadUserData();
+  }
+
+  void _showHelpDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: Icon(
+          Icons.help_outline_rounded,
+          color: Theme.of(context).colorScheme.primary,
+          size: 32,
+        ),
+        title: const Text(
+          'Comment réserver un cantique ?',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHelpStep('1', 'Choisissez un dimanche', 'Sélectionnez une date disponible dans le calendrier'),
+            const SizedBox(height: 12),
+            _buildHelpStep('2', 'Remplissez le formulaire', 'Indiquez le titre du cantique et vos coordonnées'),
+            const SizedBox(height: 12),
+            _buildHelpStep('3', 'Confirmez', 'Validez votre réservation'),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Limite de 1 réservation par mois et par personne',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Compris'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHelpStep(String number, String title, String description) {
+    final theme = Theme.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Text(
+              number,
+              style: TextStyle(
+                color: theme.colorScheme.onPrimary,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
+
+
+  Widget _buildCompactProfileImage() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return _currentUser?.profileImageUrl != null && _currentUser!.profileImageUrl!.isNotEmpty
+        ? ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.network(
+              _currentUser!.profileImageUrl!,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Center(
+                    child: SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: colorScheme.onPrimaryContainer,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return _buildCompactDefaultAvatar();
+              },
+            ),
+          )
+        : _buildCompactDefaultAvatar();
+  }
+
+  Widget _buildCompactDefaultAvatar() {
+    final colorScheme = Theme.of(context).colorScheme;
+    final initials = _getUserInitials();
+    
+    if (initials.isNotEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+          color: colorScheme.primaryContainer.withOpacity(0.7),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Center(
+          child: Text(
+            initials.length > 1 ? initials.substring(0, 1) : initials,
+            style: TextStyle(
+              color: colorScheme.onPrimaryContainer,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      );
+    }
+    
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.primaryContainer.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Icon(
+        Icons.person_rounded,
+        color: colorScheme.onPrimaryContainer,
+        size: 22,
+      ),
+    );
+  }
+
+  String _getUserInitials() {
+    if (_currentUser == null) return '';
+    
+    final firstName = _currentUser!.firstName.trim();
+    final lastName = _currentUser!.lastName.trim();
+    
+    String initials = '';
+    if (firstName.isNotEmpty) {
+      initials += firstName.substring(0, 1).toUpperCase();
+    }
+    if (lastName.isNotEmpty) {
+      initials += lastName.substring(0, 1).toUpperCase();
+    }
+    
+    return initials;
   }
 
   @override
@@ -498,18 +748,51 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(
-          'Réservation Chant Spécial',
+          'Réserver un Cantique Spécial',
           style: theme.textTheme.titleLarge?.copyWith(
             color: colorScheme.onPrimary,
-            fontWeight: AppTheme.fontSemiBold,
-            letterSpacing: 0.1,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.15,
+            fontSize: 22,
           ),
         ),
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        scrolledUnderElevation: 1,
+        scrolledUnderElevation: 4,  
+        shadowColor: colorScheme.shadow.withOpacity(0.1),
+        toolbarHeight: 64, // Hauteur augmentée pour plus d'élégance
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Icons.arrow_back_rounded, size: 24),
+          tooltip: 'Retour',
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Afficher aide contextuelle
+              _showHelpDialog();
+            },
+            icon: const Icon(Icons.help_outline_rounded, size: 24),
+            tooltip: 'Aide',
+          ),
+          const SizedBox(width: 8),
+        ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                colorScheme.primary,
+                colorScheme.primary.withBlue(
+                  (colorScheme.primary.blue * 0.9).round().clamp(0, 255),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       body: _isLoading
           ? Center(
@@ -568,7 +851,7 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
 
   Widget _buildInstructionsCard() {
     return TweenAnimationBuilder<double>(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 600),
       curve: Curves.easeOutCubic,
       tween: Tween(begin: 0.0, end: 1.0),
       builder: (context, slideValue, child) {
@@ -576,93 +859,161 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
         final colorScheme = theme.colorScheme;
         
         return Transform.translate(
-          offset: Offset(0, 16 * (1 - slideValue)),
+          offset: Offset(0, 24 * (1 - slideValue)),
           child: Opacity(
             opacity: slideValue,
-            child: Card(
-              elevation: AppTheme.elevation1,
-              surfaceTintColor: colorScheme.surfaceTint,
-              color: colorScheme.surfaceContainerHighest,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.shadow.withOpacity(0.08),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                  BoxShadow(
+                    color: colorScheme.shadow.withOpacity(0.04),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
-              child: Column(
-                children: [
-                  // En-tête interactif
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        _showInstructions = !_showInstructions;
-                      });
-                      if (_showInstructions) {
-                        _instructionsController.forward();
-                      } else {
-                        _instructionsController.reverse();
-                      }
-                    },
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                      child: Row(
-                        children: [
-                          // Icône moderne
-                          Container(
-                            padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                            decoration: BoxDecoration(
-                              color: colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                            ),
-                            child: Icon(
-                              Icons.lightbulb_outline,
-                              color: colorScheme.onPrimaryContainer,
-                              size: 24,
-                            ),
-                          ),
-                          const SizedBox(width: AppTheme.spaceMedium),
-                          
-                          // Titre et sous-titre
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Comment procéder',
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
-                                    fontWeight: AppTheme.fontSemiBold,
+              child: Card(
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                surfaceTintColor: colorScheme.surfaceTint,
+                color: colorScheme.surfaceContainerHigh,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: colorScheme.outlineVariant.withOpacity(0.5),
+                    width: 0.5,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    // En-tête moderne avec gradient subtil
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            colorScheme.primaryContainer.withOpacity(0.7),
+                            colorScheme.primaryContainer.withOpacity(0.4),
+                          ],
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _showInstructions = !_showInstructions;
+                          });
+                          if (_showInstructions) {
+                            _instructionsController.forward();
+                          } else {
+                            _instructionsController.reverse();
+                          }
+                        },
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            children: [
+                              // Icône avec animation de pulsation
+                              AnimatedBuilder(
+                                animation: _pulseController,
+                                builder: (context, child) {
+                                  return Transform.scale(
+                                    scale: 1.0 + (_pulseController.value * 0.1),
+                                    child: Container(
+                                      width: 48,
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: colorScheme.primary,
+                                        borderRadius: BorderRadius.circular(16),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: colorScheme.primary.withOpacity(0.3),
+                                            blurRadius: 8,
+                                            spreadRadius: 2,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Icon(
+                                        Icons.auto_stories_rounded,
+                                        color: colorScheme.onPrimary,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 16),
+                              
+                              // Contenu textuel
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Guide de Réservation',
+                                      style: theme.textTheme.titleLarge?.copyWith(
+                                        color: colorScheme.onPrimaryContainer,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20,
+                                        letterSpacing: 0.1,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      _showInstructions 
+                                          ? 'Suivez ces étapes simples'
+                                          : 'Découvrez comment réserver facilement',
+                                      style: theme.textTheme.bodyMedium?.copyWith(
+                                        color: colorScheme.onPrimaryContainer.withOpacity(0.8),
+                                        fontSize: 14,
+                                        letterSpacing: 0.1,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              
+                              // Icône d'expansion avec animation
+                              AnimatedRotation(
+                                turns: _showInstructions ? 0.5 : 0.0,
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOutCubic,
+                                child: Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.onPrimaryContainer.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: colorScheme.onPrimaryContainer,
+                                    size: 20,
                                   ),
                                 ),
-                                if (!_showInstructions) ...[
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    'Cliquez pour découvrir les étapes',
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      color: colorScheme.onSurfaceVariant.withOpacity(0.7),
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          
-                          // Icône d'expansion
-                          AnimatedRotation(
-                            turns: _showInstructions ? 0.5 : 0.0,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                            child: Icon(
-                              Icons.expand_more_rounded,
-                              color: colorScheme.onSurfaceVariant,
-                              size: 24,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
                     
-                    // Contenu extensible avec animation sophistiquée
+                    // Contenu extensible avec animations fluides
                     AnimatedBuilder(
                       animation: _instructionsController,
                       builder: (context, child) {
@@ -670,41 +1021,39 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                           child: AnimatedAlign(
                             alignment: Alignment.topCenter,
                             duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
+                            curve: Curves.easeInOutCubic,
                             heightFactor: _instructionsHeightAnimation.value,
                             child: FadeTransition(
                               opacity: _instructionsOpacityAnimation,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 16,
-                                  right: 16,
-                                  bottom: 16,
-                                ),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                                 child: Column(
                                   children: [
-                                    // Ligne de séparation élégante
+                                    // Divider élégant avec gradient
                                     Container(
-                                      width: double.infinity,
-                                      height: 1,
-                                      margin: const EdgeInsets.only(bottom: 16),
+                                      width: 60,
+                                      height: 4,
+                                      margin: const EdgeInsets.only(bottom: 24),
                                       decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(2),
                                         gradient: LinearGradient(
                                           colors: [
-                                            Colors.transparent,
-                                            AppTheme.blueStandard.withOpacity(0.3),
-                                            Colors.transparent,
+                                            colorScheme.primary.withOpacity(0.6),
+                                            colorScheme.primary,
+                                            colorScheme.primary.withOpacity(0.6),
                                           ],
                                         ),
                                       ),
                                     ),
                                     
-                                    // Étapes avec animations décalées
-                                    ..._buildAnimatedSteps(),
+                                    // Étapes modernes
+                                    ..._buildModernSteps(),
                                     
-                                    const SizedBox(height: AppTheme.spaceMedium),
+                                    const SizedBox(height: 20),
                                     
-                                    // Note importante avec effet de brillance
-                                    _buildImportantNote(),
+                                    // Note importante redesignée
+                                    _buildModernImportantNote(),
                                   ],
                                 ),
                               ),
@@ -713,51 +1062,8 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                         );
                       },
                     ),
-                  
-                  // Contenu extensible avec animation
-                  AnimatedBuilder(
-                    animation: _instructionsController,
-                    builder: (context, child) {
-                      return ClipRect(
-                        child: AnimatedAlign(
-                          alignment: Alignment.topCenter,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                          heightFactor: _instructionsHeightAnimation.value,
-                          child: FadeTransition(
-                            opacity: _instructionsOpacityAnimation,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                AppTheme.spaceMedium,
-                                0,
-                                AppTheme.spaceMedium,
-                                AppTheme.spaceMedium,
-                              ),
-                              child: Column(
-                                children: [
-                                  // Divider
-                                  Divider(
-                                    color: colorScheme.outline.withOpacity(0.3),
-                                    thickness: 1,
-                                  ),
-                                  const SizedBox(height: AppTheme.spaceMedium),
-                                  
-                                  // Étapes
-                                  ..._buildAnimatedSteps(),
-                                  
-                                  const SizedBox(height: AppTheme.spaceMedium),
-                                  
-                                  // Note importante
-                                  _buildImportantNote(),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -766,27 +1072,27 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
     );
   }
 
-  List<Widget> _buildAnimatedSteps() {
+  List<Widget> _buildModernSteps() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     
     final steps = [
       {
         'number': '1',
-        'title': 'Choisir une date',
-        'description': 'Sélectionnez un dimanche disponible dans le calendrier',
-        'icon': Icons.calendar_month_outlined,
+        'title': 'Sélectionnez votre date',
+        'description': 'Choisissez un dimanche libre dans le calendrier ci-dessous',
+        'icon': Icons.event_available_rounded,
       },
       {
         'number': '2',
-        'title': 'Remplir les informations',
-        'description': 'Complétez le formulaire avec les détails du chant',
+        'title': 'Complétez les informations',
+        'description': 'Renseignez le titre du cantique et vos coordonnées',
         'icon': Icons.edit_note_rounded,
       },
       {
         'number': '3',
-        'title': 'Confirmer la réservation',
-        'description': 'Vérifiez vos informations et validez votre demande',
+        'title': 'Confirmez votre réservation',
+        'description': 'Vérifiez et validez votre demande de cantique spécial',
         'icon': Icons.check_circle_outline_rounded,
       },
     ];
@@ -794,84 +1100,99 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
     return steps.asMap().entries.map((entry) {
       final index = entry.key;
       final step = entry.value;
-      final isLast = index == steps.length - 1;
       
       return TweenAnimationBuilder<double>(
-        duration: Duration(milliseconds: 200 + (index * 100)),
-        curve: Curves.easeOutCubic,
+        duration: Duration(milliseconds: 400 + (index * 150)),
+        curve: Curves.easeOutBack,
         tween: Tween(begin: 0.0, end: 1.0),
-        builder: (context, animationValue, child) {
+        builder: (context, animValue, child) {
           return Transform.translate(
-            offset: Offset(20 * (1 - animationValue), 0),
+            offset: Offset(20 * (1 - animValue), 0),
             child: Opacity(
-              opacity: animationValue,
+              opacity: animValue,
               child: Container(
-                margin: EdgeInsets.only(bottom: isLast ? 0 : AppTheme.spaceSmall),
-                child: Card(
-                  elevation: AppTheme.elevation1,
-                  surfaceTintColor: colorScheme.surfaceTint,
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                    child: Row(
-                      children: [
-                        // Badge numéro
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: colorScheme.primary,
-                            shape: BoxShape.circle,
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: colorScheme.outline.withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    // Numéro avec design moderne
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            colorScheme.primary,
+                            colorScheme.primary.withOpacity(0.8),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: colorScheme.primary.withOpacity(0.3),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
                           ),
-                          child: Center(
-                            child: Text(
-                              step['number'] as String,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                color: colorScheme.onPrimary,
-                                fontWeight: AppTheme.fontBold,
-                              ),
-                            ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          step['number'] as String,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: colorScheme.onPrimary,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(width: AppTheme.spaceMedium),
-                        
-                        // Contenu
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    
+                    // Icône et contenu
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    step['icon'] as IconData,
-                                    color: colorScheme.primary,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: AppTheme.spaceSmall),
-                                  Expanded(
-                                    child: Text(
-                                      step['title'] as String,
-                                      style: theme.textTheme.titleSmall?.copyWith(
-                                        color: colorScheme.onSurface,
-                                        fontWeight: AppTheme.fontSemiBold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              Icon(
+                                step['icon'] as IconData,
+                                color: colorScheme.primary,
+                                size: 20,
                               ),
-                              const SizedBox(height: AppTheme.spaceXSmall),
-                              Text(
-                                step['description'] as String,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: colorScheme.onSurfaceVariant,
-                                  height: 1.4,
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  step['title'] as String,
+                                  style: theme.textTheme.titleSmall?.copyWith(
+                                    color: colorScheme.onSurface,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 4),
+                          Text(
+                            step['description'] as String,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
@@ -881,65 +1202,234 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
     }).toList();
   }
 
-  Widget _buildImportantNote() {
+  Widget _buildModernImportantNote() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colorScheme.primaryContainer.withOpacity(0.7),
+            colorScheme.primaryContainer.withOpacity(0.4),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.primary.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.info_rounded,
+              color: colorScheme.primary,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Important à retenir',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Une seule réservation par personne et par mois',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onPrimaryContainer.withOpacity(0.9),
+                    height: 1.2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCalendarSection() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return TweenAnimationBuilder<double>(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 800),
       curve: Curves.easeOutCubic,
       tween: Tween(begin: 0.0, end: 1.0),
-      builder: (context, animationValue, child) {
-        final theme = Theme.of(context);
-        final colorScheme = theme.colorScheme;
-        
-        return Transform.scale(
-          scale: 0.95 + (0.05 * animationValue),
+      builder: (context, slideValue, child) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - slideValue)),
           child: Opacity(
-            opacity: animationValue,
-            child: Card(
-              elevation: AppTheme.elevation2,
-              surfaceTintColor: AppTheme.warning,
-              color: AppTheme.warningContainer,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            opacity: slideValue,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.shadow.withOpacity(0.1),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                  BoxShadow(
+                    color: colorScheme.shadow.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                child: Row(
+              child: Card(
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                surfaceTintColor: colorScheme.surfaceTint,
+                color: colorScheme.surfaceContainerHigh,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  side: BorderSide(
+                    color: colorScheme.outlineVariant.withOpacity(0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: Column(
                   children: [
-                    // Icône d'avertissement
+                    // En-tête moderne avec gradient
                     Container(
-                      padding: const EdgeInsets.all(AppTheme.spaceSmall),
                       decoration: BoxDecoration(
-                        color: AppTheme.warning,
-                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            colorScheme.secondaryContainer.withOpacity(0.8),
+                            colorScheme.secondaryContainer.withOpacity(0.5),
+                          ],
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24),
+                        ),
                       ),
-                      child: Icon(
-                        Icons.info_outline,
-                        color: AppTheme.onWarning,
-                        size: 24,
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          // Icône avec animation
+                          AnimatedBuilder(
+                            animation: _pulseController,
+                            builder: (context, child) {
+                              return Transform.scale(
+                                scale: 1.0 + (_pulseController.value * 0.08),
+                                child: Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.secondary,
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: colorScheme.secondary.withOpacity(0.3),
+                                        blurRadius: 8,
+                                        spreadRadius: 2,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.calendar_month_rounded,
+                                    color: colorScheme.onSecondary,
+                                    size: 24,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 16),
+                          
+                          // Contenu textuel
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Calendrier des Dimanches',
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    color: colorScheme.onSecondaryContainer,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                    letterSpacing: 0.1,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Sélectionnez votre date préférée',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: colorScheme.onSecondaryContainer.withOpacity(0.8),
+                                    fontSize: 14,
+                                    letterSpacing: 0.1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          
+                          // Badge indicateur si une date est sélectionnée
+                          if (_selectedSunday != null)
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.check_circle_rounded,
+                                    color: colorScheme.onPrimary,
+                                    size: 16,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Sélectionné',
+                                    style: TextStyle(
+                                      color: colorScheme.onPrimary,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: AppTheme.spaceMedium),
                     
-                    // Texte
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Règle importante',
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              color: AppTheme.onWarningContainer,
-                              fontWeight: AppTheme.fontSemiBold,
-                            ),
-                          ),
-                          const SizedBox(height: AppTheme.spaceXSmall),
-                          Text(
-                            'Une seule réservation par personne et par mois',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: AppTheme.onWarningContainer,
-                            ),
-                          ),
-                        ],
+                    // Calendrier
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: SundayCalendarWidget(
+                        onSundaySelected: _onSundaySelected,
+                        currentUserId: _currentUser?.id,
+                        onReservationCancelled: () {
+                          _loadUserData();
+                          if (_selectedSunday != null && mounted) {
+                            setState(() => _selectedSunday = null);
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -952,323 +1442,280 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
     );
   }
 
-  Widget _buildCalendarSection() {
+  Widget _buildReservationForm() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     
-    return Card(
-      elevation: AppTheme.elevation2,
-      surfaceTintColor: colorScheme.surfaceTint,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceMedium),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // En-tête de section
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                  decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 1000),
+      curve: Curves.easeOutCubic,
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, slideValue, child) {
+        return Transform.translate(
+          offset: Offset(0, 30 * (1 - slideValue)),
+          child: Opacity(
+            opacity: slideValue,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.shadow.withOpacity(0.12),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
                   ),
-                  child: Icon(
-                    Icons.calendar_month,
-                    color: colorScheme.onPrimaryContainer,
-                    size: 20,
+                  BoxShadow(
+                    color: colorScheme.shadow.withOpacity(0.06),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Card(
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                surfaceTintColor: colorScheme.surfaceTint,
+                color: colorScheme.surfaceContainerHigh,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                  side: BorderSide(
+                    color: colorScheme.outlineVariant.withOpacity(0.4),
+                    width: 0.5,
                   ),
                 ),
-                const SizedBox(width: AppTheme.spaceSmall),
-                Expanded(
+                child: Form(
+                  key: _formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Sélectionner une date',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: colorScheme.onSurface,
-                          fontWeight: AppTheme.fontSemiBold,
+                      // En-tête moderne avec gradient
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              colorScheme.tertiaryContainer.withOpacity(0.9),
+                              colorScheme.tertiaryContainer.withOpacity(0.6),
+                            ],
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(28),
+                            topRight: Radius.circular(28),
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(24),
+                        child: Row(
+                          children: [
+                            // Icône avec animation
+                            AnimatedBuilder(
+                              animation: _pulseController,
+                              builder: (context, child) {
+                                return Transform.scale(
+                                  scale: 1.0 + (_pulseController.value * 0.06),
+                                  child: Container(
+                                    width: 52,
+                                    height: 52,
+                                    decoration: BoxDecoration(
+                                      color: colorScheme.tertiary,
+                                      borderRadius: BorderRadius.circular(18),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: colorScheme.tertiary.withOpacity(0.3),
+                                          blurRadius: 12,
+                                          spreadRadius: 3,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Icon(
+                                      Icons.edit_note_rounded,
+                                      color: colorScheme.onTertiary,
+                                      size: 26,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 18),
+                            
+                            // Contenu
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Informations de Réservation',
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      color: colorScheme.onTertiaryContainer,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 22,
+                                      letterSpacing: 0.1,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Date: ${DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(_selectedSunday!)}',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: colorScheme.onTertiaryContainer.withOpacity(0.9),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        'Choisissez un dimanche disponible',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
+                      
+                      // Contenu du formulaire
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Section Informations personnelles
+                            _buildModernSectionHeader(
+                              customIcon: _buildCompactProfileImage(),
+                              title: 'Vos Informations',
+                              subtitle: 'Données personnelles pour la réservation',
+                            ),
+                            
+                            const SizedBox(height: 20),
+                            
+                            // Champs nom et prénom en ligne
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildModernTextField(
+                                    controller: _nameController,
+                                    label: 'Nom de famille',
+                                    icon: Icons.badge_outlined,
+                                    isRequired: true,
+                                    validator: (value) {
+                                      if (value == null || value.trim().isEmpty) {
+                                        return 'Le nom est requis';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: _buildModernTextField(
+                                    controller: _firstNameController,
+                                    label: 'Prénom',
+                                    icon: Icons.person_outline_rounded,
+                                    isRequired: true,
+                                    validator: (value) {
+                                      if (value == null || value.trim().isEmpty) {
+                                        return 'Le prénom est requis';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            _buildModernTextField(
+                              controller: _emailController,
+                              label: 'Adresse email',
+                              icon: Icons.email_outlined,
+                              isRequired: true,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'L\'email est requis';
+                                }
+                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                  return 'Format d\'email invalide';
+                                }
+                                return null;
+                              },
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            _buildModernTextField(
+                              controller: _phoneController,
+                              label: 'Numéro de téléphone',
+                              icon: Icons.phone_outlined,
+                              isRequired: true,
+                              keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Le téléphone est requis';
+                                }
+                                return null;
+                              },
+                            ),
+                            
+                            const SizedBox(height: 28),
+                            
+                            // Section Cantique
+                            _buildModernSectionHeader(
+                              icon: Icons.music_note_rounded,
+                              title: 'Détails du Cantique',
+                              subtitle: 'Informations sur votre performance',
+                            ),
+                            
+                            const SizedBox(height: 20),
+                            
+                            _buildModernTextField(
+                              controller: _songTitleController,
+                              label: 'Titre du cantique',
+                              icon: Icons.library_music_outlined,
+                              isRequired: true,
+                              hint: 'Ex: Amazing Grace, Il est vivant...',
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Le titre du cantique est requis';
+                                }
+                                return null;
+                              },
+                            ),
+                            
+                            const SizedBox(height: 16),
+                            
+                            _buildModernTextField(
+                              controller: _musicianLinkController,
+                              label: 'Lien de référence (optionnel)',
+                              icon: Icons.link_rounded,
+                              hint: 'YouTube, Spotify, partition PDF...',
+                              keyboardType: TextInputType.url,
+                            ),
+                            
+                            const SizedBox(height: 32),
+                            
+                            // Message d'erreur
+                            if (_errorMessage != null) ...[
+                              _buildErrorMessage(),
+                              const SizedBox(height: 20),
+                            ],
+                            
+                            // Bouton de confirmation moderne
+                            _buildModernSubmitButton(),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
-            const SizedBox(height: AppTheme.spaceMedium),
-            SundayCalendarWidget(
-              onSundaySelected: _onSundaySelected,
-              currentUserId: _currentUser?.id,
-              onReservationCancelled: () {
-                _loadUserData();
-                if (_selectedSunday != null) {
-                  setState(() => _selectedSunday = null);
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildReservationForm() {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    
-    return Card(
-      elevation: AppTheme.elevation3,
-      surfaceTintColor: colorScheme.surfaceTint,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // En-tête du formulaire
-              Container(
-                padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                      decoration: BoxDecoration(
-                        color: colorScheme.primary,
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                      ),
-                      child: Icon(
-                        Icons.music_note,
-                        color: colorScheme.onPrimary,
-                        size: 24,
-                      ),
-                    ),
-                    const SizedBox(width: AppTheme.spaceMedium),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Réservation confirmée pour',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onPrimaryContainer,
-                            ),
-                          ),
-                          const SizedBox(height: AppTheme.spaceXSmall),
-                          Text(
-                            DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(_selectedSunday!),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: colorScheme.onPrimaryContainer,
-                              fontWeight: AppTheme.fontSemiBold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: AppTheme.spaceLarge),
-              
-              // Section Informations personnelles
-              _buildSectionHeader(
-                icon: Icons.person,
-                title: 'Informations personnelles',
-                subtitle: 'Vos coordonnées pour la réservation',
-              ),
-            
-              
-              const SizedBox(height: AppTheme.spaceMedium),
-              
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildModernTextField(
-                      controller: _firstNameController,
-                      label: 'Prénom',
-                      icon: Icons.person_outline,
-                      isRequired: true,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Le prénom est requis';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.spaceMedium),
-                  Expanded(
-                    child: _buildModernTextField(
-                      controller: _nameController,
-                      label: 'Nom',
-                      icon: Icons.person,
-                      isRequired: true,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Le nom est requis';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: AppTheme.spaceMedium),
-              
-              _buildModernTextField(
-                controller: _emailController,
-                label: 'Adresse e-mail',
-                icon: Icons.email_outlined,
-                isRequired: true,
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'L\'email est requis';
-                  }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                    return 'Format d\'email invalide';
-                  }
-                  return null;
-                },
-              ),
-              
-              const SizedBox(height: AppTheme.spaceMedium),
-              
-              _buildModernTextField(
-                controller: _phoneController,
-                label: 'Numéro de téléphone',
-                icon: Icons.phone_outlined,
-                isRequired: true,
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Le téléphone est requis';
-                  }
-                  return null;
-                },
-              ),
-              
-              const SizedBox(height: AppTheme.spaceLarge),
-              
-              // Section Informations du chant
-              _buildSectionHeader(
-                icon: Icons.music_note,
-                title: 'Détails du chant spécial',
-                subtitle: 'Informations sur votre performance',
-              ),
-              
-              const SizedBox(height: AppTheme.spaceMedium),
-              
-              _buildModernTextField(
-                controller: _songTitleController,
-                label: 'Titre du chant',
-                icon: Icons.library_music_outlined,
-                isRequired: true,
-                hint: 'Ex: Amazing Grace, Il est vivant...',
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Le titre du chant est requis';
-                  }
-                  return null;
-                },
-              ),
-              
-              const SizedBox(height: AppTheme.spaceMedium),
-              
-              _buildModernTextField(
-                controller: _musicianLinkController,
-                label: 'Lien de référence (optionnel)',
-                icon: Icons.link,
-                hint: 'YouTube, Spotify, partition PDF...',
-                keyboardType: TextInputType.url,
-              ),
-              
-              const SizedBox(height: AppTheme.spaceLarge),
-              
-              // Message d'erreur
-              if (_errorMessage != null) ...[
-                Card(
-                  color: colorScheme.errorContainer,
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.error_outline,
-                          color: colorScheme.onErrorContainer,
-                          size: 20,
-                        ),
-                        const SizedBox(width: AppTheme.spaceSmall),
-                        Expanded(
-                          child: Text(
-                            _errorMessage!,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: colorScheme.onErrorContainer,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: AppTheme.spaceMedium),
-              ],
-              
-              // Boutons d'action
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildSecondaryButton(
-                      onPressed: _isSubmitting ? null : () {
-                        setState(() {
-                          _selectedSunday = null;
-                          _errorMessage = null;
-                        });
-                      },
-                      text: 'Annuler',
-                      icon: Icons.close,
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.spaceMedium),
-                  Expanded(
-                    flex: 2,
-                    child: _buildPrimaryButton(
-                      onPressed: _isSubmitting ? null : _submitReservation,
-                      text: 'Confirmer la réservation',
-                      icon: Icons.check_circle,
-                      isLoading: _isSubmitting,
-                    ),
-                  ),
-                ],
-              ),
-            ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildSectionHeader({
-    required IconData icon,
+  Widget _buildModernSectionHeader({
+    IconData? icon,
+    Widget? customIcon,
     required String title,
     required String subtitle,
   }) {
@@ -1277,19 +1724,23 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
     
     return Row(
       children: [
-        Container(
-          padding: const EdgeInsets.all(AppTheme.spaceSmall),
-          decoration: BoxDecoration(
-            color: colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-          ),
-          child: Icon(
-            icon,
-            color: colorScheme.onPrimaryContainer,
-            size: 20,
+        SizedBox(
+          width: 46,
+          height: 46,
+          child: customIcon ?? Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              icon ?? Icons.help,
+              color: colorScheme.onPrimaryContainer,
+              size: 22,
+            ),
           ),
         ),
-        const SizedBox(width: AppTheme.spaceSmall),
+        const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1298,13 +1749,15 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
                 title,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: colorScheme.onSurface,
-                  fontWeight: AppTheme.fontSemiBold,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.1,
                 ),
               ),
               Text(
                 subtitle,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
+                  fontSize: 13,
                 ),
               ),
             ],
@@ -1330,124 +1783,127 @@ class _SpecialSongReservationPageState extends State<SpecialSongReservationPage>
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
-      style: theme.textTheme.bodyLarge,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        color: colorScheme.onSurface,
+        fontWeight: FontWeight.w500,
+      ),
       decoration: InputDecoration(
-        labelText: isRequired ? '$label *' : label,
+        labelText: label + (isRequired ? ' *' : ''),
         hintText: hint,
-        prefixIcon: Container(
-          margin: const EdgeInsets.all(AppTheme.spaceSmall),
-          padding: const EdgeInsets.all(AppTheme.spaceSmall),
-          decoration: BoxDecoration(
-            color: colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-          ),
-          child: Icon(
-            icon,
-            color: colorScheme.onPrimaryContainer,
-            size: 20,
-          ),
-        ),
+        prefixIcon: Icon(icon, color: colorScheme.primary),
+        filled: true,
+        fillColor: colorScheme.surfaceContainerLowest,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-          borderSide: BorderSide(color: colorScheme.outline),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colorScheme.outline.withOpacity(0.3)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-          borderSide: BorderSide(color: colorScheme.outline),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colorScheme.outline.withOpacity(0.3)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: colorScheme.error, width: 2),
         ),
-        filled: true,
-        fillColor: colorScheme.surface,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppTheme.spaceMedium, 
-          vertical: AppTheme.spaceMedium,
-        ),
-        labelStyle: theme.textTheme.bodyMedium?.copyWith(
+        labelStyle: TextStyle(
           color: colorScheme.onSurfaceVariant,
+          fontWeight: FontWeight.w500,
         ),
-        hintStyle: theme.textTheme.bodyMedium?.copyWith(
+        hintStyle: TextStyle(
           color: colorScheme.onSurfaceVariant.withOpacity(0.6),
+          fontSize: 14,
         ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
     );
   }
 
-  Widget _buildPrimaryButton({
-    required VoidCallback? onPressed,
-    required String text,
-    required IconData icon,
-    bool isLoading = false,
-  }) {
+  Widget _buildErrorMessage() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colorScheme.errorContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.error.withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.error_outline_rounded,
+            color: colorScheme.onErrorContainer,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              _errorMessage!,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onErrorContainer,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernSubmitButton() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     
     return SizedBox(
-      height: 48,
-      child: FilledButton.icon(
-        onPressed: isLoading ? null : onPressed,
-        style: FilledButton.styleFrom(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        onPressed: _isSubmitting ? null : _submitReservation,
+        style: ElevatedButton.styleFrom(
           backgroundColor: colorScheme.primary,
           foregroundColor: colorScheme.onPrimary,
-          disabledBackgroundColor: colorScheme.onSurface.withOpacity(0.12),
-          disabledForegroundColor: colorScheme.onSurface.withOpacity(0.38),
+          elevation: 6,
+          shadowColor: colorScheme.primary.withOpacity(0.3),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            borderRadius: BorderRadius.circular(16),
           ),
-          elevation: AppTheme.elevation1,
         ),
-        icon: isLoading
+        child: _isSubmitting
             ? SizedBox(
-                width: 20,
-                height: 20,
+                width: 24,
+                height: 24,
                 child: CircularProgressIndicator(
                   color: colorScheme.onPrimary,
-                  strokeWidth: 2,
+                  strokeWidth: 2.5,
                 ),
               )
-            : Icon(icon, size: 20),
-        label: Text(
-          text,
-          style: theme.textTheme.labelLarge?.copyWith(
-            fontWeight: AppTheme.fontSemiBold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSecondaryButton({
-    required VoidCallback? onPressed,
-    required String text,
-    required IconData icon,
-  }) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    
-    return SizedBox(
-      height: 48,
-      child: OutlinedButton.icon(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: colorScheme.onSurface,
-          side: BorderSide(color: colorScheme.outline),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-          ),
-        ),
-        icon: Icon(icon, size: 20),
-        label: Text(
-          text,
-          style: theme.textTheme.labelLarge?.copyWith(
-            fontWeight: AppTheme.fontSemiBold,
-          ),
-        ),
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_rounded,
+                    size: 22,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Confirmer la Réservation',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: colorScheme.onPrimary,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.1,
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }

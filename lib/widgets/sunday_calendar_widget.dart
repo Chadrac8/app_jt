@@ -185,7 +185,9 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
           ),
         ),
         
-        // Calendrier des dimanches (suppression de l'espace résiduel)
+        const SizedBox(height: AppTheme.spaceMedium), // Ajout d'espacement entre l'en-tête et le calendrier
+        
+        // Calendrier des dimanches 
         if (_stats!.availableSundays.isEmpty && _stats!.reservedSundays.isEmpty)
           Center(
             child: Column(
@@ -280,29 +282,29 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
       status = 'Passé';
     } else if (isReserved) {
       if (isUserReservation) {
-        backgroundColor = AppTheme.grey50;
-        borderColor = AppTheme.grey400;
-        textColor = AppTheme.grey800;
-        icon = Icons.person;
+        backgroundColor = const Color(0xFFF0F4FF); // Bleu très subtil
+        borderColor = AppTheme.blueStandard.withOpacity(0.6);
+        textColor = AppTheme.blueStandard.withOpacity(0.9);
+        icon = Icons.person_rounded;
         status = 'Ma réservation';
       } else {
-        backgroundColor = AppTheme.grey50;
-        borderColor = AppTheme.grey300;
-        textColor = AppTheme.grey700;
-        icon = Icons.block;
+        backgroundColor = const Color(0xFFFFF4E6); // Orange très subtil
+        borderColor = AppTheme.orangeStandard.withOpacity(0.5);
+        textColor = AppTheme.orangeStandard.withOpacity(0.8);
+        icon = Icons.event_busy_rounded;
         status = 'Réservé';
       }
     } else if (isAvailable) {
-      backgroundColor = AppTheme.grey50;
-      borderColor = AppTheme.grey400;
-      textColor = AppTheme.grey700;
-      icon = Icons.check_circle_outline;
+      backgroundColor = const Color(0xFFF0FFF4); // Vert très subtil
+      borderColor = AppTheme.greenStandard.withOpacity(0.6);
+      textColor = AppTheme.greenStandard.withOpacity(0.9);
+      icon = Icons.event_available_rounded;
       status = 'Disponible';
     } else {
-      backgroundColor = AppTheme.grey100;
-      borderColor = AppTheme.grey300;
+      backgroundColor = const Color(0xFFFAFAFA); // Gris très clair
+      borderColor = AppTheme.grey400.withOpacity(0.5);
       textColor = AppTheme.grey600;
-      icon = Icons.block;
+      icon = Icons.event_note_rounded;
       status = 'Indisponible';
     }
 
@@ -311,6 +313,9 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
       child: InkWell(
         onTap: isAvailable ? () => widget.onSundaySelected(sunday) : null,
         borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+        hoverColor: isAvailable ? AppTheme.greenStandard.withOpacity(0.05) : null,
+        splashColor: isAvailable ? AppTheme.greenStandard.withOpacity(0.1) : null,
+        highlightColor: isAvailable ? AppTheme.greenStandard.withOpacity(0.08) : null,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.all(AppTheme.space10), // Réduit de 12 à 10
@@ -321,13 +326,7 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
               width: isUserReservation ? 2.5 : 1.5,
             ),
             borderRadius: BorderRadius.circular(10), // Réduit de 12 à 10
-            boxShadow: (isAvailable || isUserReservation) ? [
-              BoxShadow(
-                color: borderColor.withOpacity(0.3),
-                blurRadius: 4, // Réduit de 6 à 4
-                offset: const Offset(0, 2), // Reste à 2
-              ),
-            ] : null,
+            boxShadow: _buildCardShadow(isAvailable, isUserReservation, isReserved, borderColor),
           ),
           child: Row(
             children: [
@@ -335,16 +334,46 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
               Container(
                 padding: const EdgeInsets.all(AppTheme.space10), // Réduit de 12 à 10
                 decoration: BoxDecoration(
-                  color: borderColor.withOpacity(0.2),
+                  color: _getIconBackgroundColor(isAvailable, isUserReservation, isReserved, borderColor),
                   borderRadius: BorderRadius.circular(10), // Réduit de 12 à 10
+                  border: isAvailable ? Border.all(
+                    color: AppTheme.greenStandard.withOpacity(0.3),
+                    width: 1,
+                  ) : null,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      icon,
-                      color: textColor,
-                      size: 18, // Réduit de 20 à 18
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
+                          icon,
+                          color: textColor,
+                          size: 18, // Réduit de 20 à 18
+                        ),
+                        // Petit point indicateur pour les dates disponibles
+                        if (isAvailable)
+                          Positioned(
+                            top: -2,
+                            right: -2,
+                            child: Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: AppTheme.greenStandard,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppTheme.greenStandard.withOpacity(0.5),
+                                    blurRadius: 2,
+                                    spreadRadius: 0.5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                     const SizedBox(height: 3), // Réduit de 4 à 3
                     Text(
@@ -437,6 +466,65 @@ class _SundayCalendarWidgetState extends State<SundayCalendarWidget>
         ),
       ),
     );
+  }
+
+  List<BoxShadow>? _buildCardShadow(bool isAvailable, bool isUserReservation, bool isReserved, Color borderColor) {
+    if (isAvailable) {
+      // Ombre subtile verte pour les dates disponibles
+      return [
+        BoxShadow(
+          color: AppTheme.greenStandard.withOpacity(0.15),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+          spreadRadius: 1,
+        ),
+        BoxShadow(
+          color: AppTheme.greenStandard.withOpacity(0.08),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ];
+    } else if (isUserReservation) {
+      // Ombre bleue pour les réservations de l'utilisateur
+      return [
+        BoxShadow(
+          color: AppTheme.blueStandard.withOpacity(0.2),
+          blurRadius: 8,
+          offset: const Offset(0, 3),
+          spreadRadius: 1,
+        ),
+      ];
+    } else if (isReserved) {
+      // Ombre orange subtile pour les dates réservées par d'autres
+      return [
+        BoxShadow(
+          color: AppTheme.orangeStandard.withOpacity(0.12),
+          blurRadius: 4,
+          offset: const Offset(0, 2),
+        ),
+      ];
+    } else {
+      // Ombre très subtile pour les dates indisponibles
+      return [
+        BoxShadow(
+          color: AppTheme.grey400.withOpacity(0.08),
+          blurRadius: 3,
+          offset: const Offset(0, 1),
+        ),
+      ];
+    }
+  }
+
+  Color _getIconBackgroundColor(bool isAvailable, bool isUserReservation, bool isReserved, Color borderColor) {
+    if (isAvailable) {
+      return AppTheme.greenStandard.withOpacity(0.15);
+    } else if (isUserReservation) {
+      return AppTheme.blueStandard.withOpacity(0.15);
+    } else if (isReserved) {
+      return AppTheme.orangeStandard.withOpacity(0.12);
+    } else {
+      return borderColor.withOpacity(0.1);
+    }
   }
 
   Widget _buildCompactCancelButton(SpecialSongReservationModel reservation) {

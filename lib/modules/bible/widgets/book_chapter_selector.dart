@@ -7,14 +7,16 @@ class BookChapterSelector extends StatefulWidget {
   final List<BibleBook> books;
   final String? selectedBook;
   final int? selectedChapter;
-  final Function(String book, int chapter) onBookChapterSelected;
+  final int? selectedVerse;
+  final Function(String book, int chapter, int? verse) onBookChapterVerseSelected;
 
   const BookChapterSelector({
     Key? key,
     required this.books,
     this.selectedBook,
     this.selectedChapter,
-    required this.onBookChapterSelected,
+    this.selectedVerse,
+    required this.onBookChapterVerseSelected,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,8 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
   late TabController _testamentTabController;
   String? _selectedBook;
   int? _selectedChapter;
+  int? _selectedVerse;
+  bool _showVerseSelection = false;
   
   @override
   void initState() {
@@ -83,54 +87,6 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
               ],
             ),
           ),
-          
-          // Sélection actuelle
-          if (_selectedBook != null)
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(AppTheme.space12),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                border: Border.all(
-                  color: AppTheme.primaryColor.withOpacity(0.3),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.bookmark,
-                    color: AppTheme.primaryColor,
-                    size: 20,
-                  ),
-                  const SizedBox(width: AppTheme.spaceSmall),
-                  Text(
-                    '$_selectedBook${_selectedChapter != null ? ' $_selectedChapter' : ''}',
-                    style: GoogleFonts.inter(
-                      fontWeight: AppTheme.fontSemiBold,
-                      color: AppTheme.primaryColor,
-                    ),
-                  ),
-                  const Spacer(),
-                  if (_selectedBook != null && _selectedChapter != null)
-                    ElevatedButton(
-                      onPressed: () {
-                        widget.onBookChapterSelected(_selectedBook!, _selectedChapter!);
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryColor,
-                        foregroundColor: AppTheme.white100,
-                        minimumSize: const Size(80, 32),
-                      ),
-                      child: const Text('Aller'),
-                    ),
-                ],
-              ),
-            ),
-          
-          const SizedBox(height: AppTheme.spaceMedium),
-          
           // Onglets Testament
           Container(
             color: AppTheme.primaryColor, // Couleur primaire cohérente
@@ -148,13 +104,15 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
           
           // Contenu des onglets
           Expanded(
-            child: TabBarView(
-              controller: _testamentTabController,
-              children: [
-                _buildTestamentBooks('old'),
-                _buildTestamentBooks('new'),
-              ],
-            ),
+            child: _showVerseSelection 
+                ? _buildVerseSelection() 
+                : TabBarView(
+                    controller: _testamentTabController,
+                    children: [
+                      _buildTestamentBooks('old'),
+                      _buildTestamentBooks('new'),
+                    ],
+                  ),
           ),
         ],
       ),
@@ -245,6 +203,7 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
                             setState(() {
                               _selectedBook = book.name;
                               _selectedChapter = chapterNumber;
+                              _showVerseSelection = true; // Afficher automatiquement la sélection de versets
                             });
                           },
                           child: Container(
@@ -284,5 +243,131 @@ class _BookChapterSelectorState extends State<BookChapterSelector>
         );
       },
     );
+  }
+
+  Widget _buildVerseSelection() {
+    if (_selectedBook == null || _selectedChapter == null) {
+      return const Center(child: Text('Aucun chapitre sélectionné'));
+    }
+
+    // Estimation du nombre de versets (plus tard, on pourrait avoir les données exactes)
+    final estimatedVerses = _getEstimatedVerseCount(_selectedBook!, _selectedChapter!);
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header avec bouton retour
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _showVerseSelection = false;
+                    _selectedVerse = null;
+                  });
+                },
+                icon: const Icon(Icons.arrow_back),
+                color: AppTheme.primaryColor,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Choisir un verset de $_selectedBook $_selectedChapter',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize16,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.black100.withOpacity(0.87),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: AppTheme.spaceMedium),
+          
+          // Grille de versets style YouVersion
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: List.generate(estimatedVerses, (verseIndex) {
+              final verseNumber = verseIndex + 1;
+              final isVerseSelected = _selectedVerse == verseNumber;
+              
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedVerse = verseNumber;
+                  });
+                  // Navigation immédiate vers le verset sélectionné
+                  widget.onBookChapterVerseSelected(_selectedBook!, _selectedChapter!, verseNumber);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: isVerseSelected 
+                        ? AppTheme.primaryColor 
+                        : AppTheme.grey50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isVerseSelected 
+                          ? AppTheme.primaryColor 
+                          : AppTheme.grey300,
+                      width: isVerseSelected ? 2 : 1,
+                    ),
+                    boxShadow: isVerseSelected 
+                        ? [
+                            BoxShadow(
+                              color: AppTheme.primaryColor.withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '$verseNumber',
+                      style: GoogleFonts.inter(
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontSemiBold,
+                        color: isVerseSelected 
+                            ? AppTheme.white100 
+                            : AppTheme.black100.withOpacity(0.87),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  int _getEstimatedVerseCount(String bookName, int chapter) {
+    // Estimation basique du nombre de versets par chapitre
+    // Dans une version complète, ces données seraient stockées dans la base de données
+    final Map<String, Map<int, int>> verseData = {
+      'Genèse': {1: 31, 2: 25, 3: 24, 4: 26, 5: 32},
+      'Exode': {1: 22, 2: 25, 3: 22, 4: 31, 5: 23},
+      'Matthieu': {1: 25, 2: 23, 3: 17, 4: 25, 5: 48},
+      'Marc': {1: 45, 2: 28, 3: 35, 4: 41, 5: 43},
+      'Luc': {1: 80, 2: 52, 3: 38, 4: 44, 5: 39},
+      'Jean': {1: 51, 2: 25, 3: 36, 4: 54, 5: 47},
+      // Plus de livres peuvent être ajoutés ici
+    };
+
+    final bookData = verseData[bookName];
+    if (bookData != null && bookData.containsKey(chapter)) {
+      return bookData[chapter]!;
+    }
+
+    // Estimation par défaut si on n'a pas les données exactes
+    return 30; // Moyenne approximative
   }
 }

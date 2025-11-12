@@ -8,10 +8,6 @@ import '../../../theme.dart';
 import 'dart:convert';
 import 'bible_service.dart';
 import 'bible_model.dart';
-import 'widgets/reading_plan_home_widget.dart';
-import 'widgets/bible_study_home_widget.dart';
-import 'widgets/bible_article_home_widget.dart';
-import 'widgets/thematic_passages_home_widget.dart';
 import 'views/bible_reading_view.dart';
 import 'views/bible_home_view.dart';
 import '../message/widgets/audio_player_tab_perfect13.dart';
@@ -39,10 +35,9 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       widget.tabController ?? _internalTabController!;
       
   Set<String> _favorites = {};
-  Set<String> _highlights = {};
+  Map<String, Color> _highlights = {};
   double _fontSize = 16.0;
   bool _isDarkMode = false;
-  BibleVerse? _verseOfTheDay;
   Map<String, String> _notes = {}; // notes par clé de verset
   double _lineHeight = 1.5;
   String _fontFamily = '';
@@ -50,9 +45,10 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   // Ajout d'une variable pour suivre le verset sélectionné
   String? _selectedVerseKey;
   
-  // Variables pour les statistiques de l'accueil
-  int _readingStreak = 7; // Nombre de jours consécutifs de lecture
-  int _readingTimeToday = 25; // Temps de lecture aujourd'hui en minutes
+  // Variables pour la navigation cible depuis les notes
+  String? _targetBook;
+  int? _targetChapter;
+  int? _targetVerse;
   
   // Index de l'onglet actuel (géré par TabController)
   
@@ -594,7 +590,26 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _favorites = prefs.getStringList('bible_favorites')?.toSet() ?? {};
-      _highlights = prefs.getStringList('bible_highlights')?.toSet() ?? {};
+      
+      // Charger les surlignements avec couleurs
+      final highlightsList = prefs.getStringList('bible_highlights') ?? [];
+      _highlights.clear();
+      for (final highlight in highlightsList) {
+        if (highlight.contains(':')) {
+          final parts = highlight.split(':');
+          if (parts.length == 2) {
+            final verseKey = parts[0];
+            final colorValue = int.tryParse(parts[1]);
+            if (colorValue != null) {
+              _highlights[verseKey] = Color(colorValue);
+            }
+          }
+        } else {
+          // Ancien format, utiliser couleur par défaut
+          _highlights[highlight] = Colors.yellow;
+        }
+      }
+      
       _fontSize = prefs.getDouble('bible_font_size') ?? 16.0;
       _isDarkMode = prefs.getBool('bible_dark_mode') ?? false;
       final notesString = prefs.getString('bible_notes') ?? '{}';
@@ -611,7 +626,13 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     print('DEBUG: Sauvegarde des préférences...');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('bible_favorites', _favorites.toList());
-    await prefs.setStringList('bible_highlights', _highlights.toList());
+    
+    // Sauvegarder les surlignements avec leurs couleurs
+    final highlightsList = _highlights.entries
+        .map((entry) => '${entry.key}:${entry.value.value}')
+        .toList();
+    await prefs.setStringList('bible_highlights', highlightsList);
+    
     await prefs.setDouble('bible_font_size', _fontSize);
     await prefs.setBool('bible_dark_mode', _isDarkMode);
     await prefs.setString('bible_font_family', _fontFamily);
@@ -623,13 +644,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     print('DEBUG: Préférences sauvegardées - Favoris: ${_favorites.length}, Surlignements: ${_highlights.length}, Notes: ${_notes.length}');
   }
 
-  Future<void> _saveFavorites() async {
-    await _savePrefs();
-  }
 
-  Future<void> _saveNotes() async {
-    await _savePrefs();
-  }
 
   void _editNoteDialog(BibleVerse v) {
     final key = _verseKey(v);
@@ -638,13 +653,30 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Note pour ${v.book} ${v.chapter}:${v.verse}'),
-        content: TextField(
-          controller: controller,
-          maxLines: 4,
-          decoration: const InputDecoration(hintText: 'Écris ta note ici...'),
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: TextField(
+            controller: controller,
+            maxLines: 4,
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: 'Écris ta note ici...',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide(color: AppTheme.primaryColor),
+              ),
+            ),
+          ),
         ),
         actions: [
           TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
             onPressed: () {
               setState(() {
                 if (controller.text.trim().isEmpty) {
@@ -656,11 +688,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
               _savePrefs();
               Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              foregroundColor: AppTheme.white100,
+            ),
             child: const Text('Enregistrer'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
           ),
         ],
       ),
@@ -731,19 +763,19 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   void _toggleHighlight(BibleVerse v) async {
     final key = _verseKey(v);
     print('DEBUG _toggleHighlight: $key');
-    print('DEBUG: Highlights avant toggle: ${_highlights.toList()}');
+    print('DEBUG: Highlights avant toggle: ${_highlights.keys.toList()}');
     
     setState(() {
-      if (_highlights.contains(key)) {
+      if (_highlights.containsKey(key)) {
         _highlights.remove(key);
         print('DEBUG: Surlignement retiré: $key');
       } else {
-        _highlights.add(key);
+        _highlights[key] = Colors.yellow; // Couleur par défaut
         print('DEBUG: Surlignement ajouté: $key');
       }
     });
     print('DEBUG: Total surlignements après toggle: ${_highlights.length}');
-    print('DEBUG: Highlights après toggle: ${_highlights.toList()}');
+    print('DEBUG: Highlights après toggle: ${_highlights.keys.toList()}');
     
     // Forcer la sauvegarde immédiate
     await _savePrefs();
@@ -763,11 +795,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
         }
       }
     }
-    if (allVerses.isNotEmpty) {
-      final now = DateTime.now();
-      final index = (now.year * 10000 + now.month * 100 + now.day) % allVerses.length;
-      _verseOfTheDay = allVerses[index];
-    }
+    // Code for verse of the day removed - feature not used
   }
 
   String _verseKey(BibleVerse v) => '${v.book}_${v.chapter}_${v.verse}';
@@ -882,7 +910,12 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
             child: TabBarView(
               controller: _tabController,
               children: [
-                const BibleReadingView(isAdminMode: false),
+                BibleReadingView(
+                  isAdminMode: false,
+                  targetBook: _targetBook,
+                  targetChapter: _targetChapter,
+                  targetVerse: _targetVerse,
+                ),
                 const AudioPlayerTabPerfect13(),
                 _buildHomeTab(),
                 _buildNotesAndHighlightsTab(),
@@ -905,1697 +938,11 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     return const BibleHomeView();
   }
 
-  Widget _buildHomeTab_old() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.grey50,
-            AppTheme.white100,
-          ],
-        ),
-      ),
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          // En-tête avec salutation et statistiques
-          SliverToBoxAdapter(
-            child: _buildModernHeader(),
-          ),
-          
-          // Verset du jour
-          if (_verseOfTheDay != null)
-            SliverToBoxAdapter(
-              child: _buildVerseOfTheDay(),
-            ),
-          
-          // Actions rapides
-          SliverToBoxAdapter(
-            child: _buildQuickActions(),
-          ),
-          
-          // Widgets de contenu
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                const SizedBox(height: AppTheme.spaceSmall),
-                const ReadingPlanHomeWidget(),
-                const SizedBox(height: AppTheme.spaceLarge),
-                const BibleStudyHomeWidget(),
-                const SizedBox(height: AppTheme.spaceLarge),
-                const ThematicPassagesHomeWidget(),
-                const SizedBox(height: AppTheme.spaceLarge),
-                const BibleArticleHomeWidget(isAdmin: true),
-                const SizedBox(height: AppTheme.space40),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildModernHeader() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-      padding: const EdgeInsets.all(AppTheme.spaceLarge),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppTheme.primaryColor,
-            AppTheme.primaryColor.withValues(alpha: 0.8),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.primaryColor.withValues(alpha: 0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppTheme.space12),
-                decoration: BoxDecoration(
-                  color: AppTheme.white100.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                ),
-                child: const Icon(
-                  Icons.auto_stories,
-                  color: AppTheme.white100,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: AppTheme.spaceMedium),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _getGreeting(),
-                      style: GoogleFonts.inter(
-                        fontSize: AppTheme.fontSize16,
-                        color: AppTheme.white100.withValues(alpha: 0.9),
-                        fontWeight: AppTheme.fontMedium,
-                      ),
-                    ),
-                    const SizedBox(height: AppTheme.spaceXSmall),
-                    Text(
-                      'Continuons notre lecture',
-                      style: GoogleFonts.poppins(
-                        fontSize: AppTheme.fontSize24,
-                        fontWeight: AppTheme.fontBold,
-                        color: AppTheme.white100,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: AppTheme.space20),
-          
-          // Statistiques
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  icon: Icons.local_fire_department,
-                  title: 'Jour consécutif',
-                  value: '${_readingStreak}',
-                  color: AppTheme.orangeStandard,
-                ),
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Expanded(
-                child: _buildStatCard(
-                  icon: Icons.bookmark,
-                  title: 'Favoris',
-                  value: '${_favorites.length}',
-                  color: AppTheme.warning,
-                ),
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Expanded(
-                child: _buildStatCard(
-                  icon: Icons.schedule,
-                  title: 'Temps de lecture',
-                  value: '${_readingTimeToday}min',
-                  color: AppTheme.blueStandard,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildStatCard({
-    required IconData icon,
-    required String title,
-    required String value,
-    required Color color,
-    int? count,
-    String? label,
-  }) {
-    // Utiliser count et label si fournis, sinon value et title
-    final displayValue = count != null ? count.toString() : value;
-    final displayLabel = label ?? title;
-    
-    return Container(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
-      decoration: BoxDecoration(
-        color: AppTheme.white100.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-        border: Border.all(
-          color: AppTheme.white100.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(AppTheme.spaceSmall),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              icon,
-              color: AppTheme.white100,
-              size: 20,
-            ),
-          ),
-          const SizedBox(height: AppTheme.spaceSmall),
-          Text(
-            displayValue,
-            style: GoogleFonts.poppins(
-              fontSize: AppTheme.fontSize18,
-              fontWeight: AppTheme.fontBold,
-              color: AppTheme.white100,
-            ),
-          ),
-          Text(
-            displayLabel,
-            style: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize12,
-              color: AppTheme.white100.withValues(alpha: 0.8),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildVerseOfTheDay() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppTheme.warning.withAlpha(25),
-            AppTheme.grey50,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
-        border: Border.all(
-          color: AppTheme.warning.withAlpha(51),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.warning.withAlpha(25),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [AppTheme.warning, AppTheme.orangeStandard],
-                    ),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.warning.withAlpha(76),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.wb_sunny,
-                    color: AppTheme.white100,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Verset du jour',
-                        style: GoogleFonts.poppins(
-                          fontSize: AppTheme.fontSize20,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.warning,
-                        ),
-                      ),
-                      Text(
-                        _getCurrentDate(),
-                        style: GoogleFonts.inter(
-                          fontSize: AppTheme.fontSize14,
-                          color: AppTheme.warning,
-                          fontWeight: AppTheme.fontMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => _shareVerse(_verseOfTheDay!),
-                  icon: const Icon(Icons.share),
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppTheme.white100,
-                    foregroundColor: AppTheme.warning,
-                  ),
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: AppTheme.space20),
-            
-            // Quote container
-            Container(
-              padding: const EdgeInsets.all(AppTheme.space20),
-              decoration: BoxDecoration(
-                color: AppTheme.white100,
-                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppTheme.black100.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.format_quote,
-                    color: AppTheme.warning,
-                    size: 32,
-                  ),
-                  const SizedBox(height: AppTheme.spaceSmall),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 600),
-                    child: Text(
-                      _verseOfTheDay!.text,
-                      key: ValueKey(_verseOfTheDay!.text),
-                      style: GoogleFonts.crimsonText(
-                        fontSize: _fontSize + 4,
-                        fontStyle: FontStyle.italic,
-                        height: 1.5,
-                        color: AppTheme.grey800,
-                        fontWeight: AppTheme.fontMedium,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppTheme.spaceMedium),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppTheme.warning.withAlpha(51),
-                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                      ),
-                      child: Text(
-                        '${_verseOfTheDay!.book} ${_verseOfTheDay!.chapter}:${_verseOfTheDay!.verse}',
-                        style: GoogleFonts.inter(
-                          color: AppTheme.warning,
-                          fontWeight: AppTheme.fontSemiBold,
-                          fontSize: AppTheme.fontSize13,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _buildQuickActions() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 16),
-            child: Text(
-              'Actions rapides',
-              style: GoogleFonts.poppins(
-                fontSize: AppTheme.fontSize20,
-                fontWeight: AppTheme.fontBold,
-                color: AppTheme.grey800,
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: _buildQuickActionCard(
-                  icon: Icons.play_circle_filled,
-                  title: 'Continuer\nla lecture',
-                  color: AppTheme.primaryColor,
-                  onTap: () {
-                    // Naviguer vers le dernier chapitre lu
-                    _tabController.animateTo(1);
-                  },
-                ),
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Expanded(
-                child: _buildQuickActionCard(
-                  icon: Icons.search,
-                  title: 'Rechercher\nun passage',
-                  color: AppTheme.blueStandard,
-                  onTap: () {
-                    // Ouvrir la recherche
-                    _tabController.animateTo(2);
-                  },
-                ),
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Expanded(
-                child: _buildQuickActionCard(
-                  icon: Icons.star,
-                  title: 'Mes\nfavoris',
-                  color: AppTheme.warningColor,
-                  onTap: () {
-                    // Ouvrir les favoris
-                    _showFavorites();
-                  },
-                ),
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Expanded(
-                child: _buildQuickActionCard(
-                  icon: Icons.note,
-                  title: 'Mes\nnotes',
-                  color: AppTheme.greenStandard,
-                  onTap: () {
-                    // Ouvrir les notes
-                    _showNotes();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildQuickActionCard({
-    required IconData icon,
-    required String title,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-      child: Container(
-        padding: const EdgeInsets.all(AppTheme.space20),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-          border: Border.all(
-            color: color.withValues(alpha: 0.2),
-          ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(AppTheme.space12),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Icon(
-                icon,
-                color: AppTheme.white100,
-                size: 24,
-              ),
-            ),
-            const SizedBox(height: AppTheme.space12),
-            Text(
-              title,
-              style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize12,
-                fontWeight: AppTheme.fontSemiBold,
-                color: color,
-                height: 1.2,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Méthodes utilitaires
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Bonjour !';
-    if (hour < 17) return 'Bon après-midi !';
-    return 'Bonsoir !';
-  }
-
-  String _getCurrentDate() {
-    final now = DateTime.now();
-    final months = [
-      'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-      'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-    ];
-    return '${now.day} ${months[now.month - 1]} ${now.year}';
-  }
-
-  void _showFavorites() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Mes Favoris',
-          style: GoogleFonts.plusJakartaSans(
-            fontWeight: AppTheme.fontBold,
-            color: AppTheme.primaryColor,
-          ),
-        ),
-        content: SizedBox(
-          width: double.maxFinite,
-          height: 400,
-          child: _favorites.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.favorite_border, size: 64, color: AppTheme.grey500),
-                      const SizedBox(height: AppTheme.spaceMedium),
-                      Text(
-                        'Aucun verset favori',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: AppTheme.fontSize18,
-                          color: AppTheme.grey500,
-                        ),
-                      ),
-                      const SizedBox(height: AppTheme.spaceSmall),
-                      Text(
-                        'Appuyez longuement sur un verset pour l\'ajouter aux favoris',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: AppTheme.fontSize14,
-                          color: AppTheme.grey500,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: _favorites.length,
-                  itemBuilder: (context, index) {
-                    final verseKey = _favorites.elementAt(index);
-                    final parts = verseKey.split(' ');
-                    final book = parts[0];
-                    final chapterVerse = parts[1].split(':');
-                    final chapter = int.parse(chapterVerse[0]);
-                    final verse = int.parse(chapterVerse[1]);
-                    
-                    final bibleVerse = _bibleService.getVerse(book, chapter, verse);
-                    
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: ListTile(
-                        leading: Icon(Icons.favorite, color: AppTheme.redStandard),
-                        title: Text(
-                          verseKey,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontWeight: AppTheme.fontSemiBold,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                        subtitle: Text(
-                          bibleVerse?.text ?? 'Verset non trouvé',
-                          style: GoogleFonts.plusJakartaSans(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete_outline, color: AppTheme.redStandard),
-                          onPressed: () {
-                            setState(() {
-                              _favorites.remove(verseKey);
-                            });
-                            _saveFavorites();
-                            Navigator.of(context).pop();
-                            _showFavorites(); // Réafficher pour actualiser
-                          },
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          // Naviguer vers le verset
-                          setState(() {
-                            _selectedBook = book;
-                            _selectedChapter = chapter;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Fermer'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showNotes() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Mes Notes',
-          style: GoogleFonts.plusJakartaSans(
-            fontWeight: AppTheme.fontBold,
-            color: AppTheme.primaryColor,
-          ),
-        ),
-        content: SizedBox(
-          width: double.maxFinite,
-          height: 400,
-          child: _notes.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.note_add_outlined, size: 64, color: AppTheme.grey500),
-                      const SizedBox(height: AppTheme.spaceMedium),
-                      Text(
-                        'Aucune note',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: AppTheme.fontSize18,
-                          color: AppTheme.grey500,
-                        ),
-                      ),
-                      const SizedBox(height: AppTheme.spaceSmall),
-                      Text(
-                        'Appuyez longuement sur un verset pour ajouter une note',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: AppTheme.fontSize14,
-                          color: AppTheme.grey500,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: _notes.length,
-                  itemBuilder: (context, index) {
-                    final verseKey = _notes.keys.elementAt(index);
-                    final note = _notes[verseKey]!;
-                    final parts = verseKey.split(' ');
-                    final book = parts[0];
-                    final chapterVerse = parts[1].split(':');
-                    final chapter = int.parse(chapterVerse[0]);
-                    final verse = int.parse(chapterVerse[1]);
-                    
-                    final bibleVerse = _bibleService.getVerse(book, chapter, verse);
-                    
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: ListTile(
-                        leading: Icon(Icons.note, color: AppTheme.primaryColor),
-                        title: Text(
-                          verseKey,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontWeight: AppTheme.fontSemiBold,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              bibleVerse?.text ?? 'Verset non trouvé',
-                              style: GoogleFonts.plusJakartaSans(fontSize: AppTheme.fontSize12),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: AppTheme.spaceXSmall),
-                            Container(
-                              padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                              decoration: BoxDecoration(
-                                color: AppTheme.grey100,
-                                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                              ),
-                              child: Text(
-                                note,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: AppTheme.fontSize14,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit_outlined, color: AppTheme.primaryColor),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                // Ouvrir le dialogue d'édition
-                                if (bibleVerse != null) {
-                                  _editNoteDialog(bibleVerse);
-                                }
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete_outline, color: AppTheme.redStandard),
-                              onPressed: () {
-                                setState(() {
-                                  _notes.remove(verseKey);
-                                });
-                                _saveNotes();
-                                Navigator.of(context).pop();
-                                _showNotes(); // Réafficher pour actualiser
-                              },
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          // Naviguer vers le verset
-                          setState(() {
-                            _selectedBook = book;
-                            _selectedChapter = chapter;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Fermer'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildModernReadingTab(List<BibleBook> books) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.white100,
-            AppTheme.grey500.withValues(alpha: 0.03),
-          ],
-        ),
-      ),
-      child: Column(
-        children: [
-          // En-tête moderne avec sélecteurs
-          _buildModernReadingHeader(books),
-          
-          // Contenu principal
-          Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              child: _selectedBook != null && _selectedChapter != null
-                  ? _buildModernVersesList(books.firstWhere((b) => b.name == _selectedBook!), _selectedChapter!)
-                  : _buildReadingPlaceholder(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildModernReadingHeader(List<BibleBook> books) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppTheme.white100,
-            AppTheme.grey500.withValues(alpha: 0.05),
-          ],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.black100.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          // Titre et icône compacts
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      AppTheme.primaryColor,
-                      AppTheme.primaryColor.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.menu_book,
-                  color: AppTheme.white100,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: AppTheme.space12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Lecture Biblique',
-                      style: GoogleFonts.poppins(
-                        fontSize: AppTheme.fontSize18,
-                        fontWeight: AppTheme.fontBold,
-                        color: AppTheme.primaryColor,
-                        height: 1.1,
-                      ),
-                    ),
-                    Text(
-                      'Explorez les Saintes Écritures',
-                      style: GoogleFonts.inter(
-                        fontSize: AppTheme.fontSize12,
-                        color: AppTheme.grey600,
-                        fontWeight: AppTheme.fontMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Menu d'options compact
-              PopupMenuButton<String>(
-                icon: Container(
-                  padding: const EdgeInsets.all(AppTheme.space6),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(
-                    Icons.more_vert,
-                    color: AppTheme.primaryColor,
-                    size: 16,
-                  ),
-                ),
-                onSelected: (value) {
-                  switch (value) {
-                    case 'settings':
-                      _showReadingSettings();
-                      break;
-                    case 'history':
-                      _showReadingHistory();
-                      break;
-                    case 'bookmark':
-                      _bookmarkCurrentChapter();
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 'settings',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.settings,
-                          color: AppTheme.primaryColor,
-                          size: 20,
-                        ),
-                        const SizedBox(width: AppTheme.space12),
-                        Text(
-                          'Paramètres de lecture',
-                          style: GoogleFonts.inter(
-                            fontSize: AppTheme.fontSize14,
-                            fontWeight: AppTheme.fontMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'history',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.history,
-                          color: AppTheme.primaryColor,
-                          size: 20,
-                        ),
-                        const SizedBox(width: AppTheme.space12),
-                        Text(
-                          'Historique',
-                          style: GoogleFonts.inter(
-                            fontSize: AppTheme.fontSize14,
-                            fontWeight: AppTheme.fontMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'bookmark',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.bookmark_add,
-                          color: AppTheme.primaryColor,
-                          size: 20,
-                        ),
-                        const SizedBox(width: AppTheme.space12),
-                        Text(
-                          'Marquer ce chapitre',
-                          style: GoogleFonts.inter(
-                            fontSize: AppTheme.fontSize14,
-                            fontWeight: AppTheme.fontMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: AppTheme.space12),
-          
-          // Sélecteurs compacts
-          Row(
-            children: [
-              // Sélecteur de livre compact
-              Expanded(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppTheme.white100,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    border: Border.all(
-                      color: _selectedBook != null 
-                          ? AppTheme.primaryColor.withValues(alpha: 0.3)
-                          : AppTheme.grey500.withValues(alpha: 0.2),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.black100.withValues(alpha: 0.03),
-                        blurRadius: 6,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: DropdownButton<String>(
-                    value: _selectedBook,
-                    hint: Row(
-                      children: [
-                        Icon(
-                          Icons.book,
-                          color: AppTheme.grey600,
-                          size: 16,
-                        ),
-                        const SizedBox(width: AppTheme.space6),
-                        Text(
-                          'Livre',
-                          style: GoogleFonts.inter(
-                            color: AppTheme.grey600,
-                            fontSize: AppTheme.fontSize12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    isExpanded: true,
-                    underline: const SizedBox(),
-                    icon: Icon(
-                      Icons.keyboard_arrow_down,
-                      color: AppTheme.primaryColor,
-                      size: 18,
-                    ),
-                    style: GoogleFonts.inter(
-                      color: AppTheme.primaryColor,
-                      fontSize: AppTheme.fontSize13,
-                      fontWeight: AppTheme.fontSemiBold,
-                    ),
-                    items: books.map((b) => DropdownMenuItem(
-                      value: b.name,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.book,
-                            color: AppTheme.primaryColor,
-                            size: 14,
-                          ),
-                          const SizedBox(width: AppTheme.space6),
-                          Expanded(
-                            child: Text(
-                              b.name,
-                              style: GoogleFonts.inter(
-                                fontSize: AppTheme.fontSize13,
-                                fontWeight: AppTheme.fontMedium,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )).toList(),
-                    onChanged: (v) => setState(() {
-                      _selectedBook = v;
-                      _selectedChapter = null;
-                    }),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
-                ),
-              ),
-              
-              const SizedBox(width: AppTheme.space10),
-              
-              // Sélecteur de chapitre compact
-              Expanded(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    color: _selectedBook != null ? AppTheme.white100 : AppTheme.grey500.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    border: Border.all(
-                      color: _selectedChapter != null 
-                          ? AppTheme.primaryColor.withValues(alpha: 0.3)
-                          : AppTheme.grey500.withValues(alpha: 0.2),
-                    ),
-                    boxShadow: _selectedBook != null ? [
-                      BoxShadow(
-                        color: AppTheme.black100.withValues(alpha: 0.03),
-                        blurRadius: 6,
-                        offset: const Offset(0, 1),
-                      ),
-                    ] : [],
-                  ),
-                  child: DropdownButton<int>(
-                    value: _selectedChapter,
-                    hint: Row(
-                      children: [
-                        Icon(
-                          Icons.format_list_numbered,
-                          color: _selectedBook != null ? AppTheme.grey600 : AppTheme.grey400,
-                          size: 16,
-                        ),
-                        const SizedBox(width: AppTheme.space6),
-                        Expanded(
-                          child: Text(
-                            'Chap.',
-                            style: GoogleFonts.inter(
-                              color: _selectedBook != null ? AppTheme.grey600 : AppTheme.grey400,
-                              fontSize: AppTheme.fontSize12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    isExpanded: true,
-                    underline: const SizedBox(),
-                    icon: Icon(
-                      Icons.keyboard_arrow_down,
-                      color: _selectedBook != null ? AppTheme.primaryColor : AppTheme.grey400,
-                      size: 18,
-                    ),
-                    style: GoogleFonts.inter(
-                      color: AppTheme.primaryColor,
-                      fontSize: AppTheme.fontSize13,
-                      fontWeight: AppTheme.fontSemiBold,
-                    ),
-                    items: _selectedBook != null
-                        ? List.generate(
-                            books.firstWhere((b) => b.name == _selectedBook!).chapters.length,
-                            (i) => DropdownMenuItem(
-                              value: i + 1,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(
-                                      '${i + 1}',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: AppTheme.fontSize11,
-                                        fontWeight: AppTheme.fontSemiBold,
-                                        color: AppTheme.primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        : [],
-                    onChanged: _selectedBook != null 
-                        ? (v) {
-                            setState(() => _selectedChapter = v);
-                            if (_selectedBook != null && v != null) {
-                              _addToReadingHistory(_selectedBook!, v);
-                            }
-                          }
-                        : null,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReadingPlaceholder() {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppTheme.spaceXLarge),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(AppTheme.spaceXLarge),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    AppTheme.primaryColor.withValues(alpha: 0.1),
-                    AppTheme.primaryColor.withValues(alpha: 0.05),
-                  ],
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.menu_book_outlined,
-                size: 80,
-                color: AppTheme.primaryColor.withValues(alpha: 0.7),
-              ),
-            ),
-            const SizedBox(height: AppTheme.spaceXLarge),
-            Text(
-              _selectedBook == null
-                  ? 'Choisissez un livre pour commencer'
-                  : 'Sélectionnez un chapitre',
-              style: GoogleFonts.poppins(
-                fontSize: AppTheme.fontSize22,
-                fontWeight: AppTheme.fontSemiBold,
-                color: AppTheme.grey700,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppTheme.spaceMedium),
-            Text(
-              _selectedBook == null
-                  ? 'Explorez les 66 livres de la Bible et plongez dans la Parole de Dieu'
-                  : 'Découvrez les versets du livre ${_selectedBook}',
-              style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize16,
-                color: AppTheme.grey600,
-                height: 1.5,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppTheme.spaceXLarge),
-            if (_selectedBook == null) ...[
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Suggestion de livre aléatoire
-                  final suggestions = ['Jean', 'Psaumes', 'Proverbes', 'Matthieu', 'Romains'];
-                  final random = suggestions[DateTime.now().millisecond % suggestions.length];
-                  setState(() {
-                    _selectedBook = random;
-                  });
-                },
-                icon: const Icon(Icons.auto_awesome),
-                label: const Text('Suggestion aléatoire'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: AppTheme.white100,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                  ),
-                  elevation: 0,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildModernVersesList(BibleBook book, int chapter) {
-    final theme = Theme.of(context);
-    final verses = book.chapters[chapter - 1];
-    
-    if (_isLoading) {
-      return ListView.separated(
-        padding: const EdgeInsets.all(AppTheme.spaceMedium),
-        itemCount: 8,
-        separatorBuilder: (_, __) => const SizedBox(height: AppTheme.space10),
-        itemBuilder: (context, i) => Shimmer.fromColors(
-          baseColor: theme.colorScheme.surface,
-          highlightColor: theme.colorScheme.primary.withValues(alpha: 0.13),
-          child: Container(
-            height: 64,
-            decoration: BoxDecoration(
-              color: AppTheme.white100,
-              borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-            ),
-          ),
-        ),
-      );
-    }
-    
-    return Column(
-      children: [
-        // En-tête du chapitre compact
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-          padding: const EdgeInsets.all(AppTheme.space12),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppTheme.primaryColor.withValues(alpha: 0.08),
-                AppTheme.primaryColor.withValues(alpha: 0.03),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-            border: Border.all(
-              color: AppTheme.primaryColor.withValues(alpha: 0.1),
-            ),
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(
-                      Icons.auto_stories,
-                      color: AppTheme.primaryColor,
-                      size: 18,
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.space12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${book.name} ${chapter}',
-                          style: GoogleFonts.crimsonText(
-                            fontSize: AppTheme.fontSize18,
-                            fontWeight: AppTheme.fontBold,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                        Text(
-                          '${verses.length} versets',
-                          style: GoogleFonts.inter(
-                            fontSize: AppTheme.fontSize11,
-                            color: AppTheme.grey600,
-                            fontWeight: AppTheme.fontMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Navigation rapide compacte
-                  Row(
-                    children: [
-                      if (chapter > 1)
-                        IconButton(
-                          onPressed: () {
-                            setState(() => _selectedChapter = chapter - 1);
-                            if (_selectedBook != null) {
-                              _addToReadingHistory(_selectedBook!, chapter - 1);
-                            }
-                          },
-                          icon: const Icon(Icons.navigate_before),
-                          style: IconButton.styleFrom(
-                            backgroundColor: AppTheme.white100,
-                            foregroundColor: AppTheme.primaryColor,
-                            padding: const EdgeInsets.all(AppTheme.space6),
-                            minimumSize: const Size(32, 32),
-                          ),
-                          tooltip: 'Chapitre précédent',
-                        ),
-                      const SizedBox(width: AppTheme.space6),
-                      if (chapter < book.chapters.length)
-                        IconButton(
-                          onPressed: () {
-                            setState(() => _selectedChapter = chapter + 1);
-                            if (_selectedBook != null) {
-                              _addToReadingHistory(_selectedBook!, chapter + 1);
-                            }
-                          },
-                          icon: const Icon(Icons.navigate_next),
-                          style: IconButton.styleFrom(
-                            backgroundColor: AppTheme.white100,
-                            foregroundColor: AppTheme.primaryColor,
-                            padding: const EdgeInsets.all(AppTheme.space6),
-                            minimumSize: const Size(32, 32),
-                          ),
-                          tooltip: 'Chapitre suivant',
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        
-        // Liste des versets optimisée
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: verses.length,
-            separatorBuilder: (_, __) => const SizedBox(height: AppTheme.space6),
-            itemBuilder: (context, i) {
-              final v = BibleVerse(book: book.name, chapter: chapter, verse: i + 1, text: verses[i]);
-              final key = _verseKey(v);
-              final isFav = _favorites.contains(key);
-              final isHighlight = _highlights.contains(key);
-              final note = _notes[key];
-              
-              return TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0, end: 1),
-                duration: Duration(milliseconds: 300 + (i * 15)),
-                curve: Curves.easeOutCubic,
-                builder: (context, value, child) => Opacity(
-                  opacity: value,
-                  child: Transform.translate(
-                    offset: Offset(0, 20 * (1 - value)),
-                    child: child,
-                  ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isHighlight
-                        ? AppTheme.primaryColor.withValues(alpha: 0.08)
-                        : AppTheme.white100,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                    border: isHighlight 
-                        ? Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3), width: 1.5)
-                        : Border.all(color: AppTheme.grey500.withValues(alpha: 0.1)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.black100.withValues(alpha: 0.03),
-                        blurRadius: 8,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      setState(() {
-                        _selectedVerseKey = (_selectedVerseKey == key) ? null : key;
-                      });
-                      
-                      // Afficher un hint la première fois
-                      _showFirstTimeHint();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(14),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // En-tête du verset compact
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Numéro du verset avec indicateurs
-                              Column(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          AppTheme.primaryColor.withValues(alpha: 0.1),
-                                          AppTheme.primaryColor.withValues(alpha: 0.05),
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                                    ),
-                                    child: Text(
-                                      '${v.verse}',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: AppTheme.fontSize12,
-                                        fontWeight: AppTheme.fontBold,
-                                        color: AppTheme.primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                  // Indicateurs visuels compacts
-                                  const SizedBox(height: 2),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Indicateur favori
-                                      if (isFav)
-                                        Container(
-                                          width: 6,
-                                          height: 6,
-                                          margin: const EdgeInsets.symmetric(horizontal: 1),
-                                          decoration: BoxDecoration(
-                                            color: AppTheme.warning,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      // Indicateur note
-                                      if (note != null && note.isNotEmpty)
-                                        Container(
-                                          width: 6,
-                                          height: 6,
-                                          margin: const EdgeInsets.symmetric(horizontal: 1),
-                                          decoration: const BoxDecoration(
-                                            color: AppTheme.grey700,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      // Indicateur surlignement
-                                      if (isHighlight)
-                                        Container(
-                                          width: 6,
-                                          height: 6,
-                                          margin: const EdgeInsets.symmetric(horizontal: 1),
-                                          decoration: const BoxDecoration(
-                                            color: AppTheme.primaryColor,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              
-                              const SizedBox(width: AppTheme.space12),
-                              
-                              // Texte du verset
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      verses[i],
-                                      style: _fontFamily.isNotEmpty
-                                          ? GoogleFonts.getFont(
-                                              _fontFamily,
-                                              fontSize: _fontSize,
-                                              height: _lineHeight,
-                                              fontWeight: AppTheme.fontMedium,
-                                              color: AppTheme.grey800,
-                                            )
-                                          : GoogleFonts.crimsonText(
-                                              fontSize: _fontSize,
-                                              height: _lineHeight,
-                                              fontWeight: AppTheme.fontMedium,
-                                              color: AppTheme.grey800,
-                                            ),
-                                    ),
-                                    
-                                    const SizedBox(height: AppTheme.space6),
-                                    
-                                    // Référence compacte
-                                    Text(
-                                      '${v.book} ${v.chapter}:${v.verse}',
-                                      style: GoogleFonts.inter(
-                                        fontSize: AppTheme.fontSize10,
-                                        color: AppTheme.grey500,
-                                        fontWeight: AppTheme.fontMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              
-                              // Indicateurs compacts
-                              Column(
-                                children: [
-                                  if (isFav)
-                                    Container(
-                                      padding: const EdgeInsets.all(AppTheme.spaceXSmall),
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.warning.withAlpha(25),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.star,
-                                        size: 12,
-                                        color: AppTheme.warning,
-                                      ),
-                                    ),
-                                  if (note != null && note.isNotEmpty) ...[
-                                    const SizedBox(height: 3),
-                                    Container(
-                                      padding: const EdgeInsets.all(AppTheme.spaceXSmall),
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.blueStandard.withValues(alpha: 0.1),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.sticky_note_2,
-                                        size: 12,
-                                        color: AppTheme.grey700,
-                                      ),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ],
-                          ),
-                          
-                          // Note si présente (compacte)
-                          if (note != null && note.isNotEmpty) ...[
-                            const SizedBox(height: AppTheme.space10),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(AppTheme.space12),
-                              decoration: BoxDecoration(
-                                color: AppTheme.blueStandard.withValues(alpha: 0.05),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: AppTheme.blueStandard.withValues(alpha: 0.2),
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.sticky_note_2,
-                                    color: AppTheme.grey700,
-                                    size: 14,
-                                  ),
-                                  const SizedBox(width: AppTheme.spaceSmall),
-                                  Expanded(
-                                    child: Text(
-                                      note,
-                                      style: GoogleFonts.inter(
-                                        fontSize: AppTheme.fontSize12,
-                                        color: AppTheme.grey700,
-                                        fontStyle: FontStyle.italic,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                          
-                          // Actions compactes (quand le verset est sélectionné)
-                          if (_selectedVerseKey == key) ...[
-                            const SizedBox(height: AppTheme.space12),
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOutCubic,
-                              padding: const EdgeInsets.all(AppTheme.space12),
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryColor.withValues(alpha: 0.08),
-                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                                border: Border.all(
-                                  color: AppTheme.primaryColor.withValues(alpha: 0.2),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  // Texte explicatif
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.touch_app_rounded,
-                                        size: 14,
-                                        color: AppTheme.primaryColor,
-                                      ),
-                                      const SizedBox(width: AppTheme.space6),
-                                      Text(
-                                        'Choisissez une action pour ce verset',
-                                        style: GoogleFonts.inter(
-                                          fontSize: AppTheme.fontSize11,
-                                          fontWeight: AppTheme.fontMedium,
-                                          color: AppTheme.primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: AppTheme.space10),
-                                  // Actions
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      _buildVerseAction(
-                                        icon: isFav ? Icons.star : Icons.star_border,
-                                        label: isFav ? 'Favori' : 'Favoris',
-                                        color: AppTheme.warning,
-                                        isActive: isFav,
-                                        onTap: () => _toggleFavorite(v),
-                                      ),
-                                      _buildVerseAction(
-                                        icon: isHighlight ? Icons.highlight_off : Icons.highlight,
-                                        label: isHighlight ? 'Surligné' : 'Surligner',
-                                        color: AppTheme.primaryColor,
-                                        isActive: isHighlight,
-                                        onTap: () => _toggleHighlight(v),
-                                      ),
-                                      _buildVerseAction(
-                                        icon: Icons.sticky_note_2,
-                                        label: note != null && note.isNotEmpty ? 'Éditer' : 'Note',
-                                        color: AppTheme.grey700,
-                                        isActive: note != null && note.isNotEmpty,
-                                        onTap: () => _editNoteDialog(v),
-                                      ),
-                                      _buildVerseAction(
-                                        icon: Icons.share,
-                                        label: 'Partager',
-                                        color: AppTheme.grey700,
-                                        isActive: false,
-                                        onTap: () => _shareVerse(v),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildVerseAction({
     required IconData icon,
@@ -3119,203 +1466,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
     }
   }
 
-  Widget _buildSearchTab() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.grey50,
-            AppTheme.white100,
-          ],
-        ),
-      ),
-      child: Column(
-        children: [
-          // En-tête moderne avec champ de recherche
-          _buildModernSearchHeader(),
-          
-          // Contenu principal
-          Expanded(
-            child: _searchQuery.isEmpty
-                ? _buildSearchEmptyState()
-                : _buildModernSearchResults(),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildModernSearchHeader() {
-    return Container(
-      margin: const EdgeInsets.all(AppTheme.space20),
-      decoration: BoxDecoration(
-        color: AppTheme.white100,
-        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.black100.withValues(alpha: 0.06),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          // En-tête avec titre
-          Container(
-            padding: const EdgeInsets.all(AppTheme.spaceLarge),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppTheme.grey600,
-                  AppTheme.grey700,
-                ],
-              ),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.white100.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: AppTheme.white100,
-                    size: 28,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Recherche Biblique',
-                        style: GoogleFonts.poppins(
-                          fontSize: AppTheme.fontSize24,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.white100,
-                        ),
-                      ),
-                      Text(
-                        'Explorez les Écritures',
-                        style: GoogleFonts.inter(
-                          fontSize: AppTheme.fontSize14,
-                          color: AppTheme.white100.withValues(alpha: 0.9),
-                          fontWeight: AppTheme.fontMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (_searchQuery.isNotEmpty)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppTheme.white100.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                    ),
-                    child: Text(
-                      '${_searchResults.length} résultat${_searchResults.length > 1 ? 's' : ''}',
-                      style: GoogleFonts.inter(
-                        fontSize: AppTheme.fontSize12,
-                        color: AppTheme.white100,
-                        fontWeight: AppTheme.fontSemiBold,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          
-          // Champ de recherche et filtres
-          Padding(
-            padding: const EdgeInsets.all(AppTheme.spaceLarge),
-            child: Column(
-              children: [
-                // Champ de recherche principal
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppTheme.grey50,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                    border: Border.all(
-                      color: AppTheme.grey500.withValues(alpha: 0.2),
-                    ),
-                  ),
-                  child: TextField(
-                    style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize16,
-                      fontWeight: AppTheme.fontMedium,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Rechercher un mot, "expression" ou référence (ex: Jean 3:16)',
-                      hintStyle: GoogleFonts.inter(
-                        fontSize: AppTheme.fontSize14,
-                        color: AppTheme.grey500,
-                      ),
-                      prefixIcon: Container(
-                        margin: const EdgeInsets.all(AppTheme.space12),
-                        padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                        decoration: BoxDecoration(
-                          color: AppTheme.blueStandard.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                        ),
-                        child: Icon(
-                          Icons.search,
-                          color: AppTheme.grey600,
-                          size: 20,
-                        ),
-                      ),
-                      suffixIcon: _searchQuery.isNotEmpty
-                          ? IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _searchQuery = '';
-                                  _searchResults.clear();
-                                });
-                              },
-                              icon: const Icon(Icons.clear),
-                              color: AppTheme.grey500,
-                            )
-                          : null,
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                    ),
-                    onChanged: (query) {
-                      _onSearch(query);
-                      setState(() {});
-                    },
-                  ),
-                ),
-                
-                const SizedBox(height: AppTheme.spaceMedium),
-                
-                // Filtres de recherche
-                _buildSearchFilters(),
-                
-                // Suggestions de recherche
-                if (_searchQuery.isEmpty)
-                  _buildSearchSuggestions(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildSearchFilters() {
     return StatefulBuilder(
@@ -3509,48 +1660,6 @@ Partagé depuis l'app Jubilé Tabernacle''';
     );
   }
 
-  Widget _buildSearchEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(AppTheme.spaceLarge),
-            decoration: BoxDecoration(
-              color: AppTheme.blueStandard.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.search,
-              size: 64,
-              color: AppTheme.grey300,
-            ),
-          ),
-          const SizedBox(height: AppTheme.spaceLarge),
-          Text(
-            'Commencez votre recherche',
-            style: GoogleFonts.poppins(
-              fontSize: AppTheme.fontSize24,
-              fontWeight: AppTheme.fontBold,
-              color: AppTheme.grey700,
-            ),
-          ),
-          const SizedBox(height: AppTheme.spaceSmall),
-          Text(
-            'Tapez un mot, une expression ou une référence\npour explorer les Écritures',
-            style: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize16,
-              color: AppTheme.grey500,
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppTheme.spaceXLarge),
-          _buildQuickSearchCards(),
-        ],
-      ),
-    );
-  }
 
   Widget _buildQuickSearchCards() {
     final quickSearches = [
@@ -3640,105 +1749,11 @@ Partagé depuis l'app Jubilé Tabernacle''';
     );
   }
 
-  Widget _buildModernSearchResults() {
-    if (_searchResults.isEmpty) {
-      return _buildNoResultsState();
-    }
-
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        // En-tête des résultats
-        SliverToBoxAdapter(
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-            padding: const EdgeInsets.all(AppTheme.space20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppTheme.grey50,
-                  AppTheme.grey50,
-                ],
-              ),
-              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-              border: Border.all(
-                color: AppTheme.greenStandard.withValues(alpha: 0.2),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.greenStandard,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                  ),
-                  child: const Icon(
-                    Icons.check_circle,
-                    color: AppTheme.white100,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${_searchResults.length} résultat${_searchResults.length > 1 ? 's' : ''} trouvé${_searchResults.length > 1 ? 's' : ''}',
-                        style: GoogleFonts.poppins(
-                          fontSize: AppTheme.fontSize18,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.grey700,
-                        ),
-                      ),
-                      Text(
-                        'Pour la recherche: "$_searchQuery"',
-                        style: GoogleFonts.inter(
-                          fontSize: AppTheme.fontSize14,
-                          color: AppTheme.grey600,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        // Liste des résultats
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final verse = _searchResults[index];
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: _buildModernVerseCard(verse, index),
-                );
-              },
-              childCount: _searchResults.length,
-            ),
-          ),
-        ),
-
-        // Espacement final
-        const SliverToBoxAdapter(
-          child: SizedBox(height: AppTheme.space20),
-        ),
-      ],
-    );
-  }
 
   Widget _buildModernVerseCard(BibleVerse verse, int index) {
     final key = _verseKey(verse);
     final isFav = _favorites.contains(key);
-    final isHighlight = _highlights.contains(key);
+    final isHighlight = _highlights.containsKey(key);
     final note = _notes[key];
 
     return TweenAnimationBuilder<double>(
@@ -4238,173 +2253,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
     );
   }
 
-  Widget _buildFavoritesTab() {
-    // Récupération des versets favoris
-    final favVerses = <BibleVerse>[];
-    for (final book in _bibleService.books) {
-      for (int c = 0; c < book.chapters.length; c++) {
-        for (int v = 0; v < book.chapters[c].length; v++) {
-          final verse = BibleVerse(
-            book: book.name, 
-            chapter: c + 1, 
-            verse: v + 1, 
-            text: book.chapters[c][v]
-          );
-          if (_favorites.contains(_verseKey(verse))) {
-            favVerses.add(verse);
-          }
-        }
-      }
-    }
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.warning.withAlpha(25),
-            AppTheme.white100,
-          ],
-        ),
-      ),
-      child: Column(
-        children: [
-          // En-tête moderne
-          _buildModernFavoritesHeader(favVerses.length),
-          
-          // Contenu principal
-          Expanded(
-            child: favVerses.isEmpty
-                ? _buildFavoritesEmptyState()
-                : _buildModernFavoritesList(favVerses),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildModernFavoritesHeader(int favoritesCount) {
-    return Container(
-      margin: const EdgeInsets.all(AppTheme.space20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppTheme.warning,
-            AppTheme.grey600,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusCircular),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.warningColor.withValues(alpha: 0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.white100.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                  ),
-                  child: const Icon(
-                    Icons.star,
-                    color: AppTheme.white100,
-                    size: 28,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Mes Favoris',
-                        style: GoogleFonts.poppins(
-                          fontSize: AppTheme.fontSize24,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.white100,
-                        ),
-                      ),
-                      Text(
-                        favoritesCount > 0 
-                            ? '$favoritesCount verset${favoritesCount > 1 ? 's' : ''} précieux'
-                            : 'Collection de versets inspirants',
-                        style: GoogleFonts.inter(
-                          fontSize: AppTheme.fontSize14,
-                          color: AppTheme.white100.withValues(alpha: 0.9),
-                          fontWeight: AppTheme.fontMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (favoritesCount > 0)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppTheme.white100.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                    ),
-                    child: Text(
-                      '$favoritesCount',
-                      style: GoogleFonts.poppins(
-                        fontSize: AppTheme.fontSize16,
-                        color: AppTheme.white100,
-                        fontWeight: AppTheme.fontBold,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            
-            if (favoritesCount > 0) ...[
-              const SizedBox(height: AppTheme.space20),
-              
-              // Actions rapides
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildFavoriteActionButton(
-                      icon: Icons.share,
-                      label: 'Partager tout',
-                      onTap: () => _shareAllFavorites(favoritesCount),
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.space12),
-                  Expanded(
-                    child: _buildFavoriteActionButton(
-                      icon: Icons.download,
-                      label: 'Exporter',
-                      onTap: () => _exportFavorites(),
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.space12),
-                  Expanded(
-                    child: _buildFavoriteActionButton(
-                      icon: Icons.sort,
-                      label: 'Trier',
-                      onTap: () => _showSortOptions(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildFavoriteActionButton({
     required IconData icon,
@@ -4446,57 +2295,6 @@ Partagé depuis l'app Jubilé Tabernacle''';
     );
   }
 
-  Widget _buildFavoritesEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(AppTheme.spaceXLarge),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AppTheme.warning.withAlpha(51), AppTheme.grey100],
-              ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.warningColor.withValues(alpha: 0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Icon(
-              Icons.star_border,
-              size: 64,
-              color: AppTheme.warning,
-            ),
-          ),
-          const SizedBox(height: AppTheme.spaceXLarge),
-          Text(
-            'Aucun favori pour le moment',
-            style: GoogleFonts.poppins(
-              fontSize: AppTheme.fontSize24,
-              fontWeight: AppTheme.fontBold,
-              color: AppTheme.grey700,
-            ),
-          ),
-          const SizedBox(height: AppTheme.space12),
-          Text(
-            'Commencez à créer votre collection\nde versets inspirants',
-            style: GoogleFonts.inter(
-              fontSize: AppTheme.fontSize16,
-              color: AppTheme.grey500,
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppTheme.spaceXLarge),
-          _buildDiscoveryCards(),
-        ],
-      ),
-    );
-  }
 
   Widget _buildDiscoveryCards() {
     final discoveries = [
@@ -4590,94 +2388,10 @@ Partagé depuis l'app Jubilé Tabernacle''';
     );
   }
 
-  Widget _buildModernFavoritesList(List<BibleVerse> favVerses) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        // En-tête de la liste avec statistiques
-        SliverToBoxAdapter(
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-            padding: const EdgeInsets.all(AppTheme.space20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AppTheme.warning.withAlpha(25), AppTheme.grey50],
-              ),
-              borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-              border: Border.all(
-                color: AppTheme.warningColor.withValues(alpha: 0.2),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.warning,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                  ),
-                  child: const Icon(
-                    Icons.auto_stories,
-                    color: AppTheme.white100,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Collection personnelle',
-                        style: GoogleFonts.poppins(
-                          fontSize: AppTheme.fontSize18,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.warning,
-                        ),
-                      ),
-                      Text(
-                        'Vos versets précieux, toujours à portée de main',
-                        style: GoogleFonts.inter(
-                          fontSize: AppTheme.fontSize14,
-                          color: AppTheme.warning,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        // Liste des favoris
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final verse = favVerses[index];
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: _buildModernFavoriteCard(verse, index),
-                );
-              },
-              childCount: favVerses.length,
-            ),
-          ),
-        ),
-
-        // Espacement final
-        const SliverToBoxAdapter(
-          child: SizedBox(height: AppTheme.space20),
-        ),
-      ],
-    );
-  }
 
   Widget _buildModernFavoriteCard(BibleVerse verse, int index) {
     final key = _verseKey(verse);
-    final isHighlight = _highlights.contains(key);
+    final isHighlight = _highlights.containsKey(key);
     final note = _notes[key];
 
     return TweenAnimationBuilder<double>(
@@ -5063,7 +2777,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
     // Debug: imprimer les données pour diagnostic
     print('DEBUG - Notes count: $totalNotes, Highlights: $totalHighlights, Favorites: $totalFavorites');
     print('DEBUG - Notes keys: ${_notes.keys.toList()}');
-    print('DEBUG - Highlights: ${_highlights.toList()}');
+    print('DEBUG - Highlights: ${_highlights.keys.toList()}');
     print('DEBUG - Favorites: ${_favorites.toList()}');
 
     // Filtrer les versets en fonction du filtre et de la recherche actuels
@@ -5077,7 +2791,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
               _notes[key]!.toLowerCase().contains(_notesSearchQuery.toLowerCase()))
           .toList();
     } else if (_currentFilter == 'highlights') {
-      filteredVerseKeys = _highlights
+      filteredVerseKeys = _highlights.keys
           .where((key) => _notesSearchQuery.isEmpty || 
               _getVerseDisplayText(key).toLowerCase().contains(_notesSearchQuery.toLowerCase()))
           .toList();
@@ -5089,7 +2803,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
     } else {
       // Tous
       final noteKeys = _notes.keys.where((key) => _notes[key]!.isNotEmpty);
-      final allKeys = {...noteKeys, ..._highlights, ..._favorites}.toList();
+      final allKeys = {...noteKeys, ..._highlights.keys, ..._favorites}.toList();
       filteredVerseKeys = allKeys
           .where((key) => _notesSearchQuery.isEmpty || 
               _getVerseDisplayText(key).toLowerCase().contains(_notesSearchQuery.toLowerCase()) ||
@@ -5398,7 +3112,7 @@ Partagé depuis l'app Jubilé Tabernacle''';
 
   Widget _buildNoteCard(String verseKey) {
     final hasNote = _notes.containsKey(verseKey) && _notes[verseKey]!.isNotEmpty;
-    final hasHighlight = _highlights.contains(verseKey);
+    final hasHighlight = _highlights.containsKey(verseKey);
     final isFavorite = _favorites.contains(verseKey);
     
     final colorScheme = Theme.of(context).colorScheme;
@@ -5599,7 +3313,19 @@ Partagé depuis l'app Jubilé Tabernacle''';
       setState(() {
         _selectedBook = bookName;
         _selectedChapter = chapterNum;
-        _tabController.index = 1; // Aller à l'onglet lecture
+        _targetBook = bookName;
+        _targetChapter = chapterNum;
+        _targetVerse = verseNum;
+        _tabController.index = 0; // Aller à l'onglet lecture (index 0)
+      });
+      
+      // Réinitialiser les cibles après un délai pour éviter les conflits futurs
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() {
+          _targetBook = null;
+          _targetChapter = null;
+          _targetVerse = null;
+        });
       });
       
       ScaffoldMessenger.of(context).showSnackBar(

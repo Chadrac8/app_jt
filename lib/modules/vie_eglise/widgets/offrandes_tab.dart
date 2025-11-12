@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../pages/donation_webview_page.dart';
 import '../../../theme.dart';
+import '../../../auth/auth_service.dart';
+import '../../../models/person_model.dart';
+import '../../../utils/donation_url_helper.dart';
 
 class OffrandesTab extends StatefulWidget {
   const OffrandesTab({Key? key}) : super(key: key);
@@ -14,6 +17,8 @@ class OffrandesTab extends StatefulWidget {
 class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  PersonModel? _currentUser;
+  bool _isLoadingUser = true;
 
   final List<DonationType> _donationTypes = [
     DonationType(
@@ -59,6 +64,29 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
   void initState() {
     super.initState();
     _setupAnimations();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      setState(() => _isLoadingUser = true);
+      
+      final user = AuthService.currentUser;
+      if (user != null) {
+        final person = await AuthService.getCurrentUserProfile();
+        if (person != null && mounted) {
+          setState(() {
+            _currentUser = person;
+          });
+        }
+      }
+    } catch (e) {
+      print('Erreur lors du chargement des données utilisateur: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoadingUser = false);
+      }
+    }
   }
 
   void _setupAnimations() {
@@ -268,16 +296,18 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                 ? GestureDetector(
                     onTap: () {
                       HapticFeedback.lightImpact();
-                      final url = _donationUrls[index];
-                      if (url != null) {
+                      final baseUrl = _donationUrls[index];
+                      if (baseUrl != null) {
+                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DonationWebViewPage(
                               donationType: donation.title,
-                              url: url,
+                              url: prefilledUrl,
                               icon: donation.icon,
                               color: donation.color,
+                              user: _currentUser,
                             ),
                           ),
                         );
@@ -285,9 +315,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     },
                     onLongPress: () {
                       HapticFeedback.mediumImpact();
-                      final url = _donationUrls[index];
-                      if (url != null) {
-                        _showLoadingOptions(context, donation, url);
+                      final baseUrl = _donationUrls[index];
+                      if (baseUrl != null) {
+                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
+                        _showLoadingOptions(context, donation, prefilledUrl);
                       }
                     },
                     child: cardContent,
@@ -296,25 +327,28 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
                     splashColor: donation.color.withValues(alpha: AppTheme.interactionOpacity),
                     onTap: () {
-                      final url = _donationUrls[index];
-                      if (url != null) {
+                      final baseUrl = _donationUrls[index];
+                      if (baseUrl != null) {
+                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DonationWebViewPage(
                               donationType: donation.title,
-                              url: url,
+                              url: prefilledUrl,
                               icon: donation.icon,
                               color: donation.color,
+                              user: _currentUser,
                             ),
                           ),
                         );
                       }
                     },
                     onLongPress: () {
-                      final url = _donationUrls[index];
-                      if (url != null) {
-                        _showLoadingOptions(context, donation, url);
+                      final baseUrl = _donationUrls[index];
+                      if (baseUrl != null) {
+                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
+                        _showLoadingOptions(context, donation, prefilledUrl);
                       }
                     },
                     child: cardContent,

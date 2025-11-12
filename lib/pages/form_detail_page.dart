@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../widgets/form_responses_list.dart';
@@ -48,6 +49,33 @@ class _FormDetailPageState extends State<FormDetailPage>
     _tabController.dispose();
     _fabAnimationController.dispose();
     super.dispose();
+  }
+
+  // Helper methods for status
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'publie':
+        return AppTheme.successColor;
+      case 'brouillon':
+        return AppTheme.warningColor;
+      case 'archive':
+        return AppTheme.textSecondaryColor;
+      default:
+        return AppTheme.primaryColor;
+    }
+  }
+
+  String _getStatusLabel(String status) {
+    switch (status.toLowerCase()) {
+      case 'publie':
+        return 'Publié';
+      case 'brouillon':
+        return 'Brouillon';
+      case 'archive':
+        return 'Archivé';
+      default:
+        return status;
+    }
   }
 
   Future<void> _refreshFormData() async {
@@ -102,6 +130,7 @@ class _FormDetailPageState extends State<FormDetailPage>
         publishDate: DateTime.now(),
         updatedAt: DateTime.now(),
       );
+      
       await FormsFirebaseService.updateForm(updatedForm);
       setState(() => _currentForm = updatedForm);
       
@@ -127,36 +156,6 @@ class _FormDetailPageState extends State<FormDetailPage>
     }
   }
 
-  Future<void> _duplicateForm() async {
-    setState(() => _isLoading = true);
-    try {
-      await FormsFirebaseService.duplicateForm(
-        _currentForm!.id,
-        '${_currentForm!.title} (Copie)',
-      );
-      
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Formulaire dupliqué avec succès'),
-          backgroundColor: AppTheme.successColor,
-        ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de la duplication: $e'),
-          backgroundColor: AppTheme.errorColor,
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
   void _copyFormUrl() {
     final url = FormsFirebaseService.generatePublicFormUrl(_currentForm!.id);
     Clipboard.setData(ClipboardData(text: url));
@@ -169,184 +168,298 @@ class _FormDetailPageState extends State<FormDetailPage>
     );
   }
 
-  Color get _statusColor {
-    switch (_currentForm?.status) {
-      case 'brouillon': return AppTheme.warningColor;
-      case 'publie': return AppTheme.successColor;
-      case 'archive': return AppTheme.textTertiaryColor;
-      default: return AppTheme.textSecondaryColor;
+  void _handleAction(String action) {
+    switch (action) {
+      case 'edit':
+        _editForm();
+        break;
+      case 'publish':
+        _publishForm();
+        break;
+      case 'copy_url':
+        _copyFormUrl();
+        break;
+      case 'duplicate':
+        _duplicateForm();
+        break;
+      case 'archive':
+        _archiveForm();
+        break;
+    }
+  }
+
+  Future<void> _duplicateForm() async {
+    try {
+      final duplicatedForm = _currentForm!.copyWith(
+        title: '${_currentForm!.title} (Copie)',
+        status: 'brouillon',
+        updatedAt: DateTime.now(),
+        publishDate: null,
+      );
+      
+      await FormsFirebaseService.createForm(duplicatedForm);
+      
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Formulaire dupliqué avec succès'),
+          backgroundColor: AppTheme.successColor,
+        ),
+      );
+      
+      // Navigate to the new form
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FormBuilderPage(
+              form: duplicatedForm,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la duplication: $e'),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> _archiveForm() async {
+    try {
+      await FormsFirebaseService.archiveForm(_currentForm!.id);
+      
+      final updatedForm = _currentForm!.copyWith(
+        status: 'archive',
+        updatedAt: DateTime.now(),
+      );
+      
+      setState(() => _currentForm = updatedForm);
+      
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Formulaire archivé avec succès'),
+          backgroundColor: AppTheme.successColor,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de l\'archivage: $e'),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     if (_currentForm == null) {
       return Scaffold(
+        backgroundColor: colorScheme.surface,
         appBar: AppBar(
-          title: const Text('Formulaire'),
-          backgroundColor: AppTheme.primaryColor,
-          foregroundColor: AppTheme.white100,
+          title: Text(
+            'Formulaire',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          elevation: 0,
         ),
-        body: const Center(
-          child: Text('Formulaire introuvable'),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.assignment_outlined,
+                size: 80,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Formulaire introuvable',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: colorScheme.surface,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              expandedHeight: 200,
+            SliverAppBar.large(
+              expandedHeight: 280,
               pinned: true,
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: AppTheme.white100,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  _currentForm!.title,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
+                titlePadding: const EdgeInsets.only(left: 20, bottom: 16, right: 72),
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Gradient background
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            colorScheme.primary,
+                            colorScheme.primary.withOpacity(0.8),
+                          ],
+                        ),
+                      ),
+                    ),
+                    
+                    // Decorative elements
+                    Positioned(
+                      right: -50,
+                      top: -50,
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: colorScheme.onPrimary.withOpacity(0.1),
+                        ),
+                      ),
+                    ),
+                    
+                    // Status badge
+                    Positioned(
+                      top: 100,
+                      left: 20,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(_currentForm!.status).withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          _getStatusLabel(_currentForm!.status),
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    
+                    // Form icon
+                    Positioned(
+                      right: 20,
+                      bottom: 80,
+                      child: Icon(
+                        Icons.assignment_outlined,
+                        size: 60,
+                        color: colorScheme.onPrimary.withOpacity(0.3),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.refresh),
+                  icon: const Icon(Icons.refresh_rounded),
                   onPressed: _refreshFormData,
+                  tooltip: 'Actualiser',
                 ),
                 PopupMenuButton<String>(
                   onSelected: _handleAction,
+                  icon: const Icon(Icons.more_vert_rounded),
                   itemBuilder: (context) => [
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'edit',
                       child: ListTile(
-                        leading: Icon(Icons.edit),
-                        title: Text('Modifier'),
+                        leading: Icon(Icons.edit_rounded, color: colorScheme.primary),
+                        title: const Text('Modifier'),
                         contentPadding: EdgeInsets.zero,
                       ),
                     ),
                     if (_currentForm!.status != 'publie')
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'publish',
                         child: ListTile(
-                          leading: Icon(Icons.publish),
-                          title: Text('Publier'),
+                          leading: Icon(Icons.publish_rounded, color: AppTheme.successColor),
+                          title: const Text('Publier'),
                           contentPadding: EdgeInsets.zero,
                         ),
                       ),
                     if (_currentForm!.isPublished)
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'copy_url',
                         child: ListTile(
-                          leading: Icon(Icons.link),
-                          title: Text('Copier le lien'),
+                          leading: Icon(Icons.link_rounded, color: colorScheme.secondary),
+                          title: const Text('Copier le lien'),
                           contentPadding: EdgeInsets.zero,
                         ),
                       ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'duplicate',
                       child: ListTile(
-                        leading: Icon(Icons.content_copy),
-                        title: Text('Dupliquer'),
+                        leading: Icon(Icons.content_copy_rounded, color: colorScheme.tertiary),
+                        title: const Text('Dupliquer'),
                         contentPadding: EdgeInsets.zero,
                       ),
                     ),
                     const PopupMenuDivider(),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'archive',
                       child: ListTile(
-                        leading: Icon(Icons.archive),
-                        title: Text('Archiver'),
+                        leading: Icon(Icons.archive_rounded, color: AppTheme.warningColor),
+                        title: const Text('Archiver'),
                         contentPadding: EdgeInsets.zero,
                       ),
                     ),
                   ],
                 ),
               ],
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  _currentForm!.title,
-                  style: const TextStyle(
-                    color: AppTheme.white100,
-                    fontWeight: AppTheme.fontBold,
-                  ),
-                ),
-                background: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        AppTheme.primaryColor,
-                        AppTheme.primaryColor.withOpacity(0.8),
-                      ],
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 80), // Space for app bar
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: _statusColor,
-                                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                              ),
-                              child: Text(
-                                _currentForm!.statusLabel,
-                                style: const TextStyle(
-                                  color: AppTheme.white100,
-                                  fontSize: AppTheme.fontSize12,
-                                  fontWeight: AppTheme.fontMedium,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: AppTheme.spaceSmall),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppTheme.white100.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                              ),
-                              child: Text(
-                                _currentForm!.accessibilityLabel,
-                                style: const TextStyle(
-                                  color: AppTheme.white100,
-                                  fontSize: AppTheme.fontSize12,
-                                  fontWeight: AppTheme.fontMedium,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppTheme.spaceSmall),
-                        Text(
-                          _currentForm!.description,
-                          style: TextStyle(
-                            color: AppTheme.white100.withOpacity(0.70),
-                            fontSize: AppTheme.fontSize14,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ),
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
                 TabBar(
                   controller: _tabController,
-                  indicatorColor: AppTheme.primaryColor,
-                  labelColor: AppTheme.primaryColor,
-                  unselectedLabelColor: AppTheme.textSecondaryColor,
+                  indicatorColor: colorScheme.primary,
+                  labelColor: colorScheme.primary,
+                  unselectedLabelColor: colorScheme.onSurfaceVariant,
+                  labelStyle: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                  unselectedLabelStyle: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
                   tabs: const [
                     Tab(text: 'Aperçu'),
                     Tab(text: 'Réponses'),
@@ -373,95 +486,171 @@ class _FormDetailPageState extends State<FormDetailPage>
         scale: _fabAnimation,
         child: FloatingActionButton.extended(
           onPressed: _currentForm!.isPublished ? _copyFormUrl : _publishForm,
-          backgroundColor: AppTheme.primaryColor,
-          foregroundColor: AppTheme.white100,
-          icon: Icon(_currentForm!.isPublished ? Icons.link : Icons.publish),
-          label: Text(_currentForm!.isPublished ? 'Copier le lien' : 'Publier'),
+          backgroundColor: _currentForm!.isPublished 
+              ? theme.colorScheme.secondary 
+              : AppTheme.successColor,
+          foregroundColor: Colors.white,
+          icon: Icon(_currentForm!.isPublished ? Icons.link_rounded : Icons.publish_rounded),
+          label: Text(
+            _currentForm!.isPublished ? 'Partager' : 'Publier',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildOverviewTab() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoCard(
-            title: 'Informations générales',
-            icon: Icons.info_outline,
-            children: [
-              _buildInfoRow(
-                icon: Icons.title,
-                label: 'Titre',
-                value: _currentForm!.title,
-              ),
-              if (_currentForm!.description.isNotEmpty)
-                _buildInfoRow(
-                  icon: Icons.description,
-                  label: 'Description',
-                  value: _currentForm!.description,
-                ),
-              _buildInfoRow(
-                icon: Icons.visibility,
-                label: 'Accessibilité',
-                value: _currentForm!.accessibilityLabel,
-              ),
-              _buildInfoRow(
-                icon: Icons.calendar_today,
-                label: 'Créé le',
-                value: _formatDateTime(_currentForm!.createdAt),
-              ),
-              _buildInfoRow(
-                icon: Icons.update,
-                label: 'Modifié le',
-                value: _formatDateTime(_currentForm!.updatedAt),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: AppTheme.spaceMedium),
-          
-          _buildInfoCard(
-            title: 'Champs du formulaire',
-            icon: Icons.quiz,
-            children: [
-              Text(
-                '${_currentForm!.fields.where((f) => f.isInputField).length} champs de saisie',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: AppTheme.fontMedium,
-                ),
-              ),
-              const SizedBox(height: AppTheme.spaceMedium),
-              ...List.generate(_currentForm!.fields.length, (index) {
-                final field = _currentForm!.fields[index];
-                return _buildFieldPreview(field);
-              }),
-            ],
-          ),
-          
-          if (_currentForm!.publishDate != null || _currentForm!.closeDate != null) ...[
-            const SizedBox(height: AppTheme.spaceMedium),
-            _buildInfoCard(
-              title: 'Dates de publication',
-              icon: Icons.schedule,
-              children: [
-                if (_currentForm!.publishDate != null)
-                  _buildInfoRow(
-                    icon: Icons.publish,
-                    label: 'Date de publication',
-                    value: _formatDateTime(_currentForm!.publishDate!),
+          // Form info card
+          Card(
+            elevation: 2,
+            color: colorScheme.surfaceContainerHighest,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Informations générales',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
-                if (_currentForm!.closeDate != null)
-                  _buildInfoRow(
-                    icon: Icons.event_busy,
-                    label: 'Date de fermeture',
-                    value: _formatDateTime(_currentForm!.closeDate!),
-                  ),
-              ],
+                  const SizedBox(height: 16),
+                  
+                  _buildInfoRow('Titre', _currentForm!.title),
+                  if (_currentForm!.description.isNotEmpty)
+                    _buildInfoRow('Description', _currentForm!.description),
+                  _buildInfoRow('Statut', _getStatusLabel(_currentForm!.status)),
+                  _buildInfoRow('Visibilité', _currentForm!.accessibilityLabel),
+                  _buildInfoRow('Créé le', _formatDate(_currentForm!.createdAt)),
+                  if (_currentForm!.publishDate != null)
+                    _buildInfoRow('Publié le', _formatDate(_currentForm!.publishDate!)),
+                ],
+              ),
             ),
-          ],
+          ),
+          
+          const SizedBox(height: 16),
+          
+          // Fields preview card
+          Card(
+            elevation: 2,
+            color: colorScheme.surfaceContainerHighest,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.list_alt_rounded,
+                        color: colorScheme.secondary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Champs du formulaire',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.secondaryContainer,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '${_currentForm!.fields.length}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSecondaryContainer,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  ...List.generate(_currentForm!.fields.length, (index) {
+                    final field = _currentForm!.fields[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _getFieldIcon(field.type),
+                            size: 16,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              field.label,
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                          ),
+                          if (field.isRequired)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppTheme.errorColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                'Requis',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.errorColor,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -476,295 +665,156 @@ class _FormDetailPageState extends State<FormDetailPage>
   }
 
   Widget _buildSettingsTab() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoCard(
-            title: 'Paramètres de soumission',
-            icon: Icons.settings,
-            children: [
-              if (_currentForm!.hasSubmissionLimit)
-                _buildInfoRow(
-                  icon: Icons.people,
-                  label: 'Limite de soumissions',
-                  value: _currentForm!.submissionLimit.toString(),
-                ),
-              _buildInfoRow(
-                icon: Icons.repeat,
-                label: 'Soumissions multiples',
-                value: _currentForm!.settings.allowMultipleSubmissions ? 'Autorisées' : 'Interdites',
-              ),
-              _buildInfoRow(
-                icon: Icons.email,
-                label: 'Email de confirmation',
-                value: _currentForm!.settings.sendConfirmationEmail ? 'Activé' : 'Désactivé',
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: AppTheme.spaceMedium),
-          
-          _buildInfoCard(
-            title: 'Actions post-soumission',
-            icon: Icons.auto_fix_high,
-            children: [
-              _buildInfoRow(
-                icon: Icons.message,
-                label: 'Message de confirmation',
-                value: _currentForm!.settings.confirmationMessage,
-              ),
-              if (_currentForm!.settings.autoAddToGroup)
-                _buildInfoRow(
-                  icon: Icons.group_add,
-                  label: 'Ajout automatique au groupe',
-                  value: 'Activé',
-                ),
-              if (_currentForm!.settings.autoAddToWorkflow)
-                _buildInfoRow(
-                  icon: Icons.timeline,
-                  label: 'Ajout automatique au workflow',
-                  value: 'Activé',
-                ),
-            ],
-          ),
-          
-          if (_currentForm!.settings.notificationEmails.isNotEmpty) ...[
-            const SizedBox(height: AppTheme.spaceMedium),
-            _buildInfoCard(
-              title: 'Notifications',
-              icon: Icons.notifications,
-              children: [
-                Text(
-                  'Emails de notification:',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: AppTheme.fontMedium,
+          Card(
+            elevation: 2,
+            color: colorScheme.surfaceContainerHighest,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.settings_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Paramètres',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: AppTheme.spaceSmall),
-                ...List.generate(_currentForm!.settings.notificationEmails.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Text(
-                      '• ${_currentForm!.settings.notificationEmails[index]}',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                  const SizedBox(height: 16),
+                  
+                  _buildInfoRow('Mode d\'affichage', _currentForm!.displayMode == 'single_page' ? 'Page unique' : 'Multi-pages'),
+                  if (_currentForm!.submissionLimit != null && _currentForm!.submissionLimit! > 0)
+                    _buildInfoRow('Limite de soumissions', '${_currentForm!.submissionLimit}'),
+                  if (_currentForm!.closeDate != null)
+                    _buildInfoRow('Date de fermeture', _formatDate(_currentForm!.closeDate!)),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Actions
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _editForm,
+                      icon: const Icon(Icons.edit_rounded),
+                      label: const Text('Modifier le formulaire'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
                     ),
-                  );
-                }),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoCard({
-    required String title,
-    required IconData icon,
-    required List<Widget> children,
-  }) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.space20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                  ),
-                  child: Icon(
-                    icon,
-                    color: AppTheme.primaryColor,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.space12),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: AppTheme.fontBold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppTheme.spaceMedium),
-            ...children,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
+  Widget _buildInfoRow(String label, String value) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            icon,
-            size: 18,
-            color: AppTheme.textSecondaryColor,
-          ),
-          const SizedBox(width: AppTheme.space12),
-          Expanded(
-            flex: 2,
+          SizedBox(
+            width: 120,
             child: Text(
               label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppTheme.textSecondaryColor,
-                fontWeight: AppTheme.fontMedium,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
           ),
           Expanded(
-            flex: 3,
             child: Text(
               value,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFieldPreview(CustomFormField field) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(AppTheme.space12),
-      decoration: BoxDecoration(
-        color: AppTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-        border: Border.all(
-          color: AppTheme.textTertiaryColor.withOpacity(0.3),
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            _getFieldIcon(field.type),
-            size: 18,
-            color: AppTheme.primaryColor,
-          ),
-          const SizedBox(width: AppTheme.space12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  field.label.isNotEmpty ? field.label : field.typeLabel,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: AppTheme.fontMedium,
-                  ),
-                ),
-                if (field.helpText != null)
-                  Text(
-                    field.helpText!,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.textSecondaryColor,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          if (field.isRequired)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: AppTheme.errorColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-              ),
-              child: Text(
-                'Obligatoire',
-                style: TextStyle(
-                  color: AppTheme.errorColor,
-                  fontSize: AppTheme.fontSize10,
-                  fontWeight: AppTheme.fontMedium,
-                ),
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: colorScheme.onSurface,
               ),
             ),
+          ),
         ],
       ),
     );
   }
 
   IconData _getFieldIcon(String type) {
-    switch (type) {
-      case 'text': return Icons.text_fields;
-      case 'textarea': return Icons.subject;
-      case 'email': return Icons.email;
-      case 'phone': return Icons.phone;
-      case 'checkbox': return Icons.check_box;
-      case 'radio': return Icons.radio_button_checked;
-      case 'select': return Icons.arrow_drop_down;
-      case 'date': return Icons.calendar_today;
-      case 'time': return Icons.access_time;
-      case 'file': return Icons.attach_file;
-      case 'signature': return Icons.edit;
-      case 'section': return Icons.view_headline;
-      case 'title': return Icons.title;
-      case 'instructions': return Icons.info;
-      case 'person_field': return Icons.person;
-      default: return Icons.help_outline;
+    switch (type.toLowerCase()) {
+      case 'text':
+        return Icons.text_fields_rounded;
+      case 'textarea':
+        return Icons.notes_rounded;
+      case 'email':
+        return Icons.email_rounded;
+      case 'phone':
+        return Icons.phone_rounded;
+      case 'number':
+        return Icons.numbers_rounded;
+      case 'select':
+        return Icons.list_rounded;
+      case 'radio':
+        return Icons.radio_button_checked_rounded;
+      case 'checkbox':
+        return Icons.check_box_rounded;
+      case 'date':
+        return Icons.calendar_today_rounded;
+      case 'time':
+        return Icons.access_time_rounded;
+      case 'file':
+        return Icons.attach_file_rounded;
+      default:
+        return Icons.help_outline_rounded;
     }
   }
 
-  void _handleAction(String action) async {
-    switch (action) {
-      case 'edit':
-        await _editForm();
-        break;
-      case 'publish':
-        await _publishForm();
-        break;
-      case 'copy_url':
-        _copyFormUrl();
-        break;
-      case 'duplicate':
-        await _duplicateForm();
-        break;
-      case 'archive':
-        // TODO: Implement archive action
-        break;
-    }
-  }
-
-  String _formatDateTime(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year} à ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
+  String _formatDate(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
   }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar;
-
   _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
 
   @override
   double get minExtent => _tabBar.preferredSize.height;
-
   @override
   double get maxExtent => _tabBar.preferredSize.height;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: AppTheme.white100,
+      color: Theme.of(context).colorScheme.surface,
       child: _tabBar,
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:video_player/video_player.dart';
 import '../../theme.dart';
 import 'visit_us_page.dart';
 import '../models/home_config_model.dart';
@@ -291,6 +293,11 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
   }
 
   Widget _buildCoverMedia(HomeConfigModel config) {
+    // Priorité à la vidéo si useVideo est activé et coverVideoUrl est défini
+    if (config.useVideo && config.coverVideoUrl != null && config.coverVideoUrl!.isNotEmpty) {
+      return _buildCoverVideo(config.coverVideoUrl!);
+    }
+    
     // Gestion du carrousel d'images
     if (config.coverImageUrls.isNotEmpty) {
       return Stack(
@@ -396,6 +403,46 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
     
     // Background par défaut
     return _buildDefaultCoverBackground();
+  }
+
+  Widget _buildCoverVideo(String videoUrl) {
+    // Support pour les URLs YouTube
+    final videoId = YoutubePlayer.convertUrlToId(videoUrl);
+    if (videoId != null) {
+      return YoutubePlayer(
+        controller: YoutubePlayerController(
+          initialVideoId: videoId,
+          flags: const YoutubePlayerFlags(
+            autoPlay: true,           // Lecture automatique
+            mute: true,              // Son coupé pour éviter le bruit automatique
+            enableCaption: false,    // Pas de sous-titres pour un affichage plus propre
+            showLiveFullscreenButton: false, // Pas de plein écran pour garder l'effet diaporama
+            hideControls: true,      // Masquer les contrôles pour un effet diaporama
+            loop: true,              // Lecture en boucle
+            forceHD: false,          // Pas forcer HD pour éviter les problèmes de chargement
+            disableDragSeek: true,   // Désactiver le seek pour un comportement de diaporama
+          ),
+        ),
+        showVideoProgressIndicator: true,
+        progressIndicatorColor: AppTheme.primaryColor,
+        progressColors: ProgressBarColors(
+          playedColor: AppTheme.primaryColor,
+          handleColor: AppTheme.primaryColor,
+        ),
+      );
+    }
+    
+    // Pour les autres URLs vidéo (fichiers uploadés), créer un lecteur attrayant
+    return _buildUploadedVideoPlayer(videoUrl);
+  }
+
+  Widget _buildUploadedVideoPlayer(String videoUrl) {
+    return SizedBox(
+      height: 250,
+      child: AutoplayVideoPlayer(
+        videoUrl: videoUrl,
+      ),
+    );
   }
 
   Widget _buildDefaultCoverBackground() {
@@ -2238,6 +2285,225 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                   ),
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Widget personnalisé pour lecteur vidéo avec autoplay et boucle
+class AutoplayVideoPlayer extends StatefulWidget {
+  final String videoUrl;
+
+  const AutoplayVideoPlayer({
+    super.key,
+    required this.videoUrl,
+  });
+
+  @override
+  State<AutoplayVideoPlayer> createState() => _AutoplayVideoPlayerState();
+}
+
+class _AutoplayVideoPlayerState extends State<AutoplayVideoPlayer> {
+  VideoPlayerController? _controller;
+  bool _isInitialized = false;
+  bool _hasError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializePlayer();
+  }
+
+  Future<void> _initializePlayer() async {
+    try {
+      _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+      await _controller!.initialize();
+      
+      if (mounted) {
+        setState(() => _isInitialized = true);
+        
+        // Configuration pour autoplay et boucle
+        _controller!.setLooping(true);
+        _controller!.setVolume(0.0); // Son coupé pour éviter le bruit automatique
+        _controller!.play();
+        
+        // Listener pour relancer la vidéo si elle s'arrête
+        _controller!.addListener(() {
+          if (_controller!.value.hasError) {
+            setState(() => _hasError = true);
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _hasError = true);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_hasError) {
+      return _buildErrorWidget();
+    }
+    
+    if (!_isInitialized || _controller == null) {
+      return _buildLoadingWidget();
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Lecteur vidéo
+            VideoPlayer(_controller!),
+            
+            // Badge "LIVE" en haut à droite pour indiquer l'autoplay
+            Positioned(
+              top: 12,
+              right: 12,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'LIVE',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.grey900,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: AppTheme.primaryColor,
+              strokeWidth: 3,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Chargement de la vidéo...',
+              style: TextStyle(
+                color: AppTheme.white100,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.grey900,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline_rounded,
+              size: 48,
+              color: AppTheme.redStandard,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Impossible de charger la vidéo',
+              style: TextStyle(
+                color: AppTheme.white100,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Vérifiez l\'URL de la vidéo',
+              style: TextStyle(
+                color: AppTheme.grey500,
+                fontSize: 14,
+              ),
             ),
           ],
         ),

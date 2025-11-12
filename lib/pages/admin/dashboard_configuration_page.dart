@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../models/dashboard_widget_model.dart';
 import '../../services/dashboard_firebase_service.dart';
 import '../../services/app_config_firebase_service.dart';
@@ -61,84 +64,475 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
 
   @override
   Widget build(BuildContext context) {
+    final isApple = AppTheme.isApplePlatform;
+    
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configuration Dashboard'),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: AppTheme.white100,
-        elevation: 0,
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.widgets), text: 'Widgets'),
-            Tab(icon: Icon(Icons.settings), text: 'Préférences'),
-            Tab(icon: Icon(Icons.build), text: 'Maintenance'),
-          ],
-          indicatorColor: AppTheme.white100,
-          labelColor: AppTheme.white100,
-          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
-        ),
-        actions: [
-          IconButton(
-            onPressed: _resetToDefault,
-            icon: const Icon(Icons.restore),
-            tooltip: 'Réinitialiser',
-          ),
-        ],
-      ),
+      backgroundColor: AppTheme.surface,
+      appBar: _buildModernAppBar(isApple),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : TabBarView(
-              controller: _tabController,
-              children: [
-                _buildWidgetsTab(),
-                _buildPreferencesTab(),
-                _buildMaintenanceTab(),
-              ],
-            ),
+          ? _buildLoadingState(isApple)
+          : _buildModernTabBarView(isApple),
     );
   }
 
-  Widget _buildWidgetsTab() {
+  PreferredSizeWidget _buildModernAppBar(bool isApple) {
+    return AppBar(
+      backgroundColor: AppTheme.primaryColor,
+      foregroundColor: AppTheme.onPrimaryColor,
+      elevation: 0,
+      title: Text(
+        'Configuration Dashboard',
+        style: GoogleFonts.inter(
+          fontSize: AppTheme.fontSize18,
+          fontWeight: AppTheme.fontSemiBold,
+          color: AppTheme.onPrimaryColor,
+        ),
+      ),
+      leading: IconButton(
+        icon: Icon(
+          isApple ? CupertinoIcons.back : Icons.arrow_back_rounded,
+          color: AppTheme.onPrimaryColor,
+        ),
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          Navigator.pop(context);
+        },
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(
+            isApple ? CupertinoIcons.refresh : Icons.refresh_rounded,
+            color: AppTheme.onPrimaryColor,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            _loadConfiguration();
+          },
+          tooltip: 'Actualiser',
+        ),
+        IconButton(
+          icon: Icon(
+            isApple ? CupertinoIcons.restart : Icons.restore_rounded,
+            color: AppTheme.onPrimaryColor,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            _resetToDefault();
+          },
+          tooltip: 'Réinitialiser',
+        ),
+      ],
+      bottom: _buildModernTabBar(isApple),
+    );
+  }
+
+  PreferredSize _buildModernTabBar(bool isApple) {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(48.0),
+      child: Container(
+        color: AppTheme.primaryColor,
+        child: TabBar(
+          controller: _tabController,
+          indicatorColor: AppTheme.onPrimaryColor,
+          indicatorWeight: 3,
+          indicatorSize: TabBarIndicatorSize.tab,
+          labelColor: AppTheme.onPrimaryColor,
+          unselectedLabelColor: AppTheme.onPrimaryColor.withOpacity(0.7),
+          labelStyle: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontSemiBold,
+          ),
+          unselectedLabelStyle: GoogleFonts.inter(
+            fontSize: AppTheme.fontSize14,
+            fontWeight: AppTheme.fontMedium,
+          ),
+          tabs: [
+            Tab(
+              icon: Icon(
+                isApple ? CupertinoIcons.square_grid_2x2 : Icons.widgets_rounded,
+                size: 20,
+              ),
+              text: 'Widgets',
+            ),
+            Tab(
+              icon: Icon(
+                isApple ? CupertinoIcons.settings : Icons.tune_rounded,
+                size: 20,
+              ),
+              text: 'Préférences',
+            ),
+            Tab(
+              icon: Icon(
+                isApple ? CupertinoIcons.wrench : Icons.build_rounded,
+                size: 20,
+              ),
+              text: 'Maintenance',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingState(bool isApple) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: AppTheme.borderRadiusLarge,
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primaryColor.withOpacity(0.1),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+              strokeWidth: 3,
+            ),
+            const SizedBox(height: AppTheme.spaceMedium),
+            Text(
+              'Chargement de la configuration...',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize16,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernTabBarView(bool isApple) {
+    return TabBarView(
+      controller: _tabController,
+      children: [
+        _buildModernWidgetsTab(isApple),
+        _buildModernPreferencesTab(isApple),
+        _buildModernMaintenanceTab(isApple),
+      ],
+    );
+  }
+
+  Widget _buildModernWidgetsTab(bool isApple) {
     final categories = _groupWidgetsByCategory();
     
-    return ListView(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
-      children: [
-        // En-tête avec actions globales
-        Card(
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: _buildWidgetsHeader(isApple),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final entry = categories.entries.elementAt(index);
+                return _buildModernCategorySection(entry.key, entry.value, isApple);
+              },
+              childCount: categories.length,
+            ),
+          ),
+        ),
+        const SliverToBoxAdapter(
+          child: SizedBox(height: AppTheme.spaceLarge),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWidgetsHeader(bool isApple) {
+    return Container(
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppTheme.primaryContainer,
+            AppTheme.primaryContainer.withOpacity(0.7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: AppTheme.borderRadiusMedium,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor,
+                  borderRadius: AppTheme.borderRadiusSmall,
+                ),
+                child: Icon(
+                  isApple ? CupertinoIcons.square_grid_2x2 : Icons.widgets_rounded,
+                  color: AppTheme.onPrimaryColor,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Expanded(
+                child: Text(
+                  'Gestion des Widgets',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize20,
+                    fontWeight: AppTheme.fontBold,
+                    color: AppTheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppTheme.spaceSmall),
+          Text(
+            'Personnalisez votre dashboard en sélectionnant et réorganisant les widgets. '
+            'Glissez-déposez pour modifier l\'ordre d\'affichage.',
+            style: GoogleFonts.inter(
+              fontSize: AppTheme.fontSize14,
+              fontWeight: AppTheme.fontMedium,
+              color: AppTheme.onPrimaryContainer.withOpacity(0.8),
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: AppTheme.spaceMedium),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    _selectAllWidgets();
+                  },
+                  icon: Icon(
+                    isApple ? CupertinoIcons.checkmark_alt : Icons.check_box_rounded,
+                    size: 18,
+                  ),
+                  label: const Text('Tout sélectionner'),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: AppTheme.spaceSmall),
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Expanded(
+                child: FilledButton.tonalIcon(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    _deselectAllWidgets();
+                  },
+                  icon: Icon(
+                    isApple ? CupertinoIcons.clear : Icons.check_box_outline_blank_rounded,
+                    size: 18,
+                  ),
+                  label: const Text('Tout désélectionner'),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: AppTheme.spaceSmall),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernCategorySection(String category, List<DashboardWidgetModel> widgets, bool isApple) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
+          expansionTileTheme: ExpansionTileThemeData(
+            backgroundColor: AppTheme.surface,
+            collapsedBackgroundColor: AppTheme.surface,
+            shape: RoundedRectangleBorder(
+              borderRadius: AppTheme.borderRadiusMedium,
+            ),
+            collapsedShape: RoundedRectangleBorder(
+              borderRadius: AppTheme.borderRadiusMedium,
+            ),
+          ),
+        ),
+        child: ExpansionTile(
+          tilePadding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spaceMedium,
+            vertical: AppTheme.spaceSmall,
+          ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppTheme.spaceXSmall),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryContainer,
+                  borderRadius: AppTheme.borderRadiusSmall,
+                ),
+                child: Icon(
+                  _getCategoryIcon(category),
+                  color: AppTheme.onPrimaryContainer,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Text(
+                _getCategoryDisplayName(category),
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.fontSize16,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: AppTheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: AppTheme.spaceXSmall),
+            child: Text(
+              '${widgets.length} widget${widgets.length > 1 ? 's' : ''} disponible${widgets.length > 1 ? 's' : ''}',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize12,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          trailing: Icon(
+            isApple ? CupertinoIcons.chevron_down : Icons.expand_more_rounded,
+            color: AppTheme.onSurface,
+          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: AppTheme.spaceMedium,
+                right: AppTheme.spaceMedium,
+                bottom: AppTheme.spaceMedium,
+              ),
+              child: Column(
+                children: widgets.map((widget) => _buildModernWidgetTile(widget, isApple)).toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernWidgetTile(DashboardWidgetModel widget, bool isApple) {
+    final widgetColor = _parseColor(widget.config['color']);
+    
+    return Container(
+      key: ValueKey(widget.id),
+      margin: const EdgeInsets.only(bottom: AppTheme.spaceSmall),
+      decoration: BoxDecoration(
+        color: widget.isVisible 
+            ? AppTheme.primaryContainer.withOpacity(0.3)
+            : AppTheme.surfaceVariant,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: widget.isVisible 
+              ? AppTheme.primaryColor.withOpacity(0.3)
+              : AppTheme.outline.withOpacity(0.2),
+          width: widget.isVisible ? 2 : 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: AppTheme.borderRadiusMedium,
+          onTap: () {
+            HapticFeedback.lightImpact();
+            _showWidgetDetails(widget);
+          },
           child: Padding(
             padding: const EdgeInsets.all(AppTheme.spaceMedium),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(
-                  'Gestion des Widgets',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: AppTheme.fontBold,
+                Container(
+                  padding: const EdgeInsets.all(AppTheme.spaceSmall),
+                  decoration: BoxDecoration(
+                    color: widgetColor.withOpacity(0.15),
+                    borderRadius: AppTheme.borderRadiusSmall,
+                  ),
+                  child: Icon(
+                    _getWidgetIcon(widget),
+                    color: widgetColor,
+                    size: 24,
                   ),
                 ),
-                const SizedBox(height: AppTheme.spaceSmall),
-                Text(
-                  'Sélectionnez les widgets à afficher sur votre dashboard. '
-                  'Vous pouvez réorganiser l\'ordre en glissant-déposant.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.grey600,
+                const SizedBox(width: AppTheme.spaceSmall),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title,
+                        style: GoogleFonts.inter(
+                          fontSize: AppTheme.fontSize14,
+                          fontWeight: AppTheme.fontSemiBold,
+                          color: AppTheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        _getWidgetTypeDisplayName(widget.type),
+                        style: GoogleFonts.inter(
+                          fontSize: AppTheme.fontSize12,
+                          fontWeight: AppTheme.fontMedium,
+                          color: AppTheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: AppTheme.spaceMedium),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    ElevatedButton.icon(
-                      onPressed: _selectAllWidgets,
-                      icon: const Icon(Icons.select_all),
-                      label: const Text('Tout sélectionner'),
+                    Switch.adaptive(
+                      value: widget.isVisible,
+                      onChanged: (value) {
+                        HapticFeedback.lightImpact();
+                        _toggleWidgetVisibility(widget, value);
+                      },
+                      activeColor: AppTheme.primaryColor,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    OutlinedButton.icon(
-                      onPressed: _deselectAllWidgets,
-                      icon: const Icon(Icons.deselect),
-                      label: const Text('Tout désélectionner'),
+                    const SizedBox(width: AppTheme.spaceXSmall),
+                    Icon(
+                      isApple ? CupertinoIcons.line_horizontal_3 : Icons.drag_handle_rounded,
+                      color: AppTheme.onSurfaceVariant,
+                      size: 20,
                     ),
                   ],
                 ),
@@ -146,157 +540,388 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
             ),
           ),
         ),
-        const SizedBox(height: AppTheme.spaceMedium),
-        
-        // Widgets groupés par catégorie
-        ...categories.entries.map((entry) {
-          return _buildCategorySection(entry.key, entry.value);
-        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildModernPreferencesTab(bool isApple) {
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: _buildPreferencesHeader(isApple),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+          sliver: SliverToBoxAdapter(
+            child: Column(
+              children: [
+                _buildDisplayPreferencesSection(isApple),
+                const SizedBox(height: AppTheme.spaceMedium),
+                _buildAdvancedPreferencesSection(isApple),
+                const SizedBox(height: AppTheme.spaceLarge),
+                _buildSaveButton(isApple),
+                const SizedBox(height: AppTheme.spaceLarge),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildCategorySection(String category, List<DashboardWidgetModel> widgets) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: ExpansionTile(
-        title: Text(
-          _getCategoryDisplayName(category),
-          style: const TextStyle(fontWeight: AppTheme.fontBold),
+  Widget _buildPreferencesHeader(bool isApple) {
+    return Container(
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppTheme.secondaryContainer,
+            AppTheme.secondaryContainer.withOpacity(0.7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        subtitle: Text('${widgets.length} widgets'),
-        leading: Icon(_getCategoryIcon(category)),
+        borderRadius: AppTheme.borderRadiusMedium,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.secondaryColor.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
+                decoration: BoxDecoration(
+                  color: AppTheme.secondaryColor,
+                  borderRadius: AppTheme.borderRadiusSmall,
+                ),
+                child: Icon(
+                  isApple ? CupertinoIcons.settings : Icons.tune_rounded,
+                  color: AppTheme.onSecondaryColor,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Expanded(
+                child: Text(
+                  'Préférences Dashboard',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize20,
+                    fontWeight: AppTheme.fontBold,
+                    color: AppTheme.onSecondaryContainer,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppTheme.spaceSmall),
+          Text(
+            'Personnalisez l\'affichage et le comportement de votre dashboard '
+            'selon vos préférences.',
+            style: GoogleFonts.inter(
+              fontSize: AppTheme.fontSize14,
+              fontWeight: AppTheme.fontMedium,
+              color: AppTheme.onSecondaryContainer.withOpacity(0.8),
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDisplayPreferencesSection(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(AppTheme.spaceMedium),
-            child: ReorderableListView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: widgets.map((widget) => _buildWidgetTile(widget)).toList(),
-              onReorder: (oldIndex, newIndex) => _reorderWidgets(widgets, oldIndex, newIndex),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWidgetTile(DashboardWidgetModel widget) {
-    return ListTile(
-      key: ValueKey(widget.id),
-      leading: Icon(
-        _getWidgetIcon(widget),
-        color: _parseColor(widget.config['color']),
-      ),
-      title: Text(widget.title),
-      subtitle: Text(_getWidgetTypeDisplayName(widget.type)),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Switch(
-            value: widget.isVisible,
-            onChanged: (value) => _toggleWidgetVisibility(widget, value),
-          ),
-          const Icon(Icons.drag_handle),
-        ],
-      ),
-      onTap: () => _showWidgetDetails(widget),
-    );
-  }
-
-  Widget _buildPreferencesTab() {
-    return ListView(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
-      children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(AppTheme.spaceMedium),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
+                Icon(
+                  isApple ? CupertinoIcons.eye : Icons.visibility_rounded,
+                  color: AppTheme.primaryColor,
+                  size: 20,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Préférences d\'Affichage',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: AppTheme.fontBold,
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize16,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.onSurface,
                   ),
-                ),
-                const SizedBox(height: AppTheme.spaceMedium),
-                
-                // Vue compacte
-                SwitchListTile(
-                  title: const Text('Vue compacte'),
-                  subtitle: const Text('Affichage plus dense des widgets'),
-                  value: _preferences['compactView'] ?? false,
-                  onChanged: (value) => _updatePreference('compactView', value),
-                ),
-                
-                // Afficher les tendances
-                SwitchListTile(
-                  title: const Text('Afficher les tendances'),
-                  subtitle: const Text('Indicateurs d\'évolution des statistiques'),
-                  value: _preferences['showTrends'] ?? true,
-                  onChanged: (value) => _updatePreference('showTrends', value),
-                ),
-                
-                // Actualisation automatique
-                SwitchListTile(
-                  title: const Text('Actualisation automatique'),
-                  subtitle: const Text('Mise à jour périodique des données'),
-                  value: _preferences['autoRefresh'] ?? true,
-                  onChanged: (value) => _updatePreference('autoRefresh', value),
                 ),
               ],
             ),
           ),
+          _buildModernSwitchTile(
+            'Vue compacte',
+            'Affichage plus dense des widgets',
+            _preferences['compactView'] ?? false,
+            isApple ? CupertinoIcons.rectangle_compress_vertical : Icons.compress_rounded,
+            (value) => _updatePreference('compactView', value),
+            isApple,
+          ),
+          _buildModernSwitchTile(
+            'Afficher les tendances',
+            'Indicateurs d\'évolution des statistiques',
+            _preferences['showTrends'] ?? true,
+            isApple ? CupertinoIcons.chart_bar : Icons.trending_up_rounded,
+            (value) => _updatePreference('showTrends', value),
+            isApple,
+          ),
+          _buildModernSwitchTile(
+            'Actualisation automatique',
+            'Mise à jour périodique des données',
+            _preferences['autoRefresh'] ?? true,
+            isApple ? CupertinoIcons.refresh : Icons.refresh_rounded,
+            (value) => _updatePreference('autoRefresh', value),
+            isApple,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdvancedPreferencesSection(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
         ),
-        const SizedBox(height: AppTheme.spaceMedium),
-        
-        Card(
-          child: Padding(
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
             padding: const EdgeInsets.all(AppTheme.spaceMedium),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
+                Icon(
+                  isApple ? CupertinoIcons.gear_alt : Icons.settings_rounded,
+                  color: AppTheme.tertiaryColor,
+                  size: 20,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
                 Text(
                   'Paramètres Avancés',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: AppTheme.fontBold,
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize16,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.onSurface,
                   ),
-                ),
-                const SizedBox(height: AppTheme.spaceMedium),
-                
-                // Intervalle d'actualisation
-                ListTile(
-                  title: const Text('Intervalle d\'actualisation'),
-                  subtitle: Text('${(_preferences['refreshInterval'] ?? 300) ~/ 60} minutes'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: _showRefreshIntervalDialog,
                 ),
               ],
             ),
           ),
-        ),
-        const SizedBox(height: AppTheme.spaceLarge),
-        
-        // Bouton de sauvegarde
-        ElevatedButton(
-          onPressed: _isSaving ? null : _savePreferences,
-          child: _isSaving
-              ? const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.only(
+                bottomLeft: AppTheme.borderRadiusMedium.bottomLeft,
+                bottomRight: AppTheme.borderRadiusMedium.bottomRight,
+              ),
+              onTap: () {
+                HapticFeedback.lightImpact();
+                _showRefreshIntervalDialog();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(AppTheme.spaceMedium),
+                child: Row(
                   children: [
-                    SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                    Container(
+                      padding: const EdgeInsets.all(AppTheme.spaceXSmall),
+                      decoration: BoxDecoration(
+                        color: AppTheme.tertiaryContainer,
+                        borderRadius: AppTheme.borderRadiusSmall,
+                      ),
+                      child: Icon(
+                        isApple ? CupertinoIcons.time : Icons.schedule_rounded,
+                        color: AppTheme.onTertiaryContainer,
+                        size: 20,
+                      ),
                     ),
-                    SizedBox(width: AppTheme.spaceSmall),
-                    Text('Sauvegarde...'),
+                    const SizedBox(width: AppTheme.spaceSmall),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Intervalle d\'actualisation',
+                            style: GoogleFonts.inter(
+                              fontSize: AppTheme.fontSize14,
+                              fontWeight: AppTheme.fontSemiBold,
+                              color: AppTheme.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '${(_preferences['refreshInterval'] ?? 300) ~/ 60} minutes',
+                            style: GoogleFonts.inter(
+                              fontSize: AppTheme.fontSize12,
+                              fontWeight: AppTheme.fontMedium,
+                              color: AppTheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      isApple ? CupertinoIcons.chevron_right : Icons.chevron_right_rounded,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
                   ],
-                )
-              : const Text('Sauvegarder les Préférences'),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernSwitchTile(
+    String title,
+    String subtitle,
+    bool value,
+    IconData icon,
+    ValueChanged<bool> onChanged,
+    bool isApple,
+  ) {
+    return Material(
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.spaceMedium,
+          vertical: AppTheme.spaceSmall,
         ),
-      ],
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppTheme.spaceXSmall),
+              decoration: BoxDecoration(
+                color: value 
+                    ? AppTheme.primaryContainer 
+                    : AppTheme.surfaceVariant,
+                borderRadius: AppTheme.borderRadiusSmall,
+              ),
+              child: Icon(
+                icon,
+                color: value 
+                    ? AppTheme.onPrimaryContainer 
+                    : AppTheme.onSurfaceVariant,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: AppTheme.spaceSmall),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize14,
+                      fontWeight: AppTheme.fontSemiBold,
+                      color: AppTheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize12,
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Switch.adaptive(
+              value: value,
+              onChanged: (newValue) {
+                HapticFeedback.lightImpact();
+                onChanged(newValue);
+              },
+              activeColor: AppTheme.primaryColor,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSaveButton(bool isApple) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+      child: FilledButton.icon(
+        onPressed: _isSaving ? null : () {
+          HapticFeedback.lightImpact();
+          _savePreferences();
+        },
+        icon: _isSaving
+            ? SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.onPrimaryColor),
+                ),
+              )
+            : Icon(
+                isApple ? CupertinoIcons.checkmark_alt : Icons.save_rounded,
+                size: 18,
+              ),
+        label: Text(
+          _isSaving ? 'Sauvegarde...' : 'Sauvegarder les Préférences',
+          style: GoogleFonts.inter(
+            fontWeight: AppTheme.fontSemiBold,
+          ),
+        ),
+        style: FilledButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: AppTheme.spaceMedium),
+          shape: RoundedRectangleBorder(
+            borderRadius: AppTheme.borderRadiusMedium,
+          ),
+        ),
+      ),
     );
   }
 
@@ -418,26 +1043,7 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
     }
   }
 
-  void _reorderWidgets(List<DashboardWidgetModel> widgets, int oldIndex, int newIndex) {
-    // Ajuster newIndex si nécessaire
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
-    
-    // Réorganiser la liste locale
-    final widget = widgets.removeAt(oldIndex);
-    widgets.insert(newIndex, widget);
-    
-    // Mettre à jour les ordres
-    for (int i = 0; i < widgets.length; i++) {
-      widgets[i] = widgets[i].copyWith(order: i);
-    }
-    
-    // Sauvegarder l'ordre
-    DashboardFirebaseService.updateWidgetsOrder(_allWidgets);
-    
-    setState(() {});
-  }
+
 
   void _selectAllWidgets() {
     for (int i = 0; i < _allWidgets.length; i++) {
@@ -613,97 +1219,21 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
     );
   }
 
-  Widget _buildMaintenanceTab() {
-    return ListView(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
-      children: [
-        // Section de nettoyage des modules
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(AppTheme.spaceMedium),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.cleaning_services,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    Text(
-                      'Nettoyage des Modules',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: AppTheme.fontBold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppTheme.space12),
-                Text(
-                  'Supprime les modules orphelins qui n\'existent plus dans le code '
-                  'mais qui sont encore présents dans la configuration Firebase.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: AppTheme.spaceMedium),
-                ElevatedButton.icon(
-                  onPressed: _cleanupOrphanModules,
-                  icon: const Icon(Icons.delete_sweep),
-                  label: const Text('Nettoyer les modules orphelins'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.orangeStandard,
-                    foregroundColor: AppTheme.white100,
-                  ),
-                ),
-                const SizedBox(height: AppTheme.spaceSmall),
-                Text(
-                  '⚠️ Cette action supprimera définitivement les modules '
-                  '"Pour vous", "Ressources" et "Dons" du menu "Plus".',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.orangeStandard,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
-            ),
-          ),
+  Widget _buildModernMaintenanceTab(bool isApple) {
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: _buildMaintenanceHeader(isApple),
         ),
-        
-        const SizedBox(height: AppTheme.spaceMedium),
-        
-        // Section d'informations système
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+          sliver: SliverToBoxAdapter(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    Text(
-                      'Informations Système',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: AppTheme.fontBold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppTheme.space12),
-                _buildInfoRow('Version de l\'application', '1.0.0'),
-                _buildInfoRow('Configuration Firebase', 'Connectée'),
-                _buildInfoRow('Modules actifs', '${_allWidgets.length}'),
+                _buildCleanupSection(isApple),
                 const SizedBox(height: AppTheme.spaceMedium),
-                Text(
-                  'Pour plus d\'informations de maintenance, consultez la console Firebase.',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.grey500,
-                  ),
-                ),
+                _buildSystemInfoSection(isApple),
+                const SizedBox(height: AppTheme.spaceLarge),
               ],
             ),
           ),
@@ -712,26 +1242,296 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodyMedium,
+  Widget _buildMaintenanceHeader(bool isApple) {
+    return Container(
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceLarge),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppTheme.warningContainer,
+            AppTheme.warningContainer.withOpacity(0.7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: AppTheme.borderRadiusMedium,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.warning.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppTheme.spaceSmall),
+                decoration: BoxDecoration(
+                  color: AppTheme.warning,
+                  borderRadius: AppTheme.borderRadiusSmall,
+                ),
+                child: Icon(
+                  isApple ? CupertinoIcons.wrench : Icons.build_rounded,
+                  color: AppTheme.onWarning,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Expanded(
+                child: Text(
+                  'Maintenance Système',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize20,
+                    fontWeight: AppTheme.fontBold,
+                    color: AppTheme.onWarningContainer,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppTheme.spaceSmall),
           Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            'Outils de maintenance et d\'administration avancée pour le dashboard. '
+            'Utilisez ces fonctions avec précaution.',
+            style: GoogleFonts.inter(
+              fontSize: AppTheme.fontSize14,
               fontWeight: AppTheme.fontMedium,
+              color: AppTheme.onWarningContainer.withOpacity(0.8),
+              height: 1.4,
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildCleanupSection(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: Row(
+              children: [
+                Icon(
+                  isApple ? CupertinoIcons.clear : Icons.cleaning_services_rounded,
+                  color: AppTheme.warning,
+                  size: 24,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Text(
+                  'Nettoyage des Modules',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize16,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+            child: Text(
+              'Supprime les modules orphelins qui n\'existent plus dans le code '
+              'mais qui sont encore présents dans la configuration Firebase.',
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize14,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.onSurfaceVariant,
+                height: 1.4,
+              ),
+            ),
+          ),
+          const SizedBox(height: AppTheme.spaceMedium),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+            padding: const EdgeInsets.all(AppTheme.spaceSmall),
+            decoration: BoxDecoration(
+              color: AppTheme.errorContainer,
+              borderRadius: AppTheme.borderRadiusSmall,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  isApple ? CupertinoIcons.exclamationmark_triangle : Icons.warning_rounded,
+                  color: AppTheme.onErrorContainer,
+                  size: 20,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Expanded(
+                  child: Text(
+                    'Cette action supprimera définitivement les modules '
+                    '"Pour vous", "Ressources" et "Dons" du menu "Plus".',
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSize12,
+                      fontWeight: AppTheme.fontMedium,
+                      color: AppTheme.onErrorContainer,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton.tonalIcon(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  _cleanupOrphanModules();
+                },
+                icon: Icon(
+                  isApple ? CupertinoIcons.delete : Icons.delete_sweep_rounded,
+                  size: 18,
+                ),
+                label: const Text('Nettoyer les modules orphelins'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppTheme.warning,
+                  foregroundColor: AppTheme.onWarning,
+                  padding: const EdgeInsets.symmetric(vertical: AppTheme.spaceSmall),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSystemInfoSection(bool isApple) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: AppTheme.borderRadiusMedium,
+        border: Border.all(
+          color: AppTheme.outline.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: Row(
+              children: [
+                Icon(
+                  isApple ? CupertinoIcons.info : Icons.info_rounded,
+                  color: AppTheme.info,
+                  size: 24,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Text(
+                  'Informations Système',
+                  style: GoogleFonts.inter(
+                    fontSize: AppTheme.fontSize16,
+                    fontWeight: AppTheme.fontSemiBold,
+                    color: AppTheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _buildModernInfoRow('Version de l\'application', '1.0.0', isApple),
+          _buildModernInfoRow('Configuration Firebase', 'Connectée', isApple),
+          _buildModernInfoRow('Modules actifs', '${_allWidgets.length}', isApple),
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            child: Container(
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
+              decoration: BoxDecoration(
+                color: AppTheme.infoContainer,
+                borderRadius: AppTheme.borderRadiusSmall,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    isApple ? CupertinoIcons.lightbulb : Icons.lightbulb_rounded,
+                    color: AppTheme.onInfoContainer,
+                    size: 16,
+                  ),
+                  const SizedBox(width: AppTheme.spaceSmall),
+                  Expanded(
+                    child: Text(
+                      'Pour plus d\'informations de maintenance, consultez la console Firebase.',
+                      style: GoogleFonts.inter(
+                        fontSize: AppTheme.fontSize12,
+                        fontWeight: AppTheme.fontMedium,
+                        color: AppTheme.onInfoContainer,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernInfoRow(String label, String value, bool isApple) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceMedium,
+        vertical: AppTheme.spaceXSmall,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: AppTheme.fontSize14,
+                fontWeight: AppTheme.fontMedium,
+                color: AppTheme.onSurface,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: GoogleFonts.inter(
+              fontSize: AppTheme.fontSize14,
+              fontWeight: AppTheme.fontSemiBold,
+              color: AppTheme.primaryColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   Future<void> _cleanupOrphanModules() async {
     // Afficher un dialogue de confirmation

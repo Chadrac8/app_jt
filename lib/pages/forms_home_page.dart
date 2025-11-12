@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../widgets/form_card.dart';
@@ -309,141 +310,296 @@ class _FormsHomePageState extends State<FormsHomePage>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        title: const Text('Formulaires'),
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: AppTheme.white100,
-        elevation: 0,
-        actions: [
-          if (_isSelectionMode) ...[
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: _showBulkActionsMenu,
+      backgroundColor: colorScheme.surface,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar.large(
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              elevation: 0,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  'Formulaires',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                  ),
+                ),
+                titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
+                background: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.primary.withOpacity(0.8),
+                      ],
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: -50,
+                        top: -50,
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: colorScheme.onPrimary.withOpacity(0.1),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 20,
+                        bottom: 80,
+                        child: Icon(
+                          Icons.assignment_outlined,
+                          size: 80,
+                          color: colorScheme.onPrimary.withOpacity(0.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                if (_isSelectionMode) ...[
+                  IconButton(
+                    icon: const Icon(Icons.more_vert_rounded),
+                    onPressed: _showBulkActionsMenu,
+                    tooltip: 'Actions groupées',
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded),
+                    onPressed: _toggleSelectionMode,
+                    tooltip: 'Annuler la sélection',
+                  ),
+                ] else ...[
+                  IconButton(
+                    icon: const Icon(Icons.checklist_rounded),
+                    onPressed: _toggleSelectionMode,
+                    tooltip: 'Mode sélection',
+                  ),
+                ],
+              ],
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(48),
+                child: Container(
+                  color: colorScheme.primary,
+                  child: TabBar(
+                    controller: _tabController,
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: colorScheme.onPrimary.withOpacity(0.2),
+                    ),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    labelStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                    unselectedLabelStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                    labelColor: colorScheme.onPrimary,
+                    unselectedLabelColor: colorScheme.onPrimary.withOpacity(0.7),
+                    dividerColor: Colors.transparent,
+                    tabs: const [
+                      Tab(text: 'Tous'),
+                      Tab(text: 'Brouillons'),
+                      Tab(text: 'Publiés'),
+                      Tab(text: 'Archivés'),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: _toggleSelectionMode,
+          ];
+        },
+        body: Column(
+          children: [
+            _buildSearchAndFilters(),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildFormsList(''),
+                  _buildFormsList('brouillon'),
+                  _buildFormsList('publie'),
+                  _buildFormsList('archive'),
+                ],
+              ),
             ),
-          ] else ...[
-            IconButton(
-              icon: const Icon(Icons.checklist),
-              onPressed: _toggleSelectionMode,
-            ),
-          ],
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: AppTheme.white100,
-          labelColor: AppTheme.white100,
-          unselectedLabelColor: AppTheme.white100.withOpacity(0.70),
-          tabs: const [
-            Tab(text: 'Tous'),
-            Tab(text: 'Brouillons'),
-            Tab(text: 'Publiés'),
-            Tab(text: 'Archivés'),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          _buildSearchAndFilters(),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildFormsList(''),
-                _buildFormsList('brouillon'),
-                _buildFormsList('publie'),
-                _buildFormsList('archive'),
-              ],
-            ),
-          ),
-        ],
       ),
       floatingActionButton: _isSelectionMode ? null : ScaleTransition(
         scale: _fabAnimation,
         child: FloatingActionButton.extended(
           onPressed: _showCreateOptions,
-          backgroundColor: AppTheme.primaryColor,
-          foregroundColor: AppTheme.white100,
-          icon: const Icon(Icons.add),
-          label: const Text('Nouveau'),
+          backgroundColor: colorScheme.primaryContainer,
+          foregroundColor: colorScheme.onPrimaryContainer,
+          elevation: 6,
+          icon: const Icon(Icons.add_rounded),
+          label: Text(
+            'Nouveau formulaire',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildSearchAndFilters() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Container(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
-      decoration: const BoxDecoration(
-        color: AppTheme.white100,
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.black100,
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
+      margin: const EdgeInsets.all(16),
       child: Column(
         children: [
-          TextField(
-            controller: _searchController,
-            onChanged: _onSearchChanged,
-            decoration: InputDecoration(
-              hintText: 'Rechercher des formulaires...',
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                borderSide: BorderSide.none,
+          // Barre de recherche moderne
+          Container(
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: colorScheme.shadow.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: TextField(
+              controller: _searchController,
+              onChanged: _onSearchChanged,
+              style: GoogleFonts.poppins(fontSize: 16),
+              decoration: InputDecoration(
+                hintText: 'Rechercher des formulaires...',
+                hintStyle: GoogleFonts.poppins(
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 16,
+                ),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+                suffixIcon: _searchQuery.isNotEmpty
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.clear_rounded,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                        onPressed: () {
+                          _searchController.clear();
+                          _onSearchChanged('');
+                        },
+                      )
+                    : null,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
               ),
-              filled: true,
-              fillColor: AppTheme.backgroundColor,
             ),
           ),
-          const SizedBox(height: AppTheme.space12),
+          // Filtres modernes avec chips
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
-                child: DropdownButtonFormField<String>(
-                  initialValue: _statusFilter.isEmpty ? null : _statusFilter,
-                  onChanged: _onStatusFilterChanged,
-                  decoration: InputDecoration(
-                    labelText: 'Statut',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: colorScheme.outline.withOpacity(0.3),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
-                  items: _statusFilters.map((filter) {
-                    return DropdownMenuItem<String>(
-                      value: filter['value']!.isEmpty ? null : filter['value'],
-                      child: Text(filter['label']!),
-                    );
-                  }).toList(),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _statusFilter.isEmpty ? null : _statusFilter,
+                      hint: Text(
+                        'Statut',
+                        style: GoogleFonts.poppins(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 14,
+                        ),
+                      ),
+                      onChanged: _onStatusFilterChanged,
+                      isExpanded: true,
+                      icon: Icon(
+                        Icons.expand_more_rounded,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      style: GoogleFonts.poppins(
+                        color: colorScheme.onSurface,
+                        fontSize: 14,
+                      ),
+                      items: _statusFilters.map((filter) {
+                        return DropdownMenuItem<String>(
+                          value: filter['value']!.isEmpty ? null : filter['value'],
+                          child: Text(filter['label']!),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(width: AppTheme.space12),
+              const SizedBox(width: 12),
               Expanded(
-                child: DropdownButtonFormField<String>(
-                  initialValue: _accessibilityFilter.isEmpty ? null : _accessibilityFilter,
-                  onChanged: _onAccessibilityFilterChanged,
-                  decoration: InputDecoration(
-                    labelText: 'Visibilité',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: colorScheme.outline.withOpacity(0.3),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
-                  items: _accessibilityFilters.map((filter) {
-                    return DropdownMenuItem<String>(
-                      value: filter['value']!.isEmpty ? null : filter['value'],
-                      child: Text(filter['label']!),
-                    );
-                  }).toList(),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _accessibilityFilter.isEmpty ? null : _accessibilityFilter,
+                      hint: Text(
+                        'Visibilité',
+                        style: GoogleFonts.poppins(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 14,
+                        ),
+                      ),
+                      onChanged: _onAccessibilityFilterChanged,
+                      isExpanded: true,
+                      icon: Icon(
+                        Icons.expand_more_rounded,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      style: GoogleFonts.poppins(
+                        color: colorScheme.onSurface,
+                        fontSize: 14,
+                      ),
+                      items: _accessibilityFilters.map((filter) {
+                        return DropdownMenuItem<String>(
+                          value: filter['value']!.isEmpty ? null : filter['value'],
+                          child: Text(filter['label']!),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -581,86 +737,354 @@ class _FormsHomePageState extends State<FormsHomePage>
   }
 
   void _showCreateOptions() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
+        margin: const EdgeInsets.only(top: 80),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Créer un formulaire',
-              style: TextStyle(
-                fontSize: AppTheme.fontSize20,
-                fontWeight: AppTheme.fontBold,
+            // Handle indicator
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(top: 12),
+              decoration: BoxDecoration(
+                color: colorScheme.onSurfaceVariant.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: AppTheme.spaceLarge),
-            ListTile(
-              leading: const Icon(Icons.add_circle_outline, color: AppTheme.primaryColor),
-              title: const Text('Formulaire vierge'),
-              subtitle: const Text('Commencer avec un formulaire vide'),
-              onTap: () {
-                Navigator.pop(context);
-                _createNewForm();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.content_copy, color: AppTheme.secondaryColor),
-              title: const Text('À partir d\'un modèle'),
-              subtitle: const Text('Utiliser un modèle prédéfini'),
-              onTap: () {
-                Navigator.pop(context);
-                _createFromTemplate();
-              },
+            
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Créer un formulaire',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Choisissez comment vous souhaitez commencer',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // Option formulaire vierge
+                  _buildCreateOptionCard(
+                    colorScheme: colorScheme,
+                    icon: Icons.add_circle_outline_rounded,
+                    iconColor: colorScheme.primary,
+                    title: 'Formulaire vierge',
+                    subtitle: 'Commencez avec un formulaire vide et personnalisez-le',
+                    onTap: () {
+                      Navigator.pop(context);
+                      _createNewForm();
+                    },
+                  ),
+                  
+                  const SizedBox(height: 12),
+                  
+                  // Option à partir d'un modèle
+                  _buildCreateOptionCard(
+                    colorScheme: colorScheme,
+                    icon: Icons.content_copy_rounded,
+                    iconColor: colorScheme.secondary,
+                    title: 'À partir d\'un modèle',
+                    subtitle: 'Utilisez un modèle prédéfini pour gagner du temps',
+                    onTap: () {
+                      Navigator.pop(context);
+                      _createFromTemplate();
+                    },
+                  ),
+                  
+                  // Safe area bottom padding
+                  SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
+  
+  Widget _buildCreateOptionCard({
+    required ColorScheme colorScheme,
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: colorScheme.outline.withOpacity(0.2),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: iconColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  icon,
+                  color: iconColor,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   void _showBulkActionsMenu() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
+        margin: const EdgeInsets.only(top: 60),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              '${_selectedForms.length} formulaire(s) sélectionné(s)',
-              style: const TextStyle(
-                fontSize: AppTheme.fontSize18,
-                fontWeight: AppTheme.fontBold,
+            // Handle indicator
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(top: 12),
+              decoration: BoxDecoration(
+                color: colorScheme.onSurfaceVariant.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: AppTheme.spaceLarge),
-            ListTile(
-              leading: const Icon(Icons.publish, color: AppTheme.successColor),
-              title: const Text('Publier'),
-              onTap: () {
-                Navigator.pop(context);
-                _performBulkAction('publish');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.archive, color: AppTheme.warningColor),
-              title: const Text('Archiver'),
-              onTap: () {
-                Navigator.pop(context);
-                _performBulkAction('archive');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete, color: AppTheme.errorColor),
-              title: const Text('Supprimer'),
-              onTap: () {
-                Navigator.pop(context);
-                _performBulkAction('delete');
-              },
+            
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          '${_selectedForms.length}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'formulaire(s) sélectionné(s)',
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  _buildBulkActionCard(
+                    colorScheme: colorScheme,
+                    icon: Icons.publish_rounded,
+                    iconColor: AppTheme.successColor,
+                    title: 'Publier',
+                    subtitle: 'Rendre les formulaires accessibles au public',
+                    onTap: () {
+                      Navigator.pop(context);
+                      _performBulkAction('publish');
+                    },
+                  ),
+                  
+                  const SizedBox(height: 12),
+                  
+                  _buildBulkActionCard(
+                    colorScheme: colorScheme,
+                    icon: Icons.archive_rounded,
+                    iconColor: AppTheme.warningColor,
+                    title: 'Archiver',
+                    subtitle: 'Masquer les formulaires sans les supprimer',
+                    onTap: () {
+                      Navigator.pop(context);
+                      _performBulkAction('archive');
+                    },
+                  ),
+                  
+                  const SizedBox(height: 12),
+                  
+                  _buildBulkActionCard(
+                    colorScheme: colorScheme,
+                    icon: Icons.delete_rounded,
+                    iconColor: AppTheme.errorColor,
+                    title: 'Supprimer',
+                    subtitle: 'Supprimer définitivement les formulaires',
+                    onTap: () {
+                      Navigator.pop(context);
+                      _performBulkAction('delete');
+                    },
+                  ),
+                  
+                  SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
+                ],
+              ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildBulkActionCard({
+    required ColorScheme colorScheme,
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: colorScheme.outline.withOpacity(0.2),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: iconColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  icon,
+                  color: iconColor,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

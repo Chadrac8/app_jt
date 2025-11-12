@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -217,59 +218,155 @@ class _FormPublicPageState extends State<FormPublicPage>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        title: Text(_form?.title ?? 'Formulaire'),
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: AppTheme.white100,
-        elevation: 0,
+      backgroundColor: colorScheme.surface,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar.large(
+              expandedHeight: 200,
+              floating: false,
+              pinned: true,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  _form?.title ?? 'Formulaire',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
+                titlePadding: const EdgeInsets.only(left: 20, bottom: 16, right: 20),
+                background: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.primary.withOpacity(0.8),
+                      ],
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: -30,
+                        top: -30,
+                        child: Container(
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: colorScheme.onPrimary.withOpacity(0.1),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 20,
+                        bottom: 80,
+                        child: Icon(
+                          Icons.assignment_outlined,
+                          size: 50,
+                          color: colorScheme.onPrimary.withOpacity(0.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ];
+        },
+        body: _buildBody(),
       ),
-      body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                strokeWidth: 3,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Chargement du formulaire...',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
         ),
       );
     }
 
     if (_errorMessage != null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: AppTheme.errorColor,
-            ),
-            const SizedBox(height: AppTheme.spaceMedium),
-            Text(
-              'Erreur',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppTheme.errorColor,
-                fontWeight: AppTheme.fontBold,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Card(
+            elevation: 2,
+            color: colorScheme.errorContainer,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.error_outline_rounded,
+                    size: 80,
+                    color: colorScheme.onErrorContainer,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Oops ! Une erreur est survenue',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onErrorContainer,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _errorMessage!,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: colorScheme.onErrorContainer.withOpacity(0.8),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  FilledButton.icon(
+                    onPressed: _loadForm,
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: const Text('Réessayer'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: colorScheme.onErrorContainer,
+                      foregroundColor: colorScheme.errorContainer,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: AppTheme.spaceSmall),
-            Text(
-              _errorMessage!,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppTheme.textSecondaryColor,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppTheme.spaceLarge),
-            ElevatedButton(
-              onPressed: _loadForm,
-              child: const Text('Réessayer'),
-            ),
-          ],
+          ),
         ),
       );
     }
@@ -278,53 +375,85 @@ class _FormPublicPageState extends State<FormPublicPage>
       return FadeTransition(
         opacity: _fadeAnimation,
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppTheme.spaceLarge),
-                decoration: BoxDecoration(
-                  color: AppTheme.successColor.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.check_circle,
-                  size: 64,
-                  color: AppTheme.successColor,
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Card(
+              elevation: 4,
+              color: colorScheme.surfaceContainerHighest,
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: AppTheme.successColor.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.check_circle_rounded,
+                        size: 60,
+                        color: AppTheme.successColor,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Merci !',
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Votre formulaire a été soumis avec succès',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 350),
+                      child: Text(
+                        _form!.settings.confirmationMessage,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    FilledButton.icon(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.arrow_back_outlined),
+                      label: Text(
+                        'Retour',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: AppTheme.spaceLarge),
-              Text(
-                'Formulaire soumis !',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppTheme.successColor,
-                  fontWeight: AppTheme.fontBold,
-                ),
-              ),
-              const SizedBox(height: AppTheme.spaceMedium),
-              Container(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: Text(
-                  _form!.settings.confirmationMessage,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: AppTheme.spaceXLarge),
-              if (_form!.settings.redirectUrl != null)
-                ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implement redirect
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryColor,
-                    foregroundColor: AppTheme.white100,
-                  ),
-                  child: const Text('Continuer'),
-                ),
-            ],
+            ),
           ),
         ),
       );
