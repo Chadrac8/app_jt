@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../shared/widgets/base_list_page.dart';
 import '../shared/widgets/custom_card.dart';
 import '../models/person_model.dart';
+import '../widgets/admin_view_toggle_button.dart';
+import '../models/module_card_config.dart';
 import '../services/people_module_service.dart';
-import '../modules/personnes/pages/person_import_export_page.dart';
+import 'person_import_export_page.dart';
 import '../../theme.dart';
 
 /// Vue administrateur pour les personnes (Module)

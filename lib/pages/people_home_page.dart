@@ -13,7 +13,7 @@ import 'custom_fields_management_page.dart';
 import 'workflow_followups_management_page.dart';
 import 'families_management_page.dart';
 import 'people_lists_page.dart';
-import '../modules/personnes/pages/person_import_export_page.dart';
+import 'person_import_export_page.dart';
 import '../../theme.dart';
 
 

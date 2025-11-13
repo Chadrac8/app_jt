@@ -6,8 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../theme.dart';
 import 'dart:convert';
-import 'bible_service.dart';
-import 'bible_model.dart';
+import 'services/bible_service.dart';
+import 'models/bible_book.dart';
+import 'models/bible_verse.dart';
 import 'views/bible_reading_view.dart';
 import 'views/bible_home_view.dart';
 import '../message/widgets/audio_player_tab_perfect13.dart';
@@ -364,7 +365,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     
     try {
       // Pour l'instant, utilisation de la recherche basique jusqu'à ce que advancedSearch soit implémentée
-      final results = _bibleService.search(query);
+      final results = await _bibleService.search(query);
       
       Navigator.of(context).pop(); // Fermer le loading
       
@@ -554,7 +555,7 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
   }
 
   Future<void> _loadBible() async {
-    await _bibleService.loadBible();
+    await _bibleService.getBooks();
     _pickVerseOfTheDay();
     setState(() {
       _isLoading = false;
@@ -699,38 +700,47 @@ class _BiblePageState extends State<BiblePage> with SingleTickerProviderStateMix
     );
   }
 
-  void _onSearch(String query) {
+  void _onSearch(String query) async {
     setState(() {
       _searchQuery = query;
-      // Recherche avancée :
-      final refReg = RegExp(r'^(\w+)\s*(\d+):(\d+)$');
-      final match = refReg.firstMatch(query.trim());
-      if (match != null) {
-        // Recherche par référence (ex: Jean 3:16)
-        final book = match.group(1)!;
-        final chapter = int.tryParse(match.group(2)!);
-        final verse = int.tryParse(match.group(3)!);
-        if (chapter != null && verse != null) {
-          final found = _bibleService.books.where((b) => b.name.toLowerCase().contains(book.toLowerCase())).toList();
-          if (found.isNotEmpty) {
-            final b = found.first;
-            if (chapter > 0 && chapter <= b.chapters.length && verse > 0 && verse <= b.chapters[chapter-1].length) {
+    });
+    
+    // Recherche avancée :
+    final refReg = RegExp(r'^(\w+)\s*(\d+):(\d+)$');
+    final match = refReg.firstMatch(query.trim());
+    if (match != null) {
+      // Recherche par référence (ex: Jean 3:16)
+      final book = match.group(1)!;
+      final chapter = int.tryParse(match.group(2)!);
+      final verse = int.tryParse(match.group(3)!);
+      if (chapter != null && verse != null) {
+        final found = _bibleService.books.where((b) => b.name.toLowerCase().contains(book.toLowerCase())).toList();
+        if (found.isNotEmpty) {
+          final b = found.first;
+          if (chapter > 0 && chapter <= b.chapters.length && verse > 0 && verse <= b.chapters[chapter-1].length) {
+            setState(() {
               _searchResults = [BibleVerse(book: b.name, chapter: chapter, verse: verse, text: b.chapters[chapter-1][verse-1])];
-              return;
-            }
+            });
+            return;
           }
         }
       }
-      // Recherche par expression exacte entre guillemets
-      final exactReg = RegExp(r'^"(.+)"$');
-      final exactMatch = exactReg.firstMatch(query.trim());
-      if (exactMatch != null) {
-        final phrase = exactMatch.group(1)!;
-        _searchResults = _bibleService.search(phrase).where((v) => v.text.contains(phrase)).toList();
-        return;
-      }
-      // Recherche par mot-clé classique
-      _searchResults = _bibleService.search(query);
+    }
+    // Recherche par expression exacte entre guillemets
+    final exactReg = RegExp(r'^"(.+)"$');
+    final exactMatch = exactReg.firstMatch(query.trim());
+    if (exactMatch != null) {
+      final phrase = exactMatch.group(1)!;
+      final results = await _bibleService.search(phrase);
+      setState(() {
+        _searchResults = results.where((v) => v.text.contains(phrase)).toList();
+      });
+      return;
+    }
+    // Recherche par mot-clé classique
+    final results = await _bibleService.search(query);
+    setState(() {
+      _searchResults = results;
     });
   }
 
@@ -3288,7 +3298,14 @@ Partagé depuis l'app Jubilé Tabernacle''';
       
       final book = _bibleService.books.firstWhere(
         (b) => b.name == bookName,
-        orElse: () => BibleBook(name: bookName, chapters: []),
+        orElse: () => BibleBook(
+          name: bookName, 
+          abbreviation: '', 
+          testament: '', 
+          bookNumber: 0, 
+          category: '', 
+          chapters: []
+        ),
       );
       
       if (book.chapters.isNotEmpty && 

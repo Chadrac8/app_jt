@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/reading_plan.dart';
-import '../bible_service.dart';
-import '../bible_model.dart';
+import '../services/bible_service.dart';
+import '../models/bible_book.dart';
+import '../models/bible_verse.dart';
 import '../../../../theme.dart';
 
 class DailyReadingView extends StatefulWidget {
@@ -58,7 +59,7 @@ class _DailyReadingViewState extends State<DailyReadingView> {
     setState(() => _isLoading = true);
     
     try {
-      await _bibleService.loadBible();
+      await _bibleService.getBooks();
       
       final readingsVerses = <List<BibleVerse>>[];
       
@@ -88,7 +89,14 @@ class _DailyReadingViewState extends State<DailyReadingView> {
       // Livre entier - prendre les premiers chapitres
       final book = _bibleService.books.firstWhere(
         (b) => b.name == reading.book,
-        orElse: () => BibleBook(name: '', chapters: []),
+        orElse: () => BibleBook(
+          name: '', 
+          abbreviation: '', 
+          testament: '', 
+          bookNumber: 0, 
+          category: '', 
+          chapters: []
+        ),
       );
       
       if (book.chapters.isNotEmpty) {
@@ -111,7 +119,14 @@ class _DailyReadingViewState extends State<DailyReadingView> {
       for (int c = startChapter; c <= endChapter; c++) {
         final book = _bibleService.books.firstWhere(
           (b) => b.name == reading.book,
-          orElse: () => BibleBook(name: '', chapters: []),
+          orElse: () => BibleBook(
+            name: '', 
+            abbreviation: '', 
+            testament: '', 
+            bookNumber: 0, 
+            category: '', 
+            chapters: []
+          ),
         );
         
         if (book.chapters.length >= c) {

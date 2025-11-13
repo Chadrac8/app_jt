@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
-import '../bible_service.dart';
+import '../services/bible_service.dart';
 import '../widgets/theme_creation_dialog.dart';
 import '../widgets/add_passage_dialog.dart';
 
@@ -783,14 +783,14 @@ class _PassageCard extends StatelessWidget {
   Future<String> _getVerseText(ThematicPassage passage) async {
     try {
       final bibleService = BibleService();
-      await bibleService.loadBible();
-      final verse = bibleService.getVerse(passage.book, passage.chapter, passage.startVerse);
+      await bibleService.getBooks();
+      final verse = await bibleService.getVerse(passage.book, passage.chapter, passage.startVerse);
       
       if (passage.endVerse != null && passage.endVerse! > passage.startVerse) {
         // Récupérer plusieurs versets
         final List<String> verses = [];
         for (int v = passage.startVerse; v <= passage.endVerse!; v++) {
-          final currentVerse = bibleService.getVerse(passage.book, passage.chapter, v);
+          final currentVerse = await bibleService.getVerse(passage.book, passage.chapter, v);
           if (currentVerse != null) {
             verses.add('${v}. ${currentVerse.text}');
           }

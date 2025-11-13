@@ -1258,7 +1258,8 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                             color: AppTheme.surfaceColor.withValues(alpha: 0.5)),
                           prefixIcon: Icon(
                             Icons.search_rounded,
-                            color: AppTheme.surfaceColor.withValues(alpha: 0.6)),
+                            color: AppTheme.surfaceColor.withValues(alpha: 0.6),
+                          ),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16,
@@ -1267,7 +1268,10 @@ class _BranhamBackgroundPlayerWidgetState extends State<BranhamBackgroundPlayerW
                           setState(() {
                             _searchQuery = value;
                           });
-                        })),
+                        },
+                      ),
+                    ),
+                  ),
                   
                   // Filtres par année
                   if (_availableYears.isNotEmpty) ...[

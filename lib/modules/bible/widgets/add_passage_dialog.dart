@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/thematic_passage_service.dart';
-import '../bible_service.dart';
+import '../services/bible_service.dart';
 
 class AddPassageDialog extends StatefulWidget {
   final String themeId;
@@ -379,7 +379,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
     
     try {
       final bibleService = BibleService();
-      await bibleService.loadBible();
+      await bibleService.getBooks();
       
       final startVerse = int.parse(_startVerseController.text);
       final endVerse = _endVerseController.text.isNotEmpty
@@ -389,7 +389,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
       if (endVerse > startVerse) {
         List<String> verseTexts = [];
         for (int v = startVerse; v <= endVerse; v++) {
-          final verse = bibleService.getVerse(
+          final verse = await bibleService.getVerse(
             _bookController.text,
             int.parse(_chapterController.text),
             v);
@@ -401,7 +401,7 @@ class _AddPassageDialogState extends State<AddPassageDialog> {
           _previewText = verseTexts.join('\n');
         });
       } else {
-        final verse = bibleService.getVerse(
+        final verse = await bibleService.getVerse(
           _bookController.text,
           int.parse(_chapterController.text),
           startVerse);

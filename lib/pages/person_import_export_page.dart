@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../theme.dart';
+import '../theme.dart';
 import '../services/person_import_export_service.dart';
-import '../../../models/person_model.dart';
+import '../models/person_model.dart';
 
 /// Page d'import et export des personnes
 class PersonImportExportPage extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../models/thematic_passage_model.dart';
-import '../bible_service.dart';
+import 'bible_service.dart';
 import 'predefined_themes.dart';
 
 /// Service pour gérer les passages thématiques bibliques
@@ -261,7 +261,7 @@ class ThematicPassageService {
 
     // Récupérer le texte du passage depuis la Bible
     final bibleService = BibleService();
-    await bibleService.loadBible();
+    await bibleService.getBooks();
     
     String passageText = '';
     try {
@@ -269,7 +269,7 @@ class ThematicPassageService {
         // Plusieurs versets
         List<String> verseTexts = [];
         for (int v = startVerse; v <= endVerse; v++) {
-          final verse = bibleService.getVerse(book, chapter, v);
+          final verse = await bibleService.getVerse(book, chapter, v);
           if (verse != null) {
             verseTexts.add(verse.text);
           }
@@ -277,7 +277,7 @@ class ThematicPassageService {
         passageText = verseTexts.join(' ');
       } else {
         // Un seul verset
-        final verse = bibleService.getVerse(book, chapter, startVerse);
+        final verse = await bibleService.getVerse(book, chapter, startVerse);
         passageText = verse?.text ?? 'Texte non disponible';
       }
     } catch (e) {
@@ -418,7 +418,7 @@ class ThematicPassageService {
 
     final defaultThemes = PredefinedThemes.getDefaultThemes();
     final bibleService = BibleService();
-    await bibleService.loadBible();
+    await bibleService.getBooks();
 
     for (var themeData in defaultThemes) {
       final themeId = _firestore.collection(_themesCollection).doc().id;
@@ -494,7 +494,7 @@ class ThematicPassageService {
         // Plusieurs versets
         List<String> verseTexts = [];
         for (int v = startVerse; v <= endVerse; v++) {
-          final verse = bibleService.getVerse(book, chapter, v);
+          final verse = await bibleService.getVerse(book, chapter, v);
           if (verse != null) {
             verseTexts.add(verse.text);
           }
@@ -502,7 +502,7 @@ class ThematicPassageService {
         text = verseTexts.join(' ');
       } else {
         // Un seul verset
-        final verse = bibleService.getVerse(book, chapter, startVerse);
+        final verse = await bibleService.getVerse(book, chapter, startVerse);
         text = verse?.text ?? 'Texte non disponible';
       }
     } catch (e) {

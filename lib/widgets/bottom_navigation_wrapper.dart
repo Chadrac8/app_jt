@@ -13,7 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../theme.dart';
 
 import '../pages/member_dashboard_page.dart';
-import '../modules/bible/bible_module_page.dart';
+import '../modules/bible/bible_page.dart';
 
 import '../pages/member_groups_page.dart';
 import '../pages/member_events_page.dart';
@@ -189,7 +189,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
         return const MemberDashboardPage();
 
       case 'bible':
-        return BibleModulePage(tabController: _bibleTabController);
+        return BiblePage(tabController: _bibleTabController);
 
       case 'groups':
         return const MemberGroupsPage();
