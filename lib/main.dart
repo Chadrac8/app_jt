@@ -18,6 +18,7 @@ import 'services/profile_image_cache_service.dart';
 import 'services/roles_initialization_service.dart';
 import 'modules/roles/providers/permission_provider.dart';
 import 'modules/roles/providers/role_provider.dart';
+import 'providers/theme_provider.dart' as providers;
 import 'utils/date_formatter.dart';
 import 'config/locale_config.dart';
 import 'churchflow_splash.dart';
@@ -279,32 +280,56 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => PermissionProvider()),
         ChangeNotifierProvider(create: (_) => RoleProvider()),
+        ChangeNotifierProvider(create: (_) => providers.ThemeProvider()),
       ],
-      child: MaterialApp(
-        title: 'ChurchFlow - Gestion d\'Église',
-        theme: AppTheme.lightTheme,
-        home: _hasError ? _buildErrorScreen() : const SafeAuthWrapper(),
-        debugShowCheckedModeBanner: false,
-        navigatorKey: AppNavigator.navigatorKey,
-        
-        // Configuration de localisation française
-        locale: LocaleConfig.defaultLocale,
-        localizationsDelegates: LocaleConfig.localizationsDelegates,
-        supportedLocales: LocaleConfig.supportedLocales,
-        
-        // Configuration du routage
-        initialRoute: '/',
-        
-        // Gestionnaire global d'erreurs
-        builder: (context, child) {
-          if (child == null) {
-            return _buildErrorWidget();
-          }
-          
-          return child;
+      child: Consumer<providers.ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            title: 'ChurchFlow - Gestion d\'Église',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: _getFlutterThemeMode(themeProvider.themeMode),
+            home: _hasError ? _buildErrorScreen() : const SafeAuthWrapper(),
+            debugShowCheckedModeBanner: false,
+            navigatorKey: AppNavigator.navigatorKey,
+            
+            // Configuration de localisation française
+            locale: LocaleConfig.defaultLocale,
+            localizationsDelegates: LocaleConfig.localizationsDelegates,
+            supportedLocales: LocaleConfig.supportedLocales,
+            
+            // Configuration du routage
+            initialRoute: '/',
+            
+            // Gestionnaire global d'erreurs
+            builder: (context, child) {
+              if (child == null) {
+                return _buildErrorWidget();
+              }
+              
+              // Mettre à jour le thème système lors des changements
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                themeProvider.updateSystemBrightness();
+              });
+              
+              return child;
+            },
+          );
         },
       ),
     );
+  }
+
+  /// Convertir notre ThemeMode personnalisé vers le ThemeMode de Flutter
+  ThemeMode _getFlutterThemeMode(providers.ThemeMode themeMode) {
+    switch (themeMode) {
+      case providers.ThemeMode.light:
+        return ThemeMode.light;
+      case providers.ThemeMode.dark:
+        return ThemeMode.dark;
+      case providers.ThemeMode.system:
+        return ThemeMode.system;
+    }
   }
 
   /// Construire l'écran d'erreur pour les erreurs critiques de l'application

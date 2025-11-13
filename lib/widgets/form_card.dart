@@ -10,6 +10,10 @@ class FormCard extends StatefulWidget {
   final bool isSelected;
   final ValueChanged<bool> onSelectionChanged;
   final VoidCallback onCopyUrl;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDuplicate;
+  final VoidCallback? onArchive;
+  final VoidCallback? onDelete;
 
   const FormCard({
     super.key,
@@ -20,6 +24,10 @@ class FormCard extends StatefulWidget {
     this.isSelected = false,
     required this.onSelectionChanged,
     required this.onCopyUrl,
+    this.onEdit,
+    this.onDuplicate,
+    this.onArchive,
+    this.onDelete,
   });
 
   @override
@@ -422,21 +430,129 @@ class _FormCardState extends State<FormCard>
   void _handleAction(String action) {
     switch (action) {
       case 'edit':
-        // TODO: Navigate to edit form
+        widget.onEdit?.call();
         break;
       case 'copy_url':
         widget.onCopyUrl();
         break;
       case 'duplicate':
-        // TODO: Duplicate form
+        _showDuplicateConfirmation();
         break;
       case 'archive':
-        // TODO: Archive form
+        _showArchiveConfirmation();
         break;
       case 'delete':
-        // TODO: Delete form with confirmation
+        _showDeleteConfirmation();
         break;
     }
+  }
+
+  void _showDuplicateConfirmation() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Dupliquer le formulaire'),
+        content: Text(
+          'Voulez-vous créer une copie du formulaire "${widget.form.title}" ?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Annuler'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              widget.onDuplicate?.call();
+            },
+            child: const Text('Dupliquer'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showArchiveConfirmation() {
+    final isArchived = widget.form.isArchived;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(isArchived ? 'Restaurer le formulaire' : 'Archiver le formulaire'),
+        content: Text(
+          isArchived
+              ? 'Voulez-vous restaurer le formulaire "${widget.form.title}" ?'
+              : 'Voulez-vous archiver le formulaire "${widget.form.title}" ?\n\nLe formulaire ne sera plus accessible au public mais les données seront conservées.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Annuler'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              widget.onArchive?.call();
+            },
+            child: Text(isArchived ? 'Restaurer' : 'Archiver'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Supprimer le formulaire'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Êtes-vous sûr de vouloir supprimer définitivement le formulaire "${widget.form.title}" ?',
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.errorColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppTheme.errorColor.withOpacity(0.3)),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.warning, color: AppTheme.errorColor, size: 20),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Cette action est irréversible. Toutes les réponses associées seront également supprimées.',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Annuler'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              widget.onDelete?.call();
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: AppTheme.errorColor,
+            ),
+            child: const Text('Supprimer définitivement'),
+          ),
+        ],
+      ),
+    );
   }
 
   String _formatDate(DateTime date) {

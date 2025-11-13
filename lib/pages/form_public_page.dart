@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -38,6 +41,7 @@ class _FormPublicPageState extends State<FormPublicPage>
   final Map<String, dynamic> _responses = {};
   final Map<String, TextEditingController> _controllers = {};
   final Map<String, FocusNode> _focusNodes = {};
+  final Map<String, List<PlatformFile>> _selectedFiles = {};
 
   @override
   void initState() {
@@ -111,21 +115,90 @@ class _FormPublicPageState extends State<FormPublicPage>
     }
   }
 
-  void _prefillPersonField(CustomFormField field) {
-    // TODO: Implement person field prefilling
-    // This would require access to the current user's person data
+  Future<void> _prefillPersonField(CustomFormField field) async {
+    if (!field.personField.containsKey('field')) return;
+    
     final personFieldType = field.personField['field'];
-    switch (personFieldType) {
-      case 'firstName':
-        // _controllers[field.id]?.text = currentPerson?.firstName ?? '';
-        break;
-      case 'lastName':
-        // _controllers[field.id]?.text = currentPerson?.lastName ?? '';
-        break;
-      case 'email':
-        _controllers[field.id]?.text = AuthService.currentUser?.email ?? '';
-        break;
-      // Add other person fields as needed
+    final controller = _controllers[field.id];
+    if (controller == null) return;
+    
+    try {
+      // Get current user's person data
+      final currentUser = AuthService.currentUser;
+      if (currentUser == null) return;
+      
+      // Fetch person data from Firestore
+      final personData = await FirebaseFirestore.instance
+          .collection('personnes')
+          .where('userId', isEqualTo: currentUser.uid)
+          .get();
+      
+      if (personData.docs.isEmpty) {
+        // If no person record exists, at least fill email from user
+        if (personFieldType == 'email') {
+          controller.text = currentUser.email ?? '';
+        }
+        return;
+      }
+      
+      final person = personData.docs.first.data();
+      
+      // Fill field based on person field type
+      switch (personFieldType) {
+        case 'firstName':
+          controller.text = person['prenom'] ?? '';
+          break;
+        case 'lastName':
+          controller.text = person['nom'] ?? '';
+          break;
+        case 'email':
+          controller.text = person['email'] ?? currentUser.email ?? '';
+          break;
+        case 'phone':
+          controller.text = person['telephone'] ?? '';
+          break;
+        case 'address':
+          controller.text = person['adresse'] ?? '';
+          break;
+        case 'city':
+          controller.text = person['ville'] ?? '';
+          break;
+        case 'postalCode':
+          controller.text = person['codePostal'] ?? '';
+          break;
+        case 'birthDate':
+          if (person['dateNaissance'] != null) {
+            final birthDate = (person['dateNaissance'] as Timestamp).toDate();
+            controller.text = DateFormat('dd/MM/yyyy').format(birthDate);
+          }
+          break;
+        case 'gender':
+          controller.text = person['sexe'] ?? '';
+          break;
+        case 'maritalStatus':
+          controller.text = person['situationMatrimoniale'] ?? '';
+          break;
+        case 'profession':
+          controller.text = person['profession'] ?? '';
+          break;
+        case 'emergencyContact':
+          controller.text = person['contactUrgence'] ?? '';
+          break;
+        case 'emergencyPhone':
+          controller.text = person['telephoneUrgence'] ?? '';
+          break;
+        default:
+          // For custom fields, check if they exist in person data
+          if (person.containsKey(personFieldType)) {
+            controller.text = person[personFieldType]?.toString() ?? '';
+          }
+      }
+    } catch (e) {
+      debugPrint('Error prefilling person field: $e');
+      // Fallback to user email if available
+      if (personFieldType == 'email' && AuthService.currentUser?.email != null) {
+        controller.text = AuthService.currentUser!.email!;
+      }
     }
   }
 
@@ -917,44 +990,126 @@ class _FormPublicPageState extends State<FormPublicPage>
   }
 
   Widget _buildFileInput(CustomFormField field) {
-    return Container(
-      height: 120,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: AppTheme.grey500,
-          style: BorderStyle.solid,
+    final selectedFiles = _selectedFiles[field.id] ?? [];
+    final maxFiles = field.validation['maxFiles'] ?? 1;
+    final allowedTypes = field.validation['allowedTypes'] as List<String>? ?? ['*'];
+    final maxSizeMB = field.validation['maxSize'] ?? 10;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // File selection area
+        Container(
+          height: selectedFiles.isEmpty ? 120 : 80,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppTheme.grey500,
+              style: BorderStyle.solid,
+            ),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            color: AppTheme.white100,
+          ),
+          child: InkWell(
+            onTap: selectedFiles.length < maxFiles ? () => _pickFiles(field) : null,
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  selectedFiles.length >= maxFiles ? Icons.check_circle : Icons.cloud_upload,
+                  size: selectedFiles.isEmpty ? 48 : 32,
+                  color: selectedFiles.length >= maxFiles 
+                      ? AppTheme.successColor 
+                      : AppTheme.textTertiaryColor,
+                ),
+                const SizedBox(height: AppTheme.spaceSmall),
+                Text(
+                  selectedFiles.length >= maxFiles
+                      ? 'Nombre maximum de fichiers atteint'
+                      : selectedFiles.isEmpty
+                          ? 'Cliquez pour sélectionner ${maxFiles > 1 ? 'des fichiers' : 'un fichier'}'
+                          : 'Ajouter ${maxFiles > 1 ? 'des fichiers' : 'un fichier'} supplémentaire${maxFiles > 1 ? 's' : ''}',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: selectedFiles.length >= maxFiles 
+                        ? AppTheme.textSecondaryColor 
+                        : AppTheme.textPrimaryColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
         ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        color: AppTheme.white100,
-      ),
-      child: InkWell(
-        onTap: () {
-          // TODO: Implement file picker
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Fonctionnalité de téléchargement de fichiers en développement'),
-            ),
-          );
-        },
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.cloud_upload,
-              size: 48,
-              color: AppTheme.textTertiaryColor,
-            ),
-            const SizedBox(height: AppTheme.spaceSmall),
-            Text(
-              'Cliquez pour télécharger un fichier',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppTheme.textSecondaryColor,
+        
+        // Display selected files
+        if (selectedFiles.isNotEmpty) ...[
+          const SizedBox(height: AppTheme.spaceSmall),
+          ...selectedFiles.asMap().entries.map((entry) {
+            final index = entry.key;
+            final file = entry.value;
+            return Container(
+              margin: const EdgeInsets.only(bottom: AppTheme.spaceXSmall),
+              padding: const EdgeInsets.all(AppTheme.spaceSmall),
+              decoration: BoxDecoration(
+                color: AppTheme.grey200,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                border: Border.all(color: AppTheme.grey400),
               ),
+              child: Row(
+                children: [
+                  Icon(
+                    _getFileIcon(file.extension ?? ''),
+                    size: 20,
+                    color: AppTheme.primaryColor,
+                  ),
+                  const SizedBox(width: AppTheme.spaceSmall),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          file.name,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          _formatFileSize(file.size),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppTheme.textSecondaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _removeFile(field, index),
+                    icon: const Icon(Icons.close, size: 18),
+                    color: AppTheme.errorColor,
+                    constraints: const BoxConstraints(
+                      minWidth: 32,
+                      minHeight: 32,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ],
+        
+        // File constraints info
+        Padding(
+          padding: const EdgeInsets.only(top: AppTheme.spaceXSmall),
+          child: Text(
+            _buildFileConstraintsText(maxFiles, allowedTypes, maxSizeMB),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppTheme.textSecondaryColor,
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -1018,6 +1173,164 @@ class _FormPublicPageState extends State<FormPublicPage>
       default:
         return null;
     }
+  }
+
+  // File management methods
+  Future<void> _pickFiles(CustomFormField field) async {
+    try {
+      final maxFiles = field.validation['maxFiles'] ?? 1;
+      final allowedTypes = field.validation['allowedTypes'] as List<String>? ?? ['*'];
+      final maxSizeMB = field.validation['maxSize'] ?? 10;
+      final currentFiles = _selectedFiles[field.id] ?? [];
+      
+      if (currentFiles.length >= maxFiles) {
+        _showSnackBar('Nombre maximum de fichiers atteint (${maxFiles})');
+        return;
+      }
+      
+      // Determine file type from allowed types
+      FileType fileType = FileType.any;
+      List<String>? allowedExtensions;
+      
+      if (allowedTypes.contains('image/*')) {
+        fileType = FileType.image;
+      } else if (allowedTypes.contains('application/pdf')) {
+        fileType = FileType.custom;
+        allowedExtensions = ['pdf'];
+      } else if (!allowedTypes.contains('*')) {
+        fileType = FileType.custom;
+        allowedExtensions = allowedTypes
+            .where((type) => !type.contains('/'))
+            .map((type) => type.replaceAll('.', ''))
+            .toList();
+      }
+      
+      final result = await FilePicker.platform.pickFiles(
+        type: fileType,
+        allowedExtensions: allowedExtensions,
+        allowMultiple: maxFiles > 1,
+        withData: true,
+      );
+      
+      if (result != null && result.files.isNotEmpty) {
+        final newFiles = <PlatformFile>[];
+        
+        for (final file in result.files) {
+          // Check file size
+          if (file.size > maxSizeMB * 1024 * 1024) {
+            _showSnackBar('Le fichier ${file.name} dépasse la taille maximum de ${maxSizeMB}MB');
+            continue;
+          }
+          
+          // Check if we still have space
+          if (currentFiles.length + newFiles.length >= maxFiles) {
+            _showSnackBar('Nombre maximum de fichiers atteint');
+            break;
+          }
+          
+          newFiles.add(file);
+        }
+        
+        if (newFiles.isNotEmpty) {
+          setState(() {
+            _selectedFiles[field.id] = [...currentFiles, ...newFiles];
+            _responses[field.id] = _selectedFiles[field.id];
+          });
+        }
+      }
+    } catch (e) {
+      _showSnackBar('Erreur lors de la sélection du fichier: $e');
+    }
+  }
+  
+  void _removeFile(CustomFormField field, int index) {
+    setState(() {
+      final files = _selectedFiles[field.id] ?? [];
+      if (index >= 0 && index < files.length) {
+        files.removeAt(index);
+        _selectedFiles[field.id] = files;
+        _responses[field.id] = files.isEmpty ? null : files;
+      }
+    });
+  }
+  
+  IconData _getFileIcon(String extension) {
+    switch (extension.toLowerCase()) {
+      case 'pdf':
+        return Icons.picture_as_pdf;
+      case 'doc':
+      case 'docx':
+        return Icons.description;
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+      case 'bmp':
+        return Icons.image;
+      case 'mp4':
+      case 'avi':
+      case 'mov':
+        return Icons.video_file;
+      case 'mp3':
+      case 'wav':
+      case 'aac':
+        return Icons.audio_file;
+      case 'zip':
+      case 'rar':
+      case '7z':
+        return Icons.archive;
+      case 'xls':
+      case 'xlsx':
+        return Icons.table_chart;
+      case 'ppt':
+      case 'pptx':
+        return Icons.slideshow;
+      case 'txt':
+        return Icons.text_snippet;
+      default:
+        return Icons.insert_drive_file;
+    }
+  }
+  
+  String _formatFileSize(int bytes) {
+    if (bytes < 1024) return '${bytes} B';
+    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    if (bytes < 1024 * 1024 * 1024) return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
+  }
+  
+  String _buildFileConstraintsText(int maxFiles, List<String> allowedTypes, int maxSizeMB) {
+    final constraints = <String>[];
+    
+    if (maxFiles > 1) {
+      constraints.add('Maximum ${maxFiles} fichiers');
+    }
+    
+    if (!allowedTypes.contains('*')) {
+      if (allowedTypes.contains('image/*')) {
+        constraints.add('Images uniquement');
+      } else if (allowedTypes.contains('application/pdf')) {
+        constraints.add('PDF uniquement');
+      } else {
+        final extensions = allowedTypes.where((type) => !type.contains('/')).join(', ');
+        if (extensions.isNotEmpty) {
+          constraints.add('Formats: $extensions');
+        }
+      }
+    }
+    
+    constraints.add('Taille max: ${maxSizeMB}MB');
+    
+    return constraints.join(' • ');
+  }
+  
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: AppTheme.errorColor,
+      ),
+    );
   }
 
   String? _validateField(CustomFormField field, dynamic value) {

@@ -265,7 +265,7 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
 
   Widget _buildActionGroup(String groupName, List<PourVousAction> actions, ColorScheme colorScheme) {
     final crossAxisCount = _getCrossAxisCount(context);
-    const spacing = 6.0; // Réduire l'espacement pour éviter l'overflow
+    final spacing = AppTheme.isApplePlatform ? 16.0 : 12.0; // Enhanced spacing for premium feel
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -275,18 +275,65 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.spaceSmall,
-              vertical: AppTheme.spaceSmall,
+          Container(
+            margin: EdgeInsets.only(
+              left: AppTheme.isApplePlatform ? 6.0 : 4.0,
+              bottom: AppTheme.isApplePlatform ? 8.0 : 6.0,
+              top: AppTheme.spaceSmall,
             ),
-            child: Text(
-              groupName,
-              style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize16,
-                fontWeight: AppTheme.fontSemiBold,
-                color: colorScheme.primary,
-              ),
+            child: Row(
+              children: [
+                // Elegant accent with gradient
+                Container(
+                  width: 5.0,
+                  height: AppTheme.isApplePlatform ? 24.0 : 22.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.primary.withValues(alpha: 0.7),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(2.5),
+                  ),
+                ),
+                
+                // Refined spacing
+                SizedBox(width: AppTheme.isApplePlatform ? 16.0 : 14.0),
+                
+                // Premium section title
+                Expanded(
+                  child: Text(
+                    groupName,
+                    style: AppTheme.isApplePlatform
+                        ? GoogleFonts.inter(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.6,
+                            height: 1.15,
+                            color: colorScheme.onSurface,
+                          )
+                        : GoogleFonts.inter(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
+                            height: 1.15,
+                            color: colorScheme.onSurface,
+                          ),
+                  ),
+                ),
+                
+                // Subtle decorative element
+                Container(
+                  width: 20.0,
+                  height: 1.5,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(0.75),
+                  ),
+                ),
+              ],
             ),
           ),
           GridView.builder(
@@ -304,7 +351,8 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
               return _buildActionCard(actions[index], colorScheme);
             },
           ),
-          const SizedBox(height: AppTheme.spaceMedium),
+          // Enhanced spacing between sections for better visual separation
+          SizedBox(height: AppTheme.isApplePlatform ? 40.0 : 32.0),
         ],
       ),
     );
@@ -313,59 +361,160 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
   Widget _buildActionCard(PourVousAction action, ColorScheme colorScheme) {
     final actionColor = _getActionColor(action.color) ?? colorScheme.primary;
     
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+    return Container(
+      decoration: BoxDecoration(
+        // Subtle gradient overlay for premium feel
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colorScheme.surface,
+            colorScheme.surface.withValues(alpha: 0.95),
+          ],
+          stops: const [0.0, 1.0],
+        ),
+        borderRadius: BorderRadius.circular(
+          AppTheme.isApplePlatform ? 22.0 : 20.0,
+        ),
+        border: Border.all(
+          color: AppTheme.isApplePlatform
+              ? colorScheme.outline.withValues(alpha: 0.12)
+              : colorScheme.outlineVariant.withValues(alpha: 0.6),
+          width: AppTheme.isApplePlatform ? 1.0 : 1.2,
+        ),
+        // Professional multi-layer shadows
+        boxShadow: [
+          // Primary depth shadow
+          BoxShadow(
+            color: colorScheme.shadow.withValues(
+              alpha: AppTheme.isApplePlatform ? 0.12 : 0.08,
+            ),
+            offset: const Offset(0, 3),
+            blurRadius: 12,
+            spreadRadius: 0,
+          ),
+          // Secondary ambient shadow
+          BoxShadow(
+            color: colorScheme.shadow.withValues(
+              alpha: AppTheme.isApplePlatform ? 0.06 : 0.04,
+            ),
+            offset: const Offset(0, 1),
+            blurRadius: 6,
+            spreadRadius: -1,
+          ),
+        ],
       ),
-      child: InkWell(
-        onTap: () => _handleActionTap(action),
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        child: Container(
-          padding: const EdgeInsets.all(AppTheme.spaceSmall),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppTheme.spaceXSmall),
-                decoration: BoxDecoration(
-                  color: actionColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(
+          AppTheme.isApplePlatform ? 22.0 : 20.0,
+        ),
+        child: InkWell(
+          onTap: () => _handleActionTap(action),
+          borderRadius: BorderRadius.circular(
+            AppTheme.isApplePlatform ? 22.0 : 20.0,
+          ),
+          splashColor: actionColor.withValues(alpha: 0.12),
+          highlightColor: actionColor.withValues(alpha: 0.08),
+          hoverColor: actionColor.withValues(alpha: 0.04),
+          child: Container(
+            padding: EdgeInsets.all(AppTheme.isDesktop ? 16.0 : 14.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Compact icon container for square cards
+                Container(
+                  width: AppTheme.isDesktop ? 48 : 42,
+                  height: AppTheme.isDesktop ? 48 : 42,
+                  decoration: BoxDecoration(
+                    // Multi-layer gradient for depth
+                    gradient: RadialGradient(
+                      center: const Alignment(-0.3, -0.3),
+                      radius: 1.2,
+                      colors: [
+                        actionColor.withValues(alpha: 0.18),
+                        actionColor.withValues(alpha: 0.12),
+                        actionColor.withValues(alpha: 0.06),
+                      ],
+                      stops: const [0.0, 0.7, 1.0],
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      AppTheme.isApplePlatform ? 14.0 : 12.0,
+                    ),
+                    border: Border.all(
+                      color: actionColor.withValues(alpha: 0.25),
+                      width: AppTheme.isApplePlatform ? 1.0 : 0.8,
+                    ),
+                    // Subtle inner shadow for depth
+                    boxShadow: [
+                      BoxShadow(
+                        color: actionColor.withValues(alpha: 0.08),
+                        offset: const Offset(0, 1),
+                        blurRadius: 6,
+                        spreadRadius: -1,
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    action.icon,
+                    color: actionColor,
+                    size: AppTheme.isDesktop ? 24 : 22,
+                  ),
                 ),
-                child: Icon(
-                  action.icon,
-                  color: actionColor,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(height: AppTheme.spaceXSmall),
-              Flexible(
-                child: Text(
+                
+                // Compact spacing for square format
+                SizedBox(height: AppTheme.isApplePlatform ? 10.0 : 8.0),
+                
+                // Compact title for square cards
+                Text(
                   action.title,
-                  style: GoogleFonts.inter(
-                    fontSize: AppTheme.fontSize13,
-                    fontWeight: AppTheme.fontSemiBold,
-                    color: AppTheme.textPrimaryColor,
-                  ),
+                  style: AppTheme.isApplePlatform 
+                      ? GoogleFonts.inter(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.2,
+                          height: 1.15,
+                          color: colorScheme.onSurface,
+                        )
+                      : GoogleFonts.inter(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                          height: 1.15,
+                          color: colorScheme.onSurface,
+                        ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              const SizedBox(height: 2),
-              Flexible(
-                child: Text(
-                  action.description,
-                  style: GoogleFonts.inter(
-                    fontSize: AppTheme.fontSize11,
-                    color: AppTheme.textSecondaryColor,
+                
+                // Tight spacing for square format
+                const SizedBox(height: 4.0),
+                
+                // Centered description for square cards with 2-line guarantee
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  child: Text(
+                    action.description,
+                    style: AppTheme.isApplePlatform
+                        ? GoogleFonts.inter(
+                            fontSize: 12.0,
+                            letterSpacing: -0.1,
+                            height: 1.2,
+                            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                          )
+                        : GoogleFonts.inter(
+                            fontSize: 12.0,
+                            height: 1.2,
+                            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                          ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -380,11 +529,8 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
   }
 
   double _getChildAspectRatio(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    // Ajuster le ratio en fonction de la largeur d'écran pour éviter l'overflow
-    if (width > 600) return 1.0; // Tablettes
-    if (width > 400) return 1.05; // Écrans moyens
-    return 1.0; // Petits écrans
+    // Cartes carrées avec ratio 1:1 pour un design équilibré
+    return 1.0; // Cartes parfaitement carrées
   }
 
   Color? _getActionColor(String? colorString) {

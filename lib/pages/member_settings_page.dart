@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart';
 import '../auth/auth_service.dart';
 import '../../theme.dart';
+import '../providers/theme_provider.dart' as providers;
 
 class MemberSettingsPage extends StatefulWidget {
   const MemberSettingsPage({super.key});
@@ -24,7 +26,6 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
   bool _pushNotifications = true;
   
   // Paramètres d'affichage
-  bool _darkMode = false;
   String _language = 'Français';
   
   // Statistiques
@@ -76,7 +77,6 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
         _emailNotifications = prefs.getBool('email_notifications') ?? true;
         _pushNotifications = prefs.getBool('push_notifications') ?? true;
         
-        _darkMode = prefs.getBool('dark_mode') ?? false;
         _language = prefs.getString('language') ?? 'Français';
         
         _shareCount = prefs.getInt('app_share_count') ?? 0;
@@ -94,18 +94,33 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
     try {
       final prefs = await SharedPreferences.getInstance();
       
+      // Sauvegarder les paramètres de notification
       await prefs.setBool('enable_notifications', _enableNotifications);
       await prefs.setBool('email_notifications', _emailNotifications);
       await prefs.setBool('push_notifications', _pushNotifications);
       
-      await prefs.setBool('dark_mode', _darkMode);
+      // Sauvegarder la langue (le thème est géré par ThemeProvider)
       await prefs.setString('language', _language);
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Paramètres sauvegardés'),
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: AppTheme.white,
+                  size: 20,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                const Text('Paramètres sauvegardés avec succès'),
+              ],
+            ),
             backgroundColor: AppTheme.successColor,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            ),
           ),
         );
       }
@@ -113,8 +128,22 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors de la sauvegarde : $e'),
+            content: Row(
+              children: [
+                Icon(
+                  Icons.error,
+                  color: AppTheme.white,
+                  size: 20,
+                ),
+                const SizedBox(width: AppTheme.spaceSmall),
+                Expanded(child: Text('Erreur lors de la sauvegarde : $e')),
+              ],
+            ),
             backgroundColor: AppTheme.errorColor,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            ),
           ),
         );
       }
@@ -636,47 +665,422 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
   }
 
   Widget _buildDisplaySection() {
-    return _buildSectionCard(
-      title: 'Affichage',
-      icon: Icons.display_settings,
-      children: [
-        SwitchListTile(
-          title: const Text('Mode sombre'),
-          subtitle: const Text('Interface avec thème sombre'),
-          value: _darkMode,
-          onChanged: (value) {
-            setState(() {
-              _darkMode = value;
-            });
-          },
-          contentPadding: EdgeInsets.zero,
+    return Consumer<providers.ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return _buildSectionCard(
+          title: 'Affichage',
+          icon: Icons.display_settings,
+          children: [
+            // Sélecteur de mode de thème
+            _buildThemeModeSelector(themeProvider),
+            
+            const SizedBox(height: AppTheme.spaceMedium),
+            
+            // Option langue
+            _buildLanguageSelector(),
+            
+            const SizedBox(height: AppTheme.spaceMedium),
+            
+            // Informations sur les avantages des thèmes
+            _buildThemeAdvantages(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildThemeAdvantages() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
         ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(Icons.language),
-          title: const Text('Langue'),
-          subtitle: Text(_language),
-          trailing: DropdownButton<String>(
-            value: _language,
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  _language = value;
-                });
-              }
-            },
-            items: _availableLanguages.map((lang) => 
-              DropdownMenuItem(
-                value: lang,
-                child: Text(lang),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.lightbulb_outline,
+                color: Theme.of(context).colorScheme.primary,
+                size: 20,
               ),
-            ).toList(),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Text(
+                'Avantages des thèmes',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ],
           ),
-          contentPadding: EdgeInsets.zero,
+          
+          const SizedBox(height: AppTheme.spaceSmall),
+          
+          _buildAdvantageItem(
+            icon: Icons.battery_saver,
+            title: 'Économie d\'énergie',
+            description: 'Le thème sombre consomme moins d\'énergie sur les écrans OLED',
+          ),
+          
+          _buildAdvantageItem(
+            icon: Icons.remove_red_eye,
+            title: 'Confort visuel',
+            description: 'Réduit la fatigue oculaire dans les environnements sombres',
+          ),
+          
+          _buildAdvantageItem(
+            icon: Icons.bedtime,
+            title: 'Utilisation nocturne',
+            description: 'Parfait pour la lecture et la méditation en soirée',
+          ),
+          
+          _buildAdvantageItem(
+            icon: Icons.auto_awesome,
+            title: 'Thème automatique',
+            description: 'S\'adapte automatiquement selon l\'heure et vos paramètres système',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdvantageItem({
+    required IconData icon,
+    required String title,
+    required String description,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: AppTheme.spaceSmall),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            ),
+            child: Icon(
+              icon,
+              size: 16,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          
+          const SizedBox(width: AppTheme.spaceSmall),
+          
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: AppTheme.fontSemiBold,
+                  ),
+                ),
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThemeModeSelector(providers.ThemeProvider themeProvider) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+          child: Row(
+            children: [
+              Icon(
+                Icons.brightness_6,
+                color: Theme.of(context).colorScheme.primary,
+                size: 20,
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Text(
+                'Thème de l\'application',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: AppTheme.fontSemiBold,
+                ),
+              ),
+            ],
+          ),
         ),
+        
+        const SizedBox(height: AppTheme.spaceSmall),
+        
+        // Options de thème
+        RadioListTile<providers.ThemeMode>(
+          title: const Text('Thème clair'),
+          subtitle: const Text('Interface claire et lumineuse'),
+          value: providers.ThemeMode.light,
+          groupValue: themeProvider.themeMode,
+          onChanged: (value) {
+            if (value != null) {
+              themeProvider.setThemeMode(value);
+            }
+          },
+          secondary: Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: AppTheme.white,
+              border: Border.all(color: AppTheme.outline),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            ),
+            child: const Icon(
+              Icons.light_mode,
+              color: AppTheme.primaryColor,
+              size: 18,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+        ),
+        
+        RadioListTile<providers.ThemeMode>(
+          title: const Text('Thème sombre'),
+          subtitle: const Text('Interface sombre, idéale pour la nuit'),
+          value: providers.ThemeMode.dark,
+          groupValue: themeProvider.themeMode,
+          onChanged: (value) {
+            if (value != null) {
+              themeProvider.setThemeMode(value);
+            }
+          },
+          secondary: Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1A110F),
+              border: Border.all(color: const Color(0xFF534340)),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            ),
+            child: const Icon(
+              Icons.dark_mode,
+              color: Color(0xFFFFB4A9),
+              size: 18,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+        ),
+        
+        RadioListTile<providers.ThemeMode>(
+          title: const Text('Automatique'),
+          subtitle: const Text('Suit les paramètres système'),
+          value: providers.ThemeMode.system,
+          groupValue: themeProvider.themeMode,
+          onChanged: (value) {
+            if (value != null) {
+              themeProvider.setThemeMode(value);
+            }
+          },
+          secondary: Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  AppTheme.white,
+                  Color(0xFF1A110F),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              border: Border.all(color: AppTheme.outline),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+            ),
+            child: Icon(
+              Icons.brightness_auto,
+              color: Theme.of(context).colorScheme.primary,
+              size: 18,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+        ),
+        
+        // Aperçu du thème actuel
+        if (themeProvider.themeMode != providers.ThemeMode.system)
+          _buildThemePreview(themeProvider),
       ],
     );
   }
+
+  Widget _buildThemePreview(providers.ThemeProvider themeProvider) {
+    final isDark = themeProvider.isDarkMode;
+    final previewColorScheme = isDark 
+        ? AppTheme.darkTheme.colorScheme 
+        : AppTheme.lightTheme.colorScheme;
+
+    return Container(
+      margin: const EdgeInsets.all(AppTheme.spaceMedium),
+      padding: const EdgeInsets.all(AppTheme.spaceMedium),
+      decoration: BoxDecoration(
+        color: previewColorScheme.surface,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(color: previewColorScheme.outline.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.preview,
+                color: previewColorScheme.primary,
+                size: 16,
+              ),
+              const SizedBox(width: AppTheme.spaceSmall),
+              Text(
+                'Aperçu du thème',
+                style: TextStyle(
+                  fontSize: AppTheme.fontSize12,
+                  fontWeight: AppTheme.fontSemiBold,
+                  color: previewColorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: AppTheme.spaceSmall),
+          
+          // Aperçu des éléments
+          Row(
+            children: [
+              // Bouton principal
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spaceSmall,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: previewColorScheme.primary,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                ),
+                child: Text(
+                  'Bouton',
+                  style: TextStyle(
+                    fontSize: AppTheme.fontSize12,
+                    color: previewColorScheme.onPrimary,
+                    fontWeight: AppTheme.fontSemiBold,
+                  ),
+                ),
+              ),
+              
+              const SizedBox(width: AppTheme.spaceSmall),
+              
+              // Bouton secondaire
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spaceSmall,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: previewColorScheme.outline),
+                ),
+                child: Text(
+                  'Contour',
+                  style: TextStyle(
+                    fontSize: AppTheme.fontSize12,
+                    color: previewColorScheme.onSurface,
+                  ),
+                ),
+              ),
+              
+              const Spacer(),
+              
+              // Icône
+              Icon(
+                Icons.favorite,
+                color: previewColorScheme.primary,
+                size: 20,
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: AppTheme.spaceSmall),
+          
+          // Texte d'aperçu
+          Text(
+            'Texte principal dans ce thème',
+            style: TextStyle(
+              fontSize: AppTheme.fontSize14,
+              color: previewColorScheme.onSurface,
+            ),
+          ),
+          
+          Text(
+            'Texte secondaire dans ce thème',
+            style: TextStyle(
+              fontSize: AppTheme.fontSize12,
+              color: previewColorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageSelector() {
+    return ListTile(
+      leading: Icon(
+        Icons.language,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      title: const Text('Langue'),
+      subtitle: Text(_language),
+      trailing: PopupMenuButton<String>(
+        initialValue: _language,
+        onSelected: (String value) {
+          setState(() {
+            _language = value;
+          });
+        },
+        itemBuilder: (BuildContext context) {
+          return _availableLanguages.map((String language) {
+            return PopupMenuItem<String>(
+              value: language,
+              child: Row(
+                children: [
+                  Text(language),
+                  if (language == _language) ...[
+                    const Spacer(),
+                    Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 18,
+                    ),
+                  ],
+                ],
+              ),
+            );
+          }).toList();
+        },
+        child: const Icon(Icons.arrow_drop_down),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceMedium),
+    );
+  }
+
+
 
   Widget _buildInfoSection() {
     return _buildSectionCard(

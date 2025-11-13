@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../modules/songs/models/song_model.dart';
-import '../modules/songs/models/song.dart';
-import '../modules/songs/services/songs_service.dart';
+import '../modules/songs/services/songs_firebase_service.dart';
 import 'song_projection_page.dart';
 import '../../theme.dart';
 
@@ -20,8 +19,7 @@ class SetlistConductorMode extends StatefulWidget {
 
 class _SetlistConductorModeState extends State<SetlistConductorMode>
     with TickerProviderStateMixin {
-  final SongsService _songsService = SongsService();
-  List<Song> _songs = [];
+  List<SongModel> _songs = [];
   int _currentIndex = 0;
   bool _isLoading = true;
   bool _showLyrics = true; // Démarrer avec les paroles affichées
@@ -66,9 +64,9 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
         _isLoading = true;
       });
 
-      List<Song> songs = [];
+      List<SongModel> songs = [];
       for (String songId in widget.setlist.songIds) {
-        final song = await _songsService.getById(songId);
+        final song = await SongsFirebaseService.getSong(songId);
         if (song != null) {
           songs.add(song);
         }
@@ -196,7 +194,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
   }
 
   // Header compact pour maximiser l'espace des paroles
-  Widget _buildCompactHeader(Song song) {
+  Widget _buildCompactHeader(SongModel song) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       decoration: BoxDecoration(
@@ -285,7 +283,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
   }
 
   // Vue des paroles maximisée pour la meilleure lisibilité
-  Widget _buildMaximizedLyricsView(Song song) {
+  Widget _buildMaximizedLyricsView(SongModel song) {
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
       padding: const EdgeInsets.all(AppTheme.spaceMedium),
@@ -314,7 +312,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
   }
 
   // Informations du chant en version compacte
-  Widget _buildCompactSongInfo(Song song) {
+  Widget _buildCompactSongInfo(SongModel song) {
     return Container(
       margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
       padding: const EdgeInsets.all(AppTheme.spaceMedium),
@@ -334,13 +332,13 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Informations essentielles seulement
-              if (song.tonality != null && song.tonality!.isNotEmpty) ...[
-                _buildCompactInfoRow('Tonalité', song.tonality!),
+              if (song.originalKey.isNotEmpty) ...[
+                _buildCompactInfoRow('Tonalité', song.originalKey),
                 const SizedBox(height: AppTheme.spaceSmall),
               ],
               
-              if (song.author != null && song.author!.isNotEmpty) ...[
-                _buildCompactInfoRow('Auteur', song.author!),
+              if (song.authors.isNotEmpty) ...[
+                _buildCompactInfoRow('Auteur', song.authors),
                 const SizedBox(height: AppTheme.spaceSmall),
               ],
               
@@ -541,29 +539,29 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
   void _openProjection() {
     if (_songs.isNotEmpty) {
       final currentSong = _songs[_currentIndex];
-      // Convertir Song en SongModel pour la projection
+      // Utiliser directement SongModel - pas de conversion nécessaire
       final songModel = SongModel(
-        id: currentSong.id ?? '',
+        id: currentSong.id,
         title: currentSong.title,
-        authors: currentSong.author ?? '',
+        authors: currentSong.authors,
         lyrics: currentSong.lyrics,
-        originalKey: currentSong.tonality ?? '',
-        currentKey: currentSong.tonality,
-        style: '',
+        originalKey: currentSong.originalKey,
+        currentKey: currentSong.currentKey,
+        style: currentSong.style,
         tags: currentSong.tags,
-        bibleReferences: [],
+        bibleReferences: currentSong.bibleReferences,
         tempo: currentSong.tempo,
         audioUrl: currentSong.audioUrl,
-        attachmentUrls: [],
-        status: 'active',
-        visibility: currentSong.isPublic ? 'public' : 'private',
-        privateNotes: null,
-        usageCount: currentSong.views,
-        lastUsedAt: null,
+        attachmentUrls: currentSong.attachmentUrls,
+        status: currentSong.status,
+        visibility: currentSong.visibility,
+        privateNotes: currentSong.privateNotes,
+        usageCount: currentSong.usageCount,
+        lastUsedAt: currentSong.lastUsedAt,
         createdAt: currentSong.createdAt,
         updatedAt: currentSong.updatedAt,
         createdBy: currentSong.createdBy,
-        modifiedBy: null,
+        modifiedBy: currentSong.modifiedBy,
         metadata: currentSong.metadata,
       );
       
@@ -621,7 +619,7 @@ class _SetlistConductorModeState extends State<SetlistConductorMode>
                       song.title,
                       style: TextStyle(
                         fontWeight: isCurrentSong ? AppTheme.fontBold : FontWeight.normal)),
-                    subtitle: Text(song.author ?? 'Auteur inconnu'),
+                    subtitle: Text(song.authors.isNotEmpty ? song.authors : 'Auteur inconnu'),
                     trailing: isCurrentSong 
                         ? Icon(Icons.play_arrow, 
                             color: Theme.of(context).colorScheme.primary)

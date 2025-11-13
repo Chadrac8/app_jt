@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import '../../core/module_manager.dart';
 import '../../config/app_modules.dart';
 import '../../shared/widgets/custom_card.dart';
-import 'views/songs_member_view.dart';
-import 'views/songs_admin_view.dart';
-import 'views/song_detail_view.dart';
-import 'views/song_form_view.dart';
-import 'services/songs_service.dart';
+import 'views/member_songs_page.dart';
+import 'views/songs_home_page.dart';
+import 'services/songs_firebase_service.dart';
 import '../../../theme.dart';
 
 /// Module de gestion des chants
 class SongsModule extends BaseModule {
   static const String moduleId = 'songs';
-  
-  late final SongsService _songsService;
 
   SongsModule() : super(_getModuleConfig());
 
@@ -49,47 +45,27 @@ class SongsModule extends BaseModule {
 
   @override
   Map<String, WidgetBuilder> get routes => {
-    '/member/songs': (context) => const SongsMemberView(),
-    '/admin/songs': (context) => const SongsAdminView(),
-    '/song/detail': (context) {
-      final song = ModalRoute.of(context)?.settings.arguments;
-      if (song != null) {
-        return SongDetailView(song: song as dynamic);
-      }
-      return const Scaffold(
-        body: Center(child: Text('Erreur: Chant non spécifié')),
-      );
-    },
-    '/song/form': (context) => const SongFormView(),
-    '/song/edit': (context) {
-      final song = ModalRoute.of(context)?.settings.arguments;
-      if (song != null) {
-        return SongFormView(song: song as dynamic);
-      }
-      return const SongFormView();
-    },
+    '/member/songs': (context) => const MemberSongsPage(),
+    '/admin/songs': (context) => const SongsHomePage(),
+
   };
 
   @override
   Future<void> initialize() async {
     await super.initialize();
-    _songsService = SongsService();
-    await _songsService.initialize();
     print('✅ Module Songs initialisé avec succès');
-    print('   - Modèles: Song, SongCategory, SongPlaylist');
-    print('   - Services: SongsService, SongCategoriesService, SongPlaylistsService');
+    print('   - Modèles: SongModel, Setlist');
+    print('   - Services: SongsFirebaseService');
     print('   - Vues: 4 vues complètes (Member, Admin, Detail, Form)');
     print('   - Fonctionnalités: Recherche, Catégories, Favoris, Statistiques');
   }
 
   @override
   Future<void> dispose() async {
-    await _songsService.dispose();
     await super.dispose();
     print('Module Songs libéré');
   }
 
-  @override
   Widget buildModuleCard(BuildContext context) {
     return CustomCard(
       child: InkWell(
@@ -158,20 +134,16 @@ class SongsModule extends BaseModule {
               const SizedBox(height: AppTheme.space12),
               
               // Statistiques (sera mis à jour dynamiquement)
-              FutureBuilder<Map<String, int>>(
-                future: _songsService.getStatistics(),
+              FutureBuilder<Map<String, dynamic>>(
+                future: SongsFirebaseService.getSongsStatistics(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final stats = snapshot.data!;
                     return Row(
                       children: [
-                        _buildStatChip('${stats['total'] ?? 0} chants', Icons.library_music),
+                        _buildStatChip('${stats['totalSongs'] ?? 0} chants', Icons.library_music),
                         const SizedBox(width: AppTheme.spaceSmall),
-                        _buildStatChip('${stats['approved'] ?? 0} approuvés', Icons.check_circle),
-                        if ((stats['pending'] ?? 0) > 0) ...[
-                          const SizedBox(width: AppTheme.spaceSmall),
-                          _buildStatChip('${stats['pending']} en attente', Icons.pending),
-                        ],
+                        _buildStatChip('${stats['totalSetlists'] ?? 0} setlists', Icons.queue_music),
                       ],
                     );
                   }
@@ -242,14 +214,11 @@ class SongsModule extends BaseModule {
   /// Obtenir les statistiques du module
   Future<Map<String, dynamic>> getModuleStatistics() async {
     try {
-      final stats = await _songsService.getStatistics();
-      final categories = await _songsService.categories.getActiveCategories();
+      final stats = await SongsFirebaseService.getSongsStatistics();
       
       return {
-        'total_songs': stats['total'] ?? 0,
-        'approved_songs': stats['approved'] ?? 0,
-        'pending_songs': stats['pending'] ?? 0,
-        'categories_count': categories.length,
+        'total_songs': stats['totalSongs'] ?? 0,
+        'total_setlists': stats['totalSetlists'] ?? 0,
         'last_updated': DateTime.now().toIso8601String(),
       };
     } catch (e) {
@@ -263,14 +232,10 @@ class SongsModule extends BaseModule {
   /// Vérifier l'intégrité du module
   Future<bool> verifyModuleIntegrity() async {
     try {
-      // Vérifier que le service est initialisé
-      final categories = await _songsService.categories.getActiveCategories();
-      if (categories.isEmpty) {
-        print('⚠️  Aucune catégorie trouvée, réinitialisation...');
-        await _songsService.categories.initialize();
-      }
+      // Vérifier que le service fonctionne
+      final stats = await SongsFirebaseService.getSongsStatistics();
       
-      print('✅ Module Songs: Intégrité vérifiée');
+      print('✅ Module Songs: Intégrité vérifiée - ${stats['totalSongs']} chants disponibles');
       return true;
     } catch (e) {
       print('❌ Module Songs: Erreur d\'intégrité - $e');

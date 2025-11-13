@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
 import '../models/action_group.dart';
-import '../services/pour_vous_action_service.dart';
+import '../services/action_service.dart';
 import '../services/action_group_service.dart';
 import '../../../../models/form_model.dart';
 import '../../../../services/forms_firebase_service.dart';
@@ -26,7 +26,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final PourVousActionService _actionService = PourVousActionService();
+  final ActionService _actionService = ActionService();
   final ActionGroupService _groupService = ActionGroupService();
 
   String _selectedActionType = 'navigate_page';

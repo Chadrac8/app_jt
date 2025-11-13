@@ -363,7 +363,7 @@ class FormsFirebaseService {
         testSubmissions: testSubmissions,
         submissionsByDate: submissionsByDate,
         fieldResponses: fieldResponses,
-        averageCompletionTime: 0.0, // TODO: Implement completion time tracking
+        averageCompletionTime: await _calculateAverageCompletionTime(formId),
         lastUpdated: DateTime.now(),
       );
     } catch (e) {
@@ -459,13 +459,13 @@ class FormsFirebaseService {
         // await FirebaseService.startWorkflowForPerson(submission.personId!, settings.targetWorkflowId!);
       }
       
-      // Send notifications (implement email service)
+      // Send notifications
       if (settings.sendConfirmationEmail && submission.email != null) {
-        // TODO: Implement email service
+        await _sendConfirmationEmail(submission, form);
       }
       
-      for (final email in settings.notificationEmails) {
-        // TODO: Send notification email to administrators
+      if (settings.notificationEmails.isNotEmpty) {
+        await _sendNotificationEmails(settings.notificationEmails, submission, form);
       }
     } catch (e) {
       // Log error but don't fail the submission
@@ -516,9 +516,9 @@ class FormsFirebaseService {
         case 'membres':
           return userId != null;
         case 'groupe':
+          return await _checkGroupAccess(userId, form.accessibilityTargets);
         case 'role':
-          // TODO: Implement group/role access checking
-          return userId != null;
+          return await _checkRoleAccess(userId, form.accessibilityTargets);
         default:
           return false;
       }
@@ -530,5 +530,152 @@ class FormsFirebaseService {
   // Generate public form URL
   static String generatePublicFormUrl(String formId) {
     return AppConfig.generatePublicFormUrl(formId);
+  }
+
+  // Helper methods
+  static Future<double> _calculateAverageCompletionTime(String formId) async {
+    try {
+      final submissions = await _firestore
+          .collection(formSubmissionsCollection)
+          .where('formId', isEqualTo: formId)
+          .where('isTestSubmission', isEqualTo: false)
+          .where('completionTime', isGreaterThan: 0)
+          .get();
+
+      if (submissions.docs.isEmpty) return 0.0;
+
+      double totalTime = 0.0;
+      int validSubmissions = 0;
+
+      for (final doc in submissions.docs) {
+        final data = doc.data();
+        final completionTime = data['completionTime'] as double?;
+        if (completionTime != null && completionTime > 0) {
+          totalTime += completionTime;
+          validSubmissions++;
+        }
+      }
+
+      return validSubmissions > 0 ? totalTime / validSubmissions : 0.0;
+    } catch (e) {
+      return 0.0;
+    }
+  }
+
+  // Email notification methods
+  static Future<void> _sendConfirmationEmail(FormSubmissionModel submission, FormModel form) async {
+    try {
+      // Create confirmation email data
+      final emailData = {
+        'to': submission.email,
+        'template': {
+          'name': 'form_confirmation',
+          'data': {
+            'submissionId': submission.id,
+            'formTitle': form.title,
+            'submissionDate': submission.submittedAt.toIso8601String(),
+            'responses': submission.responses,
+          },
+        },
+      };
+
+      // Send email through Firebase Functions
+      await _firestore.collection('mail').add(emailData);
+      
+      // Log the email sending
+      await _logFormActivity(
+        submission.formId,
+        'confirmation_email_sent',
+        {'email': submission.email, 'submissionId': submission.id},
+      );
+    } catch (e) {
+      print('Error sending confirmation email: $e');
+      // Don't throw error to avoid failing the submission
+    }
+  }
+
+  static Future<void> _sendNotificationEmails(
+    List<String> emails,
+    FormSubmissionModel submission,
+    FormModel form,
+  ) async {
+    try {
+      for (final email in emails) {
+        final emailData = {
+          'to': email,
+          'template': {
+            'name': 'form_submission_notification',
+            'data': {
+              'formTitle': form.title,
+              'submissionId': submission.id,
+              'submitterEmail': submission.email ?? 'Non renseigné',
+              'submissionDate': submission.submittedAt.toIso8601String(),
+              'responses': submission.responses,
+              'adminUrl': AppConfig.baseUrl + '/admin/forms/${form.id}/submissions/${submission.id}',
+            },
+          },
+        };
+
+        // Send notification email through Firebase Functions
+        await _firestore.collection('mail').add(emailData);
+      }
+
+      // Log the notification sending
+      await _logFormActivity(
+        submission.formId,
+        'notification_emails_sent',
+        {'emails': emails, 'submissionId': submission.id},
+      );
+    } catch (e) {
+      print('Error sending notification emails: $e');
+      // Don't throw error to avoid failing the submission
+    }
+  }
+
+  // Access control methods
+  static Future<bool> _checkGroupAccess(String? userId, List<String> groupIds) async {
+    if (userId == null || groupIds.isEmpty) return false;
+    
+    try {
+      // Check if user is member of any of the specified groups
+      for (final groupId in groupIds) {
+        final memberQuery = await _firestore
+            .collection('groupes')
+            .doc(groupId)
+            .collection('membres')
+            .where('userId', isEqualTo: userId)
+            .where('statut', isEqualTo: 'actif')
+            .get();
+        
+        if (memberQuery.docs.isNotEmpty) {
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> _checkRoleAccess(String? userId, List<String> roleIds) async {
+    if (userId == null || roleIds.isEmpty) return false;
+    
+    try {
+      // Get user's person data to check roles
+      final personQuery = await _firestore
+          .collection('personnes')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      if (personQuery.docs.isEmpty) return false;
+
+      final person = personQuery.docs.first.data();
+      final userRoles = List<String>.from(person['roles'] ?? []);
+
+      // Check if user has any of the required roles
+      return roleIds.any((roleId) => userRoles.contains(roleId));
+    } catch (e) {
+      return false;
+    }
   }
 }

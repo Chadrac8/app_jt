@@ -96,9 +96,21 @@ class ActionGroup {
 
   static IconData _iconFromData(Map<String, dynamic> data) {
     final codePoint = data['iconCodePoint'] ?? Icons.folder.codePoint;
-    // Use Icons.folder as default to avoid tree-shaking issues
-    if (codePoint == Icons.folder.codePoint) return Icons.folder;
-    return IconData(codePoint, fontFamily: 'MaterialIcons');
+    
+    // Map common icon code points to Flutter Icons to avoid tree-shaking issues
+    switch (codePoint) {
+      case 0xe2bc: return Icons.folder;
+      case 0xe7fd: return Icons.people;
+      case 0xe8d2: return Icons.event;
+      case 0xe913: return Icons.church;
+      case 0xe88f: return Icons.school;
+      case 0xe8cc: return Icons.music_note;
+      case 0xe894: return Icons.sports;
+      case 0xe8d8: return Icons.work;
+      case 0xe7ef: return Icons.local_hospital;
+      case 0xe7f2: return Icons.restaurant;
+      default: return Icons.folder; // Always return a constant IconData
+    }
   }
 
   @override

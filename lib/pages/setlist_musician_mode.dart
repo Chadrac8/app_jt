@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../modules/songs/models/song_model.dart';
-import '../modules/songs/models/song.dart';
-import '../modules/songs/services/songs_service.dart';
+import '../modules/songs/services/songs_firebase_service.dart';
 import '../pages/song_projection_page.dart';
 import '../../theme.dart';
 
@@ -22,8 +21,7 @@ class SetlistMusicianMode extends StatefulWidget {
 
 class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     with TickerProviderStateMixin {
-  final SongsService _songsService = SongsService();
-  List<Song> _songs = [];
+  List<SongModel> _songs = [];
   int _currentIndex = 0;
   bool _isLoading = true;
   
@@ -75,9 +73,9 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
         _isLoading = true;
       });
 
-      List<Song> songs = [];
+      List<SongModel> songs = [];
       for (String songId in widget.setlist.songIds) {
-        final song = await _songsService.getById(songId);
+        final song = await SongsFirebaseService.getSong(songId);
         if (song != null) {
           songs.add(song);
         }
@@ -227,7 +225,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
   }
 
   // Header compact spécialement conçu pour les musiciens
-  Widget _buildCompactMusicianHeader(Song song) {
+  Widget _buildCompactMusicianHeader(SongModel song) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       decoration: BoxDecoration(
@@ -299,8 +297,8 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                   borderRadius: BorderRadius.circular(6)),
                 child: Text(
                   _transposeSteps == 0 
-                      ? (song.tonality ?? 'C')
-                      : _getTransposedKey(song.tonality ?? 'C'),
+                      ? (song.originalKey.isNotEmpty ? song.originalKey : 'C')
+                      : _getTransposedKey(song.originalKey.isNotEmpty ? song.originalKey : 'C'),
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.surface,
                     fontSize: AppTheme.fontSize12,
@@ -345,7 +343,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
         child: _buildContentForViewMode(currentSong)));
   }
 
-  Widget _buildContentForViewMode(Song song) {
+  Widget _buildContentForViewMode(SongModel song) {
     switch (_viewMode) {
       case 'chords_only':
         return _buildChordsOnlyView(song);
@@ -356,7 +354,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
     }
   }
 
-  Widget _buildFullLyricsView(Song song) {
+  Widget _buildFullLyricsView(SongModel song) {
     return SingleChildScrollView(
       padding: EdgeInsets.zero,
       child: Text(
@@ -369,7 +367,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
           letterSpacing: 0.2)));
   }
 
-  Widget _buildChordsOnlyView(Song song) {
+  Widget _buildChordsOnlyView(SongModel song) {
     final chords = <String>[];
     final lines = song.lyrics.split('\n');
     
@@ -437,7 +435,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
         ]));
   }
 
-  Widget _buildStructureOnlyView(Song song) {
+  Widget _buildStructureOnlyView(SongModel song) {
     final structure = <String>[];
     final lines = song.lyrics.split('\n');
     
@@ -684,29 +682,29 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
   void _openProjection() {
     if (_songs.isNotEmpty) {
       final currentSong = _songs[_currentIndex];
-      // Convertir Song en SongModel pour la projection
+      // Utiliser directement SongModel - pas de conversion nécessaire
       final songModel = SongModel(
-        id: currentSong.id ?? '',
+        id: currentSong.id,
         title: currentSong.title,
-        authors: currentSong.author ?? '',
+        authors: currentSong.authors,
         lyrics: currentSong.lyrics,
-        originalKey: currentSong.tonality ?? '',
-        currentKey: _transposeSteps == 0 ? currentSong.tonality : _getTransposedKey(currentSong.tonality),
-        style: '',
+        originalKey: currentSong.originalKey,
+        currentKey: _transposeSteps == 0 ? currentSong.originalKey : _getTransposedKey(currentSong.originalKey),
+        style: currentSong.style,
         tags: currentSong.tags,
-        bibleReferences: [],
+        bibleReferences: currentSong.bibleReferences,
         tempo: _bpm,
         audioUrl: currentSong.audioUrl,
-        attachmentUrls: [],
-        status: 'active',
-        visibility: currentSong.isPublic ? 'public' : 'private',
-        privateNotes: null,
-        usageCount: currentSong.views,
-        lastUsedAt: null,
+        attachmentUrls: currentSong.attachmentUrls,
+        status: currentSong.status,
+        visibility: currentSong.visibility,
+        privateNotes: currentSong.privateNotes,
+        usageCount: currentSong.usageCount,
+        lastUsedAt: currentSong.lastUsedAt,
         createdAt: currentSong.createdAt,
         updatedAt: currentSong.updatedAt,
         createdBy: currentSong.createdBy,
-        modifiedBy: null,
+        modifiedBy: currentSong.modifiedBy,
         metadata: currentSong.metadata,
       );
       
@@ -769,7 +767,7 @@ class _SetlistMusicianModeState extends State<SetlistMusicianMode>
                       song.title,
                       style: TextStyle(
                         fontWeight: isCurrentSong ? AppTheme.fontBold : FontWeight.normal)),
-                    subtitle: Text('${song.author ?? 'Auteur inconnu'} • ${song.tonality ?? 'C'}'),
+                    subtitle: Text('${song.authors.isNotEmpty ? song.authors : 'Auteur inconnu'} • ${song.originalKey.isNotEmpty ? song.originalKey : 'C'}'),
                     trailing: isCurrentSong 
                         ? Icon(Icons.music_note, color: AppTheme.warningColor)
                         : null,

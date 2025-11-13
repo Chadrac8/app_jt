@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
-import '../services/pour_vous_action_service.dart';
+import '../services/action_service.dart';
 import '../dialogs/action_form_dialog.dart';
 import '../dialogs/group_management_dialog.dart';
 import '../dialogs/action_templates_dialog.dart';
@@ -15,7 +15,7 @@ class AdminPourVousTab extends StatefulWidget {
 }
 
 class _AdminPourVousTabState extends State<AdminPourVousTab> {
-  final PourVousActionService _actionService = PourVousActionService();
+  final ActionService _actionService = ActionService();
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
   String _searchQuery = '';

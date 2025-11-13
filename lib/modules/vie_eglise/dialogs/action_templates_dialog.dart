@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
 import '../models/pour_vous_action.dart';
-import '../services/pour_vous_action_service.dart';
+import '../services/action_service.dart';
 import 'action_form_dialog.dart';
 
 class ActionTemplatesDialog extends StatefulWidget {
@@ -13,7 +13,7 @@ class ActionTemplatesDialog extends StatefulWidget {
 }
 
 class _ActionTemplatesDialogState extends State<ActionTemplatesDialog> {
-  final PourVousActionService _actionService = PourVousActionService();
+  final ActionService _actionService = ActionService();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
