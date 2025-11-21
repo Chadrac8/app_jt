@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart'; // Non utilisé
 import '../services/roles_firebase_service.dart';
 
 /// Service pour initialiser les données essentielles de l'application
 class SampleDataSeeder {
-  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// Initialiser les données système essentielles
   static Future<void> initializeSystemData() async {

@@ -35,7 +35,6 @@ class SoundCloudUrlInfo {
         case SoundCloudContentType.user:
           return 'Profil Utilisateur';
         case SoundCloudContentType.unknown:
-        default:
           return 'URL non reconnue';
       }
     }

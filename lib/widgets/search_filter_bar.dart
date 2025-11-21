@@ -377,7 +377,7 @@ class _SearchFilterBarState extends State<SearchFilterBar>
                                     return Wrap(
                                       spacing: 8,
                                       runSpacing: 8,
-                                      children: roles.where((role) => role != null).map((role) {
+                                      children: roles.map((role) {
                                         final isSelected = widget.selectedRoleFilters.contains(role.id);
                                         return FilterChip(
                                           label: Text(role.name),

@@ -25,7 +25,7 @@ class _ServiceSeriesManagementViewState extends State<ServiceSeriesManagementVie
   List<ServiceModel> _services = [];
   bool _isLoading = true;
   String _selectedAction = '';
-  Set<String> _selectedServiceIds = {};
+  // Set<String> _selectedServiceIds = {};
 
   @override
   void initState() {

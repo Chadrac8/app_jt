@@ -496,18 +496,6 @@ class _PageBuilderPageState extends State<PageBuilderPage>
           'longitude': 0.0,
           'zoom': 15,
         };
-      case 'video':
-        return {
-          'url': '',
-          'title': '',
-          'playbackMode': 'integrated',
-          'autoplay': false,
-          'autoPlay': false,
-          'loop': false,
-          'mute': false,
-          'hideControls': false,
-          'showControls': true,
-        };
       case 'audio':
         return {
           'source_type': 'direct',
