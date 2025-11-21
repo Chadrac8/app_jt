@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/service_model.dart';
@@ -90,13 +91,22 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView>
     );
   }
   
+  Timer? _pageChangeDebounce;
+
   void _onPageChanged(int pageIndex) {
     final monthsDiff = pageIndex - 1000;
     final now = DateTime.now();
-    setState(() {
-      _currentMonth = DateTime(now.year + (monthsDiff ~/ 12), now.month + (monthsDiff % 12));
+    final newMonth = DateTime(now.year + (monthsDiff ~/ 12), now.month + (monthsDiff % 12));
+    
+    _pageChangeDebounce?.cancel();
+    _pageChangeDebounce = Timer(const Duration(milliseconds: 150), () {
+      if (mounted) {
+        setState(() {
+          _currentMonth = newMonth;
+        });
+        _loadCalendarData();
+      }
     });
-    _loadCalendarData();
   }
   
   // Chargement intelligent des données calendrier

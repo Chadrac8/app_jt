@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 // ...existing code...
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -43,6 +44,11 @@ void main() async {
   
   // Initialiser la locale française pour les dates
   DateFormatter.initializeFrenchLocale();
+  
+  // Désactiver les logs en mode release
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
   
   // Services d'erreur supprimés pour la production
   

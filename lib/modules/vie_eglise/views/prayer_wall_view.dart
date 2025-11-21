@@ -45,7 +45,7 @@ class _PrayerWallViewState extends State<PrayerWallView>
 
   void _setupAnimations() {
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
 

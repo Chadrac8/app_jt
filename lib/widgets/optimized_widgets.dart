@@ -261,13 +261,14 @@ class OptimizedGridView extends StatelessWidget {
   }
 }
 
-/// Widget de StreamBuilder optimisé avec cache
+/// Widget de StreamBuilder optimisé avec cache et debounce
 class OptimizedStreamBuilder<T> extends StatefulWidget {
   final Stream<T> stream;
   final Widget Function(BuildContext context, T data) builder;
   final Widget Function(BuildContext context)? loadingBuilder;
   final Widget Function(BuildContext context, Object error)? errorBuilder;
   final Duration cacheDuration;
+  final Duration debounceDuration;
 
   const OptimizedStreamBuilder({
     super.key,
@@ -276,6 +277,7 @@ class OptimizedStreamBuilder<T> extends StatefulWidget {
     this.loadingBuilder,
     this.errorBuilder,
     this.cacheDuration = const Duration(minutes: 5),
+    this.debounceDuration = const Duration(milliseconds: 100),
   });
 
   @override
