@@ -372,6 +372,9 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView>
         crossAxisSpacing: 4,
         mainAxisSpacing: 4,
       ),
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: false,
+      cacheExtent: 200,
       itemCount: totalCells,
       itemBuilder: (context, index) {
         final date = startDate.add(Duration(days: index));

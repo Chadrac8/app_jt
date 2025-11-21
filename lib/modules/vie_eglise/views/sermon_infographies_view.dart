@@ -88,13 +88,16 @@ class _SermonInfographiesViewState extends State<SermonInfographiesView> {
                       });
                     },
                     itemBuilder: (context, index) {
+                      final infographieUrl = infographies[index];
                       return InteractiveViewer(
                         minScale: 0.5,
                         maxScale: 4.0,
                         child: Center(
                           child: Image.network(
-                            infographies[index],
+                            infographieUrl,
                             fit: BoxFit.contain,
+                            cacheWidth: 800,
+                            cacheHeight: 1200,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
                               return Center(

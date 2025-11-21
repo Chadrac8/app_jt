@@ -122,6 +122,10 @@ class _ServiceCardState extends State<ServiceCard>
         child: CachedNetworkImage(
           imageUrl: "https://images.unsplash.com/photo-1618347991384-a4e195e722c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDgzNTkyNjN8&ixlib=rb-4.1.0&q=80&w=1080",
           fit: BoxFit.cover,
+          memCacheWidth: 400,
+          memCacheHeight: 120,
+          maxWidthDiskCache: 800,
+          maxHeightDiskCache: 240,
           placeholder: (context, url) => _buildLoadingImage(),
           errorWidget: (context, url, error) => _buildFallbackImage(),
         ),

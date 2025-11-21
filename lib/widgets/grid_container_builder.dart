@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../models/page_model.dart';
@@ -23,6 +24,7 @@ class GridContainerBuilder extends StatefulWidget {
 class _GridContainerBuilderState extends State<GridContainerBuilder>
     with TickerProviderStateMixin {
   final _uuid = const Uuid();
+  Timer? _updateDebounce;
   late List<PageComponent> _children;
   late Map<String, dynamic> _containerData;
   late Map<String, dynamic> _containerStyling;
@@ -101,12 +103,21 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
       builder: (context) => ComponentEditor(
         component: newComponent,
         onSave: (component) {
-          setState(() {
+          _debouncedUpdate(() {
             _children.add(component);
           });
         },
       ),
     );
+  }
+
+  void _debouncedUpdate(VoidCallback update) {
+    _updateDebounce?.cancel();
+    _updateDebounce = Timer(const Duration(milliseconds: 100), () {
+      if (mounted) {
+        setState(update);
+      }
+    });
   }
 
   void _editComponent(int index) {
@@ -117,7 +128,7 @@ class _GridContainerBuilderState extends State<GridContainerBuilder>
       builder: (context) => ComponentEditor(
         component: component,
         onSave: (updatedComponent) {
-          setState(() {
+          _debouncedUpdate(() {
             _children[index] = updatedComponent;
           });
         },

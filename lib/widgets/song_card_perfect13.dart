@@ -20,8 +20,10 @@ class SongCardPerfect13 extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      elevation: AppTheme.elevation1,
+    return RepaintBoundary(
+      key: ValueKey('song_${song.id}'),
+      child: Card(
+        elevation: AppTheme.elevation1,
       shadowColor: colorScheme.shadow.withOpacity(0.2),
       surfaceTintColor: colorScheme.surfaceTint,
       shape: RoundedRectangleBorder(
@@ -137,6 +139,7 @@ class SongCardPerfect13 extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

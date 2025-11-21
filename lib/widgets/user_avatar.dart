@@ -111,6 +111,9 @@ class _UserAvatarState extends State<UserAvatar> {
         fit: BoxFit.cover,
         width: widget.radius * 2,
         height: widget.radius * 2,
+        memCacheWidth: (widget.radius * 2).toInt(),
+        memCacheHeight: (widget.radius * 2).toInt(),
+        maxWidthDiskCache: (widget.radius * 4).toInt(),
         placeholder: (context, url) => _buildLoadingIndicator(),
         errorWidget: (context, url, error) => _buildFallbackIcon(),
         // Mettre en cache automatiquement

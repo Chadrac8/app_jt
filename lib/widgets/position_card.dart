@@ -24,8 +24,10 @@ class PositionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: isSelected ? 8 : 2,
+    return RepaintBoundary(
+      key: ValueKey('position_${position.id}'),
+      child: Card(
+        elevation: isSelected ? 8 : 2,
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: onTap,
@@ -259,6 +261,7 @@ class PositionCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

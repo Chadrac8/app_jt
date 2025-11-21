@@ -121,7 +121,7 @@ class _UltraOptimizedListViewState<T> extends State<UltraOptimizedListView<T>> {
     
     // Débounce pour optimiser les rebuilds pendant le scroll
     _scrollEndTimer?.cancel();
-    _scrollEndTimer = Timer(const Duration(milliseconds: 100), () {
+    _scrollEndTimer = Timer(const Duration(milliseconds: 150), () {
       if (mounted) {
         setState(() {});
       }
@@ -137,7 +137,7 @@ class _UltraOptimizedListViewState<T> extends State<UltraOptimizedListView<T>> {
       widget.onLoadMore!();
       
       // Reset loading state après un délai
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(milliseconds: 1500), () {
         if (mounted) {
           setState(() {
             _isLoadingMore = false;

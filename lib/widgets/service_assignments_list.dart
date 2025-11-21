@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../models/service_model.dart';
 import '../models/person_model.dart';
@@ -764,11 +765,13 @@ class _PersonSelectionDialog extends StatefulWidget {
 }
 
 class _PersonSelectionDialogState extends State<_PersonSelectionDialog> {
+  Timer? _searchDebounce;
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void dispose() {
+    _searchDebounce?.cancel();
     _searchController.dispose();
     super.dispose();
   }
@@ -794,7 +797,12 @@ class _PersonSelectionDialogState extends State<_PersonSelectionDialog> {
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
               ),
-              onChanged: (value) => setState(() => _searchQuery = value),
+              onChanged: (value) {
+                _searchDebounce?.cancel();
+                _searchDebounce = Timer(const Duration(milliseconds: 300), () {
+                  if (mounted) setState(() => _searchQuery = value);
+                });
+              },
             ),
             const SizedBox(height: AppTheme.spaceMedium),
             Expanded(
