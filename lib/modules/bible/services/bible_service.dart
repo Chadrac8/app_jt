@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../models/bible_book.dart';
 import '../models/bible_verse.dart';
@@ -7,6 +8,11 @@ class BibleService {
   static BibleService? _instance;
   
   BibleService._internal();
+  
+  // Fonction isolée pour parser JSON lourd
+  static List<dynamic> _parseJsonList(String jsonString) {
+    return json.decode(jsonString) as List<dynamic>;
+  }
   
   factory BibleService() {
     _instance ??= BibleService._internal();
@@ -68,7 +74,8 @@ class BibleService {
       
       // Charger les vraies données bibliques depuis le fichier JSON
       final String data = await rootBundle.loadString('assets/bible/$fileName');
-      final List<dynamic> jsonData = json.decode(data);
+      // Parse JSON en isolate pour fichiers lourds (>100KB)
+      final List<dynamic> jsonData = await compute(_parseJsonList, data);
       
       _cachedBooksByVersion[targetVersion] = jsonData.asMap().entries.map((entry) {
         int index = entry.key;

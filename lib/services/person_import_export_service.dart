@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
@@ -110,7 +111,12 @@ class PersonImportExportService {
     }
     
     return null;
-  }  /// Champs standard disponibles pour l'export
+  }  // Fonction isolée pour parser JSON lourd
+  static Map<String, dynamic> _parseJsonMap(String jsonString) {
+    return jsonDecode(jsonString) as Map<String, dynamic>;
+  }
+
+  /// Champs standard disponibles pour l'export
   static const List<String> standardFields = [
     'firstName',
     'lastName',
@@ -624,7 +630,10 @@ class PersonImportExportService {
   ) async {
     try {
       final content = await file.readAsString(encoding: utf8);
-      final data = jsonDecode(content) as Map<String, dynamic>;
+      // Parse JSON en isolate si >100KB
+      final data = content.length > 100000 
+          ? await compute(_parseJsonMap, content)
+          : jsonDecode(content) as Map<String, dynamic>;
       
       final peopleData = data['people'] as List<dynamic>?;
       if (peopleData == null) {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/branham_message.dart';
@@ -6,6 +7,11 @@ import '../../../models/branham_message.dart';
 class BranhamMessagesService {
   static const String _baseUrl = 'https://branham.org';
   static const String _cacheKey = 'branham_messages_cache';
+  
+  // Fonction isolée pour parser JSON lourd
+  static List<dynamic> _parseJsonList(String jsonString) {
+    return json.decode(jsonString) as List<dynamic>;
+  }
   static const String _lastUpdateKey = 'branham_messages_last_update';
   static const Duration _cacheExpiry = Duration(hours: 24);
 
@@ -184,7 +190,10 @@ class BranhamMessagesService {
         if (timeSinceUpdate < _cacheExpiry) {
           final cachedJson = prefs.getString(_cacheKey);
           if (cachedJson != null) {
-            final List<dynamic> jsonList = json.decode(cachedJson);
+            // Parse JSON en isolate si >50KB
+            final List<dynamic> jsonList = cachedJson.length > 50000
+                ? await compute(_parseJsonList, cachedJson)
+                : json.decode(cachedJson) as List<dynamic>;
             return jsonList.map((json) => BranhamMessage.fromJson(json)).toList();
           }
         }

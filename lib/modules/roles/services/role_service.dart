@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/role.dart';
 import '../models/user_role.dart';
@@ -370,6 +371,15 @@ class RoleService {
           .where('isActive', isEqualTo: true)
           .get();
 
+      // Exécuter calcul en isolate si >100 rôles
+      if (allRoles.docs.length > 100) {
+        final data = {
+          'userRoles': allUserRoles.docs.map((d) => d.data()).toList(),
+          'roles': allRoles.docs.map((d) => {'id': d.id, ...d.data()}).toList(),
+        };
+        return await compute(_calculateRoleStats, data);
+      }
+
       final statistics = <String, int>{};
       
       // Compter les utilisateurs par rôle
@@ -391,6 +401,27 @@ class RoleService {
     } catch (e) {
       throw Exception('Erreur lors du calcul des statistiques: $e');
     }
+  }
+
+  // Fonction isolée pour calculs statistiques
+  static Map<String, int> _calculateRoleStats(Map<String, dynamic> data) {
+    final userRoles = data['userRoles'] as List<dynamic>;
+    final roles = data['roles'] as List<dynamic>;
+    final statistics = <String, int>{};
+    
+    for (final role in roles) {
+      final roleId = role['id'] as String;
+      final roleName = role['name'] as String;
+      
+      final count = userRoles.where((userRole) {
+        final roleIds = List<String>.from(userRole['roleIds'] ?? []);
+        return roleIds.contains(roleId);
+      }).length;
+      
+      statistics[roleName] = count;
+    }
+    
+    return statistics;
   }
 
   // ========== UTILITAIRES ==========
