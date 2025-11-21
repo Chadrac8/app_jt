@@ -43,6 +43,7 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
   }
 
   Future<void> _loadData() async {
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
       _error = null;
@@ -50,15 +51,19 @@ class _BaseListPageState<T> extends State<BaseListPage<T>> {
 
     try {
       final items = await widget.loadItems();
-      setState(() {
-        _items = items;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _items = items;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
     }
   }
 

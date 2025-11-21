@@ -47,10 +47,14 @@ class _DashboardConfigurationPageState extends State<DashboardConfigurationPage>
       _allWidgets = futures[0] as List<DashboardWidgetModel>;
       _preferences = futures[1] as Map<String, dynamic>;
 
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     } catch (e) {
       print('Erreur lors du chargement de la configuration: $e');
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

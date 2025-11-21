@@ -41,7 +41,9 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
     _tabController = TabController(length: 3, vsync: this);
     
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadInitialData();
+      if (mounted) {
+        _loadInitialData();
+      }
     });
   }
 

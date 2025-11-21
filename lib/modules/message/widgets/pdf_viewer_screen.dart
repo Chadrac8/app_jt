@@ -94,7 +94,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   }
 
   void _refreshPdf() {
-    if (!kIsWeb) {
+    if (!kIsWeb && mounted) {
       setState(() {
         _isLoading = true;
         _error = null;

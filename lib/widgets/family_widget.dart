@@ -21,7 +21,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 250),
       vsync: this,
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(

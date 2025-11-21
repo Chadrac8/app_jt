@@ -354,31 +354,35 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   Widget _buildDashboardWidget(DashboardWidgetModel widget, bool compactView) {
     switch (widget.type) {
       case 'stat':
-        return FutureBuilder<DashboardStatModel>(
-          future: StatisticsService.calculateWidgetStatistics(widget),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return DashboardStatWidget(
-                stat: snapshot.data!,
-                compactView: compactView,
-              );
-            }
-            return _buildLoadingWidget(widget.title);
-          },
+        return RepaintBoundary(
+          child: FutureBuilder<DashboardStatModel>(
+            future: StatisticsService.calculateWidgetStatistics(widget),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return DashboardStatWidget(
+                  stat: snapshot.data!,
+                  compactView: compactView,
+                );
+              }
+              return _buildLoadingWidget(widget.title);
+            },
+          ),
         );
         
       case 'chart':
-        return FutureBuilder<DashboardChartModel>(
-          future: StatisticsService.calculateChartData(widget),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return DashboardChartWidget(
-                chart: snapshot.data!,
-                compactView: compactView,
-              );
-            }
-            return _buildLoadingWidget(widget.title);
-          },
+        return RepaintBoundary(
+          child: FutureBuilder<DashboardChartModel>(
+            future: StatisticsService.calculateChartData(widget),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return DashboardChartWidget(
+                  chart: snapshot.data!,
+                  compactView: compactView,
+                );
+              }
+              return _buildLoadingWidget(widget.title);
+            },
+          ),
         );
         
       case 'list':

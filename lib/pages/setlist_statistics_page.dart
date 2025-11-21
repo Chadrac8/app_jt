@@ -14,7 +14,13 @@ class SetlistStatisticsPage extends StatelessWidget {
         future: SongsFirebaseService.getSetlistsStatistics(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            );
           }
           if (snapshot.hasError) {
             return Center(child: Text('Erreur: [200m${snapshot.error}[0m'));

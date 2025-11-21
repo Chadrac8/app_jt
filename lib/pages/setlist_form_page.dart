@@ -72,21 +72,27 @@ class _SetlistFormPageState extends State<SetlistFormPage> {
       
       if (widget.setlist != null) {
         final selectedSongs = await SongsFirebaseService.getSetlistSongs(_selectedSongIds);
-        setState(() {
-          _availableSongs = songs;
-          _selectedSongs = selectedSongs;
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _availableSongs = songs;
+            _selectedSongs = selectedSongs;
+            _isLoading = false;
+          });
+        }
       } else {
+        if (mounted) {
+          setState(() {
+            _availableSongs = songs;
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
         setState(() {
-          _availableSongs = songs;
           _isLoading = false;
         });
       }
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

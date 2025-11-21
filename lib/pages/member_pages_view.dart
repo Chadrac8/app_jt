@@ -366,6 +366,7 @@ class _MemberPageDetailViewState extends State<MemberPageDetailView> {
   }
 
   Future<void> _recordPageView() async {
+    if (!mounted) return;
     try {
       await PagesFirebaseService.recordPageView(widget.page.id, null);
     } catch (e) {

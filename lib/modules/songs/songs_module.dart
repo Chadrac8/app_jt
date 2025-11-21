@@ -134,12 +134,13 @@ class SongsModule extends BaseModule {
               const SizedBox(height: AppTheme.space12),
               
               // Statistiques (sera mis à jour dynamiquement)
-              FutureBuilder<Map<String, dynamic>>(
-                future: SongsFirebaseService.getSongsStatistics(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final stats = snapshot.data!;
-                    return Row(
+              RepaintBoundary(
+                child: FutureBuilder<Map<String, dynamic>>(
+                  future: SongsFirebaseService.getSongsStatistics(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final stats = snapshot.data!;
+                      return Row(
                       children: [
                         _buildStatChip('${stats['totalSongs'] ?? 0} chants', Icons.library_music),
                         const SizedBox(width: AppTheme.spaceSmall),
@@ -150,9 +151,10 @@ class SongsModule extends BaseModule {
                   return Row(
                     children: [
                       _buildStatChip('Chargement...', Icons.hourglass_empty),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
             ],
           ),

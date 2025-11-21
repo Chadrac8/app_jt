@@ -31,19 +31,24 @@ class _BibleArticleHomeWidgetState extends State<BibleArticleHomeWidget> {
   }
 
   Future<void> _loadData() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
     
     try {
       final recent = await _articleService.getRecentArticles(limit: 3);
       final stats = await _articleService.getGeneralStats();
       
-      setState(() {
-        _recentArticles = recent;
-        _stats = stats;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _recentArticles = recent;
+          _stats = stats;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
