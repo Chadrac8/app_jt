@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme.dart';
-import 'theme.dart';
 
 // Providers
 import 'modules/roles/providers/role_provider.dart';
@@ -9,11 +8,7 @@ import 'modules/roles/providers/permission_provider.dart';
 import 'modules/roles/providers/role_template_provider.dart';
 
 // Screens
-import 'modules/roles/screens/role_module_test_page.dart';
 import 'modules/roles/screens/role_template_management_screen.dart';
-
-// Themes
-import 'theme.dart';
 
 /// Page de navigation principale pour accéder aux différents modules de l'application
 class ModuleNavigationPage extends StatelessWidget {
@@ -404,7 +399,9 @@ class ModuleNavigationPage extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => PermissionProvider()),
             ChangeNotifierProvider(create: (_) => RoleTemplateProvider()),
           ],
-          child: const RoleModuleTestPage(),
+          child: const Scaffold(
+            body: Center(child: Text('Page de test des r\u00f4les temporairement d\u00e9sactiv\u00e9e')),
+          ),
         ),
       ),
     );

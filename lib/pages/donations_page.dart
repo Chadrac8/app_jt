@@ -3,11 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../theme.dart';
-import 'donation_webview_page.dart';
-import 'simple_donation_webview_page.dart';
+import 'helloasso_iframe_page.dart';
 import '../auth/auth_service.dart';
 import '../models/person_model.dart';
-import '../utils/donation_url_helper.dart';
 
 class DonationsPage extends StatefulWidget {
   const DonationsPage({Key? key}) : super(key: key);
@@ -47,10 +45,10 @@ class _DonationsPageState extends State<DonationsPage> {
     ),
   ];
 
-  // Informations bancaires (à remplacer par les vraies données)
-  final String _iban = 'FR76 1234 5678 9012 3456 7890 123';
-  final String _bic = 'TESTFRPP';
-  final String _titulaire = 'Association Jubilé Tabernacle France';
+  // Informations bancaires
+  final String _iban = 'FR76 1670 6054 2853 9993 2537 436';
+  final String _bic = 'AGRIFRPP867';
+  final String _titulaire = 'Jubilé Tabernacle';
 
   // URLs HelloAsso pour chaque type de don
   final Map<int, String> _donationUrls = {
@@ -281,27 +279,17 @@ class _DonationsPageState extends State<DonationsPage> {
                       HapticFeedback.lightImpact();
                       final baseUrl = _donationUrls[index];
                       if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DonationWebViewPage(
+                            builder: (context) => HelloAssoIframePage(
                               donationType: donation.title,
-                              url: prefilledUrl,
                               icon: donation.icon,
                               color: donation.color,
-                              user: _currentUser,
+                              donationUrl: baseUrl,
                             ),
                           ),
                         );
-                      }
-                    },
-                    onLongPress: () {
-                      HapticFeedback.mediumImpact();
-                      final baseUrl = _donationUrls[index];
-                      if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
-                        _showLoadingOptions(context, donation, prefilledUrl);
                       }
                     },
                     child: cardContent,
@@ -312,26 +300,17 @@ class _DonationsPageState extends State<DonationsPage> {
                     onTap: () {
                       final baseUrl = _donationUrls[index];
                       if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DonationWebViewPage(
+                            builder: (context) => HelloAssoIframePage(
                               donationType: donation.title,
-                              url: prefilledUrl,
                               icon: donation.icon,
                               color: donation.color,
-                              user: _currentUser,
+                              donationUrl: baseUrl,
                             ),
                           ),
                         );
-                      }
-                    },
-                    onLongPress: () {
-                      final baseUrl = _donationUrls[index];
-                      if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
-                        _showLoadingOptions(context, donation, prefilledUrl);
                       }
                     },
                     child: cardContent,
@@ -720,7 +699,7 @@ Merci pour votre générosité ! 🙏
             const SizedBox(height: AppTheme.space20),
             _buildCheckInstruction('À l\'ordre de', _titulaire),
             _buildCheckInstruction('Préciser au dos', 'Le type de don (Offrande, Dîme, etc.)'),
-            _buildCheckInstruction('Envoyer à', 'Adresse de l\'église\n[À compléter avec l\'adresse réelle]'),
+            _buildCheckInstruction('Envoyer à', '124 Bis rue de l\'\u00c9pidème\n59200 Tourcoing\nFrance'),
             const SizedBox(height: AppTheme.space20),
             SizedBox(
               width: double.infinity,
@@ -796,177 +775,6 @@ Merci pour votre générosité ! 🙏
 
   String _getBiblicalVerse() {
     return 'Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie.';
-  }
-
-  void _showLoadingOptions(BuildContext context, DonationType donation, String url) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        decoration: const BoxDecoration(
-          color: AppTheme.white100,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
-                  decoration: BoxDecoration(
-                    color: donation.color.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                  ),
-                  child: Icon(
-                    donation.icon,
-                    color: donation.color,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Text(
-                    'Options de chargement',
-                    style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize18,
-                      fontWeight: AppTheme.fontSemiBold,
-                      color: AppTheme.textPrimaryColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppTheme.space20),
-            _buildLoadingOption(
-              context,
-              'Chargement normal',
-              'Version complète avec toutes les fonctionnalités',
-              Icons.web,
-              AppTheme.blueStandard,
-              () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DonationWebViewPage(
-                      donationType: donation.title,
-                      url: url,
-                      icon: donation.icon,
-                      color: donation.color,
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: AppTheme.space12),
-            _buildLoadingOption(
-              context,
-              'Chargement simplifié',
-              'Version basique si problème de paiement',
-              Icons.speed,
-              AppTheme.greenStandard,
-              () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SimpleDonationWebViewPage(
-                      donationType: donation.title,
-                      url: url,
-                      icon: donation.icon,
-                      color: donation.color,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingOption(
-    BuildContext context,
-    String title,
-    String description,
-    IconData icon,
-    Color color,
-    VoidCallback onTap,
-  ) {
-    final optionContent = Container(
-      padding: EdgeInsets.all(AppTheme.actionCardPadding), // Adaptatif
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(AppTheme.actionCardRadius), // Adaptatif
-        border: Border.all(
-          color: AppTheme.grey500.withOpacity(0.2),
-          width: AppTheme.actionCardBorderWidth, // Adaptatif
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(AppTheme.space10),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: AppTheme.spaceMedium),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    fontSize: AppTheme.fontSize16,
-                    fontWeight: AppTheme.fontSemiBold,
-                    color: AppTheme.textPrimaryColor,
-                  ),
-                ),
-                const SizedBox(height: AppTheme.spaceXSmall),
-                Text(
-                  description,
-                  style: GoogleFonts.inter(
-                    fontSize: AppTheme.fontSize14,
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Icon(
-            AppTheme.isApplePlatform ? Icons.chevron_right : Icons.arrow_forward_ios,
-            color: AppTheme.grey500,
-            size: AppTheme.isApplePlatform ? 24 : 16,
-          ),
-        ],
-      ),
-    );
-    
-    return AppTheme.isApplePlatform
-        ? GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-              onTap();
-            },
-            child: optionContent,
-          )
-        : InkWell(
-            borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
-            splashColor: color.withValues(alpha: AppTheme.interactionOpacity),
-            onTap: onTap,
-            child: optionContent,
-          );
   }
 }
 

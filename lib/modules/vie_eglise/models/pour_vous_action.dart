@@ -1,6 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+/// Wrapper pour distinguer "paramètre non fourni" de "paramètre = null"
+class Optional<T> {
+  final T? value;
+  final bool isSet;
+  
+  const Optional.value(this.value) : isSet = true;
+  const Optional.unset() : value = null, isSet = false;
+}
+
 /// Modèle pour les actions "Pour vous" dans le module Vie de l'église
 class PourVousAction {
   final String id;
@@ -21,6 +30,12 @@ class PourVousAction {
   final String? groupId; // ID du groupe auquel appartient l'action
   final String? backgroundImageUrl; // URL de l'image de fond
   final String? category; // Catégorie pour le groupement
+  
+  // Nouveaux champs pour personnalisation avancée
+  final String? iconColor; // Couleur de l'icône (null = auto)
+  final String? backgroundColor; // Couleur d'arrière-plan (prioritaire sur color si défini)
+  final String? textColor; // Couleur du texte (null = auto basé sur contraste)
+  final bool showIcon; // Afficher ou masquer l'icône
 
   PourVousAction({
     required this.id,
@@ -41,6 +56,10 @@ class PourVousAction {
     this.groupId,
     this.backgroundImageUrl,
     this.category,
+    this.iconColor,
+    this.backgroundColor,
+    this.textColor,
+    this.showIcon = true,
   });
 
   factory PourVousAction.fromFirestore(DocumentSnapshot doc) {
@@ -64,6 +83,10 @@ class PourVousAction {
       groupId: data['groupId'],
       backgroundImageUrl: data['backgroundImageUrl'],
       category: data['category'],
+      iconColor: data['iconColor'],
+      backgroundColor: data['backgroundColor'],
+      textColor: data['textColor'],
+      showIcon: data['showIcon'] ?? true,
     );
   }
 
@@ -85,6 +108,10 @@ class PourVousAction {
       'groupId': groupId,
       'backgroundImageUrl': backgroundImageUrl,
       'category': category,
+      'iconColor': iconColor,
+      'backgroundColor': backgroundColor,
+      'textColor': textColor,
+      'showIcon': showIcon,
     };
   }
 
@@ -105,8 +132,12 @@ class PourVousAction {
     String? createdBy,
     String? color,
     String? groupId,
-    String? backgroundImageUrl,
+    Optional<String>? backgroundImageUrl,
     String? category,
+    Optional<String>? iconColor,
+    Optional<String>? backgroundColor,
+    Optional<String>? textColor,
+    bool? showIcon,
   }) {
     return PourVousAction(
       id: id ?? this.id,
@@ -125,8 +156,20 @@ class PourVousAction {
       createdBy: createdBy ?? this.createdBy,
       color: color ?? this.color,
       groupId: groupId ?? this.groupId,
-      backgroundImageUrl: backgroundImageUrl ?? this.backgroundImageUrl,
+      backgroundImageUrl: backgroundImageUrl != null && backgroundImageUrl.isSet 
+          ? backgroundImageUrl.value 
+          : this.backgroundImageUrl,
       category: category ?? this.category,
+      iconColor: iconColor != null && iconColor.isSet 
+          ? iconColor.value 
+          : this.iconColor,
+      backgroundColor: backgroundColor != null && backgroundColor.isSet 
+          ? backgroundColor.value 
+          : this.backgroundColor,
+      textColor: textColor != null && textColor.isSet 
+          ? textColor.value 
+          : this.textColor,
+      showIcon: showIcon ?? this.showIcon,
     );
   }
 
@@ -238,21 +281,20 @@ class PourVousAction {
   }
 
   static IconData _iconFromData(Map<String, dynamic> data) {
-    final codePoint = data['iconCodePoint'] ?? Icons.help_outline.codePoint;
-    
-    // Map common icon code points to Flutter Icons to avoid tree-shaking issues
-    switch (codePoint) {
-      case 0xe7fd: return Icons.people;
-      case 0xe8d2: return Icons.event;
-      case 0xe913: return Icons.church;
-      case 0xe88f: return Icons.school;
-      case 0xe8cc: return Icons.music_note;
-      case 0xe894: return Icons.sports;
-      case 0xe8d8: return Icons.work;
-      case 0xe7ef: return Icons.local_hospital;
-      case 0xe7f2: return Icons.restaurant;
-      case 0xe0c9: return Icons.help_outline;
-      default: return Icons.help_outline; // Always return a constant IconData
+    try {
+      final codePointString = data['iconCodePoint'];
+      if (codePointString != null) {
+        final codePoint = int.tryParse(codePointString.toString());
+        if (codePoint != null) {
+          // Créer directement l'IconData depuis le codePoint
+          return IconData(codePoint, fontFamily: 'MaterialIcons');
+        }
+      }
+    } catch (e) {
+      print('Erreur lors de la conversion de l\'icône: $e');
     }
+    
+    // Icône par défaut en cas d'erreur
+    return Icons.help_outline;
   }
 }

@@ -4,10 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/sermon.dart';
 import '../services/sermon_service.dart';
 import '../views/sermon_notes_view.dart';
+import '../views/sermon_infographies_view.dart';
 import '../../../theme.dart';
 
 class SermonsTab extends StatefulWidget {
@@ -344,12 +345,14 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
           if (isIOS) HapticFeedback.lightImpact();
           _showSermonDetails(sermon);
         },
-        onPlayTap: sermon.lienYoutube != null && sermon.lienYoutube!.isNotEmpty
-            ? () {
-                if (isIOS) HapticFeedback.lightImpact();
-                _launchYouTube(sermon.lienYoutube!);
-              }
-            : null,
+        onInfographiesTap: () {
+          if (isIOS) HapticFeedback.lightImpact();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => SermonInfographiesView(sermon: sermon),
+            ),
+          );
+        },
         onNotesTap: () {
           if (isIOS) HapticFeedback.lightImpact();
           Navigator.of(context).push(
@@ -435,15 +438,6 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
     _applyFilters();
   }
 
-  void _launchYouTube(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      _showErrorSnackBar('Impossible d\'ouvrir le lien YouTube');
-    }
-  }
-
   void _showSermonDetails(Sermon sermon) {
     // Logique pour afficher les détails du sermon
     Navigator.of(context).push(
@@ -482,7 +476,7 @@ class _ProfessionalSermonCard extends StatefulWidget {
   final ColorScheme colorScheme;
   final bool isIOS;
   final VoidCallback onTap;
-  final VoidCallback? onPlayTap;
+  final VoidCallback onInfographiesTap;
   final VoidCallback onNotesTap;
 
   const _ProfessionalSermonCard({
@@ -490,7 +484,7 @@ class _ProfessionalSermonCard extends StatefulWidget {
     required this.colorScheme,
     required this.isIOS,
     required this.onTap,
-    this.onPlayTap,
+    required this.onInfographiesTap,
     required this.onNotesTap,
   });
 
@@ -597,19 +591,25 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
               shadowColor: Colors.black.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(widget.isIOS ? 16 : 20),
               color: widget.colorScheme.surfaceContainer,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(widget.isIOS ? 16 : 20),
-                onTap: widget.onTap,
-                onTapDown: (_) => _animationController.forward(),
-                onTapUp: (_) => _animationController.reverse(),
-                onTapCancel: () => _animationController.reverse(),
-                child: Padding(
-                  padding: EdgeInsets.all(widget.isIOS ? 20 : 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // En-tête avec date et durée
-                      Row(
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Lecteur YouTube si disponible
+                  if (widget.sermon.lienYoutube?.isNotEmpty == true)
+                    _YoutubePlayerWidget(
+                      key: ValueKey('youtube_${widget.sermon.id}'),
+                      youtubeUrl: widget.sermon.lienYoutube!,
+                      colorScheme: widget.colorScheme,
+                    ),
+                  
+                  Padding(
+                    padding: EdgeInsets.all(widget.isIOS ? 20 : 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                          // En-tête avec date et durée
+                          Row(
                         children: [
                           // Badge de type de sermon
                           Container(
@@ -645,37 +645,89 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                                 ),
                               ],
                             ),
+                            ),
+                            
+                            const Spacer(),
+                            
+                            // Date et durée
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Date
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: widget.isIOS ? 10 : 12,
+                                    vertical: widget.isIOS ? 4 : 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: widget.colorScheme.surfaceContainerHighest.withValues(alpha: 0.8),
+                                    borderRadius: BorderRadius.circular(widget.isIOS ? 6 : 8),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        widget.isIOS ? CupertinoIcons.calendar : Icons.calendar_today_rounded,
+                                        size: widget.isIOS ? 12 : 13,
+                                        color: widget.colorScheme.onSurfaceVariant,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        DateFormat('dd/MM/yy').format(widget.sermon.date),
+                                        style: GoogleFonts.inter(
+                                          fontSize: widget.isIOS ? 11 : 12,
+                                          fontWeight: AppTheme.fontMedium,
+                                          color: widget.colorScheme.onSurfaceVariant,
+                                          letterSpacing: widget.isIOS ? -0.1 : 0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                
+                                // Durée si disponible
+                                if (widget.sermon.duree > 0) ...[
+                                  SizedBox(width: widget.isIOS ? 6 : 8),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: widget.isIOS ? 10 : 12,
+                                      vertical: widget.isIOS ? 4 : 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: widget.colorScheme.secondaryContainer.withValues(alpha: 0.8),
+                                      borderRadius: BorderRadius.circular(widget.isIOS ? 6 : 8),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          widget.isIOS ? CupertinoIcons.clock : Icons.access_time_rounded,
+                                          size: widget.isIOS ? 12 : 13,
+                                          color: widget.colorScheme.onSecondaryContainer,
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          '${widget.sermon.duree}min',
+                                          style: GoogleFonts.inter(
+                                            fontSize: widget.isIOS ? 11 : 12,
+                                            fontWeight: AppTheme.fontMedium,
+                                            color: widget.colorScheme.onSecondaryContainer,
+                                            letterSpacing: widget.isIOS ? -0.1 : 0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ],
                           ),
                           
-                          const Spacer(),
+                          SizedBox(height: widget.isIOS ? 16 : 20),
                           
-                          // Date
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: widget.isIOS ? 10 : 12,
-                              vertical: widget.isIOS ? 4 : 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: widget.colorScheme.surfaceContainerHighest.withValues(alpha: 0.8),
-                              borderRadius: BorderRadius.circular(widget.isIOS ? 6 : 8),
-                            ),
-                            child: Text(
-                              DateFormat('dd/MM/yy').format(widget.sermon.date),
-                              style: GoogleFonts.inter(
-                                fontSize: widget.isIOS ? 11 : 12,
-                                fontWeight: AppTheme.fontMedium,
-                                color: widget.colorScheme.onSurfaceVariant,
-                                letterSpacing: widget.isIOS ? -0.1 : 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      SizedBox(height: widget.isIOS ? 16 : 20),
-                      
-                      // Titre du sermon
-                      Text(
+                          // Titre du sermon
+                          Text(
                         widget.sermon.titre,
                         style: GoogleFonts.inter(
                           fontSize: widget.isIOS ? 20 : 18,
@@ -686,12 +738,12 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                      ),
-                      
-                      SizedBox(height: widget.isIOS ? 12 : 14),
-                      
-                      // Orateur avec icône
-                      Row(
+                          ),
+                          
+                          SizedBox(height: widget.isIOS ? 12 : 14),
+                          
+                          // Orateur avec icône
+                          Row(
                         children: [
                           Container(
                             padding: EdgeInsets.all(widget.isIOS ? 8 : 10),
@@ -719,45 +771,13 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                          ],
+                          ),
                           
-                          // Durée si disponible
-                          if (widget.sermon.duree > 0)
+                          // Description si disponible
+                          if (widget.sermon.description?.isNotEmpty == true) ...[
+                            SizedBox(height: widget.isIOS ? 14 : 16),
                             Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: widget.isIOS ? 8 : 10,
-                                vertical: widget.isIOS ? 4 : 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: widget.colorScheme.secondaryContainer.withValues(alpha: 0.8),
-                                borderRadius: BorderRadius.circular(widget.isIOS ? 6 : 8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.access_time_rounded,
-                                    size: 14,
-                                    color: widget.colorScheme.onSecondaryContainer,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '${widget.sermon.duree}min',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 11,
-                                      fontWeight: AppTheme.fontMedium,
-                                      color: widget.colorScheme.onSecondaryContainer,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                      
-                      // Description si disponible
-                      if (widget.sermon.description?.isNotEmpty == true) ...[
-                        SizedBox(height: widget.isIOS ? 14 : 16),
-                        Container(
                           padding: EdgeInsets.all(widget.isIOS ? 12 : 14),
                           decoration: BoxDecoration(
                             color: widget.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
@@ -778,43 +798,43 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
-                      
-                      SizedBox(height: widget.isIOS ? 18 : 20),
-                      
-                      // Actions en bas
-                      Row(
+                            ),
+                          ],
+                          
+                          SizedBox(height: widget.isIOS ? 18 : 20),
+                          
+                          // Actions en bas
+                          Row(
                         children: [
-                          // Bouton principal d'écoute
+                          // Bouton Écritures et notes (mis en évidence)
                           Expanded(
-                            flex: 2,
                             child: _buildActionButton(
-                              onPressed: widget.onPlayTap,
-                              icon: widget.isIOS ? CupertinoIcons.play_fill : Icons.play_arrow_rounded,
-                              label: 'Écouter',
+                              onPressed: widget.onNotesTap,
+                              icon: widget.isIOS ? CupertinoIcons.doc_text : Icons.article_rounded,
+                              label: 'Écritures et notes',
                               isPrimary: true,
-                              isEnabled: widget.onPlayTap != null,
+                              isEnabled: true,
                             ),
                           ),
                           
                           SizedBox(width: widget.isIOS ? 12 : 14),
                           
-                          // Bouton notes
+                          // Bouton Schémas (mis en évidence)
                           Expanded(
                             child: _buildActionButton(
-                              onPressed: widget.onNotesTap,
-                              icon: widget.isIOS ? CupertinoIcons.doc_text : Icons.notes_rounded,
-                              label: 'Notes',
-                              isPrimary: false,
+                              onPressed: widget.onInfographiesTap,
+                              icon: widget.isIOS ? CupertinoIcons.photo : Icons.image_rounded,
+                              label: 'Schémas',
+                              isPrimary: true,
                               isEnabled: true,
                             ),
                           ),
+                          ],
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -830,24 +850,50 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
     required bool isPrimary,
     required bool isEnabled,
   }) {
+    // Couleurs professionnelles et douces
     final backgroundColor = isPrimary
-        ? (isEnabled ? widget.colorScheme.primary : widget.colorScheme.surfaceContainerHighest)
+        ? (isEnabled 
+            ? widget.colorScheme.primaryContainer 
+            : widget.colorScheme.surfaceContainerHighest)
         : widget.colorScheme.surfaceContainerHigh;
     
     final foregroundColor = isPrimary
-        ? (isEnabled ? widget.colorScheme.onPrimary : widget.colorScheme.onSurfaceVariant)
+        ? (isEnabled 
+            ? widget.colorScheme.onPrimaryContainer 
+            : widget.colorScheme.onSurfaceVariant)
         : widget.colorScheme.onSurfaceVariant;
 
     return Container(
       height: widget.isIOS ? 44 : 48,
+      decoration: isPrimary && isEnabled
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  widget.colorScheme.primaryContainer,
+                  widget.colorScheme.primaryContainer.withValues(alpha: 0.85),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: widget.colorScheme.primary.withValues(alpha: 0.15),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            )
+          : null,
       child: widget.isIOS 
           ? CupertinoButton(
               onPressed: isEnabled ? onPressed : null,
               padding: EdgeInsets.zero,
-              color: backgroundColor,
+              color: isPrimary && isEnabled ? Colors.transparent : backgroundColor,
               borderRadius: BorderRadius.circular(12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     icon,
@@ -855,37 +901,59 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                     color: foregroundColor,
                   ),
                   SizedBox(width: 6),
-                  Text(
-                    label,
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: AppTheme.fontSemiBold,
-                      color: foregroundColor,
-                      letterSpacing: -0.1,
+                  Flexible(
+                    child: Text(
+                      label,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: AppTheme.fontSemiBold,
+                        color: foregroundColor,
+                        letterSpacing: -0.1,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
             )
-          : ElevatedButton.icon(
-              onPressed: isEnabled ? onPressed : null,
-              icon: Icon(icon, size: 18),
-              label: Text(
-                label,
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: AppTheme.fontSemiBold,
+          : Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: isEnabled ? onPressed : null,
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  decoration: isPrimary && isEnabled
+                      ? null
+                      : BoxDecoration(
+                          color: backgroundColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        icon,
+                        size: 18,
+                        color: foregroundColor,
+                      ),
+                      SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          label,
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            fontWeight: AppTheme.fontSemiBold,
+                            color: foregroundColor,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: backgroundColor,
-                foregroundColor: foregroundColor,
-                elevation: isPrimary ? 2 : 0,
-                shadowColor: isPrimary ? widget.colorScheme.primary.withValues(alpha: 0.3) : null,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
             ),
     );
@@ -905,5 +973,142 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
     } else {
       return widget.isIOS ? CupertinoIcons.mic_fill : Icons.mic_rounded;
     }
+  }
+}
+
+/// Widget pour le lecteur YouTube intégré
+class _YoutubePlayerWidget extends StatefulWidget {
+  final String youtubeUrl;
+  final ColorScheme colorScheme;
+
+  const _YoutubePlayerWidget({
+    super.key,
+    required this.youtubeUrl,
+    required this.colorScheme,
+  });
+
+  @override
+  State<_YoutubePlayerWidget> createState() => _YoutubePlayerWidgetState();
+}
+
+class _YoutubePlayerWidgetState extends State<_YoutubePlayerWidget> {
+  YoutubePlayerController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializePlayer();
+  }
+
+  String? _extractYoutubeVideoId(String url) {
+    // Essayer d'abord avec la méthode standard
+    var videoId = YoutubePlayer.convertUrlToId(url);
+    
+    if (videoId != null) {
+      return videoId;
+    }
+    
+    // Si ça ne marche pas, essayer d'extraire manuellement pour les lives et autres formats
+    try {
+      final uri = Uri.parse(url);
+      
+      // Format: youtube.com/live/VIDEO_ID
+      if (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'live') {
+        return uri.pathSegments[1];
+      }
+      
+      // Format: youtu.be/VIDEO_ID
+      if (uri.host.contains('youtu.be') && uri.pathSegments.isNotEmpty) {
+        return uri.pathSegments[0];
+      }
+      
+      // Format: youtube.com/watch?v=VIDEO_ID
+      if (uri.queryParameters.containsKey('v')) {
+        return uri.queryParameters['v'];
+      }
+      
+      // Format: youtube.com/embed/VIDEO_ID
+      if (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'embed') {
+        return uri.pathSegments[1];
+      }
+    } catch (e) {
+      // Ignore parsing errors
+    }
+    
+    return null;
+  }
+
+  void _initializePlayer() {
+    final videoId = _extractYoutubeVideoId(widget.youtubeUrl);
+    
+    if (videoId != null) {
+      _controller = YoutubePlayerController(
+        initialVideoId: videoId,
+        flags: const YoutubePlayerFlags(
+          autoPlay: false,
+          mute: false,
+          showLiveFullscreenButton: true,
+          hideControls: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_controller == null) {
+      return Container(
+        height: 200,
+        color: widget.colorScheme.surfaceContainerHighest,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.video_library_outlined,
+                size: 48,
+                color: widget.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Vidéo non disponible',
+                style: GoogleFonts.inter(
+                  color: widget.colorScheme.onSurfaceVariant,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'URL: ${widget.youtubeUrl}',
+                style: GoogleFonts.inter(
+                  color: widget.colorScheme.onSurfaceVariant,
+                  fontSize: 10,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      color: Colors.black,
+      child: YoutubePlayer(
+        controller: _controller!,
+        showVideoProgressIndicator: true,
+        progressIndicatorColor: widget.colorScheme.primary,
+        progressColors: ProgressBarColors(
+          playedColor: widget.colorScheme.primary,
+          handleColor: widget.colorScheme.primary,
+        ),
+      ),
+    );
   }
 }

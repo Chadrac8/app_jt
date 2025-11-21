@@ -230,7 +230,7 @@ class PeopleModuleService extends BaseFirebaseService<PersonModel> {
   }
 
   /// Statistiques des personnes
-  Future<Map<String, int>> getStatistics() async {
+  Future<Map<String, dynamic>> getStatistics() async {
     try {
       final allPeople = await getAll();
       final activePeople = allPeople.where((p) => p.isActive).toList();

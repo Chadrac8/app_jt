@@ -11,6 +11,8 @@ import 'models/bible_book.dart';
 import 'models/bible_verse.dart';
 import 'views/bible_reading_view.dart';
 import 'views/bible_home_view.dart';
+
+import 'services/apple_notes_share_service.dart';
 import '../message/widgets/audio_player_tab_perfect13.dart';
 
 class BiblePage extends StatefulWidget {
@@ -2926,7 +2928,16 @@ Partagé depuis l'app Jubilé Tabernacle''';
             ),
           ),
 
-          const SliverToBoxAdapter(child: SizedBox(height: AppTheme.space20)),
+          // Actions rapides pour les notes
+          if (totalNotes > 0 || totalHighlights > 0 || totalFavorites > 0)
+            SliverToBoxAdapter(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                child: _buildNotesQuickActions(),
+              ),
+            ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: AppTheme.space12)),
 
           // Liste des versets
           filteredVerseKeys.isEmpty
@@ -3363,5 +3374,169 @@ Partagé depuis l'app Jubilé Tabernacle''';
         ),
       );
     }
+  }
+
+  Widget _buildNotesQuickActions() {
+    if (_notes.isEmpty && _highlights.isEmpty && _favorites.isEmpty) {
+      return const SizedBox.shrink(); // Ne rien afficher s'il n'y a pas d'annotations
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppTheme.spaceMedium),
+      child: Card(
+        elevation: 2,
+        color: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.12),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppTheme.spaceMedium),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.ios_share_outlined,
+                    size: 20,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: AppTheme.spaceSmall),
+                  Text(
+                    'Synchronisation Apple Notes',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: AppTheme.fontMedium,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppTheme.spaceSmall),
+              Text(
+                'Partagez vos notes et surlignements avec l\'app Apple Notes',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                ),
+              ),
+              const SizedBox(height: AppTheme.spaceMedium),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () async {
+                        try {
+                          final shareService = AppleNotesShareService();
+                          // Convertir les highlights (Map<String, Color>) en Map<String, String>
+                          final highlightsAsStrings = _highlights.map((key, value) => 
+                            MapEntry(key, value.value.toRadixString(16)));
+                          
+                          // Obtenir la position du bouton pour le sharePositionOrigin (iPad)
+                          final RenderBox? box = context.findRenderObject() as RenderBox?;
+                          final Rect? sharePositionOrigin = box != null 
+                            ? Rect.fromLTWH(0, 0, box.size.width, box.size.height)
+                            : null;
+                          
+                          await shareService.shareAllNotesToAppleNotes(
+                            notes: _notes,
+                            highlights: highlightsAsStrings,
+                            favorites: _favorites,
+                            sharePositionOrigin: sharePositionOrigin,
+                          );
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      color: Theme.of(context).colorScheme.onInverseSurface,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: AppTheme.spaceSmall),
+                                    Expanded(
+                                      child: Text(
+                                        'Notes partagées avec succès !',
+                                        style: GoogleFonts.inter(
+                                          color: Theme.of(context).colorScheme.onInverseSurface,
+                                          fontWeight: AppTheme.fontMedium,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                duration: const Duration(seconds: 3),
+                                backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                                ),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      color: Theme.of(context).colorScheme.onError,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: AppTheme.spaceSmall),
+                                    Expanded(
+                                      child: Text(
+                                        'Erreur lors du partage: $e',
+                                        style: GoogleFonts.inter(
+                                          color: Theme.of(context).colorScheme.onError,
+                                          fontWeight: AppTheme.fontMedium,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                duration: const Duration(seconds: 4),
+                                backgroundColor: Theme.of(context).colorScheme.error,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      icon: const Icon(Icons.ios_share, size: 16),
+                      label: Text(
+                        'Partager',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: AppTheme.fontMedium,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppTheme.spaceMedium,
+                          vertical: AppTheme.spaceSmall,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

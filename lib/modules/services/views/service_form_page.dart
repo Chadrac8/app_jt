@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../models/service_model.dart';
-import '../../../models/event_recurrence_model.dart';
 import '../../../services/service_event_integration_service.dart';
-import '../../../widgets/event_recurrence_widget.dart';
+import '../../../widgets/service_recurrence_widget.dart';
+import '../../../widgets/image_picker_widget.dart';
 import '../../../theme.dart';
 
 class ServiceFormPage extends StatefulWidget {
@@ -38,6 +38,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
   bool _isRecurring = false;
   Map<String, dynamic>? _recurrencePattern; // Pattern de récurrence
   bool _isLoading = false;
+  String? _customImageUrl; // URL de l'image personnalisée
 
   final List<Map<String, String>> _serviceTypes = [
     {'value': 'culte', 'label': 'Culte', 'icon': 'church'},
@@ -89,6 +90,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
       _selectedTime = TimeOfDay.fromDateTime(service.dateTime);
       _durationMinutes = service.durationMinutes;
       _status = service.status;
+      _customImageUrl = service.imageUrl;
       _isRecurring = service.isRecurring;
       _recurrencePattern = service.recurrencePattern; // Charger le pattern existant
     }
@@ -164,6 +166,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           notes: _notesController.text.trim().isEmpty 
               ? null 
               : _notesController.text.trim(),
+          imageUrl: _customImageUrl,
           isRecurring: _isRecurring,
           recurrencePattern: _isRecurring ? _recurrencePattern : null, // Ajouter le pattern
           createdAt: DateTime.now(),
@@ -186,6 +189,7 @@ class _ServiceFormPageState extends State<ServiceFormPage>
           notes: _notesController.text.trim().isEmpty 
               ? null 
               : _notesController.text.trim(),
+          imageUrl: _customImageUrl,
           isRecurring: _isRecurring,
           recurrencePattern: _isRecurring ? _recurrencePattern : null, // Ajouter le pattern
           updatedAt: DateTime.now(),
@@ -361,6 +365,34 @@ class _ServiceFormPageState extends State<ServiceFormPage>
                   const SizedBox(height: AppTheme.spaceMedium),
                   _buildRecurrenceConfiguration(),
                 ],
+              ],
+            ),
+
+            const SizedBox(height: AppTheme.spaceLarge),
+
+            // Image de couverture
+            _buildSection(
+              title: 'Image de couverture',
+              icon: Icons.image,
+              children: [
+                Text(
+                  'Ajoutez votre propre image ou laissez vide pour une image par défaut',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                  ),
+                ),
+                const SizedBox(height: AppTheme.spaceMedium),
+                ImagePickerWidget(
+                  initialUrl: _customImageUrl,
+                  onImageSelected: (imageUrl) {
+                    setState(() {
+                      _customImageUrl = imageUrl;
+                    });
+                  },
+                  height: 160,
+                  label: null,
+                ),
               ],
             ),
 
@@ -723,82 +755,24 @@ class _ServiceFormPageState extends State<ServiceFormPage>
   }
 
   Widget _buildRecurrenceConfiguration() {
-    // Convertir le pattern Map en EventRecurrenceModel pour le widget
-    EventRecurrenceModel? initialRecurrence;
-    if (_recurrencePattern != null) {
-      final pattern = _recurrencePattern!;
-      initialRecurrence = EventRecurrenceModel(
-        id: '',
-        parentEventId: '',
-        type: _mapStringToRecurrenceType(pattern['type'] ?? 'weekly'),
-        interval: pattern['interval'] ?? 1,
-        daysOfWeek: pattern['daysOfWeek'] != null 
-            ? List<int>.from(pattern['daysOfWeek']) 
-            : null,
-        dayOfMonth: pattern['dayOfMonth'],
-        monthsOfYear: pattern['monthsOfYear'] != null
-            ? List<int>.from(pattern['monthsOfYear'])
-            : null,
-        endDate: pattern['endDate'] != null
-            ? DateTime.parse(pattern['endDate'])
-            : null,
-        occurrenceCount: pattern['occurrenceCount'],
-        exceptions: [],
-        overrides: [],
-        isActive: true,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      );
-    }
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-        ),
+    return ServiceRecurrenceWidget(
+      initialPattern: _recurrencePattern,
+      startDate: DateTime(
+        _selectedDate.year,
+        _selectedDate.month,
+        _selectedDate.day,
+        _selectedTime.hour,
+        _selectedTime.minute,
       ),
-      child: EventRecurrenceWidget(
-        initialRecurrence: initialRecurrence,
-        onRecurrenceChanged: (recurrence) {
-          setState(() {
-            // Convertir EventRecurrenceModel en Map pour stockage
-            _recurrencePattern = {
-              'type': recurrence.type.toString().split('.').last,
-              'interval': recurrence.interval,
-              if (recurrence.daysOfWeek != null)
-                'daysOfWeek': recurrence.daysOfWeek,
-              if (recurrence.dayOfMonth != null)
-                'dayOfMonth': recurrence.dayOfMonth,
-              if (recurrence.monthsOfYear != null)
-                'monthsOfYear': recurrence.monthsOfYear,
-              if (recurrence.endDate != null)
-                'endDate': recurrence.endDate!.toIso8601String(),
-              if (recurrence.occurrenceCount != null)
-                'occurrenceCount': recurrence.occurrenceCount,
-            };
-          });
-        },
-      ),
+      onRecurrenceChanged: (pattern) {
+        setState(() {
+          _recurrencePattern = pattern;
+        });
+      },
     );
   }
 
-  RecurrenceType _mapStringToRecurrenceType(String type) {
-    switch (type.toLowerCase()) {
-      case 'daily':
-        return RecurrenceType.daily;
-      case 'weekly':
-        return RecurrenceType.weekly;
-      case 'monthly':
-        return RecurrenceType.monthly;
-      case 'yearly':
-        return RecurrenceType.yearly;
-      default:
-        return RecurrenceType.weekly;
-    }
-  }
+
 
   String _formatDate(DateTime date) {
     final weekdays = [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
+import 'dart:io';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
 import '../../theme.dart';
@@ -236,7 +237,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                               
                               // Dernières prédications (si activées)
                               if (config.isLastSermonActive)
-                                const LatestSermonWidget(),
+                                LatestSermonWidget(key: ValueKey('latest_sermon_${config.sermonYouTubeUrl}')),
                               if (config.isLastSermonActive)
                                 const SizedBox(height: AppTheme.spaceXLarge),
                               
@@ -788,9 +789,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
           crossAxisCount: 2,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 0.9,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 1.0, // Cartes parfaitement carrées
           children: actions.map((action) => _buildQuickActionCardFromConfig(action)).toList(),
         ),
       ],
@@ -802,121 +803,458 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
     final description = actionConfig['description'] ?? '';
     final iconName = actionConfig['icon'] ?? 'help_outline';
     final colorValue = actionConfig['color'] ?? 0xFF9E9E9E;
-    final color = Color(colorValue);
+    final iconColorValue = actionConfig['iconColor'];
+    final backgroundColorValue = actionConfig['backgroundColor'] ?? colorValue;
+    final textColorValue = actionConfig['textColor'];
+    final backgroundImageUrl = actionConfig['backgroundImage'];
+    final showIcon = actionConfig['showIcon'] ?? true;
     
-    // Mapper les noms d'icônes aux IconData
+    final backgroundColor = Color(backgroundColorValue);
+    
+    // Calcul automatique des couleurs si non spécifiées
+    Color iconColor;
+    Color textColor;
+    
+    if (iconColorValue != null) {
+      iconColor = Color(iconColorValue);
+    } else {
+      // Auto: blanc sur fond sombre, noir sur fond clair
+      final luminance = backgroundColor.computeLuminance();
+      iconColor = luminance > 0.5 ? Colors.black : Colors.white;
+    }
+    
+    if (textColorValue != null) {
+      textColor = Color(textColorValue);
+    } else {
+      // Auto: contraste optimal basé sur la luminance
+      textColor = _getTextColorForBackground(backgroundColor);
+    }
+    
+    // Mapper les noms d'icônes aux IconData avec collection étendue
     IconData icon;
     switch (iconName) {
-      case 'favorite_rounded':
-        icon = Icons.favorite_rounded;
-        break;
-      case 'menu_book_rounded':
-        icon = Icons.menu_book_rounded;
+      // Icônes religieuses et spirituelles
+      case 'church':
+      case 'church_rounded':
+        icon = Icons.church;
         break;
       case 'volunteer_activism_rounded':
         icon = Icons.volunteer_activism_rounded;
         break;
+      case 'favorite_rounded':
+        icon = Icons.favorite_rounded;
+        break;
+      case 'auto_stories':
+      case 'bible':
+        icon = Icons.auto_stories;
+        break;
+      case 'menu_book_rounded':
+        icon = Icons.menu_book_rounded;
+        break;
+      case 'campaign':
+      case 'prayer':
+        icon = Icons.campaign;
+        break;
+      case 'celebration':
+        icon = Icons.celebration;
+        break;
+      case 'temple_buddhist':
+        icon = Icons.temple_buddhist;
+        break;
+        
+      // Icônes de communauté et groupes
+      case 'group':
+        icon = Icons.group;
+        break;
+      case 'groups':
+        icon = Icons.groups;
+        break;
+      case 'people':
+        icon = Icons.people;
+        break;
+      case 'family_restroom':
+      case 'family':
+        icon = Icons.family_restroom;
+        break;
+      case 'diversity_3':
+        icon = Icons.diversity_3;
+        break;
+      case 'handshake':
+      case 'community':
+        icon = Icons.handshake;
+        break;
+        
+      // Icônes de calendrier et événements
+      case 'calendar_today':
+      case 'calendar':
+        icon = Icons.calendar_today;
+        break;
+      case 'event':
+        icon = Icons.event;
+        break;
+      case 'schedule':
+        icon = Icons.schedule;
+        break;
+      case 'date_range':
+        icon = Icons.date_range;
+        break;
+      case 'event_available':
+        icon = Icons.event_available;
+        break;
+      case 'today':
+        icon = Icons.today;
+        break;
+        
+      // Icônes de communication
+      case 'mail':
+        icon = Icons.mail;
+        break;
+      case 'email':
+        icon = Icons.email;
+        break;
+      case 'message':
+        icon = Icons.message;
+        break;
+      case 'phone':
+        icon = Icons.phone;
+        break;
+      case 'contact_phone':
+        icon = Icons.contact_phone;
+        break;
+      case 'forum':
+      case 'discussion':
+        icon = Icons.forum;
+        break;
+      case 'chat':
+        icon = Icons.chat;
+        break;
+        
+      // Icônes de musique et louange
+      case 'music_note':
+      case 'worship':
+        icon = Icons.music_note;
+        break;
+      case 'library_music':
+        icon = Icons.library_music;
+        break;
+      case 'queue_music':
+        icon = Icons.queue_music;
+        break;
+      case 'mic':
+        icon = Icons.mic;
+        break;
+      case 'piano':
+        icon = Icons.piano;
+        break;
+      case 'audiotrack':
+        icon = Icons.audiotrack;
+        break;
+        
+      // Icônes de dons et finances
       case 'card_giftcard_rounded':
         icon = Icons.card_giftcard_rounded;
         break;
-      case 'location_on_rounded':
-        icon = Icons.location_on_rounded;
+      case 'volunteer_activism':
+        icon = Icons.volunteer_activism;
         break;
+      case 'monetization_on':
+        icon = Icons.monetization_on;
+        break;
+      case 'account_balance_wallet':
+        icon = Icons.account_balance_wallet;
+        break;
+      case 'savings':
+        icon = Icons.savings;
+        break;
+        
+      // Icônes de localisation
+      case 'location_on':
+      case 'location_on_rounded':
+        icon = Icons.location_on;
+        break;
+      case 'place':
+        icon = Icons.place;
+        break;
+      case 'map':
+        icon = Icons.map;
+        break;
+      case 'directions':
+        icon = Icons.directions;
+        break;
+      case 'home':
+        icon = Icons.home;
+        break;
+        
+      // Icônes d'éducation et formation
+      case 'school':
+      case 'formation':
+        icon = Icons.school;
+        break;
+      case 'book':
+        icon = Icons.book;
+        break;
+      case 'quiz':
+        icon = Icons.quiz;
+        break;
+      case 'psychology':
+        icon = Icons.psychology;
+        break;
+      case 'lightbulb':
+        icon = Icons.lightbulb;
+        break;
+        
+      // Icônes de service et ministère
+      case 'work':
+      case 'workspace_premium':
+      case 'service':
+        icon = Icons.work;
+        break;
+      case 'build':
+        icon = Icons.build;
+        break;
+      case 'engineering':
+        icon = Icons.engineering;
+        break;
+      case 'cleaning_services':
+        icon = Icons.cleaning_services;
+        break;
+      case 'restaurant':
+        icon = Icons.restaurant;
+        break;
+      case 'local_dining':
+        icon = Icons.local_dining;
+        break;
+        
+      // Icônes diverses utiles
+      case 'info':
+        icon = Icons.info;
+        break;
+      case 'help':
+        icon = Icons.help;
+        break;
+      case 'support':
+        icon = Icons.support;
+        break;
+      case 'star':
+        icon = Icons.star;
+        break;
+      case 'diamond':
+        icon = Icons.diamond;
+        break;
+      case 'emoji_events':
+        icon = Icons.emoji_events;
+        break;
+      case 'card_membership':
+        icon = Icons.card_membership;
+        break;
+      case 'badge':
+        icon = Icons.badge;
+        break;
+        
+      // Icône par défaut
+      case 'help_outline':
       default:
         icon = Icons.help_outline;
     }
     
-    return _buildQuickActionCard(title, description, icon, color, () => _handleQuickAction(title));
+    return _buildQuickActionCard(title, description, icon, backgroundColor, iconColor, textColor, backgroundImageUrl, showIcon, () => _handleQuickAction(title));
   }
 
-  Widget _buildQuickActionCard(String title, String description, IconData icon, Color color, VoidCallback onTap) {
-    return Material(
-      elevation: 0,
-      borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-      child: InkWell(
-        onTap: onTap,
+  // Méthode utilitaire pour calculer la couleur du texte selon le contraste
+  Color _getTextColorForBackground(Color backgroundColor) {
+    // Calculer la luminance de la couleur de fond
+    final luminance = backgroundColor.computeLuminance();
+    // Si la couleur est claire (luminance > 0.5), utiliser du texte noir
+    // Sinon, utiliser du texte blanc
+    return luminance > 0.5 ? AppTheme.black100 : AppTheme.white100;
+  }
+
+  ImageProvider _getImageProvider(String imageUrl) {
+    if (imageUrl.startsWith('file://')) {
+      final filePath = imageUrl.substring(7); // Enlever 'file://'
+      return FileImage(File(filePath));
+    } else {
+      return NetworkImage(imageUrl);
+    }
+  }
+
+  Widget _buildQuickActionCard(String title, String description, IconData icon, Color backgroundColor, Color iconColor, Color textColor, String? backgroundImageUrl, bool showIcon, VoidCallback onTap) {
+    
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Material(
+        elevation: 0,
         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+          // Effets d'interaction améliorés
+          splashColor: AppTheme.white100.withOpacity(0.3),
+          highlightColor: AppTheme.white100.withOpacity(0.1),
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: backgroundImageUrl == null ? LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                color,
-                color.withOpacity(0.8),
+                backgroundColor,
+                backgroundColor.withOpacity(0.8),
               ],
-            ),
+            ) : null,
+            image: backgroundImageUrl != null ? DecorationImage(
+              image: _getImageProvider(backgroundImageUrl),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                backgroundColor.withOpacity(0.3),
+                BlendMode.overlay,
+              ),
+            ) : null,
             borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
+                color: backgroundColor.withOpacity(0.25),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+              BoxShadow(
+                color: backgroundColor.withOpacity(0.1),
+                blurRadius: 40,
+                offset: const Offset(0, 20),
               ),
             ],
           ),
           child: Stack(
             children: [
-              // Background Pattern
+              // Motifs décoratifs de fond
               Positioned(
-                top: -20,
-                right: -20,
+                top: -10,
+                right: -10,
                 child: Container(
-                  width: 60,
-                  height: 60,
+                  width: 50,
+                  height: 50,
                   decoration: BoxDecoration(
-                    color: AppTheme.white100.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(30),
+                    color: AppTheme.white100.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
               ),
-              
-              // Content
-              Padding(
-                padding: const EdgeInsets.all(AppTheme.space20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Icon
-                    Container(
-                      padding: const EdgeInsets.all(AppTheme.space12),
-                      decoration: BoxDecoration(
-                        color: AppTheme.white100.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                      ),
-                      child: Icon(
-                        icon,
-                        color: AppTheme.white100,
-                        size: 28,
-                      ),
-                    ),
-                    
-                    const Spacer(),
-                    
-                    // Text
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        color: AppTheme.white100,
-                        fontWeight: AppTheme.fontBold,
-                        fontSize: AppTheme.fontSize16,
-                      ),
-                    ),
-                    const SizedBox(height: AppTheme.spaceXSmall),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        color: AppTheme.white100.withOpacity(0.9),
-                        fontSize: AppTheme.fontSize12,
-                      ),
-                    ),
-                  ],
+              Positioned(
+                bottom: -15,
+                left: -15,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppTheme.white100.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
               ),
+              // Contenu principal
+              Padding(
+            padding: const EdgeInsets.all(AppTheme.spaceMedium), // Réduit de 20 à 16
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Icône centrale proeminente - Affichage conditionnel
+                if (showIcon)
+                  Flexible(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight * 0.4,
+                        maxHeight: constraints.maxHeight * 0.6,
+                      ),
+                      child: Center(
+                        child: Container(
+                          width: constraints.maxWidth * 0.4,
+                          height: constraints.maxWidth * 0.4,
+                          constraints: const BoxConstraints(
+                            minWidth: 48,
+                            minHeight: 48,
+                            maxWidth: 72,
+                            maxHeight: 72,
+                          ),
+                          decoration: BoxDecoration(
+                            color: textColor == AppTheme.black100 
+                              ? AppTheme.black100.withOpacity(0.15)
+                              : AppTheme.white100.withOpacity(0.25),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: textColor == AppTheme.black100 
+                                  ? AppTheme.black100.withOpacity(0.1)
+                                  : AppTheme.black100.withOpacity(0.15),
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            icon,
+                            color: iconColor,
+                            size: (constraints.maxWidth * 0.2).clamp(24.0, 36.0), // Taille adaptative
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                
+                if (showIcon)
+                  const SizedBox(height: AppTheme.spaceSmall),
+                
+                // Texte compact avec contraintes strictes
+                Flexible(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight * 0.25,
+                      maxHeight: constraints.maxHeight * 0.4,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              color: textColor,
+                              fontWeight: AppTheme.fontBold,
+                              fontSize: (constraints.maxWidth * 0.08).clamp(12.0, 16.0), // Taille adaptative
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: constraints.maxHeight > 140 ? 2 : 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Flexible(
+                          child: Text(
+                            description,
+                            style: TextStyle(
+                              color: textColor == AppTheme.black100 
+                                ? textColor.withOpacity(0.7) 
+                                : textColor.withOpacity(0.85),
+                              fontSize: (constraints.maxWidth * 0.06).clamp(10.0, 13.0), // Taille adaptative
+                              height: 1.2,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: constraints.maxHeight > 140 ? 2 : 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
             ],
           ),
         ),
       ),
+    );
+      },
     );
   }
 

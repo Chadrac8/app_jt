@@ -13,6 +13,7 @@ class Sermon {
   final String? description;
   final int duree; // durée en minutes
   final List<String> tags;
+  final List<String> infographiesUrls; // URLs des schémas et infographies
 
   Sermon({
     required this.id,
@@ -27,6 +28,7 @@ class Sermon {
     this.description,
     this.duree = 0,
     this.tags = const [],
+    this.infographiesUrls = const [],
   });
 
   factory Sermon.fromMap(Map<String, dynamic> map, String id) {
@@ -43,6 +45,7 @@ class Sermon {
       description: map['description'],
       duree: map['duree'] ?? 0,
       tags: List<String>.from(map['tags'] ?? []),
+      infographiesUrls: List<String>.from(map['infographiesUrls'] ?? []),
     );
   }
 
@@ -59,6 +62,7 @@ class Sermon {
       'description': description,
       'duree': duree,
       'tags': tags,
+      'infographiesUrls': infographiesUrls,
     };
   }
 
@@ -75,6 +79,7 @@ class Sermon {
     String? description,
     int? duree,
     List<String>? tags,
+    List<String>? infographiesUrls,
   }) {
     return Sermon(
       id: id ?? this.id,
@@ -89,6 +94,7 @@ class Sermon {
       description: description ?? this.description,
       duree: duree ?? this.duree,
       tags: tags ?? this.tags,
+      infographiesUrls: infographiesUrls ?? this.infographiesUrls,
     );
   }
 }

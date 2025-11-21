@@ -265,7 +265,7 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
 
   Widget _buildActionGroup(String groupName, List<PourVousAction> actions, ColorScheme colorScheme) {
     final crossAxisCount = _getCrossAxisCount(context);
-    final spacing = AppTheme.isApplePlatform ? 16.0 : 12.0; // Enhanced spacing for premium feel
+    final spacing = 12.0; // Même espacement que les actions rapides de l'accueil
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -359,166 +359,239 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
   }
 
   Widget _buildActionCard(PourVousAction action, ColorScheme colorScheme) {
-    final actionColor = _getActionColor(action.color) ?? colorScheme.primary;
+    // Debug log
+    print('🔍 DEBUG - Member view rendering action: ${action.title}');
+    print('🔍 DEBUG - backgroundImageUrl: ${action.backgroundImageUrl}');
     
-    return Container(
-      decoration: BoxDecoration(
-        // Subtle gradient overlay for premium feel
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            colorScheme.surface,
-            colorScheme.surface.withValues(alpha: 0.95),
-          ],
-          stops: const [0.0, 1.0],
-        ),
-        borderRadius: BorderRadius.circular(
-          AppTheme.isApplePlatform ? 22.0 : 20.0,
-        ),
-        border: Border.all(
-          color: AppTheme.isApplePlatform
-              ? colorScheme.outline.withValues(alpha: 0.12)
-              : colorScheme.outlineVariant.withValues(alpha: 0.6),
-          width: AppTheme.isApplePlatform ? 1.0 : 1.2,
-        ),
-        // Professional multi-layer shadows
-        boxShadow: [
-          // Primary depth shadow
-          BoxShadow(
-            color: colorScheme.shadow.withValues(
-              alpha: AppTheme.isApplePlatform ? 0.12 : 0.08,
-            ),
-            offset: const Offset(0, 3),
-            blurRadius: 12,
-            spreadRadius: 0,
-          ),
-          // Secondary ambient shadow
-          BoxShadow(
-            color: colorScheme.shadow.withValues(
-              alpha: AppTheme.isApplePlatform ? 0.06 : 0.04,
-            ),
-            offset: const Offset(0, 1),
-            blurRadius: 6,
-            spreadRadius: -1,
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(
-          AppTheme.isApplePlatform ? 22.0 : 20.0,
-        ),
-        child: InkWell(
-          onTap: () => _handleActionTap(action),
-          borderRadius: BorderRadius.circular(
-            AppTheme.isApplePlatform ? 22.0 : 20.0,
-          ),
-          splashColor: actionColor.withValues(alpha: 0.12),
-          highlightColor: actionColor.withValues(alpha: 0.08),
-          hoverColor: actionColor.withValues(alpha: 0.04),
-          child: Container(
-            padding: EdgeInsets.all(AppTheme.isDesktop ? 16.0 : 14.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Compact icon container for square cards
-                Container(
-                  width: AppTheme.isDesktop ? 48 : 42,
-                  height: AppTheme.isDesktop ? 48 : 42,
-                  decoration: BoxDecoration(
-                    // Multi-layer gradient for depth
-                    gradient: RadialGradient(
-                      center: const Alignment(-0.3, -0.3),
-                      radius: 1.2,
-                      colors: [
-                        actionColor.withValues(alpha: 0.18),
-                        actionColor.withValues(alpha: 0.12),
-                        actionColor.withValues(alpha: 0.06),
-                      ],
-                      stops: const [0.0, 0.7, 1.0],
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      AppTheme.isApplePlatform ? 14.0 : 12.0,
-                    ),
-                    border: Border.all(
-                      color: actionColor.withValues(alpha: 0.25),
-                      width: AppTheme.isApplePlatform ? 1.0 : 0.8,
-                    ),
-                    // Subtle inner shadow for depth
-                    boxShadow: [
-                      BoxShadow(
-                        color: actionColor.withValues(alpha: 0.08),
-                        offset: const Offset(0, 1),
-                        blurRadius: 6,
-                        spreadRadius: -1,
-                      ),
-                    ],
+    // Utiliser backgroundColor si défini, sinon color, sinon couleur par défaut
+    final bgColor = action.backgroundColor != null 
+        ? _getActionColor(action.backgroundColor!)
+        : (action.color != null ? _getActionColor(action.color!) : null);
+    final actionColor = bgColor ?? colorScheme.primary;
+    
+    // Calculer les couleurs de texte et d'icône
+    final autoTextColor = _getTextColorForBackground(actionColor);
+    final textColor = action.textColor != null 
+        ? _getActionColor(action.textColor!)! 
+        : autoTextColor;
+    final iconColor = action.iconColor != null 
+        ? _getActionColor(action.iconColor!)! 
+        : autoTextColor;
+    
+    // Vérifier si on a une image de fond
+    final hasBackgroundImage = action.backgroundImageUrl != null && action.backgroundImageUrl!.isNotEmpty;
+    print('🔍 DEBUG - hasBackgroundImage: $hasBackgroundImage');
+    
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Material(
+          elevation: 0,
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+          child: InkWell(
+            onTap: () => _handleActionTap(action),
+            borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+            // Effets d'interaction améliorés
+            splashColor: AppTheme.white100.withOpacity(0.3),
+            highlightColor: AppTheme.white100.withOpacity(0.1),
+            child: Container(
+              decoration: BoxDecoration(
+                // Utiliser l'image si disponible, sinon gradient
+                image: hasBackgroundImage
+                    ? DecorationImage(
+                        image: _getImageProvider(action.backgroundImageUrl!),
+                        fit: BoxFit.cover,
+                        onError: (exception, stackTrace) {
+                          // En cas d'erreur de chargement d'image, utiliser la couleur de fond
+                        },
+                      )
+                    : null,
+                gradient: !hasBackgroundImage
+                    ? LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          actionColor,
+                          actionColor.withOpacity(0.8),
+                        ],
+                      )
+                    : null,
+                color: hasBackgroundImage ? null : null, // Pas de couleur si gradient ou image
+                borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+                boxShadow: [
+                  BoxShadow(
+                    color: actionColor.withOpacity(0.25),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
                   ),
-                  child: Icon(
-                    action.icon,
-                    color: actionColor,
-                    size: AppTheme.isDesktop ? 24 : 22,
+                  BoxShadow(
+                    color: actionColor.withOpacity(0.1),
+                    blurRadius: 40,
+                    offset: const Offset(0, 20),
                   ),
-                ),
-                
-                // Compact spacing for square format
-                SizedBox(height: AppTheme.isApplePlatform ? 10.0 : 8.0),
-                
-                // Compact title for square cards
-                Text(
-                  action.title,
-                  style: AppTheme.isApplePlatform 
-                      ? GoogleFonts.inter(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.2,
-                          height: 1.15,
-                          color: colorScheme.onSurface,
-                        )
-                      : GoogleFonts.inter(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w600,
-                          height: 1.15,
-                          color: colorScheme.onSurface,
+                ],
+              ),
+              child: Stack(
+                children: [
+                  // Overlay semi-transparent si image de fond pour améliorer la lisibilité
+                  if (hasBackgroundImage)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.black.withOpacity(0.3),
+                            Colors.black.withOpacity(0.5),
+                          ],
                         ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                
-                // Tight spacing for square format
-                const SizedBox(height: 4.0),
-                
-                // Centered description for square cards with 2-line guarantee
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  child: Text(
-                    action.description,
-                    style: AppTheme.isApplePlatform
-                        ? GoogleFonts.inter(
-                            fontSize: 12.0,
-                            letterSpacing: -0.1,
-                            height: 1.2,
-                            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
-                          )
-                        : GoogleFonts.inter(
-                            fontSize: 12.0,
-                            height: 1.2,
-                            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.85),
+                      ),
+                    ),
+                  // Motifs décoratifs de fond (seulement si pas d'image)
+                  if (!hasBackgroundImage) ...[
+                    Positioned(
+                      top: -10,
+                      right: -10,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: AppTheme.white100.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: -15,
+                      left: -15,
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: AppTheme.white100.withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ],
+                  // Contenu principal
+                  Padding(
+                    padding: const EdgeInsets.all(AppTheme.spaceMedium),
+                    child: Column(
+                      mainAxisSize: action.showIcon ? MainAxisSize.min : MainAxisSize.max,
+                      mainAxisAlignment: action.showIcon 
+                          ? MainAxisAlignment.start 
+                          : MainAxisAlignment.center,
+                      children: [
+                        // Icône centrale proéminente (si showIcon est true)
+                        if (action.showIcon) ...[
+                          Flexible(
+                            child: Container(
+                              constraints: BoxConstraints(
+                                minHeight: constraints.maxHeight * 0.4,
+                                maxHeight: constraints.maxHeight * 0.6,
+                              ),
+                              child: Center(
+                                child: Container(
+                                  width: constraints.maxWidth * 0.4,
+                                  height: constraints.maxWidth * 0.4,
+                                  constraints: const BoxConstraints(
+                                    minWidth: 48,
+                                    minHeight: 48,
+                                    maxWidth: 72,
+                                    maxHeight: 72,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: iconColor == AppTheme.black100 
+                                      ? AppTheme.black100.withOpacity(0.15)
+                                      : AppTheme.white100.withOpacity(0.25),
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: iconColor == AppTheme.black100 
+                                          ? AppTheme.black100.withOpacity(0.1)
+                                          : AppTheme.black100.withOpacity(0.15),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    action.icon,
+                                    color: iconColor,
+                                    size: (constraints.maxWidth * 0.2).clamp(24.0, 36.0),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                          const SizedBox(height: AppTheme.spaceSmall),
+                        ],
+                        
+                        // Texte compact avec contraintes strictes
+                        Flexible(
+                          child: Container(
+                            constraints: BoxConstraints(
+                              minHeight: action.showIcon 
+                                  ? constraints.maxHeight * 0.25
+                                  : constraints.maxHeight * 0.5,
+                              maxHeight: action.showIcon 
+                                  ? constraints.maxHeight * 0.4
+                                  : constraints.maxHeight * 0.8,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    action.title,
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontWeight: AppTheme.fontBold,
+                                      fontSize: (constraints.maxWidth * 0.08).clamp(12.0, 16.0),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: constraints.maxHeight > 140 ? 2 : 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Flexible(
+                                  child: Text(
+                                    action.description,
+                                    style: TextStyle(
+                                      color: textColor == AppTheme.black100 
+                                        ? textColor.withOpacity(0.7) 
+                                        : textColor.withOpacity(0.85),
+                                      fontSize: (constraints.maxWidth * 0.06).clamp(10.0, 13.0),
+                                      height: 1.2,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: constraints.maxHeight > 140 ? 2 : 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
+  }
+  
+  // Méthode utilitaire pour calculer la couleur du texte selon le contraste
+  Color _getTextColorForBackground(Color backgroundColor) {
+    final luminance = backgroundColor.computeLuminance();
+    return luminance > 0.5 ? AppTheme.black100 : AppTheme.white100;
   }
 
   int _getCrossAxisCount(BuildContext context) {
@@ -529,8 +602,8 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
   }
 
   double _getChildAspectRatio(BuildContext context) {
-    // Cartes carrées avec ratio 1:1 pour un design équilibré
-    return 1.0; // Cartes parfaitement carrées
+    // Cartes parfaitement carrées
+    return 1.0;
   }
 
   Color? _getActionColor(String? colorString) {
@@ -539,6 +612,18 @@ class _PourVousTabDynamicState extends State<PourVousTabDynamic>
       return Color(int.parse(colorString.replaceFirst('#', '0xFF')));
     } catch (e) {
       return null;
+    }
+  }
+
+  ImageProvider _getImageProvider(String imageUrl) {
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return NetworkImage(imageUrl);
+    } else if (imageUrl.startsWith('file://')) {
+      // Pour les images locales (peu probable en production mais utile pour le dev)
+      return NetworkImage(imageUrl); // Placeholder, en prod vous devriez gérer ça différemment
+    } else {
+      // Assume it's a network URL without protocol
+      return NetworkImage(imageUrl);
     }
   }
 

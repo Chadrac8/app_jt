@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../pages/donation_webview_page.dart';
+import '../../../pages/helloasso_iframe_page.dart';
 import '../../../theme.dart';
 import '../../../auth/auth_service.dart';
 import '../../../models/person_model.dart';
-import '../../../utils/donation_url_helper.dart';
 
 class OffrandesTab extends StatefulWidget {
   const OffrandesTab({Key? key}) : super(key: key);
@@ -55,10 +54,10 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
     3: 'https://www.helloasso.com/associations/jubile-tabernacle/formulaires/4', // Dîme
   };
 
-  // Informations bancaires (à remplacer par les vraies données)
-  final String _iban = 'FR76 1234 5678 9012 3456 7890 123';
-  final String _bic = 'TESTFRPP';
-  final String _titulaire = 'Association Jubilé Tabernacle France';
+  // Informations bancaires
+  final String _iban = 'FR76 1670 6054 2853 9993 2537 436';
+  final String _bic = 'AGRIFRPP867';
+  final String _titulaire = 'Jubilé Tabernacle';
 
   @override
   void initState() {
@@ -298,27 +297,17 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                       HapticFeedback.lightImpact();
                       final baseUrl = _donationUrls[index];
                       if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DonationWebViewPage(
+                            builder: (context) => HelloAssoIframePage(
                               donationType: donation.title,
-                              url: prefilledUrl,
                               icon: donation.icon,
                               color: donation.color,
-                              user: _currentUser,
+                              donationUrl: baseUrl,
                             ),
                           ),
                         );
-                      }
-                    },
-                    onLongPress: () {
-                      HapticFeedback.mediumImpact();
-                      final baseUrl = _donationUrls[index];
-                      if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
-                        _showLoadingOptions(context, donation, prefilledUrl);
                       }
                     },
                     child: cardContent,
@@ -329,26 +318,17 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     onTap: () {
                       final baseUrl = _donationUrls[index];
                       if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DonationWebViewPage(
+                            builder: (context) => HelloAssoIframePage(
                               donationType: donation.title,
-                              url: prefilledUrl,
                               icon: donation.icon,
                               color: donation.color,
-                              user: _currentUser,
+                              donationUrl: baseUrl,
                             ),
                           ),
                         );
-                      }
-                    },
-                    onLongPress: () {
-                      final baseUrl = _donationUrls[index];
-                      if (baseUrl != null) {
-                        final prefilledUrl = DonationUrlHelper.buildDonationTypeUrl(baseUrl, _currentUser, donation.title);
-                        _showLoadingOptions(context, donation, prefilledUrl);
                       }
                     },
                     child: cardContent,
@@ -788,7 +768,7 @@ Merci pour votre générosité !
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      '"Association Jubilé Tabernacle France"',
+                      '"Jubilé Tabernacle"',
                       style: textTheme.bodyMedium?.copyWith(
                         color: colorScheme.primary,
                         fontWeight: FontWeight.w600,
@@ -798,7 +778,7 @@ Merci pour votre générosité !
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    '2. Envoyer le chèque à l\'adresse de l\'association',
+                    '2. Envoyer le chèque à l\'adresse :\n124 Bis rue de l\'\u00c9pidème\n59200 Tourcoing, France',
                     style: textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -847,35 +827,7 @@ Merci pour votre générosité !
     );
   }
 
-  void _showLoadingOptions(BuildContext context, DonationType donation, String url) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(Icons.language, color: donation.color),
-              title: const Text('Ouvrir dans le navigateur'),
-              onTap: () {
-                Navigator.pop(context);
-                // Logique pour ouvrir dans le navigateur externe
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.share, color: donation.color),
-              title: const Text('Partager le lien'),
-              onTap: () {
-                Navigator.pop(context);
-                Share.share(url, subject: 'Don - ${donation.title}');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 }
 
 class DonationType {

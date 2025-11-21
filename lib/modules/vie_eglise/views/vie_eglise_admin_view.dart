@@ -17,7 +17,7 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -57,15 +57,6 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
             Tab(
               icon: Icon(Icons.play_circle, size: 20),
               text: 'Sermons'),
-            Tab(
-              icon: Icon(Icons.church, size: 20),
-              text: 'Vie de l\'Église'),
-            Tab(
-              icon: Icon(Icons.library_books, size: 20),
-              text: 'Ressources'),
-            Tab(
-              icon: Icon(Icons.event, size: 20),
-              text: 'Services'),
           ])),
       backgroundColor: AppTheme.backgroundColor,
       body: TabBarView(
@@ -73,34 +64,6 @@ class _VieEgliseAdminViewState extends State<VieEgliseAdminView> with TickerProv
         children: [
           const AdminPourVousTab(),
           const AdminSermonsTab(),
-          _buildComingSoonTab('Vie de l\'Église'),
-          _buildComingSoonTab('Ressources'),
-          _buildComingSoonTab('Services'),
-        ]));
-  }
-
-  Widget _buildComingSoonTab(String tabName) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.construction,
-            size: 80,
-            color: AppTheme.textTertiaryColor),
-          const SizedBox(height: AppTheme.space20),
-          Text(
-            'Administration $tabName',
-            style: GoogleFonts.poppins(
-              fontSize: AppTheme.fontSize24,
-              fontWeight: AppTheme.fontSemiBold,
-              color: AppTheme.textPrimaryColor)),
-          const SizedBox(height: AppTheme.space10),
-          Text(
-            'Cette section sera bientôt disponible',
-            style: GoogleFonts.poppins(
-              fontSize: AppTheme.fontSize16,
-              color: AppTheme.textSecondaryColor)),
         ]));
   }
 }

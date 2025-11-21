@@ -324,6 +324,60 @@ class AppModulesConfig {
       },
     ),
 
+    // Module Messages Branham
+    ModuleConfig(
+      id: 'branham',
+      name: 'Messages Branham',
+      description: 'Accès complet aux prédications de William Marrion Branham avec lecteur audio intégré, favoris et téléchargements offline',
+      icon: 'record_voice_over',
+      isEnabled: true,
+      permissions: [ModulePermission.admin, ModulePermission.member, ModulePermission.public],
+      memberRoute: '/member/branham',
+      adminRoute: '/admin/branham',
+      customConfig: {
+        'features': [
+          'Catalogue complet des sermons',
+          'Recherche avancée par titre, date, lieu, thème',
+          'Filtres par année, type de réunion, thème',
+          'Tri par date, titre, lieu',
+          'Lecteur audio intégré avec contrôles complets',
+          'Reprise automatique de la lecture',
+          'Système de favoris avec notes et tags',
+          'Historique d\'écoute avec statistiques',
+          'Téléchargements offline (audio, PDF, EPUB)',
+          'Interface Material 3 moderne',
+          'Cache intelligent des données',
+          'Synchronisation cloud des favoris',
+          'Partage de messages',
+          'Mode sombre/clair',
+        ],
+        'permissions': {
+          'member': ['view_messages', 'play_audio', 'add_favorites', 'view_history', 'download_files', 'share_messages'],
+          'admin': ['view_messages', 'play_audio', 'add_favorites', 'view_history', 'download_files', 'share_messages', 'manage_content', 'view_statistics', 'manage_settings'],
+          'public': ['view_messages', 'play_audio'],
+        },
+        'dataSource': {
+          'type': 'api',
+          'baseUrl': 'https://api.messagehub.info/v1',
+          'fallbackMockData': true,
+          'cacheEnabled': true,
+          'cacheDuration': '2h'
+        },
+        'audioPlayer': {
+          'supportedFormats': ['mp3', 'm4a', 'wav'],
+          'enableBackground': true,
+          'enableNotifications': true,
+          'skipForward': 30,
+          'skipBackward': 15
+        },
+        'downloads': {
+          'supportedTypes': ['audio', 'pdf', 'epub', 'text'],
+          'maxConcurrent': 3,
+          'autoRetry': true
+        }
+      },
+    ),
+
     // Module Offrandes
     ModuleConfig(
       id: 'offrandes',

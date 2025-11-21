@@ -6,16 +6,20 @@ import '../models/home_config_model.dart';
 import '../../theme.dart';
 
 class LatestSermonWidget extends StatefulWidget {
-  const LatestSermonWidget({super.key});
+  const LatestSermonWidget({Key? key}) : super(key: key);
 
   @override
   State<LatestSermonWidget> createState() => _LatestSermonWidgetState();
 }
 
-class _LatestSermonWidgetState extends State<LatestSermonWidget> {
+class _LatestSermonWidgetState extends State<LatestSermonWidget> with AutomaticKeepAliveClientMixin {
   HomeConfigModel? _homeConfig;
   bool _isLoading = true;
   YoutubePlayerController? _youtubeController;
+  String? _lastLoadedUrl;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -32,12 +36,25 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
   Future<void> _loadHomeConfig() async {
     try {
       final config = await HomeConfigService.getHomeConfig();
+      
       if (config.sermonYouTubeUrl != null && config.sermonYouTubeUrl!.isNotEmpty) {
+        // Vérifier si l'URL a changé pour recréer le controller
+        final urlChanged = _lastLoadedUrl != config.sermonYouTubeUrl;
+        _lastLoadedUrl = config.sermonYouTubeUrl;
+        
         setState(() {
           _homeConfig = config;
           _isLoading = false;
         });
-        _initializeYoutubePlayer();
+        
+        if (urlChanged) {
+          // Dispose old controller if exists
+          _youtubeController?.dispose();
+          _youtubeController = null;
+          _initializeYoutubePlayer();
+        } else if (_youtubeController == null) {
+          _initializeYoutubePlayer();
+        }
       } else {
         setState(() {
           _isLoading = false;
@@ -50,23 +67,65 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
     }
   }
 
+  String? _extractYoutubeVideoId(String url) {
+    // Essayer d'abord avec la méthode standard
+    var videoId = YoutubePlayer.convertUrlToId(url);
+    
+    if (videoId != null) {
+      return videoId;
+    }
+    
+    // Si ça ne marche pas, essayer d'extraire manuellement pour les lives et autres formats
+    try {
+      final uri = Uri.parse(url);
+      
+      // Format: youtube.com/live/VIDEO_ID
+      if (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'live') {
+        return uri.pathSegments[1];
+      }
+      
+      // Format: youtu.be/VIDEO_ID
+      if (uri.host.contains('youtu.be') && uri.pathSegments.isNotEmpty) {
+        return uri.pathSegments[0];
+      }
+      
+      // Format: youtube.com/watch?v=VIDEO_ID
+      if (uri.queryParameters.containsKey('v')) {
+        return uri.queryParameters['v'];
+      }
+      
+      // Format: youtube.com/embed/VIDEO_ID
+      if (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'embed') {
+        return uri.pathSegments[1];
+      }
+    } catch (e) {
+      // Ignore parsing errors
+    }
+    
+    return null;
+  }
+
   void _initializeYoutubePlayer() {
     if (_homeConfig?.sermonYouTubeUrl != null) {
-      final videoId = YoutubePlayer.convertUrlToId(_homeConfig!.sermonYouTubeUrl!);
+      final videoId = _extractYoutubeVideoId(_homeConfig!.sermonYouTubeUrl!);
+      
       if (videoId != null) {
-        _youtubeController = YoutubePlayerController(
-          initialVideoId: videoId,
-          flags: const YoutubePlayerFlags(
-            autoPlay: false,
-            mute: false,
-            showLiveFullscreenButton: true,
-            hideControls: false));
+        setState(() {
+          _youtubeController = YoutubePlayerController(
+            initialVideoId: videoId,
+            flags: const YoutubePlayerFlags(
+              autoPlay: false,
+              mute: false,
+              showLiveFullscreenButton: true,
+              hideControls: false));
+        });
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // Required for AutomaticKeepAliveClientMixin
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -138,13 +197,27 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16)),
-                child: YoutubePlayer(
-                  controller: _youtubeController!,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: AppTheme.primaryColor,
-                  onReady: () {
-                    // Lecteur prêt
-                  }))
+                child: YoutubePlayerBuilder(
+                  player: YoutubePlayer(
+                    controller: _youtubeController!,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: AppTheme.primaryColor,
+                    progressColors: ProgressBarColors(
+                      playedColor: AppTheme.primaryColor,
+                      handleColor: AppTheme.primaryColor,
+                    ),
+                    onReady: () {
+                      // Lecteur prêt
+                    },
+                  ),
+                  builder: (context, player) {
+                    return Container(
+                      color: Colors.black,
+                      child: player,
+                    );
+                  },
+                ),
+              )
             else
               Container(
                 height: 200,
@@ -165,6 +238,18 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> {
                         'Vidéo non disponible',
                         style: TextStyle(
                           color: AppTheme.textSecondaryColor)),
+                      if (_homeConfig?.sermonYouTubeUrl != null)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'URL: ${_homeConfig!.sermonYouTubeUrl}',
+                            style: TextStyle(
+                              color: AppTheme.textSecondaryColor,
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                     ]))),
             
             // Informations sur le sermon

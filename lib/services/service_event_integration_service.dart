@@ -4,6 +4,7 @@ import '../models/event_model.dart';
 import 'events_firebase_service.dart';
 import 'service_notification_service.dart';
 import 'event_series_service.dart'; // ✅ NOUVEAU: Pour gérer les séries d'événements récurrents
+import 'service_recurrence_service.dart'; // ✅ NOUVEAU: Service dédié aux récurrences de services
 
 /// Service d'intégration entre Services et Événements
 /// Inspiré de Planning Center Online où chaque service est un événement
@@ -18,84 +19,91 @@ class ServiceEventIntegrationService {
 
   /// Crée un service et son événement lié automatiquement
   /// 
-  /// SYSTÈME DE RÉCURRENCE:
-  /// - Service simple → 1 événement dans Firestore
-  /// - Service récurrent → N événements individuels (EventSeriesService)
+  /// NOUVEAU SYSTÈME DE RÉCURRENCE (Style Planning Center Online):
+  /// - Service simple → 1 service + 1 événement dans Firestore
+  /// - Service récurrent → N services autonomes + N événements individuels
+  /// - Chaque occurrence a sa propre date/heure et peut être modifiée indépendamment
   static Future<String> createServiceWithEvent(ServiceModel service) async {
     try {
       print('🎯 Création service avec événement lié: ${service.name}');
       
       if (service.isRecurring && service.recurrencePattern != null) {
         // ==========================================
-        // === SERVICE RÉCURRENT (NOUVEAU SYSTÈME) ===
+        // === SERVICE RÉCURRENT (NOUVEAU SYSTÈME AUTONOME) ===
         // ==========================================
-        print('   Mode: Service récurrent (série d\'événements individuels)');
+        print('   Mode: Service récurrent (occurrences autonomes)');
         
-        // 1. Convertir le pattern de service en EventRecurrence
-        final eventRecurrence = _convertServicePatternToEventRecurrence(
-          service.recurrencePattern!,
-          service.dateTime,
+        // 1. ✅ NOUVEAU: Créer la série de SERVICES avec ServiceRecurrenceService
+        final serviceIds = await ServiceRecurrenceService.createRecurringSeries(
+          masterService: service,
+          recurrencePattern: service.recurrencePattern!,
+          preGenerateMonths: 6,
         );
 
-        // 2. Créer l'événement maître (template pour la série)
-        final masterEvent = EventModel(
-          id: '', // Sera généré par EventSeriesService
-          title: service.name,
-          description: service.description ?? '',
-          type: 'culte',
-          startDate: service.dateTime,
-          endDate: service.dateTime.add(Duration(minutes: service.durationMinutes)),
-          location: service.location,
-          visibility: 'publique',
-          responsibleIds: [],
-          visibilityTargets: [],
-          status: service.status,
-          isRegistrationEnabled: true,
-          maxParticipants: null,
-          hasWaitingList: true,
-          isRecurring: true,
-          recurrence: eventRecurrence,
-          imageUrl: null,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          createdBy: service.createdBy,
-          isServiceEvent: true,
-        );
-
-        // 3. ✅ NOUVEAU: Créer la série d'événements (N événements individuels)
-        print('   Génération de la série d\'événements...');
-        final eventIds = await EventSeriesService.createRecurringSeries(
-          masterEvent: masterEvent,
-          recurrence: eventRecurrence,
-          preGenerateMonths: 6, // 6 mois par défaut
-        );
-
-        if (eventIds.isEmpty) {
-          throw Exception('Échec de la création de la série d\'événements');
+        if (serviceIds.isEmpty) {
+          throw Exception('Échec de la création de la série de services');
         }
 
-        print('   ✅ ${eventIds.length} événements créés dans la série');
+        print('   ✅ ${serviceIds.length} services autonomes créés dans la série');
 
-        // 4. Lier le service au PREMIER événement (maître de la série)
-        final linkedEventId = eventIds.first;
-        final serviceWithEvent = service.copyWith(linkedEventId: linkedEventId);
-        final serviceId = await _createService(serviceWithEvent);
+        // 2. ✅ NOUVEAU: Créer les événements correspondants pour chaque service
+        print('   Création des événements liés...');
+        int linkedEventsCount = 0;
+        
+        for (final serviceId in serviceIds) {
+          final createdService = await ServiceRecurrenceService.getService(serviceId);
+          if (createdService != null) {
+            // Créer l'événement pour ce service spécifique avec SA date
+            final linkedEvent = EventModel(
+              id: '', // Sera généré par EventsFirebaseService
+              title: createdService.name,
+              description: createdService.description ?? '',
+              type: 'culte',
+              startDate: createdService.dateTime, // ✅ Date spécifique à cette occurrence
+              endDate: createdService.dateTime.add(Duration(minutes: createdService.durationMinutes)),
+              location: createdService.location,
+              visibility: 'publique',
+              responsibleIds: [],
+              visibilityTargets: [],
+              status: createdService.status,
+              isRegistrationEnabled: true,
+              maxParticipants: null,
+              hasWaitingList: true,
+              isRecurring: false, // ✅ Chaque événement est individuel
+              imageUrl: createdService.imageUrl,
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+              createdBy: createdService.createdBy,
+              isServiceEvent: true,
+              
+              // ✅ Lien vers la série d'événements pour le calendrier
+              seriesId: createdService.seriesId,
+              isSeriesMaster: createdService.isSeriesMaster,
+              occurrenceIndex: createdService.occurrenceIndex,
+            );
 
-        // 5. ✅ IMPORTANT: Mettre à jour TOUS les événements de la série avec le lien service
-        print('   Liaison des événements au service...');
-        for (final eventId in eventIds) {
-          await _updateEventWithServiceLink(eventId, serviceId);
+            // Créer l'événement et lier au service
+            final eventId = await EventsFirebaseService.createEvent(linkedEvent);
+            
+            // Mettre à jour le service avec le lien événement
+            await _updateServiceWithEventLink(serviceId, eventId);
+            linkedEventsCount++;
+          }
         }
-        print('   ✅ ${eventIds.length} événements liés au service');
 
-        // 6. Notifications
-        await ServiceNotificationService.notifyNewService(serviceWithEvent);
-        await ServiceNotificationService.scheduleServiceReminder(serviceWithEvent);
+        print('   ✅ $linkedEventsCount événements liés créés');
 
-        print('✅ Service récurrent créé avec succès: $serviceId');
-        print('   Événements dans la série: ${eventIds.length}');
-        print('   Événement maître: $linkedEventId');
-        return serviceId;
+        // 3. Notifications pour le service maître
+        final masterService = await ServiceRecurrenceService.getService(serviceIds.first);
+        if (masterService != null) {
+          await ServiceNotificationService.notifyNewService(masterService);
+          await ServiceNotificationService.scheduleServiceReminder(masterService);
+        }
+
+        print('✅ Série services récurrents créée avec succès');
+        print('   Services autonomes: ${serviceIds.length}');
+        print('   Événements liés: $linkedEventsCount');
+        return serviceIds.first; // Retourner l'ID du service maître
 
       } else {
         // ==========================================
@@ -600,5 +608,13 @@ class ServiceEventIntegrationService {
       print('❌ Erreur liaison: $e');
       rethrow;
     }
+  }
+
+  /// Met à jour un service avec un lien vers un événement
+  static Future<void> _updateServiceWithEventLink(String serviceId, String eventId) async {
+    await _firestore.collection('services').doc(serviceId).update({
+      'linkedEventId': eventId,
+      'updatedAt': Timestamp.fromDate(DateTime.now()),
+    });
   }
 }

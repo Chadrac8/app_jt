@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../theme.dart';
 import '../services/bible_service.dart';
+import '../services/apple_notes_share_service.dart';
+
 
 class ReadingSettingsDialog extends StatefulWidget {
   final double fontSize;
@@ -762,6 +765,14 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> with Tick
           
           const SizedBox(height: 24),
           
+          _buildSectionHeader('Synchronisation', Icons.sync),
+          const SizedBox(height: 16),
+          
+          // Bouton pour accéder aux paramètres Apple Notes
+          _buildAppleNotesSyncButton(),
+          
+          const SizedBox(height: 24),
+          
           _buildSectionHeader('Gestion des données', Icons.storage),
           const SizedBox(height: 16),
           
@@ -862,6 +873,121 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> with Tick
               dense: true,
             );
           }).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppleNotesSyncButton() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+        ),
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.sync_alt_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Synchronisation Apple Notes',
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                    Text(
+                      'Synchronisez vos notes et surlignements avec Apple Notes',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      final shareService = AppleNotesShareService();
+                      final prefs = await SharedPreferences.getInstance();
+                      
+                      // Charger les données
+                      final notesString = prefs.getString('bible_notes') ?? '{}';
+                      final notes = Map<String, String>.from(jsonDecode(notesString));
+                      
+                      final highlightsList = prefs.getStringList('bible_highlights') ?? [];
+                      final highlights = <String, String>{};
+                      for (final highlight in highlightsList) {
+                        if (highlight.contains(':')) {
+                          final parts = highlight.split(':');
+                          highlights[parts[0]] = parts[1];
+                        }
+                      }
+                      
+                      final favoritesList = prefs.getStringList('bible_favorites') ?? [];
+                      final favorites = favoritesList.toSet();
+                      
+                      // Exporter vers Apple Notes
+                      await shareService.shareAllNotesToAppleNotes(
+                        notes: notes,
+                        highlights: highlights,
+                        favorites: favorites,
+                      );
+                      
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Export vers Apple Notes lancé !'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Erreur: $e'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.share, size: 18),
+                  label: const Text('Exporter'),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

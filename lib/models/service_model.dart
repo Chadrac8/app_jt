@@ -9,12 +9,23 @@ class ServiceModel {
   final String location;
   final int durationMinutes;
   final String status; // 'brouillon', 'publie', 'archive', 'annule'
+  final String? imageUrl; // URL de l'image de couverture
   final String? notes;
   final List<String> teamIds;
   final List<String> attachmentUrls;
   final Map<String, dynamic> customFields;
+  
+  // ===== RÉCURRENCE AVANCÉE (Style Planning Center Online) =====
   final bool isRecurring;
   final Map<String, dynamic>? recurrencePattern;
+  final String? seriesId; // ID de la série récurrente (commun à toutes les occurrences)
+  final String? parentServiceId; // ID du service maître (pour les occurrences)
+  final bool isSeriesMaster; // true si c'est le service maître de la série
+  final int? occurrenceIndex; // Index de l'occurrence dans la série (0 = maître)
+  final DateTime? originalDateTime; // Date/heure originale avant modification
+  final bool isModifiedOccurrence; // true si cette occurrence a été modifiée individuellement
+  final List<String> exceptions; // Dates d'exceptions (ISO strings)
+  
   final String? templateId;
   final String? linkedEventId; // Lien vers EventModel pour intégration calendrier/récurrence
   final DateTime createdAt;
@@ -31,12 +42,23 @@ class ServiceModel {
     required this.location,
     this.durationMinutes = 90,
     this.status = 'brouillon',
+    this.imageUrl,
     this.notes,
     this.teamIds = const [],
     this.attachmentUrls = const [],
     this.customFields = const {},
+    
+    // Récurrence avancée
     this.isRecurring = false,
     this.recurrencePattern,
+    this.seriesId,
+    this.parentServiceId,
+    this.isSeriesMaster = false,
+    this.occurrenceIndex,
+    this.originalDateTime,
+    this.isModifiedOccurrence = false,
+    this.exceptions = const [],
+    
     this.templateId,
     this.linkedEventId,
     required this.createdAt,
@@ -81,12 +103,25 @@ class ServiceModel {
       location: data['location'] ?? '',
       durationMinutes: data['durationMinutes'] ?? 90,
       status: data['status'] ?? 'brouillon',
+      imageUrl: data['imageUrl'],
       notes: data['notes'],
       teamIds: List<String>.from(data['teamIds'] ?? []),
       attachmentUrls: List<String>.from(data['attachmentUrls'] ?? []),
       customFields: Map<String, dynamic>.from(data['customFields'] ?? {}),
+      
+      // Récurrence avancée
       isRecurring: data['isRecurring'] ?? false,
       recurrencePattern: data['recurrencePattern'],
+      seriesId: data['seriesId'],
+      parentServiceId: data['parentServiceId'],
+      isSeriesMaster: data['isSeriesMaster'] ?? false,
+      occurrenceIndex: data['occurrenceIndex'],
+      originalDateTime: data['originalDateTime'] != null 
+          ? (data['originalDateTime'] as Timestamp).toDate() 
+          : null,
+      isModifiedOccurrence: data['isModifiedOccurrence'] ?? false,
+      exceptions: List<String>.from(data['exceptions'] ?? []),
+      
       templateId: data['templateId'],
       linkedEventId: data['linkedEventId'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
@@ -105,12 +140,25 @@ class ServiceModel {
       'location': location,
       'durationMinutes': durationMinutes,
       'status': status,
+      'imageUrl': imageUrl,
       'notes': notes,
       'teamIds': teamIds,
       'attachmentUrls': attachmentUrls,
       'customFields': customFields,
+      
+      // Récurrence avancée
       'isRecurring': isRecurring,
       'recurrencePattern': recurrencePattern,
+      'seriesId': seriesId,
+      'parentServiceId': parentServiceId,
+      'isSeriesMaster': isSeriesMaster,
+      'occurrenceIndex': occurrenceIndex,
+      'originalDateTime': originalDateTime != null 
+          ? Timestamp.fromDate(originalDateTime!) 
+          : null,
+      'isModifiedOccurrence': isModifiedOccurrence,
+      'exceptions': exceptions,
+      
       'templateId': templateId,
       'linkedEventId': linkedEventId,
       'createdAt': Timestamp.fromDate(createdAt),
@@ -128,12 +176,23 @@ class ServiceModel {
     String? location,
     int? durationMinutes,
     String? status,
+    String? imageUrl,
     String? notes,
     List<String>? teamIds,
     List<String>? attachmentUrls,
     Map<String, dynamic>? customFields,
+    
+    // Récurrence avancée
     bool? isRecurring,
     Map<String, dynamic>? recurrencePattern,
+    String? seriesId,
+    String? parentServiceId,
+    bool? isSeriesMaster,
+    int? occurrenceIndex,
+    DateTime? originalDateTime,
+    bool? isModifiedOccurrence,
+    List<String>? exceptions,
+    
     String? templateId,
     String? linkedEventId,
     DateTime? updatedAt,
@@ -148,12 +207,23 @@ class ServiceModel {
       location: location ?? this.location,
       durationMinutes: durationMinutes ?? this.durationMinutes,
       status: status ?? this.status,
+      imageUrl: imageUrl ?? this.imageUrl,
       notes: notes ?? this.notes,
       teamIds: teamIds ?? this.teamIds,
       attachmentUrls: attachmentUrls ?? this.attachmentUrls,
       customFields: customFields ?? this.customFields,
+      
+      // Récurrence avancée
       isRecurring: isRecurring ?? this.isRecurring,
       recurrencePattern: recurrencePattern ?? this.recurrencePattern,
+      seriesId: seriesId ?? this.seriesId,
+      parentServiceId: parentServiceId ?? this.parentServiceId,
+      isSeriesMaster: isSeriesMaster ?? this.isSeriesMaster,
+      occurrenceIndex: occurrenceIndex ?? this.occurrenceIndex,
+      originalDateTime: originalDateTime ?? this.originalDateTime,
+      isModifiedOccurrence: isModifiedOccurrence ?? this.isModifiedOccurrence,
+      exceptions: exceptions ?? this.exceptions,
+      
       templateId: templateId ?? this.templateId,
       linkedEventId: linkedEventId ?? this.linkedEventId,
       createdAt: createdAt,

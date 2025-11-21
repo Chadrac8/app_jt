@@ -7,6 +7,7 @@ import '../services/action_service.dart';
 import '../services/action_group_service.dart';
 import '../../../../models/form_model.dart';
 import '../../../../services/forms_firebase_service.dart';
+import 'action_customization_helpers.dart';
 
 class ActionFormDialog extends StatefulWidget {
   final PourVousAction? action;
@@ -43,6 +44,13 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
   bool _isLoading = false;
   List<ActionGroup> _groups = [];
   List<FormModel> _availableForms = [];
+  
+  // Nouveaux champs pour personnalisation avancée
+  int? _selectedIconColor; // null = auto
+  int? _selectedBackgroundColor; // null = utiliser _selectedColor
+  int? _selectedTextColor; // null = auto basé sur contraste
+  String? _selectedBackgroundImage;
+  bool _showIcon = true;
   
   final TextEditingController _urlController = TextEditingController();
 
@@ -83,42 +91,7 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
     'settings': ['/settings', '/settings/notifications'],
   };
 
-  final List<IconData> _availableIcons = [
-    Icons.church,
-    Icons.water_drop,
-    Icons.volunteer_activism,
-    Icons.contact_phone,
-    Icons.email,
-    Icons.calendar_month,
-    Icons.group,
-    Icons.favorite,
-    Icons.star,
-    Icons.info,
-    Icons.help,
-    Icons.settings,
-    Icons.notifications,
-    Icons.home,
-    Icons.person,
-    Icons.chat,
-    Icons.library_books,
-    Icons.music_note,
-    Icons.event,
-    Icons.location_on,
-    Icons.share,
-  ];
-
-  final List<Color> _availableColors = [
-    AppTheme.primaryColor,
-    AppTheme.secondaryColor,
-    AppTheme.successColor,
-    AppTheme.warningColor,
-    AppTheme.errorColor,
-    AppTheme.primaryColor,
-    AppTheme.orangeStandard,
-    AppTheme.secondaryColor,
-    AppTheme.secondaryColor,
-    AppTheme.pinkStandard,
-  ];
+  // Note: Nous utilisons maintenant les icônes et couleurs du ActionCustomizationHelpers
 
   @override
   void initState() {
@@ -179,6 +152,34 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           _selectedColor = AppTheme.primaryColor;
         }
       }
+      
+      // Initialiser les nouveaux champs de personnalisation
+      if (action.iconColor != null) {
+        try {
+          _selectedIconColor = int.parse(action.iconColor!.replaceFirst('#', '0xFF'));
+        } catch (e) {
+          _selectedIconColor = null;
+        }
+      }
+      
+      if (action.backgroundColor != null) {
+        try {
+          _selectedBackgroundColor = int.parse(action.backgroundColor!.replaceFirst('#', '0xFF'));
+        } catch (e) {
+          _selectedBackgroundColor = null;
+        }
+      }
+      
+      if (action.textColor != null) {
+        try {
+          _selectedTextColor = int.parse(action.textColor!.replaceFirst('#', '0xFF'));
+        } catch (e) {
+          _selectedTextColor = null;
+        }
+      }
+      
+      _selectedBackgroundImage = action.backgroundImageUrl;
+      _showIcon = action.showIcon;
     }
   }
 
@@ -648,53 +649,47 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const Spacer(),
-                // Prévisualisation
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: _selectedColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                    border: Border.all(color: _selectedColor.withOpacity(0.3)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(_selectedIcon, color: _selectedColor, size: 16),
-                      const SizedBox(width: 6),
-                      Text(
-                        'Aperçu',
-                        style: GoogleFonts.poppins(
-                          fontSize: AppTheme.fontSize12,
-                          color: _selectedColor,
-                          fontWeight: AppTheme.fontMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: AppTheme.spaceLarge),
             
-            // Sélection d'icône
-            Row(
-              children: [
-                Icon(Icons.category_outlined, size: 16, color: colorScheme.onSurfaceVariant),
-                const SizedBox(width: 8),
-                Text(
-                  'Icône',
-                  style: GoogleFonts.poppins(
-                    fontSize: AppTheme.fontSize14,
-                    fontWeight: AppTheme.fontMedium,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-              ],
+            // Prévisualisation en temps réel
+            Text(
+              'Aperçu',
+              style: GoogleFonts.poppins(
+                fontSize: AppTheme.fontSize14,
+                fontWeight: AppTheme.fontMedium,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: AppTheme.space12),
+            Center(
+              child: ActionCustomizationHelpers.buildActionPreview(
+                _titleController.text.isEmpty ? 'Titre de l\'action' : _titleController.text,
+                ActionCustomizationHelpers.getIconName(_selectedIcon),
+                _selectedBackgroundColor ?? _selectedColor.value,
+                _selectedIconColor,
+                _selectedTextColor,
+                _selectedBackgroundImage,
+                _showIcon,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spaceLarge),
+            const Divider(),
+            const SizedBox(height: AppTheme.spaceLarge),
+            
+            // Sélection d'icône complète avec helper
+            Text(
+              'Icône',
+              style: GoogleFonts.poppins(
+                fontSize: AppTheme.fontSize14,
+                fontWeight: AppTheme.fontMedium,
+                color: colorScheme.onSurface,
+              ),
             ),
             const SizedBox(height: AppTheme.space12),
             Container(
-              height: 140,
+              height: 200,
               decoration: BoxDecoration(
                 color: colorScheme.surface,
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -703,43 +698,47 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
               child: GridView.builder(
                 padding: const EdgeInsets.all(AppTheme.space12),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 7,
+                  crossAxisCount: 8,
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
                 ),
-                itemCount: _availableIcons.length,
+                itemCount: ActionCustomizationHelpers.availableIcons.length,
                 itemBuilder: (context, index) {
-                  final icon = _availableIcons[index];
-                  final isSelected = icon == _selectedIcon;
+                  final iconData = ActionCustomizationHelpers.availableIcons[index];
+                  final icon = iconData['icon'] as IconData;
+                  final isSelected = icon.codePoint == _selectedIcon.codePoint;
                   
                   return Material(
                     color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _selectedIcon = icon;
-                        });
-                      },
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: isSelected 
-                              ? AppTheme.primaryColor.withOpacity(0.15)
-                              : Colors.transparent,
-                          border: Border.all(
+                    child: Tooltip(
+                      message: iconData['label'] as String,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedIcon = icon;
+                          });
+                        },
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                        child: Container(
+                          decoration: BoxDecoration(
                             color: isSelected 
-                                ? AppTheme.primaryColor
-                                : colorScheme.outline.withOpacity(0.3),
-                            width: isSelected ? 2 : 1,
+                                ? AppTheme.primaryColor.withOpacity(0.15)
+                                : Colors.transparent,
+                            border: Border.all(
+                              color: isSelected 
+                                  ? AppTheme.primaryColor
+                                  : colorScheme.outline.withOpacity(0.3),
+                              width: isSelected ? 2 : 1,
+                            ),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                           ),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                        ),
-                        child: Icon(
-                          icon,
-                          color: isSelected 
-                              ? AppTheme.primaryColor 
-                              : colorScheme.onSurfaceVariant,
-                          size: 20,
+                          child: Icon(
+                            icon,
+                            color: isSelected 
+                                ? AppTheme.primaryColor 
+                                : colorScheme.onSurfaceVariant,
+                            size: 20,
+                          ),
                         ),
                       ),
                     ),
@@ -749,80 +748,133 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
             ),
             
             const SizedBox(height: AppTheme.spaceLarge),
+            const Divider(),
+            const SizedBox(height: AppTheme.spaceLarge),
             
-            // Sélection de couleur
+            // Personnalisation avancée
+            Text(
+              'Personnalisation de l\'apparence',
+              style: GoogleFonts.poppins(
+                fontSize: AppTheme.fontSize16,
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spaceMedium),
+            
+            // Arrière-plan
+            ActionCustomizationHelpers.buildBackgroundSelector(
+              context,
+              _selectedBackgroundImage,
+              _selectedBackgroundColor ?? _selectedColor.value,
+              ActionCustomizationHelpers.availableColors,
+              (imageUrl) {
+                setState(() {
+                  _selectedBackgroundImage = imageUrl;
+                  if (imageUrl != null) {
+                    _selectedBackgroundColor = null;
+                  }
+                });
+              },
+              (color) {
+                setState(() {
+                  _selectedBackgroundColor = color;
+                  if (color != null) {
+                    _selectedBackgroundImage = null;
+                  }
+                });
+              },
+              (callback) {
+                ActionCustomizationHelpers.showImagePicker(context, callback);
+              },
+            ),
+            
+            const SizedBox(height: AppTheme.spaceLarge),
+            
+            // Couleur de l'icône
+            ActionCustomizationHelpers.buildColorSelector(
+              'Couleur de l\'icône',
+              _selectedIconColor,
+              [
+                ...ActionCustomizationHelpers.availableColors,
+                {'name': 'Auto (blanc/noir)', 'color': null}
+              ],
+              (color) {
+                setState(() {
+                  _selectedIconColor = color;
+                });
+              },
+            ),
+            
+            const SizedBox(height: AppTheme.spaceLarge),
+            
+            // Couleur du texte
+            ActionCustomizationHelpers.buildColorSelector(
+              'Couleur du texte',
+              _selectedTextColor,
+              [
+                ...ActionCustomizationHelpers.availableColors,
+                {'name': 'Auto (contraste)', 'color': null}
+              ],
+              (color) {
+                setState(() {
+                  _selectedTextColor = color;
+                });
+              },
+            ),
+            
+            const SizedBox(height: AppTheme.spaceLarge),
+            
+            // Toggle affichage de l'icône
             Row(
               children: [
-                Icon(Icons.color_lens_outlined, size: 16, color: colorScheme.onSurfaceVariant),
+                Checkbox(
+                  value: _showIcon,
+                  onChanged: (value) {
+                    setState(() {
+                      _showIcon = value ?? true;
+                    });
+                  },
+                  activeColor: AppTheme.primaryColor,
+                ),
                 const SizedBox(width: 8),
                 Text(
-                  'Couleur thématique',
+                  'Afficher l\'icône',
                   style: GoogleFonts.poppins(
                     fontSize: AppTheme.fontSize14,
-                    fontWeight: AppTheme.fontMedium,
                     color: colorScheme.onSurface,
                   ),
                 ),
               ],
             ),
+            
             const SizedBox(height: AppTheme.space12),
+            
+            // Aide contextuelle
             Container(
-              height: 80,
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
               decoration: BoxDecoration(
-                color: colorScheme.surface,
-                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                border: Border.all(color: colorScheme.outline.withOpacity(0.3)),
+                color: colorScheme.surfaceVariant.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
               ),
-              child: GridView.builder(
-                padding: const EdgeInsets.all(AppTheme.space12),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                ),
-                itemCount: _availableColors.length,
-                itemBuilder: (context, index) {
-                  final color = _availableColors[index];
-                  final isSelected = color == _selectedColor;
-                  
-                  return Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _selectedColor = color;
-                        });
-                      },
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: color,
-                          borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
-                          border: Border.all(
-                            color: isSelected 
-                                ? colorScheme.onSurface 
-                                : color.withOpacity(0.3),
-                            width: isSelected ? 3 : 1,
-                          ),
-                          boxShadow: isSelected ? [
-                            BoxShadow(
-                              color: color.withOpacity(0.4),
-                              blurRadius: 8,
-                              spreadRadius: 1,
-                            ),
-                          ] : null,
-                        ),
-                        child: isSelected
-                            ? Icon(
-                                Icons.check_rounded,
-                                color: Colors.white,
-                                size: 16,
-                              )
-                            : null,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline_rounded,
+                    color: colorScheme.onSurfaceVariant,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Les couleurs automatiques s\'adaptent intelligemment selon le fond pour assurer une lisibilité optimale.',
+                      style: GoogleFonts.poppins(
+                        fontSize: AppTheme.fontSize12,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
           ],
@@ -1743,6 +1795,43 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           break;
       }
 
+      // Préparer les nouveaux champs de personnalisation
+      final iconColorHex = _selectedIconColor != null 
+          ? '#${_selectedIconColor!.toRadixString(16).substring(2).toUpperCase()}'
+          : null;
+      final backgroundColorHex = _selectedBackgroundColor != null 
+          ? '#${_selectedBackgroundColor!.toRadixString(16).substring(2).toUpperCase()}'
+          : null;
+      final textColorHex = _selectedTextColor != null 
+          ? '#${_selectedTextColor!.toRadixString(16).substring(2).toUpperCase()}'
+          : null;
+      
+      // Uploader l'image vers Firebase Storage si nécessaire
+      String? backgroundImageUrl = _selectedBackgroundImage;
+      if (backgroundImageUrl != null && backgroundImageUrl.startsWith('file://')) {
+        // C'est un fichier local, on doit l'uploader
+        final actionId = widget.action?.id ?? 'new_${DateTime.now().millisecondsSinceEpoch}';
+        final uploadedUrl = await ActionCustomizationHelpers.uploadImageToStorage(
+          backgroundImageUrl,
+          actionId,
+        );
+        
+        if (uploadedUrl != null) {
+          backgroundImageUrl = uploadedUrl;
+        } else {
+          // En cas d'échec de l'upload, on garde null pour utiliser la couleur
+          backgroundImageUrl = null;
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Erreur lors de l\'upload de l\'image. La couleur sera utilisée.'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
+        }
+      }
+      
       if (widget.action == null || widget.isDuplicate) {
         // Créer une nouvelle action
         final newAction = PourVousAction(
@@ -1761,11 +1850,17 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           updatedAt: now,
           color: colorHex,
           groupId: _selectedGroupId,
+          iconColor: iconColorHex,
+          backgroundColor: backgroundColorHex,
+          textColor: textColorHex,
+          backgroundImageUrl: backgroundImageUrl,
+          showIcon: _showIcon,
         );
 
         await _actionService.createAction(newAction);
       } else {
         // Modifier l'action existante
+        print('🔍 DEBUG - Saving backgroundImageUrl: $backgroundImageUrl');
         final updatedAction = widget.action!.copyWith(
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
@@ -1780,8 +1875,14 @@ class _ActionFormDialogState extends State<ActionFormDialog> {
           updatedAt: now,
           color: colorHex,
           groupId: _selectedGroupId,
+          iconColor: iconColorHex != null ? Optional.value(iconColorHex) : null,
+          backgroundColor: backgroundColorHex != null ? Optional.value(backgroundColorHex) : null,
+          textColor: textColorHex != null ? Optional.value(textColorHex) : null,
+          backgroundImageUrl: Optional.value(backgroundImageUrl),
+          showIcon: _showIcon,
         );
-
+        
+        print('🔍 DEBUG - After copyWith, backgroundImageUrl: ${updatedAction.backgroundImageUrl}');
         await _actionService.updateAction(widget.action!.id, updatedAction);
       }
 

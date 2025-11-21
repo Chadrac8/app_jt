@@ -701,20 +701,6 @@
       ]
     },
     {
-      "collectionGroup": "branham_sermons",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "isActive",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "blog_posts",
       "queryScope": "COLLECTION",
       "fields": [
@@ -1363,20 +1349,6 @@
       ]
     },
     {
-      "collectionGroup": "branham_sermons",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "displayOrder",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "persons",
       "queryScope": "COLLECTION",
       "fields": [
@@ -1386,24 +1358,6 @@
         },
         {
           "fieldPath": "lastName",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "branham_sermons",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "isActive",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "displayOrder",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
           "order": "ASCENDING"
         }
       ]
@@ -1419,20 +1373,6 @@
         {
           "fieldPath": "publishedAt",
           "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "branham_sermons",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "displayOrder",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
-          "order": "DESCENDING"
         }
       ]
     },
@@ -1688,24 +1628,6 @@
         },
         {
           "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "branham_sermons",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "isActive",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "displayOrder",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "date",
           "order": "DESCENDING"
         }
       ]

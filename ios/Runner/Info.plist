@@ -92,6 +92,25 @@
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
+			<key>youtube.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>youtu.be</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+			<key>googlevideo.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 		</dict>
 	</dict>
 	
@@ -101,5 +120,15 @@
 		<string>fr</string>
 		<string>en</string>
 	</array>
+	
+	<!-- URL Schemes pour Apple Notes -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>mobilenotes</string>
+	</array>
+	
+	<!-- Support des vues intégrées (Platform Views) pour YouTube -->
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>
