@@ -449,14 +449,38 @@ class FormsFirebaseService {
       
       // Auto-add to group
       if (settings.autoAddToGroup && settings.targetGroupId != null && submission.personId != null) {
-        // TODO: Implement group addition
-        // await GroupsFirebaseService.addMemberToGroup(settings.targetGroupId!, submission.personId!, 'member');
+        try {
+          await _firestore.collection('group_members').add({
+            'groupId': settings.targetGroupId!,
+            'personId': submission.personId!,
+            'role': 'member',
+            'joinedAt': FieldValue.serverTimestamp(),
+            'addedBy': 'form_submission',
+            'formSubmissionId': submission.id,
+            'isActive': true,
+          });
+          print('✅ Personne ajoutée au groupe: ${settings.targetGroupId}');
+        } catch (e) {
+          print('❌ Erreur ajout au groupe: $e');
+        }
       }
       
       // Auto-add to workflow
       if (settings.autoAddToWorkflow && settings.targetWorkflowId != null && submission.personId != null) {
-        // TODO: Implement workflow addition
-        // await FirebaseService.startWorkflowForPerson(submission.personId!, settings.targetWorkflowId!);
+        try {
+          await _firestore.collection('workflow_assignments').add({
+            'workflowId': settings.targetWorkflowId!,
+            'personId': submission.personId!,
+            'status': 'pending',
+            'assignedAt': FieldValue.serverTimestamp(),
+            'assignedBy': 'form_submission',
+            'formSubmissionId': submission.id,
+            'currentStep': 0,
+          });
+          print('✅ Workflow démarré pour la personne: ${settings.targetWorkflowId}');
+        } catch (e) {
+          print('❌ Erreur démarrage workflow: $e');
+        }
       }
       
       // Send notifications

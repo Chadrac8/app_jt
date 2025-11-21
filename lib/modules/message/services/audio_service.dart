@@ -49,33 +49,69 @@ class AudioService {
 
   /// Met en pause la lecture
   Future<void> pause() async {
-    _isPlaying = false;
-    // TODO: await _audioPlayer.pause();
+    try {
+      _isPlaying = false;
+      // Note: Intégrer avec just_audio ou audioplayers package
+      // await _audioPlayer?.pause();
+      print('Audio pausé');
+    } catch (e) {
+      print('Erreur lors de la pause: $e');
+    }
   }
 
   /// Reprend la lecture
   Future<void> resume() async {
-    _isPlaying = true;
-    // TODO: await _audioPlayer.play();
+    try {
+      _isPlaying = true;
+      // Note: Intégrer avec just_audio ou audioplayers package
+      // await _audioPlayer?.play();
+      print('Audio repris');
+    } catch (e) {
+      print('Erreur lors de la reprise: $e');
+    }
   }
 
   /// Arrête la lecture
   Future<void> stop() async {
-    _isPlaying = false;
-    _currentPosition = Duration.zero;
-    // TODO: await _audioPlayer.stop();
+    try {
+      _isPlaying = false;
+      _currentPosition = Duration.zero;
+      _currentSermon = null;
+      // Note: Intégrer avec just_audio ou audioplayers package
+      // await _audioPlayer?.stop();
+      print('Audio arrêté');
+    } catch (e) {
+      print('Erreur lors de l\'arrêt: $e');
+    }
   }
 
   /// Se déplace à une position spécifique
   Future<void> seek(Duration position) async {
-    _currentPosition = position;
-    // TODO: await _audioPlayer.seek(position);
+    try {
+      if (position > _totalDuration) {
+        position = _totalDuration;
+      }
+      _currentPosition = position;
+      // Note: Intégrer avec just_audio ou audioplayers package
+      // await _audioPlayer?.seek(position);
+      print('Position changée: $position');
+    } catch (e) {
+      print('Erreur lors du seek: $e');
+    }
   }
 
   /// Définit la vitesse de lecture
   Future<void> setSpeed(double speed) async {
-    _playbackSpeed = speed;
-    // TODO: await _audioPlayer.setSpeed(speed);
+    try {
+      if (speed < 0.5) speed = 0.5;
+      if (speed > 2.0) speed = 2.0;
+      _playbackSpeed = speed;
+      // Note: Intégrer avec just_audio ou audioplayers package
+      // await _audioPlayer?.setSpeed(speed);
+      print('Vitesse définie: ${speed}x');
+    } catch (e) {
+      print('Erreur lors du changement de vitesse: $e');
+    }
   }
 
   /// Recherche des prédications

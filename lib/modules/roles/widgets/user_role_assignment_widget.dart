@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../../../../theme.dart';
@@ -637,7 +638,7 @@ class _AssignRoleToUserDialogState extends State<_AssignRoleToUserDialog> {
         'userId': widget.userId,
         'roleId': _selectedRoleId!,
         'assignedAt': FieldValue.serverTimestamp(),
-        'assignedBy': 'current_user_id', // TODO: Récupérer l'ID de l'utilisateur connecté
+        'assignedBy': FirebaseAuth.instance.currentUser?.uid ?? 'system',
         'isActive': true,
       });
 

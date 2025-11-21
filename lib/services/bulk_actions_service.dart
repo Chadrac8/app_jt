@@ -81,9 +81,15 @@ class BulkActionsService {
     final errors = <String>[];
     for (final person in people) {
       try {
-        // TODO: Remplacer par l'appel réel à votre service d'envoi
-        // await EmailService.send(person.email, message);
-        // await NotificationService.send(person.id, message);
+        // Enregistrer la notification dans Firestore pour traitement ultérieur
+        await FirebaseFirestore.instance.collection('pending_notifications').add({
+          'personId': person.id,
+          'email': person.email,
+          'message': message,
+          'type': 'bulk_message',
+          'status': 'pending',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
         results[person.id] = true;
       } catch (e) {
         results[person.id] = false;

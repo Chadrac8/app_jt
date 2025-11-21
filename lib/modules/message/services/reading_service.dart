@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/sermon_model.dart';
 
 /// Service pour gérer la lecture des prédications
@@ -52,35 +54,136 @@ La Bible nous dit que "la foi qui a été transmise aux saints une fois pour tou
 
   /// Sauvegarde une note personnelle
   Future<void> saveNote(String sermonId, String note, int? position) async {
-    // TODO: Implémenter la sauvegarde des notes
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) throw Exception('Utilisateur non connecté');
+    
+    try {
+      await FirebaseFirestore.instance
+          .collection('sermon_notes')
+          .add({
+        'userId': userId,
+        'sermonId': sermonId,
+        'note': note,
+        'position': position,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      throw Exception('Erreur lors de la sauvegarde de la note: $e');
+    }
   }
 
   /// Récupère les notes d'une prédication
   Future<List<Map<String, dynamic>>> getNotes(String sermonId) async {
-    // TODO: Implémenter la récupération des notes
-    return [];
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return [];
+    
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('sermon_notes')
+          .where('userId', isEqualTo: userId)
+          .where('sermonId', isEqualTo: sermonId)
+          .orderBy('position')
+          .get();
+      
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+    } catch (e) {
+      print('Erreur lors de la récupération des notes: $e');
+      return [];
+    }
   }
 
   /// Sauvegarde un surlignage
   Future<void> saveHighlight(String sermonId, int startPosition, int endPosition, Color color) async {
-    // TODO: Implémenter la sauvegarde des surlignages
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) throw Exception('Utilisateur non connecté');
+    
+    try {
+      await FirebaseFirestore.instance
+          .collection('sermon_highlights')
+          .add({
+        'userId': userId,
+        'sermonId': sermonId,
+        'startPosition': startPosition,
+        'endPosition': endPosition,
+        'color': color.value,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      throw Exception('Erreur lors de la sauvegarde du surlignage: $e');
+    }
   }
 
   /// Récupère les surlignages d'une prédication
   Future<List<Map<String, dynamic>>> getHighlights(String sermonId) async {
-    // TODO: Implémenter la récupération des surlignages
-    return [];
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return [];
+    
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('sermon_highlights')
+          .where('userId', isEqualTo: userId)
+          .where('sermonId', isEqualTo: sermonId)
+          .orderBy('startPosition')
+          .get();
+      
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+    } catch (e) {
+      print('Erreur lors de la récupération des surlignages: $e');
+      return [];
+    }
   }
 
   /// Marque une position de lecture
   Future<void> saveBookmark(String sermonId, int position, String? note) async {
-    // TODO: Implémenter la sauvegarde des marque-pages
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) throw Exception('Utilisateur non connecté');
+    
+    try {
+      await FirebaseFirestore.instance
+          .collection('sermon_bookmarks')
+          .add({
+        'userId': userId,
+        'sermonId': sermonId,
+        'position': position,
+        'note': note,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      throw Exception('Erreur lors de la sauvegarde du marque-page: $e');
+    }
   }
 
   /// Récupère les marque-pages d'une prédication
   Future<List<Map<String, dynamic>>> getBookmarks(String sermonId) async {
-    // TODO: Implémenter la récupération des marque-pages
-    return [];
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return [];
+    
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('sermon_bookmarks')
+          .where('userId', isEqualTo: userId)
+          .where('sermonId', isEqualTo: sermonId)
+          .orderBy('position')
+          .get();
+      
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+    } catch (e) {
+      print('Erreur lors de la récupération des marque-pages: $e');
+      return [];
+    }
   }
 
   /// Génère des données de démonstration étendues

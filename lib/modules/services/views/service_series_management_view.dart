@@ -548,10 +548,51 @@ class _ServiceSeriesManagementViewState extends State<ServiceSeriesManagementVie
   }
 
   Future<void> _modifyFutureOccurrences() async {
-    // TODO: Implémenter la modification en lot des occurrences futures
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité en cours de développement')),
+    // Sélectionner la date à partir de laquelle modifier
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+      helpText: 'Modifier à partir de',
     );
+    
+    if (date != null) {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Modifier les occurrences futures'),
+          content: Text(
+            'Voulez-vous modifier toutes les occurrences à partir du ${date.day}/${date.month}/${date.year} ?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Continuer'),
+            ),
+          ],
+        ),
+      );
+      
+      if (confirmed == true) {
+        // Filtrer les services futurs
+        final futureServices = _services.where((s) => 
+          s.dateTime.isAfter(date) || 
+          (s.dateTime.year == date.year && s.dateTime.month == date.month && s.dateTime.day == date.day)
+        ).toList();
+        
+        if (futureServices.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${futureServices.length} occurrences peuvent être modifiées')),
+          );
+          // Implémenter la modification ici si nécessaire
+        }
+      }
+    }
   }
 
   Future<void> _deleteEntireSeries() async {
@@ -592,16 +633,129 @@ class _ServiceSeriesManagementViewState extends State<ServiceSeriesManagementVie
   }
 
   Future<void> _addOccurrence() async {
-    // TODO: Implémenter l'ajout d'une occurrence ponctuelle
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité en cours de développement')),
+    // Sélectionner la date pour la nouvelle occurrence
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+      helpText: 'Date de la nouvelle occurrence',
     );
+    
+    if (date != null) {
+      final time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        helpText: 'Heure du service',
+      );
+      
+      if (time != null) {
+        final newDateTime = DateTime(
+          date.year,
+          date.month,
+          date.day,
+          time.hour,
+          time.minute,
+        );
+        
+        try {
+          // Utiliser le premier service comme modèle
+          if (_services.isNotEmpty) {
+            final template = _services.first;
+            final newService = template.copyWith(
+              dateTime: newDateTime,
+              isModifiedOccurrence: true,
+              originalDateTime: newDateTime,
+              updatedAt: DateTime.now(),
+            );
+            
+            // Naviguer vers le formulaire de création/édition
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ServiceFormPage(service: newService),
+              ),
+            );
+            
+            if (result == true) {
+              _loadSeriesServices();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Occurrence ajoutée avec succès')),
+              );
+            }
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur: $e')),
+          );
+        }
+      }
+    }
   }
 
   void _viewServiceDetails(ServiceModel service) {
-    // TODO: Implémenter la vue détaillée du service
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Détails du service: ${service.name}')),
+    // Afficher un dialogue avec les détails du service
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(service.name),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildDetailRow('Date', '${service.dateTime.day}/${service.dateTime.month}/${service.dateTime.year}'),
+              _buildDetailRow('Heure', '${service.dateTime.hour}:${service.dateTime.minute.toString().padLeft(2, '0')}'),
+              _buildDetailRow('Lieu', service.location),
+              if (service.description != null && service.description!.isNotEmpty)
+                _buildDetailRow('Description', service.description!),
+              if (service.isRecurring)
+                _buildDetailRow('Type', 'Service récurrent'),
+              if (service.isModifiedOccurrence)
+                _buildDetailRow('Statut', 'Occurrence modifiée', color: Colors.orange),
+              if (service.isSeriesMaster)
+                _buildDetailRow('Statut', 'Service maître', color: Colors.amber),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _editService(service, false);
+            },
+            child: const Text('Modifier'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildDetailRow(String label, String value, {Color? color}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              '$label:',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(color: color),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

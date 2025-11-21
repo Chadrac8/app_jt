@@ -473,13 +473,58 @@ class EventsFirebaseService {
         cancelledRegistrations: cancelled,
         presentCount: present,
         registrationsByDate: registrationsByDate,
-        formResponsesSummary: {}, // TODO: Implement form responses analysis
+        formResponsesSummary: await _analyzeFormResponses(eventId),
         fillRate: fillRate,
         attendanceRate: attendanceRate,
         lastUpdated: DateTime.now(),
       );
     } catch (e) {
       throw Exception('Erreur lors du calcul des statistiques: $e');
+    }
+  }
+
+  /// Analyse les réponses aux formulaires d'un événement
+  static Future<Map<String, dynamic>> _analyzeFormResponses(String eventId) async {
+    try {
+      // Récupérer les réponses au formulaire de l'événement
+      final formResponses = await _firestore
+          .collection('form_responses')
+          .where('eventId', isEqualTo: eventId)
+          .get();
+      
+      if (formResponses.docs.isEmpty) {
+        return {};
+      }
+      
+      final Map<String, dynamic> summary = {
+        'totalResponses': formResponses.docs.length,
+        'questionSummaries': <String, dynamic>{},
+      };
+      
+      // Analyser les réponses par question
+      for (final response in formResponses.docs) {
+        final data = response.data();
+        final answers = data['answers'] as Map<String, dynamic>?;
+        
+        if (answers != null) {
+          answers.forEach((questionId, answer) {
+            if (!summary['questionSummaries'].containsKey(questionId)) {
+              summary['questionSummaries'][questionId] = {
+                'responses': [],
+                'count': 0,
+              };
+            }
+            
+            summary['questionSummaries'][questionId]['responses'].add(answer);
+            summary['questionSummaries'][questionId]['count']++;
+          });
+        }
+      }
+      
+      return summary;
+    } catch (e) {
+      print('Erreur lors de l\'analyse des réponses: $e');
+      return {};
     }
   }
 

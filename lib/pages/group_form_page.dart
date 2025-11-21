@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/group_model.dart';
 import '../models/recurrence_config.dart';
 import '../services/groups_firebase_service.dart';
@@ -339,7 +340,7 @@ class _GroupFormPageState extends State<GroupFormPage>
             startDate: _recurrenceStartDate ?? DateTime.now(),
             endDate: _recurrenceEndDate,
             maxOccurrences: _maxOccurrences,
-            userId: 'current_user', // TODO: Récupérer l'ID utilisateur réel
+            userId: FirebaseAuth.instance.currentUser?.uid ?? 'system',
           );
           
           if (mounted) {

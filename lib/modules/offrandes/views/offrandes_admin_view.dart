@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -554,29 +556,48 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
     }
   }
 
-  void _submitDonation() {
+  void _submitDonation() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implémenter la logique de sauvegarde
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Don de ${_amountController.text}€ enregistré avec succès'),
-          backgroundColor: AppTheme.greenStandard,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+      try {
+        // Sauvegarder le don dans Firestore
+        await FirebaseFirestore.instance.collection('donations').add({
+          'type': _selectedType,
+          'method': _selectedMethod,
+          'amount': double.parse(_amountController.text),
+          'donor': _donorController.text.isEmpty ? 'Anonyme' : _donorController.text,
+          'notes': _notesController.text,
+          'createdAt': FieldValue.serverTimestamp(),
+          'createdBy': FirebaseAuth.instance.currentUser?.uid ?? 'system',
+          'status': 'completed',
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Don de ${_amountController.text}€ enregistré avec succès'),
+            backgroundColor: AppTheme.greenStandard,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            ),
           ),
-        ),
-      );
-      
-      // Réinitialiser le formulaire
-      _formKey.currentState!.reset();
-      _amountController.clear();
-      _donorController.clear();
-      _notesController.clear();
-      setState(() {
-        _selectedType = 'offrande';
-        _selectedMethod = 'especes';
-      });
+        );
+        
+        // Réinitialiser le formulaire
+        _amountController.clear();
+        _donorController.clear();
+        _notesController.clear();
+        setState(() {
+          _selectedType = 'offrande';
+          _selectedMethod = 'especes';
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'enregistrement: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }

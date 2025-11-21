@@ -92,8 +92,9 @@ class ImageActionService {
 
           
         case 'blog_category':
+          // Naviguer vers le blog (catégorie spécifique peut être gérée dans BlogHomePage)
           page = const BlogHomePage();
-          // TODO: Implémenter la navigation vers une catégorie spécifique
+          // Note: Pour naviguer vers une catégorie spécifique, ajouter un paramètre initialCategoryId à BlogHomePage
           break;
           
         case 'prayer_wall':

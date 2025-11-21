@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../theme.dart';
 
 class RoleSettingsDialog extends StatefulWidget {
@@ -466,7 +467,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
         'strict_permission_check': _strictPermissionCheck,
         'default_role_color': _defaultRoleColor,
         'updated_at': FieldValue.serverTimestamp(),
-        'updated_by': 'current_user_id', // TODO: Récupérer l'ID utilisateur actuel
+        'updated_by': FirebaseAuth.instance.currentUser?.uid ?? 'system',
       };
 
       // Sauvegarder dans Firebase
@@ -516,7 +517,7 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
           'changed_settings': settings.keys.toList(),
           'timestamp': FieldValue.serverTimestamp(),
         },
-        'user_id': 'current_user_id', // TODO: Récupérer l'ID utilisateur actuel
+        'user_id': FirebaseAuth.instance.currentUser?.uid ?? 'system',
         'created_at': FieldValue.serverTimestamp(),
       });
     } catch (e) {

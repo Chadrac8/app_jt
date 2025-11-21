@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/person_model.dart';
 import '../services/firebase_service.dart';
 import '../../theme.dart';
@@ -210,7 +211,7 @@ class _WorkflowFormPageState extends State<WorkflowFormPage> {
         isActive: _isActive,
         createdAt: _existingWorkflow?.createdAt ?? DateTime.now(),
         updatedAt: DateTime.now(),
-        createdBy: _existingWorkflow?.createdBy ?? '', // TODO: Get current user ID
+        createdBy: _existingWorkflow?.createdBy ?? FirebaseAuth.instance.currentUser?.uid ?? 'system',
       );
 
       String workflowId;
