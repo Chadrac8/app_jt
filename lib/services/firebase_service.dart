@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../utils/network_helpers.dart';
 import '../models/person_model.dart';
 // import '../models/role_model.dart'; // supprimé car non utilisé
 

@@ -7,8 +7,8 @@ library deferred_modules;
 // Module Cantiques (songs) - Lourd avec base de données
 import '../modules/songs/songs_module.dart' deferred as songs_module;
 
-// Module Bible - Très lourd avec tous les livres
-import '../modules/bible/bible_module.dart' deferred as bible_module;
+// Module Bible - Service only, pas de module dédié
+// import '../modules/bible/bible_module.dart' deferred as bible_module;
 
 // Module Messages Branham - Lourd avec scraping
 import '../modules/message/message_module.dart' deferred as message_module;
@@ -40,19 +40,8 @@ class DeferredLoader {
     }
   }
   
-  /// Charger le module Bible
-  static Future<bool> loadBibleModule() async {
-    if (_loadedModules['bible'] == true) return true;
-    
-    try {
-      await bible_module.loadLibrary();
-      _loadedModules['bible'] = true;
-      return true;
-    } catch (e) {
-      print('❌ Erreur chargement module Bible: $e');
-      return false;
-    }
-  }
+  // Module Bible - Pas de lazy loading (service léger)
+  // La Bible est déjà optimisée avec compute() pour JSON parsing
   
   /// Charger le module Messages
   static Future<bool> loadMessageModule() async {
@@ -114,8 +103,8 @@ class DeferredLoader {
   static Future<void> preloadCriticalModules() async {
     // Charger en parallèle les modules souvent utilisés
     await Future.wait([
-      loadBibleModule(),
       loadSongsModule(),
+      loadMessageModule(),
     ]);
   }
   

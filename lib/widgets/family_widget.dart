@@ -212,6 +212,7 @@ class _FamilyWidgetState extends State<FamilyWidget>
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: families.length,
+                      itemExtent: 72.0, // Hauteur fixe ListTile
                       itemBuilder: (context, index) {
                         final family = families[index];
                         return ListTile(

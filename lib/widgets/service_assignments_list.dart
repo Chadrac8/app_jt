@@ -426,6 +426,8 @@ class _ServiceAssignmentsListState extends State<ServiceAssignmentsList>
             return ListView.builder(
               padding: const EdgeInsets.all(AppTheme.spaceMedium),
               itemCount: groupedAssignments.keys.length,
+              itemExtent: 280.0, // Hauteur fixe pour recycling automatique
+              cacheExtent: 500.0,
               itemBuilder: (context, index) {
                 final positionId = groupedAssignments.keys.elementAt(index);
                 final positionAssignments = groupedAssignments[positionId]!;
@@ -808,6 +810,8 @@ class _PersonSelectionDialogState extends State<_PersonSelectionDialog> {
             Expanded(
               child: ListView.builder(
                 itemCount: filteredPersons.length,
+                itemExtent: 72.0, // Hauteur fixe ListTile standard
+                cacheExtent: 300.0,
                 itemBuilder: (context, index) {
                   final person = filteredPersons[index];
                   
