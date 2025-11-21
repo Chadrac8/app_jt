@@ -3,7 +3,7 @@ import '../shared/widgets/base_list_page.dart';
 import '../shared/widgets/custom_card.dart';
 import '../models/person_model.dart';
 import '../widgets/admin_view_toggle_button.dart';
-import '../models/module_card_config.dart';
+// import '../models/module_card_config.dart'; // Fichier inexistant
 import '../services/people_module_service.dart';
 import 'person_import_export_page.dart';
 import '../../theme.dart';

@@ -3,15 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../theme.dart';
-import '../services/branham_scraping_service.dart';
-import '../services/ios_branham_service.dart';
 
 class DailyBreadPage extends StatefulWidget {
-  final BranhamQuoteModel? initialQuote;
-  
   const DailyBreadPage({
     Key? key,
-    this.initialQuote,
   }) : super(key: key);
 
   @override
@@ -19,8 +14,7 @@ class DailyBreadPage extends StatefulWidget {
 }
 
 class _DailyBreadPageState extends State<DailyBreadPage> {
-  final BranhamScrapingService _scrapingService = BranhamScrapingService.instance;
-  BranhamQuoteModel? _quote;
+  Map<String, dynamic>? _quote;
   bool _isLoading = true;
   String? _error;
 
@@ -37,33 +31,20 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         _error = null;
       });
 
-      BranhamQuoteModel? quote;
-      if (widget.initialQuote != null) {
-        quote = widget.initialQuote;
-      } else {
-        // Détecter si on est sur iOS/mobile et utiliser le service approprié
-        if (defaultTargetPlatform == TargetPlatform.iOS || 
-            defaultTargetPlatform == TargetPlatform.android) {
-          print('📱 Utilisation du service iOS optimisé');
-          final iosQuote = await IOSBranhamService.getTodaysQuote();
-          quote = BranhamQuoteModel(
-            text: iosQuote.text,
-            reference: iosQuote.reference,
-            date: iosQuote.date,
-            dailyBread: iosQuote.dailyBread,
-            dailyBreadReference: iosQuote.dailyBreadReference,
-            sermonTitle: 'Citation du jour',
-            sermonDate: 'Mobile',
-            audioUrl: '',
-          );
-        } else {
-          // Utiliser le service normal pour web
-          quote = await _scrapingService.getQuoteOfTheDay();
-        }
-      }
-
+      // Contenu temporaire par défaut
+      await Future.delayed(const Duration(milliseconds: 500));
+      
       setState(() {
-        _quote = quote;
+        _quote = {
+          'dailyBread': 'Jésus lui dit: Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi.',
+          'dailyBreadReference': 'Jean 14:6',
+          'text': 'Dieu est amour, et Il veut le meilleur pour chacun de nous. Tournons nos cœurs vers Lui aujourd\'hui.',
+          'sermonTitle': 'La Vie en Christ',
+          'sermonDate': DateTime.now().toString(),
+          'audioUrl': '',
+          'date': DateTime.now().toString(),
+          'shareText': 'Pain quotidien - Citation du jour',
+        };
         _isLoading = false;
       });
     } catch (e) {
@@ -78,8 +59,8 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
     if (_quote == null) return;
 
     await Share.share(
-      _quote!.shareText,
-      subject: 'Pain quotidien - ${_quote!.date}',
+      _quote!['shareText'] ?? 'Pain quotidien',
+      subject: 'Pain quotidien - ${_quote!['date'] ?? ''}',
     );
   }
 
@@ -342,11 +323,11 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Verset biblique section
-            if (_quote!.dailyBread.isNotEmpty) ...[
+            if ((_quote!['dailyBread'] ?? '').toString().isNotEmpty) ...[
               _buildVerseSection(),
               
               // Divider entre verset et citation
-              if (_quote!.text.isNotEmpty) ...[
+              if ((_quote!['text'] ?? '').toString().isNotEmpty) ...[
                 const SizedBox(height: AppTheme.spaceXLarge),
                 _buildSectionDivider(),
                 const SizedBox(height: AppTheme.spaceXLarge),
@@ -354,7 +335,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
             ],
 
             // Citation section
-            if (_quote!.text.isNotEmpty) ...[
+            if ((_quote!['text'] ?? '').toString().isNotEmpty) ...[
               _buildQuoteSection(),
             ],
           ],
@@ -425,7 +406,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         
         // Verse content
         Text(
-          _quote!.dailyBread,
+          _quote!['dailyBread'] ?? '',
           style: TextStyle(
             color: AppTheme.onSurface,
             fontSize: 18,
@@ -436,7 +417,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         ),
         
         // Bible reference
-        if (_quote!.dailyBreadReference.isNotEmpty) ...[
+        if ((_quote!['dailyBreadReference'] ?? '').toString().isNotEmpty) ...[
           const SizedBox(height: AppTheme.spaceMedium),
           Align(
             alignment: Alignment.centerRight,
@@ -450,7 +431,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               ),
               child: Text(
-                _quote!.dailyBreadReference,
+                _quote!['dailyBreadReference'] ?? '',
                 style: TextStyle(
                   color: AppTheme.primaryColor,
                   fontSize: 14,
@@ -551,7 +532,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         
         // Quote content
         Text(
-          '"${_quote!.text}"',
+          '"${_quote!['text'] ?? ''}"',
           style: TextStyle(
             color: AppTheme.onSurface,
             fontSize: 17,
@@ -567,9 +548,9 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (_quote!.sermonTitle.isNotEmpty) ...[
+            if ((_quote!['sermonTitle'] ?? '').toString().isNotEmpty) ...[
               Text(
-                _quote!.sermonTitle,
+                _quote!['sermonTitle'] ?? '',
                 style: TextStyle(
                   color: AppTheme.tertiaryColor,
                   fontSize: 15,
@@ -591,7 +572,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         ),
         
         // Audio button if available
-        if (_quote!.audioUrl.isNotEmpty) ...[
+        if ((_quote!['audioUrl'] ?? '').toString().isNotEmpty) ...[
           const SizedBox(height: AppTheme.spaceLarge),
           SizedBox(
             width: double.infinity,

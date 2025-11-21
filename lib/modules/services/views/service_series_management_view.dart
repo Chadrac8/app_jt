@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../models/service_model.dart';
 import '../../../services/service_recurrence_service.dart';
-import '../../../theme.dart';
+
 import 'service_form_page.dart';
 
 /// Vue pour gérer les séries de services récurrents

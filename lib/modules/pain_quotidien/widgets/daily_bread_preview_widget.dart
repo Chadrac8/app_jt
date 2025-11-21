@@ -55,7 +55,7 @@ class _DailyBreadPreviewWidgetState extends State<DailyBreadPreviewWidget> {
   void _navigateToDailyBreadPage() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => DailyBreadPage(initialQuote: _dailyQuote),
+        builder: (context) => const DailyBreadPage(),
       ),
     );
   }

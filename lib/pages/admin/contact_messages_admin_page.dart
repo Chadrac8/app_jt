@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/contact_message_model.dart';
-import '../services/contact_service.dart';
-import '../../../theme.dart';
+import '../../models/contact_message_model.dart';
+import '../../services/contact_service.dart';
+import '../../theme.dart';
 
 /// Page d'administration pour gérer les messages de contact
 class ContactMessagesAdminPage extends StatefulWidget {

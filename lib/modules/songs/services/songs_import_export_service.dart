@@ -10,7 +10,7 @@ import 'songs_firebase_service.dart';
 
 /// Service pour l'import/export des chants en CSV et TXT
 class SongsImportExportService {
-  static const String _csvSeparator = ',';
+  // static const String _csvSeparator = ',';
   static const String _txtSeparator = '---';
 
   /// Exporte les chants en format CSV

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/permission_model.dart';
-import '../models/user_role_model.dart';
 import '../services/enhanced_permission_provider.dart';
-import '../services/roles_permissions_service.dart';
 
 /// Écran d'assignation de rôles aux utilisateurs avec Material Design 3
 class RoleAssignmentScreen extends StatefulWidget {
@@ -62,6 +59,82 @@ class _RoleAssignmentScreenState extends State<RoleAssignmentScreen>
           // Onglet 2: Assignations en masse
           const BulkRoleAssignmentWidget(),
         ],
+      ),
+    );
+  }
+}
+
+/// Widget pour l'assignation de rôles par utilisateur
+class UserRoleAssignmentWidget extends StatelessWidget {
+  const UserRoleAssignmentWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.people_outline,
+              size: 80,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Assignation par Utilisateur',
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Fonctionnalité à venir',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Widget pour l'assignation de rôles en masse
+class BulkRoleAssignmentWidget extends StatelessWidget {
+  const BulkRoleAssignmentWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.admin_panel_settings_outlined,
+              size: 80,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Assignations en Masse',
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Fonctionnalité à venir',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

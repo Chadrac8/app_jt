@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/role.dart';
 
 /// Service avancé simplifié pour la gestion des rôles et permissions
 class AdvancedRolesPermissionsService {
-  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static const String _rolesCollection = 'roles';
-  static const String _permissionsCollection = 'permissions';
+  // static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // static const String _rolesCollection = 'roles';
+  // static const String _permissionsCollection = 'permissions';
   
   /// Initialise complètement le système de rôles et permissions (version simplifiée)
   static Future<void> initializeSystem() async {

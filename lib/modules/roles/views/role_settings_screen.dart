@@ -170,7 +170,7 @@ class _RoleSettingsScreenState extends State<RoleSettingsScreen> {
                     child: _buildStatCard(
                       context,
                       'Rôles actifs',
-                      provider.activeRoles.length.toString(),
+                      provider.roles.length.toString(),
                       Icons.check_circle,
                       AppTheme.successColor,
                     ),

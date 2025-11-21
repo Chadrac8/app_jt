@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../theme.dart';
 
 class RoleSettingsDialog extends StatefulWidget {
@@ -15,6 +15,14 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
   bool _strictPermissionCheck = true;
   int _roleExpirationDays = 365;
   String _defaultRoleColor = '#4CAF50';
+  bool _isLoading = false;
+  bool _roleExpirationEnabled = true;
+  bool _autoCleanupEnabled = false;
+  bool _notificationsEnabled = true;
+  bool _emailNotifications = false;
+  bool _roleHierarchyEnabled = false;
+  bool _auditLogEnabled = true;
+  bool _backupEnabled = false;
 
   final List<String> _availableColors = [
     '#4CAF50', '#2196F3', '#FF9800', '#9C27B0',

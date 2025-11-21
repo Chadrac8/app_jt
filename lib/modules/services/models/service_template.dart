@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'service.dart';
+import '../../vie_eglise/models/church_service.dart';
 
 /// Modèle pour les modèles de services
 class ServiceTemplate {
@@ -142,37 +142,7 @@ class ServiceTemplate {
     );
   }
 
-  /// Crée un service à partir de ce modèle
-  Service createService({
-    required DateTime startDate,
-    String? customName,
-    String? customLocation,
-    Map<String, dynamic>? overrideSettings,
-  }) {
-    final endDate = startDate.add(duration);
-    
-    return Service(
-      name: customName ?? name,
-      description: description,
-      type: type,
-      startDate: startDate,
-      endDate: endDate,
-      location: customLocation ?? location,
-      imageUrl: imageUrl,
-      colorCode: colorCode,
-      equipmentNeeded: List.from(defaultEquipment),
-      notes: notes,
-      customFields: {
-        ...customFields,
-        ...defaultSettings,
-        if (overrideSettings != null) ...overrideSettings,
-        'templateId': id,
-      },
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      createdBy: createdBy,
-    );
-  }
+  // TODO: Méthode createService à réimplémenter selon la structure finale de Service
 
   /// Obtient l'icône du type de service
   String get typeIcon {
@@ -181,7 +151,7 @@ class ServiceTemplate {
         return 'church';
       case ServiceType.prayer:
         return 'prayer';
-      case ServiceType.study:
+      case ServiceType.bibleStudy:
         return 'book';
       case ServiceType.youth:
         return 'youth';
@@ -191,12 +161,8 @@ class ServiceTemplate {
         return 'special_event';
       case ServiceType.conference:
         return 'conference';
-      case ServiceType.wedding:
-        return 'wedding';
-      case ServiceType.funeral:
-        return 'funeral';
-      case ServiceType.baptism:
-        return 'baptism';
+      case ServiceType.evangelism:
+        return 'evangelism';
     }
   }
 

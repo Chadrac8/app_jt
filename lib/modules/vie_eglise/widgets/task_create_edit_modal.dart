@@ -16,7 +16,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
+
   String _selectedPriority = 'medium';
   String _selectedStatus = 'todo';
   DateTime? _dueDate;
@@ -239,7 +239,9 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
               ? '${_dueDate!.day}/${_dueDate!.month}/${_dueDate!.year}'
               : 'Sélectionner une date',
           style: GoogleFonts.poppins(
-            color: _dueDate != null ? AppTheme.black100.withOpacity(0.87) : AppTheme.grey600,
+            color: _dueDate != null
+                ? AppTheme.black100.withOpacity(0.87)
+                : AppTheme.grey600,
           ),
         ),
       ),
@@ -248,7 +250,9 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
 
   Widget _buildCategoryField() {
     return DropdownButtonFormField<String>(
-      initialValue: (_categories.contains(_selectedCategory)) ? _selectedCategory : null,
+      initialValue: (_categories.contains(_selectedCategory))
+          ? _selectedCategory
+          : null,
       decoration: InputDecoration(
         labelText: 'Catégorie',
         labelStyle: GoogleFonts.poppins(),
@@ -308,10 +312,7 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            child: Text(
-              'Annuler',
-              style: GoogleFonts.poppins(),
-            ),
+            child: Text('Annuler', style: GoogleFonts.poppins()),
           ),
         ),
         const SizedBox(width: AppTheme.spaceMedium),

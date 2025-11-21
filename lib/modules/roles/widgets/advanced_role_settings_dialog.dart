@@ -33,8 +33,8 @@ class _RoleSettingsDialogState extends State<RoleSettingsDialog> {
   bool _backupEnabled = false;
   
   // Paramètres d'interface
-  bool _enableNotifications = true;
-  bool _autoAssignRoles = false;
+  // bool _enableNotifications = true;
+  // bool _autoAssignRoles = false;
   bool _strictPermissionCheck = true;
   String _defaultRoleColor = '#4CAF50';
 

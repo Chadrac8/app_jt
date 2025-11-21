@@ -521,7 +521,7 @@ class _RoleAssignmentsPageState extends State<RoleAssignmentsPage>
                       ),
                     ),
                     title: Text(person.fullName),
-                    subtitle: Text(person.email),
+                    subtitle: Text(person.email ?? ''),
                     trailing: _hasManageRolesPermission
                         ? IconButton(
                             icon: const Icon(Icons.remove_circle, color: AppTheme.redStandard),

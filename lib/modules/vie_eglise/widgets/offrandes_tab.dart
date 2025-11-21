@@ -13,7 +13,8 @@ class OffrandesTab extends StatefulWidget {
   State<OffrandesTab> createState() => _OffrandesTabState();
 }
 
-class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMixin {
+class _OffrandesTabState extends State<OffrandesTab>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   PersonModel? _currentUser;
@@ -69,7 +70,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
   Future<void> _loadUserData() async {
     try {
       setState(() => _isLoadingUser = true);
-      
+
       final user = AuthService.currentUser;
       if (user != null) {
         final person = await AuthService.getCurrentUserProfile();
@@ -94,13 +95,9 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
 
     _animationController.forward();
   }
@@ -115,7 +112,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    
+
     return FadeTransition(
       opacity: _fadeAnimation,
       child: SingleChildScrollView(
@@ -224,15 +221,20 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
         const SizedBox(height: AppTheme.spaceMedium),
         ...List.generate(_donationTypes.length, (index) {
           final donation = _donationTypes[index];
-          
+
           final cardContent = Container(
-            padding: EdgeInsets.all(AppTheme.actionCardPadding), // Adaptatif: 16dp mobile, 20dp desktop
+            padding: EdgeInsets.all(
+              AppTheme.actionCardPadding,
+            ), // Adaptatif: 16dp mobile, 20dp desktop
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(AppTheme.actionCardRadius), // Adaptatif: 12dp iOS, 16dp Android
+              borderRadius: BorderRadius.circular(
+                AppTheme.actionCardRadius,
+              ), // Adaptatif: 12dp iOS, 16dp Android
               border: Border.all(
                 color: colorScheme.outline.withOpacity(0.2),
-                width: AppTheme.actionCardBorderWidth, // Adaptatif: 0.5px iOS, 1px Android
+                width: AppTheme
+                    .actionCardBorderWidth, // Adaptatif: 0.5px iOS, 1px Android
               ),
               boxShadow: AppTheme.isApplePlatform
                   ? [] // iOS: pas de shadow
@@ -252,11 +254,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     color: donation.color.withOpacity(0.13),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                   ),
-                  child: Icon(
-                    donation.icon,
-                    color: donation.color,
-                    size: 24,
-                  ),
+                  child: Icon(donation.icon, color: donation.color, size: 24),
                 ),
                 const SizedBox(width: AppTheme.spaceMedium),
                 Expanded(
@@ -281,14 +279,16 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                   ),
                 ),
                 Icon(
-                  AppTheme.isApplePlatform ? Icons.chevron_right : Icons.arrow_forward_ios,
+                  AppTheme.isApplePlatform
+                      ? Icons.chevron_right
+                      : Icons.arrow_forward_ios,
                   color: donation.color,
                   size: AppTheme.isApplePlatform ? 24 : 16,
                 ),
               ],
             ),
           );
-          
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: AppTheme.isApplePlatform
@@ -313,8 +313,12 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
                     child: cardContent,
                   )
                 : InkWell(
-                    borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
-                    splashColor: donation.color.withValues(alpha: AppTheme.interactionOpacity),
+                    borderRadius: BorderRadius.circular(
+                      AppTheme.actionCardRadius,
+                    ),
+                    splashColor: donation.color.withValues(
+                      alpha: AppTheme.interactionOpacity,
+                    ),
                     onTap: () {
                       final baseUrl = _donationUrls[index];
                       if (baseUrl != null) {
@@ -384,7 +388,9 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
       padding: EdgeInsets.all(AppTheme.actionCardPadding), // Adaptatif
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppTheme.actionCardRadius), // Adaptatif
+        borderRadius: BorderRadius.circular(
+          AppTheme.actionCardRadius,
+        ), // Adaptatif
         border: Border.all(
           color: colorScheme.outline.withOpacity(0.18),
           width: AppTheme.actionCardBorderWidth, // Adaptatif
@@ -407,11 +413,7 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
               color: colorScheme.primary.withOpacity(0.12),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
             ),
-            child: Icon(
-              icon,
-              color: colorScheme.primary,
-              size: 24,
-            ),
+            child: Icon(icon, color: colorScheme.primary, size: 24),
           ),
           const SizedBox(width: AppTheme.spaceMedium),
           Expanded(
@@ -436,14 +438,16 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
             ),
           ),
           Icon(
-            AppTheme.isApplePlatform ? Icons.chevron_right : Icons.arrow_forward_ios,
+            AppTheme.isApplePlatform
+                ? Icons.chevron_right
+                : Icons.arrow_forward_ios,
             color: colorScheme.onSurfaceVariant,
             size: AppTheme.isApplePlatform ? 24 : 16,
           ),
         ],
       ),
     );
-    
+
     return AppTheme.isApplePlatform
         ? GestureDetector(
             onTap: () {
@@ -454,15 +458,20 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
           )
         : InkWell(
             borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
-            splashColor: colorScheme.primary.withValues(alpha: AppTheme.interactionOpacity),
+            splashColor: colorScheme.primary.withValues(
+              alpha: AppTheme.interactionOpacity,
+            ),
             onTap: onTap,
             child: cardContent,
           );
   }
 
-
-
-  Widget _buildRIBField(String label, String value, ColorScheme colorScheme, TextTheme textTheme) {
+  Widget _buildRIBField(
+    String label,
+    String value,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -501,7 +510,13 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
     );
   }
 
-  Widget _buildActionButton(String text, IconData icon, VoidCallback onPressed, ColorScheme colorScheme, TextTheme textTheme) {
+  Widget _buildActionButton(
+    String text,
+    IconData icon,
+    VoidCallback onPressed,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: Icon(icon, size: 16),
@@ -510,13 +525,9 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 2,
-        textStyle: textTheme.bodyMedium?.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
+        textStyle: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -528,16 +539,15 @@ class _OffrandesTabState extends State<OffrandesTab> with TickerProviderStateMix
         content: Text(message),
         backgroundColor: AppTheme.greenStandard,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         margin: const EdgeInsets.all(16),
       ),
     );
   }
 
   void _shareRIB() {
-    final ribInfo = '''
+    final ribInfo =
+        '''
 Informations bancaires - Jubilé Tabernacle
 
 Titulaire: $_titulaire
@@ -553,7 +563,7 @@ Merci pour votre générosité !
   void _showRIBBottomSheet() {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -578,7 +588,7 @@ Merci pour votre générosité !
               ),
             ),
             const SizedBox(height: 20),
-            
+
             // Header
             Row(
               children: [
@@ -605,12 +615,17 @@ Merci pour votre générosité !
               ],
             ),
             const SizedBox(height: 24),
-            
+
             // RIB fields
-            _buildRIBField('Titulaire du compte', _titulaire, colorScheme, textTheme),
+            _buildRIBField(
+              'Titulaire du compte',
+              _titulaire,
+              colorScheme,
+              textTheme,
+            ),
             _buildRIBField('IBAN', _iban, colorScheme, textTheme),
             _buildRIBField('BIC/SWIFT', _bic, colorScheme, textTheme),
-            
+
             // Action buttons
             Row(
               children: [
@@ -636,7 +651,7 @@ Merci pour votre générosité !
               ],
             ),
             const SizedBox(height: 16),
-            
+
             // Info notice
             Container(
               padding: const EdgeInsets.all(16),
@@ -668,7 +683,7 @@ Merci pour votre générosité !
                 ],
               ),
             ),
-            
+
             // Bottom padding for safe area
             SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
           ],
@@ -680,7 +695,7 @@ Merci pour votre générosité !
   void _showCheckInstructions() {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -704,7 +719,7 @@ Merci pour votre générosité !
               ),
             ),
             const SizedBox(height: 20),
-            
+
             // Header
             Row(
               children: [
@@ -731,7 +746,7 @@ Merci pour votre générosité !
               ],
             ),
             const SizedBox(height: 24),
-            
+
             // Instructions
             Container(
               padding: const EdgeInsets.all(16),
@@ -793,9 +808,9 @@ Merci pour votre générosité !
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Close button
             SizedBox(
               width: double.infinity,
@@ -818,7 +833,7 @@ Merci pour votre générosité !
                 ),
               ),
             ),
-            
+
             // Bottom padding for safe area
             SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
           ],
@@ -826,8 +841,6 @@ Merci pour votre générosité !
       ),
     );
   }
-
-
 }
 
 class DonationType {
