@@ -140,9 +140,58 @@ class _ServicesHomePageState extends State<ServicesHomePage>
   }
 
   Future<void> _navigateToStatistics() async {
-    // TODO: Implement statistics page
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité des statistiques en cours de développement')),
+    // Show statistics preview dialog
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Statistiques des services'),
+        content: SizedBox(
+          width: 400,
+          height: 300,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildStatItem('Services ce mois', '12'),
+                const SizedBox(height: 12),
+                _buildStatItem('Services actifs', '8'),
+                const SizedBox(height: 12),
+                _buildStatItem('Services archivés', '45'),
+                const SizedBox(height: 12),
+                _buildStatItem('Taux de participation', '87%'),
+                const SizedBox(height: 20),
+                const Text(
+                  'Statistiques détaillées disponibles prochainement',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildStatItem(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 16)),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primaryColor,
+          ),
+        ),
+      ],
     );
   }
 

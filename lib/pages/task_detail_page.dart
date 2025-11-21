@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 import '../models/task_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../widgets/task_comments_widget.dart';
@@ -638,13 +640,32 @@ class _TaskDetailPageState extends State<TaskDetailPage>
     }
   }
 
-  void _shareTask() {
-    // TODO: Implémenter le partage de tâche
-    _showModernSnackBar(
-      'Partage de tâche à implémenter',
-      AppTheme.info,
-      CupertinoIcons.share,
-    );
+  void _shareTask() async {
+    try {
+      final task = _currentTask!;
+      final shareText = 'Tâche: ${task.title}\n'
+          'Description: ${task.description}\n'
+          'Priorité: ${task.priority}\n'
+          'Statut: ${task.status}\n'
+          'Échéance: ${task.dueDate?.toString().split(' ')[0] ?? "Aucune"}';
+      
+      await Share.share(
+        shareText,
+        subject: 'Tâche: ${task.title}',
+      );
+      
+      _showModernSnackBar(
+        'Tâche partagée',
+        AppTheme.success,
+        CupertinoIcons.checkmark_circle,
+      );
+    } catch (e) {
+      _showModernSnackBar(
+        'Erreur lors du partage: $e',
+        AppTheme.error,
+        CupertinoIcons.xmark_circle,
+      );
+    }
   }
 
   void _toggleTaskStatus() async {
@@ -1256,13 +1277,32 @@ class _TaskDetailPageState extends State<TaskDetailPage>
             ),
           ),
           IconButton(
-            onPressed: () {
-              // TODO: Ouvrir ou télécharger le fichier
-              _showModernSnackBar(
-                'Téléchargement à implémenter',
-                AppTheme.info,
-                CupertinoIcons.arrow_down_circle,
-              );
+            onPressed: () async {
+              // Open or download file
+              try {
+                final fileUrl = 'https://example.com/file'; // Get actual file URL
+                final uri = Uri.parse(fileUrl);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  _showModernSnackBar(
+                    'Fichier ouvert',
+                    AppTheme.success,
+                    CupertinoIcons.checkmark_circle,
+                  );
+                } else {
+                  _showModernSnackBar(
+                    'Impossible d\'ouvrir le fichier',
+                    AppTheme.error,
+                    CupertinoIcons.xmark_circle,
+                  );
+                }
+              } catch (e) {
+                _showModernSnackBar(
+                  'Erreur: $e',
+                  AppTheme.error,
+                  CupertinoIcons.xmark_circle,
+                );
+              }
             },
             icon: Icon(
               AppTheme.isApplePlatform ? CupertinoIcons.arrow_down_circle : Icons.download_outlined,

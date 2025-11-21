@@ -810,7 +810,6 @@ class _ReadingPlanFormViewState extends State<ReadingPlanFormView>
         createdAt: widget.plan?.createdAt ?? DateTime.now(),
         isPopular: _isPopular);
       
-      // TODO: Sauvegarder le plan via le service
       await _savePlanToStorage(plan);
       
       if (mounted) {

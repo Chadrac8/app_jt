@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
 import '../services/event_recurrence_manager_service.dart';
@@ -236,7 +237,59 @@ class _EventsHomePageState extends State<EventsHomePage>
         backgroundColor: AppTheme.warningColor,
       ),
     );
-    // TODO: Implement export functionality
+    
+    try {
+      // Generate CSV content for selected events
+      final buffer = StringBuffer();
+      buffer.writeln('Titre,Date,Lieu,Catégorie,Places disponibles,Inscriptions');
+      
+      for (final event in _selectedEvents) {
+        // Fetch event from Firestore
+        final eventDoc = await FirebaseFirestore.instance
+            .collection('events')
+            .doc(event.id)
+            .get();
+        
+        if (eventDoc.exists) {
+          final data = eventDoc.data()!;
+          buffer.writeln(
+            '"${data['title']}",'
+            '"${data['dateTime']}",'
+            '"${data['location'] ?? ''}",'
+            '"${data['category'] ?? ''}",'
+            '"${data['maxAttendees'] ?? 'Illimité'}",'
+            '"${data['registeredCount'] ?? 0}"',
+          );
+        }
+      }
+      
+      // Save to Firestore exports collection
+      await FirebaseFirestore.instance.collection('exports').add({
+        'type': 'events',
+        'content': buffer.toString(),
+        'count': _selectedEvents.length,
+        'createdAt': FieldValue.serverTimestamp(),
+        'createdBy': FirebaseAuth.instance.currentUser?.uid,
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${_selectedEvents.length} événement(s) exporté(s) avec succès'),
+            backgroundColor: AppTheme.successColor,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'export: $e'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _showDeleteConfirmation() async {

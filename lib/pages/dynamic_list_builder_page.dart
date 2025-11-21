@@ -740,11 +740,88 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
     });
   }
 
-  void _addFilter() {
-    // TODO: Implémenter l'ajout de filtres
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité en cours de développement')),
+  void _addFilter() async {
+    final result = await showDialog<Map<String, String>>(
+      context: context,
+      builder: (context) {
+        String? selectedField;
+        String operator = '=';
+        final valueController = TextEditingController();
+        
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: const Text('Ajouter un filtre'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButtonFormField<String>(
+                  value: selectedField,
+                  decoration: const InputDecoration(
+                    labelText: 'Champ',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: _fields.map((field) {
+                    return DropdownMenuItem(
+                      value: field.fieldKey,
+                      child: Text(field.displayName),
+                    );
+                  }).toList(),
+                  onChanged: (value) => setState(() => selectedField = value),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  value: operator,
+                  decoration: const InputDecoration(
+                    labelText: 'Opérateur',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: '=', child: Text('Égal à')),
+                    DropdownMenuItem(value: '!=', child: Text('Différent de')),
+                    DropdownMenuItem(value: '>', child: Text('Supérieur à')),
+                    DropdownMenuItem(value: '<', child: Text('Inférieur à')),
+                    DropdownMenuItem(value: 'contains', child: Text('Contient')),
+                  ],
+                  onChanged: (value) => setState(() => operator = value!),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: valueController,
+                  decoration: const InputDecoration(
+                    labelText: 'Valeur',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Annuler'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (selectedField != null && valueController.text.isNotEmpty) {
+                    Navigator.pop(context, {
+                      'field': selectedField!,
+                      'operator': operator,
+                      'value': valueController.text,
+                    });
+                  }
+                },
+                child: const Text('Ajouter'),
+              ),
+            ],
+          ),
+        );
+      },
     );
+    
+    if (result != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Filtre ajouté')),
+      );
+    }
   }
 
   void _removeFilter(DynamicListFilter filter) {
@@ -753,11 +830,75 @@ class _DynamicListBuilderPageState extends State<DynamicListBuilderPage> {
     });
   }
 
-  void _addSort() {
-    // TODO: Implémenter l'ajout de tri
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité en cours de développement')),
+  void _addSort() async {
+    final result = await showDialog<Map<String, String>>(
+      context: context,
+      builder: (context) {
+        String? selectedField;
+        String order = 'asc';
+        
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: const Text('Ajouter un tri'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButtonFormField<String>(
+                  value: selectedField,
+                  decoration: const InputDecoration(
+                    labelText: 'Champ',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: _fields.map((field) {
+                    return DropdownMenuItem(
+                      value: field.fieldKey,
+                      child: Text(field.displayName),
+                    );
+                  }).toList(),
+                  onChanged: (value) => setState(() => selectedField = value),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  value: order,
+                  decoration: const InputDecoration(
+                    labelText: 'Ordre',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'asc', child: Text('Croissant (A-Z)')),
+                    DropdownMenuItem(value: 'desc', child: Text('Décroissant (Z-A)')),
+                  ],
+                  onChanged: (value) => setState(() => order = value!),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Annuler'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (selectedField != null) {
+                    Navigator.pop(context, {
+                      'field': selectedField!,
+                      'order': order,
+                    });
+                  }
+                },
+                child: const Text('Ajouter'),
+              ),
+            ],
+          ),
+        );
+      },
     );
+    
+    if (result != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tri ajouté')),
+      );
+    }
   }
 
   void _removeSort(DynamicListSort sort) {

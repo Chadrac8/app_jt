@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/person_model.dart';
 import '../services/family_service.dart';
 import '../../theme.dart';
@@ -679,11 +680,72 @@ class _FamilyDetailPageState extends State<FamilyDetailPage>
     }
   }
 
-  void _addMember() {
-    // TODO: Implémenter l'ajout de membre
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité en cours de développement')),
+  void _addMember() async {
+    final nameController = TextEditingController();
+    final roleController = TextEditingController();
+    
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Ajouter un membre'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: 'Nom du membre',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: roleController,
+              decoration: const InputDecoration(
+                labelText: 'Rôle (ex: Père, Mère, Enfant)',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (nameController.text.isNotEmpty) {
+                // Add member to family in Firestore
+                await FirebaseFirestore.instance
+                    .collection('families')
+                    .doc(widget.familyId)
+                    .collection('members')
+                    .add({
+                  'name': nameController.text,
+                  'role': roleController.text.isEmpty ? 'Membre' : roleController.text,
+                  'addedAt': FieldValue.serverTimestamp(),
+                });
+                
+                if (context.mounted) {
+                  Navigator.pop(context, true);
+                }
+              }
+            },
+            child: const Text('Ajouter'),
+          ),
+        ],
+      ),
     );
+    
+    if (result == true) {
+      _loadFamilyData();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Membre ajouté avec succès')),
+        );
+      }
+    }
   }
 
   void _deleteFamily() async {

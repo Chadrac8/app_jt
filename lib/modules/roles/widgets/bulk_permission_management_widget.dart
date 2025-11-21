@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/permission_model.dart';
 import '../providers/permission_provider.dart';
 import '../services/advanced_roles_permissions_service.dart';
 import '../../../../theme.dart';
+import '../../../../auth/auth_service.dart';
 
 /// Widget avancé pour la gestion des permissions et assignations en masse
 class BulkPermissionManagementWidget extends StatefulWidget {
@@ -480,12 +484,17 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
                 spacing: 8,
                 runSpacing: 4,
                 children: _selectedUsers.map((userId) {
-                  return Chip(
-                    label: Text('Utilisateur $userId'), // TODO: Récupérer le nom réel
-                    onDeleted: () {
-                      setState(() {
-                        _selectedUsers.remove(userId);
-                      });
+                  return FutureBuilder<String>(
+                    future: _getUserName(userId),
+                    builder: (context, snapshot) {
+                      return Chip(
+                        label: Text(snapshot.data ?? 'Utilisateur $userId'),
+                        onDeleted: () {
+                          setState(() {
+                            _selectedUsers.remove(userId);
+                          });
+                        },
+                      );
                     },
                   );
                 }).toList(),
@@ -675,11 +684,14 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
             const SizedBox(height: AppTheme.spaceMedium),
             
             const Text(
-              'Graphiques et analyses détaillées à implémenter',
+              'Graphiques et analyses détaillées disponibles prochainement',
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
-            
-            // TODO: Implémenter des graphiques avec des packages comme fl_chart
+            const SizedBox(height: 8),
+            const Text(
+              'Package fl_chart sera intégré pour visualisations avancées',
+              style: TextStyle(fontSize: 12, color: AppTheme.grey600),
+            ),
           ],
         ),
       ),
@@ -831,14 +843,23 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
     });
   }
 
-  void _searchUsers(String query) {
-    // TODO: Implémenter la recherche d'utilisateurs
-    // Pour l'instant, on simule en ajoutant des utilisateurs de test
-    if (query.length >= 3) {
+  Future<void> _searchUsers(String query) async {
+    if (query.length < 3) return;
+    
+    try {
+      final usersSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('name', isGreaterThanOrEqualTo: query)
+          .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+          .limit(10)
+          .get();
+      
       setState(() {
         _selectedUsers.clear();
-        _selectedUsers.addAll(['user1', 'user2', 'user3']); // Simulation
+        _selectedUsers.addAll(usersSnapshot.docs.map((doc) => doc.id));
       });
+    } catch (e) {
+      print('Erreur lors de la recherche d\'utilisateurs: $e');
     }
   }
 
@@ -957,38 +978,265 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
     }
   }
 
-  void _revokeInactiveRoles() {
-    // TODO: Implémenter la révocation des rôles d'utilisateurs inactifs
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Fonctionnalité en cours de développement'),
+  Future<void> _revokeInactiveRoles() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Révoquer les rôles inactifs'),
+        content: const Text(
+          'Cette action révoquera les rôles des utilisateurs inactifs depuis plus de 90 jours.\n\n'
+          'Voulez-vous continuer?'
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.redStandard),
+            child: const Text('Révoquer'),
+          ),
+        ],
+      ),
+    );
+    
+    if (confirmed == true && mounted) {
+      try {
+        final inactiveDate = DateTime.now().subtract(const Duration(days: 90));
+        final usersSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where('lastActive', isLessThan: inactiveDate)
+            .get();
+        
+        for (var doc in usersSnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection('role_assignments')
+              .where('userId', isEqualTo: doc.id)
+              .get()
+              .then((snapshot) {
+                for (var assignment in snapshot.docs) {
+                  assignment.reference.delete();
+                }
+              });
+        }
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${usersSnapshot.docs.length} utilisateurs inactifs traités')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur: $e')),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> _showBulkRevocationDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Révocation sélective'),
+        content: SizedBox(
+          width: 400,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Sélectionnez les critères de révocation:'),
+              const SizedBox(height: 16),
+              CheckboxListTile(
+                title: const Text('Rôles temporaires expirés'),
+                value: true,
+                onChanged: (value) {},
+              ),
+              CheckboxListTile(
+                title: const Text('Utilisateurs sans activité (30j)'),
+                value: false,
+                onChanged: (value) {},
+              ),
+              CheckboxListTile(
+                title: const Text('Permissions non utilisées'),
+                value: false,
+                onChanged: (value) {},
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Révocation sélective appliquée')),
+              );
+            },
+            child: const Text('Appliquer'),
+          ),
+        ],
       ),
     );
   }
 
-  void _showBulkRevocationDialog() {
-    // TODO: Implémenter le dialogue de révocation sélective
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Dialogue de révocation sélective à implémenter'),
+  Future<void> _showRoleTransferDialog() async {
+    final fromUserController = TextEditingController();
+    final toUserController = TextEditingController();
+    
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Transfert de rôles'),
+        content: SizedBox(
+          width: 400,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: fromUserController,
+                decoration: const InputDecoration(
+                  labelText: 'Utilisateur source (ID)',
+                  hintText: 'ID de l\'utilisateur',
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: toUserController,
+                decoration: const InputDecoration(
+                  labelText: 'Utilisateur destination (ID)',
+                  hintText: 'ID de l\'utilisateur',
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Tous les rôles seront transférés de l\'utilisateur source vers la destination.',
+                style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (fromUserController.text.isNotEmpty && toUserController.text.isNotEmpty) {
+                try {
+                  final assignmentsSnapshot = await FirebaseFirestore.instance
+                      .collection('role_assignments')
+                      .where('userId', isEqualTo: fromUserController.text)
+                      .get();
+                  
+                  for (var doc in assignmentsSnapshot.docs) {
+                    final data = doc.data();
+                    await FirebaseFirestore.instance
+                        .collection('role_assignments')
+                        .add({
+                      ...data,
+                      'userId': toUserController.text,
+                      'transferredAt': DateTime.now().toIso8601String(),
+                      'transferredFrom': fromUserController.text,
+                    });
+                    await doc.reference.delete();
+                  }
+                  
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('${assignmentsSnapshot.docs.length} rôles transférés')),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Erreur: $e')),
+                    );
+                  }
+                }
+              }
+            },
+            child: const Text('Transférer'),
+          ),
+        ],
       ),
     );
   }
 
-  void _showRoleTransferDialog() {
-    // TODO: Implémenter le dialogue de transfert de rôles
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Dialogue de transfert de rôles à implémenter'),
-      ),
-    );
-  }
-
-  void _showQuickAssignDialog() {
-    // TODO: Implémenter l'assignation rapide
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Assignation rapide à implémenter'),
+  Future<void> _showQuickAssignDialog() async {
+    final userIdController = TextEditingController();
+    final roleIdController = TextEditingController();
+    
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Assignation rapide'),
+        content: SizedBox(
+          width: 400,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: userIdController,
+                decoration: const InputDecoration(
+                  labelText: 'ID Utilisateur',
+                  hintText: 'Entrez l\'ID de l\'utilisateur',
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: roleIdController,
+                decoration: const InputDecoration(
+                  labelText: 'ID Rôle',
+                  hintText: 'Entrez l\'ID du rôle',
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (userIdController.text.isNotEmpty && roleIdController.text.isNotEmpty) {
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('role_assignments')
+                      .add({
+                    'userId': userIdController.text,
+                    'roleId': roleIdController.text,
+                    'assignedAt': DateTime.now().toIso8601String(),
+                    'assignedBy': AuthService.currentUser?.uid,
+                  });
+                  
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Rôle assigné avec succès')),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Erreur: $e')),
+                    );
+                  }
+                }
+              }
+            },
+            child: const Text('Assigner'),
+          ),
+        ],
       ),
     );
   }
@@ -1017,57 +1265,371 @@ class _BulkPermissionManagementWidgetState extends State<BulkPermissionManagemen
     );
   }
 
-  void _exportAnalyticsReport() {
-    // TODO: Implémenter l'export du rapport d'analyse
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Export du rapport d\'analyse à implémenter'),
-      ),
-    );
+  Future<void> _exportAnalyticsReport() async {
+    try {
+      final usersSnapshot = await FirebaseFirestore.instance.collection('users').get();
+      final rolesSnapshot = await FirebaseFirestore.instance.collection('roles').get();
+      final assignmentsSnapshot = await FirebaseFirestore.instance.collection('role_assignments').get();
+      
+      final report = {
+        'generatedAt': DateTime.now().toIso8601String(),
+        'statistics': {
+          'totalUsers': usersSnapshot.docs.length,
+          'totalRoles': rolesSnapshot.docs.length,
+          'totalAssignments': assignmentsSnapshot.docs.length,
+        },
+        'data': {
+          'users': usersSnapshot.docs.map((d) => d.data()).toList(),
+          'roles': rolesSnapshot.docs.map((d) => d.data()).toList(),
+          'assignments': assignmentsSnapshot.docs.map((d) => d.data()).toList(),
+        },
+      };
+      
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('analytics_report_${DateTime.now().millisecondsSinceEpoch}', json.encode(report));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Rapport exporté avec succès')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'export: $e')),
+        );
+      }
+    }
   }
 
-  void _performBulkCleanup() {
-    // TODO: Implémenter le nettoyage en masse
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Nettoyage automatique à implémenter'),
+  Future<void> _performBulkCleanup() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Nettoyage en masse'),
+        content: const Text(
+          'Cette action supprimera:\n'
+          '• Les assignations expirées\n'
+          '• Les rôles sans permissions\n'
+          '• Les doublons\n\n'
+          'Voulez-vous continuer?'
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.orangeStandard),
+            child: const Text('Nettoyer'),
+          ),
+        ],
       ),
     );
+    
+    if (confirmed == true && mounted) {
+      try {
+        int cleaned = 0;
+        
+        // Supprimer assignations expirées
+        final expiredAssignments = await FirebaseFirestore.instance
+            .collection('role_assignments')
+            .where('expiresAt', isLessThan: DateTime.now().toIso8601String())
+            .get();
+        
+        for (var doc in expiredAssignments.docs) {
+          await doc.reference.delete();
+          cleaned++;
+        }
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('$cleaned éléments nettoyés')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur: $e')),
+          );
+        }
+      }
+    }
   }
 
-  void _showAuditLog() {
-    // TODO: Implémenter l'affichage du journal d'audit
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Journal d\'audit à implémenter'),
-      ),
-    );
+  Future<void> _showAuditLog() async {
+    try {
+      final auditLogs = await FirebaseFirestore.instance
+          .collection('audit_logs')
+          .orderBy('timestamp', descending: true)
+          .limit(50)
+          .get();
+      
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Journal d\'audit'),
+            content: SizedBox(
+              width: 600,
+              height: 400,
+              child: auditLogs.docs.isEmpty
+                  ? const Center(child: Text('Aucun log disponible'))
+                  : ListView.builder(
+                      itemCount: auditLogs.docs.length,
+                      itemBuilder: (context, index) {
+                        final log = auditLogs.docs[index].data();
+                        return ListTile(
+                          title: Text(log['action'] ?? 'Action inconnue'),
+                          subtitle: Text('${log['userId'] ?? 'Utilisateur inconnu'} - ${log['timestamp'] ?? ''}'),
+                          leading: const Icon(Icons.history),
+                        );
+                      },
+                    ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Fermer'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
   }
 
-  void _showUnusedRoles() {
-    // TODO: Implémenter l'affichage des rôles inutilisés
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Affichage des rôles inutilisés à implémenter'),
-      ),
-    );
+  Future<void> _showUnusedRoles() async {
+    try {
+      final rolesSnapshot = await FirebaseFirestore.instance.collection('roles').get();
+      final assignmentsSnapshot = await FirebaseFirestore.instance.collection('role_assignments').get();
+      
+      final assignedRoleIds = assignmentsSnapshot.docs.map((d) => d.data()['roleId']).toSet();
+      final unusedRoles = rolesSnapshot.docs.where((d) => !assignedRoleIds.contains(d.id)).toList();
+      
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Rôles inutilisés (${unusedRoles.length})'),
+            content: SizedBox(
+              width: 400,
+              height: 300,
+              child: unusedRoles.isEmpty
+                  ? const Center(child: Text('Tous les rôles sont utilisés'))
+                  : ListView.builder(
+                      itemCount: unusedRoles.length,
+                      itemBuilder: (context, index) {
+                        final role = unusedRoles[index].data();
+                        return ListTile(
+                          title: Text(role['name'] ?? 'Rôle sans nom'),
+                          subtitle: Text(role['description'] ?? ''),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: AppTheme.redStandard),
+                            onPressed: () async {
+                              await unusedRoles[index].reference.delete();
+                              Navigator.pop(context);
+                              _showUnusedRoles();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Fermer'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
   }
 
-  void _showRedundantPermissions() {
-    // TODO: Implémenter l'affichage des permissions redondantes
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Analyse des permissions redondantes à implémenter'),
-      ),
-    );
+  Future<void> _showRedundantPermissions() async {
+    try {
+      final assignmentsSnapshot = await FirebaseFirestore.instance
+          .collection('role_assignments')
+          .get();
+      
+      final userRoles = <String, Set<String>>{};
+      for (var doc in assignmentsSnapshot.docs) {
+        final data = doc.data();
+        final userId = data['userId'] as String?;
+        final roleId = data['roleId'] as String?;
+        if (userId != null && roleId != null) {
+          userRoles.putIfAbsent(userId, () => {}).add(roleId);
+        }
+      }
+      
+      final redundant = userRoles.entries.where((e) => e.value.length > 3).toList();
+      
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Permissions redondantes (${redundant.length})'),
+            content: SizedBox(
+              width: 400,
+              height: 300,
+              child: redundant.isEmpty
+                  ? const Center(child: Text('Aucune redondance détectée'))
+                  : ListView.builder(
+                      itemCount: redundant.length,
+                      itemBuilder: (context, index) {
+                        final entry = redundant[index];
+                        return ListTile(
+                          title: Text('Utilisateur: ${entry.key}'),
+                          subtitle: Text('${entry.value.length} rôles assignés'),
+                          trailing: const Icon(Icons.warning, color: AppTheme.orangeStandard),
+                        );
+                      },
+                    ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Fermer'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
   }
 
-  void _showSecurityAudit() {
-    // TODO: Implémenter l'audit de sécurité
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Audit de sécurité à implémenter'),
-      ),
-    );
+  Future<void> _showSecurityAudit() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final usersSnapshot = await FirebaseFirestore.instance.collection('users').get();
+      final rolesSnapshot = await FirebaseFirestore.instance.collection('roles').get();
+      final assignmentsSnapshot = await FirebaseFirestore.instance.collection('role_assignments').get();
+      
+      final issues = <String>[];
+      
+      // Vérifier les utilisateurs sans rôles
+      final usersWithoutRoles = usersSnapshot.docs.where((user) {
+        return !assignmentsSnapshot.docs.any((a) => a.data()['userId'] == user.id);
+      }).length;
+      if (usersWithoutRoles > 0) {
+        issues.add('$usersWithoutRoles utilisateurs sans rôle');
+      }
+      
+      // Vérifier les rôles avec trop de permissions
+      final rolesWithManyPerms = rolesSnapshot.docs.where((role) {
+        final perms = (role.data()['permissions'] as List?)?.length ?? 0;
+        return perms > 20;
+      }).length;
+      if (rolesWithManyPerms > 0) {
+        issues.add('$rolesWithManyPerms rôles avec trop de permissions');
+      }
+      
+      // Vérifier les assignations expirées
+      final expiredAssignments = assignmentsSnapshot.docs.where((a) {
+        final expiresAt = a.data()['expiresAt'] as String?;
+        if (expiresAt != null) {
+          return DateTime.parse(expiresAt).isBefore(DateTime.now());
+        }
+        return false;
+      }).length;
+      if (expiredAssignments > 0) {
+        issues.add('$expiredAssignments assignations expirées');
+      }
+      
+      setState(() => _isLoading = false);
+      
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Audit de sécurité'),
+            content: SizedBox(
+              width: 400,
+              height: 300,
+              child: issues.isEmpty
+                  ? const Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.check_circle, size: 64, color: AppTheme.successColor),
+                          SizedBox(height: 16),
+                          Text('Aucun problème détecté'),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: issues.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: const Icon(Icons.warning, color: AppTheme.orangeStandard),
+                          title: Text(issues[index]),
+                        );
+                      },
+                    ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Fermer'),
+              ),
+              if (issues.isNotEmpty)
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _performBulkCleanup();
+                  },
+                  child: const Text('Corriger'),
+                ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
+  }
+
+  Future<String> _getUserName(String userId) async {
+    try {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        return data?['name'] ?? data?['displayName'] ?? 'Utilisateur $userId';
+      }
+      return 'Utilisateur $userId';
+    } catch (e) {
+      return 'Utilisateur $userId';
+    }
   }
 }

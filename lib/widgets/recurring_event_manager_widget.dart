@@ -375,10 +375,37 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
               }
               break;
             case 'restore':
-              // TODO: Restore logic
+              // Restore instance - would need to update Firestore
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Fonction de restauration à implémenter')),
+              );
               break;
             case 'details':
-              // TODO: Details logic
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Détails de l\'occurrence'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Date originale: ${instance.originalDate.toString().split(' ')[0]}'),
+                      const SizedBox(height: 8),
+                      Text('Date actuelle: ${instance.actualDate.toString().split(' ')[0]}'),
+                      const SizedBox(height: 8),
+                      Text('Statut: ${instance.isCancelled ? "Annulé" : instance.isOverride ? "Modifié" : "Normal"}'),
+                      const SizedBox(height: 8),
+                      Text('ID: ${instance.id}'),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Fermer'),
+                    ),
+                  ],
+                ),
+              );
               break;
           }
         },
@@ -673,17 +700,45 @@ class _RecurringEventManagerWidgetState extends State<RecurringEventManagerWidge
   }
 
   void _showModifyInstanceDialog(EventInstanceModel instance) {
-    // TODO: Implémenter la modification d'instance
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Modifier l\'occurrence'),
-        content: const Text('Fonctionnalité en cours de développement'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('Date actuelle'),
+                subtitle: Text(instance.actualDate.toString().split(' ')[0]),
+                trailing: const Icon(Icons.calendar_today),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Statut: ${instance.isOverride ? "Modifiée" : "Originale"}',
+                style: const TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Pour modifier cette occurrence, utilisez le formulaire complet d\'.édition.',
+                style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Fermer'),
           ),
+          if (widget.onEditInstance != null)
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                widget.onEditInstance!(instance);
+              },
+              child: const Text('Modifier'),
+            ),
         ],
       ),
     );

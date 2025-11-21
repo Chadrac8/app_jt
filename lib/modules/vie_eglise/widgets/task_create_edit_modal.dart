@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/task_model.dart';
 import '../../../../theme.dart';
+import '../../../../auth/auth_service.dart';
 
 class TaskCreateEditModal extends StatefulWidget {
   final TaskModel? task;
@@ -372,10 +374,42 @@ class _TaskCreateEditModalState extends State<TaskCreateEditModal> {
     }
   }
 
-  void _saveTask() {
+  Future<void> _saveTask() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implémenter la sauvegarde de la tâche
-      Navigator.of(context).pop(true);
+      try {
+        final currentUserId = AuthService.currentUser?.uid ?? 'system';
+        final task = TaskModel(
+          id: widget.task?.id ?? FirebaseFirestore.instance.collection('tasks').doc().id,
+          title: _titleController.text.trim(),
+          description: _descriptionController.text.trim(),
+          priority: _selectedPriority,
+          status: _selectedStatus,
+          dueDate: _dueDate,
+          category: _selectedCategory,
+          estimatedHours: _estimatedHours,
+          location: _location,
+          tags: _tags,
+          createdAt: widget.task?.createdAt ?? DateTime.now(),
+          updatedAt: DateTime.now(),
+          createdBy: widget.task?.createdBy ?? currentUserId,
+          assigneeIds: widget.task?.assigneeIds ?? [],
+        );
+        
+        await FirebaseFirestore.instance
+            .collection('tasks')
+            .doc(task.id)
+            .set(task.toFirestore());
+        
+        if (mounted) {
+          Navigator.of(context).pop(true);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur lors de la sauvegarde: $e')),
+          );
+        }
+      }
     }
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../auth/auth_service.dart';
 import '../../theme.dart';
 import '../providers/theme_provider.dart' as providers;
@@ -249,9 +251,27 @@ class _MemberSettingsPageState extends State<MemberSettingsPage>
             child: const Text('Fermer'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
-              // TODO: Ouvrir le lien vers la politique de confidentialité
+              // Open privacy policy online
+              final url = Uri.parse('https://example.com/privacy-policy');
+              try {
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                } else {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Impossible d\'ouvrir le lien')),
+                    );
+                  }
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erreur: $e')),
+                  );
+                }
+              }
             },
             child: const Text('Voir en ligne'),
           ),
@@ -1273,10 +1293,37 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
           child: const Text('Annuler'),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              // TODO: Implémenter le changement de mot de passe
-              Navigator.pop(context, true);
+              try {
+                final user = FirebaseAuth.instance.currentUser;
+                if (user == null) throw Exception('Utilisateur non connecté');
+                
+                // Réauthentifier l'utilisateur
+                final credential = EmailAuthProvider.credential(
+                  email: user.email!,
+                  password: _currentPasswordController.text,
+                );
+                await user.reauthenticateWithCredential(credential);
+                
+                // Changer le mot de passe
+                await user.updatePassword(_newPasswordController.text);
+                
+                Navigator.pop(context, true);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Mot de passe modifié avec succès'),
+                    backgroundColor: AppTheme.successColor,
+                  ),
+                );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Erreur: $e'),
+                    backgroundColor: AppTheme.errorColor,
+                  ),
+                );
+              }
             }
           },
           child: const Text('Modifier'),
@@ -1357,10 +1404,38 @@ class _ChangeEmailDialogState extends State<_ChangeEmailDialog> {
           child: const Text('Annuler'),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              // TODO: Implémenter le changement d'email
-              Navigator.pop(context, true);
+              try {
+                final user = FirebaseAuth.instance.currentUser;
+                if (user == null) throw Exception('Utilisateur non connecté');
+                
+                // Réauthentifier l'utilisateur
+                final credential = EmailAuthProvider.credential(
+                  email: user.email!,
+                  password: _passwordController.text,
+                );
+                await user.reauthenticateWithCredential(credential);
+                
+                // Envoyer l'email de vérification au nouvel email
+                await user.verifyBeforeUpdateEmail(_newEmailController.text);
+                
+                Navigator.pop(context, true);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Email de vérification envoyé. Vérifiez votre nouvelle adresse.'),
+                    backgroundColor: AppTheme.successColor,
+                    duration: Duration(seconds: 5),
+                  ),
+                );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Erreur: $e'),
+                    backgroundColor: AppTheme.errorColor,
+                  ),
+                );
+              }
             }
           },
           child: const Text('Modifier'),

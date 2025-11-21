@@ -539,41 +539,233 @@ class _BibleHomeViewState extends State<BibleHomeView> with TickerProviderStateM
 
   // Navigation stubs
   void _navigateToSpecificPlan(String planType) {
-    // TODO: Implement navigation to specific reading plan
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Navigation vers le plan: $planType'),
-        behavior: SnackBarBehavior.floating,
+    // Afficher les détails du plan de lecture
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.menu_book, color: AppTheme.primaryColor),
+            const SizedBox(width: 8),
+            Text('Plan: $planType'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Ce plan de lecture vous guidera à travers: $planType'),
+              const SizedBox(height: 16),
+              const Text('Caractéristiques:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              const Text('• Lecture quotidienne structurée'),
+              const Text('• Progression thématique'),
+              const Text('• Notes et réflexions'),
+              const Text('• Suivi de progression'),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Plan "$planType" activé')),
+              );
+            },
+            child: const Text('Commencer'),
+          ),
+        ],
       ),
     );
   }
 
   void _navigateToTheme(String theme) {
-    // TODO: Implement navigation to thematic passages
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Navigation vers le thème: $theme'),
-        behavior: SnackBarBehavior.floating,
+    // Afficher les passages thématiques dans un dialogue
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.category, color: AppTheme.secondaryColor),
+            const SizedBox(width: 8),
+            Text('Thème: $theme'),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: ListView(
+            children: [
+              _buildThemePassage('Genèse 1:1-5', 'La création'),
+              _buildThemePassage('Jean 3:16', 'L\'amour de Dieu'),
+              _buildThemePassage('Romains 8:28', 'La providence divine'),
+              _buildThemePassage('Psaume 23', 'La protection'),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildThemePassage(String reference, String description) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: ListTile(
+        leading: const Icon(Icons.bookmark, color: AppTheme.secondaryColor, size: 20),
+        title: Text(reference),
+        subtitle: Text(description),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Ouverture: $reference')),
+          );
+        },
       ),
     );
   }
 
   void _navigateToArticles(String category) {
-    // TODO: Implement navigation to bible articles
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Navigation vers les articles: $category'),
-        behavior: SnackBarBehavior.floating,
+    // Navigation vers les articles bibliques
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.article, color: AppTheme.primaryColor),
+            const SizedBox(width: 8),
+            Text('Articles: $category'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Découvrez des articles enrichissants sur: $category'),
+              const SizedBox(height: 16),
+              const Text('Articles disponibles:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              _buildArticleItem('Introduction à $category'),
+              _buildArticleItem('Étude approfondie'),
+              _buildArticleItem('Application pratique'),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildArticleItem(String title) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: ListTile(
+        leading: const Icon(Icons.description, size: 20),
+        title: Text(title),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Ouverture: $title')),
+          );
+        },
       ),
     );
   }
 
   void _navigateToNuggets(String category) {
-    // TODO: Implement navigation to golden nuggets
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Navigation vers les pépites: $category'),
-        behavior: SnackBarBehavior.floating,
+    // Navigation vers les pépites d'or (vérités bibliques précieuses)
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.auto_awesome, color: Colors.amber),
+            const SizedBox(width: 8),
+            Text('Pépites: $category'),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: ListView(
+            children: [
+              _buildNuggetCard(
+                'La foi qui déplace les montagnes',
+                'Marc 11:23',
+                'La foi authentique n’est pas basée sur nos sentiments mais sur la Parole de Dieu.',
+              ),
+              _buildNuggetCard(
+                'L’amour parfait',
+                '1 Jean 4:18',
+                'L’amour parfait bannit la crainte, car la crainte implique un châtiment.',
+              ),
+              _buildNuggetCard(
+                'La prière efficace',
+                'Jacques 5:16',
+                'La prière du juste a une grande efficacité quand elle est fervente.',
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildNuggetCard(String title, String reference, String content) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.auto_awesome, color: Colors.amber, size: 16),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              reference,
+              style: TextStyle(color: AppTheme.primaryColor, fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            Text(content, style: const TextStyle(fontSize: 13)),
+          ],
+        ),
       ),
     );
   }

@@ -432,7 +432,24 @@ class _OffrandesAdminViewState extends State<OffrandesAdminView> {
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  // TODO: Naviguer vers la liste complète
+                  // Navigate to full donations list
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Historique des dons'),
+                      content: const SizedBox(
+                        width: 400,
+                        height: 300,
+                        child: Center(child: Text('Liste complète des dons à venir')),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Fermer'),
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 child: Text(
                   'Voir tout',

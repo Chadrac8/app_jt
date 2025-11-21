@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../theme.dart';
 import '../../../models/branham_message.dart';
 import '../services/admin_branham_messages_service.dart';
@@ -147,8 +149,30 @@ class _ReadMessageTabState extends State<ReadMessageTab>
         filtered = await AdminBranhamMessagesService.filterByDecade('1960s');
         break;
       case 'Favoris':
-        // TODO: Implémenter le système de favoris
-        filtered = [];
+        // Load favorites from Firestore
+        try {
+          final userId = FirebaseAuth.instance.currentUser?.uid;
+          if (userId != null) {
+            final favSnapshot = await FirebaseFirestore.instance
+                .collection('user_favorites')
+                .where('userId', isEqualTo: userId)
+                .where('type', isEqualTo: 'message')
+                .get();
+            
+            final favoriteIds = favSnapshot.docs
+                .map((doc) => doc.data()['messageId'] as String)
+                .toList();
+            
+            filtered = _messages
+                .where((msg) => favoriteIds.contains(msg.id))
+                .toList();
+          } else {
+            filtered = [];
+          }
+        } catch (e) {
+          print('Erreur chargement favoris: $e');
+          filtered = [];
+        }
         break;
     }
 

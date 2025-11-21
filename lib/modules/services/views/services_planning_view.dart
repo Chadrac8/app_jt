@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../models/event_model.dart';
 import '../../../services/services_firebase_service.dart';
 import '../../../services/events_firebase_service.dart';
@@ -64,6 +65,28 @@ class _ServicesPlanningViewState extends State<ServicesPlanningView> {
     setState(() {
       _selectedEventIds.clear();
     });
+  }
+
+  /// Select all visible events in the current view
+  Future<void> _selectAllVisibleEvents() async {
+    try {
+      final eventsSnapshot = await FirebaseFirestore.instance
+          .collection('events')
+          .where('date', isGreaterThanOrEqualTo: _startDate)
+          .where('date', isLessThanOrEqualTo: _endDate)
+          .get();
+      
+      setState(() {
+        _selectedEventIds.clear();
+        _selectedEventIds.addAll(eventsSnapshot.docs.map((doc) => doc.id));
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
   }
 
   /// Actions en masse: Supprimer les événements sélectionnés
@@ -229,8 +252,7 @@ class _ServicesPlanningViewState extends State<ServicesPlanningView> {
               } else if (value == 'cancel') {
                 _changeStatusSelected('annule');
               } else if (value == 'select_all') {
-                // Sélectionner tous visibles
-                // TODO: récupérer tous les événements
+                _selectAllVisibleEvents();
               } else if (value == 'clear') {
                 _clearSelection();
               }
@@ -799,11 +821,40 @@ class _ServicesPlanningViewState extends State<ServicesPlanningView> {
               ),
               trailing: const Icon(Icons.edit),
               onTap: () async {
-                // TODO: Date range picker
                 Navigator.pop(context);
+                final picked = await showDateRangePicker(
+                  context: context,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                  initialDateRange: DateTimeRange(start: _startDate, end: _endDate),
+                  locale: const Locale('fr', 'FR'),
+                );
+                if (picked != null) {
+                  setState(() {
+                    _startDate = picked.start;
+                    _endDate = picked.end;
+                  });
+                  // Trigger rebuild with new date range
+                }
               },
             ),
-            // TODO: Autres filtres (type de service, etc.)
+            const Divider(),
+            ListTile(
+              title: const Text('Type de service'),
+              trailing: DropdownButton<String>(
+                value: 'all',
+                items: const [
+                  DropdownMenuItem(value: 'all', child: Text('Tous')),
+                  DropdownMenuItem(value: 'culte', child: Text('Culte')),
+                  DropdownMenuItem(value: 'reunion', child: Text('Réunion')),
+                  DropdownMenuItem(value: 'conference', child: Text('Conférence')),
+                ],
+                onChanged: (value) {
+                  // Filter by service type
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ],
         ),
         actions: [

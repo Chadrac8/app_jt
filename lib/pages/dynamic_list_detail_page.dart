@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/dynamic_list_model.dart';
 import '../services/dynamic_lists_firebase_service.dart';
 import '../../theme.dart';
@@ -817,15 +818,27 @@ class _DynamicListDetailPageState extends State<DynamicListDetailPage> {
     _showSuccessSnackBar(_list.isFavorite ? 'Ajouté aux favoris' : 'Retiré des favoris');
   }
 
-  void _handleFieldAction(DynamicListField field, dynamic value) {
+  void _handleFieldAction(DynamicListField field, dynamic value) async {
     switch (field.fieldType) {
       case 'email':
-        // TODO: Ouvrir l'application email
-        _showErrorSnackBar('Fonctionnalité email en cours de développement');
+        if (value != null && value.toString().isNotEmpty) {
+          final uri = Uri.parse('mailto:$value');
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri);
+          } else {
+            _showErrorSnackBar('Impossible d\'ouvrir l\'application email');
+          }
+        }
         break;
       case 'phone':
-        // TODO: Ouvrir l'application téléphone
-        _showErrorSnackBar('Fonctionnalité téléphone en cours de développement');
+        if (value != null && value.toString().isNotEmpty) {
+          final uri = Uri.parse('tel:$value');
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri);
+          } else {
+            _showErrorSnackBar('Impossible d\'ouvrir l\'application téléphone');
+          }
+        }
         break;
       default:
         _showErrorSnackBar('Action non disponible pour ce type de champ');

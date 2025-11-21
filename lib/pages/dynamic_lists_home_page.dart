@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 import '../models/dynamic_list_model.dart';
 import '../services/dynamic_lists_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -745,9 +746,19 @@ class _DynamicListsHomePageState extends State<DynamicListsHomePage> with Ticker
     }
   }
 
-  void _shareList(DynamicListModel list) {
-    // TODO: Implémenter le partage de liste
-    _showErrorSnackBar('Fonctionnalité de partage en cours de développement');
+  void _shareList(DynamicListModel list) async {
+    try {
+      final shareText = 'Consultez cette liste: ${list.name}\n'
+          'Description: ${list.description}\n'
+          'Nombre de champs: ${list.fields.length}';
+      
+      await Share.share(
+        shareText,
+        subject: 'Liste dynamique: ${list.name}',
+      );
+    } catch (e) {
+      _showErrorSnackBar('Erreur lors du partage: $e');
+    }
   }
 
   Future<void> _toggleFavorite(DynamicListModel list) async {

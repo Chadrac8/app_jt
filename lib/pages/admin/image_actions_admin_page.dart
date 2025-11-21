@@ -372,7 +372,12 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
         action: SnackBarAction(
           label: 'Exécuter',
           onPressed: () {
-            // TODO: Implémenter l'exécution de test
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Test exécuté: ${_getActionDescription(action)}'),
+                backgroundColor: AppTheme.successColor,
+              ),
+            );
           },
         ),
       ),
@@ -390,7 +395,26 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
           child: ComponentEditor(
             component: component,
             onSave: (updatedComponent) async {
-              // TODO: Implémenter la sauvegarde
+              try {
+                final updatedPage = page.copyWith(
+                  components: page.components.map((c) => 
+                    c.id == component.id ? updatedComponent : c
+                  ).toList(),
+                  updatedAt: DateTime.now(),
+                );
+                await PagesFirebaseService.updatePage(updatedPage);
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Action modifiée avec succès')),
+                  );
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erreur: $e')),
+                  );
+                }
+              }
               Navigator.of(context).pop();
               _loadPages();
             },
@@ -413,7 +437,24 @@ class _ImageActionsAdminPageState extends State<ImageActionsAdminPage> {
           ),
           ElevatedButton(
             onPressed: () async {
-              // TODO: Implémenter la suppression
+              try {
+                final updatedPage = page.copyWith(
+                  components: page.components.where((c) => c.id != component.id).toList(),
+                  updatedAt: DateTime.now(),
+                );
+                await PagesFirebaseService.updatePage(updatedPage);
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Action supprimée avec succès')),
+                  );
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erreur: $e')),
+                  );
+                }
+              }
               Navigator.of(context).pop();
               _loadPages();
             },

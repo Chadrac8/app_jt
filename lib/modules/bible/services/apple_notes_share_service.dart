@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui' show Rect;
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';

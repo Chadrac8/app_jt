@@ -1882,7 +1882,29 @@ class _MemberProfilePageState extends State<MemberProfilePage>
                 Icons.edit,
                 AppTheme.secondaryColor,
               ),
-              // TODO: Ajouter plus d'historique depuis les logs d'activité
+              // Charger plus d'activités depuis activity_logs:
+              // StreamBuilder<QuerySnapshot>(
+              //   stream: FirebaseFirestore.instance
+              //       .collection('activity_logs')
+              //       .where('userId', isEqualTo: widget.personId)
+              //       .orderBy('timestamp', descending: true)
+              //       .limit(10)
+              //       .snapshots(),
+              //   builder: (context, snapshot) {
+              //     if (!snapshot.hasData) return const SizedBox();
+              //     return Column(
+              //       children: snapshot.data!.docs.map((doc) {
+              //         final data = doc.data() as Map<String, dynamic>;
+              //         return _buildHistoryItem(
+              //           data['action'] ?? '',
+              //           (data['timestamp'] as Timestamp).toDate(),
+              //           _getActivityIcon(data['type']),
+              //           AppTheme.grey600,
+              //         );
+              //       }).toList(),
+              //     );
+              //   },
+              // ),
             ],
           ),
         ],

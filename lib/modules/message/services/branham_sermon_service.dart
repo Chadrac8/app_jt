@@ -61,7 +61,26 @@ class BranhamSermonService {
   /// Récupère les vraies URLs depuis branham.org (à implémenter plus tard)
   static Future<List<BranhamSermon>> fetchRealSermonsFromBranhamOrg() async {
     try {
-      // TODO: Implémenter le scraping des vraies URLs depuis branham.org
+      // Pour implémenter le scraping:
+      // 1. Ajouter packages dans pubspec.yaml:
+      //    http: ^1.0.0
+      //    html: ^0.15.0
+      // 2. Importer:
+      //    import 'package:http/http.dart' as http;
+      //    import 'package:html/parser.dart' as html_parser;
+      // 3. Scraper:
+      //    final response = await http.get(Uri.parse('https://branham.org/fr'));
+      //    final document = html_parser.parse(response.body);
+      //    final sermonElements = document.querySelectorAll('.sermon-item');
+      //    return sermonElements.map((element) {
+      //      return BranhamSermon(
+      //        id: element.attributes['data-id'] ?? '',
+      //        title: element.querySelector('.title')?.text ?? '',
+      //        audioStreamUrl: element.querySelector('audio')?.attributes['src'] ?? '',
+      //        ...
+      //      );
+      //    }).toList();
+      
       // Pour l'instant, retournons quelques vraies prédications connues
       return [
         BranhamSermon(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/blog_model.dart';
 import '../services/blog_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -442,7 +444,7 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         parentCommentId: _replyingTo?.id,
-        isAuthorReply: false, // TODO: Vérifier si l'utilisateur est l'auteur de l'article
+        isAuthorReply: await _checkIfUserIsAuthor(currentUser.uid),
       );
 
       await BlogFirebaseService.addComment(comment);
@@ -503,10 +505,69 @@ class _BlogCommentsSectionState extends State<BlogCommentsSection> {
   }
 
   Future<void> _likeComment(BlogComment comment) async {
-    // TODO: Implémenter le système de likes pour les commentaires
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Fonctionnalité à venir')),
-    );
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Vous devez être connecté pour aimer un commentaire')),
+      );
+      return;
+    }
+    
+    try {
+      final likeRef = FirebaseFirestore.instance
+          .collection('comment_likes')
+          .doc('${comment.id}_$userId');
+      
+      final likeDoc = await likeRef.get();
+      
+      if (likeDoc.exists) {
+        // Retirer le like
+        await likeRef.delete();
+        await FirebaseFirestore.instance
+            .collection('blog_comments')
+            .doc(comment.id)
+            .update({
+          'likesCount': FieldValue.increment(-1),
+        });
+      } else {
+        // Ajouter le like
+        await likeRef.set({
+          'commentId': comment.id,
+          'userId': userId,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+        await FirebaseFirestore.instance
+            .collection('blog_comments')
+            .doc(comment.id)
+            .update({
+          'likesCount': FieldValue.increment(1),
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
+  }
+
+  Future<bool> _checkIfUserIsAuthor(String userId) async {
+    try {
+      final postDoc = await FirebaseFirestore.instance
+          .collection('blog_posts')
+          .doc(widget.postId)
+          .get();
+      
+      if (postDoc.exists) {
+        final authorId = postDoc.data()?['authorId'] as String?;
+        return authorId == userId;
+      }
+      return false;
+    } catch (e) {
+      print('Erreur vérification auteur: $e');
+      return false;
+    }
   }
 
   void _reportComment(BlogComment comment) {

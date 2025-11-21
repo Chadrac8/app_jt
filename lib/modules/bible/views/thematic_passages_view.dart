@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../theme.dart';
+import '../../../../auth/auth_service.dart';
 import '../models/thematic_passage_model.dart';
 import '../services/thematic_passage_service.dart';
 import '../services/bible_service.dart';
@@ -653,7 +654,7 @@ class _ThemeDetailsSheet extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (!theme.isPublic || theme.createdBy == 'current_user') // TODO: Vérifier l'utilisateur actuel
+                if (!theme.isPublic || theme.createdBy == (AuthService.currentUser?.uid ?? ''))
                   IconButton(
                     onPressed: () => _showAddPassageDialog(context, theme),
                     icon: Icon(

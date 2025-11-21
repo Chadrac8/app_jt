@@ -1130,18 +1130,86 @@ class _ReadingSettingsDialogState extends State<ReadingSettingsDialog> with Tick
     );
   }
 
-  void _exportSettings() {
-    // TODO: Implémenter l'export des paramètres
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Export des paramètres - Fonctionnalité à venir')),
-    );
+  Future<void> _exportSettings() async {
+    try {
+      final settings = {
+        'fontSize': _fontSize,
+        'lineHeight': _lineHeight,
+        'showVerseNumbers': _showVerseNumbers,
+        'fontFamily': _fontFamily,
+        'isDarkMode': _isDarkMode,
+        'versePerLine': _versePerLine,
+        'paragraphSpacing': _paragraphSpacing,
+        'showNavigationButtons': _showNavigationButtons,
+        'selectedTheme': _selectedTheme,
+        'autoScroll': _autoScroll,
+        'autoScrollSpeed': _autoScrollSpeed,
+        'immersiveMode': _immersiveMode,
+      };
+      
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('bible_reading_settings', json.encode(settings));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Paramètres exportés avec succès')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'export: $e')),
+        );
+      }
+    }
   }
 
-  void _importSettings() {
-    // TODO: Implémenter l'import des paramètres
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Import des paramètres - Fonctionnalité à venir')),
-    );
+  Future<void> _importSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final settingsJson = prefs.getString('bible_reading_settings');
+      
+      if (settingsJson == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Aucun paramètre sauvegardé trouvé')),
+          );
+        }
+        return;
+      }
+      
+      final settings = json.decode(settingsJson) as Map<String, dynamic>;
+      
+      // Apply imported settings
+      if (mounted) {
+        setState(() {
+          _fontSize = settings['fontSize'] ?? _fontSize;
+          _lineHeight = settings['lineHeight'] ?? _lineHeight;
+          _showVerseNumbers = settings['showVerseNumbers'] ?? _showVerseNumbers;
+          _fontFamily = settings['fontFamily'] ?? _fontFamily;
+          _isDarkMode = settings['isDarkMode'] ?? _isDarkMode;
+          _versePerLine = settings['versePerLine'] ?? _versePerLine;
+          _paragraphSpacing = settings['paragraphSpacing'] ?? _paragraphSpacing;
+          _showNavigationButtons = settings['showNavigationButtons'] ?? _showNavigationButtons;
+          _selectedTheme = settings['selectedTheme'] ?? _selectedTheme;
+          _autoScroll = settings['autoScroll'] ?? _autoScroll;
+          _autoScrollSpeed = settings['autoScrollSpeed'] ?? _autoScrollSpeed;
+          _immersiveMode = settings['immersiveMode'] ?? _immersiveMode;
+        });
+        
+        _applySettings();
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Paramètres importés avec succès')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'import: $e')),
+        );
+      }
+    }
   }
 
   Widget _buildSliderSetting(

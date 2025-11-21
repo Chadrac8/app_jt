@@ -515,17 +515,29 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
           ),
           const SizedBox(height: AppTheme.spaceSmall),
           
-          // TODO: Implémenter la sélection de modules restreints
-          Container(
-            padding: const EdgeInsets.all(AppTheme.spaceMedium),
-            decoration: BoxDecoration(
-              border: Border.all(color: AppTheme.grey300),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-            ),
-            child: const Text(
-              'Sélection de modules restreints à implémenter',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              'users', 'roles', 'settings', 'finance', 'reports'
+            ].map((moduleId) {
+              final isRestricted = (_configuration['restrictedModules'] as List<String>? ?? []).contains(moduleId);
+              return FilterChip(
+                label: Text(_getModuleName(moduleId)),
+                selected: isRestricted,
+                onSelected: (selected) {
+                  setState(() {
+                    final restricted = List<String>.from(_configuration['restrictedModules'] ?? []);
+                    if (selected) {
+                      restricted.add(moduleId);
+                    } else {
+                      restricted.remove(moduleId);
+                    }
+                    _configuration['restrictedModules'] = restricted;
+                  });
+                },
+              );
+            }).toList(),
           ),
           
           const SizedBox(height: AppTheme.spaceMedium),
@@ -808,15 +820,26 @@ class _RoleTemplateFormDialogState extends State<RoleTemplateFormDialog>
   }
 
   String _getModuleName(String moduleId) {
-    // TODO: Récupérer le nom réel du module depuis un service
-    switch (moduleId) {
-      case 'users': return 'Utilisateurs';
-      case 'content': return 'Contenu';
-      case 'events': return 'Événements';
-      case 'reports': return 'Rapports';
-      case 'settings': return 'Paramètres';
-      default: return moduleId.toUpperCase();
-    }
+    // Map complet des modules disponibles dans l'application
+    const moduleNames = {
+      'users': 'Utilisateurs',
+      'roles': 'Rôles & Permissions',
+      'content': 'Contenu',
+      'events': 'Événements',
+      'services': 'Services',
+      'reports': 'Rapports',
+      'settings': 'Paramètres',
+      'bible': 'Bible',
+      'message': 'Message',
+      'people': 'Personnes',
+      'vie_eglise': 'Vie d\'Église',
+      'finance': 'Finance',
+      'communication': 'Communication',
+      'resources': 'Ressources',
+      'dashboard': 'Tableau de bord',
+    };
+    
+    return moduleNames[moduleId] ?? moduleId.replaceAll('_', ' ').toUpperCase();
   }
 
   Widget _getPermissionLevelIcon(PermissionLevel level) {

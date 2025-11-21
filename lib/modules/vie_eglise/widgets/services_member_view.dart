@@ -1,9 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../theme.dart';
+import '../../../../auth/auth_service.dart';
 
-class ServicesMemberView extends StatelessWidget {
+class ServicesMemberView extends StatefulWidget {
   const ServicesMemberView({super.key});
+
+  @override
+  State<ServicesMemberView> createState() => _ServicesMemberViewState();
+}
+
+class _ServicesMemberViewState extends State<ServicesMemberView> {
+  bool _isLoading = true;
+  List<Map<String, dynamic>> _services = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadServices();
+  }
+
+  Future<void> _loadServices() async {
+    try {
+      final now = DateTime.now();
+      final snapshot = await FirebaseFirestore.instance
+          .collection('services')
+          .where('date', isGreaterThanOrEqualTo: now)
+          .orderBy('date')
+          .limit(10)
+          .get();
+
+      setState(() {
+        _services = snapshot.docs.map((doc) => {
+          'id': doc.id,
+          ...doc.data(),
+        }).toList();
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Erreur chargement services: $e');
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +50,9 @@ class ServicesMemberView extends StatelessWidget {
       children: [
         _buildHeader(),
         Expanded(
-          child: _buildServicesList(),
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _buildServicesList(),
         ),
       ],
     );
@@ -53,21 +94,77 @@ class ServicesMemberView extends StatelessWidget {
     );
   }
 
-  Widget _buildServicesList() {
-    // TODO: Implémenter la liste des services depuis Firebase
-    return ListView.builder(
-      padding: const EdgeInsets.all(AppTheme.spaceMedium),
-      itemCount: 5, // Placeholder
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: _buildServiceCard(index),
+  Future<void> _registerForService(Map<String, dynamic> service) async {
+    final userId = AuthService.currentUser?.uid;
+    if (userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Vous devez être connecté')),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('service_registrations')
+          .add({
+        'serviceId': service['id'],
+        'userId': userId,
+        'registeredAt': FieldValue.serverTimestamp(),
+        'status': 'confirmed',
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Inscription réussie !')),
         );
-      },
+        _loadServices();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
+  }
+
+  Widget _buildServicesList() {
+    if (_services.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.event_busy, size: 64, color: AppTheme.grey400),
+            const SizedBox(height: AppTheme.spaceMedium),
+            Text(
+              'Aucun service à venir',
+              style: GoogleFonts.poppins(
+                fontSize: AppTheme.fontSize16,
+                color: AppTheme.grey600,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadServices,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(AppTheme.spaceMedium),
+        itemCount: _services.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _buildServiceCard(_services[index]),
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildServiceCard(int index) {
+  Widget _buildServiceCard(Map<String, dynamic> serviceData) {
+    final index = _services.indexOf(serviceData);
     final services = [
       {
         'name': 'Service du dimanche',
@@ -228,9 +325,7 @@ class ServicesMemberView extends StatelessWidget {
               const Spacer(),
               if ((service['volunteers'] as int) < (service['maxVolunteers'] as int))
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implémenter l'inscription au service
-                  },
+                  onPressed: () => _registerForService(service),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.greenStandard,
                     foregroundColor: AppTheme.white100,

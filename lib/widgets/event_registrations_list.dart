@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/event_model.dart';
 import '../services/events_firebase_service.dart';
 import '../../theme.dart';
@@ -49,13 +51,95 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
   }
 
   Future<void> _addManualRegistration() async {
-    // TODO: Implement manual registration dialog
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Fonctionnalité en cours de développement'),
-        backgroundColor: AppTheme.warningColor,
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final phoneController = TextEditingController();
+    
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Inscription manuelle'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Nom complet',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: phoneController,
+                decoration: const InputDecoration(
+                  labelText: 'Téléphone (optionnel)',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Inscrire'),
+          ),
+        ],
       ),
     );
+    
+    if (result == true && nameController.text.isNotEmpty && emailController.text.isNotEmpty) {
+      try {
+        await FirebaseFirestore.instance.collection('event_registrations').add({
+          'eventId': widget.event.id,
+          'name': nameController.text,
+          'email': emailController.text,
+          'phone': phoneController.text,
+          'status': 'confirmed',
+          'registrationType': 'manual',
+          'createdAt': FieldValue.serverTimestamp(),
+          'createdBy': FirebaseAuth.instance.currentUser?.uid ?? 'admin',
+        });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Inscription ajoutée avec succès'),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur: $e'),
+              backgroundColor: AppTheme.errorColor,
+            ),
+          );
+        }
+      }
+    }
+    
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
   }
 
   Future<void> _markAttendance(EventRegistrationModel registration, bool isPresent) async {
@@ -149,7 +233,44 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
         );
       }
       
-      // TODO: Implement actual file export
+      // Créer le contenu CSV
+      final csvContent = StringBuffer();
+      csvContent.writeln('Nom,Email,Téléphone,Statut,Date inscription');
+      
+      for (final reg in data) {
+        final name = reg['name'] ?? '';
+        final email = reg['email'] ?? '';
+        final phone = reg['phone'] ?? '';
+        final status = reg['status'] ?? '';
+        final date = reg['createdAt'] != null 
+          ? (reg['createdAt'] as Timestamp).toDate().toString().split(' ')[0]
+          : '';
+        csvContent.writeln('"$name","$email","$phone","$status","$date"');
+      }
+      
+      // Note: Pour un export réel, utiliser package:path_provider et share_plus
+      // Ici on stocke temporairement dans Firestore pour téléchargement
+      try {
+        await FirebaseFirestore.instance.collection('exports').add({
+          'type': 'event_registrations',
+          'eventId': widget.event.id,
+          'content': csvContent.toString(),
+          'format': 'csv',
+          'createdAt': FieldValue.serverTimestamp(),
+          'createdBy': FirebaseAuth.instance.currentUser?.uid,
+        });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Export préparé - disponible dans les exports'),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+        }
+      } catch (exportError) {
+        print('Erreur export: $exportError');
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

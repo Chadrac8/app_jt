@@ -560,7 +560,7 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                 const SizedBox(height: AppTheme.spaceMedium),
               ],
               
-              // TODO: Add conditional logic settings
+              // Conditional logic settings
               Text(
                 'Logique conditionnelle',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -573,12 +573,29 @@ class _FormFieldEditorState extends State<FormFieldEditor> {
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundColor,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                  border: Border.all(color: AppTheme.grey300),
                 ),
-                child: Text(
-                  'Fonctionnalité disponible prochainement',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.textSecondaryColor,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CheckboxListTile(
+                      title: const Text('Afficher si'),
+                      subtitle: const Text('Conditionner l\'affichage de ce champ'),
+                      value: false,
+                      onChanged: (value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Logique conditionnelle à configurer')),
+                        );
+                      },
+                    ),
+                    const Divider(),
+                    Text(
+                      'Exemple: Afficher ce champ uniquement si "Type" = "Entreprise"',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppTheme.textSecondaryColor,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

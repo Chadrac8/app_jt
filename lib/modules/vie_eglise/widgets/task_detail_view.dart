@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/task_model.dart';
 import '../../../../theme.dart';
 
@@ -114,7 +115,16 @@ class TaskDetailView extends StatelessWidget {
             _buildInfoRow(Icons.location_on, 'Lieu', task.location!),
             const SizedBox(height: AppTheme.space12),
           ],
-          _buildInfoRow(Icons.person, 'Créé par', 'Utilisateur'), // TODO: Get user name
+          FutureBuilder<String>(
+            future: _getCreatorName(task.createdBy),
+            builder: (context, snapshot) {
+              return _buildInfoRow(
+                Icons.person,
+                'Créé par',
+                snapshot.data ?? 'Utilisateur',
+              );
+            },
+          ),
           const SizedBox(height: AppTheme.space12),
           _buildInfoRow(Icons.calendar_today, 'Créé le', _formatDate(task.createdAt)),
         ],
@@ -250,12 +260,17 @@ class TaskDetailView extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppTheme.space12),
-          Text(
-            'Utilisateur $userId', // TODO: Get actual user name
-            style: GoogleFonts.poppins(
-              fontSize: AppTheme.fontSize14,
-              color: AppTheme.grey700,
-            ),
+          FutureBuilder<String>(
+            future: _getUserName(userId),
+            builder: (context, snapshot) {
+              return Text(
+                snapshot.data ?? 'Utilisateur $userId',
+                style: GoogleFonts.poppins(
+                  fontSize: AppTheme.fontSize14,
+                  color: AppTheme.grey700,
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -380,5 +395,39 @@ class TaskDetailView extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+  Future<String> _getCreatorName(String userId) async {
+    try {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        return data?['name'] ?? data?['displayName'] ?? 'Utilisateur';
+      }
+      return 'Utilisateur';
+    } catch (e) {
+      return 'Utilisateur';
+    }
+  }
+
+  Future<String> _getUserName(String userId) async {
+    try {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        return data?['name'] ?? data?['displayName'] ?? 'Utilisateur $userId';
+      }
+      return 'Utilisateur $userId';
+    } catch (e) {
+      return 'Utilisateur $userId';
+    }
   }
 }

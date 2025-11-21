@@ -42,7 +42,20 @@ class ReadingService {
 
   /// Récupère le contenu complet d'une prédication
   Future<String> getSermonContent(String sermonId) async {
-    // TODO: Charger le contenu réel depuis un fichier ou une API
+    // Charger depuis assets/sermons/ si les fichiers existent:
+    // 1. Créer assets/sermons/${sermonId}.txt
+    // 2. Ajouter dans pubspec.yaml sous assets:
+    //    - assets/sermons/
+    // 3. Charger:
+    //    return await rootBundle.loadString('assets/sermons/$sermonId.txt');
+    
+    // Ou depuis une API:
+    //    final response = await http.get(Uri.parse('https://api.example.com/sermons/$sermonId'));
+    //    if (response.statusCode == 200) {
+    //      return response.body;
+    //    }
+    
+    // Pour l'instant, retour contenu démo
     return '''
 Mes chers frères et sœurs, permettez-moi de vous dire ce soir que nous vivons dans l'heure la plus glorieuse que l'Église ait jamais connue.
 

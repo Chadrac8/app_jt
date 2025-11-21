@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../core/module_manager.dart';
 import '../../config/app_modules.dart';
 import '../../shared/widgets/custom_card.dart';
@@ -156,12 +157,29 @@ class OffrandesModule extends BaseModule {
 
   Future<Map<String, dynamic>> _getQuickStats() async {
     try {
-      // TODO: Implémenter la récupération des vraies statistiques depuis Firebase
-      // Pour l'instant, on retourne des données simulées
+      // Get real statistics from Firestore
+      final now = DateTime.now();
+      final firstDayOfMonth = DateTime(now.year, now.month, 1);
+      
+      final snapshot = await FirebaseFirestore.instance
+          .collection('donations')
+          .where('createdAt', isGreaterThanOrEqualTo: Timestamp.fromDate(firstDayOfMonth))
+          .get();
+      
+      double total = 0;
+      int count = snapshot.docs.length;
+      
+      for (var doc in snapshot.docs) {
+        final amount = doc.data()['amount'] as num? ?? 0;
+        total += amount.toDouble();
+      }
+      
+      final average = count > 0 ? total / count : 0;
+      
       return {
-        'monthlyTotal': '€ 2,450',
-        'donationsCount': 47,
-        'averageDonation': '€ 52',
+        'monthlyTotal': '€ ${total.toStringAsFixed(2)}',
+        'donationsCount': count,
+        'averageDonation': '€ ${average.toStringAsFixed(2)}',
         'lastUpdate': DateTime.now().toIso8601String(),
       };
     } catch (e) {

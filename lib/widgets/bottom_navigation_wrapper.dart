@@ -147,8 +147,18 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
             print('✅ PermissionProvider initialisé pour ${user.uid}');
           }
           
-          // TODO: Charger les groupes de l'utilisateur
-          // Implémenter la logique pour récupérer les groupes
+          // Load user's groups from Firestore
+          try {
+            final groupsSnapshot = await FirebaseFirestore.instance
+                .collection('group_members')
+                .where('userId', isEqualTo: user.uid)
+                .get();
+            
+            print('✅ ${groupsSnapshot.docs.length} groupe(s) chargé(s) pour ${user.uid}');
+            // Store groups in state if needed
+          } catch (e) {
+            print('❌ Erreur chargement groupes: $e');
+          }
         }
       } catch (e) {
         print('Erreur lors du chargement des données utilisateur: $e');

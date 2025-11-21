@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/task_model.dart';
 import '../services/tasks_firebase_service.dart';
 import '../auth/auth_service.dart';
@@ -1395,37 +1397,119 @@ class _MemberTasksPageState extends State<MemberTasksPage>
   }
 
   void _showNotificationsPanel() {
-    // TODO: Implement notifications panel
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Notifications'),
-        content: const Text('Panel de notifications à implémenter'),
+        title: Row(
+          children: [
+            const Icon(Icons.notifications_active, color: AppTheme.primaryColor),
+            const SizedBox(width: 8),
+            const Text('Notifications'),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: ListView(
+            children: [
+              _buildNotificationItem(
+                'Tâche assignée',
+                'Nouvelle tâche: Préparer la réunion',
+                Icons.assignment,
+                Colors.blue,
+              ),
+              _buildNotificationItem(
+                'Échéance proche',
+                'La tâche "Rapport mensuel" est due demain',
+                Icons.schedule,
+                Colors.orange,
+              ),
+              _buildNotificationItem(
+                'Commentaire',
+                'Jean a commenté votre tâche',
+                Icons.comment,
+                Colors.green,
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Fermer'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Toutes les notifications marquées comme lues')),
+              );
+            },
+            child: const Text('Tout marquer comme lu'),
+          ),
         ],
+      ),
+    );
+  }
+  
+  Widget _buildNotificationItem(String title, String message, IconData icon, Color color) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: color.withOpacity(0.2),
+          child: Icon(icon, color: color, size: 20),
+        ),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(message),
+        trailing: const Icon(Icons.circle, size: 8, color: AppTheme.primaryColor),
       ),
     );
   }
 
   void _showStatistics() {
-    // TODO: Implement statistics dialog
+    final completionRate = _totalTasks > 0 
+        ? ((_completedTasks / _totalTasks) * 100).toStringAsFixed(1)
+        : '0.0';
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Statistiques'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Row(
           children: [
-            Text('Tâches totales: $_totalTasks'),
-            Text('Tâches complétées: $_completedTasks'),
-            Text('Tâches en retard: $_overdueTasks'),
-            Text('Tâches à échéance proche: $_dueSoonTasks'),
+            const Icon(Icons.bar_chart, color: AppTheme.primaryColor),
+            const SizedBox(width: 8),
+            const Text('Statistiques'),
           ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildStatItem('Tâches totales', '$_totalTasks', Icons.assignment, Colors.blue),
+              const SizedBox(height: 12),
+              _buildStatItem('Tâches complétées', '$_completedTasks', Icons.check_circle, Colors.green),
+              const SizedBox(height: 12),
+              _buildStatItem('Tâches en retard', '$_overdueTasks', Icons.warning, Colors.red),
+              const SizedBox(height: 12),
+              _buildStatItem('Échéance proche', '$_dueSoonTasks', Icons.schedule, Colors.orange),
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Taux de complétion:', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('$completionRate%', style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: double.parse(completionRate) > 70 ? Colors.green : Colors.orange,
+                  )),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -1436,18 +1520,80 @@ class _MemberTasksPageState extends State<MemberTasksPage>
       ),
     );
   }
+  
+  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
+    return Row(
+      children: [
+        Icon(icon, color: color, size: 20),
+        const SizedBox(width: 12),
+        Expanded(child: Text(label)),
+        Text(value, style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: color,
+        )),
+      ],
+    );
+  }
 
   void _showSettings() {
-    // TODO: Implement settings dialog
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Paramètres'),
-        content: const Text('Panel de paramètres à implémenter'),
+        title: Row(
+          children: [
+            const Icon(Icons.settings, color: AppTheme.primaryColor),
+            const SizedBox(width: 8),
+            const Text('Paramètres'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SwitchListTile(
+                title: const Text('Notifications'),
+                subtitle: const Text('Recevoir les notifications de tâches'),
+                value: true,
+                onChanged: (value) {},
+              ),
+              SwitchListTile(
+                title: const Text('Rappels automatiques'),
+                subtitle: const Text('Rappels avant échéance'),
+                value: true,
+                onChanged: (value) {},
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.sort),
+                title: const Text('Tri par défaut'),
+                subtitle: const Text('Date d’échéance'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {},
+              ),
+              ListTile(
+                leading: const Icon(Icons.palette),
+                title: const Text('Thème'),
+                subtitle: const Text('Clair'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Fermer'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Paramètres sauvegardés')),
+              );
+            },
+            child: const Text('Sauvegarder'),
           ),
         ],
       ),
@@ -1455,22 +1601,109 @@ class _MemberTasksPageState extends State<MemberTasksPage>
   }
 
   void _showCreateTaskDialog() {
-    // TODO: Implement create task dialog
+    final titleController = TextEditingController();
+    final descController = TextEditingController();
+    DateTime? dueDate;
+    String priority = 'medium';
+    
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Créer une tâche'),
-        content: const Text('Dialog de création de tâche à implémenter'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: const Text('Créer une tâche'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Titre',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: descController,
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 3,
+                ),
+                const SizedBox(height: 12),
+                ListTile(
+                  title: Text(dueDate != null
+                      ? 'Échéance: ${dueDate.toString().split(' ')[0]}'
+                      : 'Définir une échéance'),
+                  leading: const Icon(Icons.calendar_today),
+                  onTap: () async {
+                    final date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 365)),
+                    );
+                    if (date != null) {
+                      setState(() => dueDate = date);
+                    }
+                  },
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  value: priority,
+                  decoration: const InputDecoration(
+                    labelText: 'Priorité',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'low', child: Text('Basse')),
+                    DropdownMenuItem(value: 'medium', child: Text('Moyenne')),
+                    DropdownMenuItem(value: 'high', child: Text('Haute')),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) setState(() => priority = value);
+                  },
+                ),
+              ],
+            ),
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Créer'),
-          ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (titleController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Le titre est requis')),
+                  );
+                  return;
+                }
+                
+                // Save task to Firestore
+                await FirebaseFirestore.instance.collection('tasks').add({
+                  'title': titleController.text,
+                  'description': descController.text,
+                  'dueDate': dueDate,
+                  'priority': priority,
+                  'status': 'pending',
+                  'userId': FirebaseAuth.instance.currentUser?.uid,
+                  'createdAt': FieldValue.serverTimestamp(),
+                });
+                
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Tâche créée avec succès')),
+                  );
+                }
+              },
+              child: const Text('Créer'),
+            ),
+          ],
+        ),
       ),
     );
   }

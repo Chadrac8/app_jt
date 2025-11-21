@@ -11,9 +11,14 @@ import '../../theme.dart';
 class PeopleListDetailPage extends StatefulWidget {
   final String listId;
   final String listName;
-  // TODO: Passer le modèle complet si besoin
+  final Map<String, dynamic>? listData; // Modèle complet de la liste si besoin
 
-  const PeopleListDetailPage({Key? key, required this.listId, required this.listName}) : super(key: key);
+  const PeopleListDetailPage({
+    Key? key, 
+    required this.listId, 
+    required this.listName,
+    this.listData,
+  }) : super(key: key);
 
   @override
   State<PeopleListDetailPage> createState() => _PeopleListDetailPageState();

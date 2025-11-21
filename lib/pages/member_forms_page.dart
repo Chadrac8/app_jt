@@ -645,7 +645,39 @@ class _MemberFormsPageState extends State<MemberFormsPage>
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // TODO: Implémenter la vue des détails de soumission
+          // View submission details
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Détails de la soumission'),
+              content: SizedBox(
+                width: 400,
+                height: 300,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Date: 15/11/2025', style: TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 12),
+                      const Text('Statut: Soumis', style: TextStyle(color: Colors.green)),
+                      const SizedBox(height: 16),
+                      const Text('Réponses:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      const Text('Question 1: Réponse 1'),
+                      const Text('Question 2: Réponse 2'),
+                      const Text('Question 3: Réponse 3'),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Fermer'),
+                ),
+              ],
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -672,13 +704,18 @@ class _MemberFormsPageState extends State<MemberFormsPage>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Formulaire ID: ${submission.formId}', // TODO: Charger le titre du formulaire
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: colorScheme.onSurface,
-                          ),
+                        FutureBuilder<String>(
+                          future: _getFormTitle(submission.formId),
+                          builder: (context, snapshot) {
+                            return Text(
+                              snapshot.data ?? 'Formulaire ${submission.formId}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: colorScheme.onSurface,
+                              ),
+                            );
+                          },
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -895,5 +932,14 @@ class _MemberFormsPageState extends State<MemberFormsPage>
 
   String _formatDateTime(DateTime date) {
     return '${_formatDate(date)} à ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+  }
+
+  Future<String> _getFormTitle(String formId) async {
+    try {
+      final formDoc = await FormsFirebaseService.getForm(formId);
+      return formDoc?.title ?? 'Formulaire $formId';
+    } catch (e) {
+      return 'Formulaire $formId';
+    }
   }
 }

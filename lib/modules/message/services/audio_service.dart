@@ -34,9 +34,19 @@ class AudioService {
       _currentSermon = sermon;
       _isPlaying = true;
       
-      // TODO: Implémenter la lecture audio réelle
-      // await _audioPlayer.setUrl(sermon.audioUrl);
-      // await _audioPlayer.play();
+      // Pour implémenter la lecture audio réelle, ajouter just_audio ou audioplayers:
+      // 1. Ajouter dans pubspec.yaml: just_audio: ^0.9.0
+      // 2. Importer: import 'package:just_audio/just_audio.dart';
+      // 3. Créer player: final _audioPlayer = AudioPlayer();
+      // 4. Utiliser:
+      //    await _audioPlayer.setUrl(sermon.audioUrl);
+      //    await _audioPlayer.play();
+      //    _audioPlayer.positionStream.listen((position) {
+      //      _currentPosition = position;
+      //    });
+      //    _audioPlayer.durationStream.listen((duration) {
+      //      _totalDuration = duration ?? Duration.zero;
+      //    });
       
       // Simulation pour la démo
       _totalDuration = sermon.duration ?? const Duration(minutes: 45);

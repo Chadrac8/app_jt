@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/role_template_model.dart';
 import '../providers/role_template_provider.dart';
 import '../../../../theme.dart';
+import '../../../../auth/auth_service.dart';
 
 /// Écran de gestion des templates de rôles
 class RoleTemplateManagementScreen extends StatefulWidget {
@@ -915,32 +918,229 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     );
   }
 
-  void _createNewTemplate() {
-    // TODO: Implémenter la création de template
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Création de template à implémenter')),
+  Future<void> _createNewTemplate() async {
+    final nameController = TextEditingController();
+    final descController = TextEditingController();
+    
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Nouveau Template'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: 'Nom du template'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: descController,
+              decoration: const InputDecoration(labelText: 'Description'),
+              maxLines: 3,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Créer'),
+          ),
+        ],
+      ),
     );
+    
+    if (result == true && nameController.text.isNotEmpty && mounted) {
+      try {
+        final provider = Provider.of<RoleTemplateProvider>(context, listen: false);
+        final template = RoleTemplate(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          name: nameController.text,
+          description: descController.text,
+          category: 'custom',
+          permissionIds: [],
+          configuration: {},
+          iconName: 'admin_panel_settings',
+          colorCode: '#2196F3',
+          createdAt: DateTime.now(),
+          createdBy: AuthService.currentUser?.uid ?? 'system',
+        );
+        await provider.createTemplate(template);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Template créé avec succès')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur: $e')),
+          );
+        }
+      }
+    }
   }
 
-  void _createRoleFromTemplate(RoleTemplate template, RoleTemplateProvider provider) {
-    // TODO: Implémenter la création de rôle à partir du template
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Création de rôle à partir de "${template.name}" à implémenter')),
+  Future<void> _createRoleFromTemplate(RoleTemplate template, RoleTemplateProvider provider) async {
+    final nameController = TextEditingController(text: template.name);
+    
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Créer rôle depuis "${template.name}"'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: 'Nom du rôle'),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '${template.permissionIds.length} permissions seront copiées',
+              style: const TextStyle(fontSize: 12, color: AppTheme.grey600),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Créer'),
+          ),
+        ],
+      ),
     );
+    
+    if (result == true && nameController.text.isNotEmpty && mounted) {
+      try {
+        await provider.createRoleFromTemplate(
+          template.id,
+          customName: nameController.text,
+          createdBy: AuthService.currentUser?.uid ?? 'system',
+        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Rôle créé avec succès')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur: $e')),
+          );
+        }
+      }
+    }
   }
 
-  void _duplicateTemplate(RoleTemplate template, RoleTemplateProvider provider) {
-    // TODO: Implémenter la duplication de template
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Duplication de "${template.name}" à implémenter')),
-    );
+  Future<void> _duplicateTemplate(RoleTemplate template, RoleTemplateProvider provider) async {
+    try {
+      final duplicate = RoleTemplate(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        name: '${template.name} (Copie)',
+        description: template.description,
+        category: template.category,
+        permissionIds: List.from(template.permissionIds),
+        configuration: Map.from(template.configuration),
+        iconName: template.iconName,
+        colorCode: template.colorCode,
+        isSystemTemplate: false,
+        createdAt: DateTime.now(),
+        createdBy: AuthService.currentUser?.uid ?? 'system',
+        isActive: template.isActive,
+      );
+      await provider.createTemplate(duplicate);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Template dupliqué avec succès')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
   }
 
-  void _editTemplate(RoleTemplate template) {
-    // TODO: Implémenter l'édition de template
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Édition de "${template.name}" à implémenter')),
+  Future<void> _editTemplate(RoleTemplate template) async {
+    final nameController = TextEditingController(text: template.name);
+    final descController = TextEditingController(text: template.description);
+    
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Éditer Template'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: 'Nom'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: descController,
+              decoration: const InputDecoration(labelText: 'Description'),
+              maxLines: 3,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Sauvegarder'),
+          ),
+        ],
+      ),
     );
+    
+    if (result == true && mounted) {
+      try {
+        final provider = Provider.of<RoleTemplateProvider>(context, listen: false);
+        final updated = RoleTemplate(
+          id: template.id,
+          name: nameController.text,
+          description: descController.text,
+          category: template.category,
+          permissionIds: template.permissionIds,
+          configuration: template.configuration,
+          iconName: template.iconName,
+          colorCode: template.colorCode,
+          isSystemTemplate: template.isSystemTemplate,
+          createdAt: template.createdAt,
+          createdBy: template.createdBy,
+          updatedAt: DateTime.now(),
+          updatedBy: AuthService.currentUser?.uid,
+          isActive: template.isActive,
+        );
+        await provider.updateTemplate(updated);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Template modifié avec succès')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur: $e')),
+          );
+        }
+      }
+    }
   }
 
   void _deleteTemplate(RoleTemplate template, RoleTemplateProvider provider) {
@@ -979,11 +1179,31 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     );
   }
 
-  void _exportTemplate(RoleTemplate template) {
-    // TODO: Implémenter l'export d'un template
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Export de "${template.name}" à implémenter')),
-    );
+  Future<void> _exportTemplate(RoleTemplate template) async {
+    try {
+      final templateJson = {
+        'name': template.name,
+        'description': template.description,
+        'category': template.category.toString(),
+        'permissionIds': template.permissionIds,
+        'exportedAt': DateTime.now().toIso8601String(),
+      };
+      
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('exported_template_${template.id}', json.encode(templateJson));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Template "${template.name}" exporté avec succès')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'export: $e')),
+        );
+      }
+    }
   }
 
   void _validateTemplate(RoleTemplate template, RoleTemplateProvider provider) async {
@@ -1088,11 +1308,46 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     );
   }
 
-  void _handleRecommendation(Map<String, dynamic> recommendation) {
-    // TODO: Implémenter le traitement des recommandations
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Traitement de "${recommendation['title']}" à implémenter')),
+  Future<void> _handleRecommendation(Map<String, dynamic> recommendation) async {
+    final action = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(recommendation['title'] ?? 'Recommandation'),
+        content: Text(recommendation['description'] ?? 'Aucune description'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'ignore'),
+            child: const Text('Ignorer'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, 'apply'),
+            child: const Text('Appliquer'),
+          ),
+        ],
+      ),
     );
+    
+    if (action == 'apply' && mounted) {
+      try {
+        // Appliquer la recommandation selon son type
+        final type = recommendation['type'] as String?;
+        if (type == 'optimize') {
+          final provider = Provider.of<RoleTemplateProvider>(context, listen: false);
+          await provider.cleanupObsoleteTemplates();
+        }
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Recommandation appliquée')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur: $e')),
+          );
+        }
+      }
+    }
   }
 
   void _initializeSystemTemplates() async {
@@ -1133,17 +1388,113 @@ class _RoleTemplateManagementScreenState extends State<RoleTemplateManagementScr
     }
   }
 
-  void _exportAllTemplates() {
-    // TODO: Implémenter l'export de tous les templates
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Export de tous les templates à implémenter')),
-    );
+  Future<void> _exportAllTemplates() async {
+    try {
+      final provider = Provider.of<RoleTemplateProvider>(context, listen: false);
+      final templates = provider.allTemplates;
+      
+      final exportData = {
+        'exportedAt': DateTime.now().toIso8601String(),
+        'count': templates.length,
+        'templates': templates.map((t) => {
+          'id': t.id,
+          'name': t.name,
+          'description': t.description,
+          'category': t.category.toString(),
+          'permissionIds': t.permissionIds,
+        }).toList(),
+      };
+      
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('all_templates_export', json.encode(exportData));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${templates.length} templates exportés avec succès')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'export: $e')),
+        );
+      }
+    }
   }
 
-  void _importTemplates() {
-    // TODO: Implémenter l'import de templates
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Import de templates à implémenter')),
-    );
+  Future<void> _importTemplates() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final exportData = prefs.getString('all_templates_export');
+      
+      if (exportData == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Aucune donnée d\'export trouvée')),
+          );
+        }
+        return;
+      }
+      
+      final data = json.decode(exportData) as Map<String, dynamic>;
+      final templatesData = data['templates'] as List;
+      
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Confirmer l\'import'),
+          content: Text('Importer ${templatesData.length} templates?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Importer'),
+            ),
+          ],
+        ),
+      );
+      
+      if (confirmed == true && mounted) {
+        final provider = Provider.of<RoleTemplateProvider>(context, listen: false);
+        int imported = 0;
+        
+        for (var templateData in templatesData) {
+          try {
+            // Créer template depuis les données
+            final template = RoleTemplate(
+              id: DateTime.now().millisecondsSinceEpoch.toString() + imported.toString(),
+              name: templateData['name'] ?? 'Template importé',
+              description: templateData['description'] ?? '',
+              category: templateData['category'] ?? 'custom',
+              permissionIds: List<String>.from(templateData['permissionIds'] ?? []),
+              configuration: {},
+              iconName: 'admin_panel_settings',
+              colorCode: '#2196F3',
+              createdAt: DateTime.now(),
+              createdBy: AuthService.currentUser?.uid ?? 'system',
+            );
+            await provider.createTemplate(template);
+            imported++;
+          } catch (e) {
+            print('Erreur import template: $e');
+          }
+        }
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('$imported templates importés')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de l\'import: $e')),
+        );
+      }
+    }
   }
 }

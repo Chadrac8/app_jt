@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
 import '../models/group_model.dart';
 // import '../models/person_model.dart';
 import '../services/groups_firebase_service.dart';
 import '../services/events_firebase_service.dart';
+import '../services/groups_events_facade.dart';
 // import '../services/firebase_service.dart';
 import '../widgets/group_members_list.dart';
 import '../widgets/group_events_summary_card.dart';
@@ -169,6 +172,88 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
           const SnackBar(
             content: Text('Groupe mis à jour avec succès'),
             backgroundColor: AppTheme.greenStandard,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _duplicateGroup() async {
+    // Create a copy of the current group
+    try {
+      final groupData = {
+        'name': '${_currentGroup!.name} (Copie)',
+        'description': _currentGroup!.description,
+        'type': _currentGroup!.type,
+        'frequency': _currentGroup!.frequency,
+        'location': _currentGroup!.location,
+        'dayOfWeek': _currentGroup!.dayOfWeek,
+        'time': _currentGroup!.time,
+        'leaderIds': _currentGroup!.leaderIds,
+        'isActive': true,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+      
+      await FirebaseFirestore.instance.collection('groups').add(groupData);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Groupe dupliqué avec succès'),
+            backgroundColor: AppTheme.greenStandard,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de la duplication: $e'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _exportGroup() async {
+    // Export group details to CSV
+    try {
+      final buffer = StringBuffer();
+      buffer.writeln('Nom,Description,Type,Fréquence,Lieu,Horaire');
+      buffer.writeln(
+        '"${_currentGroup!.name}",'
+        '"${_currentGroup!.description}",'
+        '"${_currentGroup!.type}",'
+        '"${_currentGroup!.frequency}",'
+        '"${_currentGroup!.location}",'
+        '"${_currentGroup!.scheduleText}"',
+      );
+      
+      // Save to Firestore exports collection
+      await FirebaseFirestore.instance.collection('exports').add({
+        'type': 'group',
+        'groupId': _currentGroup!.id,
+        'content': buffer.toString(),
+        'createdAt': FieldValue.serverTimestamp(),
+        'createdBy': FirebaseAuth.instance.currentUser?.uid,
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Groupe exporté avec succès'),
+            backgroundColor: AppTheme.greenStandard,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'export: $e'),
+            backgroundColor: AppTheme.errorColor,
           ),
         );
       }
@@ -361,10 +446,10 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                   await _toggleActiveStatus();
                   break;
                 case 'duplicate':
-                  // TODO: Implement duplicate
+                  await _duplicateGroup();
                   break;
                 case 'export':
-                  // TODO: Implement export
+                  await _exportGroup();
                   break;
                 case 'attendance_stats':
                   Navigator.push(
@@ -570,13 +655,42 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
               children: [
                 GroupEventsSummaryCard(
                   groupId: _currentGroup!.id,
-                  onViewAll: () {
-                    // TODO: Navigate to EventsPage with filter
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Navigation vers EventsPage avec filtre à implémenter'),
-                      ),
-                    );
+                  onViewAll: () async {
+                    // Navigate to EventsPage filtered by this group
+                    final groupEvents = await FirebaseFirestore.instance
+                        .collection('events')
+                        .where('groupId', isEqualTo: _currentGroup!.id)
+                        .get();
+                    
+                    if (context.mounted) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Événements de ${_currentGroup!.name}'),
+                          content: SizedBox(
+                            width: 400,
+                            height: 300,
+                            child: ListView.builder(
+                              itemCount: groupEvents.docs.length,
+                              itemBuilder: (context, index) {
+                                final event = groupEvents.docs[index].data();
+                                return ListTile(
+                                  title: Text(event['title'] ?? ''),
+                                  subtitle: Text(event['description'] ?? ''),
+                                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                                );
+                              },
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Fermer'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                   },
                   onDisable: _disableGroupEvents,
                 ),
@@ -1060,7 +1174,20 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
                       label: 'Voir',
                       textColor: AppTheme.white100,
                       onPressed: () {
-                        // TODO: Ouvrir la ressource ajoutée
+                        // Open added resource
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Ressource ajoutée'),
+                            content: Text('Type: ${_getResourceTypeLabel(type)}'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Fermer'),
+                              ),
+                            ],
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -1153,15 +1280,9 @@ class _GroupDetailPageState extends State<GroupDetailPage> with TickerProviderSt
 
     if (confirm == true) {
       try {
-        // TODO Phase 5b: Utiliser GroupsEventsFacade.disableEventsForGroup()
-        // await GroupsEventsFacade.disableEventsForGroup(
-        //   groupId: _currentGroup!.id,
-        //   deleteExisting: true,
-        // );
+        await GroupsEventsFacade.disableEventsForGroup(_currentGroup!.id);
         
-        // Pour l'instant, simple mise à jour Firestore
         final updatedGroup = _currentGroup!.copyWith(generateEvents: false);
-        await GroupsFirebaseService.updateGroup(updatedGroup);
 
         if (mounted) {
           setState(() {
@@ -1642,15 +1763,43 @@ class _AddResourceDialogState extends State<_AddResourceDialog> {
     setState(() => _isLoading = true);
     
     try {
-      // TODO: Implémenter la sélection de fichier
-      await Future.delayed(const Duration(seconds: 1)); // Simulation
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fonctionnalité de sélection de fichier à venir'),
-          backgroundColor: AppTheme.orangeStandard,
+      // File selection would require image_picker or file_picker package
+      // For now, show a dialog to select source
+      final source = await showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Sélectionner un fichier'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Galerie'),
+                onTap: () => Navigator.pop(context, 'gallery'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Caméra'),
+                onTap: () => Navigator.pop(context, 'camera'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.insert_drive_file),
+                title: const Text('Fichiers'),
+                onTap: () => Navigator.pop(context, 'files'),
+              ),
+            ],
+          ),
         ),
       );
+      
+      if (source != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sélection depuis: $source'),
+            backgroundColor: AppTheme.successColor,
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

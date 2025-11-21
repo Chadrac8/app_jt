@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../theme.dart';
 import '../modules/songs/models/song_model.dart';
 import '../widgets/song_lyrics_viewer.dart';
@@ -289,8 +290,20 @@ class _SongDetailPageState extends State<SongDetailPage> {
                         fontWeight: AppTheme.fontBold,
                         color: AppTheme.primaryColor))),
                   TextButton(
-                    onPressed: () {
-                      // TODO: Ouvrir le lien audio/vidéo
+                    onPressed: () async {
+                      // Open audio/video link
+                      if (widget.song.audioUrl != null && widget.song.audioUrl!.isNotEmpty) {
+                        final uri = Uri.parse(widget.song.audioUrl!);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri, mode: LaunchMode.externalApplication);
+                        } else {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Impossible d\'ouvrir le lien')),
+                            );
+                          }
+                        }
+                      }
                     },
                     child: const Text('Écouter')),
                 ])),

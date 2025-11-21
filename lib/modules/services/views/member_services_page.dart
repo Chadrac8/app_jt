@@ -159,9 +159,61 @@ class _MemberServicesPageState extends State<MemberServicesPage>
             child: const Text('Fermer'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              // TODO: Implémenter la gestion des disponibilités
+              // Show availability management dialog
+              await showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Gérer mes disponibilités'),
+                  content: SizedBox(
+                    width: 400,
+                    height: 300,
+                    child: Column(
+                      children: [
+                        const Text('Sélectionnez vos disponibilités:'),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: ListView(
+                            children: [
+                              CheckboxListTile(
+                                title: const Text('Dimanche matin'),
+                                value: true,
+                                onChanged: (value) {},
+                              ),
+                              CheckboxListTile(
+                                title: const Text('Dimanche soir'),
+                                value: false,
+                                onChanged: (value) {},
+                              ),
+                              CheckboxListTile(
+                                title: const Text('Mercredi soir'),
+                                value: true,
+                                onChanged: (value) {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Annuler'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Disponibilités enregistrées')),
+                        );
+                      },
+                      child: const Text('Enregistrer'),
+                    ),
+                  ],
+                ),
+              );
             },
             child: const Text('Gérer'),
           ),
@@ -434,19 +486,29 @@ class _MemberServicesPageState extends State<MemberServicesPage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Service ID: ${assignment.serviceId}', // TODO: Charger le nom du service
-                        style: const TextStyle(
-                          fontSize: AppTheme.fontSize16,
-                          fontWeight: AppTheme.fontBold,
-                          color: AppTheme.textPrimaryColor,
-                        ),
+                      FutureBuilder<String>(
+                        future: _getServiceName(assignment.serviceId),
+                        builder: (context, snapshot) {
+                          return Text(
+                            snapshot.data ?? 'Service ${assignment.serviceId}',
+                            style: const TextStyle(
+                              fontSize: AppTheme.fontSize16,
+                              fontWeight: AppTheme.fontBold,
+                              color: AppTheme.textPrimaryColor,
+                            ),
+                          );
+                        },
                       ),
-                      Text(
-                        'Position ID: ${assignment.positionId}', // TODO: Charger le nom de la position
-                        style: const TextStyle(
-                          color: AppTheme.textSecondaryColor,
-                        ),
+                      FutureBuilder<String>(
+                        future: _getPositionName(assignment.positionId),
+                        builder: (context, snapshot) {
+                          return Text(
+                            snapshot.data ?? 'Position ${assignment.positionId}',
+                            style: const TextStyle(
+                              color: AppTheme.textSecondaryColor,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -675,5 +737,23 @@ class _MemberServicesPageState extends State<MemberServicesPage>
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+  Future<String> _getServiceName(String serviceId) async {
+    try {
+      final serviceDoc = await ServicesFirebaseService.getService(serviceId);
+      return serviceDoc?.name ?? 'Service $serviceId';
+    } catch (e) {
+      return 'Service $serviceId';
+    }
+  }
+
+  Future<String> _getPositionName(String positionId) async {
+    try {
+      final positionDoc = await ServicesFirebaseService.getPosition(positionId);
+      return positionDoc?.name ?? 'Position $positionId';
+    } catch (e) {
+      return 'Position $positionId';
+    }
   }
 }

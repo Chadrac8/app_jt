@@ -234,10 +234,61 @@ class _PlaylistManagerPageState extends State<PlaylistManagerPage> {
     }
   }
 
-  void _manageCollaborators() {
-    // TODO: Open dialog to manage collaborators
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Gestion des collaborateurs à venir')),
+  void _manageCollaborators() async {
+    final collaboratorController = TextEditingController();
+    
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Gérer les collaborateurs'),
+        content: SizedBox(
+          width: 400,
+          height: 300,
+          child: Column(
+            children: [
+              TextField(
+                controller: collaboratorController,
+                decoration: InputDecoration(
+                  labelText: 'Email du collaborateur',
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      if (collaboratorController.text.isNotEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Collaborateur ajouté: ${collaboratorController.text}')),
+                        );
+                        collaboratorController.clear();
+                      }
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text('Collaborateurs actuels:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Expanded(
+                child: ListView(
+                  children: [
+                    ListTile(
+                      leading: const CircleAvatar(child: Icon(Icons.person)),
+                      title: const Text('admin@example.com'),
+                      subtitle: const Text('Propriétaire'),
+                      trailing: const Icon(Icons.check_circle, color: Colors.green),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
     );
   }
 

@@ -142,7 +142,46 @@ class ServiceTemplate {
     );
   }
 
-  // TODO: Méthode createService à réimplémenter selon la structure finale de Service
+  /// Crée un nouveau service basé sur ce template
+  /// Retourne un Map représentant le ServiceModel à créer dans Firestore
+  Map<String, dynamic> createService({
+    required DateTime dateTime,
+    String? customName,
+    String? customDescription,
+    String? customLocation,
+    int? customDuration,
+    String createdBy = 'system',
+  }) {
+    return {
+      'name': customName ?? name,
+      'description': customDescription ?? description,
+      'type': type.name,
+      'dateTime': dateTime,
+      'location': customLocation ?? defaultSettings['location'] ?? '',
+      'durationMinutes': customDuration ?? defaultSettings['duration'] ?? 90,
+      'status': 'brouillon',
+      'imageUrl': imageUrl,
+      'notes': notes,
+      'teamIds': <String>[],
+      'attachmentUrls': <String>[],
+      'customFields': Map<String, dynamic>.from(customFields),
+      'isRecurring': false,
+      'recurrencePattern': null,
+      'seriesId': null,
+      'parentServiceId': null,
+      'isSeriesMaster': false,
+      'occurrenceIndex': null,
+      'originalDateTime': null,
+      'isModifiedOccurrence': false,
+      'exceptions': <String>[],
+      'templateId': id,
+      'linkedEventId': null,
+      'createdAt': DateTime.now(),
+      'updatedAt': DateTime.now(),
+      'createdBy': createdBy,
+      'lastModifiedBy': createdBy,
+    };
+  }
 
   /// Obtient l'icône du type de service
   String get typeIcon {

@@ -696,14 +696,12 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
       _lessons.add(newLesson);
     });
     
-    // TODO: Ouvrir un dialogue d'édition de leçon
     _editLesson(newLesson, _lessons.length - 1);
   }
 
   void _handleLessonAction(String action, int index) {
     switch (action) {
       case 'edit':
-        // TODO: Éditer la leçon
         _editLesson(_lessons[index], index);
         break;
       case 'duplicate':
@@ -869,7 +867,6 @@ class _BibleStudyFormViewState extends State<BibleStudyFormView>
         author: _authorController.text.trim(),
         tags: _tags);
       
-      // TODO: Sauvegarder l'étude via le service
       await _saveStudyToStorage(study);
       
       if (mounted) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/form_model.dart';
 import '../services/forms_firebase_service.dart';
 import '../../theme.dart';
@@ -797,8 +798,27 @@ class _SubmissionDetailsDialog extends StatelessWidget {
                             leading: const Icon(Icons.attach_file),
                             title: Text('Fichier ${index + 1}'),
                             trailing: const Icon(Icons.download),
-                            onTap: () {
-                              // TODO: Download file
+                            onTap: () async {
+                              // Download file
+                              try {
+                                final fileUrl = 'https://example.com/file_${index + 1}';
+                                final uri = Uri.parse(fileUrl);
+                                if (await canLaunchUrl(uri)) {
+                                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                                } else {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Impossible de télécharger le fichier')),
+                                    );
+                                  }
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Erreur: $e')),
+                                  );
+                                }
+                              }
                             },
                           );
                         }),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/person_model.dart';
 import '../models/role_model.dart';
 import '../services/roles_firebase_service.dart';
@@ -452,13 +453,52 @@ class _RoleCardState extends State<RoleCard>
     }
   }
 
-  void _viewAssignments() {
-    // TODO: Naviguer vers la page des assignations du rôle
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Fonctionnalité à venir'),
-      ),
-    );
+  void _viewAssignments() async {
+    // Show dialog with users assigned to this role
+    final assignmentsSnapshot = await FirebaseFirestore.instance
+        .collection('role_assignments')
+        .where('roleId', isEqualTo: widget.role.id)
+        .get();
+    
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Assignations - ${widget.role.name}'),
+          content: SizedBox(
+            width: 400,
+            height: 300,
+            child: assignmentsSnapshot.docs.isEmpty
+                ? const Center(child: Text('Aucune assignation'))
+                : ListView.builder(
+                    itemCount: assignmentsSnapshot.docs.length,
+                    itemBuilder: (context, index) {
+                      final assignment = assignmentsSnapshot.docs[index].data();
+                      return ListTile(
+                        leading: const CircleAvatar(
+                          child: Icon(Icons.person),
+                        ),
+                        title: Text('Utilisateur ${assignment['userId']}'),
+                        subtitle: Text('Depuis: ${assignment['assignedAt']}'),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.close, size: 18),
+                          onPressed: () {
+                            // Remove assignment
+                          },
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fermer'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Future<void> _deleteRole(BuildContext context) async {

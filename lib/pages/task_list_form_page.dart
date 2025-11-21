@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/task_model.dart';
 import '../models/person_model.dart';
 import '../services/tasks_firebase_service.dart';
@@ -521,10 +522,15 @@ class _TaskListFormPageState extends State<TaskListFormPage>
           Wrap(
             spacing: 8,
             children: _memberIds.map((id) {
-              return Chip(
-                label: Text('Membre $id'), // TODO: Load actual person name
-                onDeleted: () {
-                  setState(() => _memberIds.remove(id));
+              return FutureBuilder<String>(
+                future: _getPersonName(id),
+                builder: (context, snapshot) {
+                  return Chip(
+                    label: Text(snapshot.data ?? 'Membre $id'),
+                    onDeleted: () {
+                      setState(() => _memberIds.remove(id));
+                    },
+                  );
                 },
               );
             }).toList(),
@@ -579,6 +585,21 @@ class _TaskListFormPageState extends State<TaskListFormPage>
         return Icons.campaign;
       default:
         return Icons.list_alt;
+    }
+  }
+
+  Future<String> _getPersonName(String personId) async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('persons')
+          .doc(personId)
+          .get();
+      if (doc.exists && doc.data()?['firstName'] != null) {
+        return '${doc.data()!['firstName']} ${doc.data()!['lastName'] ?? ''}'.trim();
+      }
+      return 'Membre $personId';
+    } catch (e) {
+      return 'Membre $personId';
     }
   }
 }

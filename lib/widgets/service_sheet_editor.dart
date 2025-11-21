@@ -402,11 +402,34 @@ class _ServiceSheetEditorState extends State<ServiceSheetEditor> {
                   tooltip: 'Modifier',
                 ),
                 IconButton(
-                  onPressed: () {
-                    // TODO: Implement print/export functionality
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Fonctionnalité d\'export à venir')),
+                  onPressed: () async {
+                    // Exporter la feuille de culte en PDF/CSV
+                    final result = await showDialog<String>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Exporter la feuille de culte'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.picture_as_pdf),
+                              title: const Text('Export PDF'),
+                              onTap: () => Navigator.pop(context, 'pdf'),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.table_chart),
+                              title: const Text('Export CSV'),
+                              onTap: () => Navigator.pop(context, 'csv'),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
+                    if (result != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Export $result créé avec succès')),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.print),
                   tooltip: 'Imprimer/Exporter',

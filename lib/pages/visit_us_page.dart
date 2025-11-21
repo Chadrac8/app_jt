@@ -83,8 +83,27 @@ class VisitUsPage extends StatelessWidget {
               const SizedBox(height: AppTheme.spaceXLarge),
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Intégrer Google Maps ou Apple Maps
+                  onPressed: () async {
+                    // Open maps with church address
+                    const address = '123 Rue de l\'\u00c9glise, Paris';
+                    final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}');
+                    try {
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url, mode: LaunchMode.externalApplication);
+                      } else {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Impossible d\'ouvrir Maps')),
+                          );
+                        }
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Erreur: $e')),
+                        );
+                      }
+                    }
                   },
                   icon: const Icon(Icons.directions),
                   label: const Text('Obtenir l’itinéraire'),
