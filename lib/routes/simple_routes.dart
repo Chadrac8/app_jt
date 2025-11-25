@@ -17,11 +17,17 @@ import '../pages/member_tasks_page.dart';
 import '../pages/member_appointments_page.dart';
 import '../pages/member_prayer_wall_page.dart';
 import '../pages/member_pages_view.dart';
-import '../pages/message_page.dart';
+
 import '../pages/member_notifications_page.dart';
 
 
 import '../pages/blog_home_page.dart';
+
+// Module Le Message
+import '../modules/message/message_home_page.dart';
+import '../modules/message/views/sermon_viewer_page.dart';
+import '../modules/message/views/add_sermon_page.dart';
+import '../modules/message/models/wb_sermon.dart';
 
 // Pages admin
 import '../pages/people_home_page.dart';
@@ -96,9 +102,12 @@ class SimpleRoutes {
     '/member/appointments': (context) => const MemberAppointmentsPage(),
     '/member/prayers': (context) => const MemberPrayerWallPage(),
     '/member/pages': (context) => const MemberPagesView(),
-    '/member/message': (context) => const MessagePage(),
     // '/member/automation': (context) => const MemberAutomationPage(),
     // '/member/reports': (context) => const MemberReportsPage(),
+    
+    // Module Le Message - Sermons William Branham
+    '/message': (context) => const MessageHomePage(),
+    '/member/message': (context) => const MessageHomePage(),
     
     // Blog et public
     '/blog': (context) => const BlogHomePage(),
@@ -116,7 +125,6 @@ class SimpleRoutes {
     '/admin/prayers': (context) => const PrayersHomePage(),
     '/admin/offrandes': (context) => const OffrandesAdminView(),
     '/admin/pages': (context) => const PagesHomePage(),
-    '/admin/message': (context) => const MessagePage(),
     // '/admin/automation': (context) => const AutomationHomePage(),
     // '/admin/reports': (context) => const ReportsHomePage(),
     
@@ -151,6 +159,47 @@ class SimpleRoutes {
         builder: (context) => FormPublicPage(formId: formId),
         settings: settings,
       );
+    }
+    
+    // Gérer les routes du module Search
+    if (settings.name == '/search/add-sermon') {
+      return MaterialPageRoute(
+        builder: (context) => const AddSermonPage(),
+        settings: settings,
+      );
+    }
+    
+    if (settings.name == '/search/edit-sermon') {
+      final args = settings.arguments;
+      if (args is WBSermon) {
+        return MaterialPageRoute(
+          builder: (context) => AddSermonPage(sermon: args),
+          settings: settings,
+        );
+      }
+    }
+    
+    if (settings.name == '/search/sermon') {
+      final args = settings.arguments;
+      if (args is WBSermon) {
+        return MaterialPageRoute(
+          builder: (context) => SermonViewerPage(sermon: args),
+          settings: settings,
+        );
+      } else if (args is Map<String, dynamic>) {
+        // Pour les cas où on passe un Map avec sermonId, etc.
+        // On pourrait charger le sermon ici ou afficher un placeholder
+        return MaterialPageRoute(
+          builder: (context) => const MessageHomePage(),
+          settings: settings,
+        );
+      } else {
+        // Arguments invalides, retourner à la page de recherche
+        return MaterialPageRoute(
+          builder: (context) => const MessageHomePage(),
+          settings: settings,
+        );
+      }
     }
     
     // Vérifier si la route existe dans notre map

@@ -421,6 +421,18 @@ class AppConfigFirebaseService {
         isBuiltIn: true,
       ),
       ModuleConfig(
+        id: 'search',
+        name: 'Sermons WB',
+        description: 'Rechercher et lire les sermons de William Branham',
+        iconName: 'search',
+        route: 'search',
+        category: 'ministry',
+        isEnabledForMembers: true,
+        isPrimaryInBottomNav: false,
+        order: 16,
+        isBuiltIn: true,
+      ),
+      ModuleConfig(
         id: 'vie-eglise',
         name: 'Vie de l\'église',
         description: 'Gestion de la vie de l\'église avec onglets spécialisés',

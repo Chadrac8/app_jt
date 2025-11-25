@@ -13,7 +13,6 @@ import 'views/bible_reading_view.dart';
 import 'views/bible_home_view.dart';
 
 import 'services/apple_notes_share_service.dart';
-import '../message/widgets/audio_player_tab_perfect13.dart';
 
 class BiblePage extends StatefulWidget {
   final TabController?
@@ -68,7 +67,7 @@ class _BiblePageState extends State<BiblePage>
     super.initState();
     // MD3: Créer un TabController interne seulement si non fourni par le wrapper
     if (widget.tabController == null) {
-      _internalTabController = TabController(length: 4, vsync: this);
+      _internalTabController = TabController(length: 3, vsync: this);
     }
     final tabController = _tabController; // Utiliser le getter
     tabController.addListener(() {
@@ -932,7 +931,6 @@ class _BiblePageState extends State<BiblePage>
               // Les couleurs sont héritées du TabBarTheme (primaryColor pour actif, gris pour inactif)
               tabs: const [
                 Tab(icon: Icon(Icons.menu_book_rounded), text: 'La Bible'),
-                Tab(icon: Icon(Icons.campaign_rounded), text: 'Le Message'),
                 Tab(
                   icon: Icon(Icons.library_books_rounded),
                   text: 'Ressources',
@@ -960,7 +958,6 @@ class _BiblePageState extends State<BiblePage>
                 targetChapter: _targetChapter,
                 targetVerse: _targetVerse,
               ),
-              const AudioPlayerTabPerfect13(),
               _buildHomeTab(),
               _buildNotesAndHighlightsTab(),
             ],

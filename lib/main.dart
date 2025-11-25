@@ -25,6 +25,10 @@ import 'config/locale_config.dart';
 import 'churchflow_splash.dart';
 import 'modules/roles/roles_module.dart';
 import 'modules/pain_quotidien/services/daily_bread_scheduler.dart';
+import 'modules/message/providers/sermons_provider.dart';
+import 'modules/message/providers/search_provider.dart';
+import 'modules/message/providers/notes_highlights_provider.dart';
+import 'routes/simple_routes.dart';
 
 /// Gestionnaire global pour les messages en background
 @pragma('vm:entry-point')
@@ -287,6 +291,10 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
         ChangeNotifierProvider(create: (_) => PermissionProvider()),
         ChangeNotifierProvider(create: (_) => RoleProvider()),
         ChangeNotifierProvider(create: (_) => providers.ThemeProvider()),
+        // Providers du module Search
+        ChangeNotifierProvider(create: (_) => SermonsProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
+        ChangeNotifierProvider(create: (_) => NotesHighlightsProvider()),
       ],
       child: Consumer<providers.ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -306,6 +314,7 @@ class _ChurchFlowAppState extends State<ChurchFlowApp> {
             
             // Configuration du routage
             initialRoute: '/',
+            onGenerateRoute: SimpleRoutes.onGenerateRoute,
             
             // Gestionnaire global d'erreurs
             builder: (context, child) {

@@ -11,6 +11,12 @@ class UserProfileService {
     try {
       print('🔄 UserProfileService: Vérification/création du profil pour ${user.uid}');
       
+      // Attendre que le token d'authentification soit prêt
+      await user.getIdToken(true);
+      
+      // Petit délai pour s'assurer que les règles Firestore ont le token
+      await Future.delayed(const Duration(milliseconds: 500));
+      
       // Vérifier si le profil existe déjà
       final existingProfile = await FirebaseService.getPersonByUid(user.uid);
       

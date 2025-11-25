@@ -237,6 +237,7 @@ class HomeWidgetService {
     // Cette méthode devrait récupérer les modules depuis la configuration
     return [
       {'id': 'songs', 'name': 'Cantiques', 'route': '/member/songs'},
+      {'id': 'search', 'name': 'Sermons WB', 'route': '/member/search'},
       {'id': 'groups', 'name': 'Groupes', 'route': '/member/groups'},
       {'id': 'events', 'name': 'Événements', 'route': '/member/events'},
       {'id': 'services', 'name': 'Services', 'route': '/member/services'},

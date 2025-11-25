@@ -183,7 +183,6 @@ class _EventCardState extends State<EventCard>
       onTap: widget.onTap,
       onLongPress: widget.onLongPress,
       child: Container(
-        height: 280,
         decoration: BoxDecoration(
           color: AppTheme.white100,
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
@@ -200,6 +199,7 @@ class _EventCardState extends State<EventCard>
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Image et sélection
             Stack(
@@ -291,12 +291,12 @@ class _EventCardState extends State<EventCard>
             ),
             
             // Contenu
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(AppTheme.spaceMedium),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            Padding(
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                     // Titre et type
                     Row(
                       children: [
@@ -440,7 +440,6 @@ class _EventCardState extends State<EventCard>
                     ),
                   ],
                 ),
-              ),
             ),
           ],
         ),

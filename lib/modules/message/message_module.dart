@@ -1,107 +1,55 @@
-import 'package:flutter/material.dart';
-import '../../../theme.dart';
-import 'widgets/pepites_or_tab.dart';
-import 'widgets/audio_player_tab_perfect13.dart';
-import 'widgets/read_message_tab.dart';
+// Module Le Message - Sermons William Branham
+// Export central pour tous les composants du module
 
-/// Module principal "Le Message" avec 3 onglets
-class MessageModule extends StatefulWidget {
-  final TabController? tabController; // MD3: TabController fourni par le wrapper
-  
-  const MessageModule({Key? key, this.tabController}) : super(key: key);
+// Models
+export 'models/wb_sermon.dart';
+export 'models/sermon_note.dart';
+export 'models/sermon_highlight.dart';
+export 'models/sermon_bookmark.dart';
+export 'models/sermon_analytics.dart';
+export 'models/search_result.dart';
+export 'models/search_filter.dart';
 
-  @override
-  State<MessageModule> createState() => _MessageModuleState();
-}
+// Services
+export 'services/wb_sermon_search_service.dart';
+export 'services/notes_highlights_service.dart';
+export 'services/notes_highlights_cloud_service.dart';
+export 'services/bookmarks_service.dart';
+export 'services/reading_preferences_service.dart';
+export 'services/sermon_analytics_service.dart';
 
-class _MessageModuleState extends State<MessageModule>
-    with TickerProviderStateMixin {
-  TabController? _internalTabController; // TabController interne (si non fourni)
-  
-  // MD3: Getter pour obtenir le TabController (externe ou interne)
-  TabController get _tabController => 
-      widget.tabController ?? _internalTabController!;
+// Providers
+export 'providers/sermons_provider.dart';
+export 'providers/search_provider.dart';
+export 'providers/notes_highlights_provider.dart';
+export 'providers/bookmarks_provider.dart';
+export 'providers/reading_preferences_provider.dart';
+export 'providers/sermon_analytics_provider.dart';
 
-  @override
-  void initState() {
-    super.initState();
-    // MD3: Créer un TabController interne seulement si non fourni par le wrapper
-    if (widget.tabController == null) {
-      _internalTabController = TabController(length: 3, vsync: this);
-    }
-  }
+// Views
+export 'views/sermons_tab_view.dart';
+export 'views/search_tab_view.dart';
+export 'views/notes_highlights_tab_view.dart';
+export 'views/sermon_viewer_page.dart';
 
-  @override
-  void dispose() {
-    // MD3: Disposer uniquement le TabController interne (pas celui du wrapper)
-    _internalTabController?.dispose();
-    super.dispose();
-  }
+// Widgets
+export 'widgets/sermon_card.dart';
+export 'widgets/search_result_card.dart';
+export 'widgets/note_card.dart';
+export 'widgets/highlight_card.dart';
+export 'widgets/sermon_filters_sheet.dart';
+export 'widgets/search_filters_sheet.dart';
+export 'widgets/note_form_dialog.dart';
+export 'widgets/bookmark_widgets.dart';
+export 'widgets/create_bookmark_dialog.dart';
+export 'widgets/reading_settings_panel.dart';
+export 'widgets/sermon_analytics_widgets.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    // MD3: Construction du body
-    final body = Column(
-      children: [
-        // MD3: Afficher le TabBar seulement si non fourni par le wrapper
-        if (widget.tabController == null) ...[
-          // TabBar intégrée - Style MD3 avec fond Surface (clair)
-          Container(
-            color: AppTheme.surface, // MD3: Fond clair comme l'AppBar
-            child: TabBar(
-              controller: _tabController,
-              // Les couleurs sont héritées du TabBarTheme (primaryColor pour actif, gris pour inactif)
-              tabs: const [
-                Tab(
-                  icon: Icon(Icons.headphones_rounded),
-                  text: 'Écouter',
-                ),
-                Tab(
-                  icon: Icon(Icons.menu_book_rounded),
-                  text: 'Lire',
-                ),
-                Tab(
-                  icon: Icon(Icons.auto_awesome_rounded),
-                  text: 'Pépites d\'Or',
-                ),
-              ],
-            ),
-          ),
-          // Divider subtil MD3
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: AppTheme.grey300.withOpacity(0.5),
-          ),
-        ],
-        
-        // TabBarView
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppTheme.primaryColor.withOpacity(0.05), // Rouge bordeaux très léger
-                  AppTheme.backgroundColor, // Background F8F9FA
-                ],
-              ),
-            ),
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                AudioPlayerTabPerfect13(),
-                ReadMessageTab(),
-                PepitesOrTab(),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-    
-    // MD3: Si dans le wrapper (TabController fourni), retourner directement le body
-    return body;
-  }
-}
+// Media Players
+export 'widgets/pdf_viewer_widget.dart';
+export 'widgets/audio_player_widget.dart';
+export 'widgets/video_player_widget.dart';
+
+// Pages
+export 'message_home_page.dart';  // Vue Admin
+export 'message_member_page.dart'; // Vue Membre

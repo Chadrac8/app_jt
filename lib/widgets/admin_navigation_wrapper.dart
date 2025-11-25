@@ -15,7 +15,6 @@ import '../pages/pages_home_page.dart';
 import '../modules/songs/views/songs_home_page.dart';
 import '../modules/bible/bible_admin_page.dart';
 import '../modules/vie_eglise/views/vie_eglise_admin_view.dart';
-import '../modules/message/views/message_admin_view.dart';
 
 import '../modules/offrandes/views/offrandes_admin_view.dart';
 
@@ -24,7 +23,7 @@ import '../modules/roles/views/roles_management_screen.dart';
 import '../pages/blog_home_page.dart';
 import '../pages/prayers_home_page.dart';
 
-
+import '../modules/message/message_home_page.dart';
 
 import '../pages/admin/modules_configuration_page.dart';
 
@@ -92,6 +91,12 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
   // Pages secondaires (dans le menu "Plus")
   final List<AdminMenuItem> _secondaryPages = [
     AdminMenuItem(
+      route: 'message',
+      title: 'Le Message',
+      icon: Icons.campaign,
+      page: const MessageHomePage(),
+    ),
+    AdminMenuItem(
       route: 'services',
       title: 'Services',
       icon: Icons.church,
@@ -136,15 +141,9 @@ class _AdminNavigationWrapperState extends State<AdminNavigationWrapper> {
     ),
     AdminMenuItem(
       route: 'vie-eglise',
-      title: 'Vie de l\'Église',
+      title: 'Vie de l\'\u00c9glise',
       icon: Icons.church,
       page: const VieEgliseAdminView(),
-    ),
-    AdminMenuItem(
-      route: 'message',
-      title: 'Le Message',
-      icon: Icons.audiotrack,
-      page: const MessageAdminView(),
     ),
     AdminMenuItem(
       route: 'pages',

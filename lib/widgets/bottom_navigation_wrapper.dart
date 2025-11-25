@@ -28,6 +28,7 @@ import '../pages/member_appointments_page.dart';
 import '../pages/member_profile_page.dart';
 import '../pages/member_prayer_wall_page.dart';
 import '../modules/songs/views/member_songs_page.dart';
+import '../modules/message/message_member_page.dart';
 import '../pages/blog_home_page.dart';
 
 import '../pages/member_notifications_page.dart';
@@ -38,7 +39,6 @@ import 'package:provider/provider.dart';
 
 
 import '../pages/member_dynamic_lists_page.dart';
-import '../pages/message_page.dart';
 import '../modules/vie_eglise/vie_eglise_module.dart';
 import '../models/page_model.dart';
 import '../services/pages_firebase_service.dart';
@@ -64,7 +64,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
 
   // MD3: TabControllers pour chaque module avec TabBar intégré
   late TabController _vieEgliseTabController;
-  late TabController _messageTabController;
   late TabController _bibleTabController;
   late TabController _songsTabController;
 
@@ -89,8 +88,7 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
     
     // MD3: Initialiser les TabControllers pour les modules
     _vieEgliseTabController = TabController(length: 4, vsync: this);
-    _messageTabController = TabController(length: 3, vsync: this);
-    _bibleTabController = TabController(length: 4, vsync: this);
+    _bibleTabController = TabController(length: 3, vsync: this);
     _songsTabController = TabController(length: 3, vsync: this);
     
     // Optimisation : Reporter les tâches lourdes après le premier rendu
@@ -104,7 +102,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
   void dispose() {
     // MD3: Disposer les TabControllers
     _vieEgliseTabController.dispose();
-    _messageTabController.dispose();
     _bibleTabController.dispose();
     _songsTabController.dispose();
     super.dispose();
@@ -229,6 +226,9 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
           tabController: _songsTabController,
           onToggleSearchChanged: (callback) => _toggleSearch = callback,
         );
+      case 'message':
+        // Module Le Message - Sermons William Branham (vue membre)
+        return const MessageMemberPage();
       case 'blog':
         return const BlogHomePage();
       case 'calendar':
@@ -245,8 +245,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
         return const MemberPagesView();
       case 'dynamic_lists':
         return const MemberDynamicListsPage();
-      case 'message':
-        return MessagePage(tabController: _messageTabController);
       case 'vie-eglise':
         return VieEgliseModule(tabController: _vieEgliseTabController);
       default:
@@ -445,8 +443,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
       // Communication et notifications
       case 'notifications':
         return Icons.notifications;
-      case 'message':
-        return Icons.message;
       case 'chat':
         return Icons.chat;
       case 'email':
@@ -457,6 +453,16 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
         return Icons.announcement;
       case 'speaker_notes':
         return Icons.speaker_notes;
+      
+      // Module Le Message - Sermons
+      case 'message':
+        return Icons.campaign;
+      case 'manage_search':
+        return Icons.manage_search;
+      case 'library_books_outlined':
+        return Icons.library_books_outlined;
+      case 'collections_bookmark':
+        return Icons.collections_bookmark;
 
       // Navigation et interface
       case 'dashboard':
@@ -930,22 +936,11 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
           ],
         );
         break;
-      case 'message':
-        bottomTabBar = TabBar(
-          controller: _messageTabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.headphones_rounded), text: 'Écouter'),
-            Tab(icon: Icon(Icons.menu_book_rounded), text: 'Lire'),
-            Tab(icon: Icon(Icons.auto_awesome_rounded), text: 'Pépites d\'Or'),
-          ],
-        );
-        break;
       case 'bible':
         bottomTabBar = TabBar(
           controller: _bibleTabController,
           tabs: const [
             Tab(icon: Icon(Icons.menu_book_rounded), text: 'La Bible'),
-            Tab(icon: Icon(Icons.campaign_rounded), text: 'Le Message'),
             Tab(icon: Icon(Icons.library_books_rounded), text: 'Ressources'),
             Tab(icon: Icon(Icons.bookmark_rounded), text: 'Notes'),
           ],
@@ -1062,6 +1057,8 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
         return 'Mur de Prière';
       case 'songs':
         return 'Cantiques';
+      case 'message':
+        return 'Le Message';
       case 'blog':
         return 'Blog';
       case 'notifications':
@@ -1072,8 +1069,6 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
         return 'Listes Dynamiques';
       case 'bible':
         return 'La Bible';
-      case 'message':
-        return 'Le Message';
       case 'vie-eglise':
         return 'Vie de l\'Église';
       default:

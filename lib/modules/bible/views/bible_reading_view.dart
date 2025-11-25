@@ -1379,11 +1379,21 @@ class _BibleReadingViewState extends State<BibleReadingView>
                       height: _lineHeight,
                     ),
                   ),
-                // Texte du verset
+                // Texte du verset avec style "Le Message"
                 TextSpan(
                   text: verseText,
                   style: GoogleFonts.crimsonText(
-                    fontWeight: isFavorite ? AppTheme.fontSemiBold : AppTheme.fontRegular,
+                    backgroundColor: isHighlighted 
+                        ? _getHighlightColor(verseKey).withOpacity(0.35)
+                        : null,
+                    fontWeight: isHighlighted 
+                        ? FontWeight.w500
+                        : isFavorite 
+                            ? AppTheme.fontSemiBold 
+                            : AppTheme.fontRegular,
+                    decoration: isHighlighted ? TextDecoration.underline : null,
+                    decorationColor: isHighlighted ? _getHighlightColor(verseKey) : null,
+                    decorationThickness: isHighlighted ? 2.5 : null,
                     color: isFavorite 
                         ? (_isDarkMode ? AppTheme.white100 : AppTheme.black100)
                         : (_isDarkMode ? AppTheme.white100.withOpacity(0.87) : AppTheme.black100.withOpacity(0.87)),
@@ -1444,6 +1454,7 @@ class _BibleReadingViewState extends State<BibleReadingView>
           final verseKey = '${book.name}_${chapter}_$verseNumber';
           final isHighlighted = _highlights.containsKey(verseKey);
           final isFavorite = _favorites.contains(verseKey);
+          final hasNote = _notes.containsKey(verseKey) && _notes[verseKey]!.isNotEmpty;
           
           return TextSpan(
             children: [
@@ -1458,40 +1469,39 @@ class _BibleReadingViewState extends State<BibleReadingView>
                     height: _lineHeight,
                   ),
                 ),
-              // Texte du verset avec effets visuels améliorés
+              // Texte du verset avec effets visuels style "Le Message"
               TextSpan(
                 text: '$verseText ',
                 style: TextStyle(
+                  // Style exact de "Le Message"
                   backgroundColor: isHighlighted 
-                      ? _getYouVersionHighlightColor(verseKey)
+                      ? _getHighlightColor(verseKey).withOpacity(0.35)
                       : null,
-                  decoration: _selectedVerses.contains(verseKey)
+                  fontWeight: isHighlighted 
+                      ? FontWeight.w500
+                      : isFavorite 
+                          ? AppTheme.fontSemiBold 
+                          : AppTheme.fontRegular,
+                  decoration: isHighlighted
                       ? TextDecoration.underline
-                      : null,
-                  decorationColor: _selectedVerses.contains(verseKey)
-                      ? AppTheme.primaryColor
-                      : null,
-                  decorationThickness: _selectedVerses.contains(verseKey)
-                      ? 3.0
-                      : null,
-                  fontWeight: isFavorite 
-                      ? AppTheme.fontSemiBold 
-                      : AppTheme.fontRegular,
-                  // Couleur du texte optimisée pour les surlignements YouVersion
-                  color: isHighlighted 
-                      ? const Color(0xFF2C2C2C) // Texte plus foncé sur surlignement comme YouVersion
-                      : themeColors['textColor'],
-                  shadows: isFavorite ? [
+                      : _selectedVerses.contains(verseKey)
+                          ? TextDecoration.underline
+                          : null,
+                  decorationColor: isHighlighted
+                      ? _getHighlightColor(verseKey)
+                      : _selectedVerses.contains(verseKey)
+                          ? AppTheme.primaryColor
+                          : null,
+                  decorationThickness: isHighlighted
+                      ? 2.5
+                      : _selectedVerses.contains(verseKey)
+                          ? 3.0
+                          : null,
+                  color: themeColors['textColor'],
+                  shadows: isFavorite && !isHighlighted ? [
                     Shadow(
                       color: AppTheme.warningColor.withOpacity(0.3),
                       blurRadius: 2,
-                    ),
-                  ] : isHighlighted ? [
-                    // Ombre subtile sur texte surligné pour meilleure lisibilité
-                    Shadow(
-                      color: Colors.white.withOpacity(0.8),
-                      blurRadius: 1,
-                      offset: const Offset(0, 0.5),
                     ),
                   ] : null,
                 ),
@@ -1509,6 +1519,18 @@ class _BibleReadingViewState extends State<BibleReadingView>
                     }
                   },
               ),
+              // Icône de note
+              if (hasNote)
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: GestureDetector(
+                    onTap: () => _showNotePopup(verseKey, _notes[verseKey]!),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: _buildNoteIndicator(verseKey),
+                    ),
+                  ),
+                ),
             ],
           );
         }).toList(),
@@ -1525,6 +1547,7 @@ class _BibleReadingViewState extends State<BibleReadingView>
         final verseKey = '${book.name}_${chapter}_$verseNumber';
         final isHighlighted = _highlights.containsKey(verseKey);
         final isFavorite = _favorites.contains(verseKey);
+        final hasNote = _notes.containsKey(verseKey) && _notes[verseKey]!.isNotEmpty;
         
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1545,24 +1568,7 @@ class _BibleReadingViewState extends State<BibleReadingView>
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                 decoration: BoxDecoration(
-                  // Effet de surlignement YouVersion parfaitement reproduit
-                  color: isHighlighted 
-                      ? _getYouVersionHighlightColor(verseKey)
-                      : null,
                   borderRadius: BorderRadius.circular(6),
-                  // Bordure subtile comme dans YouVersion
-                  border: isHighlighted ? Border.all(
-                    color: (_highlights[verseKey] ?? const Color(0xFFFFE066)).withOpacity(0.3),
-                    width: 1,
-                  ) : null,
-                  // Ombre douce pour l'effet de profondeur YouVersion
-                  boxShadow: isHighlighted ? [
-                    BoxShadow(
-                      color: (_highlights[verseKey] ?? const Color(0xFFFFE066)).withOpacity(0.15),
-                      blurRadius: 3,
-                      offset: const Offset(0, 1),
-                    ),
-                  ] : null,
                 ),
                 child: RichText(
                   textAlign: TextAlign.justify,
@@ -1587,27 +1593,36 @@ class _BibleReadingViewState extends State<BibleReadingView>
                             height: _lineHeight,
                           ),
                         ),
-                      // Texte du verset avec effets visuels améliorés
+                      // Texte du verset avec style exact "Le Message"
                       TextSpan(
                         text: verseText,
                         style: TextStyle(
-                          decoration: _selectedVerses.contains(verseKey)
+                          // Style exact de "Le Message"
+                          backgroundColor: isHighlighted 
+                              ? _getHighlightColor(verseKey).withOpacity(0.35)
+                              : null,
+                          fontWeight: isHighlighted 
+                              ? FontWeight.w500
+                              : isFavorite 
+                                  ? AppTheme.fontSemiBold 
+                                  : AppTheme.fontRegular,
+                          decoration: isHighlighted
                               ? TextDecoration.underline
-                              : null,
-                          decorationColor: _selectedVerses.contains(verseKey)
-                              ? AppTheme.primaryColor
-                              : null,
-                          decorationThickness: _selectedVerses.contains(verseKey)
-                              ? 3.0
-                              : null,
-                          fontWeight: isFavorite 
-                              ? AppTheme.fontSemiBold 
-                              : AppTheme.fontRegular,
-                          // Couleur du texte optimisée pour les surlignements YouVersion
-                          color: isHighlighted 
-                              ? const Color(0xFF2C2C2C) // Texte plus foncé sur surlignement comme YouVersion
-                              : themeColors['textColor'],
-                          shadows: isFavorite ? [
+                              : _selectedVerses.contains(verseKey)
+                                  ? TextDecoration.underline
+                                  : null,
+                          decorationColor: isHighlighted
+                              ? _getHighlightColor(verseKey)
+                              : _selectedVerses.contains(verseKey)
+                                  ? AppTheme.primaryColor
+                                  : null,
+                          decorationThickness: isHighlighted
+                              ? 2.5
+                              : _selectedVerses.contains(verseKey)
+                                  ? 3.0
+                                  : null,
+                          color: themeColors['textColor'],
+                          shadows: isFavorite && !isHighlighted ? [
                             Shadow(
                               color: AppTheme.warningColor.withOpacity(0.3),
                               blurRadius: 2,
@@ -1622,6 +1637,18 @@ class _BibleReadingViewState extends State<BibleReadingView>
                           ] : null,
                         ),
                       ),
+                      // Icône de note
+                      if (hasNote)
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: GestureDetector(
+                            onTap: () => _showNotePopup(verseKey, _notes[verseKey]!),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                              child: _buildNoteIndicator(verseKey),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -2469,12 +2496,15 @@ class _BibleReadingViewState extends State<BibleReadingView>
     // Sauvegarder immédiatement
     _saveUserData();
     
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Verset ${verse.book} ${verse.chapter}:${verse.verse} surligné'),
-        duration: const Duration(seconds: 1),
-      ),
-    );
+    // Vérifier que le widget est toujours monté avant d'afficher le SnackBar
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Verset ${verse.book} ${verse.chapter}:${verse.verse} surligné'),
+          duration: const Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   void _removeHighlight(BibleVerse verse) {
@@ -2484,12 +2514,15 @@ class _BibleReadingViewState extends State<BibleReadingView>
         _highlights.remove(verseKey);
       });
       _saveUserData();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Surlignement retiré pour ${verse.book} ${verse.chapter}:${verse.verse}'),
-          duration: const Duration(seconds: 1),
-        ),
-      );
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Surlignement retiré pour ${verse.book} ${verse.chapter}:${verse.verse}'),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+      }
     }
   }
 
@@ -2506,16 +2539,18 @@ class _BibleReadingViewState extends State<BibleReadingView>
     // Sauvegarder immédiatement
     _saveUserData();
     
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _favorites.contains(verseKey) 
-              ? 'Verset ajouté aux favoris'
-              : 'Verset retiré des favoris',
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _favorites.contains(verseKey) 
+                ? 'Verset ajouté aux favoris'
+                : 'Verset retiré des favoris',
+          ),
+          duration: const Duration(seconds: 1),
         ),
-        duration: const Duration(seconds: 1),
-      ),
-    );
+      );
+    }
   }
 
   void _addNote(BibleVerse verse, String note) {
@@ -2531,12 +2566,14 @@ class _BibleReadingViewState extends State<BibleReadingView>
     // Sauvegarder immédiatement
     _saveUserData();
     
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(note.trim().isEmpty ? 'Note supprimée' : 'Note ajoutée'),
-        duration: const Duration(seconds: 1),
-      ),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(note.trim().isEmpty ? 'Note supprimée' : 'Note ajoutée'),
+          duration: const Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   // === INDICATEURS VISUELS PROFESSIONNELS ===
@@ -2621,12 +2658,14 @@ class _BibleReadingViewState extends State<BibleReadingView>
 
   void _shareVerse(BibleVerse verse) {
     // Implémentation du partage
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Partage de ${verse.book} ${verse.chapter}:${verse.verse}'),
-        duration: const Duration(seconds: 1),
-      ),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Partage de ${verse.book} ${verse.chapter}:${verse.verse}'),
+          duration: const Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   void _shareChapter() async {

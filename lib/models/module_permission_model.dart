@@ -247,21 +247,6 @@ class AppModules {
       category: 'Finance',
     ),
 
-    // Module Messages
-    AppModule(
-      key: 'message',
-      name: 'Messages',
-      description: 'Système de messagerie',
-      icon: Icons.message,
-      availablePermissions: [
-        PermissionType.read,
-        PermissionType.write,
-        PermissionType.delete,
-        PermissionType.manage,
-      ],
-      category: 'Communication',
-    ),
-
     // Module Blog
     AppModule(
       key: 'blog',

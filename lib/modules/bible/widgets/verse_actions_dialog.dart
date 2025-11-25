@@ -78,20 +78,20 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
           
           // En-tête avec référence du verset
           Padding(
-            padding: const EdgeInsets.all(AppTheme.spaceMedium),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
             child: Column(
               children: [
                 Text(
                   widget.verse.reference,
                   style: GoogleFonts.inter(
-                    fontSize: AppTheme.fontSize18,
+                    fontSize: AppTheme.fontSize16,
                     fontWeight: AppTheme.fontBold,
                     color: AppTheme.primaryColor,
                   ),
                 ),
-                const SizedBox(height: AppTheme.spaceSmall),
+                const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.grey50,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
@@ -116,41 +116,10 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  // Surlignage avec couleurs
-                  _buildActionSection(
-                    'Surligner',
-                    Icons.highlight,
-                    _buildHighlightColors(),
-                  ),
-                  // Bouton pour retirer le surlignement si le verset est déjà surligné
-                  if (widget.isHighlighted) ...[
-                    const SizedBox(height: AppTheme.spaceSmall),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton.icon(
-                        onPressed: () {
-                          if (widget.onRemoveHighlight != null) {
-                            widget.onRemoveHighlight!();
-                          }
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.remove_circle_outline,
-                          color: AppTheme.grey700,
-                          size: 18,
-                        ),
-                        label: Text(
-                          'Retirer le surlignement',
-                          style: GoogleFonts.inter(
-                            fontSize: AppTheme.fontSize12,
-                            color: AppTheme.grey700,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  // Couleurs de surlignage
+                  _buildHighlightColors(),
                   
-                  const SizedBox(height: AppTheme.spaceMedium),
+                  const SizedBox(height: 12),
                   
                   // Actions rapides style YouVersion
                   if (_showHighlightPalette)
@@ -282,8 +251,10 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                 child: GestureDetector(
                   onTap: () {
                     // Feedback haptique comme YouVersion
-                    widget.onHighlight(color);
-                    Navigator.pop(context);
+                    HapticFeedback.lightImpact();
+                    Navigator.of(context).pop();
+                    // Appeler le callback APRÈS la fermeture du dialogue
+                    Future.microtask(() => widget.onHighlight(color));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -382,12 +353,12 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
         onTap();
       },
       child: Container(
-        height: 64,
+        height: 32,
         decoration: BoxDecoration(
           color: isActive 
             ? color.withOpacity(0.1) 
             : Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isActive 
               ? color.withOpacity(0.4) 
@@ -395,7 +366,7 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
             width: 1.5,
           ),
         ),
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Stack(
@@ -405,28 +376,28 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                   color: isActive 
                     ? color 
                     : Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                  size: 22,
+                  size: 18,
                 ),
                 if (showBadge)
                   Positioned(
                     right: -2,
                     top: -2,
                     child: Container(
-                      width: 12,
-                      height: 12,
+                      width: 8,
+                      height: 8,
                       decoration: BoxDecoration(
                         color: color,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: Theme.of(context).colorScheme.surface,
-                          width: 1.5,
+                          width: 1,
                         ),
                       ),
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 6),
+            const SizedBox(width: 6),
             Text(
               label,
               style: GoogleFonts.inter(
@@ -450,22 +421,15 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
       children: [
         // Actions principales
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 4,
-            childAspectRatio: 1,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
+            crossAxisCount: 3,
+            childAspectRatio: 2.5,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
             children: [
-              _buildYouVersionActionButton(
-                'Surligner',
-                Icons.format_color_text,
-                const Color(0xFFFFE066),
-                () => _showHighlightOptions(),
-                isActive: widget.isHighlighted,
-              ),
               _buildYouVersionActionButton(
                 'Note',
                 Icons.note_add_outlined,
@@ -511,28 +475,30 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                 Row(
                   children: [
                     if (widget.isHighlighted)
-                      Expanded(
+                      Flexible(
+                        fit: FlexFit.tight,
                         child: _buildSecondaryAction(
-                          'Supprimer le surlignement',
+                          'Surlignement',
                           Icons.format_color_reset,
                           () {
-                            if (widget.onRemoveHighlight != null) {
-                              widget.onRemoveHighlight!();
-                            }
                             Navigator.of(context).pop();
+                            if (widget.onRemoveHighlight != null) {
+                              Future.microtask(() => widget.onRemoveHighlight!());
+                            }
                           },
                         ),
                       ),
                     if (widget.isHighlighted && (widget.existingNote?.isNotEmpty ?? false))
                       const SizedBox(width: 12),
                     if (widget.existingNote?.isNotEmpty ?? false)
-                      Expanded(
+                      Flexible(
+                        fit: FlexFit.tight,
                         child: _buildSecondaryAction(
-                          'Supprimer la note',
+                          'Note',
                           Icons.delete_outline,
                           () {
-                            widget.onNote('');
                             Navigator.of(context).pop();
+                            Future.microtask(() => widget.onNote(''));
                           },
                         ),
                       ),
@@ -659,8 +625,9 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
               return GestureDetector(
                 onTap: () {
                   HapticFeedback.lightImpact();
-                  widget.onHighlight(color);
                   Navigator.of(context).pop();
+                  // Appeler le callback APRÈS la fermeture du dialogue
+                  Future.microtask(() => widget.onHighlight(color));
                 },
                 child: Column(
                   children: [
@@ -795,8 +762,8 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      widget.onNote(''); // Passer une chaîne vide pour supprimer
                       Navigator.pop(context);
+                      Future.microtask(() => widget.onNote('')); // Passer une chaîne vide pour supprimer
                     },
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppTheme.redStandard,
@@ -810,8 +777,9 @@ class _VerseActionsDialogState extends State<VerseActionsDialog> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    widget.onNote(_noteController.text.trim());
+                    final noteText = _noteController.text.trim();
                     Navigator.pop(context);
+                    Future.microtask(() => widget.onNote(noteText));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryColor,
