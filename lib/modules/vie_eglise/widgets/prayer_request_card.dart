@@ -247,65 +247,77 @@ class PrayerRequestCard extends StatelessWidget {
       children: [
         // Bouton "Prier pour" (seulement pour les demandes)
         if (showPrayButton)
-          TextButton.icon(
-            onPressed: onPrayFor,
-            style: TextButton.styleFrom(
-              foregroundColor: AppTheme.primaryColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppTheme.spaceMedium,
-                vertical: AppTheme.spaceSmall,
+          Flexible(
+            child: TextButton.icon(
+              onPressed: onPrayFor,
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.primaryColor,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppTheme.isApplePlatform ? AppTheme.spaceMedium : 10,
+                  vertical: AppTheme.spaceSmall,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                ),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              icon: Icon(
+                prayer.prayedByUsers.isNotEmpty ? Icons.favorite : Icons.favorite_border,
+                size: 18,
               ),
-            ),
-            icon: Icon(
-              prayer.prayedByUsers.isNotEmpty ? Icons.favorite : Icons.favorite_border,
-              size: 18,
-            ),
-            label: Text(
-              prayer.prayedByUsers.isNotEmpty ? 'Vous priez' : 'Prier pour',
-              style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize14,
-                fontWeight: AppTheme.fontMedium,
+              label: Text(
+                prayer.prayedByUsers.isNotEmpty ? 'Vous priez' : 'Prier pour',
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.isApplePlatform ? 14 : 13,
+                  fontWeight: AppTheme.fontMedium,
+                  height: 1.2,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
           ),
         
         // Bouton "Soutenir" (pour témoignages et actions de grâce)
         if (showSupport)
-          TextButton.icon(
-            onPressed: onPrayFor, // Même action mais sémantique différente
-            style: TextButton.styleFrom(
-              foregroundColor: AppTheme.primaryColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppTheme.spaceMedium,
-                vertical: AppTheme.spaceSmall,
+          Flexible(
+            child: TextButton.icon(
+              onPressed: onPrayFor, // Même action mais sémantique différente
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.primaryColor,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppTheme.isApplePlatform ? AppTheme.spaceMedium : 10,
+                  vertical: AppTheme.spaceSmall,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                ),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              icon: Icon(
+                prayer.prayedByUsers.isNotEmpty ? Icons.thumb_up : Icons.thumb_up_outlined,
+                size: 18,
               ),
-            ),
-            icon: Icon(
-              prayer.prayedByUsers.isNotEmpty ? Icons.thumb_up : Icons.thumb_up_outlined,
-              size: 18,
-            ),
-            label: Text(
-              prayer.prayedByUsers.isNotEmpty ? 'Vous soutenez' : 'Soutenir',
-              style: GoogleFonts.inter(
-                fontSize: AppTheme.fontSize14,
-                fontWeight: AppTheme.fontMedium,
+              label: Text(
+                prayer.prayedByUsers.isNotEmpty ? 'Vous soutenez' : 'Soutenir',
+                style: GoogleFonts.inter(
+                  fontSize: AppTheme.isApplePlatform ? 14 : 13,
+                  fontWeight: AppTheme.fontMedium,
+                  height: 1.2,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
           ),
         
-        const SizedBox(width: AppTheme.spaceSmall),
+        const SizedBox(width: 8),
         
         // Compteur adapté selon le type
         if (prayer.prayerCount > 0)
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.spaceSmall,
+              horizontal: 6,
               vertical: 4,
             ),
             decoration: BoxDecoration(
@@ -324,26 +336,29 @@ class PrayerRequestCard extends StatelessWidget {
                 Text(
                   '${prayer.prayerCount}',
                   style: GoogleFonts.inter(
-                    fontSize: AppTheme.fontSize12,
+                    fontSize: AppTheme.isApplePlatform ? 12 : 11,
                     fontWeight: AppTheme.fontMedium,
                     color: AppTheme.onPrimaryContainer,
+                    height: 1.2,
                   ),
                 ),
               ],
             ),
           ),
         
-        const Spacer(),
+        const SizedBox(width: 8),
         
         // Bouton "Voir plus"
         TextButton(
           onPressed: onTap,
           style: TextButton.styleFrom(
             foregroundColor: AppTheme.onSurfaceVariant,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.spaceMedium,
-              vertical: AppTheme.spaceSmall,
+            padding: EdgeInsets.symmetric(
+              horizontal: AppTheme.isApplePlatform ? 12 : 8,
+              vertical: 6,
             ),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
@@ -354,12 +369,14 @@ class PrayerRequestCard extends StatelessWidget {
               Text(
                 'Voir plus',
                 style: GoogleFonts.inter(
-                  fontSize: AppTheme.fontSize14,
+                  fontSize: AppTheme.isApplePlatform ? 13 : 12,
                   fontWeight: AppTheme.fontMedium,
+                  height: 1.2,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
                 ),
               ),
               const SizedBox(width: 4),
-              const Icon(Icons.arrow_forward, size: 16),
+              const Icon(Icons.arrow_forward, size: 14),
             ],
           ),
         ),

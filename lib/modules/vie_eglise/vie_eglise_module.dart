@@ -89,22 +89,42 @@ class _VieEgliseModuleState extends State<VieEgliseModule> with TickerProviderSt
           child: TabBar(
             controller: _tabController,
             // Les couleurs sont héritées du TabBarTheme (primaryColor pour actif, gris pour inactif)
-            tabs: const [
+            tabs: [
               Tab(
-                icon: Icon(Icons.auto_awesome_rounded),
-                text: 'Pour vous',
+                icon: const Icon(Icons.auto_awesome_rounded),
+                child: Text(
+                  'Pour vous',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: AppTheme.isApplePlatform ? 14 : 12),
+                ),
               ),
               Tab(
-                icon: Icon(Icons.mic_rounded),
-                text: 'Sermons',
+                icon: const Icon(Icons.mic_rounded),
+                child: Text(
+                  'Sermons',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: AppTheme.isApplePlatform ? 14 : 12),
+                ),
               ),
               Tab(
-                icon: Icon(Icons.volunteer_activism_rounded),
-                text: 'Offrandes',
+                icon: const Icon(Icons.volunteer_activism_rounded),
+                child: Text(
+                  'Offrandes',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: AppTheme.isApplePlatform ? 14 : 12),
+                ),
               ),
               Tab(
-                icon: Icon(Icons.diversity_3_rounded),
-                text: 'Prières',
+                icon: const Icon(Icons.diversity_3_rounded),
+                child: Text(
+                  'Prières',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: AppTheme.isApplePlatform ? 14 : 12),
+                ),
               ),
             ],
           ),

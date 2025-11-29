@@ -99,7 +99,11 @@ class ThemeProvider extends ChangeNotifier {
     // Mettre à jour l'interface système
     _updateSystemUIOverlay();
     
-    notifyListeners();
+    // Utiliser SchedulerBinding pour notifier après le frame actuel
+    // Cela évite l'erreur "_elements.contains(element)" lors du changement de thème
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 
   /// Basculer entre thème clair et sombre

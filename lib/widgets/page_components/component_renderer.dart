@@ -4464,45 +4464,65 @@ class ComponentRenderer extends StatelessWidget {
               // En-tête avec type et catégorie
               Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: _getPrayerTypeColor(prayer['type'], primaryColor).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _getPrayerTypeIcon(prayer['type']),
-                          size: 14,
-                          color: _getPrayerTypeColor(prayer['type'], primaryColor),
-                        ),
-                        const SizedBox(width: AppTheme.spaceXSmall),
-                        Text(
-                          _getPrayerTypeLabel(prayer['type']),
-                          style: TextStyle(
-                            fontSize: AppTheme.fontSize12,
-                            fontWeight: AppTheme.fontMedium,
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppTheme.isApplePlatform ? 8 : 6,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _getPrayerTypeColor(prayer['type'], primaryColor).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            _getPrayerTypeIcon(prayer['type']),
+                            size: 14,
                             color: _getPrayerTypeColor(prayer['type'], primaryColor),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              _getPrayerTypeLabel(prayer['type']),
+                              style: TextStyle(
+                                fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                                fontWeight: AppTheme.fontMedium,
+                                color: _getPrayerTypeColor(prayer['type'], primaryColor),
+                                height: 1.2,
+                                letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   if (showCategories && prayer['category'] != null) ...[
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: accentColor.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                      ),
-                      child: Text(
-                        prayer['category'],
-                        style: TextStyle(
-                          fontSize: AppTheme.fontSize12,
-                          color: primaryColor,
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppTheme.isApplePlatform ? 8 : 6,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: accentColor.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                        ),
+                        child: Text(
+                          prayer['category'],
+                          style: TextStyle(
+                            fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                            color: primaryColor,
+                            height: 1.2,
+                            letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
                     ),
@@ -4514,10 +4534,14 @@ class ComponentRenderer extends StatelessWidget {
               // Titre
               Text(
                 prayer['title'],
-                style: const TextStyle(
-                  fontSize: AppTheme.fontSize18,
+                style: TextStyle(
+                  fontSize: AppTheme.isApplePlatform ? 18 : 17,
                   fontWeight: AppTheme.fontBold,
+                  height: 1.2,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.2 : -0.3,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: AppTheme.spaceSmall),
 
@@ -4525,10 +4549,13 @@ class ComponentRenderer extends StatelessWidget {
               Text(
                 prayer['content'],
                 style: TextStyle(
-                  fontSize: AppTheme.fontSize16,
+                  fontSize: AppTheme.isApplePlatform ? 16 : 15,
                   color: AppTheme.grey700,
                   height: 1.4,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
                 ),
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: AppTheme.space12),
 
@@ -4543,18 +4570,25 @@ class ComponentRenderer extends StatelessWidget {
                         child: Text(
                           prayer['author'][0].toUpperCase(),
                           style: TextStyle(
-                            fontSize: AppTheme.fontSize12,
+                            fontSize: AppTheme.isApplePlatform ? 12 : 11,
                             fontWeight: AppTheme.fontBold,
                             color: primaryColor,
+                            height: 1.2,
                           ),
                         ),
                       ),
-                      const SizedBox(width: AppTheme.spaceSmall),
-                      Text(
-                        prayer['author'],
-                        style: const TextStyle(
-                          fontSize: AppTheme.fontSize14,
-                          fontWeight: AppTheme.fontMedium,
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          prayer['author'],
+                          style: TextStyle(
+                            fontSize: AppTheme.isApplePlatform ? 14 : 13,
+                            fontWeight: AppTheme.fontMedium,
+                            height: 1.2,
+                            letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
                       if (showDates) ...[
@@ -4562,19 +4596,21 @@ class ComponentRenderer extends StatelessWidget {
                         Text(
                           _formatDate(prayer['date']),
                           style: TextStyle(
-                            fontSize: AppTheme.fontSize14,
+                            fontSize: AppTheme.isApplePlatform ? 14 : 13,
                             color: AppTheme.grey600,
+                            height: 1.2,
                           ),
                         ),
                       ],
                     ] else if (showDates) ...[
                       Icon(Icons.schedule, size: 16, color: AppTheme.grey600),
-                      const SizedBox(width: AppTheme.spaceXSmall),
+                      const SizedBox(width: 4),
                       Text(
                         _formatDate(prayer['date']),
                         style: TextStyle(
-                          fontSize: AppTheme.fontSize14,
+                          fontSize: AppTheme.isApplePlatform ? 14 : 13,
                           color: AppTheme.grey600,
+                          height: 1.2,
                         ),
                       ),
                     ],
@@ -4587,39 +4623,61 @@ class ComponentRenderer extends StatelessWidget {
               Row(
                 children: [
                   if (allowPrayerCount) ...[
-                    TextButton.icon(
-                      onPressed: () => _handlePrayerAction(context, prayer),
-                      icon: Icon(
-                        prayer['userPrayed'] == true ? Icons.favorite : Icons.favorite_border,
-                        size: 20,
-                        color: primaryColor,
-                      ),
-                      label: Text(
-                        '${prayer['prayerCount']} $prayerCountText',
-                        style: TextStyle(color: primaryColor),
-                      ),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                    Flexible(
+                      child: TextButton.icon(
+                        onPressed: () => _handlePrayerAction(context, prayer),
+                        icon: Icon(
+                          prayer['userPrayed'] == true ? Icons.favorite : Icons.favorite_border,
+                          size: 18,
+                          color: primaryColor,
+                        ),
+                        label: Text(
+                          '${prayer['prayerCount']} $prayerCountText',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: AppTheme.isApplePlatform ? 14 : 13,
+                            height: 1.2,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppTheme.isApplePlatform ? 12 : 8,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                   if (allowComments) ...[
-                    TextButton.icon(
-                      onPressed: () => _showCommentsDialog(context, prayer, primaryColor),
-                      icon: Icon(Icons.comment_outlined, size: 20, color: AppTheme.grey600),
-                      label: Text(
-                        '${prayer['commentCount']} commentaires',
-                        style: TextStyle(color: AppTheme.grey600),
-                      ),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                    Flexible(
+                      child: TextButton.icon(
+                        onPressed: () => _showCommentsDialog(context, prayer, primaryColor),
+                        icon: Icon(Icons.comment_outlined, size: 18, color: AppTheme.grey600),
+                        label: Text(
+                          '${prayer['commentCount']} commentaires',
+                          style: TextStyle(
+                            color: AppTheme.grey600,
+                            fontSize: AppTheme.isApplePlatform ? 14 : 13,
+                            height: 1.2,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppTheme.isApplePlatform ? 12 : 8,
+                          ),
+                        ),
                       ),
                     ),
                   ],
-                  const Spacer(),
+                  const SizedBox(width: 4),
                   IconButton(
                     onPressed: () => _sharePrayer(context, prayer),
                     icon: Icon(Icons.share_outlined, size: 20, color: AppTheme.grey600),
+                    padding: EdgeInsets.all(AppTheme.isApplePlatform ? 8 : 6),
+                    constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
                   ),
                 ],
               ),

@@ -928,31 +928,31 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
       case 'vie-eglise':
         bottomTabBar = TabBar(
           controller: _vieEgliseTabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.auto_awesome_rounded), text: 'Pour vous'),
-            Tab(icon: Icon(Icons.mic_rounded), text: 'Sermons'),
-            Tab(icon: Icon(Icons.volunteer_activism_rounded), text: 'Offrandes'),
-            Tab(icon: Icon(Icons.diversity_3_rounded), text: 'Prières'),
+          tabs: [
+            AppTheme.adaptiveTab(text: 'Pour vous', icon: Icons.auto_awesome_rounded),
+            AppTheme.adaptiveTab(text: 'Sermons', icon: Icons.mic_rounded),
+            AppTheme.adaptiveTab(text: 'Offrandes', icon: Icons.volunteer_activism_rounded),
+            AppTheme.adaptiveTab(text: 'Prières', icon: Icons.diversity_3_rounded),
           ],
         );
         break;
       case 'bible':
         bottomTabBar = TabBar(
           controller: _bibleTabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.menu_book_rounded), text: 'La Bible'),
-            Tab(icon: Icon(Icons.library_books_rounded), text: 'Ressources'),
-            Tab(icon: Icon(Icons.bookmark_rounded), text: 'Notes'),
+          tabs: [
+            AppTheme.adaptiveTab(text: 'La Bible', icon: Icons.menu_book_rounded),
+            AppTheme.adaptiveTab(text: 'Ressources', icon: Icons.library_books_rounded),
+            AppTheme.adaptiveTab(text: 'Notes', icon: Icons.bookmark_rounded),
           ],
         );
         break;
       case 'songs':
         bottomTabBar = TabBar(
           controller: _songsTabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.library_music_rounded), text: 'Cantiques'),
-            Tab(icon: Icon(Icons.favorite_rounded), text: 'Favoris'),
-            Tab(icon: Icon(Icons.playlist_play_rounded), text: 'Setlists'),
+          tabs: [
+            AppTheme.adaptiveTab(text: 'Cantiques', icon: Icons.library_music_rounded),
+            AppTheme.adaptiveTab(text: 'Favoris', icon: Icons.favorite_rounded),
+            AppTheme.adaptiveTab(text: 'Setlists', icon: Icons.playlist_play_rounded),
           ],
         );
         break;
@@ -1269,6 +1269,20 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> with 
       },
       selectedItemColor: AppTheme.primaryColor,
       unselectedItemColor: AppTheme.textSecondaryColor,
+      // Configuration explicite pour Android
+      selectedFontSize: AppTheme.isApplePlatform ? 12 : 11,
+      unselectedFontSize: AppTheme.isApplePlatform ? 12 : 11,
+      selectedLabelStyle: TextStyle(
+        fontWeight: AppTheme.fontSemiBold,
+        height: 1.2,
+      ),
+      unselectedLabelStyle: TextStyle(
+        fontWeight: AppTheme.fontRegular,
+        height: 1.2,
+      ),
+      // S'assurer que les labels sont toujours visibles
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
       items: navItems,
     );
   }
@@ -1296,6 +1310,9 @@ class _ProfileMenuSheet extends StatelessWidget {
       decoration: const BoxDecoration(
         color: AppTheme.white100,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.85,
       ),
       child: SafeArea(
         child: Column(
@@ -1338,6 +1355,8 @@ class _ProfileMenuSheet extends StatelessWidget {
                             fontWeight: AppTheme.fontSemiBold,
                             color: AppTheme.textPrimaryColor,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: AppTheme.spaceXSmall),
                         Text(
@@ -1346,6 +1365,8 @@ class _ProfileMenuSheet extends StatelessWidget {
                             fontSize: AppTheme.fontSize14,
                             color: AppTheme.textSecondaryColor,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         if (currentUser?.roles.isNotEmpty == true) ...[
                           const SizedBox(height: AppTheme.spaceXSmall),
@@ -1356,6 +1377,8 @@ class _ProfileMenuSheet extends StatelessWidget {
                               color: AppTheme.primaryColor,
                               fontWeight: AppTheme.fontMedium,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ],
@@ -1377,10 +1400,18 @@ class _ProfileMenuSheet extends StatelessWidget {
             
             const Divider(height: 1),
             
-            // Menu items relatifs au profil
-            ..._buildProfileMenuItems(context),
-            
-            const SizedBox(height: AppTheme.space20),
+            // Menu items relatifs au profil avec scroll
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ..._buildProfileMenuItems(context),
+                    const SizedBox(height: AppTheme.space20),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

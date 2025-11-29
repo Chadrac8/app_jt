@@ -1557,79 +1557,91 @@ class _MemberProfilePageState extends State<MemberProfilePage>
               ],
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 50),
-              _buildProfileImage(),
-              const SizedBox(height: AppTheme.space20),
-              if (_currentPerson != null) ...[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    _currentPerson!.fullName,
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: AppTheme.fontBold,
-                      color: AppTheme.white100,
-                      letterSpacing: 0.5,
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 50),
+                  _buildProfileImage(),
+                  const SizedBox(height: AppTheme.space20),
+                  if (_currentPerson != null) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        _currentPerson!.fullName,
+                        style: const TextStyle(
+                          fontSize: 26,
+                          fontWeight: AppTheme.fontBold,
+                          color: AppTheme.white100,
+                          letterSpacing: 0.5,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: AppTheme.spaceSmall),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.white100.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-                  ),
-                  child: Text(
-                    _currentPerson!.email ?? '',
-                    style: const TextStyle(
-                      fontSize: AppTheme.fontSize14,
-                      color: AppTheme.white100,
-                      fontWeight: AppTheme.fontMedium,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                if (_currentPerson!.roles.isNotEmpty) ...[
-                  const SizedBox(height: 15),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      alignment: WrapAlignment.center,
-                      children: _currentPerson!.roles.map((role) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: AppTheme.white100.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: AppTheme.white100.withOpacity(0.3),
-                              width: 1,
-                            ),
+                    const SizedBox(height: AppTheme.spaceSmall),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.white100.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+                        ),
+                        child: Text(
+                          _currentPerson!.email ?? '',
+                          style: const TextStyle(
+                            fontSize: AppTheme.fontSize14,
+                            color: AppTheme.white100,
+                            fontWeight: AppTheme.fontMedium,
                           ),
-                          child: Text(
-                            role,
-                            style: const TextStyle(
-                              color: AppTheme.white100,
-                              fontSize: AppTheme.fontSize12,
-                              fontWeight: AppTheme.fontSemiBold,
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
-                  ),
+                    if (_currentPerson!.roles.isNotEmpty) ...[
+                      const SizedBox(height: 15),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          alignment: WrapAlignment.center,
+                          children: _currentPerson!.roles.map((role) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: AppTheme.white100.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                  color: AppTheme.white100.withOpacity(0.3),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                role,
+                                style: const TextStyle(
+                                  color: AppTheme.white100,
+                                  fontSize: AppTheme.fontSize12,
+                                  fontWeight: AppTheme.fontSemiBold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ],
+                  const SizedBox(height: AppTheme.space20),
                 ],
-              ],
-              const SizedBox(height: AppTheme.space20),
-            ],
+              ),
+            ),
           ),
         ),
       ),

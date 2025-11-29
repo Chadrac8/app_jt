@@ -313,17 +313,29 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView>
       children: [
         if (widget.typeFilters != null && widget.typeFilters!.isNotEmpty)
           ...widget.typeFilters!.map((type) => Chip(
-            label: Text(type),
+            label: Text(
+              type,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           )),
         if (widget.statusFilters != null && widget.statusFilters!.isNotEmpty)
           ...widget.statusFilters!.map((status) => Chip(
-            label: Text(status),
+            label: Text(
+              status,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
             backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           )),
         if (widget.searchQuery != null && widget.searchQuery!.isNotEmpty)
           Chip(
-            label: Text('"${widget.searchQuery}"'),
+            label: Text(
+              '"${widget.searchQuery}"',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
             backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
           ),
       ],
@@ -627,11 +639,27 @@ class _ServiceCalendarViewState extends State<ServiceCalendarView>
                               children: [
                                 Icon(Icons.schedule, size: 14, color: Theme.of(context).colorScheme.outline),
                                 const SizedBox(width: 4),
-                                Text(_formatTime(service.dateTime)),
-                                const SizedBox(width: 16),
+                                Text(
+                                  _formatTime(service.dateTime),
+                                  style: TextStyle(
+                                    fontSize: AppTheme.isApplePlatform ? 13 : 12,
+                                    height: 1.2,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
                                 Icon(Icons.location_on, size: 14, color: Theme.of(context).colorScheme.outline),
                                 const SizedBox(width: 4),
-                                Expanded(child: Text(service.location)),
+                                Expanded(
+                                  child: Text(
+                                    service.location,
+                                    style: TextStyle(
+                                      fontSize: AppTheme.isApplePlatform ? 13 : 12,
+                                      height: 1.2,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 2),

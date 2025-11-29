@@ -299,6 +299,151 @@ class AppTheme {
       defaultTargetPlatform == TargetPlatform.iOS ||
       defaultTargetPlatform == TargetPlatform.macOS;
   
+  // === HELPERS POUR TEXTES ADAPTATIFS ===
+  
+  /// Crée un Tab adaptatif qui ne coupe pas le texte sur Android
+  static Tab adaptiveTab({
+    required String text,
+    IconData? icon,
+  }) {
+    return Tab(
+      icon: icon != null ? Icon(icon) : null,
+      child: Text(
+        text,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        style: TextStyle(
+          fontSize: isApplePlatform ? 14 : 12,
+          height: 1.2,
+        ),
+      ),
+    );
+  }
+
+  /// Crée un FilterChip adaptatif avec gestion automatique du débordement
+  static FilterChip adaptiveFilterChip({
+    required String label,
+    required bool selected,
+    required ValueChanged<bool> onSelected,
+    Widget? avatar,
+    Color? selectedColor,
+    Color? checkmarkColor,
+  }) {
+    return FilterChip(
+      label: Text(
+        label,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        // ✅ Style hérité du ChipTheme (WidgetStateTextStyle)
+      ),
+      avatar: avatar,
+      selected: selected,
+      onSelected: onSelected,
+      selectedColor: selectedColor,
+      checkmarkColor: checkmarkColor,
+    );
+  }
+
+  /// Crée un ChoiceChip adaptatif avec gestion automatique du débordement
+  static ChoiceChip adaptiveChoiceChip({
+    required String label,
+    required bool selected,
+    required ValueChanged<bool> onSelected,
+    Widget? avatar,
+    Color? selectedColor,
+  }) {
+    return ChoiceChip(
+      label: Text(
+        label,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        // ✅ Style hérité du ChipTheme (WidgetStateTextStyle)
+      ),
+      avatar: avatar,
+      selected: selected,
+      onSelected: onSelected,
+      selectedColor: selectedColor,
+    );
+  }
+
+  /// Crée un Row adaptatif avec icône et texte pour les boutons
+  /// Gère automatiquement le débordement avec Flexible
+  static Widget adaptiveButtonContent({
+    required String label,
+    IconData? icon,
+    bool iconAfterText = false,
+    double? fontSize,
+    FontWeight? fontWeight,
+    Color? color,
+  }) {
+    final textWidget = Flexible(
+      child: Text(
+        label,
+        style: GoogleFonts.inter(
+          fontSize: fontSize ?? (isApplePlatform ? 14 : 13),
+          fontWeight: fontWeight ?? fontMedium,
+          color: color,
+          height: 1.2,
+          letterSpacing: isApplePlatform ? -0.1 : -0.2,
+        ),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+    );
+
+    if (icon == null) {
+      return textWidget;
+    }
+
+    final iconWidget = Icon(icon, size: 18);
+    const spacing = SizedBox(width: 6);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: iconAfterText
+          ? [textWidget, spacing, iconWidget]
+          : [iconWidget, spacing, textWidget],
+    );
+  }
+
+  /// Crée un Text avec overflow handling automatique pour les labels
+  /// À utiliser dans Chip, FilterChip, ChoiceChip, etc.
+  static Text adaptiveChipLabel(
+    String text, {
+    TextStyle? style,
+  }) {
+    return Text(
+      text,
+      style: style,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      // Style hérité du ChipTheme si non spécifié
+    );
+  }
+  
+  /// Taille de police adaptative pour les labels
+  static double get adaptiveLabelFontSize => isApplePlatform ? 14 : 12;
+  
+  /// Taille de police adaptative pour les chips
+  static double get adaptiveChipFontSize => isApplePlatform ? 13 : 11.5;
+  
+  /// Style de texte adaptatif pour éviter les textes coupés
+  static TextStyle adaptiveTextStyle({
+    required double iosFontSize,
+    double? androidFontSize,
+    FontWeight? fontWeight,
+    Color? color,
+    double? letterSpacing,
+  }) {
+    return GoogleFonts.inter(
+      fontSize: isApplePlatform ? iosFontSize : (androidFontSize ?? iosFontSize - 1.5),
+      fontWeight: fontWeight ?? fontRegular,
+      color: color,
+      letterSpacing: letterSpacing ?? (isApplePlatform ? -0.1 : -0.2),
+      height: 1.2,
+    );
+  }
+  
   /// Détermine si la plateforme actuelle est un desktop
   static bool get isDesktop =>
       defaultTargetPlatform == TargetPlatform.macOS ||
@@ -381,9 +526,10 @@ class AppTheme {
   static double get adaptiveBodySmall => isDesktop ? 14.0 : 12.0;  // MD3: 12sp
   
   // Label (Labels de boutons, etc.)
-  static double get adaptiveLabelLarge => isDesktop ? 16.0 : 14.0;  // MD3: 14sp
-  static double get adaptiveLabelMedium => isDesktop ? 14.0 : 12.0; // MD3: 12sp
-  static double get adaptiveLabelSmall => isDesktop ? 13.0 : 11.0;  // MD3: 11sp
+  // Adapté iOS vs Android : Android légèrement plus petit pour éviter les textes coupés
+  static double get adaptiveLabelLarge => isDesktop ? 16.0 : (isApplePlatform ? 14.0 : 13.0);  // MD3: 14sp (iOS 14, Android 13)
+  static double get adaptiveLabelMedium => isDesktop ? 14.0 : (isApplePlatform ? 12.0 : 11.0); // MD3: 12sp (iOS 12, Android 11)
+  static double get adaptiveLabelSmall => isDesktop ? 13.0 : (isApplePlatform ? 11.0 : 10.0);  // MD3: 11sp (iOS 11, Android 10)
   
   /// Multiplicateur de taille pour iOS/macOS (conventions Apple)
   /// Body iOS: 14sp × 1.05 = 14.7sp (proche recommandation Apple ~17pt)
@@ -492,16 +638,22 @@ class AppTheme {
           fontSize: AppTheme.adaptiveLabelLarge * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurface,
+          height: 1.2, // Meilleure lisibilité sur Android
+          letterSpacing: isApplePlatform ? -0.1 : -0.2,
         ),
         labelMedium: GoogleFonts.inter(
           fontSize: AppTheme.adaptiveLabelMedium * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurface,
+          height: 1.2,
+          letterSpacing: isApplePlatform ? -0.1 : -0.2,
         ),
         labelSmall: GoogleFonts.inter(
           fontSize: AppTheme.adaptiveLabelSmall * AppTheme.fontSizeMultiplier,
           fontWeight: fontMedium,
           color: onSurfaceVariant,
+          height: 1.2,
+          letterSpacing: isApplePlatform ? -0.1 : -0.2,
         ),
       ),
       
@@ -586,7 +738,8 @@ class AppTheme {
           // Elevation adaptative: plus prononcée sur Android, subtile sur iOS
           elevation: isApplePlatform ? 0 : elevation1,
           padding: EdgeInsets.symmetric(
-            horizontal: isDesktop ? spaceLarge + 8 : spaceLarge,
+            // Plus de padding horizontal sur Android pour éviter les textes coupés
+            horizontal: isDesktop ? spaceLarge + 8 : (isApplePlatform ? spaceLarge : spaceLarge + 4),
             vertical: isDesktop ? spaceMedium + 4 : spaceMedium,
           ),
           shape: RoundedRectangleBorder(
@@ -597,7 +750,11 @@ class AppTheme {
           textStyle: GoogleFonts.inter(
             fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
             fontWeight: fontMedium,
+            // Hauteur de ligne plus généreuse pour Android
+            height: isApplePlatform ? 1.2 : 1.3,
           ),
+          // Permet au texte de respirer sur Android
+          minimumSize: const Size(64, 42),
         ),
       ),
       
@@ -610,7 +767,8 @@ class AppTheme {
             width: isApplePlatform ? 1.5 : 1.0, // iOS lignes plus épaisses
           ),
           padding: EdgeInsets.symmetric(
-            horizontal: isDesktop ? spaceLarge + 8 : spaceLarge,
+            // Plus de padding horizontal sur Android
+            horizontal: isDesktop ? spaceLarge + 8 : (isApplePlatform ? spaceLarge : spaceLarge + 4),
             vertical: isDesktop ? spaceMedium + 4 : spaceMedium,
           ),
           shape: RoundedRectangleBorder(
@@ -621,7 +779,9 @@ class AppTheme {
           textStyle: GoogleFonts.inter(
             fontSize: isDesktop ? AppTheme.fontSize16 : AppTheme.fontSize14,
             fontWeight: fontMedium,
+            height: isApplePlatform ? 1.2 : 1.3,
           ),
+          minimumSize: const Size(64, 42),
         ),
       ),
       
@@ -629,14 +789,20 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: primaryColor,
-          padding: const EdgeInsets.symmetric(horizontal: spaceMedium, vertical: spaceSmall),
+          // Plus de padding horizontal sur Android
+          padding: EdgeInsets.symmetric(
+            horizontal: isApplePlatform ? spaceMedium : spaceMedium + 4,
+            vertical: spaceSmall,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radiusSmall),
           ),
           textStyle: GoogleFonts.inter(
             fontSize: AppTheme.fontSize14,
             fontWeight: fontMedium,
+            height: isApplePlatform ? 1.2 : 1.3,
           ),
+          minimumSize: const Size(48, 36),
         ),
       ),
       
@@ -714,11 +880,25 @@ class AppTheme {
       ),
       
       // Bottom Navigation Bar Theme
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: surface,
         selectedItemColor: primaryColor,
         unselectedItemColor: onSurfaceVariant,
         type: BottomNavigationBarType.fixed,
+        // Tailles de police adaptatives pour éviter les textes coupés sur Android
+        selectedLabelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 12 : 11,
+          fontWeight: fontSemiBold,
+          height: 1.2,
+        ),
+        unselectedLabelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 12 : 11,
+          fontWeight: fontRegular,
+          height: 1.2,
+        ),
+        // Permet d'afficher toujours les labels
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
       ),
       
       // Tab Bar Theme - Material Design 3 (Primary Tabs)
@@ -726,6 +906,18 @@ class AppTheme {
         // MD3: Primary tabs intégrées à l'AppBar Surface
         labelColor: primaryColor, // MD3: Texte rouge (primary) pour tab active
         unselectedLabelColor: onSurfaceVariant, // MD3: Texte gris pour tabs inactives
+        
+        // Styles de texte adaptatifs pour Android
+        labelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 14 : 12,
+          fontWeight: fontSemiBold,
+          height: 1.2,
+        ),
+        unselectedLabelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 14 : 12,
+          fontWeight: fontMedium,
+          height: 1.2,
+        ),
         
         // MD3: Indicateur de sélection style YouTube Studio (arrondi en haut, 3dp hauteur)
         indicator: const UnderlineTabIndicator(
@@ -750,38 +942,51 @@ class AppTheme {
           }
           return null;
         }),
-        // MD3: Typographie pour tabs
-        labelStyle: GoogleFonts.inter(
-          fontSize: 14, // MD3: titleSmall (14sp)
-          fontWeight: FontWeight.w600, // MD3: Semibold pour active
-          letterSpacing: 0.1, // MD3: Letter spacing
-        ),
-        unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: 14, // MD3: titleSmall (14sp)
-          fontWeight: FontWeight.w500, // MD3: Medium pour inactive
-          letterSpacing: 0.1,
-        ),
         // MD3: Padding et spacing
         labelPadding: const EdgeInsets.symmetric(horizontal: 16), // MD3: 16dp horizontal
         splashFactory: InkRipple.splashFactory, // MD3: Ripple effect
       ),
       
-      // Chip Theme - Adaptatif
+      // Chip Theme - Adaptatif (FilterChip, ChoiceChip, etc.)
       chipTheme: ChipThemeData(
         backgroundColor: surfaceVariant,
-        selectedColor: primaryContainer,
-        labelStyle: GoogleFonts.inter(
-          fontSize: isDesktop ? AppTheme.fontSize14 : AppTheme.fontSize13,
-          fontWeight: fontMedium,
-          color: onSurfaceVariant,
-        ),
+        selectedColor: primaryColor,
+        disabledColor: surfaceVariant.withOpacity(0.5),
+        // Couleur du label avec Material State (selected/unselected)
+        labelStyle: WidgetStateTextStyle.resolveWith((states) {
+          final isSelected = states.contains(WidgetState.selected);
+          return GoogleFonts.inter(
+            fontSize: isApplePlatform ? 13 : 11.5,
+            fontWeight: isSelected ? fontSemiBold : fontMedium,
+            color: isSelected ? onPrimaryColor : onSurfaceVariant,
+            letterSpacing: isApplePlatform ? -0.1 : -0.2,
+            height: 1.2,
+          );
+        }),
+        // Padding réduit sur mobile pour économiser l'espace
         padding: EdgeInsets.symmetric(
-          horizontal: isDesktop ? spaceMedium : spaceSmall,
+          horizontal: isDesktop ? spaceMedium : (isApplePlatform ? spaceSmall : 6),
+          vertical: isApplePlatform ? spaceSmall : 6,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             isApplePlatform ? radiusMedium : radiusSmall,
           ),
+        ),
+        // Style alternatif pour chip sélectionné (fallback)
+        secondaryLabelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 13 : 11.5,
+          fontWeight: fontSemiBold,
+          color: onPrimaryContainer,
+          letterSpacing: isApplePlatform ? -0.1 : -0.2,
+          height: 1.2,
+        ),
+        // Espacement entre icône et label
+        labelPadding: EdgeInsets.symmetric(horizontal: isApplePlatform ? 8 : 6),
+        // Couleur de l'icône avec Material State
+        iconTheme: IconThemeData(
+          color: onSurfaceVariant,
+          size: 16,
         ),
       ),
       
@@ -1539,8 +1744,9 @@ class AppTheme {
           backgroundColor: darkColorScheme.primary,
           foregroundColor: darkColorScheme.onPrimary,
           elevation: elevation1,
-          padding: const EdgeInsets.symmetric(
-            horizontal: spaceLarge,
+          padding: EdgeInsets.symmetric(
+            // Plus de padding horizontal sur Android
+            horizontal: isApplePlatform ? spaceLarge : spaceLarge + 4,
             vertical: spaceMedium,
           ),
           shape: RoundedRectangleBorder(
@@ -1549,7 +1755,9 @@ class AppTheme {
           textStyle: GoogleFonts.inter(
             fontSize: fontSize14,
             fontWeight: fontSemiBold,
+            height: isApplePlatform ? 1.2 : 1.3,
           ),
+          minimumSize: const Size(64, 42),
         ),
       ),
       
@@ -1577,8 +1785,9 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: darkColorScheme.primary,
           side: BorderSide(color: darkColorScheme.outline),
-          padding: const EdgeInsets.symmetric(
-            horizontal: spaceLarge,
+          padding: EdgeInsets.symmetric(
+            // Plus de padding horizontal sur Android
+            horizontal: isApplePlatform ? spaceLarge : spaceLarge + 4,
             vertical: spaceMedium,
           ),
           shape: RoundedRectangleBorder(
@@ -1587,13 +1796,16 @@ class AppTheme {
           textStyle: GoogleFonts.inter(
             fontSize: fontSize14,
             fontWeight: fontSemiBold,
+            height: isApplePlatform ? 1.2 : 1.3,
           ),
+          minimumSize: const Size(64, 42),
         ),
       ),
       
       // Configuration des boutons texte
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+          minimumSize: const Size(48, 36),
           foregroundColor: darkColorScheme.primary,
           padding: const EdgeInsets.symmetric(
             horizontal: spaceMedium,
@@ -1649,13 +1861,17 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: elevation3,
         selectedLabelStyle: GoogleFonts.inter(
-          fontSize: fontSize12,
+          fontSize: isApplePlatform ? fontSize12 : 11,
           fontWeight: fontSemiBold,
+          height: 1.2,
         ),
         unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: fontSize12,
+          fontSize: isApplePlatform ? fontSize12 : 11,
           fontWeight: fontMedium,
+          height: 1.2,
         ),
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
       ),
       
       // Configuration des onglets
@@ -1664,10 +1880,55 @@ class AppTheme {
         unselectedLabelColor: darkColorScheme.onSurfaceVariant,
         indicatorColor: darkColorScheme.primary,
         labelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 14 : 12,
           fontWeight: fontSemiBold,
+          height: 1.2,
         ),
         unselectedLabelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 14 : 12,
           fontWeight: fontMedium,
+          height: 1.2,
+        ),
+      ),
+      
+      // Chip Theme - Adaptatif (mode sombre)
+      chipTheme: ChipThemeData(
+        backgroundColor: darkColorScheme.surfaceContainerHighest,
+        selectedColor: darkColorScheme.primary,
+        disabledColor: darkColorScheme.surfaceContainerHighest.withOpacity(0.5),
+        // Couleur du label avec Material State (selected/unselected)
+        labelStyle: WidgetStateTextStyle.resolveWith((states) {
+          final isSelected = states.contains(WidgetState.selected);
+          return GoogleFonts.inter(
+            fontSize: isApplePlatform ? 13 : 11.5,
+            fontWeight: isSelected ? fontSemiBold : fontMedium,
+            color: isSelected ? darkColorScheme.onPrimary : darkColorScheme.onSurfaceVariant,
+            letterSpacing: isApplePlatform ? -0.1 : -0.2,
+            height: 1.2,
+          );
+        }),
+        padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? spaceMedium : (isApplePlatform ? spaceSmall : 6),
+          vertical: isApplePlatform ? spaceSmall : 6,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            isApplePlatform ? radiusMedium : radiusSmall,
+          ),
+        ),
+        // Style alternatif pour chip sélectionné (fallback)
+        secondaryLabelStyle: GoogleFonts.inter(
+          fontSize: isApplePlatform ? 13 : 11.5,
+          fontWeight: fontSemiBold,
+          color: darkColorScheme.onPrimaryContainer,
+          letterSpacing: isApplePlatform ? -0.1 : -0.2,
+          height: 1.2,
+        ),
+        labelPadding: EdgeInsets.symmetric(horizontal: isApplePlatform ? 8 : 6),
+        // Couleur de l'icône avec Material State
+        iconTheme: IconThemeData(
+          color: darkColorScheme.onSurfaceVariant,
+          size: 16,
         ),
       ),
       

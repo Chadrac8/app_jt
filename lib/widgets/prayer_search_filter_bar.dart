@@ -236,8 +236,15 @@ class _PrayerSearchFilterBarState extends State<PrayerSearchFilterBar>
                                   ? _getTypeColor(type)
                                   : AppTheme.grey500,
                             ),
-                            const SizedBox(width: AppTheme.spaceXSmall),
-                            Text(type.label),
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                type.label,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                // Style hérité du ChipTheme
+                              ),
+                            ),
                           ],
                         ),
                         selected: widget.selectedType == type,

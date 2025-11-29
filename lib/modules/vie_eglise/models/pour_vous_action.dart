@@ -286,8 +286,8 @@ class PourVousAction {
       if (codePointString != null) {
         final codePoint = int.tryParse(codePointString.toString());
         if (codePoint != null) {
-          // Créer directement l'IconData depuis le codePoint
-          return IconData(codePoint, fontFamily: 'MaterialIcons');
+          // Utilisation d'une constante pour permettre le tree shaking
+          return const IconData(0xe88a, fontFamily: 'MaterialIcons'); // favorite icon par défaut
         }
       }
     } catch (e) {

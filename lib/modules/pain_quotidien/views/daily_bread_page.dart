@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../theme.dart';
+import '../services/branham_scraping_service.dart';
 
 class DailyBreadPage extends StatefulWidget {
   const DailyBreadPage({
@@ -14,7 +15,7 @@ class DailyBreadPage extends StatefulWidget {
 }
 
 class _DailyBreadPageState extends State<DailyBreadPage> {
-  Map<String, dynamic>? _quote;
+  BranhamQuoteModel? _quote;
   bool _isLoading = true;
   String? _error;
 
@@ -31,22 +32,20 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         _error = null;
       });
 
-      // Contenu temporaire par défaut
-      await Future.delayed(const Duration(milliseconds: 500));
+      // Récupérer le contenu depuis branham.org
+      final quote = await BranhamScrapingService.instance.getQuoteOfTheDay();
       
-      setState(() {
-        _quote = {
-          'dailyBread': 'Jésus lui dit: Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi.',
-          'dailyBreadReference': 'Jean 14:6',
-          'text': 'Dieu est amour, et Il veut le meilleur pour chacun de nous. Tournons nos cœurs vers Lui aujourd\'hui.',
-          'sermonTitle': 'La Vie en Christ',
-          'sermonDate': DateTime.now().toString(),
-          'audioUrl': '',
-          'date': DateTime.now().toString(),
-          'shareText': 'Pain quotidien - Citation du jour',
-        };
-        _isLoading = false;
-      });
+      if (quote != null) {
+        setState(() {
+          _quote = quote;
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _error = 'Impossible de charger le pain quotidien';
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         _error = 'Erreur lors du chargement: $e';
@@ -55,13 +54,279 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
     }
   }
 
-  Future<void> _shareContent() async {
+  // Copier le contenu dans le presse-papiers
+  Future<void> _copyContent() async {
     if (_quote == null) return;
 
-    await Share.share(
-      _quote!['shareText'] ?? 'Pain quotidien',
-      subject: 'Pain quotidien - ${_quote!['date'] ?? ''}',
+    try {
+      await Clipboard.setData(ClipboardData(text: _quote!.shareText));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 8),
+                Text('Contenu copié dans le presse-papiers'),
+              ],
+            ),
+            backgroundColor: AppTheme.successColor,
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Erreur lors de la copie : ${e.toString()}'),
+                ),
+              ],
+            ),
+            backgroundColor: AppTheme.errorColor,
+            duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  // Copier uniquement le verset
+  Future<void> _copyVerse() async {
+    if (_quote == null) return;
+
+    try {
+      final verseText = '${_quote!.dailyBread}\n${_quote!.dailyBreadReference}';
+      await Clipboard.setData(ClipboardData(text: verseText));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 8),
+                Text('Verset copié'),
+              ],
+            ),
+            backgroundColor: AppTheme.successColor,
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur : ${e.toString()}'),
+            backgroundColor: AppTheme.errorColor,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  // Copier uniquement la citation
+  Future<void> _copyQuote() async {
+    if (_quote == null) return;
+
+    try {
+      final quoteText = '"${_quote!.text}"\n— William Marrion Branham\n${_quote!.sermonTitle}';
+      await Clipboard.setData(ClipboardData(text: quoteText));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 8),
+                Text('Citation copiée'),
+              ],
+            ),
+            backgroundColor: AppTheme.successColor,
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur : ${e.toString()}'),
+            backgroundColor: AppTheme.errorColor,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  // Afficher le dialog avec les options de partage
+  Future<void> _showShareOptions() async {
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Titre
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.share, color: AppTheme.primaryColor, size: 24),
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  'Partager le pain quotidien',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            
+            // Option 1: Partager tout via les applications
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.share_outlined, color: AppTheme.primaryColor),
+              ),
+              title: const Text('Partager tout'),
+              subtitle: const Text('Verset + Citation via WhatsApp, Email, etc.'),
+              onTap: () {
+                Navigator.pop(context);
+                _shareViaApps();
+              },
+            ),
+            
+            // Option 2: Copier tout
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.secondaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.content_copy, color: AppTheme.secondaryColor),
+              ),
+              title: const Text('Copier tout'),
+              subtitle: const Text('Copier le verset et la citation'),
+              onTap: () {
+                Navigator.pop(context);
+                _copyContent();
+              },
+            ),
+            
+            // Option 3: Copier uniquement le verset
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.menu_book, color: Colors.blue),
+              ),
+              title: const Text('Copier le verset'),
+              subtitle: const Text('Verset biblique uniquement'),
+              onTap: () {
+                Navigator.pop(context);
+                _copyVerse();
+              },
+            ),
+            
+            // Option 4: Copier uniquement la citation
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.tertiaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.format_quote, color: AppTheme.tertiaryColor),
+              ),
+              title: const Text('Copier la citation'),
+              subtitle: const Text('Citation de William Branham uniquement'),
+              onTap: () {
+                Navigator.pop(context);
+                _copyQuote();
+              },
+            ),
+            
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
     );
+  }
+
+  // Partager via les applications système
+  Future<void> _shareViaApps() async {
+    if (_quote == null) return;
+
+    try {
+      // Utiliser Share.share au lieu de shareWithResult pour éviter les problèmes iOS
+      await Share.share(
+        _quote!.shareText,
+        subject: 'Pain quotidien - ${_quote!.date}',
+      );
+      
+      // Note: Share.share ne retourne pas de résultat, donc pas de feedback de succès
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Erreur lors du partage : ${e.toString()}'),
+                ),
+              ],
+            ),
+            backgroundColor: AppTheme.errorColor,
+            duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  // Méthode principale de partage (appelle le dialog)
+  Future<void> _shareContent() async {
+    await _showShareOptions();
   }
 
 
@@ -323,11 +588,11 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Verset biblique section
-            if ((_quote!['dailyBread'] ?? '').toString().isNotEmpty) ...[
+            if (_quote!.dailyBread.isNotEmpty) ...[
               _buildVerseSection(),
               
               // Divider entre verset et citation
-              if ((_quote!['text'] ?? '').toString().isNotEmpty) ...[
+              if (_quote!.text.isNotEmpty) ...[
                 const SizedBox(height: AppTheme.spaceXLarge),
                 _buildSectionDivider(),
                 const SizedBox(height: AppTheme.spaceXLarge),
@@ -335,7 +600,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
             ],
 
             // Citation section
-            if ((_quote!['text'] ?? '').toString().isNotEmpty) ...[
+            if (_quote!.text.isNotEmpty) ...[
               _buildQuoteSection(),
             ],
           ],
@@ -406,7 +671,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         
         // Verse content
         Text(
-          _quote!['dailyBread'] ?? '',
+          _quote!.dailyBread,
           style: TextStyle(
             color: AppTheme.onSurface,
             fontSize: 18,
@@ -417,7 +682,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         ),
         
         // Bible reference
-        if ((_quote!['dailyBreadReference'] ?? '').toString().isNotEmpty) ...[
+        if (_quote!.dailyBreadReference.isNotEmpty) ...[
           const SizedBox(height: AppTheme.spaceMedium),
           Align(
             alignment: Alignment.centerRight,
@@ -431,7 +696,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
                 borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
               ),
               child: Text(
-                _quote!['dailyBreadReference'] ?? '',
+                _quote!.dailyBreadReference,
                 style: TextStyle(
                   color: AppTheme.primaryColor,
                   fontSize: 14,
@@ -505,13 +770,18 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AppTheme.tertiaryContainer,
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                border: Border.all(
+                  color: AppTheme.tertiaryColor.withOpacity(0.2),
+                  width: 1,
+                ),
               ),
-              child: Icon(
-                Icons.format_quote_outlined,
-                color: AppTheme.tertiaryColor,
-                size: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                child: Image.asset(
+                  'assets/branham.jpg',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: AppTheme.spaceMedium),
@@ -532,14 +802,13 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         
         // Quote content
         Text(
-          '"${_quote!['text'] ?? ''}"',
+          '"${_quote!.text}"',
           style: TextStyle(
             color: AppTheme.onSurface,
             fontSize: 17,
             fontWeight: FontWeight.w500,
             height: 1.6,
             letterSpacing: 0.2,
-            fontStyle: FontStyle.italic,
           ),
         ),
         const SizedBox(height: AppTheme.spaceLarge),
@@ -548,9 +817,9 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if ((_quote!['sermonTitle'] ?? '').toString().isNotEmpty) ...[
+            if (_quote!.sermonTitle.isNotEmpty) ...[
               Text(
-                _quote!['sermonTitle'] ?? '',
+                _quote!.sermonTitle,
                 style: TextStyle(
                   color: AppTheme.tertiaryColor,
                   fontSize: 15,
@@ -572,7 +841,7 @@ class _DailyBreadPageState extends State<DailyBreadPage> {
         ),
         
         // Audio button if available
-        if ((_quote!['audioUrl'] ?? '').toString().isNotEmpty) ...[
+        if (_quote!.audioUrl.isNotEmpty) ...[
           const SizedBox(height: AppTheme.spaceLarge),
           SizedBox(
             width: double.infinity,

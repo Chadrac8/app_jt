@@ -282,67 +282,101 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
               // Header avec type et status
               Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: _getTypeColor().withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                      border: Border.all(color: _getTypeColor(), width: 1),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(_getTypeIcon(), size: 16, color: _getTypeColor()),
-                        const SizedBox(width: AppTheme.spaceXSmall),
-                        Text(
-                          widget.prayer.type.label,
-                          style: TextStyle(
-                            color: _getTypeColor(),
-                            fontSize: AppTheme.fontSize12,
-                            fontWeight: AppTheme.fontSemiBold,
+                  // Type badge - Flexible pour s'adapter
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppTheme.isApplePlatform ? 8 : 6,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _getTypeColor().withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                        border: Border.all(color: _getTypeColor(), width: 1),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(_getTypeIcon(), size: 16, color: _getTypeColor()),
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              widget.prayer.type.label,
+                              style: TextStyle(
+                                color: _getTypeColor(),
+                                fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                                fontWeight: AppTheme.fontSemiBold,
+                                height: 1.2,
+                                letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(width: AppTheme.spaceSmall),
+                  const SizedBox(width: 6),
+                  // Catégorie - Flexible
                   if (widget.prayer.category.isNotEmpty)
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppTheme.grey500.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                      ),
-                      child: Text(
-                        widget.prayer.category,
-                        style: const TextStyle(
-                          fontSize: AppTheme.fontSize12,
-                          color: AppTheme.grey500,
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppTheme.isApplePlatform ? 8 : 6,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.grey500.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                        ),
+                        child: Text(
+                          widget.prayer.category,
+                          style: TextStyle(
+                            fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                            color: AppTheme.grey500,
+                            height: 1.2,
+                            letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
                     ),
-                  const Spacer(),
+                  const SizedBox(width: 6),
+                  // Status en attente
                   if (!widget.prayer.isApproved && widget.isAdminView)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppTheme.isApplePlatform ? 8 : 6,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: AppTheme.orangeStandard.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
                       ),
-                      child: const Text(
+                      child: Text(
                         'En attente',
                         style: TextStyle(
-                          fontSize: AppTheme.fontSize12,
+                          fontSize: AppTheme.isApplePlatform ? 12 : 10,
                           color: AppTheme.orangeStandard,
                           fontWeight: AppTheme.fontSemiBold,
+                          height: 1.2,
+                          letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
                         ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
+                  const SizedBox(width: 4),
+                  // Date - toujours visible
                   Text(
                     _formatDate(widget.prayer.createdAt),
-                    style: const TextStyle(
-                      fontSize: AppTheme.fontSize12,
+                    style: TextStyle(
+                      fontSize: AppTheme.isApplePlatform ? 12 : 11,
                       color: AppTheme.grey500,
+                      height: 1.2,
+                      letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
                     ),
                   ),
                 ],
@@ -352,9 +386,11 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
               // Titre
               Text(
                 widget.prayer.title,
-                style: const TextStyle(
-                  fontSize: AppTheme.fontSize16,
+                style: TextStyle(
+                  fontSize: AppTheme.isApplePlatform ? 16 : 15,
                   fontWeight: AppTheme.fontSemiBold,
+                  height: 1.2,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.2 : -0.3,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -364,9 +400,11 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
               // Contenu
               Text(
                 widget.prayer.content,
-                style: const TextStyle(
-                  fontSize: AppTheme.fontSize14,
+                style: TextStyle(
+                  fontSize: AppTheme.isApplePlatform ? 14 : 13,
                   color: AppTheme.grey500,
+                  height: 1.3,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
@@ -388,27 +426,38 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                               widget.prayer.authorName.trim().isNotEmpty 
                                   ? widget.prayer.authorName.trim()[0].toUpperCase() 
                                   : '?',
-                              style: const TextStyle(fontSize: AppTheme.fontSize12),
+                              style: TextStyle(
+                                fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                                height: 1.2,
+                              ),
                             )
                           : null,
                     ),
-                    const SizedBox(width: AppTheme.spaceSmall),
-                    Text(
-                      widget.prayer.authorName,
-                      style: const TextStyle(
-                        fontSize: AppTheme.fontSize12,
-                        fontWeight: AppTheme.fontMedium,
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        widget.prayer.authorName,
+                        style: TextStyle(
+                          fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                          fontWeight: AppTheme.fontMedium,
+                          height: 1.2,
+                          letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                   ] else ...[
                     const Icon(Icons.person_outline, size: 16, color: AppTheme.grey500),
-                    const SizedBox(width: AppTheme.spaceXSmall),
-                    const Text(
+                    const SizedBox(width: 4),
+                    Text(
                       'Anonyme',
                       style: TextStyle(
-                        fontSize: AppTheme.fontSize12,
+                        fontSize: AppTheme.isApplePlatform ? 12 : 11,
                         color: AppTheme.grey500,
                         fontStyle: FontStyle.italic,
+                        height: 1.2,
+                        letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
                       ),
                     ),
                   ],
@@ -426,9 +475,13 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                     if (widget.prayer.comments.isNotEmpty)
                       Text(
                         '${widget.prayer.comments.length}',
-                        style: const TextStyle(fontSize: AppTheme.fontSize12, color: AppTheme.grey500),
+                        style: TextStyle(
+                          fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                          color: AppTheme.grey500,
+                          height: 1.2,
+                        ),
                       ),
-                    const SizedBox(width: AppTheme.spaceSmall),
+                    const SizedBox(width: 6),
 
                     // Prière
                     AnimatedBuilder(
@@ -453,9 +506,10 @@ class _PrayerCardState extends State<PrayerCard> with TickerProviderStateMixin {
                       Text(
                         '${widget.prayer.prayerCount}',
                         style: TextStyle(
-                          fontSize: AppTheme.fontSize12,
+                          fontSize: AppTheme.isApplePlatform ? 12 : 11,
                           color: hasPrayed ? AppTheme.primaryColor : AppTheme.grey500,
                           fontWeight: hasPrayed ? AppTheme.fontSemiBold : FontWeight.normal,
+                          height: 1.2,
                         ),
                       ),
                   ],

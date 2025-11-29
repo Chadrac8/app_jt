@@ -758,19 +758,21 @@ class _MemberEventsPageState extends State<MemberEventsPage>
             
             const SizedBox(height: AppTheme.spaceMedium),
             
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: isRegistrationOpen
-                    ? () => _registerForEvent(event)
-                    : null,
-                icon: Icon(isRegistrationOpen ? Icons.add : Icons.lock),
-                label: Text(isRegistrationOpen ? 'S\'inscrire' : 'Inscriptions fermées'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isRegistrationOpen ? eventColor : AppTheme.textSecondaryColor,
+            // Pas d'inscription pour les événements du module service
+            if (!event.isServiceEvent)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: isRegistrationOpen
+                      ? () => _registerForEvent(event)
+                      : null,
+                  icon: Icon(isRegistrationOpen ? Icons.add : Icons.lock),
+                  label: Text(isRegistrationOpen ? 'S\'inscrire' : 'Inscriptions fermées'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isRegistrationOpen ? eventColor : AppTheme.textSecondaryColor,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

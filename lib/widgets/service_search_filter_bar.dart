@@ -308,7 +308,11 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                             children: _serviceTypes.map((type) {
                               final isSelected = widget.selectedTypeFilters.contains(type['value']);
                               return FilterChip(
-                                label: Text(type['label']!),
+                                label: Text(
+                                  type['label']!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
                                 selected: isSelected,
                                 onSelected: (selected) => _onTypeFilterChanged(type['value']!, selected),
                                 backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
@@ -340,7 +344,11 @@ class _ServiceSearchFilterBarState extends State<ServiceSearchFilterBar>
                             children: _serviceStatuses.map((status) {
                               final isSelected = widget.selectedStatusFilters.contains(status['value']);
                               return FilterChip(
-                                label: Text(status['label']!),
+                                label: Text(
+                                  status['label']!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
                                 selected: isSelected,
                                 onSelected: (selected) => _onStatusFilterChanged(status['value']!, selected),
                                 backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,

@@ -545,16 +545,23 @@ Merci pour votre générosité ! 🙏
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        decoration: const BoxDecoration(
-          color: AppTheme.white100,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: AppTheme.spaceLarge,
+              right: AppTheme.spaceLarge,
+              top: AppTheme.spaceLarge,
+              bottom: MediaQuery.of(context).viewInsets.bottom + AppTheme.spaceLarge,
+            ),
+            decoration: const BoxDecoration(
+              color: AppTheme.white100,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             // Handle bar
             Center(
               child: Container(
@@ -656,9 +663,9 @@ Merci pour votre générosité ! 🙏
               ),
             ),
             
-            // Bottom padding for safe area
-            SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -667,17 +674,25 @@ Merci pour votre générosité ! 🙏
   void _showCheckInstructions() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        decoration: const BoxDecoration(
-          color: AppTheme.white100,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: AppTheme.spaceLarge,
+              right: AppTheme.spaceLarge,
+              top: AppTheme.spaceLarge,
+              bottom: MediaQuery.of(context).viewInsets.bottom + AppTheme.spaceLarge,
+            ),
+            decoration: const BoxDecoration(
+              color: AppTheme.white100,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             Row(
               children: [
                 Icon(
@@ -722,7 +737,9 @@ Merci pour votre générosité ! 🙏
                 ),
               ),
             ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

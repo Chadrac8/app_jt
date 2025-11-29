@@ -132,70 +132,109 @@ class _OffrandesTabState extends State<OffrandesTab>
   }
 
   Widget _buildBiblicalVerse(ColorScheme colorScheme, TextTheme textTheme) {
-    return Container(
-      padding: const EdgeInsets.all(AppTheme.spaceLarge),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            colorScheme.primary.withOpacity(0.08),
-            colorScheme.secondary.withOpacity(0.08),
-          ],
-        ),
+    return Card(
+      elevation: AppTheme.isApplePlatform ? 0 : 3,
+      shadowColor: colorScheme.shadow.withOpacity(0.2),
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
-        border: Border.all(
-          color: colorScheme.primary.withOpacity(0.18),
+        side: BorderSide(
+          color: colorScheme.primary.withOpacity(0.15),
           width: 1,
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppTheme.space12),
-                decoration: BoxDecoration(
-                  color: colorScheme.primary.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+      child: Container(
+        padding: const EdgeInsets.all(AppTheme.spaceLarge),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              colorScheme.primary.withOpacity(0.08),
+              colorScheme.secondary.withOpacity(0.08),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(AppTheme.radiusXLarge),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(AppTheme.space12),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    boxShadow: AppTheme.isApplePlatform
+                        ? []
+                        : [
+                            BoxShadow(
+                              color: colorScheme.primary.withOpacity(0.25),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                  ),
+                  child: Icon(
+                    Icons.auto_stories,
+                    color: colorScheme.primary,
+                    size: 26,
+                  ),
                 ),
-                child: Icon(
-                  Icons.auto_stories,
-                  color: colorScheme.primary,
-                  size: 24,
+                const SizedBox(width: AppTheme.spaceMedium),
+                Expanded(
+                  child: Text(
+                    'Parole de Dieu',
+                    style: textTheme.titleLarge?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.15,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppTheme.space20),
+            Container(
+              padding: const EdgeInsets.all(AppTheme.spaceMedium),
+              decoration: BoxDecoration(
+                color: colorScheme.surface.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                border: Border.all(
+                  color: colorScheme.primary.withOpacity(0.12),
+                  width: 1,
                 ),
               ),
-              const SizedBox(width: AppTheme.spaceMedium),
-              Expanded(
-                child: Text(
-                  'Parole de Dieu',
-                  style: textTheme.titleMedium?.copyWith(
-                    color: colorScheme.onSurface,
+              child: Text(
+                '"Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie."',
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            const SizedBox(height: AppTheme.space12),
+            Row(
+              children: [
+                Icon(
+                  Icons.bookmark,
+                  size: 16,
+                  color: colorScheme.primary,
+                ),
+                const SizedBox(width: AppTheme.space6),
+                Text(
+                  '2 Corinthiens 9:7',
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppTheme.space20),
-          Text(
-            '"Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte ; car Dieu aime celui qui donne avec joie."',
-            style: textTheme.bodyLarge?.copyWith(
-              color: colorScheme.onSurface,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w500,
+              ],
             ),
-          ),
-          const SizedBox(height: AppTheme.space12),
-          Text(
-            '2 Corinthiens 9:7',
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -204,88 +243,125 @@ class _OffrandesTabState extends State<OffrandesTab>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Payer par carte bancaire',
-          style: textTheme.titleLarge?.copyWith(
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 24,
+              decoration: BoxDecoration(
+                color: colorScheme.primary,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: AppTheme.space12),
+            Expanded(
+              child: Text(
+                'Payer par carte bancaire',
+                style: textTheme.titleLarge?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.15,
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: AppTheme.spaceSmall),
-        Text(
-          'Choisissez le type de don et payez en ligne de manière sécurisée',
-          style: textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(
+            'Choisissez le type de don et payez en ligne de manière sécurisée',
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              height: 1.4,
+            ),
           ),
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         ...List.generate(_donationTypes.length, (index) {
           final donation = _donationTypes[index];
 
-          final cardContent = Container(
-            padding: EdgeInsets.all(
-              AppTheme.actionCardPadding,
-            ), // Adaptatif: 16dp mobile, 20dp desktop
-            decoration: BoxDecoration(
-              color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(
-                AppTheme.actionCardRadius,
-              ), // Adaptatif: 12dp iOS, 16dp Android
-              border: Border.all(
-                color: colorScheme.outline.withOpacity(0.2),
-                width: AppTheme
-                    .actionCardBorderWidth, // Adaptatif: 0.5px iOS, 1px Android
+          final cardContent = Card(
+            elevation: AppTheme.isApplePlatform ? 0 : 2,
+            shadowColor: donation.color.withOpacity(0.2),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
+              side: BorderSide(
+                color: donation.color.withOpacity(0.15),
+                width: AppTheme.actionCardBorderWidth,
               ),
-              boxShadow: AppTheme.isApplePlatform
-                  ? [] // iOS: pas de shadow
-                  : [
-                      BoxShadow(
-                        color: colorScheme.shadow.withOpacity(0.05),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
             ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space12),
-                  decoration: BoxDecoration(
-                    color: donation.color.withOpacity(0.13),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            child: Container(
+              padding: EdgeInsets.all(AppTheme.actionCardPadding),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.surface,
+                    donation.color.withOpacity(0.03),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(AppTheme.space12),
+                    decoration: BoxDecoration(
+                      color: donation.color.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      boxShadow: AppTheme.isApplePlatform
+                          ? []
+                          : [
+                              BoxShadow(
+                                color: donation.color.withOpacity(0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                    ),
+                    child: Icon(donation.icon, color: donation.color, size: 26),
                   ),
-                  child: Icon(donation.icon, color: donation.color, size: 24),
-                ),
-                const SizedBox(width: AppTheme.spaceMedium),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        donation.title,
-                        style: textTheme.titleMedium?.copyWith(
-                          color: colorScheme.onSurface,
-                          fontWeight: FontWeight.w600,
+                  const SizedBox(width: AppTheme.spaceMedium),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          donation.title,
+                          style: textTheme.titleMedium?.copyWith(
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.1,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: AppTheme.spaceXSmall),
-                      Text(
-                        donation.description,
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
+                        const SizedBox(height: AppTheme.spaceXSmall),
+                        Text(
+                          donation.description,
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Icon(
-                  AppTheme.isApplePlatform
-                      ? Icons.chevron_right
-                      : Icons.arrow_forward_ios,
-                  color: donation.color,
-                  size: AppTheme.isApplePlatform ? 24 : 16,
-                ),
-              ],
+                  Container(
+                    padding: const EdgeInsets.all(AppTheme.space6),
+                    decoration: BoxDecoration(
+                      color: donation.color.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      AppTheme.isApplePlatform
+                          ? Icons.chevron_right
+                          : Icons.arrow_forward_ios,
+                      color: donation.color,
+                      size: AppTheme.isApplePlatform ? 22 : 16,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
 
@@ -347,12 +423,28 @@ class _OffrandesTabState extends State<OffrandesTab>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Moyens de paiement',
-          style: textTheme.titleLarge?.copyWith(
-            color: colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 24,
+              decoration: BoxDecoration(
+                color: colorScheme.primary,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: AppTheme.space12),
+            Expanded(
+              child: Text(
+                'Moyens de paiement',
+                style: textTheme.titleLarge?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.15,
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: AppTheme.spaceMedium),
         _buildPaymentMethodCard(
@@ -384,67 +476,87 @@ class _OffrandesTabState extends State<OffrandesTab>
     required ColorScheme colorScheme,
     required TextTheme textTheme,
   }) {
-    final cardContent = Container(
-      padding: EdgeInsets.all(AppTheme.actionCardPadding), // Adaptatif
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(
-          AppTheme.actionCardRadius,
-        ), // Adaptatif
-        border: Border.all(
-          color: colorScheme.outline.withOpacity(0.18),
-          width: AppTheme.actionCardBorderWidth, // Adaptatif
+    final cardContent = Card(
+      elevation: AppTheme.isApplePlatform ? 0 : 2,
+      shadowColor: colorScheme.primary.withOpacity(0.15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
+        side: BorderSide(
+          color: colorScheme.outline.withOpacity(0.15),
+          width: AppTheme.actionCardBorderWidth,
         ),
-        boxShadow: AppTheme.isApplePlatform
-            ? [] // iOS: pas de shadow
-            : [
-                BoxShadow(
-                  color: colorScheme.shadow.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
       ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(AppTheme.space12),
-            decoration: BoxDecoration(
-              color: colorScheme.primary.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+      child: Container(
+        padding: EdgeInsets.all(AppTheme.actionCardPadding),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              colorScheme.surface,
+              colorScheme.primary.withOpacity(0.03),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(AppTheme.actionCardRadius),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppTheme.space12),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                boxShadow: AppTheme.isApplePlatform
+                    ? []
+                    : [
+                        BoxShadow(
+                          color: colorScheme.primary.withOpacity(0.25),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+              ),
+              child: Icon(icon, color: colorScheme.primary, size: 26),
             ),
-            child: Icon(icon, color: colorScheme.primary, size: 24),
-          ),
-          const SizedBox(width: AppTheme.spaceMedium),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: textTheme.titleMedium?.copyWith(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
+            const SizedBox(width: AppTheme.spaceMedium),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: textTheme.titleMedium?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.1,
+                    ),
                   ),
-                ),
-                const SizedBox(height: AppTheme.spaceXSmall),
-                Text(
-                  description,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                  const SizedBox(height: AppTheme.spaceXSmall),
+                  Text(
+                    description,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Icon(
-            AppTheme.isApplePlatform
-                ? Icons.chevron_right
-                : Icons.arrow_forward_ios,
-            color: colorScheme.onSurfaceVariant,
-            size: AppTheme.isApplePlatform ? 24 : 16,
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.all(AppTheme.space6),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                AppTheme.isApplePlatform
+                    ? Icons.chevron_right
+                    : Icons.arrow_forward_ios,
+                color: colorScheme.primary,
+                size: AppTheme.isApplePlatform ? 22 : 16,
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -477,31 +589,48 @@ class _OffrandesTabState extends State<OffrandesTab>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              label,
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.5,
+              ),
             ),
           ),
           const SizedBox(height: AppTheme.space6),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(AppTheme.space12),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.spaceMedium,
+              vertical: AppTheme.space12,
+            ),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(
-                color: colorScheme.outline.withOpacity(0.18),
-                width: 1,
+                color: colorScheme.outline.withOpacity(0.2),
+                width: 1.5,
               ),
+              boxShadow: AppTheme.isApplePlatform
+                  ? []
+                  : [
+                      BoxShadow(
+                        color: colorScheme.shadow.withOpacity(0.05),
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
             ),
             child: Text(
               value,
               style: textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurface,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 fontFamily: 'RobotoMono',
+                letterSpacing: 0.5,
               ),
             ),
           ),
@@ -519,15 +648,32 @@ class _OffrandesTabState extends State<OffrandesTab>
   ) {
     return ElevatedButton.icon(
       onPressed: onPressed,
-      icon: Icon(icon, size: 16),
-      label: Text(text),
+      icon: Icon(icon, size: 18),
+      label: Flexible(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
+      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        elevation: 2,
-        textStyle: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+        // Plus de padding sur Android pour éviter les textes coupés
+        padding: EdgeInsets.symmetric(
+          vertical: 14,
+          horizontal: AppTheme.isApplePlatform ? 18 : 22,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        elevation: AppTheme.isApplePlatform ? 0 : 3,
+        shadowColor: colorScheme.primary.withOpacity(0.4),
+        textStyle: textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.2,
+          height: AppTheme.isApplePlatform ? 1.2 : 1.3,
+        ),
       ),
     );
   }
@@ -570,12 +716,19 @@ Merci pour votre générosité !
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24,
+              top: 24,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             // Handle bar
             Center(
               child: Container(
@@ -593,23 +746,35 @@ Merci pour votre générosité !
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: colorScheme.primary.withOpacity(0.12),
+                    color: colorScheme.primary.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: AppTheme.isApplePlatform
+                        ? []
+                        : [
+                            BoxShadow(
+                              color: colorScheme.primary.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                   ),
                   child: Icon(
                     Icons.account_balance,
                     color: colorScheme.primary,
-                    size: 24,
+                    size: 26,
                   ),
                 ),
                 const SizedBox(width: 16),
-                Text(
-                  'Informations bancaires',
-                  style: textTheme.titleLarge?.copyWith(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
+                Expanded(
+                  child: Text(
+                    'Informations bancaires',
+                    style: textTheme.titleLarge?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.15,
+                    ),
                   ),
                 ),
               ],
@@ -656,27 +821,51 @@ Merci pour votre générosité !
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: colorScheme.secondary.withOpacity(0.08),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.secondaryContainer.withOpacity(0.5),
+                    colorScheme.tertiaryContainer.withOpacity(0.3),
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: colorScheme.secondary.withOpacity(0.18),
+                  color: colorScheme.secondary.withOpacity(0.2),
                   width: 1,
                 ),
+                boxShadow: AppTheme.isApplePlatform
+                    ? []
+                    : [
+                        BoxShadow(
+                          color: colorScheme.shadow.withOpacity(0.05),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: colorScheme.onSurfaceVariant,
-                    size: 20,
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: colorScheme.secondary.withOpacity(0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.info_outline,
+                      color: colorScheme.secondary,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       'Précisez le type de don en commentaire du virement',
                       style: textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.w500,
+                        height: 1.3,
                       ),
                     ),
                   ),
@@ -684,9 +873,9 @@ Merci pour votre générosité !
               ),
             ),
 
-            // Bottom padding for safe area
-            SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -698,15 +887,23 @@ Merci pour votre générosité !
 
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24,
+              top: 24,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             // Handle bar
             Center(
               child: Container(
@@ -724,23 +921,35 @@ Merci pour votre générosité !
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: colorScheme.primary.withOpacity(0.12),
+                    color: colorScheme.primary.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: AppTheme.isApplePlatform
+                        ? []
+                        : [
+                            BoxShadow(
+                              color: colorScheme.primary.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                   ),
                   child: Icon(
                     Icons.receipt_long,
                     color: colorScheme.primary,
-                    size: 24,
+                    size: 26,
                   ),
                 ),
                 const SizedBox(width: 16),
-                Text(
-                  'Paiement par chèque',
-                  style: textTheme.titleLarge?.copyWith(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
+                Expanded(
+                  child: Text(
+                    'Paiement par chèque',
+                    style: textTheme.titleLarge?.copyWith(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.15,
+                    ),
                   ),
                 ),
               ],
@@ -834,9 +1043,9 @@ Merci pour votre générosité !
               ),
             ),
 
-            // Bottom padding for safe area
-            SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

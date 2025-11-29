@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/sermon.dart';
 import '../services/sermon_service.dart';
 import '../views/sermon_notes_view.dart';
@@ -287,14 +288,9 @@ class _SermonsTabState extends State<SermonsTab> with TickerProviderStateMixin {
                   child: FilterChip(
                     label: Text(
                       filter['key'],
-                      style: GoogleFonts.inter(
-                        fontSize: isIOS ? 14 : 13,
-                        fontWeight: isSelected ? AppTheme.fontSemiBold : AppTheme.fontMedium,
-                        color: isSelected 
-                            ? colorScheme.onPrimary 
-                            : colorScheme.onSurfaceVariant,
-                        letterSpacing: isIOS ? -0.1 : 0,
-                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      // ✅ Pas de style : hérite automatiquement du ChipTheme
                     ),
                     avatar: Icon(
                       filter['icon'],
@@ -527,6 +523,34 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
   void dispose() {
     _animationController.dispose();
     super.dispose();
+  }
+
+  // Ouvrir la vidéo YouTube
+  Future<void> _openYoutubeVideo(String youtubeUrl) async {
+    try {
+      final uri = Uri.parse(youtubeUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Impossible d\'ouvrir la vidéo'),
+              backgroundColor: AppTheme.errorColor,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur : ${e.toString()}'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+      }
+    }
   }
 
   Color _getSermonTypeColor() {
@@ -806,26 +830,41 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                           // Actions en bas
                           Row(
                         children: [
-                          // Bouton Écritures et notes (mis en évidence)
+                          // Bouton Regarder (YouTube) - mis en évidence si vidéo disponible
+                          if (widget.sermon.lienYoutube?.isNotEmpty == true)
+                            Expanded(
+                              child: _buildActionButton(
+                                onPressed: () => _openYoutubeVideo(widget.sermon.lienYoutube!),
+                                icon: widget.isIOS ? CupertinoIcons.play_circle : Icons.play_circle_rounded,
+                                label: 'Regarder',
+                                isPrimary: true,
+                                isEnabled: true,
+                              ),
+                            ),
+                          
+                          if (widget.sermon.lienYoutube?.isNotEmpty == true)
+                            SizedBox(width: widget.isIOS ? 12 : 14),
+                          
+                          // Bouton Écritures
                           Expanded(
                             child: _buildActionButton(
                               onPressed: widget.onNotesTap,
                               icon: widget.isIOS ? CupertinoIcons.doc_text : Icons.article_rounded,
-                              label: 'Écritures et notes',
-                              isPrimary: true,
+                              label: 'Écritures',
+                              isPrimary: widget.sermon.lienYoutube?.isEmpty ?? true,
                               isEnabled: true,
                             ),
                           ),
                           
                           SizedBox(width: widget.isIOS ? 12 : 14),
                           
-                          // Bouton Schémas (mis en évidence)
+                          // Bouton Schémas
                           Expanded(
                             child: _buildActionButton(
                               onPressed: widget.onInfographiesTap,
                               icon: widget.isIOS ? CupertinoIcons.photo : Icons.image_rounded,
                               label: 'Schémas',
-                              isPrimary: true,
+                              isPrimary: false,
                               isEnabled: true,
                             ),
                           ),
@@ -897,20 +936,22 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                 children: [
                   Icon(
                     icon,
-                    size: 18,
+                    size: 16,
                     color: foregroundColor,
                   ),
-                  SizedBox(width: 6),
+                  SizedBox(width: 4),
                   Flexible(
                     child: Text(
                       label,
                       style: GoogleFonts.inter(
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: AppTheme.fontSemiBold,
                         color: foregroundColor,
-                        letterSpacing: -0.1,
+                        letterSpacing: -0.2,
+                        height: 1.2,
                       ),
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                 ],
@@ -922,7 +963,7 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                 onTap: isEnabled ? onPressed : null,
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                   decoration: isPrimary && isEnabled
                       ? null
                       : BoxDecoration(
@@ -935,17 +976,19 @@ class _ProfessionalSermonCardState extends State<_ProfessionalSermonCard>
                     children: [
                       Icon(
                         icon,
-                        size: 18,
+                        size: 16,
                         color: foregroundColor,
                       ),
-                      SizedBox(width: 6),
+                      SizedBox(width: 4),
                       Flexible(
                         child: Text(
                           label,
                           style: GoogleFonts.inter(
-                            fontSize: 13,
+                            fontSize: 11,
                             fontWeight: AppTheme.fontSemiBold,
                             color: foregroundColor,
+                            letterSpacing: -0.3,
+                            height: 1.2,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,

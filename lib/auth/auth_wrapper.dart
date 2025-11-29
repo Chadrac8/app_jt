@@ -5,6 +5,7 @@ import 'auth_service.dart';
 import 'login_page.dart';
 import '../widgets/bottom_navigation_wrapper.dart';
 import '../models/person_model.dart';
+import '../widgets/professional_splash_screen.dart';
 
 import '../modules/roles/providers/permission_provider.dart';
 import '../../theme.dart';
@@ -160,41 +161,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
   /// Build loading screen with message
   Widget _buildLoadingScreen(String message) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: AppTheme.white100,
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // App branding
-                Container(
-                  padding: const EdgeInsets.all(AppTheme.space20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.blueStandard,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
-                  ),
-                  child: Icon(
-                    Icons.church,
-                    size: 48,
-                    color: AppTheme.blueStandard,
-                  ),
-                ),
-                const SizedBox(height: AppTheme.spaceXLarge),
-                const CircularProgressIndicator(),
-                const SizedBox(height: AppTheme.space20),
-                Text(
-                  message,
-                  style: const TextStyle(
-                    fontSize: AppTheme.fontSize16,
-                    color: AppTheme.grey500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
+      debugShowCheckedModeBanner: false,
+      home: ProfessionalSplashScreen(
+        message: message,
+        showProgress: true,
       ),
     );
   }

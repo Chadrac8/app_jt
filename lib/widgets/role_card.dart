@@ -228,23 +228,31 @@ class _RoleCardState extends State<RoleCard>
                     color: AppTheme.grey500,
                   ),
                   const SizedBox(width: AppTheme.spaceXSmall),
-                  Text(
-                    '$personCount personne${personCount > 1 ? 's' : ''}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.grey500,
+                  Flexible(
+                    child: Text(
+                      '$personCount personne${personCount > 1 ? 's' : ''}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppTheme.grey500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(width: 12),
                   Icon(
                     Icons.security,
                     size: 16,
                     color: AppTheme.grey500,
                   ),
                   const SizedBox(width: AppTheme.spaceXSmall),
-                  Text(
-                    '${widget.role.permissions.length} permission${widget.role.permissions.length > 1 ? 's' : ''}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.grey500,
+                  Flexible(
+                    child: Text(
+                      '${widget.role.permissions.length} permission${widget.role.permissions.length > 1 ? 's' : ''}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppTheme.grey500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                 ],
@@ -315,13 +323,17 @@ class _RoleCardState extends State<RoleCard>
             color: AppTheme.grey400,
           ),
           const SizedBox(width: AppTheme.spaceXSmall),
-          Text(
-            'Créé le ${_formatDate(widget.role.createdAt)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppTheme.grey400,
+          Flexible(
+            child: Text(
+              'Créé le ${_formatDate(widget.role.createdAt)}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppTheme.grey400,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
-          const Spacer(),
+          const SizedBox(width: 8),
           if (widget.canEdit && !widget.isSelectionMode)
             Row(
               mainAxisSize: MainAxisSize.min,

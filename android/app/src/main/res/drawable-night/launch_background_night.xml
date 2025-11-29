@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Professional launch splash screen for Jubilé Tabernacle -->
+<!-- Professional launch splash screen for Jubilé Tabernacle - Night Mode -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Background couleur élégante -->
-    <item android:drawable="@android:color/white" />
+    <!-- Background sombre élégant -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#121212" />
+        </shape>
+    </item>
 
     <!-- Logo centré -->
     <item>

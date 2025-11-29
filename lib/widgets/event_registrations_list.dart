@@ -697,29 +697,63 @@ class _EventRegistrationsListState extends State<EventRegistrationsList>
               children: [
                 // Marquer présent/absent
                 if (registration.isConfirmed) ...[
-                  TextButton.icon(
-                    onPressed: () => _markAttendance(registration, !registration.isPresent),
-                    icon: Icon(
-                      registration.isPresent ? Icons.remove_circle_outline : Icons.check_circle_outline,
-                      size: 16,
-                    ),
-                    label: Text(registration.isPresent ? 'Marquer absent' : 'Marquer présent'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: registration.isPresent ? AppTheme.warningColor : AppTheme.successColor,
+                  Flexible(
+                    child: TextButton.icon(
+                      onPressed: () => _markAttendance(registration, !registration.isPresent),
+                      icon: Icon(
+                        registration.isPresent ? Icons.remove_circle_outline : Icons.check_circle_outline,
+                        size: 16,
+                      ),
+                      label: Text(
+                        registration.isPresent ? 'Marquer absent' : 'Marquer présent',
+                        style: TextStyle(
+                          fontSize: AppTheme.isApplePlatform ? 13 : 12,
+                          height: 1.2,
+                          letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      style: TextButton.styleFrom(
+                        foregroundColor: registration.isPresent ? AppTheme.warningColor : AppTheme.successColor,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppTheme.isApplePlatform ? 12 : 8,
+                          vertical: 6,
+                        ),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                     ),
                   ),
                 ],
                 
-                const Spacer(),
+                const SizedBox(width: 8),
                 
                 // Annuler inscription
                 if (!registration.isCancelled) ...[
-                  TextButton.icon(
-                    onPressed: () => _cancelRegistration(registration),
-                    icon: const Icon(Icons.cancel_outlined, size: 16),
-                    label: const Text('Annuler'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppTheme.errorColor,
+                  Flexible(
+                    child: TextButton.icon(
+                      onPressed: () => _cancelRegistration(registration),
+                      icon: const Icon(Icons.cancel_outlined, size: 16),
+                      label: Text(
+                        'Annuler',
+                        style: TextStyle(
+                          fontSize: AppTheme.isApplePlatform ? 13 : 12,
+                          height: 1.2,
+                          letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppTheme.errorColor,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppTheme.isApplePlatform ? 12 : 8,
+                          vertical: 6,
+                        ),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                     ),
                   ),
                 ],

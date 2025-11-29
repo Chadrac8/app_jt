@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../theme.dart';
 import 'visit_us_page.dart';
 import '../models/home_config_model.dart';
@@ -345,12 +346,21 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                 }
               },
               itemBuilder: (context, index) {
-                return Image.network(
-                  config.coverImageUrls[index],
+                return CachedNetworkImage(
+                  imageUrl: config.coverImageUrls[index],
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildDefaultCoverBackground();
-                  },
+                  fadeInDuration: const Duration(milliseconds: 300),
+                  fadeOutDuration: const Duration(milliseconds: 100),
+                  placeholder: (context, url) => Container(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => _buildDefaultCoverBackground(),
                 );
               },
             ),
@@ -393,12 +403,21 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
     
     // Image unique si coverImageUrl est défini
     if (config.coverImageUrl.isNotEmpty) {
-      return Image.network(
-        config.coverImageUrl,
+      return CachedNetworkImage(
+        imageUrl: config.coverImageUrl,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return _buildDefaultCoverBackground();
-        },
+        fadeInDuration: const Duration(milliseconds: 300),
+        fadeOutDuration: const Duration(milliseconds: 100),
+        placeholder: (context, url) => Container(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+              strokeWidth: 2,
+            ),
+          ),
+        ),
+        errorWidget: (context, url, error) => _buildDefaultCoverBackground(),
       );
     }
     
@@ -1344,7 +1363,12 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> with TickerPr
                       style: TextStyle(
                         color: AppTheme.primaryColor,
                         fontWeight: AppTheme.fontSemiBold,
+                        fontSize: AppTheme.isApplePlatform ? 14 : 13,
+                        height: 1.2,
+                        letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                 ],

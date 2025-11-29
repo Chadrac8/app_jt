@@ -179,16 +179,20 @@ class SetlistCard extends StatelessWidget {
                     color: AppTheme.grey600,
                   ),
                   const SizedBox(width: AppTheme.spaceXSmall),
-                  Text(
-                    '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
-                    style: TextStyle(
-                      fontSize: AppTheme.fontSize14,
-                      fontWeight: AppTheme.fontMedium,
-                      color: AppTheme.grey700,
+                  Flexible(
+                    child: Text(
+                      '${setlist.songIds.length} chant${setlist.songIds.length > 1 ? 's' : ''}',
+                      style: TextStyle(
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontMedium,
+                        color: AppTheme.grey700,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                   
-                  const Spacer(),
+                  const SizedBox(width: 8),
                   
                   // Indicateur de notes
                   if (setlist.notes != null && setlist.notes!.isNotEmpty) ...[

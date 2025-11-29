@@ -127,7 +127,7 @@ class BlogRelatedPosts extends StatelessWidget {
                               color: AppTheme.grey600,
                             ),
                           ),
-                          const Spacer(),
+                          const SizedBox(width: 12),
                           Icon(
                             Icons.favorite,
                             size: 14,

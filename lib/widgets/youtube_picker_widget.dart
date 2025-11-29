@@ -155,21 +155,36 @@ class _YouTubePickerWidgetState extends State<YouTubePickerWidget> {
                   size: 20,
                 ),
                 const SizedBox(width: AppTheme.spaceSmall),
-                Text(
-                  _urlInfo!.displayType,
-                  style: TextStyle(
-                    color: AppTheme.primaryColor,
-                    fontWeight: AppTheme.fontSemiBold,
+                Flexible(
+                  child: Text(
+                    _urlInfo!.displayType,
+                    style: TextStyle(
+                      color: AppTheme.primaryColor,
+                      fontWeight: AppTheme.fontSemiBold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 TextButton.icon(
                   onPressed: () => _showUrlDetails(),
                   icon: const Icon(Icons.info_outline, size: 16),
-                  label: const Text('Détails'),
+                  label: Text(
+                    'Détails',
+                    style: TextStyle(
+                      fontSize: AppTheme.isApplePlatform ? 13 : 12,
+                      height: 1.2,
+                    ),
+                  ),
                   style: TextButton.styleFrom(
                     foregroundColor: AppTheme.primaryColor,
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppTheme.isApplePlatform ? 8 : 6,
+                      vertical: 4,
+                    ),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
               ],

@@ -300,17 +300,22 @@ class _LatestSermonWidgetState extends State<LatestSermonWidget> with AutomaticK
                                   fontWeight: AppTheme.fontSemiBold)),
                             ])),
                       ),
-                      const Spacer(),
+                      const SizedBox(width: 8),
                       Icon(
                         Icons.schedule,
                         size: 16,
                         color: AppTheme.textSecondaryColor),
                       const SizedBox(width: AppTheme.spaceXSmall),
-                      Text(
-                        _formatDate(_homeConfig!.lastUpdated),
-                        style: TextStyle(
-                          fontSize: AppTheme.fontSize12,
-                          color: AppTheme.textSecondaryColor)),
+                      Flexible(
+                        child: Text(
+                          _formatDate(_homeConfig!.lastUpdated),
+                          style: TextStyle(
+                            fontSize: AppTheme.fontSize12,
+                            color: AppTheme.textSecondaryColor),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
                     ]),
                 ])),
           ]));

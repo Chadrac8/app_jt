@@ -644,17 +644,25 @@ class _DonationWebViewPageState extends State<DonationWebViewPage> {
   void _showSecurityInfo() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        decoration: const BoxDecoration(
-          color: AppTheme.white100,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: AppTheme.spaceLarge,
+              right: AppTheme.spaceLarge,
+              top: AppTheme.spaceLarge,
+              bottom: MediaQuery.of(context).viewInsets.bottom + AppTheme.spaceLarge,
+            ),
+            decoration: const BoxDecoration(
+              color: AppTheme.white100,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             Row(
               children: [
                 Container(
@@ -682,79 +690,81 @@ class _DonationWebViewPageState extends State<DonationWebViewPage> {
                 ),
               ],
             ),
-            const SizedBox(height: AppTheme.space20),
-            _buildSecurityItem(
-              Icons.verified_user,
-              'Plateforme certifiée',
-              'HelloAsso est certifié et régulé par l\'ACPR',
-            ),
-            _buildSecurityItem(
-              Icons.lock,
-              'Paiement sécurisé',
-              'Chiffrement SSL 256 bits et conformité PCI DSS',
-            ),
-            _buildSecurityItem(
-              Icons.receipt_long,
-              'Reçu fiscal automatique',
-              'Déduction fiscale de 66% de votre don',
-            ),
-            _buildSecurityItem(
-              Icons.shield,
-              'Données protégées',
-              'Vos informations ne sont jamais partagées',
-            ),
-            const SizedBox(height: AppTheme.spaceMedium),
-            Container(
-              padding: const EdgeInsets.all(AppTheme.space12),
-              decoration: BoxDecoration(
-                color: AppTheme.blueStandard.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+              const SizedBox(height: AppTheme.space20),
+              _buildSecurityItem(
+                Icons.verified_user,
+                'Plateforme certifiée',
+                'HelloAsso est certifié et régulé par l\'ACPR',
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Problème de chargement ?',
+              _buildSecurityItem(
+                Icons.lock,
+                'Paiement sécurisé',
+                'Chiffrement SSL 256 bits et conformité PCI DSS',
+              ),
+              _buildSecurityItem(
+                Icons.receipt_long,
+                'Reçu fiscal automatique',
+                'Déduction fiscale de 66% de votre don',
+              ),
+              _buildSecurityItem(
+                Icons.shield,
+                'Données protégées',
+                'Vos informations ne sont jamais partagées',
+              ),
+              const SizedBox(height: AppTheme.spaceMedium),
+              Container(
+                padding: const EdgeInsets.all(AppTheme.space12),
+                decoration: BoxDecoration(
+                  color: AppTheme.blueStandard.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Problème de chargement ?',
+                      style: GoogleFonts.poppins(
+                        fontSize: AppTheme.fontSize14,
+                        fontWeight: AppTheme.fontSemiBold,
+                        color: AppTheme.blueStandard,
+                      ),
+                    ),
+                    const SizedBox(height: AppTheme.spaceSmall),
+                    Text(
+                      'Si les informations de paiement ne s\'affichent pas, essayez de recharger la page avec le bouton 🔄',
+                      style: GoogleFonts.inter(
+                        fontSize: AppTheme.fontSize12,
+                        color: AppTheme.textSecondaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppTheme.spaceLarge),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: widget.color,
+                    foregroundColor: AppTheme.white100,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    ),
+                  ),
+                  child: Text(
+                    'Compris',
                     style: GoogleFonts.poppins(
-                      fontSize: AppTheme.fontSize14,
+                      fontSize: AppTheme.fontSize16,
                       fontWeight: AppTheme.fontSemiBold,
-                      color: AppTheme.blueStandard,
                     ),
-                  ),
-                  const SizedBox(height: AppTheme.spaceSmall),
-                  Text(
-                    'Si les informations de paiement ne s\'affichent pas, essayez de recharger la page avec le bouton 🔄',
-                    style: GoogleFonts.inter(
-                      fontSize: AppTheme.fontSize12,
-                      color: AppTheme.textSecondaryColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppTheme.spaceLarge),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: widget.color,
-                  foregroundColor: AppTheme.white100,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                  ),
-                ),
-                child: Text(
-                  'Compris',
-                  style: GoogleFonts.poppins(
-                    fontSize: AppTheme.fontSize16,
-                    fontWeight: AppTheme.fontSemiBold,
                   ),
                 ),
               ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -51,7 +51,12 @@ class _ExpandableTextState extends State<ExpandableText> {
                 style: TextStyle(
                   color: widget.linkColor ?? Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w600,
+                  fontSize: Theme.of(context).platform == TargetPlatform.iOS ? 14 : 13,
+                  height: 1.2,
+                  letterSpacing: Theme.of(context).platform == TargetPlatform.iOS ? -0.1 : -0.2,
                 ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
           ),

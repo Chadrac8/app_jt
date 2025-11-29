@@ -289,7 +289,11 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                 children: _statusOptions.map((status) {
                                   final isSelected = widget.selectedStatusFilters.contains(status['value']);
                                   return FilterChip(
-                                    label: Text(status['label']!),
+                                    label: Text(
+                                      status['label']!,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
                                     selected: isSelected,
                                     onSelected: (selected) => _onStatusFilterChanged(status['value']!, selected),
                                     selectedColor: AppTheme.primaryColor.withOpacity(0.3),
@@ -318,7 +322,11 @@ class _TaskSearchFilterBarState extends State<TaskSearchFilterBar>
                                   if (priority['value'] == 'low') priorityColor = AppTheme.successColor;
                                   
                                   return FilterChip(
-                                    label: Text(priority['label']!),
+                                    label: Text(
+                                      priority['label']!,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
                                     selected: isSelected,
                                     onSelected: (selected) => _onPriorityFilterChanged(priority['value']!, selected),
                                     selectedColor: priorityColor.withOpacity(0.3),

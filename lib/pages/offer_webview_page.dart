@@ -523,17 +523,25 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
   void _showSecurityInfo() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(AppTheme.spaceLarge),
-        decoration: const BoxDecoration(
-          color: AppTheme.white100,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              left: AppTheme.spaceLarge,
+              right: AppTheme.spaceLarge,
+              top: AppTheme.spaceLarge,
+              bottom: MediaQuery.of(context).viewInsets.bottom + AppTheme.spaceLarge,
+            ),
+            decoration: const BoxDecoration(
+              color: AppTheme.white100,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             Row(
               children: [
                 Container(
@@ -582,29 +590,31 @@ class _OfferWebViewPageState extends State<OfferWebViewPage> {
               'Données protégées',
               'Vos informations ne sont jamais partagées',
             ),
-            const SizedBox(height: AppTheme.spaceLarge),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: AppTheme.white100,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+              const SizedBox(height: AppTheme.spaceLarge),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    foregroundColor: AppTheme.white100,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Compris',
-                  style: GoogleFonts.poppins(
-                    fontSize: AppTheme.fontSize16,
-                    fontWeight: AppTheme.fontSemiBold,
+                  child: Text(
+                    'Compris',
+                    style: GoogleFonts.poppins(
+                      fontSize: AppTheme.fontSize16,
+                      fontWeight: AppTheme.fontSemiBold,
+                    ),
                   ),
                 ),
               ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

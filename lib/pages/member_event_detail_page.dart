@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/event_model.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 class MemberEventDetailPage extends StatefulWidget {
   final EventModel event;
@@ -256,40 +258,344 @@ ${event.description.isNotEmpty ? '📝 ${event.description}' : ''}
     }
   }
 
-  Future<void> _shareEvent() async {
-    try {
-      final event = widget.event;
-      final startDate = DateFormat('dd/MM/yyyy à HH:mm').format(event.startDate);
-      final endDate = event.endDate != null 
-          ? DateFormat('dd/MM/yyyy à HH:mm').format(event.endDate!)
-          : null;
+  // Générer le texte de partage formaté
+  String _generateShareText() {
+    final event = widget.event;
+    final startDate = DateFormat('dd/MM/yyyy à HH:mm', 'fr_FR').format(event.startDate);
+    final endDate = event.endDate != null 
+        ? DateFormat('dd/MM/yyyy à HH:mm', 'fr_FR').format(event.endDate!)
+        : null;
+    
+    final StringBuffer shareBuffer = StringBuffer();
+    
+    // Titre avec emoji approprié
+    shareBuffer.writeln('🎉 ${event.title}');
+    shareBuffer.writeln();
+    
+    // Type d'événement
+    shareBuffer.writeln('📅 ${event.typeLabel}');
+    
+    // Date(s)
+    if (endDate != null) {
+      shareBuffer.writeln('🕐 Du $startDate');
+      shareBuffer.writeln('    Au $endDate');
+    } else {
+      shareBuffer.writeln('🕐 $startDate');
+    }
+    
+    // Lieu
+    shareBuffer.writeln('📍 ${event.location}');
+    
+    // Description
+    if (event.description.isNotEmpty) {
+      shareBuffer.writeln();
+      shareBuffer.writeln(event.description);
+    }
+    
+    // Informations sur l'inscription
+    if (event.isRegistrationEnabled && !event.isServiceEvent) {
+      shareBuffer.writeln();
+      final isRegistrationOpen = event.closeDate == null || 
+          event.closeDate!.isAfter(DateTime.now());
       
-      final shareText = '''
-🎉 ${event.title}
+      if (isRegistrationOpen) {
+        if (event.maxParticipants != null) {
+          shareBuffer.writeln('✅ Inscription ouverte (${event.maxParticipants} places)');
+        } else {
+          shareBuffer.writeln('✅ Inscription ouverte');
+        }
+        
+        if (event.closeDate != null) {
+          final closeDate = DateFormat('dd/MM/yyyy', 'fr_FR').format(event.closeDate!);
+          shareBuffer.writeln('⏰ Clôture des inscriptions : $closeDate');
+        }
+      } else {
+        shareBuffer.writeln('🔒 Inscriptions fermées');
+      }
+    }
+    
+    // Événement récurrent
+    if (event.isRecurring && event.recurrence != null) {
+      shareBuffer.writeln();
+      shareBuffer.write('🔄 Événement récurrent');
+      
+      final freq = event.recurrence!.frequency;
+      if (freq == RecurrenceFrequency.daily) {
+        shareBuffer.write(' (quotidien)');
+      } else if (freq == RecurrenceFrequency.weekly) {
+        shareBuffer.write(' (hebdomadaire)');
+      } else if (freq == RecurrenceFrequency.monthly) {
+        shareBuffer.write(' (mensuel)');
+      } else if (freq == RecurrenceFrequency.yearly) {
+        shareBuffer.write(' (annuel)');
+      }
+      shareBuffer.writeln();
+    }
+    
+    // Hashtags
+    shareBuffer.writeln();
+    shareBuffer.write('#JubileTabernacle #${event.typeLabel.replaceAll(' ', '')}');
+    
+    return shareBuffer.toString().trim();
+  }
 
-📅 ${event.typeLabel}
-📍 ${event.location}
-🕐 $startDate${endDate != null ? ' - $endDate' : ''}
-
-${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet événement !'}
-
-#JubileTabernacle #Événement
-''';
-
-      await Share.share(
-        shareText.trim(),
-        subject: event.title,
-      );
+  // Copier les détails de l'événement dans le presse-papiers
+  Future<void> _copyEventDetails() async {
+    try {
+      final shareText = _generateShareText();
+      await Clipboard.setData(ClipboardData(text: shareText));
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 8),
+                Text('Détails copiés dans le presse-papiers'),
+              ],
+            ),
+            backgroundColor: AppTheme.successColor,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors du partage : $e'),
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Erreur lors de la copie : ${e.toString()}'),
+                ),
+              ],
+            ),
             backgroundColor: AppTheme.errorColor,
+            duration: const Duration(seconds: 3),
           ),
         );
       }
     }
+  }
+
+  // Afficher le dialog avec les options de partage
+  Future<void> _showShareOptions() async {
+    final eventColor = _getEventColor(widget.event.type);
+    
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: AppTheme.white100,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Titre
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: eventColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Icons.share, color: eventColor, size: 24),
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  'Partager l\'événement',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            
+            // Option 1: Partager via les applications
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.share_outlined, color: AppTheme.primaryColor),
+              ),
+              title: const Text('Partager via...'),
+              subtitle: const Text('WhatsApp, Email, SMS, etc.'),
+              onTap: () {
+                Navigator.pop(context);
+                _shareViaApps();
+              },
+            ),
+            
+            // Option 2: Copier les détails
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.secondaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.content_copy, color: AppTheme.secondaryColor),
+              ),
+              title: const Text('Copier les détails'),
+              subtitle: const Text('Copier dans le presse-papiers'),
+              onTap: () {
+                Navigator.pop(context);
+                _copyEventDetails();
+              },
+            ),
+            
+            // Option 3: Partager l'image (si disponible)
+            if (widget.event.imageUrl?.isNotEmpty == true)
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.purple.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.image, color: Colors.purple),
+                ),
+                title: const Text('Partager avec l\'image'),
+                subtitle: const Text('Inclure l\'image de l\'événement'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _shareWithImage();
+                },
+              ),
+            
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Partager via les applications système
+  Future<void> _shareViaApps() async {
+    try {
+      final shareText = _generateShareText();
+      final result = await Share.shareWithResult(
+        shareText,
+        subject: '${widget.event.typeLabel} - ${widget.event.title}',
+      );
+      
+      if (mounted) {
+        if (result.status == ShareResultStatus.success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text('Événement partagé avec succès'),
+                ],
+              ),
+              backgroundColor: AppTheme.successColor,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Erreur lors du partage : ${e.toString()}'),
+                ),
+              ],
+            ),
+            backgroundColor: AppTheme.errorColor,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
+  // Partager avec l'image de l'événement
+  Future<void> _shareWithImage() async {
+    try {
+      final shareText = _generateShareText();
+      
+      if (widget.event.imageUrl?.isNotEmpty == true) {
+        // Télécharger l'image depuis l'URL
+        final uri = Uri.parse(widget.event.imageUrl!);
+        final response = await NetworkAssetBundle(uri).load(widget.event.imageUrl!);
+        final bytes = response.buffer.asUint8List();
+        
+        // Créer un fichier temporaire
+        final tempDir = await getTemporaryDirectory();
+        final file = await File('${tempDir.path}/event_${widget.event.id}.jpg').create();
+        await file.writeAsBytes(bytes);
+        
+        // Partager avec l'image
+        final result = await Share.shareXFiles(
+          [XFile(file.path)],
+          text: shareText,
+          subject: '${widget.event.typeLabel} - ${widget.event.title}',
+        );
+        
+        if (mounted && result.status == ShareResultStatus.success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text('Événement partagé avec l\'image'),
+                ],
+              ),
+              backgroundColor: AppTheme.successColor,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+        
+        // Nettoyer le fichier temporaire
+        await file.delete();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Erreur : ${e.toString()}'),
+                ),
+              ],
+            ),
+            backgroundColor: AppTheme.errorColor,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
+  // Méthode principale de partage (appelle le dialog)
+  Future<void> _shareEvent() async {
+    await _showShareOptions();
   }
 
   @override
@@ -318,13 +624,11 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
                           const SizedBox(height: AppTheme.spaceLarge),
                           _buildEventDetails(),
                           const SizedBox(height: AppTheme.spaceLarge),
-                          _buildQuickActions(),
-                          const SizedBox(height: AppTheme.spaceLarge),
                           _buildEventDescription(),
                           const SizedBox(height: AppTheme.spaceLarge),
                           if (_userRegistration != null)
                             _buildRegistrationStatus()
-                          else if (isRegistrationOpen && isUpcoming)
+                          else if (isRegistrationOpen && isUpcoming && !widget.event.isServiceEvent)
                             _buildRegistrationCard(),
                           const SizedBox(height: 100), // Space for FAB
                         ],
@@ -595,74 +899,6 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
     );
   }
 
-  Widget _buildQuickActions() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLarge)),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.space20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              children: [
-                Icon(
-                  Icons.flash_on,
-                  color: AppTheme.primaryColor,
-                ),
-                SizedBox(width: AppTheme.spaceSmall),
-                Text(
-                  'Actions rapides',
-                  style: TextStyle(
-                    fontSize: AppTheme.fontSize18,
-                    fontWeight: AppTheme.fontBold,
-                    color: AppTheme.textPrimaryColor,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppTheme.spaceMedium),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: _addToCalendar,
-                    icon: const Icon(Icons.calendar_today, size: 18),
-                    label: const Text('Ajouter au calendrier'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _getEventColor(widget.event.type),
-                      foregroundColor: AppTheme.white100,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: AppTheme.space12),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: _shareEvent,
-                    icon: const Icon(Icons.share, size: 18),
-                    label: const Text('Partager'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: _getEventColor(widget.event.type),
-                      side: BorderSide(color: _getEventColor(widget.event.type)),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildRegistrationStatus() {
     final registration = _userRegistration!;
     
@@ -839,6 +1075,9 @@ ${event.description.isNotEmpty ? event.description : 'Rejoignez-nous pour cet é
 
   Widget? _buildFloatingActionButton(bool isUpcoming, bool isRegistrationOpen) {
     if (!isUpcoming) return null;
+    
+    // Pas d'inscription pour les événements du module service
+    if (widget.event.isServiceEvent) return null;
 
     if (_userRegistration != null && !_userRegistration!.isCancelled) {
       return FloatingActionButton.extended(

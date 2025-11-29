@@ -447,27 +447,49 @@ class BlogPostCard extends StatelessWidget {
         if (post.status == BlogPostStatus.scheduled && post.scheduledAt != null) ...[
           Icon(Icons.schedule, size: 16, color: AppTheme.grey600),
           const SizedBox(width: AppTheme.spaceXSmall),
-          Text(
-            'Programmé pour le ${_formatDate(post.scheduledAt!)}',
-            style: TextStyle(
-              fontSize: AppTheme.fontSize12,
-              color: AppTheme.grey600,
-              fontStyle: FontStyle.italic,
+          Flexible(
+            child: Text(
+              'Programmé pour le ${_formatDate(post.scheduledAt!)}',
+              style: TextStyle(
+                fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                color: AppTheme.grey600,
+                fontStyle: FontStyle.italic,
+                height: 1.2,
+                letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
         ],
         
-        const Spacer(),
+        const SizedBox(width: 8),
         
         // Actions rapides
         if (onPublish != null && post.status == BlogPostStatus.draft)
-          TextButton.icon(
-            onPressed: onPublish,
-            icon: const Icon(Icons.publish, size: 16),
-            label: const Text('Publier'),
-            style: TextButton.styleFrom(
-              foregroundColor: AppTheme.greenStandard,
-              textStyle: const TextStyle(fontSize: AppTheme.fontSize12),
+          Flexible(
+            child: TextButton.icon(
+              onPressed: onPublish,
+              icon: const Icon(Icons.publish, size: 16),
+              label: Text(
+                'Publier',
+                style: TextStyle(
+                  fontSize: AppTheme.isApplePlatform ? 12 : 11,
+                  height: 1.2,
+                  letterSpacing: AppTheme.isApplePlatform ? -0.1 : -0.2,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.greenStandard,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppTheme.isApplePlatform ? 12 : 8,
+                  vertical: 6,
+                ),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
             ),
           ),
       ],

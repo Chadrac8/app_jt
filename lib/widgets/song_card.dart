@@ -230,7 +230,7 @@ class _SongCardState extends State<SongCard> {
                     ),
                   ],
                   
-                  const Spacer(),
+                  const SizedBox(width: 8),
                   
                   // Statut
                   Container(
@@ -340,15 +340,19 @@ class _SongCardState extends State<SongCard> {
                     ),
                   ],
                   
-                  const Spacer(),
+                  const SizedBox(width: 12),
                   
                   // Date de dernière utilisation
                   if (widget.song.lastUsedAt != null)
-                    Text(
-                      'Utilisé le ${_formatDate(widget.song.lastUsedAt!)}',
-                      style: TextStyle(
-                        fontSize: AppTheme.fontSize12,
-                        color: AppTheme.grey600,
+                    Flexible(
+                      child: Text(
+                        'Utilisé le ${_formatDate(widget.song.lastUsedAt!)}',
+                        style: TextStyle(
+                          fontSize: AppTheme.fontSize12,
+                          color: AppTheme.grey600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                 ],

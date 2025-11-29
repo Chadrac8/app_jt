@@ -228,7 +228,11 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                 children: [
                   if (_searchController.text.isNotEmpty)
                     Chip(
-                      label: Text('Recherche: "${_searchController.text}"'),
+                      label: Text(
+                        'Recherche: "${_searchController.text}"',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                       onDeleted: () {
                         _searchController.clear();
                         widget.onSearchChanged('');
@@ -236,7 +240,11 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                     ),
                   if (_selectedStyle != null)
                     Chip(
-                      label: Text('Style: $_selectedStyle'),
+                      label: Text(
+                        'Style: $_selectedStyle',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                       onDeleted: () {
                         setState(() => _selectedStyle = null);
                         widget.onStyleChanged(null);
@@ -244,7 +252,11 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                     ),
                   if (_selectedKey != null)
                     Chip(
-                      label: Text('Tonalité: $_selectedKey'),
+                      label: Text(
+                        'Tonalité: $_selectedKey',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                       onDeleted: () {
                         setState(() => _selectedKey = null);
                         widget.onKeyChanged(null);
@@ -252,14 +264,22 @@ class _SongSearchFilterBarState extends State<SongSearchFilterBar> {
                     ),
                   if (_selectedStatus != null)
                     Chip(
-                      label: Text('Statut: ${_getStatusDisplayName(_selectedStatus!)}'),
+                      label: Text(
+                        'Statut: ${_getStatusDisplayName(_selectedStatus!)}',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                       onDeleted: () {
                         setState(() => _selectedStatus = null);
                         widget.onStatusChanged(null);
                       },
                     ),
                   ..._selectedTags.map((tag) => Chip(
-                        label: Text('Tag: $tag'),
+                        label: Text(
+                          'Tag: $tag',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                         onDeleted: () {
                           setState(() => _selectedTags.remove(tag));
                           widget.onTagsChanged(_selectedTags);
